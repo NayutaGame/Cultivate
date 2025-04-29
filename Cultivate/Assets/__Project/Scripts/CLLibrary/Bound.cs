@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CLLibrary
@@ -20,6 +21,8 @@ namespace CLLibrary
 
         public bool Contains(int value)
             => Start <= value && value < End;
+
+        public int Length => End - Start;
 
         public static implicit operator Bound(int i) => new(i);
 

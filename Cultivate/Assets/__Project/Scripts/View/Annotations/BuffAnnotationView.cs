@@ -19,8 +19,8 @@ public class BuffAnnotationView : XView
         Buff buff = Get<Buff>();
         Icon.sprite = buff.GetEntry().GetSprite();
         TitleText.text = $"{buff.GetName()} {buff.Stack}";
-        DescriptionText.text = buff.GetEntry().GetDescription();
-        AnnotationText.text = buff.GetExplanation();
+        DescriptionText.text = buff.GetEntry().GetDescription().ToString();
+        AnnotationText.text = buff.GetCascadeAnnotated();
 
         string trivia = buff.GetTrivia();
         bool hasTrivia = trivia != null;

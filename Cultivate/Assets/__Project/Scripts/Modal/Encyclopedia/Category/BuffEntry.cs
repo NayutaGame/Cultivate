@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffEntry : Entry, IAnnotation
+public class BuffEntry : Entry, Annotatable
 {
     public string GetName() => GetId();
     
     private string _description;
-    public string GetDescription() => _description;
+    public Description GetDescription() => _description;
 
     public readonly BuffStackRule BuffStackRule;
     public readonly bool Friendly;
@@ -57,16 +57,16 @@ public class BuffEntry : Entry, IAnnotation
         _spriteEntry = $"Buff{GetName()}";
     }
     
-    private AnnotationArray _annotationArray;
-    public void GenerateAnnotations()
-        => _annotationArray = AnnotationArray.FromDescription(GetDescription());
-    public string GetHighlight(string description)
-        => _annotationArray.HighlightFromDescription(description);
+    private AnnotationArray _cascade;
+    public void GenerateCascade()
+        => _cascade = AnnotationArray.FromDescription(GetDescription());
+    public string GetHighlight(Description description)
+        => description.GetHighlight(_cascade);
     public string GetHighlight()
-        => GetHighlight(GetDescription());
+        => GetDescription().GetHighlight(_cascade);
     
-    public string GetExplanation()
-        => _annotationArray.GetExplanation();
+    public string GetCascadeAnnotated()
+        => _cascade.GetCascadeAnnotated();
 
     public static implicit operator BuffEntry(string id) => Encyclopedia.BuffCategory[id];
 

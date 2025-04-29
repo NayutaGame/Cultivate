@@ -114,7 +114,8 @@ public class StageEntity : Addressable, StageClosureListener
         await _env.PlayAsync(new ShiftAnimation());
         _env.Result.TryAppend($"{GetName()}使用了{d.Skill.Entry.GetName()}");
         
-        await d.Skill.Entry.Cast(d);
+        await d.Skill.Entry.Cast(_env, d);
+        
         _env.Result.TryAppendNote(Index, d.Skill, _costResult, castResult);
         
         

@@ -135,6 +135,29 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.Value = Mathf.Max(d.Value, highestAttackRecord) + duanTi;
                                                     });
 
+    private static readonly StageClosure QiShiClosure = new(StageClosureDict.DID_DAMAGE, 0,
+                                                    async (owner, closureDetails) =>
+                                                    {
+                                                        DamageDetails d = closureDetails as DamageDetails;
+                                                        if (owner != d.Initiator) return;
+
+                                                        StageSkill initiator = d.Initiator as StageSkill;
+                                                        int value = 1 + initiator.Dj;
+                                                        d.CastResult["QiShiLingQiGain"] = value.ToString();
+                                                        await d.Src.GainBuffProcedure("灵气", value, induced: true);
+                                                        d.CastResult.Append("QiShiClosure", true);
+                                                    }, "QiShiClosure", "击伤：灵气+[QiShiLingQiGain]");
+
+    private static readonly StageClosure LianXiClosure = new(StageClosureDict.WIL_DAMAGE, 0,
+                                                    async (owner, closureDetails) =>
+                                                    {
+                                                        DamageDetails d = closureDetails as DamageDetails;
+                                                        if (owner != d.Initiator) return;
+                                                        await d.Src.RemoveArmorProcedure(d.Value, true);
+                                                        d.Cancel = true;
+                                                        d.CastResult.Append("LianXiClosure", true);
+                                                    }, "LianXiClosure", "击伤：伤害转为破甲");
+
     private static readonly MergeRule NoMerge = new(
         name: "无法合成",
         errorMessage: "特殊卡牌不可参与合成",
@@ -180,13 +203,10 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{Fib.ToValue(4 + dj)}攻".ApplyAttack() +
-                    $"\n施加{Fib.ToValue(3 + dj)}破甲",
-                cast:                       async d =>
+                procedures:                 (j, dj) => new ProcedureDefinition[]
                 {
-                    await d.AttackProcedure(Fib.ToValue(4 + d.Dj));
-                    await d.RemoveArmorProcedure(Fib.ToValue(3 + d.Dj), false);
+                    new AttackProcedureDefinition(Fib.ToValue(4 + dj)),
+                    new RemoveArmorProcedureDefinition(Fib.ToValue(3 + dj), false),
                 }),
 
             new(id:                         "0104",
@@ -194,30 +214,24 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"4攻".ApplyAttack() +
                     ($"\n击伤：" + $"灵气+{1 + dj}".ApplyMana()).ApplyCond(castResult) +
                     $"\n开局：" + $"灵气+{1 + dj}".ApplyMana(),
                 cast:                       async d =>
                 {
-                    StageClosure closure = new(StageClosureDict.DID_DAMAGE, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            DamageDetails d = closureDetails as DamageDetails;
-                            if (owner != d.Initiator) return;
-
-                            StageSkill initiator = d.Initiator as StageSkill;
-                            await d.Src.GainBuffProcedure("灵气", 1 + initiator.Dj, induced: true);
-                            d.CastResult.AppendCond(true);
-                        });
-
                     d.CastResult.AppendCond(false);
                     await d.AttackProcedure(4,
-                        closures: new [] { closure });
+                        closures: new [] { QiShiClosure });
                 },
                 startStageCast:             async d =>
                 {
                     await d.Caster.GainBuffProcedure("灵气", 1 + d.Skill.Dj, induced: false);
+                },
+                procedures:                 (j, dj) => new ProcedureDefinition[]
+                {
+                    new SetValueProcedureDefinition("QiShiLingQiGain", (1 + dj).ToString()),
+                    new AttackProcedureDefinition(4, closures: new [] { QiShiClosure }),
                 }),
 
             new(id:                         "0118",
@@ -227,24 +241,9 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
-                    $"{6 + 4 * dj}攻".ApplyAttack() +
-                    $"\n击伤：伤害转为破甲".ApplyCond(castResult),
-                cast:                       async d =>
+                procedures:                 (j, dj) => new ProcedureDefinition[]
                 {
-                    StageClosure closure = new(StageClosureDict.WIL_DAMAGE, 0,
-                        async (owner, closureDetails) =>
-                        {
-                            DamageDetails d = closureDetails as DamageDetails;
-                            if (owner != d.Initiator) return;
-                            await d.Src.RemoveArmorProcedure(d.Value, false);
-                            d.Cancel = true;
-                            d.CastResult.AppendCond(true);
-                        });
-                    
-                    d.CastResult.AppendCond(false);
-                    await d.AttackProcedure(6 + 4 * d.Dj,
-                        closures: new [] { closure });
+                    new AttackProcedureDefinition(6 + 4 * dj, closures: new [] { LianXiClosure }),
                 }),
 
             new(id:                         "0109",
@@ -252,7 +251,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{3 + 3 * dj}攻".ApplyAttack() +
                     $"\n下回合{3 + 3 * dj}攻",
                 cast:                       async d =>
@@ -260,6 +259,11 @@ public class SkillCategory : Category<SkillEntry>
                     int value = 3 + 3 * d.Dj;
                     await d.AttackProcedure(value);
                     await d.GainBuffProcedure("延迟攻", value, induced: true);
+                },
+                procedures:                 (j, dj) => new ProcedureDefinition[]
+                {
+                    new AttackProcedureDefinition(3 + 3 * dj),
+                    new GainBuffProcedureDefinition("延迟攻", 3 + 3 * dj, induced: true),
                 }),
             
             new(id:                         "0125",
@@ -269,7 +273,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{6 + 4 * dj}攻".ApplyAttack() +
                     $"\n每相邻1张金，多1次",
                 cast:                       async d =>
@@ -287,7 +291,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加{5 + 5 * dj}破甲" +
                     $"\n每1破甲，护甲+1",
                 cast:                       async d =>
@@ -296,7 +300,14 @@ public class SkillCategory : Category<SkillEntry>
                     int value = (-d.Caster.Opponent().Armor).ClampLower(0);
                     if (value > 0)
                         await d.GainArmorProcedure(value, induced: false);
-                }),
+                }
+                // procedures:                 d => new ProcedureDefinition[]
+                // {
+                //     new RemoveArmorProcedureDefinition(5 + 5 * d.Dj, induced: false),
+                //     new GainArmorProcedureDefinition((-d.Caster.Opponent().Armor).ClampLower(0), induced: true)
+                //         .AddCondition(),
+                // }
+                ),
 
             new(id:                         "0128",
                 name:                       "白刃",
@@ -305,7 +316,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Swift,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{10 + 8 * dj}攻".ApplyAttack() +
                     $"\n击伤：二动".ApplyCond(castResult),
                 cast:                       async d =>
@@ -331,7 +342,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{15 + 5 * dj}".ApplyDefend() +
                     $"\n每{15 - 5 * dj}护甲，锋锐+1",
                 cast:                       async d =>
@@ -348,7 +359,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"6攻x3".ApplyAttack() +
                     $"\n暴击",
                 cast:                       async d =>
@@ -362,7 +373,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
                     $"\n击伤：施加{5 + 5 * dj}破甲".ApplyCond(castResult),
                 cast:                       async d =>
@@ -388,7 +399,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n对手护甲每降低过1次，多{1 + dj}攻",
                 cast:                       async d =>
@@ -402,7 +413,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "天地同寿",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加{Fib.ToValue(4 + dj)}破甲" +
                     $"\n自身每1破甲，多1" +
                     $"\n开局：施加{Fib.ToValue(4 + dj)}破甲",
@@ -425,7 +436,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{5 + 4 * dj}攻".ApplyAttack() +
                     $"\n碎防",
                 cast:                       async d =>
@@ -439,7 +450,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+{1 + dj}" +
                     $"\n锋锐变为施加破甲",
                 cast:                       async d =>
@@ -453,7 +464,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Mana | SkillType.Swift,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+4".ApplyMana() + " 二动" +
                     $"\n遭受{4 - dj}滞气".ApplyDebuff(),
                 cast:                       async d =>
@@ -469,7 +480,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"暴击+{1 + dj}" +
                     $"\n护甲+6".ApplyDefend() +
                     $"\n开局：暴击+{1 + dj}",
@@ -488,7 +499,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() + " 暴击释放" +
                     $"\n开局：施加1跳行动",
                 cast:                       async d =>
@@ -517,7 +528,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     $"\n破甲将补齐至攻击前的数值",
                 cast:                       async d =>
@@ -566,7 +577,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(3 + dj) * 2}攻".ApplyAttack() + " 吸血".ApplyHeal(),
                 cast:                       async d =>
                 {
@@ -579,7 +590,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + dj}".ApplyMana() +
                     $"\n气血上限+{4 + 4 * dj}" +
                     (j >= JingJie.HuaShen ? "\n治疗可以穿上限" : ""),
@@ -599,7 +610,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n未击伤：气血+{4 + 4 * dj}".ApplyCond(castResult),
                 cast:                       async d =>
@@ -624,7 +635,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Mana | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+1".ApplyMana() +
                     $"\n气血+{1 + 4 * dj}".ApplyHeal() +
                     $"\n终结：翻倍".ApplyCond(castResult),
@@ -646,7 +657,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.Swift,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 * (1 << dj)}攻".ApplyAttack() +
                     $"\n护甲+{4 * (1 << dj)}".ApplyDefend() + $" 二动",
                 cast:                       async d =>
@@ -662,7 +673,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"14攻".ApplyAttack() +
                     $"\n消耗每1灵气，多{3 + dj}攻",
                 cast:                       async d =>
@@ -690,7 +701,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Mana,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ? $"灵气翻倍" : $"灵气变成三倍") +
                     $"\n之后无法获得灵气",
                 cast:                       async d =>
@@ -706,7 +717,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend | SkillType.Swift,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     j >= JingJie.HuaShen
                         ? ("格挡+1\n二动\n二动时：获得1格挡")
                         : ("格挡+1\n二动"),
@@ -730,7 +741,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     ($"\n击伤：" + "下1次受伤转为治疗".ApplyHeal()).ApplyCond(castResult),
                 cast:                       async d =>
@@ -758,7 +769,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) =>
                     new ManaCostResult(3 + skill.Dj - entity.TraversalSkills().Count(s => s.Entry.WuXing == WuXing.Shui)),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{6 + 6 * dj}攻".ApplyAttack() +
                     $"\n每携带1水：消耗-1",
                 cast:                       async d =>
@@ -773,7 +784,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Mana,
                 cost:                       CostResult.ManaFromDj(dj => 3 + dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 3 + dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{8 + 4 * dj}攻".ApplyAttack() +
                     $"\n灵气+{3 + 1 * dj}".ApplyMana(),
                 cast:                       async d =>
@@ -787,7 +798,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Mana | SkillType.Attack | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}".ApplyMana() +
                     $"\n爆能{5 + 5 * dj}：{20 + 10 * dj}攻 吸血".ApplyCond(castResult),
                 cast:                       async d =>
@@ -812,7 +823,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Mana,
                 cost:                       CostResult.ManaFromDj(dj => 2 + dj),
                 costDescription:            CostDescription.ManaFromDj(dj => 2 + dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{5 + 2 * dj}".ApplyMana(),
                 cast:                       async d =>
                 {
@@ -850,7 +861,7 @@ public class SkillCategory : Category<SkillEntry>
                         s.Owner.Memory.PerformOperation(penetrateKey, false, record => record | d.Penetrate);
                     }),
                 },
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{10 + 4 * dj}攻".ApplyAttack() +
                     $"\n返还触发过的" +
                     $"暴击".ApplyStyle(castResult, "0") +
@@ -887,7 +898,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气补至本局最高+{1 + dj}".ApplyMana(),
                 cast:                       async d =>
                 {
@@ -901,7 +912,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     $"\n每{5 - dj}累计治疗，多1攻",
                 cast:                       async d =>
@@ -930,7 +941,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend,
                 cost:                       CostResult.ManaFromValue(3),
                 costDescription:            CostDescription.ManaFromValue(3),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"格挡+{1 + dj}".ApplyDefend() +
                     $"\n格挡变成治疗" +
                     $"\n无法二动",
@@ -946,7 +957,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Mana | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"消耗每40气血，灵气+1".ApplyMana() +
                     $"\n消耗每1灵气，气血+10".ApplyHeal(),
                 cast:                       async d =>
@@ -975,7 +986,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.ZiZhi,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(4 + dj)}攻".ApplyAttack() +
                     $"\n成长：多{Fib.ToValue(3 + dj)}",
                 cast:                       async d =>
@@ -998,7 +1009,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n对方每有2护甲，多1",
                 cast:                       async d =>
@@ -1021,7 +1032,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Mana | SkillType.ZiZhi,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + dj}".ApplyMana() +
                     $"\n成长：多{(j >= JingJie.HuaShen ? 2 : 1)}",
                 cast:                       async d =>
@@ -1037,7 +1048,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend | SkillType.Health,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"双方护甲+{6 + 4 * dj}".ApplyDefend() +
                     $"\n双方气血+{6 + 4 * dj}".ApplyHeal(),
                 cast:                       async d =>
@@ -1053,7 +1064,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "落英",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"力量+{1 + dj}" +
                     $"\n消耗每{5 - dj}灵气，多1",
                 cast:                       async d =>
@@ -1066,7 +1077,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "钟声",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"使下{1 + dj}张牌升级",
                 cast:                       async d =>
                 {
@@ -1078,7 +1089,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n力量/剑意具有{5 + dj}倍效果",
                 cast:                       async d =>
@@ -1103,7 +1114,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"下{1 + dj}张牌使用两次",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -1143,7 +1154,7 @@ public class SkillCategory : Category<SkillEntry>
                         });
                     }),
                 },
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     $"\n具有所有已触发的攻击描述",
                 cast:                       async d =>
@@ -1164,7 +1175,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.ZiZhi,
                 cost:                       CostResult.ManaFromValue(1),
                 costDescription:            CostDescription.ManaFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     ($"成长{2 + dj}次后：" + ($"{(4 + 2 * dj) * (4 + 2 * dj)}攻".ApplyAttack())).ApplyStyle(castResult, "0") +
                     $"\n成长{2 + dj}次前：闪避+1".ApplyStyle(castResult, "1"),
                 cast:                       async d =>
@@ -1188,7 +1199,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend | SkillType.ZiZhi,
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(5 - skill.Dj - skill.TotalStageCastedCount),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"10攻".ApplyAttack() + " 闪避+2".ApplyDefend() +
                     $"\n成长：吟唱-1",
                 cast:                       async d =>
@@ -1202,7 +1213,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"气血+{2 + 4 * dj}".ApplyHeal() +
                     $"\n成长：多{Fib.ToValue(2 + dj)}",
                 cast:                       async d =>
@@ -1217,7 +1228,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Mana,
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(await skill.IsFirstTime() ? 3 : 0),
                 costDescription:            CostDescription.ChannelFromValue(3),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{4 + 2 * dj}".ApplyMana() +
                     $"\n非初次：无需吟唱",
                 cast:                       async d =>
@@ -1230,7 +1241,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Defend | SkillType.ZiZhi,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"闪避+1".ApplyDefend() +
                     $"\n初次：跳过下{2 + 2 * dj}张牌，使其成长".ApplyCond(castResult),
                 cast:                       async d =>
@@ -1248,7 +1259,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ManaFromJ(j => (j <= JingJie.JinDan ? 2 : 0)),
                 costDescription:            CostDescription.ManaFromJ(j => (j <= JingJie.JinDan ? 2 : 0)),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ? $"使用第一张牌\n已升华的牌无效" : $"使用前两张牌\n已升华的牌无效"),
                 cast:                       async d =>
                 {
@@ -1267,7 +1278,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{2 + dj}攻x{2 + dj}".ApplyAttack() +
                     $"\n力量/" + "闪避".ApplyDefend() + $"+{2 + dj}" +
                     $"\n遭受不堪一击".ApplyDebuff(),
@@ -1285,7 +1296,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Swift,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"交换左右牌" +
                     (j <= JingJie.YuanYing ? $"" :
                         $"\n二动"),
@@ -1310,7 +1321,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "一念无量劫",
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.HuaShenOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"消耗每8灵气，多重+1",
                 cast:                       async d =>
                 {
@@ -1323,7 +1334,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{2 + 2 * dj}攻x2".ApplyAttack() +
                     $"\n护甲+{2 + 2 * dj}".ApplyDefend(),
                 cast:                       async d =>
@@ -1340,7 +1351,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend | SkillType.Exhaust,
                 cost:                       CostResult.ChannelFromDj(dj => 5 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 5 - dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n护甲+{10 + 10 * dj}".ApplyDefend(),
                 cast:                       async d =>
@@ -1354,7 +1365,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻x{2 + dj}".ApplyAttack() +
                     $"\n击伤：灵气+1".ApplyCond(castResult),
                 cast:                       async d =>
@@ -1378,7 +1389,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"剑意+{2 + dj}" +
                     $"\n护甲+{2 + dj}".ApplyDefend(),
                 cast:                       async d =>
@@ -1394,7 +1405,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+2".ApplyDefend() +
                     $"\n直到使用攻击牌：" + $"每回合{1 + 4 * dj}攻".ApplyAttack() +
                     $"\n不消耗剑意",
@@ -1411,7 +1422,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ChannelFromDj(dj => 2 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 2 - dj),
                 skillTypeComposite:         SkillType.Exhaust,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n剑意+3",
                 cast:                       async d =>
@@ -1425,7 +1436,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灼烧+1" +
                     $"\n每1灼烧，剑意+1" +
                     (j <= JingJie.YuanYing ? "" : "\n下1次攻击保留剑意"),
@@ -1448,7 +1459,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
                 skillTypeComposite:         SkillType.Exhaust,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n下一张牌具有升华",
                 cast:                       async d =>
@@ -1479,7 +1490,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     $"\n每1已升华牌，多1次",
                 cast:                       async d =>
@@ -1504,7 +1515,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
                 cost:                       CostResult.HealthFromDj(dj => Fib.ToValue(5 + dj)),
                 costDescription:            CostDescription.HealthFromDj(dj => Fib.ToValue(5 + dj)),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(6 + dj)}攻".ApplyAttack() +
                     $"\n满血：多{Fib.ToValue(6 + dj)}".ApplyCond(castResult),
                 cast:                       async d =>
@@ -1533,7 +1544,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) =>
                     new HealthCostResult(entity.IsLowHealth ? 1 : Fib.ToValue(5 + skill.Dj)),
                 costDescription:            CostDescription.HealthFromDj(dj => Fib.ToValue(5 + dj)),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(5 + dj)}".ApplyDefend() +
                     $"\n残血：只需1消耗".ApplyCond(castResult),
                 cast:                       async d =>
@@ -1551,7 +1562,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) =>
                     new ChannelCostResult(3 + skill.Dj - entity.Memory.TryGetVariable(StageEntity.BurnTimesKey, 0)),
                 costDescription:            CostDescription.ChannelFromDj(dj => 3 + dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{10 + 10 * dj}攻".ApplyAttack() +
                     $"\n每燃命1次，吟唱-1",
                 cast:                       async d =>
@@ -1567,7 +1578,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) =>
                     new HealthCostResult(entity.IsLowHealth ? 0 : 8),
                 costDescription:            CostDescription.HealthFromValue(8),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + dj}".ApplyMana() +
                     $"\n锻体+5" +
                     $"\n残血：免除消耗".ApplyCond(castResult),
@@ -1585,7 +1596,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{30 + 10 * dj}攻".ApplyAttack() +
                     " 成为残血" +
                     "\n初次：3回合，气血无法降低至0".ApplyCond(castResult),
@@ -1608,7 +1619,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Health,
                 cost:                       CostResult.HealthFromValue(8),
                 costDescription:            CostDescription.HealthFromValue(8),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灼烧+{1 + dj}" +
                     $"\n燃命时：根据灼烧造成伤害",
                 cast:                       async d =>
@@ -1624,7 +1635,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.HealthFromDj(dj => Fib.ToValue(8 + dj)),
                 costDescription:            CostDescription.HealthFromDj(dj => Fib.ToValue(8 + dj)),
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"剑意+{6 + 2 * dj}",
                 cast:                       async d =>
                 {
@@ -1636,7 +1647,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Exhaust,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华左边牌" + (j == JingJie.HuaShen ? "，两次" : ""),
                 cast:                       async d =>
                 {
@@ -1654,7 +1665,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ChannelFromValue(5),
                 costDescription:            CostDescription.ChannelFromValue(5),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"9攻x9".ApplyAttack() +
                     $"\n每燃命过1次，多1攻" +
                     $"\n禁止行动".ApplyDebuff(),
@@ -1681,7 +1692,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(6 + dj)}攻".ApplyAttack() +
                     $"\n遭受{(int)j switch { 0 => 4, 1 => 6, 2 => 8, 3 => 11, _ => 15 }}软弱".ApplyDebuff() +
                     $"\n终结：软弱不影响攻击".ApplyEnd(castResult) +
@@ -1717,7 +1728,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(4 + dj)}".ApplyDefend() +
                     $"\n终结：消耗每1护甲，1攻".ApplyEnd(castResult) +
                     $"\n大终结：每1护甲，1攻".ApplyDoubleEnd(castResult),
@@ -1750,7 +1761,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(5 + dj)}".ApplyDefend() +
                     $"\n遭受{2 + 2 * dj}软弱".ApplyDebuff(),
                 cast:                       async d =>
@@ -1764,7 +1775,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(4 + dj)}".ApplyDefend() +
                     $"\n终结：{Fib.ToValue(5 + dj)}攻".ApplyEnd(castResult),
                 cast:                       async d =>
@@ -1789,7 +1800,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{7 + 5 * dj}攻".ApplyAttack() +
                     ($"\n击伤：" + $"护甲+{7 + 5 * dj}".ApplyDefend()).ApplyCond(castResult) +
                     $"\n终结：根据击伤值".ApplyEnd(castResult) +
@@ -1822,7 +1833,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "无畏",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"坚毅+{1 + dj}" +
                     $"\n每1坚毅，净化1",
                 cast:                       async d =>
@@ -1838,7 +1849,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+20".ApplyDefend() +
                     $"\n下{1 + dj}次失去护甲时，返还",
                 cast:                       async d =>
@@ -1853,7 +1864,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 1 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 1 - dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"激活下1次终结" +
                     $"\n终结：大终结".ApplyEnd(castResult) +
                     $"\n大终结：2次大终结".ApplyDoubleEnd(castResult),
@@ -1882,7 +1893,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"闪避+1".ApplyDefend() +
                     $"\n开局：" +
                     $"护甲+100".ApplyDefend() +
@@ -1902,7 +1913,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"合成：气血上限增加{Fib.ToValue(3 + dj)}",
                 overridingMergeRule:        new MergeRule(
                     name:                       "固元",
@@ -1925,7 +1936,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Health,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                 {
                     return $"气血+{6 + dj}\n" + (int)j switch
                     {
@@ -1959,7 +1970,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(4 + dj)}".ApplyDefend() +
                     $"\n满血：三倍".ApplyCond(castResult),
                 cast:                       async d =>
@@ -1977,7 +1988,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                 {
                     return $"{dj switch { 0 => 10, 1 => 25, 2 => 45, 3 => 70, _ => 100 }}攻".ApplyAttack() +
                            $"\n遭受4跳行动".ApplyDebuff() +
@@ -2014,7 +2025,7 @@ public class SkillCategory : Category<SkillEntry>
                         s.Owner.Memory.PerformOperation(key, 0, record => Mathf.Max(record, d.Value));
                     }),
                 },
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"造成本局最高攻击".ApplyAttack() +
                     $"\n终结：锻体提供攻击".ApplyEnd(castResult) +
                     $"\n大终结：锻体提供攻击，攻击2次".ApplyDoubleEnd(castResult),
@@ -2048,7 +2059,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Defend,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"坚毅+{1 + dj}" +
                     $"\n开局：" +
                     $"吟唱时：" + $"坚毅+{1 + dj}".ApplyDefend(),
@@ -2068,7 +2079,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Health,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锻体+{6 + dj}" +
                     $"\n每1锻体，治疗{1 + dj}".ApplyHeal() +
                     $"\n移除多余气血上限",
@@ -2085,7 +2096,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 skillTypeComposite:         SkillType.Health,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"回复{10 + 10 * dj}气血" +
                     $"\n满血：二动".ApplyStyle(castResult, "0") +
                     $"\n残血：翻倍".ApplyStyle(castResult, "1"),
@@ -2107,7 +2118,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"10攻".ApplyAttack() +
                     $"\n锻体+5" +
                     $"\n终结：遭受1跳走步".ApplyEnd(castResult) +
@@ -2139,7 +2150,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "硬化蛊",
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"对手失去{10 + 4 * dj}气血" +
                     $"\n给予10护甲" +
                     $"\n一次性",
@@ -2153,7 +2164,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "雷火弹",
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(5 + dj)}攻" +
                     $"\n碎防" +
                     $"\n一次性",
@@ -2167,7 +2178,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "养气丹",
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"力量+{Fib.ToValue(2 + dj)}" +
                     $"\n一次性",
                 cast:                       async d =>
@@ -2179,7 +2190,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "天雷丸",
                 jingJieBound:              JingJie.LianQi2HuaShen,
                 skillTypeComposite:        SkillType.Attack | SkillType.Exhaust | SkillType.Deplete,
-                castDescription:           (j, dj, costResult, castResult) =>
+                descriptionGenerator:           (j, dj, costResult, castResult) =>
                 {
                     int damage = dj switch { 0 => 10, 1 => 25, 2 => 45, 3 => 70, _ => 100 };
                     
@@ -2198,7 +2209,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "同心蛊",
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"下{1 + dj}次受治疗时，对敌方造成等量伤害" +
                     $"\n一次性",
                 cast:                       async d =>
@@ -2210,7 +2221,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "七彩蛊",
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"遭受{20 - 5 * dj}腐朽".ApplyDebuff() +
                     $"\n下次攻击具有暴击，吸血，穿透" +
                     $"\n一次性",
@@ -2226,7 +2237,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "破境丹",
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Swift | SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     j <= JingJie.YuanYing ? 
                         "二动\n升华2次\n一次性" : 
                         "三动\n升华3次\n一次性",
@@ -2242,7 +2253,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "小雷劫",
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     j <= JingJie.YuanYing ? 
                         "开局：双方失去1/4气血\n一次性" : 
                         "开局：双方失去1/3气血\n一次性",
@@ -2260,7 +2271,7 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "SKILL_DB_009",
                 name:                       "补天丹",
                 jingJieBound:               JingJie.HuaShenOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"合成：另外一张牌变成化神",
                 overridingMergeRule:        new MergeRule(
                     name:                       "补天丹",
@@ -2303,7 +2314,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "缭乱",
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{2 + 4 * dj}攻".ApplyAttack() +
                     $"\n初次：力量+{Fib.ToValue(2 + dj)}".ApplyCond(castResult),
                 cast:                       async d =>
@@ -2321,7 +2332,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"坚毅+{1 + dj}" +
                     $"\n失去所有护甲",
                 cast:                       async d =>
@@ -2339,7 +2350,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{9 + 3 * dj}攻".ApplyAttack() +
                     $"\n每造成{9 - dj}点伤害，格挡+1".ApplyDefend(),
                 cast:                       async d =>
@@ -2364,7 +2375,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 skillTypeComposite:         SkillType.ZiZhi,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ?
                         $"灼烧+{1 + dj}" +
                         $"\n成长:多1"
@@ -2389,7 +2400,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "百草集",
                 wuXing:                     null,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"流转最高五行" +
                     $"\n额外获得{1 + dj}层",
                 withinPool:                 false,
@@ -2404,7 +2415,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "停云",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+{1 + dj}" +
                     $"\n开局：锋锐+{1 + dj}",
                 cast:                       async d =>
@@ -2420,7 +2431,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "常仪",
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Swift,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     j <= JingJie.YuanYing ?
                         "流转时：造成伤害\n流转最高五行" :
                         "流转时：造成伤害\n流转最高五行\n二动",
@@ -2443,7 +2454,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+{1 + dj}" +
                     $"\n每1锋锐，灵气+1".ApplyMana(),
                 cast:                       async d =>
@@ -2457,7 +2468,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "羲和",
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Health | SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "流转最高五行\n使用牌时：流转对应五行",
                 cast:                       async d =>
                 {
@@ -2478,7 +2489,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻".ApplyAttack() +
                     $"\n满血：翻倍".ApplyCond(castResult) +
                     (j >= JingJie.HuaShen ? $"\n天人形态：施加禁止治疗" : ""),
@@ -2513,7 +2524,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Health | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锻体+{Fib.ToValue(4 + dj)}" +
                     $"\n持续：灵气不足时，可消耗3锻体代替1灵气",
                 cast:                       async d =>
@@ -2526,7 +2537,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "天人五衰",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                 {
                     BuffEntry[] debuffs = new BuffEntry[] { "滞气", "缠绕", "软弱", "腐朽", "内伤", "脆弱" };
 
@@ -2553,7 +2564,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Mana | SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{2 + dj}".ApplyMana() +
                     $"\n每1灵气，" + $"护甲+{1 + dj}".ApplyDefend(),
                 cast:                       async d =>
@@ -2567,7 +2578,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灼烧+{1 + dj}" +
                     $"\n每1灼烧，护甲+2".ApplyDefend(),
                 cast:                       async d =>
@@ -2582,7 +2593,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Exhaust,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n使用所有已升华牌",
                 cast:                       async d =>
@@ -2605,7 +2616,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Health | SkillType.Exhaust,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n气血回复至上限" +
                     $"\n治疗可以穿上限",
@@ -2623,7 +2634,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack | SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+2" +
                     $"\n锋锐具有吸血".ApplyHeal() +
                     $"\n无法攻击",
@@ -2639,7 +2650,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n开局：{Fib.ToValue(6 + dj)}攻".ApplyAttack(),
                 startStageCast: async d =>
@@ -2656,7 +2667,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"气血+4".ApplyHeal() +
                     $"\n开局：气血及上限+{8 << (1 + dj)}",
                 startStageCast:             async d =>
@@ -2676,7 +2687,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"坚毅+{Fib.ToValue(3 + dj)}",
                 cast:                       async d =>
                 {
@@ -2688,7 +2699,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"气血+40".ApplyHeal() +
                     $"\n至多受到40伤害" +
                     $"\n无法获得护甲",
@@ -3008,7 +3019,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       CostResult.ChannelFromValue(1),
                 costDescription:            CostDescription.ChannelFromValue(1),
                 skillTypeComposite:         SkillType.Attack | SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
                     $"\n灵气+3".ApplyMana() +
                     $"\n下{1 + dj}次攻击也触发",
@@ -3036,7 +3047,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Swift,
                 cost:                       CostResult.ManaFromValue(8),
                 costDescription:            CostDescription.ManaFromValue(8),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
                     $"\n二动+1" +
                     $"\n下{2 + dj}次攻击也触发",
@@ -3065,7 +3076,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
                     $"\n力量+1" +
                     $"\n下{1 + dj}次攻击也触发",
@@ -3091,7 +3102,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"2攻".ApplyAttack() +
                     $"\n攻击多8攻".ApplyAttack() +
                     $"\n下{1 + dj}次攻击也触发",
@@ -3118,7 +3129,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ? $"2攻".ApplyAttack() : "2攻x2".ApplyAttack()) +
                     $"\n不消耗剑阵效果",
                 withinPool:                 false,
@@ -3151,7 +3162,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 withinPool:                 false,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{20 + 20 * dj}攻".ApplyAttack() +
                     $"\n遭受{3 + 2 * dj}腐朽".ApplyDebuff(),
                 cast:                       async d =>
@@ -3168,7 +3179,7 @@ public class SkillCategory : Category<SkillEntry>
                 withinPool:                 false,
                 cost:                       CostResult.ManaFromValue(8),
                 costDescription:            CostDescription.ManaFromValue(8),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{40 + 20 * dj}攻".ApplyAttack(),
                 cast:                       async d =>
                 {
@@ -3181,7 +3192,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 withinPool:                 false,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻".ApplyAttack() +
                     $"\n每耗1灵气，多1次".ApplyAttack(),
                 cast:                       async d =>
@@ -3438,7 +3449,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "卡池已空",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQiOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "卡池已空",
                 withinPool:                 false),
 
@@ -3446,7 +3457,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "聚气术",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQiOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "灵气+1".ApplyMana(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3458,7 +3469,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "灵气匮乏",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQiOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "灵气+1".ApplyMana(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3470,7 +3481,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "幻化",
                 wuXing:                     null,
                 jingJieBound:               JingJie.HuaShenOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "模仿对手对位的牌",
                 withinPool:                 false,
                 overridingMergeRule:        NoMerge),
@@ -3479,7 +3490,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "作弊",
                 wuXing:                     null,
                 jingJieBound:               JingJie.HuaShenOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "对手气血变成0",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3492,7 +3503,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "发呆",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQiOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     "就真的只是发呆",
                 withinPool:                 false),
 
@@ -3504,7 +3515,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "遗憾",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"对手失去{3 + dj}灵气",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3516,7 +3527,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "爱恋",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3530,7 +3541,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Health,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"双方气血+{20 + 5 * dj}".ApplyHeal(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3543,7 +3554,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "枯木",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"双方遭受{5 + dj}腐朽".ApplyDebuff(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3559,7 +3570,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Swift | SkillType.Health,
                 cost:                       CostResult.HealthFromDj(dj => 8 - 2 * dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 8 - 2 * dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     j <= JingJie.ZhuJi ? "二动" : "三动",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3573,7 +3584,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"治疗{18 + dj * 6}".ApplyHeal(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3588,7 +3599,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Swift | SkillType.Health,
                 cost:                       CostResult.HealthFromDj(dj => 8 - 2 * dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 8 - 2 * dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     j <= JingJie.ZhuJi ? "二动" : "三动",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3602,7 +3613,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Health,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"治疗{24 + dj * 6}".ApplyHeal(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3615,7 +3626,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"5攻x4".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3627,7 +3638,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "毒性",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDan2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加3内伤".ApplyDebuff(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3639,7 +3650,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "观棋烂柯",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.HuaShenOnly,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加1跳行动",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3656,7 +3667,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{3 + dj}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3669,7 +3680,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 2 * dj}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3684,7 +3695,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{8 + dj}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3697,7 +3708,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     null,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{100}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -3824,7 +3835,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"坚毅+{1 + dj}" +
                     $"\n失去所有护甲",
                 withinPool:                 false,
@@ -3842,7 +3853,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Mana,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+{1 + dj}" +
                     $"\n每1锋锐，灵气+1".ApplyMana(),
                 withinPool:                 false,
@@ -3861,7 +3872,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,
                 cost:                       CostResult.ManaFromValue(2),
                 costDescription:            CostDescription.ManaFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{9 + 3 * dj}攻".ApplyAttack() +
                     $"\n每造成{9 - dj}点伤害，格挡+1".ApplyDefend(),
                 withinPool:                 false,
@@ -3887,7 +3898,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "养气丹",
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Deplete,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"力量+{Fib.ToValue(2 + dj)}" +
                     $"\n一次性",
                 withinPool:                 false,
@@ -3902,7 +3913,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 skillTypeComposite:         SkillType.ZiZhi,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     (j < JingJie.HuaShen ?
                         $"灼烧+{1 + dj}" +
                         $"\n成长:多1"
@@ -4437,7 +4448,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "攻击",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{Fib.ToValue(4 + dj)}攻".ApplyAttack(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4450,7 +4461,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "防御",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{Fib.ToValue(4 + dj)}".ApplyDefend(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4463,7 +4474,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "聚灵",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+{1 + (dj / 2)}".ApplyMana(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4476,7 +4487,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "调息",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"气血+{Fib.ToValue(4 + dj)}".ApplyHeal(),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4489,7 +4500,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "啃咬",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加{6 << dj}破甲",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4502,7 +4513,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "切割",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{2 << dj}攻".ApplyAttack() +
                     $"\n获得{4 << dj}护甲",
                 withinPool:                 false,
@@ -4517,7 +4528,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "腐蚀",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+5" +
                     $"\n每有1护甲，施加1破甲",
                 withinPool:                 false,
@@ -4533,7 +4544,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "剑芒",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+{1 << (Mathf.Max(dj - 1, 0))}",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4546,7 +4557,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "祥瑞",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"开局：二动 双发",
                 withinPool:                 false,
                 startStageCast:             async d =>
@@ -4563,7 +4574,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "万千光辉",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"锋锐+1" +
                     $"\n每1锋锐，多{2 + dj}攻",
                 withinPool:                 false,
@@ -4579,7 +4590,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "恶意",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"之后{1 + dj}次施加破甲时将会造成气血流失",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4592,7 +4603,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "岁月",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{10 + 10 * dj}攻".ApplyAttack() +
                     $"\n击伤：施加{3 + 2 * dj}腐朽".ApplyCond(castResult),
                 withinPool:                 false,
@@ -4618,7 +4629,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "恶灵招徕",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"若敌方有腐朽，施加10破甲".ApplyStyle(castResult, "0") +
                     $"\n否则，将破甲转为腐朽".ApplyStyle(castResult, "1"),
                 withinPool:                 false,
@@ -4645,7 +4656,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "浪击",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{4 + 4 * dj}攻" +
                     $"\n击伤：灵气+{2 + dj}".ApplyCond(castResult),
                 withinPool:                 false,
@@ -4671,7 +4682,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "惊涛",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"4攻" +
                     $"\n爆能{10 + 2 * dj}：多{4 + 2 * dj}攻，多{1 + dj}次，吸血".ApplyCond(castResult),
                 withinPool:                 false,
@@ -4696,7 +4707,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "放血",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加4内伤",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4709,7 +4720,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "高速",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"二动" +
                     $"\n每1格挡，造成{1 + dj}伤害",
                 withinPool:                 false,
@@ -4725,7 +4736,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "逍遥游",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"格挡减半" +
                     $"\n格挡+{2 + 2 * dj}",
                 withinPool:                 false,
@@ -4743,7 +4754,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 4 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"气血回复至上限",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4759,7 +4770,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       async (env, entity, skill, recursive) => new ChannelCostResult(4 * (1 - skill.TotalStageCastedCount.Clamp(0, 1))),
                 costDescription:            CostDescription.ChannelFromValue(4),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"30攻 吸血" +
                     $"\n非初次：无需吟唱".ApplyCond(castResult),
                 withinPool:                 false,
@@ -4776,7 +4787,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "须臾",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"十二动 升华",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4790,7 +4801,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "月华清辉",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"敌方失去所有灵气",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4806,7 +4817,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       CostResult.ChannelFromValue(2),
                 costDescription:            CostDescription.ChannelFromValue(2),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{10 + 10 * dj}攻 穿透",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4820,7 +4831,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "滑水",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"闪避+{1 + dj}",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4833,7 +4844,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "驱藤",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"双方坚毅+{2 + dj}",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4847,7 +4858,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "花海",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华" +
                     $"\n每回合力量+1",
                 withinPool:                 false,
@@ -4862,7 +4873,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "啄击",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"1攻" +
                     $"\n成长：多1次",
                 withinPool:                 false,
@@ -4876,7 +4887,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "娑婆双树",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"将左边牌的成长次数给右边牌",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4898,7 +4909,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       CostResult.ManaFromValue(3),
                 costDescription:            CostDescription.ManaFromValue(3),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"闪避+3" +
                     $"\n成功闪避时：双发+1",
                 withinPool:                 false,
@@ -4913,7 +4924,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "灵犀剑",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灵气+3" +
                     $"\n1攻 每1灵气，多{1 + dj}",
                 withinPool:                 false,
@@ -4940,7 +4951,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "他心通",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"下一次对方获得增益时：自己也获得",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -4953,7 +4964,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "吞炎",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"成为残血" +
                     $"\n护甲+{10 + 20 * dj}",
                 withinPool:                 false,
@@ -4968,7 +4979,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "焚天",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{10 + 10 * dj}攻" +
                     $"\n残血：多{10 + 10 * dj}攻".ApplyCond(castResult),
                 withinPool:                 false,
@@ -4983,7 +4994,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "山火",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{3 + dj}攻 每携带1张火，多1次",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5000,7 +5011,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Health,
                 cost:                       CostResult.HealthFromDj(dj => 4 + 4 * dj),
                 costDescription:            CostDescription.HealthFromDj(dj => 4 + 4 * dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"灼烧+{1 + dj}",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5013,7 +5024,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "火墙",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"若在下次使用前，没有遭受{1 + dj}次伤害".ApplyCond(castResult) +
                     $"\n50攻".ApplyCond(castResult),
                 withinPool:                 false,
@@ -5037,7 +5048,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "献祭",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华所有卡牌",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5050,7 +5061,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "须弥",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+{10 + 10 * dj}" +
                     $"\n二动 升华",
                 withinPool:                 false,
@@ -5068,7 +5079,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       CostResult.ChannelFromDj(dj => 4 - dj),
                 costDescription:            CostDescription.ChannelFromDj(dj => 4 - dj),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"使用3次后：将对方气血变为0".ApplyCond(castResult),
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5087,7 +5098,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "消愁",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"下一张牌取消升华",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5101,7 +5112,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "滚石",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"10攻" +
                     $"\n有护甲：多5攻".ApplyCond(castResult),
                 withinPool:                 false,
@@ -5121,7 +5132,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       CostResult.ChannelFromValue(3),
                 costDescription:            CostDescription.ChannelFromValue(3),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"护甲+10" +
                     $"\n每有{6 - dj}气血，多1",
                 withinPool:                 false,
@@ -5136,7 +5147,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "风魔",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"10攻" +
                     $"\n遭受1跳走步",
                 withinPool:                 false,
@@ -5151,7 +5162,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "震地",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"10攻" +
                     $"\n击伤：对手灵气-2".ApplyCond(castResult),
                 withinPool:                 false,
@@ -5176,7 +5187,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "硬化",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"坚毅+2" +
                     $"\n失去所有护甲",
                 withinPool:                 false,
@@ -5193,7 +5204,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "惊吓",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加4滞气",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5206,7 +5217,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "铁布衫",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"升华\n受到伤害时：最多20",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5223,7 +5234,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       async (env, entity, skill, recursive) =>
                     new ChannelCostResult(4 - entity.Opponent().TraversalBuffs().Count(b => !b.GetEntry().Friendly)),
                 costDescription:            CostDescription.ChannelFromValue(4),
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"{40 + 40 * dj}攻" +
                     $"\n对手每有1种debuff，吟唱-1",
                 withinPool:                 false,
@@ -5237,7 +5248,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "天人五衰",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                castDescription:            (j, dj, costResult, castResult) =>
+                descriptionGenerator:            (j, dj, costResult, castResult) =>
                     $"施加滞气，缠绕，软弱，腐朽，内伤各5层",
                 withinPool:                 false,
                 cast:                       async d =>
@@ -5255,7 +5266,7 @@ public class SkillCategory : Category<SkillEntry>
     {
         List.Do(entry =>
         {
-            entry.GenerateAnnotations();
+            entry.GenerateCascade();
             entry.CreateSprite();
         });
     }

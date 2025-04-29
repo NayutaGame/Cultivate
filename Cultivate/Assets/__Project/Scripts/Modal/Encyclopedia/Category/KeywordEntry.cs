@@ -1,25 +1,25 @@
 
-public class KeywordEntry : Entry, IAnnotation
+public class KeywordEntry : Entry, Annotatable
 {
-    public string GetName() => GetId();
-    
     private string _description;
-
-    public string GetDescription() => _description;
+    private AnnotationArray _cascade;
 
     public KeywordEntry(string id, string description) : base(id)
     {
         _description = description;
     }
+    
+    public string GetName() => GetId();
+    public Description GetDescription() => _description;
 
-    private AnnotationArray _annotationArray;
-    public void GenerateAnnotations()
-        => _annotationArray = AnnotationArray.FromDescription(GetDescription());
-    public string GetHighlight(string description)
-        => _annotationArray.HighlightFromDescription(description);
+    public string GetHighlight(Description description)
+        => description.GetHighlight(_cascade);
     public string GetHighlight()
         => GetHighlight(GetDescription());
     
-    public string GetExplanation()
-        => _annotationArray.GetExplanation();
+    public string GetCascadeAnnotated()
+        => _cascade.GetCascadeAnnotated();
+    
+    public void GenerateCascade()
+        => _cascade = AnnotationArray.FromDescription(GetDescription());
 }

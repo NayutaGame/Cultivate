@@ -21,7 +21,7 @@ public class RoomAnnotationView : XView
         // Buff buff = Get<Buff>();
         // TitleText.text = $"{buff.GetName()} {buff.Stack}";
         // DescriptionText.text = buff.GetEntry().GetDescription();
-        // AnnotationText.text = buff.GetExplanation();
+        // AnnotationText.text = buff.GetCascadeAnnotated();
         //
         // string trivia = buff.GetTrivia();
         // bool hasTrivia = trivia != null;

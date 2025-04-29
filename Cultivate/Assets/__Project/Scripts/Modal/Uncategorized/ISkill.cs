@@ -9,7 +9,7 @@ public interface ISkill
     WuXing? GetWuXing();
     string GetName();
     SkillTypeComposite GetSkillTypeComposite();
-    string GetExplanation();
+    string GetCascadeAnnotated();
     string GetTrivia();
     
     JingJie GetJingJie();

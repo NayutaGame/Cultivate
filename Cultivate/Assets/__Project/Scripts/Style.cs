@@ -5,7 +5,7 @@ public static class Style
 {
     public static string ApplyStyle(this string s, CastResult castResult, string styleName)
     {
-        if (castResult == null)
+        if (castResult == null || styleName == null)
             return s;
 
         if (!castResult.ContainsKey(styleName))
@@ -44,6 +44,9 @@ public static class Style
     
     public static string ApplyDoubleEnd(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "doubleEnd");
+
+    public static string Apply(this string s, CastResult castResult, string key)
+        => s.ApplyStyle(castResult, key);
     
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");

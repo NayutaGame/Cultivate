@@ -16,7 +16,7 @@ public class FormationEntry : IFormationModel, Addressable
     private string _rewardDescription;
     public string GetRewardDescription() => _rewardDescription;
     public string GetHighlightedRewardDescription() => GetHighlight();
-    public string GetRewardDescriptionAnnotation() => _annotationArray.GetExplanation();
+    public string GetRewardDescriptionAnnotation() => _annotationArray.GetCascadeAnnotated();
     
     private AnnotationArray _annotationArray;
     public void GenerateAnnotations()

@@ -5,9 +5,10 @@ using CLLibrary;
 
 public class AnnotationArray
 {
-    private IAnnotation[] _array;
+    private Annotatable[] _array;
+    public Annotatable[] GetArray() => _array;
 
-    private AnnotationArray(IAnnotation[] array)
+    private AnnotationArray(Annotatable[] array)
     {
         _array = array;
     }
@@ -15,28 +16,29 @@ public class AnnotationArray
     public string HighlightFromDescription(string description)
     {
         StringBuilder sb = new(description);
-        foreach (IAnnotation annotation in _array)
-            sb = sb.Replace(annotation.GetName(), $"<style=\"Highlight\">{annotation.GetName()}</style>");
+        foreach (Annotatable annotatable in _array)
+            sb = sb.Replace(annotatable.GetName(), $"<style=\"Highlight\">{annotatable.GetName()}</style>");
 
         return sb.ToString();
     }
 
-    public string GetExplanation()
+    public string GetCascadeAnnotated()
     {
         StringBuilder sb = new();
-        foreach (IAnnotation annotation in _array)
-            sb.Append($"<style=\"Highlight\">{annotation.GetName()}</style>\n{annotation.GetHighlight()}\n\n");
+        foreach (Annotatable annotatable in _array)
+            sb.Append($"<style=\"Highlight\">{annotatable.GetName()}</style>\n{annotatable.GetHighlight()}\n\n");
 
         return sb.ToString();
     }
     
-    public static AnnotationArray FromDescription(string description)
+    public static AnnotationArray FromDescription(Description description)
     {
-        List<IAnnotation> annotations = new();
+        List<Annotatable> annotations = new();
+        string descriptionString = description.ToString();
 
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (!description.Contains(keywordEntry.GetName()))
+            if (!descriptionString.Contains(keywordEntry.GetName()))
                 continue;
 
             annotations.Add(keywordEntry);
@@ -44,10 +46,10 @@ public class AnnotationArray
 
         foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
         {
-            if (!description.Contains(buffEntry.GetName()))
+            if (!descriptionString.Contains(buffEntry.GetName()))
                 continue;
 
-            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
+            Annotatable duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
             if (duplicate != null)
                 continue;
 
@@ -57,9 +59,10 @@ public class AnnotationArray
         return new AnnotationArray(annotations.ToArray());
     }
     
-    public static AnnotationArray FromDescriptionAndCostType(string description, CostDescription.CostType costType)
+    public static AnnotationArray FromDescriptionAndCostType(Description description, CostDescription.CostType costType)
     {
-        List<IAnnotation> annotations = new();
+        List<Annotatable> annotations = new();
+        string descriptionString = description.ToString();
 
         switch (costType)
         {
@@ -73,7 +76,7 @@ public class AnnotationArray
 
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
         {
-            if (!description.Contains(keywordEntry.GetName()))
+            if (!descriptionString.Contains(keywordEntry.GetName()))
                 continue;
 
             annotations.Add(keywordEntry);
@@ -81,10 +84,10 @@ public class AnnotationArray
 
         foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
         {
-            if (!description.Contains(buffEntry.GetName()))
+            if (!descriptionString.Contains(buffEntry.GetName()))
                 continue;
 
-            IAnnotation duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
+            Annotatable duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
             if (duplicate != null)
                 continue;
 

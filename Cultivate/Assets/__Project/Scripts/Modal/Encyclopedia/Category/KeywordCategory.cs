@@ -45,6 +45,6 @@ public class KeywordCategory : Category<KeywordEntry>
 
     public void Init()
     {
-        List.Do(entry => entry.GenerateAnnotations());
+        List.Do(entry => entry.GenerateCascade());
     }
 }

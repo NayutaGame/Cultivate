@@ -125,8 +125,8 @@ public class SkillEntryDescriptor : ISkill
     public SkillTypeComposite GetSkillTypeComposite()
         => _entry?.GetSkillTypeComposite();
 
-    public string GetExplanation()
-        => _entry?.GetExplanation();
+    public string GetCascadeAnnotated()
+        => _entry?.GetCascadeAnnotated();
 
     public string GetTrivia()
         => _entry?.GetTrivia();

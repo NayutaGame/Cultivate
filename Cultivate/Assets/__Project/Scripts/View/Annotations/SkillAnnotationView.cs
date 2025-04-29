@@ -40,7 +40,7 @@ public class SkillAnnotationView : XView
         for (int i = 0; i < TypeTagList.Length; i++)
             TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
 
-        DescriptionText.text = skill.GetExplanation();
+        DescriptionText.text = skill.GetCascadeAnnotated();
 
         SetTrivia(skill.GetTrivia());
     }
