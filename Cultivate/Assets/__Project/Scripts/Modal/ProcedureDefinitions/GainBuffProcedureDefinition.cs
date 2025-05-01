@@ -1,5 +1,4 @@
 
-using System.Text;
 using Cysharp.Threading.Tasks;
 
 public class GainBuffProcedureDefinition : ProcedureDefinition
@@ -7,27 +6,39 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     public BuffEntry BuffEntry;
     public int Stack;
     public bool Recursive;
+    public StageClosure[] Closures;
     public bool Induced;
 
     public GainBuffProcedureDefinition(
         BuffEntry buffEntry,
         int stack = 1,
         bool recursive = true,
+        StageClosure[] closures = null,
         bool induced = false)
     {
         BuffEntry = buffEntry;
         Stack = stack;
         Recursive = recursive;
+        Closures = closures;
         Induced = induced;
     }
 
     public GainBuffDetails GetDetailsFromCastDetails(CastDetails d)
-        => new(d.Caster, d.Caster, BuffEntry, Stack, Recursive, Induced);
+        => new(
+            src: d.Caster,
+            tgt: d.Caster,
+            buffEntry: BuffEntry,
+            stack: Stack,
+            recursive: Recursive,
+            initiator: d.Skill,
+            castResult: d.CastResult,
+            closures: Closures,
+            induced: Induced);
 
     public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
         => await env.GainBuffProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description GetDescription(CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
         if (BuffEntry.Friendly)
@@ -40,6 +51,29 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
         }
 
         description.Sb.Append($"{Stack}{BuffEntry.GetName()}");
+        if (Closures != null)
+            foreach (StageClosure c in Closures)
+            {
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                // closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
+        return description;
+    }
+
+    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    {
+        GainBuffProcedureDefinition pd = procedureDefinition as GainBuffProcedureDefinition;
+        Description description = new();
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
+            {
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                // closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
         return description;
     }
 }

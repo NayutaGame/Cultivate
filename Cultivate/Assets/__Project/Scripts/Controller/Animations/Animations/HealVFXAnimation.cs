@@ -10,7 +10,7 @@ public class HealVFXAnimation : Animation
     public HealVFXAnimation(HealDetails healDetails, bool isAwait) : base(isAwait, healDetails.Induced)
     {
         _model = healDetails.Tgt.Model();
-        _healDetails = healDetails.Clone();
+        _healDetails = healDetails.ShallowClone();
     }
 
     public override AnimationHandle GetHandle()

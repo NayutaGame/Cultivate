@@ -118,40 +118,44 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask GainBuffProcedure(GainBuffDetails d)
     {
+        RegisterTempClosures(d.Initiator, d.Closures);
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_BUFF, d);
-        d.Cancel |= d._stack <= 0;
+        d.Cancel |= d.Stack <= 0;
         if (d.Cancel)
+        {
+            UnregisterTempClosures(d.Initiator, d.Closures);
             return;
+        }
 
-        Buff buff = d.Tgt.FindBuff(d._buffEntry);
+        Buff buff = d.Tgt.FindBuff(d.BuffEntry);
         
-        bool generateNew = buff == null || d._buffEntry.BuffStackRule == BuffStackRule.Individual;
+        bool generateNew = buff == null || d.BuffEntry.BuffStackRule == BuffStackRule.Individual;
         if (generateNew)
         {
-            buff = new Buff(d.Tgt, d._buffEntry);
+            buff = new Buff(d.Tgt, d.BuffEntry);
             d.Tgt.AddBuff(buff);
-            buff.SetStack(d._stack);
+            buff.SetStack(d.Stack);
             await GainBuffStaging(d, buff);
         }
         else
         {
             int newStack = buff.Stack;
-            switch (d._buffEntry.BuffStackRule)
+            switch (d.BuffEntry.BuffStackRule)
             {
                 case BuffStackRule.One:
                     return;
                     break;
                 case BuffStackRule.Add:
-                    newStack = buff.Stack + d._stack;
+                    newStack = buff.Stack + d.Stack;
                     break;
                 case BuffStackRule.Min:
-                    newStack = Mathf.Min(buff.Stack, d._stack);
+                    newStack = Mathf.Min(buff.Stack, d.Stack);
                     break;
                 case BuffStackRule.Max:
-                    newStack = Mathf.Max(buff.Stack, d._stack);
+                    newStack = Mathf.Max(buff.Stack, d.Stack);
                     break;
                 case BuffStackRule.Overwrite:
-                    newStack = d._stack;
+                    newStack = d.Stack;
                     break;
             }
 
@@ -160,6 +164,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_BUFF, d);
+        UnregisterTempClosures(d.Initiator, d.Closures);
     }
 
     public async UniTask LoseBuffProcedure(LoseBuffDetails d)
@@ -194,7 +199,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask GainBuffStaging(GainBuffDetails d, Buff buff)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
+        _result.TryAppend($"    {d.BuffEntry.GetName()} +{d.Stack}");
         if (!_config.Animated)
             return;
         
@@ -216,7 +221,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask GainBuffStackStaging(GainBuffDetails d, Buff buff)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} +{d._stack}");
+        _result.TryAppend($"    {d.BuffEntry.GetName()} +{d.Stack}");
         if (!_config.Animated)
             return;
         
@@ -278,7 +283,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)
     {
-        RegisterAttackClosures(attackDetails);
+        RegisterTempClosures(attackDetails.Initiator, attackDetails.Closures);
 
         attackDetails.Value = Mathf.Max(1, attackDetails.Value);
         attackDetails.Times = Mathf.Max(1, attackDetails.Times);
@@ -303,7 +308,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         await _closureDict.SendEvent(StageClosureDict.DID_FULL_ATTACK, attackDetails);
         
-        UnregisterAttackClosures(attackDetails);
+        UnregisterTempClosures(attackDetails.Initiator, attackDetails.Closures);
         
         // check win condition, but do not commit
         await RecoverStaging(attackDetails);
@@ -463,7 +468,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_DAMAGE, d);
 
         if (!d.Cancel && d.LifeSteal)
-            await HealProcedure(d.Src, d.Src, d.Value, false, true);
+            await HealProcedure(d.Src, d.Src, d.Value, false, d.Initiator, d.CastResult, null,true);
     }
 
     public async UniTask LoseHealthProcedure(StageEntity owner, int value, bool causedByAttack, bool induced)
@@ -482,8 +487,9 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_HEALTH, d);
     }
 
-    public async UniTask HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate, bool induced)
-        => await HealProcedure(new HealDetails(src, tgt, value, penetrate, induced));
+    public async UniTask HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate,
+        StageClosureListener initiator, CastResult castResult, StageClosure[] closures, bool induced)
+        => await HealProcedure(new(src, tgt, value, penetrate, initiator, castResult, closures, induced));
 
     public async UniTask HealProcedure(HealDetails d)
     {
@@ -537,10 +543,16 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask GainArmorProcedure(GainArmorDetails d)
     {
+        RegisterTempClosures(d.Initiator, d.Closures);
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_ARMOR, d);
 
+        d.Cancel |= d.Value <= 0;
+
         if (d.Cancel)
+        {
+            UnregisterTempClosures(d.Initiator, d.Closures);
             return;
+        }
 
         d.Tgt.Armor += d.Value;
 
@@ -553,6 +565,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_ARMOR, d);
+        UnregisterTempClosures(d.Initiator, d.Closures);
     }
 
     public async UniTask LoseArmorProcedure(LoseArmorDetails d)
@@ -618,10 +631,14 @@ public class StageEnvironment : Addressable, StageClosureListener
     {
         d.Rotate &= _config.RunConfig.DifficultyProfile.GetEntry().AllowRotate;
         
+        RegisterTempClosures(d.Initiator, d.Closures);
         await _closureDict.SendEvent(StageClosureDict.WIL_CYCLE, d);
 
         if (d.Cancel)
+        {
+            UnregisterTempClosures(d.Initiator, d.Closures);
             return;
+        }
 
         if (d.Rotate)
         {
@@ -644,6 +661,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_CYCLE, d);
+        UnregisterTempClosures(d.Initiator, d.Closures);
     }
     
     public async UniTask DispelProcedure(DispelDetails d)
@@ -932,9 +950,12 @@ public class StageEnvironment : Addressable, StageClosureListener
         _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Register(s, s.Entry.Closures)));
     }
 
-    private void RegisterAttackClosures(AttackDetails attackDetails)
+    private void RegisterTempClosures(StageClosureListener listener, StageClosure[] closures)
     {
-        _closureDict.Register(attackDetails.Initiator, attackDetails.Closures);
+        // TODO: to be removed after guarantee all listeners is not null
+        if (listener == null || closures == null)
+            return;
+        _closureDict.Register(listener, closures);
     }
 
     private void RegisterAchievementClosures()
@@ -974,9 +995,12 @@ public class StageEnvironment : Addressable, StageClosureListener
         _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Unregister(s, s.Entry.Closures)));
     }
 
-    private void UnregisterAttackClosures(AttackDetails attackDetails)
+    private void UnregisterTempClosures(StageClosureListener listener, StageClosure[] closures)
     {
-        _closureDict.Unregister(attackDetails.Initiator, attackDetails.Closures);
+        // TODO: to be removed after guarantee all listeners is not null
+        if (listener == null || closures == null)
+            return;
+        _closureDict.Unregister(listener, closures);
     }
     
     private void ClearResults()

@@ -10,7 +10,7 @@ public class SetValueProcedureDefinition : ProcedureDefinition
         Value = value;
     }
     
-    public override Description GetDescription(CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         castResult[Key] = Value;
         return null;

@@ -7,10 +7,22 @@ public class CycleDetails : StageClosureDetails
     public int Step;
     public int Gain;
     public int Recover;
+    public StageClosureListener Initiator;
+    public StageClosure[] Closures;
+    public CastResult CastResult;
 
     public int Flow;
 
-    public CycleDetails(StageEntity owner, bool rotate, WuXing wuXing, int gain, int recover, bool induced)
+    public CycleDetails(
+        StageEntity owner,
+        bool rotate,
+        WuXing wuXing,
+        int gain,
+        int recover,
+        StageClosureListener initiator,
+        StageClosure[] closures,
+        CastResult castResult,
+        bool induced)
     {
         Owner = owner;
         Rotate = rotate;
@@ -18,8 +30,11 @@ public class CycleDetails : StageClosureDetails
         Step = 1;
         Gain = gain;
         Recover = recover;
+        Initiator = initiator;
+        Closures = closures;
+        CastResult = castResult;
         Induced = induced;
     }
 
-    public CycleDetails Clone() => new(Owner, Rotate, WuXing, Gain, Recover, Induced);
+    public CycleDetails ShallowClone() => new(Owner, Rotate, WuXing, Gain, Recover, Initiator, Closures, CastResult, Induced);
 }

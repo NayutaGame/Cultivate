@@ -56,7 +56,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
         await env.AttackProcedure(GetDetailsFromCastDetails(castDetails));
     }
 
-    public override Description GetDescription(CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
         if (Times > 1)

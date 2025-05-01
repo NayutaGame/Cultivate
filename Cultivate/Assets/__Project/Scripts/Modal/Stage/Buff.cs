@@ -48,7 +48,7 @@ public class Buff : StageClosureListener, IEmphasizable
     }
 
     public async UniTask GainStackProcedure(int stack)
-        => await _owner.Env.GainBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, true));
+        => await _owner.Env.GainBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, null, null, null, true));
 
     public async UniTask LoseStackProcedure(int stack = 1)
         => await _owner.Env.LoseBuffProcedure(new(_owner, _owner, GetEntry(), stack, true, true));

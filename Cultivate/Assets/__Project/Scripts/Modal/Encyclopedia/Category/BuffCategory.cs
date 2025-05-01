@@ -352,7 +352,7 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         GainBuffDetails d = (GainBuffDetails)closureDetails;
                         if (b.Owner != d.Tgt) return;
-                        if (d._buffEntry.GetName() != "灵气") return;
+                        if (d.BuffEntry.GetName() != "灵气") return;
                         d.Cancel = true;
                         b.Emphasize();
                     }),
@@ -565,8 +565,8 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         GainBuffDetails d = (GainBuffDetails)closureDetails;
                         if (b.Owner != d.Tgt) return;
-                        if (d._buffEntry.GetName() != "灵气") return;
-                        await b.Owner.HealProcedure(d._stack * 3, induced: true);
+                        if (d.BuffEntry.GetName() != "灵气") return;
+                        await b.Owner.HealProcedure(d.Stack * 3, induced: true);
                         b.Emphasize();
                     }),
                 }),
@@ -1238,7 +1238,7 @@ public class BuffCategory : Category<BuffEntry>
                         GainBuffDetails d = (GainBuffDetails)closureDetails;
 
                         b.Emphasize();
-                        d._stack = 0;
+                        d.Stack = 0;
                     }),
                     new(StageClosureDict.WIL_LOSE_BUFF, 0, async (owner, closureDetails) =>
                     {
@@ -1357,10 +1357,10 @@ public class BuffCategory : Category<BuffEntry>
                         GainBuffDetails d = (GainBuffDetails)closureDetails;
 
                         if (b.Owner != d.Tgt) return;
-                        if (d._buffEntry.GetName() != "灵气") return;
+                        if (d.BuffEntry.GetName() != "灵气") return;
                         
                         b.Emphasize();
-                        await b.Owner.HealProcedure(d._stack * b.Stack, induced: true);
+                        await b.Owner.HealProcedure(d.Stack * b.Stack, induced: true);
                     }),
                 }),
             
@@ -1597,13 +1597,13 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)owner;
                         GainBuffDetails d = (GainBuffDetails)closureDetails;
-                        if (!d._recursive) return;
-                        if (d._buffEntry == (BuffEntry)("他心通")) return;
+                        if (!d.Recursive) return;
+                        if (d.BuffEntry == (BuffEntry)("他心通")) return;
                         if (b.Owner.Opponent() != d.Tgt) return;
-                        if (!d._buffEntry.Friendly) return;
+                        if (!d.BuffEntry.Friendly) return;
                         b.Emphasize();
                         await b.LoseStackProcedure();
-                        await b.Owner.GainBuffProcedure(d._buffEntry, d._stack, recursive: false);
+                        await b.Owner.GainBuffProcedure(d.BuffEntry, d.Stack, recursive: false);
                     }),
                 }),
             
@@ -1729,11 +1729,11 @@ public class BuffCategory : Category<BuffEntry>
                         
                         // 检查是否是五行buff之一
                         BuffEntry[] wuXingBuffs = { "锋锐", "格挡", "力量", "灼烧", "坚毅" };
-                        if (!wuXingBuffs.Contains(d._buffEntry.GetName()))
+                        if (!wuXingBuffs.Contains(d.BuffEntry.GetName()))
                             return;
                         
                         b.Emphasize();
-                        d._stack += b.Stack;
+                        d.Stack += b.Stack;
                         await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);  // 消耗空明
                     }),
                 }),

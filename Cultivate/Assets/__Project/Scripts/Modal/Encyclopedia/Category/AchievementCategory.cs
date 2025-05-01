@@ -991,10 +991,10 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         StageEntity home = StageManager.Instance.Environment.Home;
                         if (d.Tgt != home) return;
-                        if (d._buffEntry.GetName() != "灵气") return;
+                        if (d.BuffEntry.GetName() != "灵气") return;
 
                         const string TOTAL_MANA_GAINED_KEY = "TotalManaGained";
-                        int totalManaGained = p.Memory.PerformAggregate(TOTAL_MANA_GAINED_KEY, d._stack);
+                        int totalManaGained = p.Memory.PerformAggregate(TOTAL_MANA_GAINED_KEY, d.Stack);
                         if (totalManaGained < 300) return;
                         
                         p.Unlock();
@@ -1134,7 +1134,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         StageEntity home = StageManager.Instance.Environment.Home;
                         if (d.Tgt != home) return;
-                        if (d._buffEntry.GetName() != "战意") return;
+                        if (d.BuffEntry.GetName() != "战意") return;
 
                         int stack = d.Tgt.GetStackOfBuff("战意");
 

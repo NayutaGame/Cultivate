@@ -9,7 +9,7 @@ public class GainArmorVFXAnimation : Animation
     public GainArmorVFXAnimation(GainArmorDetails gainArmorDetails, bool isAwait) : base(isAwait, gainArmorDetails.Induced)
     {
         _model = gainArmorDetails.Tgt.Model();
-        _gainArmorDetails = gainArmorDetails.Clone();
+        _gainArmorDetails = gainArmorDetails.ShallowClone();
     }
 
     public override AnimationHandle GetHandle()

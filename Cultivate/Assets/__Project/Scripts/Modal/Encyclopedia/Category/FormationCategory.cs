@@ -476,9 +476,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 GainBuffDetails d = (GainBuffDetails)stageEventDetails;
                                 if (f.Owner != d.Tgt) return;
                                 if (d.Cancel) return;
-                                if (d._stack == 0) return;
+                                if (d.Stack == 0) return;
                                 if (f.Owner.GetStackOfBuff("天人合一") > 0) return;
-                                if (!d._buffEntry.IsForbiddenDebuff) return;
+                                if (!d.BuffEntry.IsForbiddenDebuff) return;
                                 
                                 await f.Owner.GainBuffProcedure("天人合一");
                                 f.Emphasize();

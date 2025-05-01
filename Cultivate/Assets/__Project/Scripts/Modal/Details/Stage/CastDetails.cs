@@ -61,16 +61,16 @@ public class CastDetails : StageClosureDetails
         => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster.Opponent(), value, false, induced));
 
     public async UniTask HealProcedure(int value, bool induced)
-        => await Env.HealProcedure(new HealDetails(Caster, Caster, value, false, induced));
+        => await Env.HealProcedure(new HealDetails(Caster, Caster, value, false, Skill, CastResult, null, induced));
 
     public async UniTask HealOppoProcedure(int value, bool induced)
-        => await Env.HealProcedure(new HealDetails(Caster, Caster.Opponent(), value, false, induced));
+        => await Env.HealProcedure(new HealDetails(Caster, Caster.Opponent(), value, false, Skill, CastResult, null, induced));
 
     public async UniTask GainArmorProcedure(int value, bool induced)
-        => await Env.GainArmorProcedure(new GainArmorDetails(Caster, Caster, value, induced));
+        => await Env.GainArmorProcedure(new GainArmorDetails(Caster, Caster, value, Skill, CastResult, null, induced));
 
     public async UniTask GiveArmorProcedure(int value, bool induced)
-        => await Env.GainArmorProcedure(new GainArmorDetails(Caster, Caster.Opponent(), value, induced));
+        => await Env.GainArmorProcedure(new GainArmorDetails(Caster, Caster.Opponent(), value, Skill, CastResult, null, induced));
 
     public async UniTask LoseArmorProcedure(int value, bool induced)
         => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster, value, induced));
@@ -79,10 +79,10 @@ public class CastDetails : StageClosureDetails
         => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster.Opponent(), value, induced));
 
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
-        => await Env.GainBuffProcedure(new GainBuffDetails(Caster, Caster, buffEntry, stack, recursive, induced));
+        => await Env.GainBuffProcedure(new GainBuffDetails(Caster, Caster, buffEntry, stack, recursive, Skill, CastResult, null, induced));
 
     public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
-        => await Env.GainBuffProcedure(new GainBuffDetails(Caster, Caster.Opponent(), buffEntry, stack, recursive, induced));
+        => await Env.GainBuffProcedure(new GainBuffDetails(Caster, Caster.Opponent(), buffEntry, stack, recursive, Skill, CastResult, null, induced));
 
     public async UniTask LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.LoseBuffProcedure(new LoseBuffDetails(Caster, Caster, buffEntry, stack, recursive, induced));
@@ -91,7 +91,7 @@ public class CastDetails : StageClosureDetails
         => await Env.LoseBuffProcedure(new LoseBuffDetails(Caster, Caster.Opponent(), buffEntry, stack, recursive, induced));
 
     public async UniTask CycleProcedure(WuXing wuXing, bool rotate = true, int gain = 0, int recover = 0, bool induced = false)
-        => await Env.CycleProcedure(new CycleDetails(Caster, rotate, wuXing, gain, recover, induced));
+        => await Env.CycleProcedure(new CycleDetails(Caster, rotate, wuXing, gain, recover, Skill, null, CastResult, induced));
     
     public async UniTask DispelProcedure(int stack, bool induced = false)
         => await Env.DispelProcedure(new DispelDetails(Caster, stack, induced));
@@ -111,7 +111,14 @@ public class CastDetails : StageClosureDetails
         return false;
     }
 
-    public async UniTask TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? maxFlow = null, int? upperBound = null)
+    public async UniTask TransferProcedure(
+        int fromStack,
+        BuffEntry fromBuff,
+        int toStack,
+        BuffEntry toBuff,
+        bool consuming,
+        int? maxFlow = null,
+        int? upperBound = null)
     {
         int flow = Caster.GetStackOfBuff(fromBuff) / fromStack;
         if (upperBound.HasValue)

@@ -221,10 +221,10 @@ public class TextAnimation : Animation
 
     public static TextAnimation FromGainBuffDetails(GainBuffDetails d)
         => new(d.Tgt.Model(),
-            d._buffEntry.GetName() == "灵气"
+            d.BuffEntry.GetName() == "灵气"
                 ? TextEffectType.Mana
-                : (d._buffEntry.Friendly ? TextEffectType.Buff : TextEffectType.Debuff),
-            $"{d._buffEntry.GetName()} +{d._stack}", false, d.Induced);
+                : (d.BuffEntry.Friendly ? TextEffectType.Buff : TextEffectType.Debuff),
+            $"{d.BuffEntry.GetName()} +{d.Stack}", false, d.Induced);
 
     public static TextAnimation FromLoseBuffDetails(LoseBuffDetails d)
         => new(d.Tgt.Model(), TextEffectType.LoseBuff, $"{d._buffEntry.GetName()} -{d._stack}", false, d.Induced);
