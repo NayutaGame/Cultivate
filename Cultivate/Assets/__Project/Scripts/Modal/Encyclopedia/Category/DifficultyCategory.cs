@@ -15,7 +15,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: false, awayAllowFormation: false, allowRotate: false,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -25,7 +25,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: false, allowRotate: false,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -35,7 +35,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: false, allowRotate: false,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -45,7 +45,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: false, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -55,7 +55,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -65,7 +65,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -75,7 +75,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -85,7 +85,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -95,7 +95,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -105,7 +105,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;

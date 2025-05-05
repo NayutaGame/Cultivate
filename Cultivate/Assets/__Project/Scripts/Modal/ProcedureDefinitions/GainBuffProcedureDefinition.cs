@@ -30,7 +30,7 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
             buffEntry: BuffEntry,
             stack: Stack,
             recursive: Recursive,
-            initiator: d.Skill,
+            listener: d.Skill,
             castResult: d.CastResult,
             closures: Closures,
             induced: Induced);
@@ -41,6 +41,8 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
+
+        description.Sb.Append(PostCondDefinition.Description);
         if (BuffEntry.Friendly)
         {
             description.Sb.Append("获得");
@@ -59,6 +61,9 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, this);
+        
         return description;
     }
 
@@ -66,6 +71,8 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     {
         GainBuffProcedureDefinition pd = procedureDefinition as GainBuffProcedureDefinition;
         Description description = new();
+
+        description.Sb.Append(pd.PostCondDefinition.Description);
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
@@ -74,6 +81,9 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, pd);
+        
         return description;
     }
 }

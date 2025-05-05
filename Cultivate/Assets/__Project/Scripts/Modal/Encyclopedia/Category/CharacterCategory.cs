@@ -21,7 +21,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.START_RUN, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.START_RUN, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         StartRunDetails d = (StartRunDetails)eventDetails;
@@ -29,7 +29,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         env.SetMaxMingYuanProcedure(12);
                         env.SetDMingYuanProcedure(2);
                     }),
-                    new(RunClosureDict.WIL_DEPLETE, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_DEPLETE, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DepleteDetails d = (DepleteDetails)eventDetails;
@@ -50,7 +50,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -78,7 +78,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_FORMATION, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_FORMATION, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         RunFormationDetails d = (RunFormationDetails)eventDetails;
@@ -114,7 +114,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.START_RUN, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.START_RUN, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         StartRunDetails d = (StartRunDetails)eventDetails;
@@ -126,7 +126,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         b.Invoke();
                     }),
 
-                    new(RunClosureDict.WIL_PLACEMENT, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_PLACEMENT, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         PlacementDetails d = (PlacementDetails)eventDetails;
@@ -163,7 +163,7 @@ public class CharacterCategory : Category<CharacterEntry>
                             env.Memory.PerformOperation<SkillEntryDescriptor>(key, null, skill => skill ?? SkillEntryDescriptor.FromRunSkill(oppoSlot.Skill));
                         });
                     }),
-                    new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, eventDetails) =>
+                    new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
@@ -195,7 +195,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
                     {
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
@@ -216,7 +216,7 @@ public class CharacterCategory : Category<CharacterEntry>
             // new("浮千舟", abilityDescription: "失去灵气时获得1点",
             //     stageClosures: new StageClosure[]
             //     {
-            //         new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+            //         new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
             //         {
             //             StageEnvironment env = (StageEnvironment)listener;
             //             StageDetails d = (StageDetails)eventDetails;
@@ -231,7 +231,7 @@ public class CharacterCategory : Category<CharacterEntry>
             // new("语真幻", abilityDescription: "使用二动牌时，获得1闪避",
             //     stageClosures: new StageClosure[]
             //     {
-            //         new(StageClosureDict.WIL_STAGE, 0, async (listener, eventDetails) =>
+            //         new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
             //         {
             //             StageEnvironment env = (StageEnvironment)listener;
             //             StageDetails d = (StageDetails)eventDetails;
@@ -246,7 +246,7 @@ public class CharacterCategory : Category<CharacterEntry>
             // new("花辞树", abilityDescription: "金丹之后移除所有练气牌；化神后移除所有筑基牌",
             //     runClosures: new RunClosure[]
             //     {
-            //         new(RunClosureDict.DID_SET_JINGJIE, 0, (listener, eventDetails) =>
+            //         new(RunClosureDict.DID_SET_JINGJIE, 0, (listener, closure, eventDetails) =>
             //         {
             //             RunEnvironment env = (RunEnvironment)listener;
             //             SetJingJieDetails d = (SetJingJieDetails)eventDetails;
@@ -268,7 +268,7 @@ public class CharacterCategory : Category<CharacterEntry>
             //                                "战斗后，可返还至多一张被使用的机关牌",
             //     runEventDescriptors: new RunEventDescriptor[]
             //     {
-            //         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_DEPLETE, 0, (listener, eventDetails) =>
+            //         new(RunEventDict.RUN_ENVIRONMENT, RunEventDict.DID_DEPLETE, 0, (listener, closure, eventDetails) =>
             //         {
             //             RunEnvironment env = (RunEnvironment)listener;
             //             DepleteDetails d = (DepleteDetails)eventDetails;

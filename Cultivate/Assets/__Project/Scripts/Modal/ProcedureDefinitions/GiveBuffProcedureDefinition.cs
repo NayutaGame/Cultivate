@@ -1,43 +1,58 @@
 
 using Cysharp.Threading.Tasks;
 
-public class HealOppoProcedureDefinition : ProcedureDefinition
+public class GiveBuffProcedureDefinition : ProcedureDefinition
 {
-    public int Value;
-    public bool Penetrate;
+    public BuffEntry BuffEntry;
+    public int Stack;
+    public bool Recursive;
     public StageClosure[] Closures;
     public bool Induced;
 
-    public HealOppoProcedureDefinition(int value,
-        bool penetrate = false,
+    public GiveBuffProcedureDefinition(
+        BuffEntry buffEntry,
+        int stack = 1,
+        bool recursive = true,
         StageClosure[] closures = null,
         bool induced = false)
     {
-        Value = value;
-        Penetrate = penetrate;
+        BuffEntry = buffEntry;
+        Stack = stack;
+        Recursive = recursive;
         Closures = closures;
         Induced = induced;
     }
-    
-    public HealDetails GetDetailsFromCastDetails(CastDetails d)
+
+    public GainBuffDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
             src: d.Caster,
             tgt: d.Caster.Opponent(),
-            value: Value,
-            penetrate: Penetrate,
+            buffEntry: BuffEntry,
+            stack: Stack,
+            recursive: Recursive,
             listener: d.Skill,
             castResult: d.CastResult,
             closures: Closures,
             induced: Induced);
 
     public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
-        => await env.HealProcedure(GetDetailsFromCastDetails(castDetails));
+        => await env.GainBuffProcedure(GetDetailsFromCastDetails(castDetails));
 
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
+
         description.Sb.Append(PostCondDefinition.Description);
-        description.Sb.Append($"敌方气血+{Value}");
+        if (BuffEntry.Friendly)
+        {
+            description.Sb.Append("给予");
+        }
+        else
+        {
+            description.Sb.Append("施加");
+        }
+
+        description.Sb.Append($"{Stack}{BuffEntry.GetName()}");
         if (Closures != null)
             foreach (StageClosure c in Closures)
             {
@@ -54,8 +69,9 @@ public class HealOppoProcedureDefinition : ProcedureDefinition
 
     public static Description OnlyClosure(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
-        HealOppoProcedureDefinition pd = procedureDefinition as HealOppoProcedureDefinition;
+        GiveBuffProcedureDefinition pd = procedureDefinition as GiveBuffProcedureDefinition;
         Description description = new();
+
         description.Sb.Append(pd.PostCondDefinition.Description);
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)

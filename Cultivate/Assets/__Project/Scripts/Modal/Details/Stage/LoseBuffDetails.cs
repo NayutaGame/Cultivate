@@ -3,9 +3,9 @@ public class LoseBuffDetails : StageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
-    public BuffEntry _buffEntry;
-    public int _stack;
-    public bool _recursive;
+    public BuffEntry BuffEntry;
+    public int Stack;
+    public bool Recursive;
 
     public LoseBuffDetails(
         StageEntity src,
@@ -17,9 +17,9 @@ public class LoseBuffDetails : StageClosureDetails
     {
         Src = src;
         Tgt = tgt;
-        _buffEntry = buffEntry;
-        _stack = stack;
-        _recursive = recursive;
+        BuffEntry = buffEntry;
+        Stack = stack;
+        Recursive = recursive;
         Induced = induced;
     }
 }

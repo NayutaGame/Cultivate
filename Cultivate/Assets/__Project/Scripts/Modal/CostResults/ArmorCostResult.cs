@@ -23,7 +23,7 @@ public class ArmorCostResult : CostResult
             await Env.ArmorShortageProcedure(this);
         
         int total = Value + 2 * shortage;
-        await Entity.LoseArmorProcedure(total, false);
+        await Entity.LoseArmorProcedure(total, induced: false);
         
         Env.Result.TryAppend($"{Entity.GetName()}消耗了{Value}护甲，不足的部分变成了三倍的减甲，以使用{Skill.Entry.GetName()}\n");
         // suspicious

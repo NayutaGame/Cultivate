@@ -118,12 +118,12 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask GainBuffProcedure(GainBuffDetails d)
     {
-        RegisterTempClosures(d.Initiator, d.Closures);
+        RegisterTempClosures(d.Listener, d.Closures);
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_BUFF, d);
         d.Cancel |= d.Stack <= 0;
         if (d.Cancel)
         {
-            UnregisterTempClosures(d.Initiator, d.Closures);
+            UnregisterTempClosures(d.Listener, d.Closures);
             return;
         }
 
@@ -164,21 +164,21 @@ public class StageEnvironment : Addressable, StageClosureListener
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_BUFF, d);
-        UnregisterTempClosures(d.Initiator, d.Closures);
+        UnregisterTempClosures(d.Listener, d.Closures);
     }
 
     public async UniTask LoseBuffProcedure(LoseBuffDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_BUFF, d);
-        d.Cancel |= d._stack <= 0;
+        d.Cancel |= d.Stack <= 0;
         if (d.Cancel)
             return;
 
-        Buff b = d.Tgt.FindBuff(d._buffEntry);
+        Buff b = d.Tgt.FindBuff(d.BuffEntry);
         if (b == null)
             return;
         
-        int newStack = Mathf.Max(0, b.Stack - d._stack);
+        int newStack = Mathf.Max(0, b.Stack - d.Stack);
 
         if (newStack > 0)
         {
@@ -242,7 +242,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask LoseBuffStaging(LoseBuffDetails d, int buffIndex)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} losing:{d._stack}");
+        _result.TryAppend($"    {d.BuffEntry.GetName()} losing:{d.Stack}");
         if (!_config.Animated)
             return;
         
@@ -262,7 +262,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask LoseBuffStackStaging(LoseBuffDetails d, Buff buff)
     {
-        _result.TryAppend($"    {d._buffEntry.GetName()} losing:{d._stack}");
+        _result.TryAppend($"    {d.BuffEntry.GetName()} losing:{d.Stack}");
         if (!_config.Animated)
             return;
         
@@ -283,7 +283,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask AttackProcedure(AttackDetails attackDetails)
     {
-        RegisterTempClosures(attackDetails.Initiator, attackDetails.Closures);
+        RegisterTempClosures(attackDetails.Listener, attackDetails.Closures);
 
         attackDetails.Value = Mathf.Max(1, attackDetails.Value);
         attackDetails.Times = Mathf.Max(1, attackDetails.Times);
@@ -308,7 +308,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         await _closureDict.SendEvent(StageClosureDict.DID_FULL_ATTACK, attackDetails);
         
-        UnregisterTempClosures(attackDetails.Initiator, attackDetails.Closures);
+        UnregisterTempClosures(attackDetails.Listener, attackDetails.Closures);
         
         // check win condition, but do not commit
         await RecoverStaging(attackDetails);
@@ -358,7 +358,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             int ratio = d.Shatter ? 2 : 1;
             int negate = Mathf.Min(ratio * d.Value, d.Tgt.Armor);
             d.Value -= negate / ratio;
-            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Induced));
+            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, d.Induced));
         }
 
         if (d.Tgt.Armor < 0)
@@ -420,7 +420,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         {
             int negate = Mathf.Min(d.Value, d.Tgt.Armor);
             d.Value -= negate;
-            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Induced));
+            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, d.Induced));
         }
 
         if (d.Tgt.Armor < 0)
@@ -468,7 +468,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_DAMAGE, d);
 
         if (!d.Cancel && d.LifeSteal)
-            await HealProcedure(d.Src, d.Src, d.Value, false, d.Initiator, d.CastResult, null,true);
+            await HealProcedure(d.Src, d.Src, d.Value, false, d.Listener, d.CastResult, null,true);
     }
 
     public async UniTask LoseHealthProcedure(StageEntity owner, int value, bool causedByAttack, bool induced)
@@ -543,14 +543,14 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask GainArmorProcedure(GainArmorDetails d)
     {
-        RegisterTempClosures(d.Initiator, d.Closures);
+        RegisterTempClosures(d.Listener, d.Closures);
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_ARMOR, d);
 
         d.Cancel |= d.Value <= 0;
 
         if (d.Cancel)
         {
-            UnregisterTempClosures(d.Initiator, d.Closures);
+            UnregisterTempClosures(d.Listener, d.Closures);
             return;
         }
 
@@ -565,7 +565,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
         await _closureDict.SendEvent(StageClosureDict.DID_GAIN_ARMOR, d);
-        UnregisterTempClosures(d.Initiator, d.Closures);
+        UnregisterTempClosures(d.Listener, d.Closures);
     }
 
     public async UniTask LoseArmorProcedure(LoseArmorDetails d)
@@ -631,12 +631,12 @@ public class StageEnvironment : Addressable, StageClosureListener
     {
         d.Rotate &= _config.RunConfig.DifficultyProfile.GetEntry().AllowRotate;
         
-        RegisterTempClosures(d.Initiator, d.Closures);
+        RegisterTempClosures(d.Listener, d.Closures);
         await _closureDict.SendEvent(StageClosureDict.WIL_CYCLE, d);
 
         if (d.Cancel)
         {
-            UnregisterTempClosures(d.Initiator, d.Closures);
+            UnregisterTempClosures(d.Listener, d.Closures);
             return;
         }
 
@@ -661,7 +661,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_CYCLE, d);
-        UnregisterTempClosures(d.Initiator, d.Closures);
+        UnregisterTempClosures(d.Listener, d.Closures);
     }
     
     public async UniTask DispelProcedure(DispelDetails d)
@@ -904,13 +904,13 @@ public class StageEnvironment : Addressable, StageClosureListener
         RunManager.Instance.Environment.DepleteProcedure();
     }
 
-    private async UniTask WriteShortage(StageClosureListener listener, ClosureDetails stageClosureDetails)
+    private async UniTask WriteShortage(StageClosureListener listener, StageClosure closure, ClosureDetails stageClosureDetails)
     {
         CostResult d = (CostResult)stageClosureDetails;
         d.State = CostResult.CostState.Shortage;
     }
 
-    private async UniTask WriteCost(StageClosureListener listener, ClosureDetails stageClosureDetails)
+    private async UniTask WriteCost(StageClosureListener listener, StageClosure closure, ClosureDetails stageClosureDetails)
     {
         CostResult d = (CostResult)stageClosureDetails;
         if (d.State == CostResult.CostState.Shortage)

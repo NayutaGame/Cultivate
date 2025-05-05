@@ -34,15 +34,38 @@ public class Description
     public void ApplyCastResult(CastResult castResult, string key)
         => ApplyStyle(castResult, key);
     
-    public void ApplyStyle(CastResult castResult, string styleName)
+    public void ApplyStyle(CastResult castResult, string styleKey)
     {
-        if (castResult == null || styleName == null)
+        if (castResult == null || styleKey == null)
             return;
 
-        if (!castResult.ContainsKey(styleName))
+        if (!castResult.ContainsKey(styleKey))
             return;
         
-        string style = castResult[styleName];
+        string style = castResult[styleKey];
+        if (string.IsNullOrEmpty(style))
+            return;
+
+        if (style == "Hide")
+        {
+            _sb.Clear();
+            return;
+        }
+        
+        string content = _sb.ToString();
+        _sb.Clear();
+        _sb.Append($"<style=\"{style}\">{content}</style>");
+    }
+    
+    public void ApplyStyle(CastResult castResult, object styleKey)
+    {
+        if (castResult == null || styleKey == null)
+            return;
+
+        if (!castResult.ContainsKey(styleKey))
+            return;
+        
+        string style = castResult[styleKey];
         if (string.IsNullOrEmpty(style))
             return;
 

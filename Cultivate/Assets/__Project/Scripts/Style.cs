@@ -3,15 +3,33 @@ using System;
 
 public static class Style
 {
-    public static string ApplyStyle(this string s, CastResult castResult, string styleName)
+    public static string ApplyStyle(this string s, CastResult castResult, string styleKey)
     {
-        if (castResult == null || styleName == null)
+        if (castResult == null || styleKey == null)
             return s;
 
-        if (!castResult.ContainsKey(styleName))
+        if (!castResult.ContainsKey(styleKey))
             return s;
         
-        string style = castResult[styleName];
+        string style = castResult[styleKey];
+        if (string.IsNullOrEmpty(style))
+            return s;
+
+        if (style == "Hide")
+            return "";
+        
+        return $"<style=\"{style}\">{s}</style>";
+    }
+    
+    public static string ApplyStyle(this string s, CastResult castResult, object styleKey)
+    {
+        if (castResult == null || styleKey == null)
+            return s;
+
+        if (!castResult.ContainsKey(styleKey))
+            return s;
+        
+        string style = castResult[styleKey];
         if (string.IsNullOrEmpty(style))
             return s;
 
@@ -47,12 +65,27 @@ public static class Style
 
     public static string Apply(this string s, CastResult castResult, string key)
         => s.ApplyStyle(castResult, key);
+
+    public static string Apply(this string s, CastResult castResult, object key)
+        => s.ApplyStyle(castResult, key);
     
     public static string ApplyCond(this string s, CastResult castResult)
         => s.ApplyStyle(castResult, "cond");
 
 
     public static void Append(this CastResult castResult, string key, bool cond)
+    {
+        if (!cond)
+        {
+            castResult[key] = "Inactive";
+            return;
+        }
+        
+        if (castResult.ContainsKey(key))
+            castResult.Remove(key);
+    }
+    
+    public static void Append(this CastResult castResult, object key, bool cond)
     {
         if (!cond)
         {

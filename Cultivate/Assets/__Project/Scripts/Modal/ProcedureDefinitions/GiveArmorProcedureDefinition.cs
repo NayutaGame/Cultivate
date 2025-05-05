@@ -21,7 +21,7 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             value: Value,
-            initiator: d.Skill,
+            listener: d.Skill,
             castResult: d.CastResult,
             closures: Closures,
             induced: Induced);
@@ -32,6 +32,8 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
+
+        description.Sb.Append(PostCondDefinition.Description);
         description.Sb.Append($"给予{Value}护甲");
         if (Closures != null)
             foreach (StageClosure c in Closures)
@@ -41,13 +43,18 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, this);
+        
         return description;
     }
 
     public static Description OnlyClosure(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
-        GainArmorProcedureDefinition pd = procedureDefinition as GainArmorProcedureDefinition;
+        GiveArmorProcedureDefinition pd = procedureDefinition as GiveArmorProcedureDefinition;
         Description description = new();
+
+        description.Sb.Append(pd.PostCondDefinition.Description);
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
@@ -56,6 +63,9 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, pd);
+        
         return description;
     }
 }

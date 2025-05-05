@@ -87,18 +87,21 @@ public class StageEntity : Addressable, StageClosureListener
 
     private async UniTask StartStageCastProcedure(StageSkill skill, bool recursive = true)
     {
-        StartStageCastDetails d = new StartStageCastDetails(_env, this, skill, recursive, new());
+        CastResult castResult = new();
+        CastDetails d = new CastDetails(_env, this, skill, recursive, fromWanJian: false, castResult: castResult, isStartStage: true, startStageCastTimes: 1);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_START_STAGE_CAST, d);
 
-        for (int i = 0; i < d.Times; i++)
+        for (int i = 0; i < d.StartStageCastTimes; i++)
         {
             await _env.PlayAsync(new ShiftAnimation());
             _env.Result.TryAppend($"{GetName()}使用了{d.Skill.Entry.GetName()}的开局效果");
-
-            await d.Skill.Entry.StartStageCast(d);
-            _env.Result.TryAppendNote(Index, d.Skill, _costResult, null);
+            await d.Skill.Entry.Cast(_env, d);
+            _env.Result.TryAppendNote(Index, d.Skill, _costResult, castResult);
             _env.Result.TryAppend($"\n");
         }
+        
+        if (this == d.Skill.Owner)
+            d.Skill.IncreaseRealCastedCount();
         
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_START_STAGE_CAST, d);
     }
@@ -106,25 +109,20 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask<CastResult> CastProcedure(StageSkill skill, bool recursive = true, bool fromWanJian = false)
     {
         CastResult castResult = new();
-        CastDetails d = new CastDetails(_env, this, skill, recursive, fromWanJian, castResult);
+        CastDetails d = new CastDetails(_env, this, skill, recursive, fromWanJian, castResult, isStartStage: false, startStageCastTimes: 1);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_CAST, d);
-        
         
         // will cast report
         await _env.PlayAsync(new ShiftAnimation());
         _env.Result.TryAppend($"{GetName()}使用了{d.Skill.Entry.GetName()}");
-        
         await d.Skill.Entry.Cast(_env, d);
-        
         _env.Result.TryAppendNote(Index, d.Skill, _costResult, castResult);
-        
-        
         _env.Result.TryAppend($"\n");
         // did cast report
-        
 
         if (this == d.Skill.Owner)
             d.Skill.IncreaseRealCastedCount();
+        
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_CAST, d);
 
         return castResult;
@@ -362,7 +360,7 @@ public class StageEntity : Addressable, StageClosureListener
         // }
     }
 
-    public async UniTask BuffRecorder(StageClosureListener listener, ClosureDetails closureDetails)
+    public async UniTask BuffRecorder(StageClosureListener listener, StageClosure closure, ClosureDetails closureDetails)
     {
         GainBuffDetails d = (GainBuffDetails)closureDetails;
         if (d.BuffEntry.GetName() == "滞气")
@@ -377,7 +375,7 @@ public class StageEntity : Addressable, StageClosureListener
             HasFuXiuRecord = true;
     }
 
-    public async UniTask ChannelRecorder(StageClosureListener listener, ClosureDetails closureDetails)
+    public async UniTask ChannelRecorder(StageClosureListener listener, StageClosure closure, ClosureDetails closureDetails)
     {
         ChannelDetails d = (ChannelDetails)closureDetails;
         HasChannelRecord = true;
@@ -501,10 +499,10 @@ public class StageEntity : Addressable, StageClosureListener
         => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, initiator, wuXing, lifeSteal, recursive, castResult, induced));
     
     public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, CastResult castResult = null, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(this, this, value, srcSkill, crit: false, lifeSteal: false, false, recursive, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(this, this, value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
     
     public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, CastResult castResult, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, srcSkill, crit: false, lifeSteal: false, false, recursive, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
     
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced = false)
         => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, causedByAttack, induced));
@@ -521,11 +519,11 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask GiveArmorProcedure(int value, CastResult castResult = null, bool induced = false)
         => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value, null, castResult, null, induced));
     
-    public async UniTask LoseArmorProcedure(int value, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value, induced));
+    public async UniTask LoseArmorProcedure(int value, CastResult castResult = null, bool induced = false)
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value, null, null, castResult, induced));
     
-    public async UniTask RemoveArmorProcedure(int value, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value, induced));
+    public async UniTask RemoveArmorProcedure(int value, CastResult castResult = null, bool induced = false)
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value, null, null, castResult, induced));
     
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, CastResult castResult = null, bool induced = false)
         => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive, null, castResult, null, induced));
@@ -606,7 +604,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public static string ActualHealKey = "ActualHeal";
     private static StageClosure RecordActualHeal =
-        new(StageClosureDict.DID_HEAL, 1, async (listener, closureDetails) =>
+        new(StageClosureDict.DID_HEAL, 1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
             HealDetails d = (HealDetails)closureDetails;
@@ -617,7 +615,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public static string BurnTimesKey = "BurnTimes";
     private static StageClosure RecordBurnTimes =
-        new(StageClosureDict.DID_BURN, -1, async (listener, closureDetails) =>
+        new(StageClosureDict.DID_BURN, -1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
             BurnDetails d = (BurnDetails)closureDetails;
@@ -629,7 +627,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public static string HighestManaKey = "HighestMana";
     private static StageClosure RecordHighestMana =
-        new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closureDetails) =>
+        new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
             GainBuffDetails d = (GainBuffDetails)closureDetails;
@@ -642,7 +640,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public static string OppoLoseArmorTimesKey = "OppoLoseArmorTimes";
     private static StageClosure OppoLoseArmorTimes =
-        new(StageClosureDict.DID_LOSE_ARMOR, -1, async (owner, closureDetails) =>
+        new(StageClosureDict.DID_LOSE_ARMOR, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
             LoseArmorDetails d = (LoseArmorDetails)closureDetails;

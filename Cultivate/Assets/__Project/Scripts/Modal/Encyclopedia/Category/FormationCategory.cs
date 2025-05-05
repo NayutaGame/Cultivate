@@ -25,7 +25,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n9张：死亡不会停止战斗",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -36,13 +36,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                                 await f.Owner.GainBuffProcedure("人间无戈");
                             }),
-                            new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
-                                StartStageCastDetails d = (StartStageCastDetails)stageEventDetails;
+                                CastDetails d = (CastDetails)stageEventDetails;
                                 if (f.Owner != d.Caster) return;
 
-                                d.Times += 1;
+                                d.StartStageCastTimes += 1;
                             }),
                         }),
                     new FormationEntry(
@@ -55,7 +55,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -65,13 +65,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮暴击");
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                             }),
-                            new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
-                                StartStageCastDetails d = (StartStageCastDetails)stageEventDetails;
+                                CastDetails d = (CastDetails)stageEventDetails;
                                 if (f.Owner != d.Caster) return;
 
-                                d.Times += 1;
+                                d.StartStageCastTimes += 1;
                             }),
                         }),
                     new FormationEntry(
@@ -84,7 +84,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -105,7 +105,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -142,7 +142,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n9张：第一次二动时，行动八次，之后如果受伤则死亡",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -153,7 +153,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("轮吸血");
                                 await f.Owner.GainBuffProcedure("心斋");
                             }),
-                            new(StageClosureDict.WIL_ACTION, 1, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_ACTION, 1, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 ActionDetails d = (ActionDetails)stageEventDetails;
@@ -177,7 +177,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -199,7 +199,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -220,7 +220,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -256,7 +256,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n9张：永久穿透和集中",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -280,7 +280,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：永久穿透和集中".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -303,7 +303,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：永久穿透和集中".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -324,7 +324,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：永久穿透和集中".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -361,7 +361,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n9张：每轮气血恢复至上限",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -383,7 +383,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -404,7 +404,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -424,7 +424,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -460,7 +460,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n9张：可以抵挡一次禁制Debuff",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -470,7 +470,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("击伤赋予护甲");
                                 await f.Owner.GainBuffProcedure("连岳");
                             }),
-                            new(StageClosureDict.WIL_GAIN_BUFF, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_GAIN_BUFF, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 GainBuffDetails d = (GainBuffDetails)stageEventDetails;
@@ -495,7 +495,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -516,7 +516,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -536,7 +536,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -571,7 +571,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -591,7 +591,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -610,7 +610,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -628,7 +628,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -653,7 +653,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动",
                         runClosures: new RunClosure[]
                         {
-                            new(RunClosureDict.WIL_SECOND_PLACEMENT, 0, (listener, runEventDetails) =>
+                            new(RunClosureDict.WIL_SECOND_PLACEMENT, 0, (listener, closure, runEventDetails) =>
                             {
                                 RunEntity runEntity = (RunEntity)listener;
                                 SecondPlacementDetails d = (SecondPlacementDetails)runEventDetails;
@@ -668,7 +668,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         },
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -687,7 +687,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -706,7 +706,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -740,7 +740,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n7张：获得灵气时：每1，回复2气血",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -760,7 +760,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n7张：获得灵气时：每1，回复2气血".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -779,7 +779,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n7张：获得灵气时：每1，回复2气血".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -813,7 +813,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                                                                     "\n7张：受到治疗时：力量+1",
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -835,7 +835,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n7张：受到治疗时：力量+1".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;
@@ -856,7 +856,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         "\n7张：受到治疗时：力量+1".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
-                            new(StageClosureDict.WIL_STAGE, 0, async (listener, stageEventDetails) =>
+                            new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
                             {
                                 Formation f = (Formation)listener;
                                 StageDetails d = (StageDetails)stageEventDetails;

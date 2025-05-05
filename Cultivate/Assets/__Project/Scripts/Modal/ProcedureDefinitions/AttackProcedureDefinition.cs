@@ -31,7 +31,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
             tgt: d.Caster.Opponent(),
             value: Value,
             times: Times,
-            initiator: d.Skill,
+            listener: d.Skill,
             wuxing: WuXing ?? d.Skill.Entry.WuXing,
             crit: false,
             lifeSteal: false,
@@ -59,10 +59,14 @@ public class AttackProcedureDefinition : ProcedureDefinition
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
+
+        description.Sb.Append(PostCondDefinition.Description);
+        
         if (Times > 1)
             description.Sb.Append($"{Value}攻x{Times}".ApplyAttack());
         else
             description.Sb.Append($"{Value}攻".ApplyAttack());
+        
         if (Closures != null)
             foreach (StageClosure c in Closures)
             {
@@ -71,6 +75,9 @@ public class AttackProcedureDefinition : ProcedureDefinition
                 closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, this);
+        
         return description;
     }
 }

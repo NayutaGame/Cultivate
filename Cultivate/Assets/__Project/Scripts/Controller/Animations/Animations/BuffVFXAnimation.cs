@@ -17,7 +17,7 @@ public class BuffVFXAnimation : Animation
         => new(d.Tgt.Model(), GetPrefabFromGain(d.BuffEntry), isAwait, d.Induced);
 
     public static BuffVFXAnimation FromLoseBuffDetails(LoseBuffDetails d, bool isAwait)
-        => new(d.Tgt.Model(), GetPrefabFromLose(d._buffEntry), isAwait, d.Induced);
+        => new(d.Tgt.Model(), GetPrefabFromLose(d.BuffEntry), isAwait, d.Induced);
 
     public override AnimationHandle GetHandle()
     {

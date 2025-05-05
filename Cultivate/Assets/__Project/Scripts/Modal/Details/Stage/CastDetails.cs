@@ -12,7 +12,18 @@ public class CastDetails : StageClosureDetails
     public bool FromWanJian;
     public CastResult CastResult;
 
-    public CastDetails(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive, bool fromWanJian, CastResult castResult)
+    public bool IsStartStage;
+    public int StartStageCastTimes;
+
+    public CastDetails(
+        StageEnvironment env,
+        StageEntity caster,
+        StageSkill skill,
+        bool recursive,
+        bool fromWanJian,
+        CastResult castResult,
+        bool isStartStage,
+        int startStageCastTimes)
     {
         Env = env;
         Caster = caster;
@@ -20,6 +31,8 @@ public class CastDetails : StageClosureDetails
         Recursive = recursive;
         FromWanJian = fromWanJian;
         CastResult = castResult;
+        IsStartStage = isStartStage;
+        StartStageCastTimes = startStageCastTimes;
     }
 
     public int J => Skill.GetJingJie();
@@ -47,12 +60,12 @@ public class CastDetails : StageClosureDetails
         int value,
         bool recursive = true,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Caster, Caster, value, Skill, crit: false, lifeSteal: false, false, recursive, CastResult, induced));
+        => await Env.DamageProcedure(new DamageDetails(Caster, Caster, value, crit: false, lifeSteal: false, false, recursive, Skill, null, CastResult, induced));
 
     public async UniTask DamageOppoProcedure(int value,
         bool recursive = true,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, Skill, crit: false, lifeSteal: false, false, recursive, CastResult, induced));
+        => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, crit: false, lifeSteal: false, false, recursive, Skill, null, CastResult, induced));
 
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced)
         => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value, causedByAttack, induced));
@@ -73,10 +86,10 @@ public class CastDetails : StageClosureDetails
         => await Env.GainArmorProcedure(new GainArmorDetails(Caster, Caster.Opponent(), value, Skill, CastResult, null, induced));
 
     public async UniTask LoseArmorProcedure(int value, bool induced)
-        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster, value, induced));
+        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster, value, Skill, null, CastResult, induced));
 
     public async UniTask RemoveArmorProcedure(int value, bool induced)
-        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster.Opponent(), value, induced));
+        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster.Opponent(), value, Skill, null, CastResult, induced));
 
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.GainBuffProcedure(new GainBuffDetails(Caster, Caster, buffEntry, stack, recursive, Skill, CastResult, null, induced));

@@ -1,23 +1,23 @@
 
 using Cysharp.Threading.Tasks;
 
-public class SetActionPointProcedureDefinition : ProcedureDefinition
+public class GainMaxHealthProcedureDefinition : ProcedureDefinition
 {
-    public int ActionPoint;
-    
-    public SetActionPointProcedureDefinition(int actionPoint)
+    public int Value;
+
+    public GainMaxHealthProcedureDefinition(int value)
     {
-        ActionPoint = actionPoint;
+        Value = value;
     }
-    
+
     public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
-        => castDetails.Caster.SetActionPoint(ActionPoint);
-    
+        => castDetails.Caster.MaxHp += Value;
+
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
         description.Sb.Append(PostCondDefinition.Description);
-        description.Sb.Append($"二动");
+        description.Sb.Append($"气血上限+{Value}");
         // if (Closures != null)
         //     foreach (StageClosure c in Closures)
         //     {

@@ -227,7 +227,7 @@ public class TextAnimation : Animation
             $"{d.BuffEntry.GetName()} +{d.Stack}", false, d.Induced);
 
     public static TextAnimation FromLoseBuffDetails(LoseBuffDetails d)
-        => new(d.Tgt.Model(), TextEffectType.LoseBuff, $"{d._buffEntry.GetName()} -{d._stack}", false, d.Induced);
+        => new(d.Tgt.Model(), TextEffectType.LoseBuff, $"{d.BuffEntry.GetName()} -{d.Stack}", false, d.Induced);
     
     public static TextAnimation FromGainFormationDetails(GainFormationDetails d)
         => new(d.Owner.Model(), TextEffectType.Formation, d._formation.GetName(), false, d.Induced);

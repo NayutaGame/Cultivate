@@ -1,14 +1,11 @@
 
-public class GainBuffDetails : StageClosureDetails
+public class GainBuffDetails : NestedStageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
     public BuffEntry BuffEntry;
     public int Stack;
     public bool Recursive;
-    public StageClosureListener Initiator;
-    public CastResult CastResult;
-    public StageClosure[] Closures;
 
     public GainBuffDetails(
         StageEntity src,
@@ -16,7 +13,7 @@ public class GainBuffDetails : StageClosureDetails
         BuffEntry buffEntry,
         int stack,
         bool recursive,
-        StageClosureListener initiator,
+        StageClosureListener listener,
         CastResult castResult,
         StageClosure[] closures,
         bool induced)
@@ -26,11 +23,11 @@ public class GainBuffDetails : StageClosureDetails
         BuffEntry = buffEntry;
         Stack = stack;
         Recursive = recursive;
-        Initiator = initiator;
+        Listener = listener;
         CastResult = castResult;
         Closures = closures;
         Induced = induced;
     }
 
-    public GainBuffDetails ShallowClone() => new(Src, Tgt, BuffEntry, Stack, Recursive, Initiator, CastResult, Closures, Induced);
+    public GainBuffDetails ShallowClone() => new(Src, Tgt, BuffEntry, Stack, Recursive, Listener, CastResult, Closures, Induced);
 }

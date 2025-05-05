@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-public class AttackDetails : StageClosureDetails
+public class AttackDetails : NestedStageClosureDetails
 {
     public StageEntity Src;
     public StageEntity Tgt;
@@ -21,7 +21,6 @@ public class AttackDetails : StageClosureDetails
         set => _times = Mathf.Max(1, value);
     }
 
-    public StageClosureListener Initiator;
     public WuXing? WuXing;
     public bool Crit;
     public bool LifeSteal;
@@ -30,8 +29,6 @@ public class AttackDetails : StageClosureDetails
     public bool Shatter;
     public bool Evade;
     public bool Recursive;
-    public CastResult CastResult;
-    public StageClosure[] Closures;
 
     /// <summary>
     /// 一次攻击行为的细节
@@ -40,8 +37,6 @@ public class AttackDetails : StageClosureDetails
     /// <param name="tgt">受攻击者</param>
     /// <param name="value">攻击数值</param>
     /// <param name="times">攻击次数</param>
-    /// <param name="initiator">技能来源</param>
-    /// <param name="castResult">结果描述</param>
     /// <param name="wuXing">攻击特效的五行</param>
     /// <param name="crit">是否吸血</param>
     /// <param name="lifeSteal">是否吸血</param>
@@ -49,15 +44,17 @@ public class AttackDetails : StageClosureDetails
     /// <param name="doesntConsumeJianYi">是否保存剑意</param>
     /// <param name="shatter">是否碎防</param>
     /// <param name="evade">是否闪避</param>
-    /// <param name="closures">额外行为</param>
     /// <param name="recursive">是否会递归</param>
+    /// <param name="listener">技能来源</param>
+    /// <param name="closures">额外行为</param>
+    /// <param name="castResult">结果描述</param>
     /// <param name="induced">该行为是间接行为，不会引起额外的角色动画</param>
     public AttackDetails(
         StageEntity src,
         StageEntity tgt,
         int value,
         int times,
-        StageClosureListener initiator,
+        StageClosureListener listener,
         WuXing? wuxing,
         bool crit,
         bool lifeSteal,
@@ -74,7 +71,7 @@ public class AttackDetails : StageClosureDetails
         Tgt = tgt;
         Value = value;
         Times = times;
-        Initiator = initiator;
+        Listener = listener;
         WuXing = wuxing;
         Crit = crit;
         LifeSteal = lifeSteal;
@@ -93,7 +90,7 @@ public class AttackDetails : StageClosureDetails
         Tgt,
         Value,
         Times,
-        Initiator,
+        Listener,
         WuXing,
         Crit,
         LifeSteal,

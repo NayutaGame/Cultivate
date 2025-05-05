@@ -4,10 +4,12 @@ using System.Collections.Generic;
 public class CastResult
 {
     public Dictionary<string, string> SSDictionary;
+    public Dictionary<object, string> ObjectDictionary;
 
     public CastResult()
     {
         SSDictionary = new();
+        ObjectDictionary = new();
     }
 
     public string this[string key]
@@ -21,6 +23,18 @@ public class CastResult
 
     public void Remove(string key)
         => SSDictionary.Remove(key);
+
+    public string this[object key]
+    {
+        get => ObjectDictionary[key];
+        set => ObjectDictionary[key] = value;
+    }
+
+    public bool ContainsKey(object key)
+        => ObjectDictionary.ContainsKey(key);
+
+    public void Remove(object key)
+        => ObjectDictionary.Remove(key);
     
     private static CastResult _default;
 

@@ -7,24 +7,45 @@ public class StageClosure
     public readonly int EventId;
     public readonly int Order;
 
-    private Func<StageClosureListener, StageClosureDetails, UniTask> _func;
-    public async UniTask Invoke(StageClosureListener listener, StageClosureDetails closureDetails) => await _func(listener, closureDetails);
+    private Func<StageClosureListener, StageClosure, StageClosureDetails, UniTask> _func;
+    public async UniTask Invoke(StageClosureListener listener, StageClosureDetails closureDetails)
+    {
+        if (closureDetails is NestedStageClosureDetails nestedDetails)
+            await Invoke(listener, nestedDetails);
+        await _func(listener, this, closureDetails);
+    }
+
+    private async UniTask Invoke(StageClosureListener listener, NestedStageClosureDetails nestedDetails)
+    {
+        if (_checkListener)
+            if (nestedDetails.Listener != null && nestedDetails.Listener != listener)
+                return;
+        await _func(listener, this, nestedDetails);
+
+        // TODO: after everything is working, this null propagation should be removed
+        if (nestedDetails.CastResult != null && Key != null)
+            nestedDetails.CastResult.Append(Key, true);
+    }
 
     public string Key;
     private Description _description;
     public Description Description => _description.Clone();
 
+    private bool _checkListener;
+
     public StageClosure(
         int eventId,
         int order,
-        Func<StageClosureListener, StageClosureDetails, UniTask> func,
+        Func<StageClosureListener, StageClosure, StageClosureDetails, UniTask> func,
         string key = null,
-        string description = null)
+        string description = null,
+        bool checkListener = false)
     {
         EventId = eventId;
         Order = order;
         _func = func;
         Key = key;
         _description = description;
+        _checkListener = checkListener;
     }
 }

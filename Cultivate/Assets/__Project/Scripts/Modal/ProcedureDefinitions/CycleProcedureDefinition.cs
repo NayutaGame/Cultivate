@@ -38,6 +38,8 @@ public class CycleProcedureDefinition : ProcedureDefinition
         CastResult castResult)
     {
         Description description = new();
+
+        description.Sb.Append(PostCondDefinition.Description);
         description.Sb.Append($"{WuXing._elementaryBuff}+{Gain}");
         if (Closures != null)
             foreach (StageClosure c in Closures)
@@ -47,6 +49,9 @@ public class CycleProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, this);
+        
         return description;
     }
 
@@ -55,6 +60,8 @@ public class CycleProcedureDefinition : ProcedureDefinition
     {
         CycleProcedureDefinition pd = procedureDefinition as CycleProcedureDefinition;
         Description description = new();
+
+        description.Sb.Append(pd.PostCondDefinition.Description);
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
@@ -63,6 +70,9 @@ public class CycleProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, pd);
+        
         return description;
     }
 }

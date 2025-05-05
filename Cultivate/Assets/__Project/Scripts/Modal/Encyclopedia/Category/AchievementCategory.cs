@@ -18,7 +18,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 0),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -38,7 +38,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -58,7 +58,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 2),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageDetails d = (StageDetails)details;
 
@@ -66,7 +66,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         string key = "MaxBuffCount";
                         p.Memory.SetVariable(key, 0);
                     }),
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         GainBuffDetails d = (GainBuffDetails)details;
 
@@ -76,7 +76,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         string key = "MaxBuffCount";
                         p.Memory.PerformOperation(key, 0, c => Mathf.Max(c, count));
                     }),
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -100,7 +100,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -124,7 +124,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 4),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, details) => {
+                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         PanelChangedDetails d = (PanelChangedDetails)details;
 
@@ -150,7 +150,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 5),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -172,7 +172,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -199,7 +199,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 0),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -219,7 +219,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -244,7 +244,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 2),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -270,7 +270,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -300,7 +300,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 4),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.START_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.START_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StartRunDetails d = (StartRunDetails)details;
                         if (p.IsUnlocked()) return;
@@ -310,7 +310,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         intMemory.SetVariable(TAKEN_DAMAGE_THIS_RUN_KEY, 0);
                     }),
 
-                    new(RunClosureDict.DID_SET_D_MINGYUAN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_SET_D_MINGYUAN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         SetDMingYuanDetails d = (SetDMingYuanDetails)details;
 
@@ -323,7 +323,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         intMemory.PerformAggregate(TAKEN_DAMAGE_THIS_RUN_KEY, -d.Value);
                     }),
 
-                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         JingJieChangedDetails d = (JingJieChangedDetails)details;
 
@@ -347,7 +347,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 5),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -369,7 +369,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非鱼", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_CYCLE, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_CYCLE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         CycleDetails d = (CycleDetails)details;
 
@@ -388,7 +388,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 0),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -408,7 +408,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 1),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_MERGE, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_MERGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         MergeDetails d = (MergeDetails)details;
 
@@ -429,7 +429,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 2),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, details) => {
+                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         PanelChangedDetails d = (PanelChangedDetails)details;
 
@@ -449,7 +449,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 3),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         JingJieChangedDetails d = (JingJieChangedDetails)details;
 
@@ -472,7 +472,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 4),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -481,7 +481,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(MAX_WUXING_BUFF_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         GainBuffDetails d = (GainBuffDetails)details;
 
@@ -501,7 +501,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(MAX_WUXING_BUFF_KEY, 0, current => Math.Max(current, maxWuXingBuffStacks));
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -524,7 +524,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 5),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_SET_D_GOLD, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_SET_D_GOLD, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         SetDGoldDetails d = (SetDGoldDetails)details;
 
@@ -547,7 +547,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -571,7 +571,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 0),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -591,7 +591,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -600,7 +600,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(MAX_DAMAGE_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         DamageDetails d = (DamageDetails)details;
 
@@ -612,7 +612,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(MAX_DAMAGE_KEY, 0, currentMax => Math.Max(currentMax, d.Value));
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -636,7 +636,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 2),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_DISCOVER_SKILL, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_DISCOVER_SKILL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)details;
 
@@ -657,7 +657,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -678,7 +678,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 4),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         JingJieChangedDetails d = (JingJieChangedDetails)details;
 
@@ -697,7 +697,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 5),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_SET_HEALTH, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_SET_HEALTH, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         SetHealthDetails d = (SetHealthDetails)details;
 
@@ -720,7 +720,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("彼此卿", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_CAST, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_CAST, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         CastDetails d = (CastDetails)details;
 
@@ -732,7 +732,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
                         home.Memory.SetVariable(LAST_CASTED_SKILL_INDEX, d.Skill.SlotIndex);
                     }),
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -761,7 +761,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 0),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -781,7 +781,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 1),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -802,7 +802,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 2),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, details) => {
+                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         PanelChangedDetails d = (PanelChangedDetails)details;
 
@@ -825,7 +825,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 3),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -851,7 +851,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 4),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) =>
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) =>
                     {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
@@ -873,7 +873,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 5),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -894,7 +894,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 6),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -915,7 +915,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("无常路引")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_FULL_ATTACK, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_FULL_ATTACK, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         AttackDetails d = (AttackDetails)details;
 
@@ -938,7 +938,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("大音希声")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -947,7 +947,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(MAX_DAMAGE_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         DamageDetails d = (DamageDetails)details;
 
@@ -959,7 +959,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(MAX_DAMAGE_KEY, 0, currentMax => Math.Max(currentMax, d.Value));
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -984,7 +984,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("天河引气录")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         GainBuffDetails d = (GainBuffDetails)details;
 
@@ -1008,7 +1008,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("御虚诀")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -1017,7 +1017,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(INITIAL_HP_KEY, home.Hp);
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1041,7 +1041,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("大椿功")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1062,7 +1062,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("游龙遁")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -1071,7 +1071,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(CANNOT_UNLOCK_YOU_LONG_DUN_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_DAMAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         DamageDetails d = (DamageDetails)details;
 
@@ -1083,7 +1083,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(CANNOT_UNLOCK_YOU_LONG_DUN_KEY, 1);
                     }),
 
-                    new(StageClosureDict.DID_GAIN_ARMOR, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_GAIN_ARMOR, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         GainArmorDetails d = (GainArmorDetails)details;
 
@@ -1096,7 +1096,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(CANNOT_UNLOCK_YOU_LONG_DUN_KEY, 1);
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1118,7 +1118,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("归鸿十二步")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -1127,7 +1127,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(MAX_ZHANYI_STACKS_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_GAIN_BUFF, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         GainBuffDetails d = (GainBuffDetails)details;
 
@@ -1146,7 +1146,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         );
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1170,7 +1170,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("大焚天秘乘")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_BURN, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_BURN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         BurnDetails d = (BurnDetails)details;
 
@@ -1194,7 +1194,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("须弥妙法")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -1203,7 +1203,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(MAX_ARMOR_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_GAIN_ARMOR, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_GAIN_ARMOR, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         GainArmorDetails d = (GainArmorDetails)details;
 
@@ -1220,7 +1220,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         );
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1242,7 +1242,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("锻体四则")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_CAST, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_CAST, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         CastDetails d = (CastDetails)details;
 
@@ -1254,7 +1254,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
                         home.Memory.SetVariable(LAST_CASTED_SKILL_INDEX, d.Skill.SlotIndex);
                     }),
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1285,7 +1285,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("丹兵道")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1311,7 +1311,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("化哉")),
                 stageClosures: new StageClosure[]
                 {
-                    new(StageClosureDict.WIL_STAGE, 0, async (owner, details) => {
+                    new(StageClosureDict.WIL_STAGE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
@@ -1320,7 +1320,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.SetVariable(WUXING_CYCLE_COUNT_KEY, 0);
                     }),
 
-                    new(StageClosureDict.DID_CYCLE, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_CYCLE, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         CycleDetails d = (CycleDetails)details;
 
@@ -1332,7 +1332,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         home.Memory.PerformOperation(WUXING_CYCLE_COUNT_KEY, 0, v => v + 1);
                     }),
 
-                    new(StageClosureDict.DID_COMMIT, 0, async (owner, details) => {
+                    new(StageClosureDict.DID_COMMIT, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
@@ -1356,7 +1356,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("子非鱼"),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -1375,7 +1375,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("子非燕"),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -1394,7 +1394,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("风雨晴"),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -1413,7 +1413,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromCharacter("彼此卿"),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+                    new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
 
@@ -1432,7 +1432,7 @@ public class AchievementCategory : Category<AchievementEntry>
             //     lockIndex: LockIndex.FromCharacter("梦乃遥"),
             //     runClosures: new RunClosure[]
             //     {
-            //         new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, details) => {
+            //         new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
             //             AchievementProfile p = (AchievementProfile)owner;
             //             RunCommitDetails d = (RunCommitDetails)details;
             //

@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
@@ -40,13 +41,6 @@ public class SkillEntry : Entry, Annotatable, ISkill
     
     private Func<CastDetails, UniTask> _castGenerator;
     private async UniTask DefaultCast(CastDetails d) { }
-
-    private Func<StartStageCastDetails, UniTask> _startStageCast;
-    public async UniTask StartStageCast(StartStageCastDetails d)
-        => await _startStageCast(d);
-    private async UniTask DefaultStartStageCast(StartStageCastDetails d) { }
-
-    public bool HasStartStageCast() => _startStageCast != DefaultStartStageCast;
 
     private Func<JingJie, int, CostResult, CastResult, Description> _descriptionGenerator;
     public Description DescriptionFromEnv(JingJie j, CostResult costResult = null, CastResult castResult = null)
@@ -97,9 +91,13 @@ public class SkillEntry : Entry, Annotatable, ISkill
     public MergeRule OverridingMergeRule => _overridingMergeRule;
 
     private bool _hasCast;
+    
     private Func<int, int, ProcedureDefinition[]> _procedureDefinitionsFromJingJie;
     private ProcedureDefinition[][] _procedureDefinitionsCache;
     private ProcedureDefinition[] EmptyProcedureDefinitions(int j, int dj) => Array.Empty<ProcedureDefinition>();
+
+    private bool _hasStartStageCast;
+    public bool HasStartStageCast() => _hasStartStageCast;
     
     public async UniTask Cast(StageEnvironment env, CastDetails d)
     {
@@ -108,7 +106,7 @@ public class SkillEntry : Entry, Annotatable, ISkill
             ProcedureDefinition[] procedureDefinitions = _procedureDefinitionsCache[d.Dj];
             for (int i = 0; i < procedureDefinitions.Length; i++)
             {
-                await procedureDefinitions[i].Cast(env, d);
+                await procedureDefinitions[i].TryCast(env, d);
             }
             return;
         }
@@ -131,8 +129,6 @@ public class SkillEntry : Entry, Annotatable, ISkill
         Func<CastDetails, UniTask> castGenerator = null,
         Func<JingJie, int, CostResult, CastResult, Description> descriptionGenerator = null,
         
-        Func<StartStageCastDetails, UniTask> startStageCast = null,
-        
         string trivia = null,
         bool withinPool = true,
         MergeRule overridingMergeRule = null,
@@ -151,8 +147,6 @@ public class SkillEntry : Entry, Annotatable, ISkill
         _costDescription = costDescription ?? CostDescription.Empty;
         _castGenerator = castGenerator ?? DefaultCast;
         _descriptionGenerator = descriptionGenerator;
-
-        _startStageCast = startStageCast ?? DefaultStartStageCast;
         
         _trivia = trivia;
         _withinPool = withinPool;
@@ -163,7 +157,14 @@ public class SkillEntry : Entry, Annotatable, ISkill
         _procedureDefinitionsFromJingJie = cast ?? EmptyProcedureDefinitions;
         _procedureDefinitionsCache = new ProcedureDefinition[_jingJieBound.Length][];
         for (int i = 0; i < _jingJieBound.Length; i++)
-            _procedureDefinitionsCache[i] = _procedureDefinitionsFromJingJie(LowestJingJie, i);
+        {
+            ProcedureDefinition[] procedureDefinitions = _procedureDefinitionsFromJingJie(LowestJingJie + i, i);
+            List<ProcedureDefinition> procedureDefinitionsList = procedureDefinitions.ToList();
+            _procedureDefinitionsCache[i] = procedureDefinitionsList.FilterObj(pd => pd.GetPreCondDefinition().Cond(LowestJingJie + i, i)).ToArray();
+
+            for (int j = 0; j < _procedureDefinitionsCache[i].Length; j++)
+                _hasStartStageCast |= _procedureDefinitionsCache[i][j].GetPostCondDefinition() == PostCondDefinition.StartStage;
+        }
     }
 
     public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];

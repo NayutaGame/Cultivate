@@ -4,11 +4,15 @@ using Cysharp.Threading.Tasks;
 public class RemoveArmorProcedureDefinition : ProcedureDefinition
 {
     public int Value;
+    public StageClosure[] Closures;
     public bool Induced;
 
-    public RemoveArmorProcedureDefinition(int value, bool induced)
+    public RemoveArmorProcedureDefinition(int value, 
+        StageClosure[] closures = null,
+        bool induced = false)
     {
         Value = value;
+        Closures = closures;
         Induced = induced;
     }
 
@@ -17,6 +21,9 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             value: Value,
+            listener: d.Skill,
+            closures: Closures,
+            castResult: d.CastResult,
             induced: Induced);
 
     public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
@@ -25,7 +32,20 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
+        description.Sb.Append(PostCondDefinition.Description);
         description.Sb.Append($"施加{Value}破甲");
+        
+        if (Closures != null)
+            foreach (StageClosure c in Closures)
+            {
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                // closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
+        
+        description.ApplyStyle(castResult, this);
+        
         return description;
     }
 }

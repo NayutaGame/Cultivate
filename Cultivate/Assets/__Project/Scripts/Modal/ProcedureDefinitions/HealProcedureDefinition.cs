@@ -25,7 +25,7 @@ public class HealProcedureDefinition : ProcedureDefinition
             tgt: d.Caster,
             value: Value,
             penetrate: Penetrate,
-            initiator: d.Skill,
+            listener: d.Skill,
             castResult: d.CastResult,
             closures: Closures,
             induced: Induced);
@@ -36,6 +36,7 @@ public class HealProcedureDefinition : ProcedureDefinition
     public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
     {
         Description description = new();
+        description.Sb.Append(PostCondDefinition.Description);
         description.Sb.Append($"气血+{Value}");
         if (Closures != null)
             foreach (StageClosure c in Closures)
@@ -45,6 +46,9 @@ public class HealProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, this);
+        
         return description;
     }
 
@@ -52,6 +56,7 @@ public class HealProcedureDefinition : ProcedureDefinition
     {
         HealProcedureDefinition pd = procedureDefinition as HealProcedureDefinition;
         Description description = new();
+        description.Sb.Append(pd.PostCondDefinition.Description);
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
@@ -60,6 +65,9 @@ public class HealProcedureDefinition : ProcedureDefinition
                 // closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
+        
+        description.ApplyStyle(castResult, pd);
+        
         return description;
     }
 }
