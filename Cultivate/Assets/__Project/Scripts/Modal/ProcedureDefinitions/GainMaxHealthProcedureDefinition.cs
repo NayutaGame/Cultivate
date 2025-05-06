@@ -10,10 +10,10 @@ public class GainMaxHealthProcedureDefinition : ProcedureDefinition
         Value = value;
     }
 
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
+    public override async UniTask Cast(CastDetails castDetails)
         => castDetails.Caster.MaxHp += Value;
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
         description.Sb.Append(PostCondDefinition.Description);

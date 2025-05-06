@@ -14,7 +14,7 @@ public class GainBuffDetails : NestedStageClosureDetails
         int stack,
         bool recursive,
         StageClosureListener listener,
-        CastResult castResult,
+        ResultDict castResult,
         StageClosure[] closures,
         bool induced)
     {

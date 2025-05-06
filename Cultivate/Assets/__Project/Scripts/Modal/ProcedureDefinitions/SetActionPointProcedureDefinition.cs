@@ -10,10 +10,10 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
         ActionPoint = actionPoint;
     }
     
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
+    public override async UniTask Cast(CastDetails castDetails)
         => castDetails.Caster.SetActionPoint(ActionPoint);
     
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
         description.Sb.Append(PostCondDefinition.Description);

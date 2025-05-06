@@ -6,7 +6,7 @@ public abstract class ProcedureDefinition
 {
     protected PreCondDefinition PreCondDefinition;
     protected PostCondDefinition PostCondDefinition;
-    private Func<ProcedureDefinition, CostResult, CastResult, Description> _getDescription;
+    private Func<ProcedureDefinition, ResultDict, ResultDict, Description> _getDescription;
     
     public ProcedureDefinition()
     {
@@ -15,23 +15,23 @@ public abstract class ProcedureDefinition
         _getDescription = DefaultGetDescription;
     }
 
-    public async UniTask TryCast(StageEnvironment env, CastDetails castDetails)
+    public async UniTask TryCast(CastDetails castDetails)
     {
-        bool postCond = PostCondDefinition.Cond(env, castDetails);
+        bool postCond = PostCondDefinition.GetCond(castDetails);
         if (postCond)
-            await Cast(env, castDetails);
+            await Cast(castDetails);
         
         castDetails.CastResult.Append(this, postCond);
     }
     
-    public virtual async UniTask Cast(StageEnvironment env, CastDetails castDetails)
+    public virtual async UniTask Cast(CastDetails castDetails)
     {
     }
 
-    public Description GetDescription(CostResult costResult, CastResult castResult)
+    public Description GetDescription(ResultDict costResult, ResultDict castResult)
         => _getDescription(this, costResult, castResult);
 
-    public ProcedureDefinition SetDescription(Func<ProcedureDefinition, CostResult, CastResult, Description> getDescription)
+    public ProcedureDefinition SetDescription(Func<ProcedureDefinition, ResultDict, ResultDict, Description> getDescription)
     {
         _getDescription = getDescription;
         return this;
@@ -55,5 +55,5 @@ public abstract class ProcedureDefinition
         return this;
     }
 
-    public abstract Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult);
+    public abstract Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult);
 }

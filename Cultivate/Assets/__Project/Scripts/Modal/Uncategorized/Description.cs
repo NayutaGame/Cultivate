@@ -31,10 +31,10 @@ public class Description
         return sb.ToString();
     }
 
-    public void ApplyCastResult(CastResult castResult, string key)
+    public void ApplyCastResult(ResultDict castResult, string key)
         => ApplyStyle(castResult, key);
     
-    public void ApplyStyle(CastResult castResult, string styleKey)
+    public void ApplyStyle(ResultDict castResult, string styleKey)
     {
         if (castResult == null || styleKey == null)
             return;
@@ -57,7 +57,7 @@ public class Description
         _sb.Append($"<style=\"{style}\">{content}</style>");
     }
     
-    public void ApplyStyle(CastResult castResult, object styleKey)
+    public void ApplyStyle(ResultDict castResult, object styleKey)
     {
         if (castResult == null || styleKey == null)
             return;
@@ -80,16 +80,8 @@ public class Description
         _sb.Append($"<style=\"{style}\">{content}</style>");
     }
 
-    public void ApplyReplaceValues(CastResult castResult)
+    public void ApplyReplaceValues(ResultDict castResult)
     {
-        // 首先， sb中的内容可能长这个样子
-        // "击伤：灵气+[QiShiLingQiGain]"
-        // 可能有多个[]
-        // 对于每个[]，我想访问里面的字符串，然后把这个字符串当作key
-        // 查找castResult[key]，将这个castResult[key]中的内容替换掉[QiShiLingQiGain]
-        // 假设我的castResult中间有一条"QiShiLingQiGain" : "4"
-        // 最终我的description中的sb应该是击伤：灵气+4
-        
         if (castResult == null) return;
     
         string content = _sb.ToString();

@@ -401,7 +401,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     }
 
     public async UniTask IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
-        CastResult castResult, WuXing? wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
+        ResultDict castResult, WuXing? wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
         => await IndirectProcedure(new IndirectDetails(src, tgt, value, srcSkill, wuXing, lifesteal, recursive, castResult, induced));
 
     public async UniTask IndirectProcedure(IndirectDetails indirectDetails)
@@ -488,7 +488,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     }
 
     public async UniTask HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate,
-        StageClosureListener initiator, CastResult castResult, StageClosure[] closures, bool induced)
+        StageClosureListener initiator, ResultDict castResult, StageClosure[] closures, bool induced)
         => await HealProcedure(new(src, tgt, value, penetrate, initiator, castResult, closures, induced));
 
     public async UniTask HealProcedure(HealDetails d)
@@ -592,7 +592,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_ARMOR, d);
     }
 
-    public async UniTask ManaShortageProcedure(ManaCostResult d)
+    public async UniTask ManaShortageProcedure(CostDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_MANA_SHORTAGE, d);
 
@@ -602,7 +602,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_MANA_SHORTAGE, d);
     }
 
-    public async UniTask ArmorShortageProcedure(ArmorCostResult d)
+    public async UniTask ArmorShortageProcedure(CostDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_ARMOR_SHORTAGE, d);
 
@@ -906,23 +906,23 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask WriteShortage(StageClosureListener listener, StageClosure closure, ClosureDetails stageClosureDetails)
     {
-        CostResult d = (CostResult)stageClosureDetails;
-        d.State = CostResult.CostState.Shortage;
+        CostDetails d = (CostDetails)stageClosureDetails;
+        d.State = CostState.Shortage;
     }
 
     private async UniTask WriteCost(StageClosureListener listener, StageClosure closure, ClosureDetails stageClosureDetails)
     {
-        CostResult d = (CostResult)stageClosureDetails;
-        if (d.State == CostResult.CostState.Shortage)
+        CostDetails d = (CostDetails)stageClosureDetails;
+        if (d.State == CostState.Shortage)
             return;
 
         StageSkill skill = d.Skill;
-        CostDescription costDescription = skill.Entry.GetCostDescription(skill.GetJingJie());
+        CostDescription costDescription = skill.Entry.GetLiteralCostDescription(skill.GetJingJie());
         int literalCost = costDescription.Value;
 
-        CostResult.CostState state = d.Value < literalCost
-            ? CostResult.CostState.Reduced
-            : CostResult.CostState.Normal;
+        CostState state = d.Value < literalCost
+            ? CostState.Reduced
+            : CostState.Normal;
 
         d.State = state;
     }

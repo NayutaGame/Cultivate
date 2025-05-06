@@ -10,8 +10,9 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
 {
     [NonSerialized] public Neuron EnvironmentChangedNeuron = new();
     [NonSerialized] public PlacedSkill PlacedSkill;
-    [NonSerialized] public CastResult CastResult;
-    [NonSerialized] public CostResult CostResult;
+
+    [NonSerialized] public CostDescription ActualCostDescription;
+    [NonSerialized] public string ActualDescription;
     
     [SerializeField] private int _index;
     [SerializeField] private bool _hidden;
@@ -70,8 +71,8 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
 
     public void ClearResults()
     {
-        CastResult = null;
-        CostResult = null;
+        ActualCostDescription = null;
+        ActualDescription = null;
     }
 
     public void OnBeforeSerialize() { }

@@ -25,31 +25,17 @@ public class SkillEntry : Entry, Annotatable, ISkill
     public StageClosure[] Closures;
     
 
-    private Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> _costGenerator;
-    public async UniTask<CostResult> Cost(StageEnvironment env, StageEntity caster, StageSkill skill, bool recursive)
-    {
-        CostResult result = await _costGenerator(env, caster, skill, recursive);
-        result.Env = env;
-        result.Entity = caster;
-        result.Skill = skill;
-        return result;
-    }
-    
-    private Func<JingJie, int, CostResult, CostDescription> _costDescription;
-    public CostDescription GetCostDescription(JingJie showingJingJie, CostResult costResult)
-        => _costDescription(showingJingJie, showingJingJie - LowestJingJie, costResult);
-    
     private Func<CastDetails, UniTask> _castGenerator;
     private async UniTask DefaultCast(CastDetails d) { }
 
-    private Func<JingJie, int, CostResult, CastResult, Description> _descriptionGenerator;
-    public Description DescriptionFromEnv(JingJie j, CostResult costResult = null, CastResult castResult = null)
+    private Func<JingJie, int, ResultDict, ResultDict, Description> _descriptionGenerator;
+    public Description DescriptionFromEnv(JingJie j, ResultDict costResult = null, ResultDict castResult = null)
     {
         if (_hasCast)
         {
             ProcedureDefinition[] procedureDefinitions = _procedureDefinitionsCache[j - LowestJingJie];
             Description description = new();
-            CastResult tempCastResult = castResult ?? new();
+            ResultDict tempCastResult = castResult ?? new();
             
             for (int i = 0; i < procedureDefinitions.Length; i++)
             {
@@ -59,10 +45,15 @@ public class SkillEntry : Entry, Annotatable, ISkill
                 description.Join(subDescription);
             }
 
+            CostDefinition costDefinition = _costDefinitionsCache[j - LowestJingJie];
+            Description descriptionFromCost = costDefinition.DefaultGetDescription(costResult);
+            if (descriptionFromCost != null)
+                description.Join(descriptionFromCost);
+
             return description;
         }
         
-        return _descriptionGenerator(j, j - LowestJingJie, costResult, castResult ?? CastResult.Default);
+        return _descriptionGenerator(j, j - LowestJingJie, costResult, castResult ?? ResultDict.Default);
     }
 
     public Description GetDescription()
@@ -71,7 +62,7 @@ public class SkillEntry : Entry, Annotatable, ISkill
     private AnnotationArray _cascade;
     public void GenerateCascade()
     {
-        CostDescription costDescription = _costDescription(LowestJingJie, 0, null);
+        CostDescription costDescription = GetLiteralCostDescription(LowestJingJie);
         _cascade = AnnotationArray.FromDescriptionAndCostType(GetDescription(), costDescription.Type);
     }
 
@@ -79,7 +70,7 @@ public class SkillEntry : Entry, Annotatable, ISkill
         => description.GetHighlight(_cascade);
     public string GetHighlight()
         => GetDescription().GetHighlight(_cascade);
-    public string GetHighlight(JingJie jingJie, CostResult costResult, CastResult castResult)
+    public string GetHighlight(JingJie jingJie, ResultDict costResult, ResultDict castResult)
         => DescriptionFromEnv(jingJie, costResult, castResult).GetHighlight(_cascade);
     
     private string _trivia;
@@ -90,23 +81,28 @@ public class SkillEntry : Entry, Annotatable, ISkill
     private MergeRule _overridingMergeRule;
     public MergeRule OverridingMergeRule => _overridingMergeRule;
 
-    private bool _hasCast;
+    private bool _hasCost;
+    private Func<int, int, CostDefinition> _costDefinitionsFromJingJie;
+    private CostDefinition[] _costDefinitionsCache;
     
+    public CostDefinition Cost(CostDetails d)
+        => _costDefinitionsCache[d.Dj];
+
+    private bool _hasCast;
     private Func<int, int, ProcedureDefinition[]> _procedureDefinitionsFromJingJie;
     private ProcedureDefinition[][] _procedureDefinitionsCache;
-    private ProcedureDefinition[] EmptyProcedureDefinitions(int j, int dj) => Array.Empty<ProcedureDefinition>();
 
     private bool _hasStartStageCast;
     public bool HasStartStageCast() => _hasStartStageCast;
     
-    public async UniTask Cast(StageEnvironment env, CastDetails d)
+    public async UniTask Cast(CastDetails d)
     {
         if (_hasCast)
         {
             ProcedureDefinition[] procedureDefinitions = _procedureDefinitionsCache[d.Dj];
             for (int i = 0; i < procedureDefinitions.Length; i++)
             {
-                await procedureDefinitions[i].TryCast(env, d);
+                await procedureDefinitions[i].TryCast(d);
             }
             return;
         }
@@ -124,15 +120,14 @@ public class SkillEntry : Entry, Annotatable, ISkill
         
         StageClosure[] closures = null,
         
-        Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<CostResult>> costGenerator = null,
-        Func<JingJie, int, CostResult, CostDescription> costDescription = null,
         Func<CastDetails, UniTask> castGenerator = null,
-        Func<JingJie, int, CostResult, CastResult, Description> descriptionGenerator = null,
+        Func<JingJie, int, ResultDict, ResultDict, Description> descriptionGenerator = null,
         
         string trivia = null,
         bool withinPool = true,
         MergeRule overridingMergeRule = null,
         
+        Func<int, int, CostDefinition> cost = null,
         Func<int, int, ProcedureDefinition[]> cast = null
         ) : base(id)
     {
@@ -143,8 +138,6 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
         Closures = closures ?? Array.Empty<StageClosure>();
         
-        _costGenerator = costGenerator ?? CostResult.Empty;
-        _costDescription = costDescription ?? CostDescription.Empty;
         _castGenerator = castGenerator ?? DefaultCast;
         _descriptionGenerator = descriptionGenerator;
         
@@ -153,8 +146,29 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
         _overridingMergeRule = overridingMergeRule ?? MergeRule.Trivial;
 
+        BuildCostDefinitionCache(cost);
+        BuildProcedureDefinitionCache(cast);
+    }
+
+    private CostDefinition DefaultCost(int j, int dj)
+        => new EmptyCostDefinition();
+
+    private void BuildCostDefinitionCache(Func<int, int, CostDefinition> cost)
+    {
+        _costDefinitionsFromJingJie = cost ?? DefaultCost;
+        _costDefinitionsCache = new CostDefinition[_jingJieBound.Length];
+        for (int i = 0; i < _jingJieBound.Length; i++)
+        {
+            _costDefinitionsCache[i] = _costDefinitionsFromJingJie(LowestJingJie + i, i);
+        }
+    }
+
+    private void BuildProcedureDefinitionCache(Func<int, int, ProcedureDefinition[]> cast)
+    {
         _hasCast = cast != null;
-        _procedureDefinitionsFromJingJie = cast ?? EmptyProcedureDefinitions;
+        if (cast == null) return;
+        
+        _procedureDefinitionsFromJingJie = cast;
         _procedureDefinitionsCache = new ProcedureDefinition[_jingJieBound.Length][];
         for (int i = 0; i < _jingJieBound.Length; i++)
         {
@@ -200,7 +214,8 @@ public class SkillEntry : Entry, Annotatable, ISkill
     public string GetTrivia() => _trivia;
 
     public JingJie GetJingJie() => LowestJingJie;
-    public CostDescription GetCostDescription(JingJie showingJingJie) => GetCostDescription(showingJingJie, null);
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+        => _costDefinitionsCache[showingJingJie - LowestJingJie].GetLiteralCostDescription();
     public string GetHighlight(JingJie showingJingJie) => GetHighlight(showingJingJie, null, null);
     public Sprite GetJingJieSprite(JingJie showingJingJie) => CanvasManager.Instance.JingJieSprites[showingJingJie];
     public JingJie NextJingJie(JingJie showingJingJie)

@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class StageNote : ISkill
@@ -7,8 +8,8 @@ public class StageNote : ISkill
     public int TemporalIndex;
     public StageSkill Skill;
 
-    public CostResult CostResult;
-    public CastResult CastResult;
+    [NonSerialized] public CostDescription ActualCostDescription;
+    [NonSerialized] public string ActualDescription;
 
     public StageNote(int entityIndex, int temporalIndex, StageSkill skill, int currCounter = 0, int maxCounter = 0)
     {
@@ -53,14 +54,14 @@ public class StageNote : ISkill
     public JingJie GetJingJie()
         => Skill.GetJingJie();
 
-    public CostDescription GetCostDescription(JingJie showingJingJie)
-        => GetJingJie() == showingJingJie
-            ? Skill.Entry.GetCostDescription(showingJingJie, CostResult)
-            : Skill.Entry.GetCostDescription(showingJingJie);
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+        => GetJingJie() == showingJingJie && ActualCostDescription != null
+            ? ActualCostDescription
+            : Skill.Entry.GetLiteralCostDescription(showingJingJie);
 
     public string GetHighlight(JingJie showingJingJie)
-        => GetJingJie() == showingJingJie
-            ? Skill.Entry.GetHighlight(showingJingJie, CostResult, CastResult)
+        => GetJingJie() == showingJingJie && ActualDescription != null
+            ? ActualDescription
             : Skill.Entry.GetHighlight(showingJingJie);
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)

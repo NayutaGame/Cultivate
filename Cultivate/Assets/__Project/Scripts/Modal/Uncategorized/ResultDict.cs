@@ -1,12 +1,12 @@
 
 using System.Collections.Generic;
 
-public class CastResult
+public class ResultDict
 {
     public Dictionary<string, string> SSDictionary;
     public Dictionary<object, string> ObjectDictionary;
 
-    public CastResult()
+    public ResultDict()
     {
         SSDictionary = new();
         ObjectDictionary = new();
@@ -35,10 +35,16 @@ public class CastResult
 
     public void Remove(object key)
         => ObjectDictionary.Remove(key);
-    
-    private static CastResult _default;
 
-    public static CastResult Default
+    public void Clear()
+    {
+        SSDictionary.Clear();
+        ObjectDictionary.Clear();
+    }
+    
+    private static ResultDict _default;
+
+    public static ResultDict Default
     {
         get
         {

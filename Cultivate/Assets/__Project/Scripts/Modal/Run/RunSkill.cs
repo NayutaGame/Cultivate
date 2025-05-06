@@ -99,15 +99,21 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     public JingJie GetJingJie()
         => _jingJie;
 
-    public CostDescription GetCostDescription(JingJie showingJingJie)
-        => _jingJie == showingJingJie
-            ? GetEntry().GetCostDescription(showingJingJie, _skillSlot?.CostResult)
-            : GetEntry().GetCostDescription(showingJingJie);
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+    {
+        CostDescription actualCostDescription = _skillSlot?.ActualCostDescription;
+        return _jingJie == showingJingJie && actualCostDescription != null
+            ? actualCostDescription
+            : GetEntry().GetLiteralCostDescription(showingJingJie);
+    }
 
     public string GetHighlight(JingJie showingJingJie)
-        => _jingJie == showingJingJie
-            ? GetEntry().GetHighlight(showingJingJie, _skillSlot?.CostResult, _skillSlot?.CastResult)
+    {
+        string actualDescription = _skillSlot?.ActualDescription;
+        return _jingJie == showingJingJie && actualDescription != null
+            ? actualDescription
             : GetEntry().GetHighlight(showingJingJie);
+    }
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
         => _entry.GetJingJieSprite(showingJingJie);

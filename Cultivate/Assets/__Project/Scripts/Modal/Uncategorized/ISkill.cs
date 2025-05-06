@@ -13,7 +13,7 @@ public interface ISkill
     string GetTrivia();
     
     JingJie GetJingJie();
-    CostDescription GetCostDescription(JingJie showingJingJie);
+    CostDescription GetLiteralCostDescription(JingJie showingJingJie);
     string GetHighlight(JingJie showingJingJie);
     Sprite GetJingJieSprite(JingJie showingJingJie);
     JingJie NextJingJie(JingJie showingJingJie);

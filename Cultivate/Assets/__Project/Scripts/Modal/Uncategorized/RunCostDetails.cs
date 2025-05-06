@@ -1,13 +1,13 @@
 
 using System.Text;
 
-public class CostDetails
+public class RunCostDetails
 {
     public int Gold;
     public int MingYuan;
     public int Health;
 
-    public CostDetails(int gold = 0, int mingYuan = 0, int health = 0)
+    public RunCostDetails(int gold = 0, int mingYuan = 0, int health = 0)
     {
         Gold = gold;
         MingYuan = mingYuan;
@@ -49,5 +49,5 @@ public class CostDetails
         return sb.ToString();
     }
 
-    public static CostDetails Default => new();
+    public static RunCostDetails Default => new();
 }

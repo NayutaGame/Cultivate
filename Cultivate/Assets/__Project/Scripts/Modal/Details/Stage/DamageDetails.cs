@@ -40,7 +40,7 @@ public class DamageDetails : NestedStageClosureDetails
         bool recursive,
         StageClosureListener listener,
         StageClosure[] closures,
-        CastResult castResult,
+        ResultDict castResult,
         bool induced)
     {
         Src = src;

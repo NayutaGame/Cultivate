@@ -8,12 +8,13 @@ public class CastDetails : StageClosureDetails
     public StageEnvironment Env;
     public StageEntity Caster;
     public StageSkill Skill;
+    
     public bool Recursive;
     public bool FromWanJian;
-    public CastResult CastResult;
-
     public bool IsStartStage;
     public int StartStageCastTimes;
+    
+    public ResultDict CastResult;
 
     public CastDetails(
         StageEnvironment env,
@@ -21,23 +22,28 @@ public class CastDetails : StageClosureDetails
         StageSkill skill,
         bool recursive,
         bool fromWanJian,
-        CastResult castResult,
         bool isStartStage,
-        int startStageCastTimes)
+        int startStageCastTimes,
+        ResultDict castResult)
     {
         Env = env;
         Caster = caster;
         Skill = skill;
         Recursive = recursive;
         FromWanJian = fromWanJian;
-        CastResult = castResult;
         IsStartStage = isStartStage;
         StartStageCastTimes = startStageCastTimes;
+        CastResult = castResult;
     }
 
     public int J => Skill.GetJingJie();
     public int Dj => Skill.Dj;
     public int Cc => Skill.TotalStageCastedCount;
+
+    public void Clear()
+    {
+        CastResult.Clear();
+    }
 
     public async UniTask AttackProcedure(int value,
         int times = 1,

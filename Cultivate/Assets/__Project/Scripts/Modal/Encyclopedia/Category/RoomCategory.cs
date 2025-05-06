@@ -1626,8 +1626,8 @@ public class RoomCategory : Category<RoomEntry>
                         Bound manaCost = 0;
 
                         SkillEntryCollectionDescriptor descriptor = new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie)
-                                .ByType(CostDescription.CostType.Mana)),
+                            pred: e => manaCost.Contains(e.GetLiteralCostDescription(RunManager.Instance.Environment.JingJie)
+                                .ByType(CostType.Mana)),
                             jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
                             distinct: true,
@@ -1644,8 +1644,8 @@ public class RoomCategory : Category<RoomEntry>
                         Bound manaCost = new Bound(1, 10);
 
                         SkillEntryCollectionDescriptor descriptor = new(
-                            pred: e => manaCost.Contains(e.GetCostDescription(RunManager.Instance.Environment.JingJie)
-                                .ByType(CostDescription.CostType.Mana)),
+                            pred: e => manaCost.Contains(e.GetLiteralCostDescription(RunManager.Instance.Environment.JingJie)
+                                .ByType(CostType.Mana)),
                             jingJie: RunManager.Instance.Environment.JingJie,
                             count: 3,
                             distinct: true,
@@ -1882,7 +1882,7 @@ public class RoomCategory : Category<RoomEntry>
                         .SetReward(new DrawSkillReward("获得五个技能", new(jingJie: RunManager.Instance.Environment.JingJie, count: 5)));
 
                     A[0].SetSelect(option => B);
-                    A[1].SetCost(new CostDetails(health: 30))
+                    A[1].SetCost(new RunCostDetails(health: 30))
                         .SetSelect(option => C);
 
                     return A;
@@ -2702,9 +2702,9 @@ public class RoomCategory : Category<RoomEntry>
                         return B;
                     });
 
-                    A[1].SetCost(new CostDetails(mingYuan: 1))
+                    A[1].SetCost(new RunCostDetails(mingYuan: 1))
                         .SetSelect(option => C);
-                    A[2].SetCost(new CostDetails(gold: 100))
+                    A[2].SetCost(new RunCostDetails(gold: 100))
                         .SetSelect(option => D);
                     B[0].SetSelect(option => E);
                     C[0].SetSelect(option => E);
@@ -3038,7 +3038,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
-                    A[1].SetCost(new CostDetails(gold: 4));
+                    A[1].SetCost(new RunCostDetails(gold: 4));
                     A[2].SetSelect(option => D);
                     B.SetOperation(s =>
                     {
@@ -3085,7 +3085,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "神农",
                         detailedText: "你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
                         "给他展示运气抵御毒素的法门", "一口抢过来蘑菇", "选择仙草");
-                    A[1].SetCost(new CostDetails(mingYuan: 1));
+                    A[1].SetCost(new RunCostDetails(mingYuan: 1));
             
                     Puzzle puzzle = new(
                         description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
@@ -3171,7 +3171,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "神农",
                         detailedText: "你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个容光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
                         "给他展示运气抵御毒素的法门", "你个外行，学别人采什么药，离这个蘑菇远一点", "这次我就选择仙草吧");
-                    A[1].SetCost(new CostDetails(mingYuan: 1));
+                    A[1].SetCost(new RunCostDetails(mingYuan: 1));
             
                     Puzzle puzzle = new(
                         description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",

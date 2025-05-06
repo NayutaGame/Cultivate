@@ -142,7 +142,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("消耗描述", EditorStyles.boldLabel);
-        var costDesc = skill.GetCostDescription(skill.LowestJingJie);
+        var costDesc = skill.GetLiteralCostDescription(skill.LowestJingJie);
         EditorGUILayout.LabelField($"类型: {costDesc.Type}");
         DrawStyledText($"描述: {costDesc}");
         

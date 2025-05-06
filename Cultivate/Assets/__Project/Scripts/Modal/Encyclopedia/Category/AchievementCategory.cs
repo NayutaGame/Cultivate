@@ -835,8 +835,8 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageEntity home = StageManager.Instance.Environment.Home;
                         int count = home.TraversalSkills().Count(s =>
                         {
-                            CostDescription costDescription = s.Entry.GetCostDescription(s.GetJingJie());
-                            return costDescription.Type == CostDescription.CostType.Mana && costDescription.Value >= 3;
+                            CostDescription costDescription = s.Entry.GetLiteralCostDescription(s.GetJingJie());
+                            return costDescription.Type == CostType.Mana && costDescription.Value >= 3;
                         });
 
                         if (count < 3) return;

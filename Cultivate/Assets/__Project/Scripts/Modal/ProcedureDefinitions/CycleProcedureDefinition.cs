@@ -29,13 +29,14 @@ public class CycleProcedureDefinition : ProcedureDefinition
     public CycleDetails GetDetailsFromCastDetails(CastDetails d)
         => new(d.Caster, Rotate, WuXing, Gain, Recover, d.Skill, Closures, d.CastResult, Induced);
 
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
+    public override async UniTask Cast(CastDetails castDetails)
     {
-        await env.CycleProcedure(GetDetailsFromCastDetails(castDetails));
+        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails));
     }
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult,
-        CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition,
+        ResultDict costResult,
+        ResultDict castResult)
     {
         Description description = new();
 
@@ -55,8 +56,8 @@ public class CycleProcedureDefinition : ProcedureDefinition
         return description;
     }
 
-    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, CostResult costResult,
-        CastResult castResult)
+    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, ResultDict costResult,
+        ResultDict castResult)
     {
         CycleProcedureDefinition pd = procedureDefinition as CycleProcedureDefinition;
         Description description = new();

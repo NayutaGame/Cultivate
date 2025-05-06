@@ -59,17 +59,17 @@ public class AnnotationArray
         return new AnnotationArray(annotations.ToArray());
     }
     
-    public static AnnotationArray FromDescriptionAndCostType(Description description, CostDescription.CostType costType)
+    public static AnnotationArray FromDescriptionAndCostType(Description description, CostType costType)
     {
         List<Annotatable> annotations = new();
         string descriptionString = description.ToString();
 
         switch (costType)
         {
-            case CostDescription.CostType.Channel:
+            case CostType.Channel:
                 annotations.Add(Encyclopedia.KeywordCategory["吟唱"]);
                 break;
-            case CostDescription.CostType.Health:
+            case CostType.Health:
                 annotations.Add(Encyclopedia.KeywordCategory["燃命"]);
                 break;
         }

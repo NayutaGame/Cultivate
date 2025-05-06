@@ -12,7 +12,7 @@ public class HealDetails : NestedStageClosureDetails
         int value,
         bool penetrate,
         StageClosureListener listener,
-        CastResult castResult,
+        ResultDict castResult,
         StageClosure[] closures,
         bool induced)
     {

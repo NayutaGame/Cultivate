@@ -3,10 +3,10 @@ using Cysharp.Threading.Tasks;
 
 public class ExhaustProcedureDefinition : ProcedureDefinition
 {
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
-        => await env.ExhaustProcedure(castDetails.Caster, castDetails.Skill);
+    public override async UniTask Cast(CastDetails castDetails)
+        => await castDetails.Env.ExhaustProcedure(castDetails.Caster, castDetails.Skill);
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
 

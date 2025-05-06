@@ -26,10 +26,10 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
             castResult: d.CastResult,
             induced: Induced);
 
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
-        => await env.LoseArmorProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails castDetails)
+        => await castDetails.Env.LoseArmorProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
         description.Sb.Append(PostCondDefinition.Description);

@@ -134,8 +134,8 @@ public class SkillEntryDescriptor : ISkill
     public JingJie GetJingJie()
         => _jingJie ?? global::JingJie.LianQi;
 
-    public CostDescription GetCostDescription(JingJie showingJingJie)
-        => _entry?.GetCostDescription(showingJingJie) ?? new CostDescription();
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+        => _entry?.GetLiteralCostDescription(showingJingJie) ?? CostDescription.Empty;
 
     public string GetHighlight(JingJie showingJingJie)
         => _entry?.GetHighlight(showingJingJie);

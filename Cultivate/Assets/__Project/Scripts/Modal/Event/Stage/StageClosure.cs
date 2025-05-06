@@ -11,11 +11,12 @@ public class StageClosure
     public async UniTask Invoke(StageClosureListener listener, StageClosureDetails closureDetails)
     {
         if (closureDetails is NestedStageClosureDetails nestedDetails)
-            await Invoke(listener, nestedDetails);
-        await _func(listener, this, closureDetails);
+            await InvokeWithNested(listener, nestedDetails);
+        else
+            await _func(listener, this, closureDetails);
     }
 
-    private async UniTask Invoke(StageClosureListener listener, NestedStageClosureDetails nestedDetails)
+    private async UniTask InvokeWithNested(StageClosureListener listener, NestedStageClosureDetails nestedDetails)
     {
         if (_checkListener)
             if (nestedDetails.Listener != null && nestedDetails.Listener != listener)

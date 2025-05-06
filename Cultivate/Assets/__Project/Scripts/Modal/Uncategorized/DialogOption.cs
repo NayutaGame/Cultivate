@@ -6,10 +6,10 @@ public class DialogOption
 {
     public string Text;
 
-    private CostDetails _costDetails;
-    public DialogOption SetCost(CostDetails costDetails)
+    private RunCostDetails _runCostDetails;
+    public DialogOption SetCost(RunCostDetails runCostDetails)
     {
-        _costDetails = costDetails;
+        _runCostDetails = runCostDetails;
         return this;
     }
 
@@ -23,7 +23,7 @@ public class DialogOption
     private DialogOption(string text, Func<DialogOption, PanelDescriptor> select)
     {
         Text = text;
-        _costDetails = CostDetails.Default;
+        _runCostDetails = RunCostDetails.Default;
         _select = select ?? DefaultSelect;
     }
 
@@ -39,18 +39,18 @@ public class DialogOption
 
     public bool CanSelect()
     {
-        return _costDetails.CanCost();
+        return _runCostDetails.CanCost();
     }
 
     public PanelDescriptor Select()
     {
-        _costDetails.Cost();
+        _runCostDetails.Cost();
         return _select(this);
     }
 
     private PanelDescriptor DefaultSelect(DialogOption dialogOption)
     {
-        _costDetails.Cost();
+        _runCostDetails.Cost();
         return null;
     }
 

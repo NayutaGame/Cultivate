@@ -16,7 +16,7 @@ public class IndirectDetails : StageClosureDetails
     public WuXing? WuXing;
     public bool LifeSteal;
     public bool Recursive;
-    public CastResult CastResult;
+    public ResultDict CastResult;
 
     /// <summary>
     /// 一次间接攻击行为的细节，例如锋锐，灼烧，会结算目标的护甲，不会继承攻击词条
@@ -38,7 +38,7 @@ public class IndirectDetails : StageClosureDetails
         WuXing? wuxing,
         bool lifeSteal,
         bool recursive,
-        CastResult castResult,
+        ResultDict castResult,
         bool induced)
     {
         Src = src;

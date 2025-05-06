@@ -23,7 +23,7 @@ public class KPIDetails
 
     public static readonly KPIDetails ManaCost = new(
         name: "法力消耗",
-        predicate: s => s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Mana,
+        predicate: s => s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Mana,
         targetTable: new Dictionary<WuXing, (int Min, int Max)>
         {
             { WuXing.Jin, (0, 1) },    // 正常消耗
@@ -37,7 +37,7 @@ public class KPIDetails
 
     public static readonly KPIDetails HealthCost = new(
         name: "气血消耗",
-        predicate: s => s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Health,
+        predicate: s => s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Health,
         targetTable: new Dictionary<WuXing, (int Min, int Max)>
         {
             { WuXing.Jin, (0, 0) },    // 不消耗
@@ -51,7 +51,7 @@ public class KPIDetails
 
     public static readonly KPIDetails ChannelCost = new(
         name: "引导消耗",
-        predicate: s => s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Channel,
+        predicate: s => s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Channel,
         targetTable: new Dictionary<WuXing, (int Min, int Max)>
         {
             { WuXing.Jin, (0, 1) },    // 少量消耗

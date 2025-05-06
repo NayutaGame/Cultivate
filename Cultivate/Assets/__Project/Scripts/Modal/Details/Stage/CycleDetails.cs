@@ -18,7 +18,7 @@ public class CycleDetails : NestedStageClosureDetails
         int recover,
         StageClosureListener listener,
         StageClosure[] closures,
-        CastResult castResult,
+        ResultDict castResult,
         bool induced)
     {
         Owner = owner;

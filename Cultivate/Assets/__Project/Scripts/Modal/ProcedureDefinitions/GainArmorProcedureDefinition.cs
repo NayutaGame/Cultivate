@@ -26,10 +26,10 @@ public class GainArmorProcedureDefinition : ProcedureDefinition
             closures: Closures,
             induced: Induced);
 
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
-        => await env.GainArmorProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails castDetails)
+        => await castDetails.Env.GainArmorProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
 
@@ -49,7 +49,7 @@ public class GainArmorProcedureDefinition : ProcedureDefinition
         return description;
     }
 
-    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         GainArmorProcedureDefinition pd = procedureDefinition as GainArmorProcedureDefinition;
         Description description = new();

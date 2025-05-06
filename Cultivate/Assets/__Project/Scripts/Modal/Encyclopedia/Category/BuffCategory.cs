@@ -368,7 +368,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageClosureDict.WIL_MANA_COST, -3, async (owner, closure, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        ManaCostResult d = (ManaCostResult)closureDetails;
+                        CostDetails d = closureDetails as CostDetails;
 
                         if (b.Owner != d.Entity) return;
                         b.Emphasize();
@@ -386,7 +386,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageClosureDict.WIL_MANA_COST, -2, async (owner, closure, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        ManaCostResult d = (ManaCostResult)closureDetails;
+                        CostDetails d = closureDetails as CostDetails;
 
                         if (b.Owner != d.Entity) return;
                         b.Emphasize();
@@ -404,7 +404,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageClosureDict.WIL_MANA_COST, -1, async (owner, closure, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        ManaCostResult d = (ManaCostResult)closureDetails;
+                        CostDetails d = closureDetails as CostDetails;
 
                         if (b.Owner != d.Entity) return;
                         if (d.Value <= 0) return;
@@ -1227,7 +1227,7 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageClosureDict.WIL_MANA_COST, -4, async (owner, closure, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        ManaCostResult d = (ManaCostResult)closureDetails;
+                        CostDetails d = closureDetails as CostDetails;
 
                         b.Emphasize();
                         d.Value = 0;

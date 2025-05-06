@@ -35,10 +35,10 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
             closures: Closures,
             induced: Induced);
 
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
-        => await env.GainBuffProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails castDetails)
+        => await castDetails.Env.GainBuffProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
 
@@ -67,7 +67,7 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
         return description;
     }
 
-    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         GiveBuffProcedureDefinition pd = procedureDefinition as GiveBuffProcedureDefinition;
         Description description = new();

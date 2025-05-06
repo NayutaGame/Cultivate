@@ -3,7 +3,7 @@ using System;
 
 public static class Style
 {
-    public static string ApplyStyle(this string s, CastResult castResult, string styleKey)
+    public static string ApplyStyle(this string s, ResultDict castResult, string styleKey)
     {
         if (castResult == null || styleKey == null)
             return s;
@@ -21,7 +21,7 @@ public static class Style
         return $"<style=\"{style}\">{s}</style>";
     }
     
-    public static string ApplyStyle(this string s, CastResult castResult, object styleKey)
+    public static string ApplyStyle(this string s, ResultDict castResult, object styleKey)
     {
         if (castResult == null || styleKey == null)
             return s;
@@ -57,23 +57,23 @@ public static class Style
     public static string ApplyInactive(this string s)
         => $"<style=\"Inactive\">{s}</style>";
 
-    public static string ApplyEnd(this string s, CastResult castResult)
+    public static string ApplyEnd(this string s, ResultDict castResult)
         => s.ApplyStyle(castResult, "end");
     
-    public static string ApplyDoubleEnd(this string s, CastResult castResult)
+    public static string ApplyDoubleEnd(this string s, ResultDict castResult)
         => s.ApplyStyle(castResult, "doubleEnd");
 
-    public static string Apply(this string s, CastResult castResult, string key)
+    public static string Apply(this string s, ResultDict castResult, string key)
         => s.ApplyStyle(castResult, key);
 
-    public static string Apply(this string s, CastResult castResult, object key)
+    public static string Apply(this string s, ResultDict castResult, object key)
         => s.ApplyStyle(castResult, key);
     
-    public static string ApplyCond(this string s, CastResult castResult)
+    public static string ApplyCond(this string s, ResultDict castResult)
         => s.ApplyStyle(castResult, "cond");
 
 
-    public static void Append(this CastResult castResult, string key, bool cond)
+    public static void Append(this ResultDict castResult, string key, bool cond)
     {
         if (!cond)
         {
@@ -85,7 +85,7 @@ public static class Style
             castResult.Remove(key);
     }
     
-    public static void Append(this CastResult castResult, object key, bool cond)
+    public static void Append(this ResultDict castResult, object key, bool cond)
     {
         if (!cond)
         {
@@ -97,21 +97,21 @@ public static class Style
             castResult.Remove(key);
     }
 
-    public static void AppendCond(this CastResult castResult, bool cond)
+    public static void AppendCond(this ResultDict castResult, bool cond)
         => castResult.Append("cond", cond);
 
-    public static void AppendBools(this CastResult castResult, params bool[] bools)
+    public static void AppendBools(this ResultDict castResult, params bool[] bools)
     {
         for (int i = 0; i < bools.Length; i++)
             castResult.Append(i.ToString(), bools[i]);
     }
 
-    public static void AppendBool(this CastResult castResult, int n, bool value)
+    public static void AppendBool(this ResultDict castResult, int n, bool value)
     {
         castResult.Append(n.ToString(), value);
     }
 
-    public static void AppendEndTuple(this CastResult castResult, Tuple<bool, bool> endTuple)
+    public static void AppendEndTuple(this ResultDict castResult, Tuple<bool, bool> endTuple)
     {
         if (endTuple.Item2)
         {

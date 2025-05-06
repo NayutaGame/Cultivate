@@ -44,7 +44,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
             closures: Closures,
             induced: Induced);
 
-    public override async UniTask Cast(StageEnvironment env, CastDetails castDetails)
+    public override async UniTask Cast(CastDetails castDetails)
     {
         if (Closures != null)
             foreach (StageClosure closure in Closures)
@@ -53,10 +53,10 @@ public class AttackProcedureDefinition : ProcedureDefinition
                     return;
                 castDetails.CastResult.Append(closure.Key, false);
             }
-        await env.AttackProcedure(GetDetailsFromCastDetails(castDetails));
+        await castDetails.Env.AttackProcedure(GetDetailsFromCastDetails(castDetails));
     }
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, CostResult costResult, CastResult castResult)
+    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         Description description = new();
 

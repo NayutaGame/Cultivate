@@ -63,7 +63,7 @@ public class AttackDetails : NestedStageClosureDetails
         bool shatter,
         bool evade,
         bool recursive,
-        CastResult castResult,
+        ResultDict castResult,
         StageClosure[] closures,
         bool induced)
     {

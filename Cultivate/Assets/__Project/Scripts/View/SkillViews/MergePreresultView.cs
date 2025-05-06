@@ -160,26 +160,26 @@ public class MergePreresultView : XView
         }
 
         JingJie jingJie = _mergePreresult.ResultJingJie ?? _mergePreresult.ResultEntry.LowestJingJie;
-        CostDescription costDescription = _mergePreresult.ResultEntry.GetCostDescription(jingJie);
+        CostDescription costDescription = _mergePreresult.ResultEntry.GetLiteralCostDescription(jingJie);
         switch (costDescription.Type)
         {
-            case CostDescription.CostType.Empty:
+            case CostType.Empty:
                 CostIcon.sprite = CanvasManager.Instance.CostIconSprites[0];
                 CostText.text = "";
                 break;
-            case CostDescription.CostType.Mana:
+            case CostType.Mana:
                 CostIcon.sprite = CanvasManager.Instance.CostIconSprites[1];
                 CostText.text = costDescription.Value.ToString();
                 break;
-            case CostDescription.CostType.Health:
+            case CostType.Health:
                 CostIcon.sprite = CanvasManager.Instance.CostIconSprites[2];
                 CostText.text = costDescription.Value.ToString();
                 break;
-            case CostDescription.CostType.Channel:
+            case CostType.Channel:
                 CostIcon.sprite = CanvasManager.Instance.CostIconSprites[3];
                 CostText.text = costDescription.Value.ToString();
                 break;
-            case CostDescription.CostType.Armor:
+            case CostType.Armor:
                 CostIcon.sprite = CanvasManager.Instance.CostIconSprites[4];
                 CostText.text = costDescription.Value.ToString();
                 break;
@@ -188,16 +188,16 @@ public class MergePreresultView : XView
         int? i = null;
         switch (costDescription.State)
         {
-            case CostResult.CostState.Unwritten:
+            case CostState.Unwritten:
                 i = 0;
                 break;
-            case CostResult.CostState.Normal:
+            case CostState.Normal:
                 i = 1;
                 break;
-            case CostResult.CostState.Reduced:
+            case CostState.Reduced:
                 i = 2;
                 break;
-            case CostResult.CostState.Shortage:
+            case CostState.Shortage:
                 i = 3;
                 break;
         }

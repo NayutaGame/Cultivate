@@ -32,11 +32,11 @@ public class ConsoleEditorWindow : EditorWindow
         _filterTabs = new[]
         {
             new FilterTab("法力消耗", s => 
-                s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Mana),
+                s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Mana),
             new FilterTab("气血消耗", s => 
-                s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Health),
+                s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Health),
             new FilterTab("引导消耗", s => 
-                s.GetCostDescription(s.LowestJingJie).Type == CostDescription.CostType.Channel),
+                s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Channel),
             new FilterTab("灵气牌", s => 
                 s.GetSkillTypeComposite().Contains(SkillType.Mana)),
         };
