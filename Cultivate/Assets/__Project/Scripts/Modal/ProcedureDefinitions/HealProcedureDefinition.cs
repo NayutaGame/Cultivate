@@ -5,17 +5,14 @@ public class HealProcedureDefinition : ProcedureDefinition
 {
     public int Value;
     public bool Penetrate;
-    public StageClosure[] Closures;
     public bool Induced;
 
     public HealProcedureDefinition(int value,
         bool penetrate = false,
-        StageClosure[] closures = null,
         bool induced = false)
     {
         Value = value;
         Penetrate = penetrate;
-        Closures = closures;
         Induced = induced;
     }
     

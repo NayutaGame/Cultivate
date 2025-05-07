@@ -73,6 +73,7 @@ public struct JingJie : IEquatable<JingJie>
     public static CLLibrary.Bound ZhuJi2HuaShen => new(1, 5);
     public static CLLibrary.Bound ZhuJiOnly => new(1, 2);
     public static CLLibrary.Bound JinDan2HuaShen => new(2, 5);
+    public static CLLibrary.Bound JinDanOnly => new(2, 3);
     public static CLLibrary.Bound YuanYing2HuaShen => new(3, 5);
     public static CLLibrary.Bound YuanYingOnly => new(3, 4);
     public static CLLibrary.Bound HuaShenOnly => new(4, 5);

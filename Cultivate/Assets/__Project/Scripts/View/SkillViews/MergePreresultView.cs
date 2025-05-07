@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [SelectionBase]
 public class MergePreresultView : XView
 {
-    private MergePreresult _mergePreresult;
+    private MergeTarget _mergeTarget;
     private Animator _animator;
     
     [SerializeField] private Image CardImage;
@@ -54,10 +54,10 @@ public class MergePreresultView : XView
         return animator;
     }
     
-    public MergePreresult GetMergePreresult() => _mergePreresult;
-    public async UniTask SetMergePreresultAsync(int state, MergePreresult mergePreresult)
+    public MergeTarget GetMergeTarget() => _mergeTarget;
+    public async UniTask SetMergeTargetAsync(int state, MergeTarget mergeTarget)
     {
-        _mergePreresult = mergePreresult;
+        _mergeTarget = mergeTarget;
 
         switch (state)
         {
@@ -129,21 +129,21 @@ public class MergePreresultView : XView
     
     protected virtual void SetSpriteFromMergePreresult()
     {
-        if (!_mergePreresult.Valid)
+        if (!_mergeTarget.Valid)
         {
             CardImage.sprite = Encyclopedia.SpriteCategory["无法合成"].Sprite;
             return;
         }
         
-        if (_mergePreresult.ResultEntry != null)
+        if (_mergeTarget.ResultEntry != null)
         {
-            CardImage.sprite = _mergePreresult.ResultEntry.GetSprite();
+            CardImage.sprite = _mergeTarget.ResultEntry.GetSprite();
             return;
         }
 
-        if (_mergePreresult.ResultWuXing != null)
+        if (_mergeTarget.ResultWuXing != null)
         {
-            WuXing wuXing = _mergePreresult.ResultWuXing.Value;
+            WuXing wuXing = _mergeTarget.ResultWuXing.Value;
             CardImage.sprite = Encyclopedia.SpriteCategory[$"{wuXing._name}合成"].Sprite;
             return;
         }
@@ -153,14 +153,14 @@ public class MergePreresultView : XView
     
     protected virtual void SetCostDescriptionFromMergePreresult()
     {
-        if (_mergePreresult.ResultEntry == null)
+        if (_mergeTarget.ResultEntry == null)
         {
             CostText.text = "";
             return;
         }
 
-        JingJie jingJie = _mergePreresult.ResultJingJie ?? _mergePreresult.ResultEntry.LowestJingJie;
-        CostDescription costDescription = _mergePreresult.ResultEntry.GetLiteralCostDescription(jingJie);
+        JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry.LowestJingJie;
+        CostDescription costDescription = _mergeTarget.ResultEntry.GetLiteralCostDescription(jingJie);
         switch (costDescription.Type)
         {
             case CostType.Empty:
@@ -210,35 +210,35 @@ public class MergePreresultView : XView
     
     protected virtual void SetNameFromMergePreresult()
     {
-        if (_mergePreresult.ResultEntry == null)
+        if (_mergeTarget.ResultEntry == null)
         {
             NameText.text = "";
             return;
         }
         
-        NameText.text = _mergePreresult.ResultEntry.GetName();
+        NameText.text = _mergeTarget.ResultEntry.GetName();
     }
     
     protected virtual void SetDescriptionFromMergePreresult()
     {
-        if (_mergePreresult.ResultEntry == null)
+        if (_mergeTarget.ResultEntry == null)
         {
             DescriptionText.text = "";
             return;
         }
         
-        JingJie jingJie = _mergePreresult.ResultJingJie ?? _mergePreresult.ResultEntry.LowestJingJie;
-        DescriptionText.text = _mergePreresult.ResultEntry.GetHighlight(jingJie);
+        JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry.LowestJingJie;
+        DescriptionText.text = _mergeTarget.ResultEntry.GetHighlight(jingJie);
     }
     
     protected virtual void SetSkillTypeCompositeFromMergePreresult()
     {
-        if (_mergePreresult.ResultEntry == null)
+        if (_mergeTarget.ResultEntry == null)
         {
             return;
         }
 
-        var skillTypeComposite = _mergePreresult.ResultEntry.GetSkillTypeComposite();
+        var skillTypeComposite = _mergeTarget.ResultEntry.GetSkillTypeComposite();
         
         // List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
         //
@@ -256,17 +256,17 @@ public class MergePreresultView : XView
     
     protected virtual void SetJingJieSpriteFromMergePreresult()
     {
-        JingJie jingJie = _mergePreresult.ResultJingJie ?? _mergePreresult.ResultEntry?.LowestJingJie ?? JingJie.LianQi;
+        JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry?.LowestJingJie ?? JingJie.LianQi;
         JingJieImage.sprite = CanvasManager.Instance.JingJieSprites[jingJie];
     }
 
     protected virtual void SetMergeTypeTextFromMergePreresult()
     {
-        MergeTypeText.text = _mergePreresult.MergeType;
+        MergeTypeText.text = _mergeTarget.MergeType;
     }
 
     protected virtual void SetErrorMessageFromMergePreresult()
     {
-        ErrorMessage.text = _mergePreresult.Valid ? "" : _mergePreresult.ErrorMessage;
+        ErrorMessage.text = _mergeTarget.Valid ? "" : _mergeTarget.ErrorMessage;
     }
 }

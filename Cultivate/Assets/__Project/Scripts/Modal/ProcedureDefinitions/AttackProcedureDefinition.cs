@@ -7,21 +7,18 @@ public class AttackProcedureDefinition : ProcedureDefinition
     public int Times;
     public WuXing? WuXing;
     public bool Recursive;
-    public StageClosure[] Closures;
     public bool Induced;
 
     public AttackProcedureDefinition(int value,
         int times = 1,
         WuXing? wuXing = null,
         bool recursive = true,
-        StageClosure[] closures = null,
         bool induced = false)
     {
         Value = value;
         Times = times;
         WuXing = wuXing;
         Recursive = recursive;
-        Closures = closures;
         Induced = induced;
     }
 

@@ -4,15 +4,12 @@ using Cysharp.Threading.Tasks;
 public class RemoveArmorProcedureDefinition : ProcedureDefinition
 {
     public int Value;
-    public StageClosure[] Closures;
     public bool Induced;
 
-    public RemoveArmorProcedureDefinition(int value, 
-        StageClosure[] closures = null,
+    public RemoveArmorProcedureDefinition(int value,
         bool induced = false)
     {
         Value = value;
-        Closures = closures;
         Induced = induced;
     }
 

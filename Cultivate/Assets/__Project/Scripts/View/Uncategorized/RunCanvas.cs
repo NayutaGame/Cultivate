@@ -409,7 +409,7 @@ public class RunCanvas : Panel
 
     private void MergeStaging(MergeDetails d)
     {
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(2, null);
+        CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(2, null);
         
         DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
         DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;

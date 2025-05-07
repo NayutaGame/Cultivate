@@ -4,15 +4,12 @@ using Cysharp.Threading.Tasks;
 public class GainArmorProcedureDefinition : ProcedureDefinition
 {
     public int Value;
-    public StageClosure[] Closures;
     public bool Induced;
 
-    public GainArmorProcedureDefinition(int value, 
-        StageClosure[] closures = null,
+    public GainArmorProcedureDefinition(int value,
         bool induced = false)
     {
         Value = value;
-        Closures = closures;
         Induced = induced;
     }
     

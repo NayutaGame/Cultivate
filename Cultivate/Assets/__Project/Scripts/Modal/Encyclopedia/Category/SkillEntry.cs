@@ -92,6 +92,9 @@ public class SkillEntry : Entry, Annotatable, ISkill
     private Func<int, int, ProcedureDefinition[]> _procedureDefinitionsFromJingJie;
     private ProcedureDefinition[][] _procedureDefinitionsCache;
 
+    public ProcedureDefinition[] GetProcedureDefinitionsFromJingJie(int jingJie)
+        => _procedureDefinitionsCache[jingJie - LowestJingJie];
+
     private bool _hasStartStageCast;
     public bool HasStartStageCast() => _hasStartStageCast;
     
@@ -109,6 +112,11 @@ public class SkillEntry : Entry, Annotatable, ISkill
         
         await _castGenerator(d);
     }
+
+    private MutateDefinition[] _mutate;
+
+    public MutateDefinition[] GetMutateDefinitions()
+        => _mutate;
 
     private SpriteEntry _spriteEntry;
 
@@ -128,7 +136,9 @@ public class SkillEntry : Entry, Annotatable, ISkill
         MergeRule overridingMergeRule = null,
         
         Func<int, int, CostDefinition> cost = null,
-        Func<int, int, ProcedureDefinition[]> cast = null
+        Func<int, int, ProcedureDefinition[]> cast = null,
+        
+        Func<int, int, MutateDefinition[]> mutate = null
         ) : base(id)
     {
         _name = name;
@@ -148,7 +158,12 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
         BuildCostDefinitionCache(cost);
         BuildProcedureDefinitionCache(cast);
+
+        _mutate = mutate(LowestJingJie, 0);
     }
+
+    public bool IsMutator
+        => _mutate != null;
 
     private CostDefinition DefaultCost(int j, int dj)
         => new EmptyCostDefinition();

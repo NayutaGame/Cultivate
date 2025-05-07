@@ -7,7 +7,6 @@ public class CycleProcedureDefinition : ProcedureDefinition
     public bool Rotate;
     public int Gain;
     public int Recover;
-    public StageClosure[] Closures;
     public bool Induced;
     
     public CycleProcedureDefinition(
@@ -15,14 +14,12 @@ public class CycleProcedureDefinition : ProcedureDefinition
         bool rotate = true,
         int gain = 0,
         int recover = 0,
-        StageClosure[] closures = null,
         bool induced = false)
     {
         WuXing = wuXing;
         Rotate = rotate;
         Gain = gain;
         Recover = recover;
-        Closures = closures;
         Induced = induced;
     }
     

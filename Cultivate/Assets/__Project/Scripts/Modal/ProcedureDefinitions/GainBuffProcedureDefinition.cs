@@ -6,20 +6,17 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     public BuffEntry BuffEntry;
     public int Stack;
     public bool Recursive;
-    public StageClosure[] Closures;
     public bool Induced;
 
     public GainBuffProcedureDefinition(
         BuffEntry buffEntry,
         int stack = 1,
         bool recursive = true,
-        StageClosure[] closures = null,
         bool induced = false)
     {
         BuffEntry = buffEntry;
         Stack = stack;
         Recursive = recursive;
-        Closures = closures;
         Induced = induced;
     }
 

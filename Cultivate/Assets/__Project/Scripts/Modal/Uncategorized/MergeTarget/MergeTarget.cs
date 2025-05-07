@@ -1,9 +1,7 @@
 
 using System;
-using CLLibrary;
-using UnityEngine;
 
-public class MergePreresult
+public abstract class MergeTarget
 {
     public readonly string MergeType;
     public readonly bool Valid;
@@ -13,7 +11,7 @@ public class MergePreresult
     public readonly WuXing? ResultWuXing;
     public readonly Predicate<SkillEntry> Pred;
 
-    public MergePreresult(
+    public MergeTarget(
         string mergeType,
         bool valid,
         string errorMessage,
@@ -31,5 +29,8 @@ public class MergePreresult
         Pred = pred;
     }
 
-    public static Tuple<Func<RunSkill, RunSkill, JingJie, bool>, Func<RunSkill, RunSkill, JingJie, MergePreresult>>[] MergeRules = null;
+    public virtual void Execute(MergeDetails d, SkillInventory hand)
+    {
+        
+    }
 }

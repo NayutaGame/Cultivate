@@ -519,10 +519,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _away.SecondPlacementProcedure();
     }
 
-    public MergePreresult GetMergePreresult(RunSkill lhs, RunSkill rhs)
+    public MergeTarget GetMergePreresult(RunSkill lhs, RunSkill rhs)
     {
-        JingJie playerJingJie = _home.GetJingJie();
-
         MergeDetails d = new(lhs, rhs);
         d.PlayerJingJie = _home.GetJingJie();
         d.IsDryRun = true;
@@ -554,7 +552,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (d.IsDryRun)
             return;
 
-        ExecuteMergeResult(d);
+        ExecuteMergeTarget(d);
         
         SendEvent(RunClosureDict.DID_MERGE, d);
         
@@ -612,29 +610,13 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
     }
 
-    private void ExecuteMergeResult(MergeDetails d)
+    private void ExecuteMergeTarget(MergeDetails d)
     {
         d.ExecuteSideEffects();
-
-        if (d.MergeTarget.ResultEntry != null)
-        {
-            d.Rhs.SetEntry(d.MergeTarget.ResultEntry);
-            d.Rhs.JingJie = d.MergeTarget.ResultJingJie.Value;
-            Hand.Remove(d.Lhs);
-        }
-        else
-        {
-            SkillEntryDescriptor skillEntryDescriptor = new(
-                pred: d.MergeTarget.Pred,
-                wuXing: d.MergeTarget.ResultWuXing,
-                jingJie: d.MergeTarget.ResultJingJie);
-            GainSkillBuilder b = new();
-            b.Draw(skillEntryDescriptor);
-            b.Create(skillEntryDescriptor.JingJie);
-            b.RecordDeckIndex(d.Rhs.ToDeckIndex());
-            b.Add();
-            Hand.Remove(d.Lhs);
-        }
+        
+        Assert.IsFalse(d.MergeTarget is InvalidMergeTarget);
+        
+        d.MergeTarget.Execute(d, Hand);
     }
 
     public void EquipProcedure(EquipDetails d)

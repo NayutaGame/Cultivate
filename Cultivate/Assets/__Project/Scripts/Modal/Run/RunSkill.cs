@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 
@@ -12,6 +13,10 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     [SerializeField] protected int _runUsedTimes;
     [SerializeField] protected int _runEquippedTimes;
     [SerializeField] private bool _borrowed;
+
+    // [SerializeField] private List<SkillEntry> _appliedMutators;
+    // [NonSerialized] private CostDefinition _mutatedCostDefinition;
+    // [NonSerialized] private ProcedureDefinition[] _mutatedProcedureDefinitions;
     
     public SkillEntry GetEntry() => _entry;
     public void SetEntry(SkillEntry entry) => _entry = entry;
@@ -126,4 +131,37 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
 
     public DeckIndex ToDeckIndex()
         => RunManager.Instance.Environment.DeckIndexFromSkill(this).Value;
+
+    public bool CanMutate(RunSkill mutator)
+    {
+        MutateDefinition[] mutateDefinitions = mutator.GetEntry().GetMutateDefinitions();
+        // ProcedureDefinition[] procedureDefinitions = _procedureDefinitions ?? GetEntry().GetProcedureDefinitionsFromJingJie(GetJingJie());
+        ProcedureDefinition[] procedureDefinitions = GetEntry().GetProcedureDefinitionsFromJingJie(GetJingJie());
+        
+        for (int i = 0; i < mutateDefinitions.Length; i++)
+        for (int j = 0; j < procedureDefinitions.Length; j++)
+        {
+            MutateDefinition mutateDefinition = mutateDefinitions[i];
+            ProcedureDefinition procedureDefinition = procedureDefinitions[j];
+            if (mutateDefinition.CanMutate(procedureDefinition))
+                return true;
+        }
+
+        return false;
+    }
+
+    public void Mutate(RunSkill mutator)
+    {
+        MutateDefinition[] mutateDefinitions = mutator.GetEntry().GetMutateDefinitions();
+        ProcedureDefinition[] procedureDefinitions = null;
+        // re cache
+        
+        for (int i = 0; i < mutateDefinitions.Length; i++)
+        for (int j = 0; j < procedureDefinitions.Length; j++)
+        {
+            MutateDefinition mutateDefinition = mutateDefinitions[i];
+            ProcedureDefinition procedureDefinition = procedureDefinitions[j];
+            mutateDefinition.Mutate(procedureDefinition);
+        }
+    }
 }

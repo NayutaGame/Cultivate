@@ -76,12 +76,12 @@ public class DeckPanel : Panel
         RunSkill lhs = from.Get<RunSkill>();
         RunSkill rhs = to.Get<RunSkill>();
 
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(1, env.GetMergePreresult(lhs, rhs));
+        CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(1, env.GetMergePreresult(lhs, rhs));
     }
 
     private void DraggingExit(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
+        CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(0, null);
     }
 
     protected override Animator InitAnimator()
@@ -172,7 +172,7 @@ public class DeckPanel : Panel
 
     private void RemoveMergePreresult(InteractBehaviour from, PointerEventData d)
     {
-        CanvasManager.Instance.MergePreresultView.SetMergePreresultAsync(0, null);
+        CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(0, null);
     }
 
     private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)

@@ -23,7 +23,7 @@ public class MergeDetails : RunClosureDetails
     public DeckIndex ToDeckIndex;
 
     public MergeState State;
-    public MergePreresult MergeTarget;
+    public MergeTarget MergeTarget;
     public List<Action> SideEffects;
     
     public MergeDetails(RunSkill lhs, RunSkill rhs)
