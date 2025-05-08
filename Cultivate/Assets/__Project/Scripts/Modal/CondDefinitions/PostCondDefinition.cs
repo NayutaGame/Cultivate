@@ -14,6 +14,9 @@ public class PostCondDefinition
         Description = description;
     }
 
+    public PostCondDefinition Clone()
+        => new(Cond, Description);
+
     public bool GetCond(CastDetails d)
     {
         return Cond(d.Env, d.Caster, d.Skill, d.IsStartStage);

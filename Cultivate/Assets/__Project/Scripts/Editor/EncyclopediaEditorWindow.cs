@@ -116,7 +116,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         EditorGUILayout.Space();
         
         EditorGUILayout.LabelField("Name", buff.GetName());
-        EditorGUILayout.LabelField("Description", buff.GetDescription().ToString());
+        EditorGUILayout.LabelField("Description", buff.GetLiteralDescription().ToString());
         // ... 添加更多 Buff 相关信息
     }
 
@@ -148,7 +148,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("技能效果", EditorStyles.boldLabel);
-        DrawStyledText(skill.GetDescription().ToString());
+        DrawStyledText(skill.GetLiteralDescription().ToString());
         
         // if (!string.IsNullOrEmpty(skill.GetCascadeAnnotated()))
         // {

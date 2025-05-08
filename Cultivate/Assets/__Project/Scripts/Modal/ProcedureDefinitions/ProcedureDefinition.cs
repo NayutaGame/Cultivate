@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using FMOD;
 
 public abstract class ProcedureDefinition
 {
@@ -9,8 +10,9 @@ public abstract class ProcedureDefinition
     protected PostCondDefinition PostCondDefinition;
     
     private List<StageClosure> _closures;
+    public List<StageClosure> Closures => _closures;
     private StageClosure[] _closureArray;
-    public StageClosure[] Closures
+    public StageClosure[] ClosuresArray
     {
         get
         {
@@ -21,7 +23,7 @@ public abstract class ProcedureDefinition
         }
     }
 
-    private Func<ProcedureDefinition, ResultDict, ResultDict, Description> _getDescription;
+    protected Action<Description, ProcedureDefinition, ResultDict, ResultDict> _getDescription;
     
     public ProcedureDefinition()
     {
@@ -30,6 +32,20 @@ public abstract class ProcedureDefinition
         _closures = new();
         _getDescription = DefaultGetDescription;
     }
+
+    protected ProcedureDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
+        List<StageClosure> closures)
+    {
+        PreCondDefinition = preCondDefinition;
+        PostCondDefinition = postCondDefinition;
+        _getDescription = getDescription;
+        _closures = closures;
+    }
+
+    public abstract ProcedureDefinition Clone();
 
     public ProcedureDefinition AddClosure(StageClosure closure)
     {
@@ -55,9 +71,13 @@ public abstract class ProcedureDefinition
     }
 
     public Description GetDescription(ResultDict costResult, ResultDict castResult)
-        => _getDescription(this, costResult, castResult);
+    {
+        Description description = new();
+        _getDescription(description, this, costResult, castResult);
+        return description;
+    }
 
-    public ProcedureDefinition SetDescription(Func<ProcedureDefinition, ResultDict, ResultDict, Description> getDescription)
+    public ProcedureDefinition SetDescription(Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription)
     {
         _getDescription = getDescription;
         return this;
@@ -81,5 +101,20 @@ public abstract class ProcedureDefinition
         return this;
     }
 
-    public abstract Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult);
+    public abstract void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult);
+    
+    public static void OnlyClosure(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
+    {
+        description.Sb.Append(procedureDefinition.PostCondDefinition.Description);
+        if (procedureDefinition.Closures != null)
+            foreach (StageClosure c in procedureDefinition.Closures)
+            {
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                // closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
+        
+        description.ApplyStyle(castResult, procedureDefinition);
+    }
 }

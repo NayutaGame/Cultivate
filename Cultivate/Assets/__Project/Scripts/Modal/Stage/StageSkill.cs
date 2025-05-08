@@ -16,14 +16,11 @@ public class StageSkill : StageClosureListener
         set => _slotIndex = value;
     }
 
-    private int _runSlotIndex;
-    public int RunSlotIndex
-    {
-        get => _runSlotIndex;
-        set => _runSlotIndex = value;
-    }
+    private readonly int _runSlotIndex;
     public SkillSlot GetSlot()
         => _owner.RunEntity.GetSlot(_runSlotIndex + 0);
+    public SkillDefinition GetSkillDefinition()
+        => GetSlot().Skill?.GetSkillDefinitionFromDj(Dj) ?? Entry.GetSkillDefinitionFromDj(Dj);
     
     private readonly SkillEntry _entry;
     public SkillEntry Entry => _entry;

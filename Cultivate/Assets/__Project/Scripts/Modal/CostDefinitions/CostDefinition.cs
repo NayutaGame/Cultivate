@@ -6,7 +6,7 @@ public abstract class CostDefinition
 {
     protected PreCondDefinition PreCondDefinition;
     protected PostCondDefinition PostCondDefinition;
-    private Func<CostDefinition, ResultDict, Description> _getDescription;
+    protected Func<CostDefinition, ResultDict, Description> _getDescription;
     
     public int Value;
     public StageClosure[] Closures;
@@ -18,8 +18,24 @@ public abstract class CostDefinition
         PreCondDefinition = PreCondDefinition.Default;
         PostCondDefinition = PostCondDefinition.Default;
         Value = value;
+        Closures = closures ?? Array.Empty<StageClosure>();
+    }
+
+    protected CostDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Func<CostDefinition, ResultDict, Description> getDescription,
+        int value,
+        StageClosure[] closures)
+    {
+        PreCondDefinition = preCondDefinition;
+        PostCondDefinition = postCondDefinition;
+        _getDescription = getDescription;
+        Value = value;
         Closures = closures;
     }
+
+    public abstract CostDefinition Clone();
 
     public virtual async UniTask WillCostEvent(CostDetails d) { }
 

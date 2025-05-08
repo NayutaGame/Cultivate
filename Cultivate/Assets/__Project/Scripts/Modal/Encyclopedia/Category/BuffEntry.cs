@@ -8,7 +8,7 @@ public class BuffEntry : Entry, Annotatable
     public string GetName() => GetId();
     
     private string _description;
-    public Description GetDescription() => _description;
+    public Description GetLiteralDescription() => _description;
 
     public readonly BuffStackRule BuffStackRule;
     public readonly bool Friendly;
@@ -59,11 +59,9 @@ public class BuffEntry : Entry, Annotatable
     
     private AnnotationArray _cascade;
     public void GenerateCascade()
-        => _cascade = AnnotationArray.FromDescription(GetDescription());
-    public string GetHighlight(Description description)
-        => description.GetHighlight(_cascade);
+        => _cascade = AnnotationArray.FromDescription(GetLiteralDescription());
     public string GetHighlight()
-        => GetDescription().GetHighlight(_cascade);
+        => GetLiteralDescription().GetHighlight(_cascade);
     
     public string GetCascadeAnnotated()
         => _cascade.GetCascadeAnnotated();

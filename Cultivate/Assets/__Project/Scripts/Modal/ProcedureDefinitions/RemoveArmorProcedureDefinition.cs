@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 public class RemoveArmorProcedureDefinition : ProcedureDefinition
@@ -13,27 +15,56 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
         Induced = induced;
     }
 
+    protected RemoveArmorProcedureDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
+        List<StageClosure> closures,
+        int value,
+        bool induced) :
+        base(preCondDefinition, postCondDefinition, getDescription, closures)
+    {
+        Value = value;
+        Induced = induced;
+    }
+
+    public override ProcedureDefinition Clone()
+    {
+        List<StageClosure> clonedClosures = new List<StageClosure>();
+        for (int i = 0; i < Closures.Count; i++)
+            clonedClosures[i] = Closures[i];
+
+        return new RemoveArmorProcedureDefinition(
+            preCondDefinition: PreCondDefinition.Clone(),
+            postCondDefinition: PostCondDefinition.Clone(),
+            getDescription: _getDescription,
+            closures: clonedClosures,
+            value: Value,
+            induced: Induced
+        );
+    }
+
     public LoseArmorDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             value: Value,
             listener: d.Skill,
-            closures: Closures,
+            closures: ClosuresArray,
             castResult: d.CastResult,
             induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
         => await castDetails.Env.LoseArmorProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
+    public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        Description description = new();
-        description.Sb.Append(PostCondDefinition.Description);
-        description.Sb.Append($"施加{Value}破甲");
+        RemoveArmorProcedureDefinition pd = procedureDefinition as RemoveArmorProcedureDefinition;
+        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Sb.Append($"施加{pd.Value}破甲");
         
-        if (Closures != null)
-            foreach (StageClosure c in Closures)
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
             {
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
@@ -41,8 +72,6 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
                 description.Sb.Append(closureDescription);
             }
         
-        description.ApplyStyle(castResult, this);
-        
-        return description;
+        description.ApplyStyle(castResult, pd);
     }
 }

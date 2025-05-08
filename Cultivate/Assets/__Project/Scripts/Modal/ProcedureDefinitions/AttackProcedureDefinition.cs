@@ -1,5 +1,8 @@
 
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Assertions;
 
 public class AttackProcedureDefinition : ProcedureDefinition
 {
@@ -22,6 +25,44 @@ public class AttackProcedureDefinition : ProcedureDefinition
         Induced = induced;
     }
 
+    protected AttackProcedureDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
+        List<StageClosure> closures,
+        int value,
+        int times,
+        WuXing? wuXing,
+        bool recursive,
+        bool induced) :
+        base(preCondDefinition, postCondDefinition, getDescription, closures)
+    {
+        Value = value;
+        Times = times;
+        WuXing = wuXing;
+        Recursive = recursive;
+        Induced = induced;
+    }
+
+    public override ProcedureDefinition Clone()
+    {
+        List<StageClosure> clonedClosures = new List<StageClosure>();
+        for (int i = 0; i < Closures.Count; i++)
+            clonedClosures[i] = Closures[i];
+
+        return new AttackProcedureDefinition(
+            preCondDefinition: PreCondDefinition.Clone(),
+            postCondDefinition: PostCondDefinition.Clone(),
+            getDescription: _getDescription,
+            closures: clonedClosures,
+            value: Value,
+            times: Times,
+            wuXing: WuXing,
+            recursive: Recursive,
+            induced: Induced
+        );
+    }
+
     public AttackDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
             src: d.Caster,
@@ -38,7 +79,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
             evade: false,
             recursive: Recursive,
             castResult: d.CastResult,
-            closures: Closures,
+            closures: ClosuresArray,
             induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
@@ -53,19 +94,19 @@ public class AttackProcedureDefinition : ProcedureDefinition
         await castDetails.Env.AttackProcedure(GetDetailsFromCastDetails(castDetails));
     }
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
+    public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        Description description = new();
-
-        description.Sb.Append(PostCondDefinition.Description);
+        AttackProcedureDefinition pd = procedureDefinition as AttackProcedureDefinition;
         
-        if (Times > 1)
-            description.Sb.Append($"{Value}攻x{Times}".ApplyAttack());
+        description.Sb.Append(pd.PostCondDefinition.Description);
+        
+        if (pd.Times > 1)
+            description.Sb.Append($"{pd.Value}攻x{pd.Times}".ApplyAttack());
         else
-            description.Sb.Append($"{Value}攻".ApplyAttack());
+            description.Sb.Append($"{pd.Value}攻".ApplyAttack());
         
-        if (Closures != null)
-            foreach (StageClosure c in Closures)
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
             {
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
@@ -73,8 +114,6 @@ public class AttackProcedureDefinition : ProcedureDefinition
                 description.Sb.Append(closureDescription);
             }
         
-        description.ApplyStyle(castResult, this);
-        
-        return description;
+        description.ApplyStyle(castResult, pd);
     }
 }

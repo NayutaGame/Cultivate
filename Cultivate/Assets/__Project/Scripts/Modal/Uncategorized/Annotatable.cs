@@ -2,12 +2,9 @@
 public interface Annotatable
 {
     string GetName();
-    Description GetDescription();
+    Description GetLiteralDescription();
     
     string GetCascadeAnnotated();
     
     string GetHighlight();
-    string GetHighlight(Description description);
-    
-    void GenerateCascade();
 }

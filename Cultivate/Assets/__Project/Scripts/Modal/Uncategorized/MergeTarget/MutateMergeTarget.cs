@@ -1,26 +1,27 @@
 
 public class MutateMergeTarget : MergeTarget
 {
-    private RunSkill _skill;
-    private RunSkill _mutator;
+    private bool _rhsIsMutator;
     
     public MutateMergeTarget(
         string mergeType,
         SkillEntry resultEntry,
         JingJie? resultJingJie,
         WuXing? resultWuXing,
-        RunSkill skill,
-        RunSkill mutator) : base(mergeType, true, null, resultEntry, resultJingJie, resultWuXing, null)
+        bool rhsIsMutator
+        ) : base(mergeType, true, null, resultEntry, resultJingJie, resultWuXing, null)
     {
-        _skill = skill;
-        _mutator = mutator;
+        _rhsIsMutator = rhsIsMutator;
     }
 
     public override void Execute(MergeDetails d, SkillInventory hand)
     {
-        _skill.Mutate(_mutator);
-     
-        // mutator to be removed
-        // hand.Remove(d.Lhs);
+        RunSkill skill = _rhsIsMutator ? d.Lhs : d.Rhs;
+        RunSkill mutator = _rhsIsMutator ? d.Rhs : d.Lhs;
+        
+        skill.Mutate(mutator);
+        
+        hand.Replace(d.Rhs.ToDeckIndex().Index, skill);
+        hand.Remove(d.Lhs);
     }
 }

@@ -32,7 +32,7 @@ public class MergeRule
             RunSkill rhs = d.Rhs;
 
             bool cond = rhs.GetEntry().IsMutator && lhs.GetEntry().IsMutator;
-            if (!cond)
+            if (cond)
             {
                 d.State = MergeDetails.MergeState.Cancel;
                 d.MergeTarget = new InvalidMergeTarget(
@@ -52,7 +52,7 @@ public class MergeRule
             RunSkill lhs = d.Lhs;
             RunSkill rhs = d.Rhs;
 
-            bool cond = rhs.GetEntry().IsMutator ^ lhs.GetEntry().IsMutator;
+            bool cond = rhs.GetEntry().IsMutator != lhs.GetEntry().IsMutator;
             if (!cond)
             {
                 d.State = MergeDetails.MergeState.Continue;
@@ -73,8 +73,7 @@ public class MergeRule
                     resultEntry:            rhs.GetEntry(),
                     resultJingJie:          (rhs.GetJingJie() + 2).ClampUpper(rhs.GetEntry().HighestJingJie),
                     resultWuXing:           rhs.GetWuXing(),
-                    skill:                  skill,
-                    mutator:                mutator);
+                    rhsIsMutator:           rhsIsMutator);
                 d.State = MergeDetails.MergeState.Success;
             }
             else
@@ -376,6 +375,8 @@ public class MergeRule
         });
     
     public static MergeRule[] DefaultMergeRules = new[] {
+        BothMutator,
+        Mutate,
         Congruent,
         SameName,
         JingJieLimit1,

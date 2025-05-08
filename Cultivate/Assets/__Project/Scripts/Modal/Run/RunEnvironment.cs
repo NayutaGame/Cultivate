@@ -870,7 +870,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GainSkillBuilder b = new();
         b.Pick(skillEntry);
         b.Create(preferredJingJie);
-        b.RecordDeckIndex(preferredDeckIndex);
+        if (preferredDeckIndex != null)
+            b.RecordDeckIndex(preferredDeckIndex);
+        else
+            b.RecordDeckIndex(new NextHandDeckIndexDefinition());
         b.Add();
         b.Invoke();
     }

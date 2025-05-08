@@ -10,16 +10,14 @@ public class KeywordEntry : Entry, Annotatable
     }
     
     public string GetName() => GetId();
-    public Description GetDescription() => _description;
+    public Description GetLiteralDescription() => _description;
 
-    public string GetHighlight(Description description)
-        => description.GetHighlight(_cascade);
     public string GetHighlight()
-        => GetHighlight(GetDescription());
+        => GetLiteralDescription().GetHighlight(_cascade);
     
     public string GetCascadeAnnotated()
         => _cascade.GetCascadeAnnotated();
     
     public void GenerateCascade()
-        => _cascade = AnnotationArray.FromDescription(GetDescription());
+        => _cascade = AnnotationArray.FromDescription(GetLiteralDescription());
 }

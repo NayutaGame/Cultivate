@@ -586,10 +586,10 @@ public class SkillCategory : Category<SkillEntry>
         {
             #region 墨染牌
             
-            new(id:                         "0101",
+            new(id:                         "MORAN_001",
                 name:                       "暴击墨染",
                 wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.JinDanOnly,
+                jingJieBound:               JingJie.LianQiOnly,
                 descriptionGenerator:       (j, dj, costResult, castResult) =>
                     $"[攻击] 暴击",
                 mutate:                     (j, dj) => new MutateDefinition[]
@@ -647,7 +647,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new AttackProcedureDefinition(3 + 3 * dj),
                     new GainBuffProcedureDefinition("延迟攻", 3 + 3 * dj, induced: true)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"下回合{3 + 3 * dj}攻"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"下回合{3 + 3 * dj}攻")),
                 }),
             
             new(id:                         "0125",
@@ -672,7 +672,7 @@ public class SkillCategory : Category<SkillEntry>
                     new RemoveArmorProcedureDefinition(5 + 5 * dj, induced: false),
                     new GainArmorProcedureDefinition(0, induced: true)
                         .AddClosure(PanXuanClosure)
-                        .SetDescription(GainArmorProcedureDefinition.OnlyClosure),
+                        .SetDescription(ProcedureDefinition.OnlyClosure),
                 }),
 
             new(id:                         "0128",
@@ -699,7 +699,7 @@ public class SkillCategory : Category<SkillEntry>
                     new GainArmorProcedureDefinition(15 + 5 * dj, induced: false),
                     new CycleProcedureDefinition(WuXing.Jin)
                         .AddClosure(ShanFengClosure)
-                        .SetDescription(CycleProcedureDefinition.OnlyClosure),
+                        .SetDescription(ProcedureDefinition.OnlyClosure),
                 }),
 
             new(id:                         "0113",
@@ -770,7 +770,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new CycleProcedureDefinition(WuXing.Jin, gain: 1 + dj),
                     new GainBuffProcedureDefinition("摇曳")
-                        .SetDescription((procedureDefinition, costResult, castResult) => "锋锐变为施加破甲"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("锋锐变为施加破甲")),
                 }),
             
             new(id:                         "0108",
@@ -845,7 +845,7 @@ public class SkillCategory : Category<SkillEntry>
                     new GainBuffProcedureDefinition("灵气", 2 + dj),
                     new GainMaxHealthProcedureDefinition(4 + 4 * dj),
                     new GainBuffProcedureDefinition("玄武吐息法")
-                        .SetDescription((procedureDefinition, costResult, castResult) => "治疗可以穿上限")
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("治疗可以穿上限"))
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                 }),
             
@@ -917,14 +917,14 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainBuffProcedureDefinition("灵气", 0)
                         .AddClosure(CaiHong2Closure)
-                        .SetDescription((procedureDefinition, costResult, castResult) => "灵气翻倍")
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("灵气翻倍"))
                         .SetPreCondDefinition(PreCondDefinition.LeYuanYing),
                     new GainBuffProcedureDefinition("灵气", 0)
                         .AddClosure(CaiHong3Closure)
-                        .SetDescription((procedureDefinition, costResult, castResult) => "灵气变成三倍")
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("灵气变成三倍"))
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                     new GainBuffProcedureDefinition("禁止灵气")
-                        .SetDescription((procedureDefinition, costResult, castResult) => "之后无法获得灵气"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("之后无法获得灵气")),
                 }),
             
             new(id:                         "0219",
@@ -936,7 +936,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainBuffProcedureDefinition("飞鸿踏雪", 0)
                         .AddClosure(CaiHong3Closure)
-                        .SetDescription((procedureDefinition, costResult, castResult) => "二动时：获得1格挡")
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("二动时：获得1格挡"))
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                     new CycleProcedureDefinition(WuXing.Shui, gain: 1),
                     new SetActionPointProcedureDefinition(2),
@@ -1060,7 +1060,7 @@ public class SkillCategory : Category<SkillEntry>
                     new SetValueProcedureDefinition("QiTunShanHeExtra", (1 + dj).ToString()),
                     new GainBuffProcedureDefinition("灵气", 0)
                         .AddClosure(QiTunShanHeClosure)
-                        .SetDescription(GainBuffProcedureDefinition.OnlyClosure),
+                        .SetDescription(ProcedureDefinition.OnlyClosure),
                 }),
             
             new(id:                         "0218",
@@ -1085,9 +1085,9 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new CycleProcedureDefinition(WuXing.Shui, gain: 1 + dj),
                     new GainBuffProcedureDefinition("瑞雪", induced: false)
-                        .SetDescription((procedureDefinition, costResult, castResult) => "格挡变成治疗"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("格挡变成治疗")),
                     new GainBuffProcedureDefinition("禁止二动", induced: false)
-                        .SetDescription((procedureDefinition, costResult, castResult) => "无法二动"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("无法二动")),
                 }),
             
             new(id:                         "0221",
@@ -1162,13 +1162,13 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainArmorProcedureDefinition(6 + 4 * dj, induced: false)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"双方护甲+{6 + 4 * dj}"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"双方护甲+{6 + 4 * dj}")),
                     new GiveArmorProcedureDefinition(6 + 4 * dj, induced: true)
-                        .SetDescription((procedureDefinition, costResult, castResult) => ""),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => { }),
                     new HealProcedureDefinition(6 + 4 * dj, induced: false)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"双方气血+{6 + 4 * dj}"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"双方气血+{6 + 4 * dj}")),
                     new HealOppoProcedureDefinition(6 + 4 * dj, induced: true)
-                        .SetDescription((procedureDefinition, costResult, castResult) => ""),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => { }),
                 }),
 
             new(id:                         "0315",
@@ -1189,7 +1189,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("钟声", 1 + dj)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"使下{1 + dj}张牌升级"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"使下{1 + dj}张牌升级")),
                 }),
 
             new(id:                         "0324",
@@ -1212,7 +1212,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("二重", 1 + dj)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"下{1 + dj}张牌使用两次"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"下{1 + dj}张牌使用两次")),
                 }),
 
             new(id:                         "0317",
@@ -1320,7 +1320,7 @@ public class SkillCategory : Category<SkillEntry>
                     new GainBuffProcedureDefinition("闪避"),
                     new GainBuffProcedureDefinition("飞龙在天", 2 + 2 * dj, induced: true)
                         .SetPostCondDefinition(PostCondDefinition.FirstTime)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"跳过下{2 + 2 * dj}张牌，使其成长"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"跳过下{2 + 2 * dj}张牌，使其成长")),
                 }),
 
             new(id:                         "0316",
@@ -1353,7 +1353,7 @@ public class SkillCategory : Category<SkillEntry>
                     new GainBuffProcedureDefinition("闪避", 2 + dj, induced: true),
                     new AttackProcedureDefinition(2 + dj, times: 2 + dj),
                     new GainBuffProcedureDefinition("不堪一击", induced: true)
-                        .SetDescription((procedureDefinition, costResult, castResult) => "遭受不堪一击"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("遭受不堪一击")),
                 }),
     
             new(id:                         "0314",
@@ -1390,7 +1390,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainBuffProcedureDefinition("多重", 0)
                         .AddClosure(YiNianWuLiangJieClosure)
-                        .SetDescription(GainBuffProcedureDefinition.OnlyClosure),
+                        .SetDescription(ProcedureDefinition.OnlyClosure),
                 },
                 trivia:"在个人量子超算还没普及的时代，凡人只能体验个二十劫意思意思"),
             
@@ -1449,7 +1449,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainArmorProcedureDefinition(2, induced: true),
                     new GainBuffProcedureDefinition("天衣无缝", 1 + 4 * dj)
-                        .SetDescription((procedureDefinition, costResult, castResult) => $"直到使用攻击牌：每回合{1 + 4 * dj}攻不消耗剑意"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"直到使用攻击牌：每回合{1 + 4 * dj}攻不消耗剑意")),
                 }),
             
             new(id:                         "0404",
@@ -1495,7 +1495,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new ExhaustProcedureDefinition(),
                     new GainBuffProcedureDefinition("升华")
-                        .SetDescription((procedureDefinition, costResult, castResult) => "下一张牌具有升华"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("下一张牌具有升华")),
                 }),
             
             new(id:                         "0417",
@@ -1601,7 +1601,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new CycleProcedureDefinition(WuXing.Huo, gain: 1 + dj),
                     new GainBuffProcedureDefinition("浴火")
-                        .SetDescription((procedureDefinition, costResult, castResult) => "燃命时：根据灼烧造成伤害"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("燃命时：根据灼烧造成伤害")),
                 }),
 
             new(id:                         "0416",
@@ -1642,7 +1642,7 @@ public class SkillCategory : Category<SkillEntry>
                     new AttackProcedureDefinition(9, times: 9)
                         .AddClosure(ChangXiaClosure),
                     new GainBuffProcedureDefinition("禁止行动")
-                        .SetDescription((procedureDefinition, costResult, castResult) => "禁止行动"),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("禁止行动")),
                 },
                 trivia: "用完之后就会体力耗尽动弹不得"),
 
@@ -5149,7 +5149,6 @@ public class SkillCategory : Category<SkillEntry>
     {
         List.Do(entry =>
         {
-            entry.GenerateCascade();
             entry.CreateSprite();
         });
     }

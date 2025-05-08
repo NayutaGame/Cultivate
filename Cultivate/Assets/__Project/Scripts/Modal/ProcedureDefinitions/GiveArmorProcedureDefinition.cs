@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 public class GiveArmorProcedureDefinition : ProcedureDefinition
@@ -12,6 +14,35 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
         Value = value;
         Induced = induced;
     }
+
+    protected GiveArmorProcedureDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
+        List<StageClosure> closures,
+        int value,
+        bool induced) :
+        base(preCondDefinition, postCondDefinition, getDescription, closures)
+    {
+        Value = value;
+        Induced = induced;
+    }
+
+    public override ProcedureDefinition Clone()
+    {
+        List<StageClosure> clonedClosures = new List<StageClosure>();
+        for (int i = 0; i < Closures.Count; i++)
+            clonedClosures[i] = Closures[i];
+
+        return new GiveArmorProcedureDefinition(
+            preCondDefinition: PreCondDefinition.Clone(),
+            postCondDefinition: PostCondDefinition.Clone(),
+            getDescription: _getDescription,
+            closures: clonedClosures,
+            value: Value,
+            induced: Induced
+        );
+    }
     
     public GainArmorDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
@@ -20,38 +51,17 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
             value: Value,
             listener: d.Skill,
             castResult: d.CastResult,
-            closures: Closures,
+            closures: ClosuresArray,
             induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
         => await castDetails.Env.GainArmorProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
-    {
-        Description description = new();
-
-        description.Sb.Append(PostCondDefinition.Description);
-        description.Sb.Append($"给予{Value}护甲");
-        if (Closures != null)
-            foreach (StageClosure c in Closures)
-            {
-                Description closureDescription = c.Description;
-                closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
-            }
-        
-        description.ApplyStyle(castResult, this);
-        
-        return description;
-    }
-
-    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
+    public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         GiveArmorProcedureDefinition pd = procedureDefinition as GiveArmorProcedureDefinition;
-        Description description = new();
-
         description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Sb.Append($"给予{pd.Value}护甲");
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
@@ -62,7 +72,5 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
             }
         
         description.ApplyStyle(castResult, pd);
-        
-        return description;
     }
 }

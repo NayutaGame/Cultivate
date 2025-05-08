@@ -51,8 +51,9 @@ public class StageEntity : Addressable, StageClosureListener
     {
         if (_costDefinition == null)
         {
-            _costDetails = new(_env, this, _skills[_p]);
-            _costDefinition = _skills[_p].Entry.Cost(_costDetails);
+            StageSkill skill = _skills[_p];
+            _costDetails = new(_env, this, skill);
+            _costDefinition = skill.GetSkillDefinition().GetCostDefinition();
             _costDetails.CostDescription = _costDefinition.GetLiteralCostDescription();
 
             await _costDefinition.WillCostEvent(_costDetails);
@@ -97,11 +98,13 @@ public class StageEntity : Addressable, StageClosureListener
         for (int i = 0; i < castDetails.StartStageCastTimes; i++)
         {
             await _env.PlayAsync(new ShiftAnimation());
+            
             _env.Result.TryAppend($"{GetName()}使用了{castDetails.Skill.Entry.GetName()}的开局效果");
-            await castDetails.Skill.Entry.Cast(castDetails);
+            SkillDefinition skillDefinition = skill.GetSkillDefinition();
+            await skillDefinition.Cast(castDetails);
 
             CostDescription actualCostDescription = CostDescription.Empty;
-            string actualDescription = castDetails.Skill.Entry.GetHighlight(castDetails.Skill.GetJingJie(), _costDetails?.CostResult, castResult);
+            string actualDescription = skillDefinition.GetActualDescriptionHighlighted(_costDetails?.CostResult, castResult);
             _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
             _env.Result.TryAppend($"\n");
         }
@@ -122,10 +125,12 @@ public class StageEntity : Addressable, StageClosureListener
         
         await _env.PlayAsync(new ShiftAnimation());
         _env.Result.TryAppend($"{GetName()}使用了{castDetails.Skill.Entry.GetName()}");
-        await castDetails.Skill.Entry.Cast(castDetails);
+        
+        SkillDefinition skillDefinition = skill.GetSkillDefinition();
+        await skillDefinition.Cast(castDetails);
         
         CostDescription actualCostDescription = _costDetails.CostDescription.Clone();
-        string actualDescription = castDetails.Skill.Entry.GetHighlight(castDetails.Skill.GetJingJie(), _costDetails?.CostResult, castResult);
+        string actualDescription = skillDefinition.GetActualDescriptionHighlighted(_costDetails?.CostResult, castResult);
         _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
         _env.Result.TryAppend($"\n");
 

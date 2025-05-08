@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 public class GiveBuffProcedureDefinition : ProcedureDefinition
@@ -20,6 +22,41 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
         Induced = induced;
     }
 
+    protected GiveBuffProcedureDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
+        List<StageClosure> closures,
+        BuffEntry buffEntry,
+        int stack,
+        bool recursive,
+        bool induced) :
+        base(preCondDefinition, postCondDefinition, getDescription, closures)
+    {
+        BuffEntry = buffEntry;
+        Stack = stack;
+        Recursive = recursive;
+        Induced = induced;
+    }
+
+    public override ProcedureDefinition Clone()
+    {
+        List<StageClosure> clonedClosures = new List<StageClosure>();
+        for (int i = 0; i < Closures.Count; i++)
+            clonedClosures[i] = Closures[i];
+
+        return new GiveBuffProcedureDefinition(
+            preCondDefinition: PreCondDefinition.Clone(),
+            postCondDefinition: PostCondDefinition.Clone(),
+            getDescription: _getDescription,
+            closures: clonedClosures,
+            buffEntry: BuffEntry,
+            stack: Stack,
+            recursive: Recursive,
+            induced: Induced
+        );
+    }
+
     public GainBuffDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
             src: d.Caster,
@@ -29,18 +66,17 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
             recursive: Recursive,
             listener: d.Skill,
             castResult: d.CastResult,
-            closures: Closures,
+            closures: ClosuresArray,
             induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
         => await castDetails.Env.GainBuffProcedure(GetDetailsFromCastDetails(castDetails));
 
-    public override Description DefaultGetDescription(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
+    public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        Description description = new();
-
-        description.Sb.Append(PostCondDefinition.Description);
-        if (BuffEntry.Friendly)
+        GiveBuffProcedureDefinition pd = procedureDefinition as GiveBuffProcedureDefinition;
+        description.Sb.Append(pd.PostCondDefinition.Description);
+        if (pd.BuffEntry.Friendly)
         {
             description.Sb.Append("给予");
         }
@@ -49,27 +85,7 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
             description.Sb.Append("施加");
         }
 
-        description.Sb.Append($"{Stack}{BuffEntry.GetName()}");
-        if (Closures != null)
-            foreach (StageClosure c in Closures)
-            {
-                Description closureDescription = c.Description;
-                closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
-            }
-        
-        description.ApplyStyle(castResult, this);
-        
-        return description;
-    }
-
-    public static Description OnlyClosure(ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
-    {
-        GiveBuffProcedureDefinition pd = procedureDefinition as GiveBuffProcedureDefinition;
-        Description description = new();
-
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Sb.Append($"{pd.Stack}{pd.BuffEntry.GetName()}");
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
@@ -80,7 +96,5 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
             }
         
         description.ApplyStyle(castResult, pd);
-        
-        return description;
     }
 }

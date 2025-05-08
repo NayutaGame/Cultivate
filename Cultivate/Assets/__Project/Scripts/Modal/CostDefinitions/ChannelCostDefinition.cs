@@ -7,6 +7,28 @@ public class ChannelCostDefinition : CostDefinition
 {
     public ChannelCostDefinition(int value, StageClosure[] closures = null) : base(value, closures) { }
 
+    public ChannelCostDefinition(
+        PreCondDefinition preCondDefinition,
+        PostCondDefinition postCondDefinition,
+        Func<CostDefinition, ResultDict, Description> getDescription,
+        int value, StageClosure[] closures) :
+        base(preCondDefinition, postCondDefinition, getDescription, value, closures) { }
+
+    public override CostDefinition Clone()
+    {
+        StageClosure[] clonedClosures = new StageClosure[Closures.Length];
+        for (int i = 0; i < Closures.Length; i++)
+            clonedClosures[i] = Closures[i];
+
+        return new ChannelCostDefinition(
+            PreCondDefinition.Clone(),
+            PostCondDefinition.Clone(),
+            _getDescription,
+            Value,
+            clonedClosures
+        );
+    }
+
     public static Func<int, int, ChannelCostDefinition> FromValue(int value)
         => (j, dj) => new(value);
     

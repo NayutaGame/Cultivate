@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using Sirenix.Utilities;
 using UnityEngine;
 
 [Serializable]
@@ -14,9 +14,8 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     [SerializeField] protected int _runEquippedTimes;
     [SerializeField] private bool _borrowed;
 
-    // [SerializeField] private List<SkillEntry> _appliedMutators;
-    // [NonSerialized] private CostDefinition _mutatedCostDefinition;
-    // [NonSerialized] private ProcedureDefinition[] _mutatedProcedureDefinitions;
+    [SerializeField] private List<SkillEntry> _appliedMutators;
+    [NonSerialized] private SkillDefinition _skillDefinition;
     
     public SkillEntry GetEntry() => _entry;
     public void SetEntry(SkillEntry entry) => _entry = entry;
@@ -39,22 +38,23 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
         set => _borrowed = value;
     }
 
-    private RunSkill(SkillEntry entry, JingJie jingJie, int runUsedTimes, int runEquippedTimes)
+    private RunSkill(SkillEntry entry, JingJie jingJie, int runUsedTimes, int runEquippedTimes, List<SkillEntry> appliedMutators)
     {
         _entry = entry;
         _jingJie = jingJie;
         _runUsedTimes = runUsedTimes;
         _runEquippedTimes = runEquippedTimes;
+        _appliedMutators = appliedMutators ?? new();
     }
 
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
-        => new(entry, Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie), 0, 0);
+        => new(entry, Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie), 0, 0, null);
 
     public static RunSkill FromEntry(SkillEntry entry)
         => FromEntryJingJie(entry, entry.LowestJingJie);
 
     public RunSkill Clone()
-        => new(_entry, _jingJie, _runUsedTimes, _runEquippedTimes);
+        => new(_entry, _jingJie, _runUsedTimes, _runEquippedTimes, _appliedMutators);
 
     public void OnBeforeSerialize() { }
 
@@ -107,17 +107,25 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
     {
         CostDescription actualCostDescription = _skillSlot?.ActualCostDescription;
-        return _jingJie == showingJingJie && actualCostDescription != null
-            ? actualCostDescription
-            : GetEntry().GetLiteralCostDescription(showingJingJie);
+        if (actualCostDescription != null)
+            return actualCostDescription;
+
+        if (_jingJie == showingJingJie)
+            return SkillDefinition.GetLiteralCostDescription();
+        
+        return GetEntry().GetLiteralCostDescription(showingJingJie);
     }
 
     public string GetHighlight(JingJie showingJingJie)
     {
         string actualDescription = _skillSlot?.ActualDescription;
-        return _jingJie == showingJingJie && actualDescription != null
-            ? actualDescription
-            : GetEntry().GetHighlight(showingJingJie);
+        if (actualDescription != null)
+            return actualDescription;
+
+        if (_jingJie == showingJingJie)
+            return SkillDefinition.GetLiteralDescriptionHighlighted();
+        
+        return GetEntry().GetHighlight(showingJingJie);
     }
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
@@ -135,33 +143,41 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     public bool CanMutate(RunSkill mutator)
     {
         MutateDefinition[] mutateDefinitions = mutator.GetEntry().GetMutateDefinitions();
-        // ProcedureDefinition[] procedureDefinitions = _procedureDefinitions ?? GetEntry().GetProcedureDefinitionsFromJingJie(GetJingJie());
-        ProcedureDefinition[] procedureDefinitions = GetEntry().GetProcedureDefinitionsFromJingJie(GetJingJie());
-        
-        for (int i = 0; i < mutateDefinitions.Length; i++)
-        for (int j = 0; j < procedureDefinitions.Length; j++)
-        {
-            MutateDefinition mutateDefinition = mutateDefinitions[i];
-            ProcedureDefinition procedureDefinition = procedureDefinitions[j];
-            if (mutateDefinition.CanMutate(procedureDefinition))
-                return true;
-        }
-
-        return false;
+        SkillDefinition skillDefinition = GetSkillDefinitionFromDj(Dj);
+        return skillDefinition.CanMutate(mutateDefinitions);
     }
 
     public void Mutate(RunSkill mutator)
     {
-        MutateDefinition[] mutateDefinitions = mutator.GetEntry().GetMutateDefinitions();
-        ProcedureDefinition[] procedureDefinitions = null;
-        // re cache
-        
-        for (int i = 0; i < mutateDefinitions.Length; i++)
-        for (int j = 0; j < procedureDefinitions.Length; j++)
+        SkillEntry entry = mutator.GetEntry();
+        _appliedMutators.Add(entry);
+    }
+
+    public SkillDefinition SkillDefinition
+    {
+        get
         {
-            MutateDefinition mutateDefinition = mutateDefinitions[i];
-            ProcedureDefinition procedureDefinition = procedureDefinitions[j];
-            mutateDefinition.Mutate(procedureDefinition);
+            if (_skillDefinition != null)
+                return _skillDefinition;
+
+            if (!_appliedMutators.IsNullOrEmpty())
+            {
+                SkillDefinition skillDefinition = GetUnmutatedSkillDefinitionFromDj(Dj);
+                _skillDefinition = SkillDefinition.FromMutate(skillDefinition, _appliedMutators);
+                return _skillDefinition;
+            }
+
+            return GetEntry().GetSkillDefinitionFromDj(Dj);
         }
     }
+
+    public SkillDefinition GetSkillDefinitionFromDj(int dj)
+    {
+        if (dj == Dj)
+            return _skillDefinition ?? GetEntry().GetSkillDefinitionFromDj(dj);
+        return GetEntry().GetSkillDefinitionFromDj(dj);
+    }
+
+    public SkillDefinition GetUnmutatedSkillDefinitionFromDj(int dj)
+        => GetEntry().GetSkillDefinitionFromDj(dj);
 }
