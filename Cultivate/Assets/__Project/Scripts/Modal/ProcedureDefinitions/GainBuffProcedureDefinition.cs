@@ -94,9 +94,10 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
+                description.AppendSoftReturn();
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         

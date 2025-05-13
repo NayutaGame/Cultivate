@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class Address : IEquatable<Address>
 {
-    private static Regex Pattern = new Regex(@"\w+");
+    private static Regex Pattern = new Regex(@"\w+", RegexOptions.Compiled);
 
     private static Dictionary<string, Func<object>> _root = new();
 

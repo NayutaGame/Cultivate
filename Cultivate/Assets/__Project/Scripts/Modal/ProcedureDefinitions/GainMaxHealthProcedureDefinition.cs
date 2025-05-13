@@ -46,14 +46,16 @@ public class GainMaxHealthProcedureDefinition : ProcedureDefinition
         GainMaxHealthProcedureDefinition pd = procedureDefinition as GainMaxHealthProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         description.Sb.Append($"气血上限+{pd.Value}");
-        // if (Closures != null)
-        //     foreach (StageClosure c in Closures)
-        //     {
-        //         Description closureDescription = c.Description;
-        //         // closureDescription.ApplyReplaceValues(castResult);
-        //         // closureDescription.ApplyCastResult(castResult, c.Key);
-        //         description.Sb.Append(closureDescription);
-        //     }
+        
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
+            {
+                description.AppendSoftReturn();
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
         
         description.ApplyStyle(castResult, pd);
     }

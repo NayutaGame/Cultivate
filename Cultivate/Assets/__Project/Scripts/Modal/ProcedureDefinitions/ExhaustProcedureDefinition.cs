@@ -38,14 +38,16 @@ public class ExhaustProcedureDefinition : ProcedureDefinition
         ExhaustProcedureDefinition pd = procedureDefinition as ExhaustProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         description.Sb.Append($"升华");
-        // if (Closures != null)
-        //     foreach (StageClosure c in Closures)
-        //     {
-        //         Description closureDescription = c.Description;
-        //         closureDescription.ApplyReplaceValues(castResult);
-        //         // closureDescription.ApplyCastResult(castResult, c.Key);
-        //         description.Sb.Append(closureDescription);
-        //     }
+        
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
+            {
+                description.AppendSoftReturn();
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
         
         description.ApplyStyle(castResult, pd);
     }

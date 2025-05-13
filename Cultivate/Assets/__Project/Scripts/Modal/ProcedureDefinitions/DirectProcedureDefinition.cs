@@ -46,14 +46,15 @@ public class DirectProcedureDefinition : ProcedureDefinition
         DirectProcedureDefinition pd = procedureDefinition as DirectProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         
-        // if (Closures != null)
-        //     foreach (StageClosure c in Closures)
-        //     {
-        //         Description closureDescription = c.Description;
-        //         // closureDescription.ApplyReplaceValues(castResult);
-        //         // closureDescription.ApplyCastResult(castResult, c.Key);
-        //         description.Sb.Append(closureDescription);
-        //     }
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
+            {
+                description.AppendSoftReturn();
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
         
         description.ApplyStyle(castResult, pd);
     }

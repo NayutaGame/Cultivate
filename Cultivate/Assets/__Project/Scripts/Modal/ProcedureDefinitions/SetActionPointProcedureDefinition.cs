@@ -50,14 +50,16 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
             description.Sb.Append($"二动");
         else if (ActionPoint == 3)
             description.Sb.Append($"三动");
-        // if (Closures != null)
-        //     foreach (StageClosure c in Closures)
-        //     {
-        //         Description closureDescription = c.Description;
-        //         // closureDescription.ApplyReplaceValues(castResult);
-        //         // closureDescription.ApplyCastResult(castResult, c.Key);
-        //         description.Sb.Append(closureDescription);
-        //     }
+        
+        if (pd.Closures != null)
+            foreach (StageClosure c in pd.Closures)
+            {
+                description.AppendSoftReturn();
+                Description closureDescription = c.Description;
+                closureDescription.ApplyReplaceValues(castResult);
+                closureDescription.ApplyCastResult(castResult, c.Key);
+                description.Sb.Append(closureDescription);
+            }
         
         description.ApplyStyle(castResult, pd);
     }

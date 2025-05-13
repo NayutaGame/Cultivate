@@ -52,6 +52,7 @@ public class BecomeLowHealProcedureDefinition : ProcedureDefinition
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
+                description.AppendSoftReturn();
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyCastResult(castResult, c.Key);

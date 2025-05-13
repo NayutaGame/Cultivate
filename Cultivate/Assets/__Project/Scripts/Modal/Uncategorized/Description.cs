@@ -22,6 +22,16 @@ public class Description
         _sb.Append(description.Sb);
     }
 
+    public void AppendReturn()
+    {
+        _sb.Append("\n");
+    }
+
+    public void AppendSoftReturn()
+    {
+        _sb.Append("||");
+    }
+
     public string GetHighlight(AnnotationArray cascade)
     {
         StringBuilder sb = new(_sb.ToString());
@@ -80,18 +90,17 @@ public class Description
         _sb.Append($"<style=\"{style}\">{content}</style>");
     }
 
+    private static readonly Regex ReplacingWhatsInBrackets = new(@"\[(.*?)\]", RegexOptions.Compiled);
+
     public void ApplyReplaceValues(ResultDict castResult)
     {
         if (castResult == null) return;
     
         string content = _sb.ToString();
-        // 匹配形如 [Key] 的模式
-        string pattern = @"\[(.*?)\]";
     
-        // 使用正则表达式替换所有匹配项
-        string result = Regex.Replace(content, pattern, match =>
+        string result = ReplacingWhatsInBrackets.Replace(content, match =>
         {
-            string key = match.Groups[1].Value; // 获取括号中的key
+            string key = match.Groups[1].Value;
             return castResult.ContainsKey(key) ? castResult[key] : match.Value;
         });
     

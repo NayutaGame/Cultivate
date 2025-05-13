@@ -62,12 +62,14 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
         GiveArmorProcedureDefinition pd = procedureDefinition as GiveArmorProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         description.Sb.Append($"给予{pd.Value}护甲");
+        
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
+                description.AppendSoftReturn();
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         

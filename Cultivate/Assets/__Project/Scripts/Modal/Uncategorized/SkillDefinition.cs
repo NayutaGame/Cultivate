@@ -1,7 +1,9 @@
 
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using TMPro.EditorUtilities;
+using System.Text;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class SkillDefinition
 {
@@ -92,7 +94,7 @@ public class SkillDefinition
         for (int i = 0; i < _procedureDefinitions.Length; i++)
         {
             if (i != 0)
-                description.Join("\n");
+                description.AppendReturn();
             Description subDescription = new();
             _procedureDefinitions[i].GetDescription(subDescription, costResult, tempCastResult);
             description.Join(subDescription);
@@ -101,11 +103,81 @@ public class SkillDefinition
         Description descriptionFromCost = _costDefinition.DefaultGetDescription(costResult);
         if (descriptionFromCost != null)
         {
-            description.Join("\n");
+            description.AppendReturn();
             description.Join(descriptionFromCost);
         }
 
+        ProcessExtraReturn(description);
+        ProcessSoftReturn(description);
+
         return description;
+    }
+
+    private static readonly Regex SplitterRegex = new Regex(@"(?:\n|\|\|)+", RegexOptions.Compiled);
+    private static readonly Regex TrimReturnRegex = new Regex(@"^(?:\n|\|\|)+|(?:\n|\|\|)+$", RegexOptions.Compiled);
+
+    private void ProcessExtraReturn(Description description)
+    {
+        string content = description.ToString();
+
+        content = TrimReturnRegex.Replace(content, "");
+
+        string[] groups = SplitterRegex.Split(content);
+        MatchCollection matchCollection = SplitterRegex.Matches(content);
+        
+        description.Sb.Clear();
+
+        for (int i = 0; i < groups.Length - 1; i++)
+        {
+            description.Sb.Append(groups[i]);
+            string split = matchCollection[i].Value;
+            description.Sb.Append(split.Contains("\n") ? "\n" : "||");
+        }
+
+        description.Sb.Append(groups[^1]);
+    }
+
+    private void ProcessSoftReturn(Description description, int maxConvert = 2)
+    {
+        const string SOFT_RETURN = "||";
+        const string HARD_RETURN = "\n";
+        const string SPACE = "  ";
+
+        string content = description.ToString();
+        int hardReturnCount = 0;
+        for (int i = 0; i < content.Length; i++)
+        {
+            if (content[i] == '\n')
+                hardReturnCount++;
+        }
+
+        int convert = Mathf.Max(0, maxConvert - hardReturnCount);
+        int replaced = 0;
+        int idx = 0;
+        StringBuilder sb = new StringBuilder();
+        while (idx < content.Length)
+        {
+            int softIdx = content.IndexOf(SOFT_RETURN, idx);
+            if (softIdx == -1)
+            {
+                sb.Append(content.Substring(idx));
+                break;
+            }
+            sb.Append(content.Substring(idx, softIdx - idx));
+            if (replaced < convert)
+            {
+                sb.Append(HARD_RETURN);
+                replaced++;
+            }
+            else
+            {
+                sb.Append(SPACE);
+            }
+            idx = softIdx + SOFT_RETURN.Length;
+        }
+        // 更新description内容
+        description.Sb.Clear();
+        description.Sb.Append(sb.ToString());
     }
 
     public string GetActualDescriptionHighlighted(ResultDict costResult, ResultDict castResult)

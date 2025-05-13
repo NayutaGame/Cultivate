@@ -69,12 +69,14 @@ public class HealOppoProcedureDefinition : ProcedureDefinition
         HealOppoProcedureDefinition pd = procedureDefinition as HealOppoProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         description.Sb.Append($"敌方气血+{pd.Value}");
+        
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
+                description.AppendSoftReturn();
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         
