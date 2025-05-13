@@ -43,7 +43,7 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     {
         List<StageClosure> clonedClosures = new List<StageClosure>();
         for (int i = 0; i < Closures.Count; i++)
-            clonedClosures[i] = Closures[i];
+            clonedClosures.Add(Closures[i]);
 
         return new GainBuffProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
@@ -76,16 +76,21 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     {
         GainBuffProcedureDefinition pd = procedureDefinition as GainBuffProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
-        if (pd.BuffEntry.Friendly)
-        {
-            description.Sb.Append("获得");
-        }
-        else
-        {
-            description.Sb.Append("遭受");
-        }
 
-        description.Sb.Append($"{pd.Stack}{pd.BuffEntry.GetName()}");
+        if (pd.Stack != 0)
+        {
+            if (pd.BuffEntry.Friendly)
+            {
+                description.Sb.Append("获得");
+            }
+            else
+            {
+                description.Sb.Append("遭受");
+            }
+
+            description.Sb.Append($"{pd.Stack}{pd.BuffEntry.GetName()}");
+        }
+        
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {

@@ -1,13 +1,14 @@
 
 using System;
+using Cysharp.Threading.Tasks;
 
 public class PostCondDefinition
 {
-    public Func<StageEnvironment, StageEntity, StageSkill, bool, bool> Cond;
+    public Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<bool>> Cond;
     public string Description;
 
     protected PostCondDefinition(
-        Func<StageEnvironment, StageEntity, StageSkill, bool, bool> cond,
+        Func<StageEnvironment, StageEntity, StageSkill, bool, UniTask<bool>> cond,
         string description)
     {
         Cond = cond;
@@ -17,24 +18,39 @@ public class PostCondDefinition
     public PostCondDefinition Clone()
         => new(Cond, Description);
 
-    public bool GetCond(CastDetails d)
+    public async UniTask<bool> GetCond(CastDetails d)
     {
-        return Cond(d.Env, d.Caster, d.Skill, d.IsStartStage);
+        return await Cond(d.Env, d.Caster, d.Skill, d.IsStartStage);
     }
 
-    public bool GetCond(CostDetails d)
+    public async UniTask<bool> GetCond(CostDetails d)
     {
-        return Cond(d.Env, d.Entity, d.Skill, false);
+        return await Cond(d.Env, d.Entity, d.Skill, false);
     }
 
-    public static readonly PostCondDefinition Default = new((env, entity, skill, startStage) => !startStage, "");
-    public static readonly PostCondDefinition StartStage = new((env, entity, skill, startStage) => startStage, "开局：");
-    public static readonly PostCondDefinition FirstTime = new((env, entity, skill, startStage) => skill.IsFirstTime, "初次：");
-    public static readonly PostCondDefinition FullHealth = new((env, entity, skill, startStage) => entity.IsFullHealth, "满血：");
-    public static readonly PostCondDefinition LowHealth = new((env, entity, skill, startStage) => entity.IsLowHealth, "残血：");
+    public static readonly PostCondDefinition Default = new(async (env, entity, skill, startStage) => !startStage, "");
+    public static readonly PostCondDefinition StartStage = new(async (env, entity, skill, startStage) => startStage, "开局：");
+    public static readonly PostCondDefinition FirstTime = new(async (env, entity, skill, startStage) => skill.IsFirstTime, "初次：");
+    public static readonly PostCondDefinition NotFirstTime = new(async (env, entity, skill, startStage) => skill.IsNotFirstTime, "非初次：");
+    public static readonly PostCondDefinition FullHealth = new(async (env, entity, skill, startStage) => entity.IsFullHealth, "满血：");
+    public static readonly PostCondDefinition LowHealth = new(async (env, entity, skill, startStage) => entity.IsLowHealth, "残血：");
+    public static readonly PostCondDefinition NoOtherAttack = new(async (env, entity, skill, startStage) => skill.NoOtherAttack, "唯一攻击牌：");
+    public static readonly PostCondDefinition HasOtherAttack = new(async (env, entity, skill, startStage) => !skill.NoOtherAttack, "非唯一攻击牌：");
+    public static PostCondDefinition ManaBurst(int value)
+        => new(async (env, entity, skill, startStage) => await entity.TryConsumeProcedure("灵气", value), $"爆能{value}：");
+    public static readonly PostCondDefinition IsEnd = new(async (env, entity, skill, startStage) =>
+    {
+        if (skill.IsEnd)
+            return true;
+
+        if (await entity.TryConsumeProcedure("终结"))
+            return true;
+
+        return false;
+    }, "终结：");
     
     public static PostCondDefinition FromCc(int value, bool greaterEqual)
         => greaterEqual ?
-            new((env, entity, skill, startStage) => skill.TotalStageCastedCount >= value, $"成长{value}次后：") :
-            new((env, entity, skill, startStage) => skill.TotalStageCastedCount < value, $"成长{value}次前：");
+            new(async (env, entity, skill, startStage) => skill.TotalStageCastedCount >= value, $"成长{value}次后：") :
+            new(async (env, entity, skill, startStage) => skill.TotalStageCastedCount < value, $"成长{value}次前：");
 }

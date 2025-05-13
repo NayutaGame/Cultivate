@@ -27,7 +27,7 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
     {
         List<StageClosure> clonedClosures = new List<StageClosure>();
         for (int i = 0; i < Closures.Count; i++)
-            clonedClosures[i] = Closures[i];
+            clonedClosures.Add(Closures[i]);
 
         return new SetActionPointProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
@@ -45,7 +45,11 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
     {
         SetActionPointProcedureDefinition pd = procedureDefinition as SetActionPointProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"二动");
+        
+        if (ActionPoint == 2)
+            description.Sb.Append($"二动");
+        else if (ActionPoint == 3)
+            description.Sb.Append($"三动");
         // if (Closures != null)
         //     foreach (StageClosure c in Closures)
         //     {

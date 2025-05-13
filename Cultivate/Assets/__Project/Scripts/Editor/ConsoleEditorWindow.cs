@@ -154,7 +154,6 @@ public class ConsoleEditorWindow : EditorWindow
         
         // 使用当前选中的过滤器
         var skills = Encyclopedia.SkillCategory.Traversal
-            .Where(s => s.WithinPool)
             .Where(_filterTabs[_currentFilterTab].Predicate);
 
         var distribution = skills

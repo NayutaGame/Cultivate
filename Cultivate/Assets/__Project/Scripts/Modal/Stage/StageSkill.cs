@@ -16,11 +16,11 @@ public class StageSkill : StageClosureListener
         set => _slotIndex = value;
     }
 
-    private readonly int _runSlotIndex;
+    private readonly int? _runSlotIndex;
     public SkillSlot GetSlot()
-        => _owner.RunEntity.GetSlot(_runSlotIndex + 0);
+        => _runSlotIndex == null ? null : _owner.RunEntity.GetSlot(_runSlotIndex.Value + 0);
     public SkillDefinition GetSkillDefinition()
-        => GetSlot().Skill?.GetSkillDefinitionFromDj(Dj) ?? Entry.GetSkillDefinitionFromDj(Dj);
+        => GetSlot()?.Skill?.GetSkillDefinitionFromDj(Dj) ?? Entry.GetSkillDefinitionFromDj(Dj);
     
     private readonly SkillEntry _entry;
     public SkillEntry Entry => _entry;
@@ -53,19 +53,10 @@ public class StageSkill : StageClosureListener
 
     public int TotalStageCastedCount => _realStageCastedCount + _bonusStageCastedCount;
 
-    public static StageSkill FromPlacedSkill(StageEntity owner, int slotIndex, PlacedSkill placedSkill)
-        => new(owner, slotIndex, slotIndex, placedSkill.Entry, placedSkill.JingJie);
-
-    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
-        => new(owner, slotIndex, slotIndex, skillEntry, jingJie ?? skillEntry.LowestJingJie);
-
-    public StageSkill Clone()
-        => new(_owner, _slotIndex, _runSlotIndex, _entry, _jingJie, _exhausted, _realStageCastedCount, _bonusStageCastedCount);
-
     private StageSkill(
         StageEntity owner,
         int slotIndex,
-        int runSlotIndex,
+        int? runSlotIndex,
         SkillEntry skillEntry,
         JingJie jingJie,
         bool exhausted = false,
@@ -81,6 +72,15 @@ public class StageSkill : StageClosureListener
         _realStageCastedCount = realStageCastedCount;
         _bonusStageCastedCount = bonusStageCastedCount;
     }
+
+    public static StageSkill FromPlacedSkill(StageEntity owner, int slotIndex, PlacedSkill placedSkill)
+        => new(owner, slotIndex, slotIndex, placedSkill.Entry, placedSkill.JingJie);
+
+    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
+        => new(owner, slotIndex, null, skillEntry, jingJie ?? skillEntry.LowestJingJie);
+
+    public StageSkill Clone()
+        => new(_owner, _slotIndex, _runSlotIndex, _entry, _jingJie, _exhausted, _realStageCastedCount, _bonusStageCastedCount);
 
     public SkillTypeComposite GetSkillType()
         => _entry.GetSkillTypeComposite();
@@ -101,6 +101,9 @@ public class StageSkill : StageClosureListener
             return isFirstTime;
         }
     }
+
+    public bool IsNotFirstTime
+        => TotalStageCastedCount > 0;
 
     public bool IsEnd
     {

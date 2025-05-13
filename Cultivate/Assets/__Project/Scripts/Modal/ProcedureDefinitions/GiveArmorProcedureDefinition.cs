@@ -32,7 +32,7 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
     {
         List<StageClosure> clonedClosures = new List<StageClosure>();
         for (int i = 0; i < Closures.Count; i++)
-            clonedClosures[i] = Closures[i];
+            clonedClosures.Add(Closures[i]);
 
         return new GiveArmorProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),

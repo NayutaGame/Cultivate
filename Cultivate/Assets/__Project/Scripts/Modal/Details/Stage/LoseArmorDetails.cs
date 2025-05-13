@@ -5,7 +5,8 @@ public class LoseArmorDetails : NestedStageClosureDetails
     public StageEntity Tgt;
     public int Value;
 
-    public LoseArmorDetails(StageEntity src, StageEntity tgt, int value, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
+    public LoseArmorDetails(
+        StageEntity src, StageEntity tgt, int value, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
     {
         Src = src;
         Tgt = tgt;

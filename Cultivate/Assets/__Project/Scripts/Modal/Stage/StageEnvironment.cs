@@ -463,7 +463,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             await PlayAsync(d.Tgt.Model().GetAnimationFromDamaged(d.Induced));
             await PlayAsync(TextAnimation.FromDamageDetails(d));
         }
-        await LoseHealthProcedure(d.Tgt, d.Value, d.CausedByAttack, d.Induced);
+        await LoseHealthProcedure(d.Tgt, d.Value, d.CausedByAttack, d.Listener, d.Closures, d.CastResult, d.Induced);
 
         await _closureDict.SendEvent(StageClosureDict.DID_DAMAGE, d);
 
@@ -471,8 +471,9 @@ public class StageEnvironment : Addressable, StageClosureListener
             await HealProcedure(d.Src, d.Src, d.Value, false, d.Listener, d.CastResult, null,true);
     }
 
-    public async UniTask LoseHealthProcedure(StageEntity owner, int value, bool causedByAttack, bool induced)
-        => await LoseHealthProcedure(new LoseHealthDetails(owner, value, causedByAttack, induced));
+    public async UniTask LoseHealthProcedure(
+        StageEntity owner, int value, bool causedByAttack, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
+        => await LoseHealthProcedure(new LoseHealthDetails(owner, value, causedByAttack, listener, closures, castResult, induced));
 
     public async UniTask LoseHealthProcedure(LoseHealthDetails d)
     {
@@ -480,9 +481,9 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (d.Cancel)
             return;
 
-        d.Owner.Hp -= d.Value;
-        if (d.Owner.Hp <= 0 && d.CausedByAttack)
-            d.Owner.DeathCauseIsAttack = true;
+        d.Victim.Hp -= d.Value;
+        if (d.Victim.Hp <= 0 && d.CausedByAttack)
+            d.Victim.DeathCauseIsAttack = true;
 
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_HEALTH, d);
     }
@@ -671,10 +672,10 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (d.Cancel)
             return;
 
-        List<Buff> buffs = d.Owner.TraversalBuffs().FilterObj(b => !b.GetEntry().Friendly && b.GetEntry().Dispellable).ToList();
+        List<Buff> buffs = d.Entity.TraversalBuffs().FilterObj(b => !b.GetEntry().Friendly && b.GetEntry().Dispellable).ToList();
 
         foreach (Buff b in buffs)
-            await d.Owner.LoseBuffProcedure(b.GetEntry(), d.Stack);
+            await d.Entity.LoseBuffProcedure(b.GetEntry(), d.Value);
 
         await _closureDict.SendEvent(StageClosureDict.DID_DISPEL, d);
     }

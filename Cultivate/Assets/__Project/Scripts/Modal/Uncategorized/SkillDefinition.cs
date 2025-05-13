@@ -91,15 +91,19 @@ public class SkillDefinition
             
         for (int i = 0; i < _procedureDefinitions.Length; i++)
         {
-            Description subDescription = _procedureDefinitions[i].GetDescription(costResult, tempCastResult);
-            if (subDescription == null)
-                continue;
+            if (i != 0)
+                description.Join("\n");
+            Description subDescription = new();
+            _procedureDefinitions[i].GetDescription(subDescription, costResult, tempCastResult);
             description.Join(subDescription);
         }
 
         Description descriptionFromCost = _costDefinition.DefaultGetDescription(costResult);
         if (descriptionFromCost != null)
+        {
+            description.Join("\n");
             description.Join(descriptionFromCost);
+        }
 
         return description;
     }

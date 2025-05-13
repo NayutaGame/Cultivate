@@ -1,15 +1,17 @@
 
-public class DispelDetails : StageClosureDetails
+public class DispelDetails : NestedStageClosureDetails
 {
-    public StageEntity Owner;
-    public int Stack;
+    public StageEntity Entity;
+    public int Value;
 
-    public DispelDetails(StageEntity owner, int stack, bool induced)
+    public DispelDetails(
+        StageEntity entity, int value, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
     {
-        Owner = owner;
-        Stack = stack;
+        Entity = entity;
+        Value = value;
+        Listener = listener;
+        Closures = closures;
+        CastResult = castResult;
         Induced = induced;
     }
-
-    public DispelDetails Clone() => new(Owner, Stack, Induced);
 }

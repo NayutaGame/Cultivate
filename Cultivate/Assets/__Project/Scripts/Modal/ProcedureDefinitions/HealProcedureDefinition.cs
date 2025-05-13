@@ -37,7 +37,7 @@ public class HealProcedureDefinition : ProcedureDefinition
     {
         List<StageClosure> clonedClosures = new List<StageClosure>();
         for (int i = 0; i < Closures.Count; i++)
-            clonedClosures[i] = Closures[i];
+            clonedClosures.Add(Closures[i]);
 
         return new HealProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
@@ -68,7 +68,9 @@ public class HealProcedureDefinition : ProcedureDefinition
     {
         HealProcedureDefinition pd = procedureDefinition as HealProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"气血+{pd.Value}");
+        if (pd.Value > 0)
+            description.Sb.Append($"气血+{pd.Value}");
+        
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {

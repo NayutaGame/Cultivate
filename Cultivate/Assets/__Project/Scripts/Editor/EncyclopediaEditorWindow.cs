@@ -130,7 +130,6 @@ public class EncyclopediaEditorWindow : EditorWindow
         EditorGUILayout.LabelField($"名称: {skill.GetName()}");
         EditorGUILayout.LabelField($"五行: {skill.GetWuXing()?.ToString() ?? "无"}");
         EditorGUILayout.LabelField($"境界范围: {skill.LowestJingJie} ~ {skill.HighestJingJie}");
-        EditorGUILayout.LabelField($"是否在卡池中: {skill.WithinPool}");
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("技能类型", EditorStyles.boldLabel);

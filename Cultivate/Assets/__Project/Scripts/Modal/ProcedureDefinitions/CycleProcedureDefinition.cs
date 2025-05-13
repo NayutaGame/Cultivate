@@ -48,7 +48,7 @@ public class CycleProcedureDefinition : ProcedureDefinition
     {
         List<StageClosure> clonedClosures = new List<StageClosure>();
         for (int i = 0; i < Closures.Count; i++)
-            clonedClosures[i] = Closures[i];
+            clonedClosures.Add(Closures[i]);
 
         return new CycleProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
@@ -79,7 +79,10 @@ public class CycleProcedureDefinition : ProcedureDefinition
     {
         CycleProcedureDefinition pd = procedureDefinition as CycleProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"{pd.WuXing._elementaryBuff}+{pd.Gain}");
+        
+        if (pd.Gain != 0)
+            description.Sb.Append($"{pd.WuXing._elementaryBuff}+{pd.Gain}");
+        
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {

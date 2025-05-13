@@ -3,24 +3,24 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class GainMaxHealthProcedureDefinition : ProcedureDefinition
+public class DirectProcedureDefinition : ProcedureDefinition
 {
-    public int Value;
-
-    public GainMaxHealthProcedureDefinition(int value)
+    private Func<CastDetails, UniTask> _cast;
+    
+    public DirectProcedureDefinition(Func<CastDetails, UniTask> cast)
     {
-        Value = value;
+        _cast = cast;
     }
 
-    protected GainMaxHealthProcedureDefinition(
+    protected DirectProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
         List<StageClosure> closures,
-        int value) :
+        Func<CastDetails, UniTask> cast) :
         base(preCondDefinition, postCondDefinition, getDescription, closures)
     {
-        Value = value;
+        _cast = cast;
     }
 
     public override ProcedureDefinition Clone()
@@ -29,23 +29,23 @@ public class GainMaxHealthProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new GainMaxHealthProcedureDefinition(
+        return new DirectProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
             closures: clonedClosures,
-            value: Value
+            cast: _cast
         );
     }
-
+    
     public override async UniTask Cast(CastDetails castDetails)
-        => castDetails.Caster.MaxHp += Value;
-
+        => await _cast(castDetails);
+    
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        GainMaxHealthProcedureDefinition pd = procedureDefinition as GainMaxHealthProcedureDefinition;
+        DirectProcedureDefinition pd = procedureDefinition as DirectProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"气血上限+{pd.Value}");
+        
         // if (Closures != null)
         //     foreach (StageClosure c in Closures)
         //     {

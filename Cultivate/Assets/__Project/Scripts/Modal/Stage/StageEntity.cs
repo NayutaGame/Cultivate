@@ -134,8 +134,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
         _env.Result.TryAppend($"\n");
 
-        if (shouldWriteToSlot && SlotIsUnwritten(skill.GetSlot()))
-            WriteResultToSlot(skill.GetSlot(), actualCostDescription, actualDescription);
+        TryWriteResultToSlot(shouldWriteToSlot, skill, actualCostDescription, actualDescription);
 
         if (this == castDetails.Skill.Owner)
             castDetails.Skill.IncreaseRealCastedCount();
@@ -143,6 +142,16 @@ public class StageEntity : Addressable, StageClosureListener
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_CAST, castDetails);
         
         castDetails.Clear();
+    }
+
+    private void TryWriteResultToSlot(bool shouldWriteToSlot, StageSkill skill, CostDescription actualCostDescription, string actualDescription)
+    {
+        if (!shouldWriteToSlot) return;
+        SkillSlot slot = skill.GetSlot();
+        if (slot == null) return;
+        if (!SlotIsUnwritten(slot)) return;
+        
+        WriteResultToSlot(slot, actualCostDescription, actualDescription);
     }
 
     private async UniTask StepProcedure()
@@ -524,8 +533,8 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, ResultDict castResult, bool recursive = true, bool induced = false)
         => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
     
-    public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced = false)
-        => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, causedByAttack, induced));
+    public async UniTask LoseHealthProcedure(int value, bool causedByAttack, StageSkill srcSkill = null, ResultDict castResult = null, bool induced = false)
+        => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, causedByAttack, srcSkill, null, castResult, induced));
     
     public async UniTask HealProcedure(int value, ResultDict castResult = null, bool induced = false)
         => await _env.HealProcedure(new HealDetails(this, this, value, false, null, castResult, null, induced));
@@ -560,8 +569,8 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask CycleProcedure(WuXing wuXing, bool rotate = true, int gain = 0, int recover = 0, ResultDict castResult = null, bool induced = false)
         => await _env.CycleProcedure(new CycleDetails(this, rotate, wuXing, gain, recover, null, null, castResult, induced));
     
-    public async UniTask DispelProcedure(int stack, bool induced = false)
-        => await _env.DispelProcedure(new DispelDetails(this, stack, induced));
+    public async UniTask DispelProcedure(int stack, ResultDict castResult = null, bool induced = false)
+        => await _env.DispelProcedure(new DispelDetails(this, stack, null, null, castResult, induced));
 
     public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {

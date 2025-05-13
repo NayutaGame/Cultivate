@@ -3,19 +3,19 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class GainArmorProcedureDefinition : ProcedureDefinition
+public class LoseArmorProcedureDefinition : ProcedureDefinition
 {
     public int Value;
     public bool Induced;
 
-    public GainArmorProcedureDefinition(int value,
+    public LoseArmorProcedureDefinition(int value,
         bool induced = false)
     {
         Value = value;
         Induced = induced;
     }
 
-    protected GainArmorProcedureDefinition(
+    protected LoseArmorProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
@@ -34,7 +34,7 @@ public class GainArmorProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new GainArmorProcedureDefinition(
+        return new LoseArmorProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
@@ -43,27 +43,27 @@ public class GainArmorProcedureDefinition : ProcedureDefinition
             induced: Induced
         );
     }
-    
-    public GainArmorDetails GetDetailsFromCastDetails(CastDetails d)
+
+    public LoseArmorDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
             src: d.Caster,
             tgt: d.Caster,
             value: Value,
             listener: d.Skill,
-            castResult: d.CastResult,
             closures: ClosuresArray,
+            castResult: d.CastResult,
             induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.GainArmorProcedure(GetDetailsFromCastDetails(castDetails));
+        => await castDetails.Env.LoseArmorProcedure(GetDetailsFromCastDetails(castDetails));
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        GainArmorProcedureDefinition pd = procedureDefinition as GainArmorProcedureDefinition;
+        LoseArmorProcedureDefinition pd = procedureDefinition as LoseArmorProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         
-        if (pd.Value != 0)
-            description.Sb.Append($"护甲+{pd.Value}");
+        if (pd.Value > 0)
+            description.Sb.Append($"失去{pd.Value}护甲");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)

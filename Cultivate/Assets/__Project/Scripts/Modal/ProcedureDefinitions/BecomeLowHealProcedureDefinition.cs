@@ -3,29 +3,17 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class GainArmorProcedureDefinition : ProcedureDefinition
+public class BecomeLowHealProcedureDefinition : ProcedureDefinition
 {
-    public int Value;
-    public bool Induced;
+    public BecomeLowHealProcedureDefinition() { }
 
-    public GainArmorProcedureDefinition(int value,
-        bool induced = false)
-    {
-        Value = value;
-        Induced = induced;
-    }
-
-    protected GainArmorProcedureDefinition(
+    protected BecomeLowHealProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
-        List<StageClosure> closures,
-        int value,
-        bool induced) :
+        List<StageClosure> closures) :
         base(preCondDefinition, postCondDefinition, getDescription, closures)
     {
-        Value = value;
-        Induced = induced;
     }
 
     public override ProcedureDefinition Clone()
@@ -34,43 +22,39 @@ public class GainArmorProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new GainArmorProcedureDefinition(
+        return new BecomeLowHealProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
-            closures: clonedClosures,
-            value: Value,
-            induced: Induced
+            closures: clonedClosures
         );
     }
-    
-    public GainArmorDetails GetDetailsFromCastDetails(CastDetails d)
-        => new(
-            src: d.Caster,
-            tgt: d.Caster,
-            value: Value,
-            listener: d.Skill,
-            castResult: d.CastResult,
-            closures: ClosuresArray,
-            induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.GainArmorProcedure(GetDetailsFromCastDetails(castDetails));
+    {
+        if (Closures != null)
+            foreach (StageClosure closure in Closures)
+            {
+                if (closure.Description == null)
+                    return;
+                castDetails.CastResult.Append(closure.Key, false);
+            }
+        await castDetails.BecomeLowHealth();
+    }
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        GainArmorProcedureDefinition pd = procedureDefinition as GainArmorProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        BecomeLowHealProcedureDefinition pd = procedureDefinition as BecomeLowHealProcedureDefinition;
         
-        if (pd.Value != 0)
-            description.Sb.Append($"护甲+{pd.Value}");
+        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Sb.Append("成为残血");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
             {
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyCastResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         

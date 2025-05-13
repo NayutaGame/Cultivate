@@ -42,7 +42,7 @@ public class ChannelCostDefinition : CostDefinition
     {
         if (Closures != null)
         {
-            bool postCond = PostCondDefinition.GetCond(d);
+            bool postCond = await PostCondDefinition.GetCond(d);
             if (postCond)
                 foreach (StageClosure closure in Closures)
                     if (closure.EventId == StageClosureDict.WIL_CHANNEL_COST)

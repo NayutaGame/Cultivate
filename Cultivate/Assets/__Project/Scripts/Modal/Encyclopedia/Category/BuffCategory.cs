@@ -1842,7 +1842,7 @@ public class BuffCategory : Category<BuffEntry>
                     {
                         Buff b = (Buff)owner;
                         LoseHealthDetails d = (LoseHealthDetails)closureDetails;
-                        if (b.Owner != d.Owner) return;
+                        if (b.Owner != d.Victim) return;
 
                         int upperBound = b.Owner.Hp - 1;
                         d.Value = d.Value.ClampUpper(upperBound);
@@ -1890,9 +1890,48 @@ public class BuffCategory : Category<BuffEntry>
                         }
                     }),
                 }),
+            
+            new(id:                         "童趣",
+                description:                "复制对手下一次获得的增益",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_GAIN_BUFF, 0, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        GainBuffDetails d = closureDetails as GainBuffDetails;
+                        if (!d.Recursive) return;
+                        if (b.Owner.Opponent() != d.Tgt) return;
+                        if (!d.BuffEntry.Friendly) return;
+
+                        await b.Owner.GainBuffProcedure(d.BuffEntry, d.Stack, recursive: false, induced: true);
+                        await b.LoseStackProcedure();
+                        b.Emphasize();
+                    }),
+                }),
+            
+            new(id:                         "一心",
+                description:                "下一次吟唱免费",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_CHANNEL_COST, 0, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        CostDetails d = closureDetails as CostDetails;
+                        if (b.Owner != d.Entity) return;
+
+                        d.Value = 0;
+                        await b.LoseStackProcedure();
+                        b.Emphasize();
+                    }),
+                }),
 
             new("终结", "激活下一个终结效果",                         BuffStackRule.Add, true, false),
-            new("大终结", "激活下一个终结效果的大终结版本",             BuffStackRule.Add, true, false),
             new("摩诃钵特摩", "已经触发过摩诃钵特摩",                   BuffStackRule.One, true, false),
             new("天人合一", "已经触发过天人合一",                       BuffStackRule.One, true, false),
             new("连岳", "最后两张牌都可以触发终结",                     BuffStackRule.One, true, false),
@@ -1906,7 +1945,6 @@ public class BuffCategory : Category<BuffEntry>
             new("跳卡牌",     "行动时跳过下张卡牌",                     BuffStackRule.Add, false, false),
             new("集中",      "下一次使用牌时，条件算作激活",            BuffStackRule.Add, true, false),
             new("浮空艇",     "回合被跳过时：气血及上线无法下降",       BuffStackRule.Add, true, false),
-            new("架势",     "消耗架势激活效果，没有架势时获得架势",     BuffStackRule.Add, true, false),
         });
     }
 

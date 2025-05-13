@@ -48,7 +48,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
     {
         List<StageClosure> clonedClosures = new List<StageClosure>();
         for (int i = 0; i < Closures.Count; i++)
-            clonedClosures[i] = Closures[i];
+            clonedClosures.Add(Closures[i]);
 
         return new AttackProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
@@ -99,11 +99,15 @@ public class AttackProcedureDefinition : ProcedureDefinition
         AttackProcedureDefinition pd = procedureDefinition as AttackProcedureDefinition;
         
         description.Sb.Append(pd.PostCondDefinition.Description);
-        
-        if (pd.Times > 1)
-            description.Sb.Append($"{pd.Value}攻x{pd.Times}".ApplyAttack());
-        else
-            description.Sb.Append($"{pd.Value}攻".ApplyAttack());
+
+        if (pd.Value > 0)
+        {
+            description.Sb.Append($"{pd.Value}攻");
+            if (pd.Times > 1)
+            {
+                description.Sb.Append($"x{pd.Times}");
+            }
+        }
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)

@@ -1,5 +1,4 @@
 
-using System;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
@@ -35,6 +34,9 @@ public class CastDetails : StageClosureDetails
         StartStageCastTimes = startStageCastTimes;
         CastResult = castResult;
     }
+
+    public CastDetails Clone()
+        => new(Env, Caster, Skill, Recursive, FromWanJian, IsStartStage, StartStageCastTimes, CastResult);
 
     public int J => Skill.GetJingJie();
     public int Dj => Skill.Dj;
@@ -74,10 +76,10 @@ public class CastDetails : StageClosureDetails
         => await Env.DamageProcedure(new DamageDetails(Caster, Caster.Opponent(), value, crit: false, lifeSteal: false, false, recursive, Skill, null, CastResult, induced));
 
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced)
-        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value, causedByAttack, induced));
+        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster, value, causedByAttack, Skill, null, CastResult, induced));
 
     public async UniTask RemoveHealthProcedure(int value, bool induced)
-        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster.Opponent(), value, false, induced));
+        => await Env.LoseHealthProcedure(new LoseHealthDetails(Caster.Opponent(), value, false, Skill, null, CastResult, induced));
 
     public async UniTask HealProcedure(int value, bool induced)
         => await Env.HealProcedure(new HealDetails(Caster, Caster, value, false, Skill, CastResult, null, induced));
@@ -113,7 +115,7 @@ public class CastDetails : StageClosureDetails
         => await Env.CycleProcedure(new CycleDetails(Caster, rotate, wuXing, gain, recover, Skill, null, CastResult, induced));
     
     public async UniTask DispelProcedure(int stack, bool induced = false)
-        => await Env.DispelProcedure(new DispelDetails(Caster, stack, induced));
+        => await Env.DispelProcedure(new DispelDetails(Caster, stack, Skill, null, CastResult, induced));
 
     public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
@@ -163,23 +165,8 @@ public class CastDetails : StageClosureDetails
             await Env.BurnProcedure(Caster, gap, induced);
     }
 
-    public async UniTask<Tuple<bool, bool>> IsEnd(bool allowDoubleEnd)
+    public async UniTask RemoveExtraMaxHealth(bool induced = false)
     {
-        if (allowDoubleEnd)
-        {
-            if (Skill.IsEnd && await Caster.TryConsumeProcedure("终结"))
-                return new(true, true);
-
-            if (await Caster.TryConsumeProcedure("大终结"))
-                return new(true, true);
-        }
-        
-        if (Skill.IsEnd)
-            return new(true, false);
-
-        if (await Caster.TryConsumeProcedure("终结"))
-            return new(true, false);
-
-        return new Tuple<bool, bool>(false, false);
+        Caster.MaxHp = Caster.Hp;
     }
 }

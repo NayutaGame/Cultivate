@@ -56,13 +56,6 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     public RunSkill Clone()
         => new(_entry, _jingJie, _runUsedTimes, _runEquippedTimes, _appliedMutators);
 
-    public void OnBeforeSerialize() { }
-
-    public void OnAfterDeserialize()
-    {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.SkillCategory[_entry.GetId()];
-    }
-
     public bool TryIncreaseJingJie(bool loop = true)
     {
         if (GetEntry().JingJieContains(JingJie + 1))
@@ -151,6 +144,7 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     {
         SkillEntry entry = mutator.GetEntry();
         _appliedMutators.Add(entry);
+        _skillDefinition = null;
     }
 
     public SkillDefinition SkillDefinition
@@ -163,7 +157,7 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
             if (!_appliedMutators.IsNullOrEmpty())
             {
                 SkillDefinition skillDefinition = GetUnmutatedSkillDefinitionFromDj(Dj);
-                _skillDefinition = SkillDefinition.FromMutate(skillDefinition, _appliedMutators);
+                    _skillDefinition = SkillDefinition.FromMutate(skillDefinition, _appliedMutators);
                 return _skillDefinition;
             }
 
@@ -173,11 +167,27 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
 
     public SkillDefinition GetSkillDefinitionFromDj(int dj)
     {
-        if (dj == Dj)
-            return _skillDefinition ?? GetEntry().GetSkillDefinitionFromDj(dj);
-        return GetEntry().GetSkillDefinitionFromDj(dj);
+        if (dj != Dj)
+            return GetEntry().GetSkillDefinitionFromDj(dj);
+        return SkillDefinition;
+        
     }
 
     public SkillDefinition GetUnmutatedSkillDefinitionFromDj(int dj)
         => GetEntry().GetSkillDefinitionFromDj(dj);
+
+    public void OnBeforeSerialize() { }
+
+    public void OnAfterDeserialize()
+    {
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.SkillCategory[_entry.GetId()];
+
+        if (_appliedMutators != null)
+        {
+            for (int i = 0; i < _appliedMutators.Count; i++)
+            {
+                _appliedMutators[i] = string.IsNullOrEmpty(_appliedMutators[i].GetId()) ? null : Encyclopedia.SkillCategory[_appliedMutators[i].GetId()];
+            }
+        }
+    }
 }

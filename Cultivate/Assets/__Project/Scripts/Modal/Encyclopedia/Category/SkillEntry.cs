@@ -23,20 +23,6 @@ public class SkillEntry : Entry, Annotatable, ISkill
     
     public StageClosure[] Closures;
 
-    private Func<CastDetails, UniTask> _castGenerator;
-    private async UniTask DefaultCast(CastDetails d) { }
-
-    private Func<JingJie, int, ResultDict, ResultDict, Description> _descriptionGenerator;
-    public Description GetActualDescription(JingJie j, ResultDict costResult = null, ResultDict castResult = null)
-    {
-        if (_hasCast)
-        {
-            return _skillDefinitions[j - LowestJingJie].GetActualDescription(costResult, castResult);
-        }
-        
-        return _descriptionGenerator(j, j - LowestJingJie, costResult, castResult ?? ResultDict.Default);
-    }
-
     public Description GetLiteralDescription() => GetSkillDefinitionFromDj(0).GetLiteralDescription();
 
     public string GetHighlight()
@@ -46,13 +32,9 @@ public class SkillEntry : Entry, Annotatable, ISkill
     
     private string _trivia;
 
-    private bool _withinPool;
-    public bool WithinPool => _withinPool;
-
     private MergeRule _overridingMergeRule;
     public MergeRule OverridingMergeRule => _overridingMergeRule;
 
-    private bool _hasCast;
     private bool _hasStartStageCast;
     public bool HasStartStageCast() => _hasStartStageCast;
     public bool IsMutator => _mutate != null;
@@ -75,12 +57,10 @@ public class SkillEntry : Entry, Annotatable, ISkill
         Func<JingJie, int, ResultDict, ResultDict, Description> descriptionGenerator = null,
         
         string trivia = null,
-        bool withinPool = true,
         MergeRule overridingMergeRule = null,
         
         Func<int, int, CostDefinition> cost = null,
         Func<int, int, ProcedureDefinition[]> cast = null,
-        
         Func<int, int, MutateDefinition[]> mutate = null
         ) : base(id)
     {
@@ -91,15 +71,9 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
         Closures = closures ?? Array.Empty<StageClosure>();
         
-        _castGenerator = castGenerator ?? DefaultCast;
-        _descriptionGenerator = descriptionGenerator;
-        
         _trivia = trivia;
-        _withinPool = withinPool;
 
         _overridingMergeRule = overridingMergeRule ?? MergeRule.Trivial;
-
-        _hasCast = cast != null;
 
         _mutate = mutate?.Invoke(LowestJingJie, 0);
 

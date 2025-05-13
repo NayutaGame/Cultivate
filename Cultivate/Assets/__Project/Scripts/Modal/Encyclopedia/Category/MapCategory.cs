@@ -200,7 +200,11 @@ public class MapCategory : Category<MapEntry>
                 onStartRun: env =>
                 {
                     env.PickSkillProcedure(SkillEntry.FromName("金刃"));
+                    env.PickSkillProcedure(SkillEntry.FromName("起势"));
                     env.PickSkillProcedure(SkillEntry.FromName("暴击墨染"));
+                    env.PickSkillProcedure(SkillEntry.FromName("吸血墨染"));
+                    env.PickSkillProcedure(SkillEntry.FromName("穿透墨染"));
+                    env.PickSkillProcedure(SkillEntry.FromName("二动墨染"));
                 },
                 levels: new RoomDefinition[][]
                 {

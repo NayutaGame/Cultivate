@@ -1,15 +1,18 @@
 
-public class LoseHealthDetails : StageClosureDetails
+public class LoseHealthDetails : NestedStageClosureDetails
 {
-    public StageEntity Owner;
+    public StageEntity Victim;
     public int Value;
     public bool CausedByAttack;
 
-    public LoseHealthDetails(StageEntity owner, int value, bool causedByAttack, bool induced)
+    public LoseHealthDetails(StageEntity victim, int value, bool causedByAttack, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
     {
-        Owner = owner;
+        Victim = victim;
         Value = value;
         CausedByAttack = causedByAttack;
+        Listener = listener;
+        Closures = closures;
+        CastResult = castResult;
         Induced = induced;
     }
 }

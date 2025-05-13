@@ -21,11 +21,12 @@ public class StageClosure
         if (_checkListener)
             if (nestedDetails.Listener != null && nestedDetails.Listener != listener)
                 return;
-        await _func(listener, this, nestedDetails);
 
         // TODO: after everything is working, this null propagation should be removed
         if (nestedDetails.CastResult != null && Key != null)
             nestedDetails.CastResult.Append(Key, true);
+        
+        await _func(listener, this, nestedDetails);
     }
 
     public string Key;
