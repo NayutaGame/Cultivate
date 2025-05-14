@@ -2,18 +2,18 @@
 using System;
 using System.Collections.Generic;
 
-public class SetValueProcedureDefinition : ProcedureDefinition
+public class TrySetValueProcedureDefinition : ProcedureDefinition
 {
     public string Key;
     public string Value;
     
-    public SetValueProcedureDefinition(string key, string value)
+    public TrySetValueProcedureDefinition(string key, string value)
     {
         Key = key;
         Value = value;
     }
 
-    protected SetValueProcedureDefinition(
+    protected TrySetValueProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
@@ -32,7 +32,7 @@ public class SetValueProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new SetValueProcedureDefinition(
+        return new TrySetValueProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
@@ -44,7 +44,8 @@ public class SetValueProcedureDefinition : ProcedureDefinition
     
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        SetValueProcedureDefinition pd = procedureDefinition as SetValueProcedureDefinition;
-        castResult[pd.Key] = pd.Value;
+        TrySetValueProcedureDefinition pd = procedureDefinition as TrySetValueProcedureDefinition;
+        if (!castResult.ContainsKey(pd.Key))
+            castResult[pd.Key] = pd.Value;
     }
 }

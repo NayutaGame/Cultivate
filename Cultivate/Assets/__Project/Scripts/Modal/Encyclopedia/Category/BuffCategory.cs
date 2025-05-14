@@ -295,10 +295,11 @@ public class BuffCategory : Category<BuffEntry>
                     new(StageClosureDict.WIL_GAIN_ARMOR, 0, async (owner, closure, closureDetails) =>
                     {
                         Buff b = (Buff)owner;
-                        HealDetails d = (HealDetails)closureDetails;
+                        GainArmorDetails d = (GainArmorDetails)closureDetails;
 
                         if (b.Owner != d.Tgt) return;
                         d.Cancel = true;
+                        b.Emphasize();
                     }),
                 }),
             
@@ -1924,6 +1925,7 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         CostDetails d = closureDetails as CostDetails;
                         if (b.Owner != d.Entity) return;
+                        if (d.Value <= 0) return;
 
                         d.Value = 0;
                         await b.LoseStackProcedure();

@@ -374,6 +374,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         });
     }
 
+    public void ClearSlotResults()
+    {
+        _home.TraversalCurrentSlots().Do(s => s.ClearResults());
+        _away.TraversalCurrentSlots().Do(s => s.ClearResults());
+    }
+
     #endregion
 
     #region Procedures

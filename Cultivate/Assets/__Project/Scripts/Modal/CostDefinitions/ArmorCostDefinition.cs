@@ -56,16 +56,16 @@ public class ArmorCostDefinition : CostDefinition
     
     public override async UniTask ApplyCost(CostDetails d)
     {
-        int shortage = Mathf.Max(Value - Mathf.Max(0, d.Entity.Armor), 0);
+        int shortage = Mathf.Max(d.Value - Mathf.Max(0, d.Entity.Armor), 0);
         if (shortage > 0)
             await d.Env.ArmorShortageProcedure(d);
         
-        int total = Value + 2 * shortage;
+        int total = d.Value + 2 * shortage;
         await d.Entity.LoseArmorProcedure(total, induced: false);
         
-        d.Env.Result.TryAppend($"{d.Entity.GetName()}消耗了{Value}护甲，不足的部分变成了三倍的减甲，以使用{d.Skill.Entry.GetName()}\n");
+        d.Env.Result.TryAppend($"{d.Entity.GetName()}消耗了{d.Value}护甲，不足的部分变成了三倍的减甲，以使用{d.Skill.Entry.GetName()}\n");
         // suspicious
-        await d.Env.LoseHealthProcedure(d.Entity, Value, false, d.Skill, Closures, null, induced: true);
+        await d.Env.LoseHealthProcedure(d.Entity, d.Value, false, d.Skill, Closures, null, induced: true);
     }
     
     public override async UniTask DidCostEvent(CostDetails d)

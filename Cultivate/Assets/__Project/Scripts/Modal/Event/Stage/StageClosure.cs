@@ -19,7 +19,7 @@ public class StageClosure
     private async UniTask InvokeWithNested(StageClosureListener listener, NestedStageClosureDetails nestedDetails)
     {
         if (_checkListener)
-            if (nestedDetails.Listener != null && nestedDetails.Listener != listener)
+            if (nestedDetails.Listener == null || nestedDetails.Listener != listener)
                 return;
 
         // TODO: after everything is working, this null propagation should be removed

@@ -35,6 +35,7 @@ public class BattlePanelDescriptor : PanelDescriptor
     {
         base.DefaultExit(panelDescriptor);
         SetEnemy(null);
+        RunManager.Instance.Environment.ClearSlotResults();
     }
 
     private Func<PanelDescriptor> _winOperation;

@@ -6,8 +6,8 @@ using FMOD;
 
 public abstract class ProcedureDefinition
 {
-    protected PreCondDefinition PreCondDefinition;
-    protected PostCondDefinition PostCondDefinition;
+    public PreCondDefinition PreCondDefinition;
+    public PostCondDefinition PostCondDefinition;
     
     private List<StageClosure> _closures;
     public List<StageClosure> Closures => _closures;

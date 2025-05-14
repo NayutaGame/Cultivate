@@ -55,8 +55,8 @@ public class HealthCostDefinition : CostDefinition
     
     public override async UniTask ApplyCost(CostDetails d)
     {
-        d.Env.Result.TryAppend($"{d.Entity.GetName()}消耗了{Value}气血，以使用{d.Skill.Entry.GetName()}\n");
-        await d.Env.BurnProcedure(d.Entity, Value, true);
+        d.Env.Result.TryAppend($"{d.Entity.GetName()}消耗了{d.Value}气血，以使用{d.Skill.Entry.GetName()}\n");
+        await d.Env.BurnProcedure(d.Entity, d.Value, true);
     }
 
     public override async UniTask DidCostEvent(CostDetails d)

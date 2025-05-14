@@ -776,7 +776,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack | SkillType.Mana,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("QiShiLingQiGain", (1 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("QiShiLingQiGain", (1 + dj).ToString()),
                     new AttackProcedureDefinition(4)
                         .AddClosure(QiShiClosure),
                     new GainBuffProcedureDefinition("灵气", 1 + dj, induced: false)
@@ -851,7 +851,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ChannelCostDefinition.FromValue(1),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("ShanFengConvert", (15 - 5 * dj).ToString()),
+                    new TrySetValueProcedureDefinition("ShanFengConvert", (15 - 5 * dj).ToString()),
                     new GainArmorProcedureDefinition(15 + 5 * dj, induced: false),
                     new CycleProcedureDefinition(WuXing.Jin)
                         .AddClosure(ShanFengClosure),
@@ -876,7 +876,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("XunLieFragile", (5 + 5 * dj).ToString()),
+                    new TrySetValueProcedureDefinition("XunLieFragile", (5 + 5 * dj).ToString()),
                     new AttackProcedureDefinition(2)
                         .AddClosure(XunLieClosure),
                 }),
@@ -888,7 +888,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("QiuLuBaiConvert", (1 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("QiuLuBaiConvert", (1 + dj).ToString()),
                     new AttackProcedureDefinition(4 + 4 * dj)
                         .AddClosure(QiuLuBaiClosure),
                 }),
@@ -1012,7 +1012,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ManaCostDefinition.FromValue(1),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("ZhiShuiHealth", (4 + 4 * dj).ToString()),
+                    new TrySetValueProcedureDefinition("ZhiShuiHealth", (4 + 4 * dj).ToString()),
                     new AttackProcedureDefinition(4 + 4 * dj)
                         .AddClosure(ZhiShuiClosure),
                 }),
@@ -1024,7 +1024,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Mana | SkillType.Health,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("TiaoHeGain", (1 + 4 * dj).ToString()),
+                    new TrySetValueProcedureDefinition("TiaoHeGain", (1 + 4 * dj).ToString()),
                     new GainBuffProcedureDefinition("灵气", stack: 1),
                     new HealProcedureDefinition(1 + 4 * dj)
                         .AddClosure(TiaoHeClosure),
@@ -1050,7 +1050,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("HaiXiaoConvert", (3 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("HaiXiaoConvert", (3 + dj).ToString()),
                     new AttackProcedureDefinition(14)
                         .AddClosure(HaiXiaoClosure),
                 }),
@@ -1181,9 +1181,9 @@ public class SkillCategory : Category<SkillEntry>
                 },
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("XieYiCrit", "暴击"),
-                    new SetValueProcedureDefinition("XieYiLifeSteal", "吸血"),
-                    new SetValueProcedureDefinition("XieYiPenetrate", "穿透"),
+                    new TrySetValueProcedureDefinition("XieYiCrit", "暴击"),
+                    new TrySetValueProcedureDefinition("XieYiLifeSteal", "吸血"),
+                    new TrySetValueProcedureDefinition("XieYiPenetrate", "穿透"),
                     new AttackProcedureDefinition(10 + 4 * dj)
                         .AddClosure(XieYiClosure),
                 }),
@@ -1195,7 +1195,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Mana,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("QiTunShanHeExtra", (1 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("QiTunShanHeExtra", (1 + dj).ToString()),
                     new GainBuffProcedureDefinition("灵气", 0)
                         .AddClosure(QiTunShanHeClosure),
                 }),
@@ -1207,7 +1207,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("TunTianConvert", (5 - dj).ToString()),
+                    new TrySetValueProcedureDefinition("TunTianConvert", (5 - dj).ToString()),
                     new AttackProcedureDefinition(1)
                         .AddClosure(TunTianClosure),
                 }),
@@ -1263,7 +1263,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ManaCostDefinition.FromValue(1),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("XiaoSongGrow", Fib.ToValue(3 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("XiaoSongGrow", Fib.ToValue(3 + dj).ToString()),
                     new AttackProcedureDefinition(Fib.ToValue(4 + dj))
                         .AddClosure(XiaoSongClosure),
                 }),
@@ -1286,7 +1286,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Mana | SkillType.ZiZhi,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("MingShenGrow", (j >= JingJie.HuaShen ? 2 : 1).ToString()),
+                    new TrySetValueProcedureDefinition("MingShenGrow", (j >= JingJie.HuaShen ? 2 : 1).ToString()),
                     new GainBuffProcedureDefinition("灵气", 1 + dj)
                         .AddClosure(MingShenClosure),
                 }),
@@ -1315,7 +1315,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("LuoYingConvert", (5 - dj).ToString()),
+                    new TrySetValueProcedureDefinition("LuoYingConvert", (5 - dj).ToString()),
                     new CycleProcedureDefinition(WuXing.Mu, gain: 1 + dj)
                         .AddClosure(LuoYingClosure),
                 }),
@@ -1337,7 +1337,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("YiXinYiJianConvert", (5 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("YiXinYiJianConvert", (5 + dj).ToString()),
                     new AttackProcedureDefinition(4 + 4 * dj)
                         .AddClosure(YiXinYiJianClosure),
                 }),
@@ -1367,37 +1367,63 @@ public class SkillCategory : Category<SkillEntry>
 
                         if (s.Owner != d.Src) return;
                         if (d.Listener == s) return;
-                        StageSkill initiator = d.Listener as StageSkill;
-                        if (initiator == null) return;
+                        StageSkill skill = d.Listener as StageSkill;
+                        if (skill == null) return;
+                        if (skill.Entry == s.Entry) return;
 
                         string key = "UsedClosureDict";
-                        s.Owner.Memory.PerformOperation(key, new Dictionary<StageSkill, StageClosure[]>(), record =>
+                        s.Owner.Memory.PerformOperation(key, new Dictionary<StageSkill, List<StageClosure>>(), record =>
                         {
-                            if (record.ContainsKey(initiator))
+                            if (record.ContainsKey(skill))
                             {
-                                bool newHasMore = d.Closures.Length > record[initiator].Length;
+                                bool newHasMore = d.Closures.Length > record[skill].Count;
                                 if (newHasMore)
-                                    record[initiator] = d.Closures;
+                                    record[skill] = d.Closures.ToList();
                                 return record;
                             }
-                            record[initiator] = d.Closures;
+                            record[skill] = d.Closures.ToList();
                             return record;
                         });
                     }),
                 },
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
+                    new TrySetValueProcedureDefinition("CopiedClosures", "||具有所有已触发的攻击描述"),
                     new DirectProcedureDefinition(async d =>
                         {
                             string key = "UsedClosureDict";
-                            Dictionary<StageSkill, StageClosure[]> dict = d.Caster.Memory.TryGetVariable(key, new Dictionary<StageSkill, StageClosure[]>());
+                            Dictionary<StageSkill, List<StageClosure>> dict = d.Caster.Memory.TryGetVariable(key, new Dictionary<StageSkill, List<StageClosure>>());
                             List<StageClosure> flattenedList = new List<StageClosure>();
                             dict.Do(kvp => flattenedList.AddRange(kvp.Value));
                     
                             StageClosure[] closures = flattenedList.ToArray();
                             await d.AttackProcedure(1, closures: closures);
+
+                            Description extraDescription = new Description();
+                            foreach (StageClosure c in closures)
+                            {
+                                extraDescription.AppendSoftReturn();
+                                Description closureDescription = c.Description;
+                                closureDescription.ApplyReplaceValues(d.CastResult);
+                                closureDescription.ApplyCastResult(d.CastResult, c.Key);
+                                extraDescription.Sb.Append(closureDescription);
+                            }
+                            
+                            d.CastResult["CopiedClosures"] = extraDescription.ToString();
                         })
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"1攻\n具有所有已触发的攻击描述")),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) =>
+                        {
+                            DirectProcedureDefinition pd = procedureDefinition as DirectProcedureDefinition;
+        
+                            d.Sb.Append(pd.PostCondDefinition.Description);
+                            
+                            d.Sb.Append($"1攻");
+                            Description closureDescription = "[CopiedClosures]";
+                            closureDescription.ApplyReplaceValues(castResult);
+                            d.Sb.Append(closureDescription);
+                            
+                            d.ApplyStyle(castResult, pd);
+                        }),
                 }),
 
             new(id:                         "0302",
@@ -1433,7 +1459,7 @@ public class SkillCategory : Category<SkillEntry>
                 skillTypeComposite:         SkillType.Health,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("ShengJiGrow", Fib.ToValue(2 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("ShengJiGrow", Fib.ToValue(2 + dj).ToString()),
                     new HealProcedureDefinition(2 + 4 * dj)
                         .AddClosure(ShengJiClosure),
                 }),
@@ -1590,7 +1616,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainArmorProcedureDefinition(2, induced: true),
                     new GainBuffProcedureDefinition("天衣无缝", 1 + 4 * dj)
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"直到使用攻击牌：每回合{1 + 4 * dj}攻不消耗剑意")),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"直到使用攻击牌：每回合{1 + 4 * dj}攻，不消耗剑意")),
                 }),
             
             new(id:                         "0404",
@@ -1652,7 +1678,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       HealthCostDefinition.FromDj(dj => Fib.ToValue(5 + dj)),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("HongTianExtra", Fib.ToValue(6 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("HongTianExtra", Fib.ToValue(6 + dj).ToString()),
                     new AttackProcedureDefinition(Fib.ToValue(6 + dj))
                         .AddClosure(HongTianClosure),
                 }),
@@ -1908,7 +1934,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ChannelCostDefinition.FromValue(1),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("ShouShiGain", (2 * Fib.ToValue(4 + dj)).ToString()),
+                    new TrySetValueProcedureDefinition("ShouShiGain", (2 * Fib.ToValue(4 + dj)).ToString()),
                     new GainArmorProcedureDefinition(Fib.ToValue(4 + dj))
                         .AddClosure(ShouShiClosure),
                 }),
@@ -1973,7 +1999,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("锻体", 6 + dj),
-                    new SetValueProcedureDefinition("DuanSuiConvert", (1 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("DuanSuiConvert", (1 + dj).ToString()),
                     new HealProcedureDefinition(0)
                         .AddClosure(DuanSuiClosure),
                     new RemoveExtraMaxHealthProcedureDefinition(),
@@ -1986,7 +2012,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("YangShengHealth", (10 + 10 * dj).ToString()),
+                    new TrySetValueProcedureDefinition("YangShengHealth", (10 + 10 * dj).ToString()),
                     new HealProcedureDefinition(10 + 10 * dj)
                         .AddClosure(YangShengClosure),
                     new SetActionPointProcedureDefinition(2)
@@ -2160,7 +2186,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ManaCostDefinition.FromValue(2),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("LiuXianConvert", (9 - dj).ToString()),
+                    new TrySetValueProcedureDefinition("LiuXianConvert", (9 - dj).ToString()),
                     new AttackProcedureDefinition(9 + 3 * dj)
                         .AddClosure(LiuXianClosure),
                 }),
@@ -2172,13 +2198,13 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("LiaoYuanGrow", 1.ToString())
+                    new TrySetValueProcedureDefinition("LiaoYuanGrow", 1.ToString())
                         .SetPreCondDefinition(PreCondDefinition.LeYuanYing),
                     new CycleProcedureDefinition(WuXing.Huo, gain: 1 + dj)
                         .AddClosure(LiaoYuanClosure)
                         .SetPreCondDefinition(PreCondDefinition.LeYuanYing),
                     
-                    new SetValueProcedureDefinition("LiaoYuanGrow", 2.ToString())
+                    new TrySetValueProcedureDefinition("LiaoYuanGrow", 2.ToString())
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                     new CycleProcedureDefinition(WuXing.Huo, gain: 3)
                         .AddClosure(LiaoYuanClosure)
@@ -2361,7 +2387,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("灵气", 2 + dj),
-                    new SetValueProcedureDefinition("JianJiBuConvert", (1 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("JianJiBuConvert", (1 + dj).ToString()),
                     new GainArmorProcedureDefinition(0)
                         .AddClosure(JianJiBuClosure),
                 }),
@@ -2564,7 +2590,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new ExhaustProcedureDefinition(),
-                    new GiveBuffProcedureDefinition("跳回合", 2)
+                    new GiveBuffProcedureDefinition("跳行动", 2)
                         .SetPostCondDefinition(PostCondDefinition.StartStage),
                 }),
 
@@ -2731,7 +2757,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ManaCostDefinition.FromValue(2),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("LiuXianConvert", (9 - dj).ToString()),
+                    new TrySetValueProcedureDefinition("LiuXianConvert", (9 - dj).ToString()),
                     new AttackProcedureDefinition(9 + 3 * dj)
                         .AddClosure(LiuXianClosure),
                 }),
@@ -2755,13 +2781,13 @@ public class SkillCategory : Category<SkillEntry>
                 overridingMergeRule:        DreamCard,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("LiaoYuanGrow", 1.ToString())
+                    new TrySetValueProcedureDefinition("LiaoYuanGrow", 1.ToString())
                         .SetPreCondDefinition(PreCondDefinition.LeYuanYing),
                     new CycleProcedureDefinition(WuXing.Huo, gain: 1 + dj)
                         .AddClosure(LiaoYuanClosure)
                         .SetPreCondDefinition(PreCondDefinition.LeYuanYing),
                     
-                    new SetValueProcedureDefinition("LiaoYuanGrow", 2.ToString())
+                    new TrySetValueProcedureDefinition("LiaoYuanGrow", 2.ToString())
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                     new CycleProcedureDefinition(WuXing.Huo, gain: 3)
                         .AddClosure(LiaoYuanClosure)
@@ -2876,7 +2902,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new CycleProcedureDefinition(WuXing.Jin, gain: 1),
-                    new SetValueProcedureDefinition("WanQianGuangHuiConvert", (2 + dj).ToString()),
+                    new TrySetValueProcedureDefinition("WanQianGuangHuiConvert", (2 + dj).ToString()),
                     new AttackProcedureDefinition(0)
                         .AddClosure(WanQianGuangHuiClosure),
                 }),
@@ -2899,7 +2925,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new SetValueProcedureDefinition("SuiYueGain", (3 + 2 * dj).ToString()),
+                    new TrySetValueProcedureDefinition("SuiYueGain", (3 + 2 * dj).ToString()),
                     new AttackProcedureDefinition(10 + 10 * dj)
                         .AddClosure(SuiYueClosure),
                 }),

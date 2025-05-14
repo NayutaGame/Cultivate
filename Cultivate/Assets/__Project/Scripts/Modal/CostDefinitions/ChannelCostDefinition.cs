@@ -58,15 +58,15 @@ public class ChannelCostDefinition : CostDefinition
     public override async UniTask ApplyCost(CostDetails d)
     {
         int counter = d.Counter;
-        ChannelDetails channelDetails = new ChannelDetails(d.Entity, d.Skill, counter, Value, 1);
+        ChannelDetails channelDetails = new ChannelDetails(d.Entity, d.Skill, counter, d.Value, 1);
         await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL, channelDetails);
 
         d.Blocking = counter > 0;
         if (d.Blocking)
         {
             await d.Env.PlayAsync(new ShiftAnimation());
-            d.Env.Result.TryAppendChannelNote(d.Entity.Index, d.Skill, counter, Value);
-            d.Env.Result.TryAppend($"{d.Entity.GetName()}正在吟唱{d.Skill.Entry.GetName()} 进度: {counter}//{Value} 将推进：{channelDetails.ProgressGain}\n");
+            d.Env.Result.TryAppendChannelNote(d.Entity.Index, d.Skill, counter, d.Value);
+            d.Env.Result.TryAppend($"{d.Entity.GetName()}正在吟唱{d.Skill.Entry.GetName()} 进度: {counter}//{d.Value} 将推进：{channelDetails.ProgressGain}\n");
             counter -= channelDetails.ProgressGain;
             counter = Mathf.Max(0, counter);
             d.Counter = counter;

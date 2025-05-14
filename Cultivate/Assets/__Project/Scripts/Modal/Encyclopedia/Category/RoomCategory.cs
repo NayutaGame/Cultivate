@@ -1334,7 +1334,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor B1 = new DialogPanelDescriptor(
                             titleText: "缘分",
                             detailedText: "你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
-                        .SetReward(new AddSkillReward("0603", JingJie.JinDan));
+                        .SetReward(new AddSkillReward("0603", RunManager.Instance.Environment.JingJie));
 
                     DialogPanelDescriptor C = new(
                         titleText: "缘分",
@@ -1343,7 +1343,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor C1 = new DialogPanelDescriptor(
                             titleText: "缘分",
                             detailedText: "你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
-                        .SetReward(new AddSkillReward("0604", JingJie.JinDan));
+                        .SetReward(new AddSkillReward("0604", RunManager.Instance.Environment.JingJie));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);

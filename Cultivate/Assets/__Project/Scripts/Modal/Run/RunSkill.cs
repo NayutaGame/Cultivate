@@ -111,14 +111,14 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
 
     public string GetHighlight(JingJie showingJingJie)
     {
+        if (_jingJie != showingJingJie)
+            return GetEntry().GetHighlight(showingJingJie);
+        
         string actualDescription = _skillSlot?.ActualDescription;
         if (actualDescription != null)
             return actualDescription;
 
-        if (_jingJie == showingJingJie)
-            return SkillDefinition.GetLiteralDescriptionHighlighted();
-        
-        return GetEntry().GetHighlight(showingJingJie);
+        return SkillDefinition.GetLiteralDescriptionHighlighted();
     }
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)

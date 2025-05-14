@@ -43,7 +43,8 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
     private SpriteEntry _spriteEntry;
     private SkillDefinition[] _skillDefinitions;
-    public SkillDefinition GetSkillDefinitionFromDj(int dj) => _skillDefinitions[dj];
+    public SkillDefinition GetSkillDefinitionFromDj(int dj)
+        => _skillDefinitions[dj.Clamp(0, HighestJingJie - LowestJingJie)];
 
     public SkillEntry(string id,
         string name,
@@ -139,7 +140,7 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
     public JingJie GetJingJie() => LowestJingJie;
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
-        => _skillDefinitions[showingJingJie - LowestJingJie].GetLiteralCostDescription();
+        => GetSkillDefinitionFromDj(showingJingJie - LowestJingJie).GetLiteralCostDescription();
     public string GetHighlight(JingJie showingJingJie) => GetHighlight(showingJingJie, null, null);
     public Sprite GetJingJieSprite(JingJie showingJingJie) => CanvasManager.Instance.JingJieSprites[showingJingJie];
     public JingJie NextJingJie(JingJie showingJingJie)

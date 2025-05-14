@@ -100,7 +100,7 @@ public class StageEntity : Addressable, StageClosureListener
             await _env.PlayAsync(new ShiftAnimation());
             
             _env.Result.TryAppend($"{GetName()}使用了{castDetails.Skill.Entry.GetName()}的开局效果");
-            SkillDefinition skillDefinition = skill.GetSkillDefinition();
+            SkillDefinition skillDefinition = castDetails.Skill.GetSkillDefinition();
             await skillDefinition.Cast(castDetails);
 
             CostDescription actualCostDescription = CostDescription.Empty;
@@ -126,7 +126,7 @@ public class StageEntity : Addressable, StageClosureListener
         await _env.PlayAsync(new ShiftAnimation());
         _env.Result.TryAppend($"{GetName()}使用了{castDetails.Skill.Entry.GetName()}");
         
-        SkillDefinition skillDefinition = skill.GetSkillDefinition();
+        SkillDefinition skillDefinition = castDetails.Skill.GetSkillDefinition();
         await skillDefinition.Cast(castDetails);
         
         CostDescription actualCostDescription = _costDetails.CostDescription.Clone();
@@ -134,7 +134,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
         _env.Result.TryAppend($"\n");
 
-        TryWriteResultToSlot(shouldWriteToSlot, skill, actualCostDescription, actualDescription);
+        TryWriteResultToSlot(shouldWriteToSlot, castDetails.Skill, actualCostDescription, actualDescription);
 
         if (this == castDetails.Skill.Owner)
             castDetails.Skill.IncreaseRealCastedCount();

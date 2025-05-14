@@ -27,11 +27,11 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         DifficultyProfile = difficultyProfile;
         PacksToStartWith = packsToStartWith ?? GetCharacter().GetDefaultPacks();
         // MapEntry = mapEntry ?? "标准无教程";
-        // MapEntry = mapEntry ?? "标准";
+        MapEntry = mapEntry ?? "标准";
         // MapEntry = mapEntry ?? "发现";
         
         // MapEntry = mapEntry ?? "测试";
-        MapEntry = mapEntry ?? "测试墨染";
+        // MapEntry = mapEntry ?? "测试墨染";
         // MapEntry = mapEntry ?? "动画测试";
         // MapEntry = mapEntry ?? "境界测试";
         // MapEntry = mapEntry ?? "多段测试";

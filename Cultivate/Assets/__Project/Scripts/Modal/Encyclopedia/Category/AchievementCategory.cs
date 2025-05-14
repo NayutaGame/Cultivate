@@ -119,7 +119,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH005",
                 name: "不染凡尘",
-                conditionDescription: "手牌和准备区共计5张丹药牌",
+                conditionDescription: "手牌和准备区共计3张丹药牌",
                 rewardDescription: "徐福可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 4),
                 runClosures: new RunClosure[]
@@ -137,7 +137,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         string key = "MaxDepleteCardCounts";
                         p.Memory.PerformOperation(key, 0, v => Mathf.Max(depleteCardCounts, v));
 
-                        if (depleteCardCounts < 5) return;
+                        if (depleteCardCounts < 3) return;
 
                         p.Unlock();
                     })
@@ -797,7 +797,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH031",
                 name: "缘法天成",
-                conditionDescription: "手牌和准备区中，共计多于3张无属性牌",
+                conditionDescription: "手牌和准备区中，共计多于5张无属性牌",
                 rewardDescription: "风雨晴可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 2),
                 runClosures: new RunClosure[]
@@ -812,7 +812,7 @@ public class AchievementCategory : Category<AchievementEntry>
                             .TraversalSkills()
                             .Count(skill => !skill.GetEntry().GetWuXing().HasValue);
 
-                        if (noAttributeCardCount <= 3) return;
+                        if (noAttributeCardCount <= 5) return;
 
                         p.Unlock();
                     })

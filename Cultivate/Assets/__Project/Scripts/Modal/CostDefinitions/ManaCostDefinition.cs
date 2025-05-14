@@ -70,7 +70,7 @@ public class ManaCostDefinition : CostDefinition
 
     public void PayWithMana(CostDetails costDetails, ref ManaConsumptionDetails d)
     {
-        int manaRequirement = Value;
+        int manaRequirement = costDetails.Value;
         int availableMana = costDetails.Entity.GetStackOfBuff("灵气");
         if (availableMana >= manaRequirement)
         {
@@ -88,7 +88,7 @@ public class ManaCostDefinition : CostDefinition
         if (d.manaSufficient)
             return;
 
-        int manaRequirement = Value;
+        int manaRequirement = costDetails.Value;
         int suoHunStack = costDetails.Entity.GetStackOfBuff("塑魂");
         if (suoHunStack <= 0)
             return;
@@ -106,7 +106,7 @@ public class ManaCostDefinition : CostDefinition
 
     public override async UniTask ApplyCost(CostDetails costDetails)
     {
-        Assert.IsTrue(Value >= 0);
+        Assert.IsTrue(costDetails.Value >= 0);
         ManaConsumptionDetails d = new ManaConsumptionDetails();
         d.Reset();
 

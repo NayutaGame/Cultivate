@@ -1,9 +1,17 @@
 
+using CLLibrary;
+
 public class CostDescription
 {
     public CostType Type;
     public CostState State;
-    public int Value;
+    private int _value;
+
+    public int Value
+    {
+        get => _value;
+        set => _value = value.ClampLower(0);
+    }
 
     public CostDescription(CostType type, CostState state, int value)
     {
