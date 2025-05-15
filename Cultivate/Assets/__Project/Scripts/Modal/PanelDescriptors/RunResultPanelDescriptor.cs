@@ -12,7 +12,7 @@ public class RunResultPanelDescriptor : PanelDescriptor
     private AchievementProfile[] _newUnlocks;      // 新解锁成就
     private Profile _profile;                      // 玩家存档
 
-    private RunMilestone[] _milestones;
+    private ListModel<RunMilestone> _milestones;
 
     private int _initialExperience;
     private int _finalExperience;
@@ -25,6 +25,7 @@ public class RunResultPanelDescriptor : PanelDescriptor
         _accessors = new()
         {
             { "Guide",                    GetGuideDescriptor },
+            { "Milestones",               () => _milestones },
         };
 
         Debug.Assert(env != null, "RunEnvironment cannot be null");
@@ -36,9 +37,11 @@ public class RunResultPanelDescriptor : PanelDescriptor
         _newUnlocks = env.TraversalNewlyUnlockedAchievements().ToArray();
         _profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         
-        _milestones = _result.GetCompletedMilestones(env);
-        _experienceGain = _milestones.Sum(m => m.ExperienceGain) + 
-                        _newUnlocks.Sum(ap => ap.GetEntry().GetExperienceGain());
+        RunMilestone[] milestones = _result.GetCompletedMilestones(env);
+        _milestones = new();
+        _milestones.AddRange(milestones);
+        _experienceGain = milestones.Sum(m => m.ExperienceGain) + 
+                          _newUnlocks.Sum(ap => ap.GetEntry().GetExperienceGain());
 
         _initialExperience = _profile.GetExperience();
         _initialLevel = _profile.GetLevel();

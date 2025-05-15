@@ -32,6 +32,17 @@ public class RunResultPanel : Panel
         ReturnButton.onClick.RemoveAllListeners();
         ReturnButton.onClick.AddListener(Return);
     }
+
+    protected override Animator InitAnimator()
+    {
+        // 0 for hide, 1 for show
+        Animator animator = new(2, "Dialog Panel");
+        animator[0, 1] = EnterIdle;
+        animator[-1, 0] = EnterHide;
+        
+        animator.SetState(0);
+        return animator;
+    }
     
     public override void Refresh()
     {
@@ -54,7 +65,8 @@ public class RunResultPanel : Panel
         DifficultyText.text = panelDescriptor.GetDifficulty();
         PlayTimeText.text = panelDescriptor.GetPlayTime();
 
-        // AchievementEntryList.SetModel(...);
+        Address address = new Address("Run.Environment.ActivePanel");
+        MilestoneList.SetAddress(address.Append(".Milestones"));
 
         _details = new(panelDescriptor.GetInitialExperience(), panelDescriptor.GetInitialLevel(), panelDescriptor.GetExperienceGain());
 
@@ -65,22 +77,19 @@ public class RunResultPanel : Panel
         // UnlockList.SetModel(...);
     }
 
-    private void PlayAnimation(ExperienceAnimationDetails details)
+    private Tween ScoringAnimation()
     {
         const float SPEED = 500;
-        float totalTime = details.ExperienceGain / SPEED;
+        float totalTime = _details.ExperienceGain / SPEED;
 
         _experienceProgress = 0;
         _levelProgress = 0;
 
-        _handle?.Kill();
-        _handle = DOTween.To(Getter, Setter, details.ExperienceGain, totalTime).SetEase(Ease.Linear);
-        _handle.SetAutoKill();
-        _handle.Restart();
+        return DOTween.To(Getter, Setter, _details.ExperienceGain, totalTime).SetEase(Ease.Linear);
     }
 
-    private int _experienceProgress = 0;
-    private int _levelProgress = 0;
+    private int _experienceProgress;
+    private int _levelProgress;
 
     public int Getter()
     {
@@ -91,14 +100,9 @@ public class RunResultPanel : Panel
     {
         _experienceProgress = value;
 
-        int currValue = _details.InitialExperience + _experienceProgress;
-        if (currValue >= 1000)
-        {
-            // 升级
-            currValue -= 1000;
-            _levelProgress++;
-            LevelText.text = $"{_details.InitialLevel + _levelProgress}";
-        }
+        int total = _details.InitialExperience + _experienceProgress;
+        _levelProgress = total / 1000;
+        LevelText.text = $"{_details.InitialLevel + _levelProgress}";
 
         // ExperienceSlider.value = currValue;
         ExperienceGainText.text = $"+{_experienceProgress}";
@@ -108,4 +112,11 @@ public class RunResultPanel : Panel
     {
         RunManager.Instance.ReturnToTitle();
     }
+
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE))
+            // .Append(ScoringAnimation())
+        ;
 }
