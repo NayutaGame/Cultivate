@@ -1395,7 +1395,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new(
                         titleText: "辩论",
                         detailedText: "你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
-                        "赞同月亮是变化的", "赞同月亮是不变的", "变得不是月亮，而是人");
+                        "赞同月亮是变化的", "赞同月亮是不变的", "变的不是月亮，而是人");
 
                     DialogPanelDescriptor B = new DialogPanelDescriptor(
                             titleText: "辩论",
