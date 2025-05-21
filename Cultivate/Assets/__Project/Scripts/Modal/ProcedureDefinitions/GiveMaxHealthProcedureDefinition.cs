@@ -3,17 +3,28 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class RemoveExtraMaxHealthProcedureDefinition : ProcedureDefinition
+public class GiveMaxHealthProcedureDefinition : ProcedureDefinition
 {
-    public RemoveExtraMaxHealthProcedureDefinition() { }
+    public int Value;
+    public bool Induced;
 
-    protected RemoveExtraMaxHealthProcedureDefinition(
+    public GiveMaxHealthProcedureDefinition(int value, bool induced)
+    {
+        Value = value;
+        Induced = induced;
+    }
+
+    protected GiveMaxHealthProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
-        List<StageClosure> closures) :
+        List<StageClosure> closures,
+        int value,
+        bool induced) :
         base(preCondDefinition, postCondDefinition, getDescription, closures)
     {
+        Value = value;
+        Induced = induced;
     }
 
     public override ProcedureDefinition Clone()
@@ -22,32 +33,35 @@ public class RemoveExtraMaxHealthProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new RemoveExtraMaxHealthProcedureDefinition(
+        return new GiveMaxHealthProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
-            closures: clonedClosures
+            closures: clonedClosures,
+            value: Value,
+            induced: Induced
         );
     }
+    
+    public GainMaxHealthDetails GetDetailsFromCastDetails(CastDetails d)
+        => new(
+            entity: d.Caster.Opponent(),
+            value: Value,
+            listener: d.Skill,
+            castResult: d.CastResult,
+            closures: ClosuresArray,
+            induced: Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
-    {
-        if (Closures != null)
-            foreach (StageClosure closure in Closures)
-            {
-                if (closure.Description == null)
-                    return;
-                castDetails.CastResult.Append(closure.Key, false);
-            }
-        await castDetails.RemoveExtraMaxHealth();
-    }
+        => await castDetails.Env.GainMaxHealthProcedure(GetDetailsFromCastDetails(castDetails));
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        RemoveExtraMaxHealthProcedureDefinition pd = procedureDefinition as RemoveExtraMaxHealthProcedureDefinition;
-        
+        GainMaxHealthProcedureDefinition pd = procedureDefinition as GainMaxHealthProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append("移除多余气血上限");
+        
+        if (pd.Value != 0)
+            description.Sb.Append($"给予{pd.Value}气血上限");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -55,7 +69,7 @@ public class RemoveExtraMaxHealthProcedureDefinition : ProcedureDefinition
                 description.AppendSoftReturn();
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
-                closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         

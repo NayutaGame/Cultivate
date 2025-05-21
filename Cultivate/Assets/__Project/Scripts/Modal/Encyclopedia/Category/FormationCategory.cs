@@ -355,7 +355,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后暂时移出本场战斗" +
+                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                                                                                     "\n4张：燃命时：灼烧+1" +
                                                                                     "\n6张：每回合：剑意+1" +
                                                                                     "\n9张：每轮气血恢复至上限",
@@ -367,7 +367,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("升华");
+                                await f.Owner.GainBuffProcedure("火升华");
                                 await f.Owner.GainBuffProcedure("淬体");
                                 await f.Owner.GainBuffProcedure("剑心");
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
@@ -377,7 +377,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后暂时移出本场战斗" +
+                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                         "\n4张：燃命时：灼烧+1" +
                         "\n6张：每回合：剑意+1" +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -389,7 +389,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("升华");
+                                await f.Owner.GainBuffProcedure("火升华");
                                 await f.Owner.GainBuffProcedure("淬体");
                                 await f.Owner.GainBuffProcedure("剑心");
                             }),
@@ -398,7 +398,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后暂时移出本场战斗" +
+                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                         "\n4张：燃命时：灼烧+1" +
                         "\n6张：每回合：剑意+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -410,7 +410,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("升华");
+                                await f.Owner.GainBuffProcedure("火升华");
                                 await f.Owner.GainBuffProcedure("淬体");
                             }),
                         }),
@@ -418,7 +418,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后暂时移出本场战斗" +
+                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                         "\n4张：燃命时：灼烧+1".ApplyInactive() +
                         "\n6张：每回合：剑意+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -430,14 +430,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
-                                await f.Owner.GainBuffProcedure("升华");
+                                await f.Owner.GainBuffProcedure("火升华");
                             }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张牌后暂时移出本场战斗".ApplyInactive() +
+                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗".ApplyInactive() +
                         "\n4张：燃命时：灼烧+1".ApplyInactive() +
                         "\n6张：每回合：剑意+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive()),

@@ -67,7 +67,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 description:         "集攻防于一体的剑舞。每一式都蕴含多重变化，可攻可守，令敌人难以应对。",
                 trivia:              "剑法灵感来自归鸿展翅，十二式浑然一体，如同天成。",
-                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "拂晓", "长明", "登宝塔", "一舞惊鸿" },
+                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "晚霞", "长明", "登宝塔", "一舞惊鸿" },
                 startCardNames:      new string[] { "云袖", "正念", "战意" }
                 ),
             
@@ -76,8 +76,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 description:         "以燃烧气血为代价，爆发出惊人的威力。使用者与敌人同归于尽的觉悟越强，威力越大。",
                 trivia:              "此功原是佛门明王法，后流落江湖，习者多有走火入魔之危。",
-                cardNames:           new string[] { "轰天", "明镜", "怒瞳", "舍生", "不动明王诀", "浴火", "晚霞", "观众生", "常夏" },
-                startCardNames:      new string[] { "轰天", "明镜", "怒瞳" }
+                cardNames:           new string[] { "一力降十会", "轰天", "拂晓", "明镜", "浴火", "藏锋", "顺势斩", "观众生", "常夏" },
+                startCardNames:      new string[] { "轰天", "一力降十会", "拂晓" }
                 ),
             
             new(id:                  "0009",
@@ -85,8 +85,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Tu,
                 description:         "以厚重的护体真气抵御伤害。越是危险的处境，防御越是坚不可摧。",
                 trivia:              "须弥山不动，此功亦如是。传说创功之人曾以此功硬接天雷而不伤。",
-                cardNames:           new string[] { "寸劲", "八极拳", "活步", "滑步", "震脚", "无畏", "崩山掌", "架势", "须弥结界" },
-                startCardNames:      new string[] { "寸劲", "八极拳", "活步" }
+                cardNames:           new string[] { "寸劲", "滑步", "守势", "澄心", "八极拳", "龟息", "震脚", "崩山掌", "须弥结界" },
+                startCardNames:      new string[] { "寸劲", "滑步", "守势" }
                 ),
             
             new(id:                  "0010",
@@ -94,8 +94,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Tu,
                 description:         "以刚猛的力道摧毁一切。修炼者需苦练筋骨，方能发挥此功真正威力。",
                 trivia:              "四则：炼筋、锻骨、淬体、养气。此功重在基础，却也最难练至大成。",
-                cardNames:           new string[] { "固元", "守势", "一力降十会", "守势", "顺势斩", "磐石", "锻髓", "养生", "疯魔" },
-                startCardNames:      new string[] { "固元", "守势", "一力降十会" }
+                cardNames:           new string[] { "隼击", "霸王", "锻骨", "固元", "封喉", "瓮城", "养生", "磐石", "疯魔" },
+                startCardNames:      new string[] { "隼击", "霸王", "锻骨" }
                 ),
             
             new(id:                  "0011",

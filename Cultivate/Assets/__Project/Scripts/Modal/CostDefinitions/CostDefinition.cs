@@ -55,8 +55,8 @@ public abstract class CostDefinition
             foreach (StageClosure c in Closures)
             {
                 Description closureDescription = c.Description;
-                // closureDescription.ApplyReplaceValues(castResult);
-                // closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyReplaceValues(costResult);
+                closureDescription.ApplyResult(costResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         

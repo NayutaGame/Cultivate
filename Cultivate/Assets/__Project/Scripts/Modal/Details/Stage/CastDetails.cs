@@ -164,9 +164,4 @@ public class CastDetails : StageClosureDetails
         if (gap > 0)
             await Env.BurnProcedure(Caster, gap, induced);
     }
-
-    public async UniTask RemoveExtraMaxHealth(bool induced = false)
-    {
-        Caster.MaxHp = Caster.Hp;
-    }
 }

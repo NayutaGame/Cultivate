@@ -89,7 +89,7 @@ public class CycleProcedureDefinition : ProcedureDefinition
                 description.AppendSoftReturn();
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
-                closureDescription.ApplyCastResult(castResult, c.Key);
+                closureDescription.ApplyResult(castResult, c.Key);
                 description.Sb.Append(closureDescription);
             }
         

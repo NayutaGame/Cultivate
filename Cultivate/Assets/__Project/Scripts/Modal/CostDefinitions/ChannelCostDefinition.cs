@@ -1,5 +1,6 @@
 
 using System;
+using CLLibrary;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -52,27 +53,26 @@ public class ChannelCostDefinition : CostDefinition
         }
         
         await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL_COST, d);
-        d.Counter = Value;
+        d.Counter = d.Value;
     }
     
     public override async UniTask ApplyCost(CostDetails d)
     {
-        int counter = d.Counter;
-        ChannelDetails channelDetails = new ChannelDetails(d.Entity, d.Skill, counter, d.Value, 1);
+        int oldProgress = d.Counter;
+        ChannelDetails channelDetails = new ChannelDetails(d.Entity, d.Skill, oldProgress, d.Value, 1);
         await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL, channelDetails);
 
-        d.Blocking = counter > 0;
+        int newProgress = oldProgress - channelDetails.ProgressGain;
+
+        d.Blocking = newProgress >= 0;
         if (d.Blocking)
         {
             await d.Env.PlayAsync(new ShiftAnimation());
-            d.Env.Result.TryAppendChannelNote(d.Entity.Index, d.Skill, counter, d.Value);
-            d.Env.Result.TryAppend($"{d.Entity.GetName()}正在吟唱{d.Skill.Entry.GetName()} 进度: {counter}//{d.Value} 将推进：{channelDetails.ProgressGain}\n");
-            counter -= channelDetails.ProgressGain;
-            counter = Mathf.Max(0, counter);
-            d.Counter = counter;
+            d.Env.Result.TryAppendChannelNote(d.Entity.Index, d.Skill, oldProgress, d.Value);
+            d.Env.Result.TryAppend($"{d.Entity.GetName()}正在吟唱{d.Skill.Entry.GetName()} 进度: {oldProgress}//{d.Value} 将推进：{channelDetails.ProgressGain}\n");
+            d.Counter = newProgress.ClampLower(0);
+            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL, channelDetails);
         }
-        
-        await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_CHANNEL, channelDetails);
     }
 
     public override async UniTask DidCostEvent(CostDetails d)

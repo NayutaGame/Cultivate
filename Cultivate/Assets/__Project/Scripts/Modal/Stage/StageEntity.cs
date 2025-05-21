@@ -228,6 +228,9 @@ public class StageEntity : Addressable, StageClosureListener
         }
     }
 
+    public int MaxHpDiff
+        => Mathf.Abs(MaxHp - Opponent().MaxHp);
+
     private int _armor;
     public int Armor
     {
@@ -285,7 +288,6 @@ public class StageEntity : Addressable, StageClosureListener
     public bool HasNeiShangRecord;
     public bool HasFuXiuRecord;
 
-    public bool TriggeredEndRecord;
     public bool TriggeredFirstTimeRecord;
 
     public bool DeathCauseIsAttack;
@@ -335,7 +337,6 @@ public class StageEntity : Addressable, StageClosureListener
         HasNeiShangRecord = false;
         HasFuXiuRecord = false;
         
-        TriggeredEndRecord = false;
         TriggeredFirstTimeRecord = false;
 
         DeathCauseIsAttack = false;
@@ -572,6 +573,9 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask DispelProcedure(int stack, ResultDict castResult = null, bool induced = false)
         => await _env.DispelProcedure(new DispelDetails(this, stack, null, null, castResult, induced));
 
+    public async UniTask LoseMaxHealthProcedure(int value, ResultDict castResult = null, bool induced = false)
+        => await _env.LoseMaxHealthProcedure(new LoseMaxHealthDetails(this, value, null, castResult, null, induced));
+
     public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
         if (stack == 0)
@@ -620,6 +624,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Register(this, RecordActualHeal);
         _env.ClosureDict.Register(this, RecordBurnTimes);
         _env.ClosureDict.Register(this, RecordHighestMana);
+        _env.ClosureDict.Register(this, RecordHighestJianYi);
         _env.ClosureDict.Register(this, OppoLoseArmorTimes);
     }
 
@@ -628,6 +633,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Unregister(this, RecordActualHeal);
         _env.ClosureDict.Unregister(this, RecordBurnTimes);
         _env.ClosureDict.Unregister(this, RecordHighestMana);
+        _env.ClosureDict.Unregister(this, RecordHighestJianYi);
         _env.ClosureDict.Unregister(this, OppoLoseArmorTimes);
     }
 
@@ -665,6 +671,19 @@ public class StageEntity : Addressable, StageClosureListener
             if (d.BuffEntry.GetName() != "灵气") return;
             
             entity.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("灵气")));
+        });
+
+    public static string HighestJianYiKey = "HighestMana";
+    private static StageClosure RecordHighestJianYi =
+        new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closure, closureDetails) =>
+        {
+            StageEntity entity = owner as StageEntity;
+            GainBuffDetails d = (GainBuffDetails)closureDetails;
+
+            if (entity != d.Tgt) return;
+            if (d.BuffEntry.GetName() != "剑意") return;
+            
+            entity.Memory.PerformOperation(HighestJianYiKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("剑意")));
         });
 
     public static string OppoLoseArmorTimesKey = "OppoLoseArmorTimes";

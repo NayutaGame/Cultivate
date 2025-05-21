@@ -84,6 +84,8 @@ public class StageSkill : StageClosureListener
 
     public SkillTypeComposite GetSkillType()
         => _entry.GetSkillTypeComposite();
+    public int J
+        => GetJingJie();
     public int Dj
         => GetJingJie() - _entry.LowestJingJie;
     public bool IsOdd
@@ -109,16 +111,30 @@ public class StageSkill : StageClosureListener
     {
         get
         {
-            bool isEnd = (SlotIndex == _owner._skills.Length - 1) || (SlotIndex == _owner._skills.Length - 2 && _owner.GetStackOfBuff("连岳") > 0);
+            bool lianYue = _owner.GetStackOfBuff("连岳") > 0;
 
-            if (isEnd)
-                _owner.TriggeredEndRecord = true;
-            return isEnd;
+            int slot = 0;
+            
+            int capacity = lianYue ? 2 : 1;
+            for (int i = _owner._skills.Length - 1; i >= 0; i--)
+            {
+                StageSkill skill = _owner._skills[i];
+                if (skill.Exhausted)
+                    continue;
+                capacity--;
+                if (capacity == 0)
+                {
+                    slot = i;
+                    break;
+                }
+            }
+            
+            return SlotIndex >= slot;
         }
     }
     
     public bool NoOtherAttack
-        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Attack));
+        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Attack) || skill._exhausted);
     public bool NoOtherLingQi
         => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Mana));
     public bool NoAttackAdjacents

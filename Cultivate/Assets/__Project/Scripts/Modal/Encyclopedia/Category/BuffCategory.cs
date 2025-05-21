@@ -1015,7 +1015,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
             
-            new("长明", "下1次攻击不会消耗剑意", BuffStackRule.Add, true, false,
+            new("保留剑意", "下1次攻击保留剑意", BuffStackRule.Add, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_FULL_ATTACK, 0, async (owner, closure, closureDetails) =>
@@ -1064,21 +1064,6 @@ public class BuffCategory : Category<BuffEntry>
                         {
                             b.Emphasize();
                             await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
-                        }
-                    }),
-                }),
-            
-            new("业火", "卡牌变成升华时：使用2次", BuffStackRule.One, true, false,
-                closures: new StageClosure[]
-                {
-                    new(StageClosureDict.DID_EXHAUST, 0, async (owner, closure, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        ExhaustDetails d = (ExhaustDetails)closureDetails;
-                        if (b.Owner == d.Owner)
-                        {
-                            b.Emphasize();
-                            await d.Owner.CastProcedure(d.Skill);
                         }
                     }),
                 }),
@@ -1176,7 +1161,7 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
-            new("通透世界", "永久穿透和集中", BuffStackRule.One, true, false,
+            new("通透世界", "己方所有攻击具有穿透", BuffStackRule.One, true, false,
                 closures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_ATTACK, -1, async (owner, closure, closureDetails) =>
@@ -1342,6 +1327,24 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Caster) return;
                         if (d.Skill.Exhausted) return;
+                        
+                        b.Emphasize();
+                        await d.Skill.ExhaustProcedure();
+                        await b.LoseStackProcedure();
+                    }),
+                }),
+            
+            new("火升华", "下一张火属性牌在使用后，暂时移出卡组，战斗结束返还", BuffStackRule.Add, true, false,
+                closures: new StageClosure[]
+                {
+                    new(StageClosureDict.DID_CAST, 0, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        CastDetails d = (CastDetails)closureDetails;
+
+                        if (b.Owner != d.Caster) return;
+                        if (d.Skill.Exhausted) return;
+                        if (d.Skill.Entry.GetWuXing() != WuXing.Huo) return;
                         
                         b.Emphasize();
                         await d.Skill.ExhaustProcedure();

@@ -41,7 +41,7 @@ public class Description
         return sb.ToString();
     }
 
-    public void ApplyCastResult(ResultDict castResult, string key)
+    public void ApplyResult(ResultDict castResult, string key)
         => ApplyStyle(castResult, key);
     
     public void ApplyStyle(ResultDict castResult, string styleKey)

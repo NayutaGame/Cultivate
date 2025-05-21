@@ -35,7 +35,8 @@ public class PostCondDefinition
     public static readonly PostCondDefinition FullHealth = new(async (env, entity, skill, startStage) => entity.IsFullHealth, "满血：");
     public static readonly PostCondDefinition LowHealth = new(async (env, entity, skill, startStage) => entity.IsLowHealth, "残血：");
     public static readonly PostCondDefinition NoOtherAttack = new(async (env, entity, skill, startStage) => skill.NoOtherAttack, "唯一攻击牌：");
-    public static readonly PostCondDefinition HasOtherAttack = new(async (env, entity, skill, startStage) => !skill.NoOtherAttack, "非唯一攻击牌：");
+    public static readonly PostCondDefinition HasOtherAttack = new(async (env, entity, skill, startStage) => !skill.NoOtherAttack, "有其他攻击牌：");
+    public static readonly PostCondDefinition HasArmor = new(async (env, entity, skill, startStage) => entity.Armor > 0, "有护甲：");
     public static PostCondDefinition ManaBurst(int value)
         => new(async (env, entity, skill, startStage) => await entity.TryConsumeProcedure("灵气", value), $"爆能{value}：");
     public static readonly PostCondDefinition IsEnd = new(async (env, entity, skill, startStage) =>

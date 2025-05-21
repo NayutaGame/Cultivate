@@ -3,24 +3,28 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class DirectProcedureDefinition : ProcedureDefinition
+public class LoseMaxHealthProcedureDefinition : ProcedureDefinition
 {
-    private Func<CastDetails, UniTask> _cast;
-    
-    public DirectProcedureDefinition(Func<CastDetails, UniTask> cast)
+    public int Value;
+    public bool Induced;
+
+    public LoseMaxHealthProcedureDefinition(int value, bool induced)
     {
-        _cast = cast;
+        Value = value;
+        Induced = induced;
     }
 
-    protected DirectProcedureDefinition(
+    protected LoseMaxHealthProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
         List<StageClosure> closures,
-        Func<CastDetails, UniTask> cast) :
+        int value,
+        bool induced) :
         base(preCondDefinition, postCondDefinition, getDescription, closures)
     {
-        _cast = cast;
+        Value = value;
+        Induced = induced;
     }
 
     public override ProcedureDefinition Clone()
@@ -29,22 +33,35 @@ public class DirectProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new DirectProcedureDefinition(
+        return new LoseMaxHealthProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
             closures: clonedClosures,
-            cast: _cast
+            value: Value,
+            induced: Induced
         );
     }
     
+    public LoseMaxHealthDetails GetDetailsFromCastDetails(CastDetails d)
+        => new(
+            entity: d.Caster,
+            value: Value,
+            listener: d.Skill,
+            castResult: d.CastResult,
+            closures: ClosuresArray,
+            induced: Induced);
+
     public override async UniTask Cast(CastDetails castDetails)
-        => await _cast(castDetails);
-    
+        => await castDetails.Env.LoseMaxHealthProcedure(GetDetailsFromCastDetails(castDetails));
+
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
-        DirectProcedureDefinition pd = procedureDefinition as DirectProcedureDefinition;
+        LoseMaxHealthProcedureDefinition pd = procedureDefinition as LoseMaxHealthProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
+        
+        if (pd.Value != 0)
+            description.Sb.Append($"失去{pd.Value}气血上限");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
