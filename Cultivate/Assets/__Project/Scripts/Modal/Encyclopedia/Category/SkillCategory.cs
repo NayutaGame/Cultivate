@@ -55,14 +55,14 @@ public class SkillCategory : Category<SkillEntry>
                                                         await d.Src.GainArmorProcedure(d.Value, induced: true);
                                                     }, key: "ZhenJiaoClosure", description: "击伤：获得等量护甲", checkListener: true);
 
-    private static readonly StageClosure ShunShiZhanClosure = new(StageClosureDict.WIL_ATTACK, -1,
+    private static readonly StageClosure HongLianClosure = new(StageClosureDict.WIL_ATTACK, -1,
                                                     async (listener, closure, closureDetails) =>
                                                     {
                                                         AttackDetails d = closureDetails as AttackDetails;
                                                         string key = "HighestAttackRecord";
                                                         int highestAttackRecord = d.Src.Memory.TryGetVariable(key, 0);
                                                         d.Value = Mathf.Max(d.Value, highestAttackRecord);
-                                                    }, key: "ShunShiZhanClosure", description: "造成本局最高攻", checkListener: true);
+                                                    }, key: "HongLianClosure", description: "造成本局最高攻", checkListener: true);
 
     private static readonly StageClosure DuanSuiClosure = new(StageClosureDict.WIL_HEAL, -1,
                                                     async (listener, closure, closureDetails) =>
@@ -1824,7 +1824,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
             
             new(id:                         "0521",
-                name:                       "顺势斩",
+                name:                       "红莲",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 cost:                       ChannelCostDefinition.FromDj(dj => 1 - dj),
@@ -1845,7 +1845,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new AttackProcedureDefinition(0)
-                        .AddClosure(ShunShiZhanClosure),
+                        .AddClosure(HongLianClosure),
                 }),
 
             new(id:                         "0415",
@@ -2495,7 +2495,7 @@ public class SkillCategory : Category<SkillEntry>
                         .AddClosure(JiaShiClosure),
                 }),
 
-            new(id:                         "0407",
+            new(id:                         "0536",
                 name:                       "无畏",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
@@ -3008,6 +3008,18 @@ public class SkillCategory : Category<SkillEntry>
 
             #region 怪物专属
             
+            new(id:                         "0220",
+                name:                       "奔腾",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                skillTypeComposite:         SkillType.Swift,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new SetActionPointProcedureDefinition(2),
+                    new SetActionPointProcedureDefinition(j <= JingJie.YuanYing ? 3 : 4)
+                        .SetPostCondDefinition(PostCondDefinition.ManaBurst(8)),
+                }),
+            
             // 3 5 8 13 21
             new(id:                         "1001",
                 name:                       "攻击",
@@ -3046,6 +3058,16 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new HealProcedureDefinition(Fib.ToValue(4 + dj)),
+                }),
+            
+            // 3 5 8 13 21
+            new(id:                         "1005",
+                name:                       "高速",
+                wuXing:                     null,
+                jingJieBound:               JingJie.YuanYing2HuaShen,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new SetActionPointProcedureDefinition(j <= JingJie.YuanYing ? 2 : 3),
                 }),
             
             // 6 12 26 52 102
@@ -4145,20 +4167,6 @@ public class SkillCategory : Category<SkillEntry>
             //     {
             //         await d.HealProcedure(20 + 10 * d.Dj, induced: false);
             //         await d.GainBuffProcedure("缠绕", 5);
-            //     }),
-            //
-            // new(id:                         "0220",
-            //     name:                       "奔腾",
-            //     wuXing:                     WuXing.Shui,
-            //     jingJieBound:               JingJie.YuanYing2HuaShen,
-            //     skillTypeComposite:         SkillType.Swift,
-            //     cost:                       CostResult.ManaFromValue(1),
-            //     costDescription:            CostDescription.ManaFromValue(1),
-            //     castDescription:            (j, dj, costResult, castResult) =>
-            //         (j <= JingJie.YuanYing ? "二动" : "三动"),
-            //     cast:                       async d =>
-            //     {
-            //         d.Caster.SetActionPoint(d.J <= JingJie.YuanYing ? 2 : 3);
             //     }),
             //
             // new(id:                         "0322",

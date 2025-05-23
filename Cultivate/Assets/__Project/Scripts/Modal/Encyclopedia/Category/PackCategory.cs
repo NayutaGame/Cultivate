@@ -76,7 +76,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 description:         "以燃烧气血为代价，爆发出惊人的威力。使用者与敌人同归于尽的觉悟越强，威力越大。",
                 trivia:              "此功原是佛门明王法，后流落江湖，习者多有走火入魔之危。",
-                cardNames:           new string[] { "一力降十会", "轰天", "拂晓", "明镜", "浴火", "藏锋", "顺势斩", "观众生", "常夏" },
+                cardNames:           new string[] { "一力降十会", "轰天", "拂晓", "明镜", "浴火", "藏锋", "红莲", "观众生", "常夏" },
                 startCardNames:      new string[] { "轰天", "一力降十会", "拂晓" }
                 ),
             

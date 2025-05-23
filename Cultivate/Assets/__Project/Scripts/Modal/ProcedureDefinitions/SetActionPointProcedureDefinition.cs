@@ -50,6 +50,8 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
             description.Sb.Append($"二动");
         else if (ActionPoint == 3)
             description.Sb.Append($"三动");
+        else if (ActionPoint == 4)
+            description.Sb.Append($"四动");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
