@@ -1717,7 +1717,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.Emphasize();
                         await b.LoseStackProcedure();
-                        await b.Owner.Opponent().IndirectProcedure(d.Value, induced: true);
+                        await b.Owner.IndirectProcedure(d.Value, induced: true);
                     }),
                 }),
                 

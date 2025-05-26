@@ -138,57 +138,25 @@ public class StageSkill : StageClosureListener
     public bool NoOtherLingQi
         => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Mana));
     public bool NoAttackAdjacents
-        => !Prev(false).GetSkillType().Contains(SkillType.Attack) && !Next(false).GetSkillType().Contains(SkillType.Attack);
+        => !PrevSkill(false).GetSkillType().Contains(SkillType.Attack) && !NextSkill(false).GetSkillType().Contains(SkillType.Attack);
 
-    public IEnumerable<StageSkill> Nexts(bool loop = false)
+    public IEnumerable<StageSkill> NextSkills(bool loop = false)
     {
-        StageSkill curr = this;
-        for (int i = 0; i < _owner._skills.Length - 1; i++)
-        {
-            curr = curr.Next(loop);
-            if (curr == null)
-                yield break;
-
-            yield return curr;
-        }
+        foreach (var ret in _owner.NextSkills(_slotIndex, loop))
+            yield return ret;
     }
 
-    public IEnumerable<StageSkill> Prevs(bool loop = false)
+    public IEnumerable<StageSkill> PrevSkills(bool loop = false)
     {
-        StageSkill curr = this;
-        for (int i = 0; i < _owner._skills.Length - 1; i++)
-        {
-            curr = curr.Prev(loop);
-            if (curr == null)
-                yield break;
-
-            yield return curr;
-        }
+        foreach (var ret in _owner.PrevSkills(_slotIndex, loop))
+            yield return ret;
     }
 
-    public StageSkill Next(bool loop)
-    {
-        int index = _slotIndex + 1;
-        if (loop)
-            index %= _owner._skills.Length;
+    public StageSkill NextSkill(bool loop)
+        => _owner.NextSkill(_slotIndex, loop);
 
-        if (index >= _owner._skills.Length)
-            return null;
-
-        return _owner._skills[index];
-    }
-
-    public StageSkill Prev(bool loop)
-    {
-        int index = _slotIndex - 1;
-        if (loop)
-            index = (index + _owner._skills.Length) % _owner._skills.Length;
-
-        if (index < 0)
-            return null;
-
-        return _owner._skills[index];
-    }
+    public StageSkill PrevSkill(bool loop)
+        => _owner.PrevSkill(_slotIndex, loop);
 
     public override string ToString()
     {

@@ -152,8 +152,8 @@ public class SkillCategory : Category<SkillEntry>
                                                     {
                                                         AttackDetails d = closureDetails as AttackDetails;
                                                         StageSkill skill = listener as StageSkill;
-                                                        bool prevIsJin = skill.Prev(true).Entry.GetWuXing() == WuXing.Jin;
-                                                        bool nextIsJin = skill.Next(true).Entry.GetWuXing() == WuXing.Jin;
+                                                        bool prevIsJin = skill.PrevSkill(true).Entry.GetWuXing() == WuXing.Jin;
+                                                        bool nextIsJin = skill.NextSkill(true).Entry.GetWuXing() == WuXing.Jin;
                                                         d.Times += (prevIsJin ? 1 : 0) + (nextIsJin ? 1 : 0);
                                                     }, key: "RenYuClosure", description: "每相邻1张金，多1次", checkListener: true);
 
@@ -872,12 +872,11 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "流云",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack,
+                skillTypeComposite:         SkillType.Defend,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new AttackProcedureDefinition(3 + 3 * dj),
-                    new GainBuffProcedureDefinition("延迟攻", 3 + 3 * dj, induced: true)
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"下回合{3 + 3 * dj}攻")),
+                    new GainArmorProcedureDefinition(3 + 3 * dj, induced: false),
+                    new RemoveArmorProcedureDefinition(3 + 3 * dj, induced: true),
                 }),
             
             new(id:                         "0125",
@@ -1610,8 +1609,8 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new DirectProcedureDefinition(async d =>
                         {
-                            int leftIndex = d.Skill.Prev(true).SlotIndex;
-                            int rightIndex = d.Skill.Next(true).SlotIndex;
+                            int leftIndex = d.Skill.PrevSkill(true).SlotIndex;
+                            int rightIndex = d.Skill.NextSkill(true).SlotIndex;
                         
                             var tempStageSkill = d.Caster._skills[leftIndex];
                             d.Caster._skills[leftIndex] = d.Caster._skills[rightIndex];
@@ -1859,7 +1858,8 @@ public class SkillCategory : Category<SkillEntry>
                         {
                             for (int i = 0; i < 1 + d.Dj; i++)
                             {
-                                StageSkill skill = d.Skill.Prevs(false).FirstObj(skill => !skill.Exhausted) ?? d.Skill;
+                                StageSkill skill = d.Caster.PrevSkills(d.Caster._p, loop: false)
+                                    .FirstObj(skill => !skill.Exhausted) ?? d.Caster._skills[d.Caster._p];
                                 await skill.ExhaustProcedure();
                             }
                         })
@@ -1896,7 +1896,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "滑步",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                skillTypeComposite:         SkillType.Attack | SkillType.Defend,
+                skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new TrySetValueProcedureDefinition("HuaBuExtra", (dj switch { 0 => 2, 1 => 3, 2 => 5, 3 => 13, _ => 30 }).ToString()),
@@ -2249,6 +2249,7 @@ public class SkillCategory : Category<SkillEntry>
 
             new(id:                         "SKILL_HZ_001",
                 name:                       "缭乱",
+                wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 skillTypeComposite:         SkillType.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
@@ -2842,7 +2843,7 @@ public class SkillCategory : Category<SkillEntry>
                     
                     new DirectProcedureDefinition(async d =>
                         {
-                            StageSkill toCast = d.Skill.Prev(true);
+                            StageSkill toCast = d.Skill.PrevSkill(true);
                             await d.Caster.CastProcedure(toCast);
                         })
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"使用上一张牌\n即使已经升华")),
@@ -3020,6 +3021,33 @@ public class SkillCategory : Category<SkillEntry>
                         .SetPostCondDefinition(PostCondDefinition.ManaBurst(8)),
                 }),
             
+            new(id:                         "0419",
+                name:                       "净天地",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.HuaShenOnly,
+                skillTypeComposite:         SkillType.Exhaust,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DirectProcedureDefinition(async d =>
+                        {
+                            if (!d.Recursive)
+                                return;
+
+                            if (d.Skill.Exhausted)
+                                return;
+
+                            await d.Skill.ExhaustProcedure();
+                    
+                            foreach (StageSkill s in d.Caster._skills)
+                            {
+                                if (!s.Exhausted)
+                                    continue;
+                                await d.Caster.CastProcedure(s, recursive: false);
+                            }
+                        })
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append($"升华\n使用所有已升华牌")),
+                }),
+            
             // 3 5 8 13 21
             new(id:                         "1001",
                 name:                       "攻击",
@@ -3070,25 +3098,25 @@ public class SkillCategory : Category<SkillEntry>
                     new SetActionPointProcedureDefinition(j <= JingJie.YuanYing ? 2 : 3),
                 }),
             
-            // 6 12 26 52 102
-            new(id:                         "1101",
+            // 3 5 8 13 21
+            new(id:                         "1006",
                 name:                       "啃咬",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new RemoveArmorProcedureDefinition(6 << dj),
+                    new RemoveArmorProcedureDefinition(Fib.ToValue(4 + dj)),
                 }),
 
-            // 6 12 26 52 102
-            new(id:                         "1102",
+            // 3 5 8 13 21
+            new(id:                         "1007",
                 name:                       "切割",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new AttackProcedureDefinition(2 << dj),
-                    new GainArmorProcedureDefinition(4 << dj, induced: true),
+                    new AttackProcedureDefinition(Fib.ToValue(4 + dj))
+                        .AddClosure(Crit),
                 }),
 
             // 8 24 52 105 204
@@ -3251,7 +3279,7 @@ public class SkillCategory : Category<SkillEntry>
             
             // 6 12 26 52 102
             new(id:                         "1204",
-                name:                       "高速",
+                name:                       "高速冲撞",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 descriptionGenerator:       (j, dj, costResult, castResult) =>
@@ -3331,57 +3359,46 @@ public class SkillCategory : Category<SkillEntry>
                     await d.RemoveBuffProcedure("灵气", value, induced: false);
                 }),
             
-            // 6 12 26 52 102
             new(id:                         "1301",
                 name:                       "木刺",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cost:                       ChannelCostDefinition.FromValue(2),
-                descriptionGenerator:       (j, dj, costResult, castResult) =>
-                    $"{10 + 10 * dj}攻 穿透",
-                castGenerator:              async d =>
+                cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    await d.AttackProcedure(10 + 10 * d.Dj,
-                        closures: new [] { Penetrate });
+                    new AttackProcedureDefinition(10 + 10 * dj)
+                        .AddClosure(Penetrate),
                 }),
 
-            // 6 12 26 52 102
             new(id:                         "1302",
                 name:                       "滑水",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                descriptionGenerator:       (j, dj, costResult, castResult) =>
-                    $"闪避+{1 + dj}",
-                castGenerator:              async d =>
+                cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    await d.GainBuffProcedure("闪避", 1 + d.Dj);
+                    new GainBuffProcedureDefinition("闪避", 1 + dj),
                 }),
 
-            // 8 24 52 105 204
             new(id:                         "1303",
                 name:                       "驱藤",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                descriptionGenerator:       (j, dj, costResult, castResult) =>
-                    $"双方坚毅+{2 + dj}",
-                castGenerator:              async d =>
+                cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    await d.GainBuffProcedure("坚毅", 2 + d.Dj, induced: false);
-                    await d.GiveBuffProcedure("坚毅", 2 + d.Dj, induced: true);
+                    new GainBuffProcedureDefinition("坚毅", 2 + dj, induced: false),
+                    new GiveBuffProcedureDefinition("坚毅", 2 + dj, induced: true),
                 }),
             
-            // 6 12 26 52 102
             new(id:                         "1304",
                 name:                       "花海",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                descriptionGenerator:       (j, dj, costResult, castResult) =>
-                    $"升华" +
-                    $"\n每回合力量+1",
-                castGenerator:              async d =>
+                cost:                       ChannelCostDefinition.FromDj(dj => 5 - dj),
+                cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    await d.Skill.ExhaustProcedure();
-                    await d.GainBuffProcedure("花海");
+                    new ExhaustProcedureDefinition(),
+                    new GainBuffProcedureDefinition("花海")
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Sb.Append("每回合力量+1")),
                 }),
 
             // 6 12 26 52 102
@@ -3406,8 +3423,8 @@ public class SkillCategory : Category<SkillEntry>
                     $"将左边牌的成长次数给右边牌",
                 castGenerator:              async d =>
                 {
-                    StageSkill leftSkill = d.Skill.Prev(false);
-                    StageSkill rightSkill = d.Skill.Next(false);
+                    StageSkill leftSkill = d.Skill.PrevSkill(false);
+                    StageSkill rightSkill = d.Skill.NextSkill(false);
                     if (leftSkill == null || rightSkill == null)
                         return;
 
@@ -3467,6 +3484,16 @@ public class SkillCategory : Category<SkillEntry>
                 castGenerator:              async d =>
                 {
                     await d.GainBuffProcedure("他心通");
+                }),
+
+            new(id:                         "1310",
+                name:                       "小春",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new CycleProcedureDefinition(WuXing.Mu, gain: 1),
+                    new AttackProcedureDefinition(Fib.ToValue(3 + dj)),
                 }),
             
             // 6 12 26 52 102
@@ -3602,7 +3629,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"下一张牌取消升华",
                 castGenerator:              async d =>
                 {
-                    StageSkill s = d.Skill.Next(loop: false);
+                    StageSkill s = d.Skill.NextSkill(loop: false);
                     s.Exhausted = false;
                 }),
             
@@ -4451,29 +4478,6 @@ public class SkillCategory : Category<SkillEntry>
             //         await d.Caster.GainBuffProcedure(debuff, 3 + 2 * d.Dj);
             //         int value = d.Caster.GetStackOfBuff(debuff);
             //         await d.Caster.GainBuffProcedure("锻体", value);
-            //     }),
-            //
-            // new(id:                         "0419",
-            //     name:                       "净天地",
-            //     wuXing:                     WuXing.Huo,
-            //     jingJieBound:               JingJie.HuaShenOnly,
-            //     skillTypeComposite:         SkillType.Exhaust,
-            //     descriptionGenerator:       (j, dj, costResult, castResult) =>
-            //         $"升华" +
-            //         $"\n使用所有已升华牌",
-            //     castGenerator:              async d =>
-            //     {
-            //         if (!d.Recursive)
-            //             return;
-            //         
-            //         foreach (StageSkill s in d.Caster._skills)
-            //         {
-            //             if (!s.Exhausted)
-            //                 continue;
-            //             await d.Caster.CastProcedure(s, recursive: false);
-            //         }
-            //
-            //         await d.Skill.ExhaustProcedure();
             //     }),
             //
             // // 筑基

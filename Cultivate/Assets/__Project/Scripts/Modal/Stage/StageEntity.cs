@@ -417,6 +417,76 @@ public class StageEntity : Addressable, StageClosureListener
     public IEnumerable<StageSkill> TraversalSkills()
         => _skills.Traversal();
 
+    public IEnumerable<StageSkill> NextSkills(int index, bool loop = false)
+    {
+        int p = index;
+        for (int i = 0; i < _skills.Length - 1; i++)
+        {
+            int? nextP = Next(p, loop);
+            if (!nextP.HasValue)
+                yield break;
+            
+            p = nextP.Value;
+            yield return _skills[p];
+        }
+    }
+
+    public IEnumerable<StageSkill> PrevSkills(int index, bool loop = false)
+    {
+        int p = index;
+        for (int i = 0; i < _skills.Length - 1; i++)
+        {
+            int? prevP = Prev(p, loop);
+            if (!prevP.HasValue)
+                yield break;
+            
+            p = prevP.Value;
+            yield return _skills[p];
+        }
+    }
+
+    public StageSkill NextSkill(int index, bool loop = false)
+    {
+        int? p = Next(index, loop);
+        if (!p.HasValue)
+            return null;
+        
+        return _skills[p.Value];
+    }
+
+    public StageSkill PrevSkill(int index, bool loop = false)
+    {
+        int? p = Prev(index, loop);
+        if (!p.HasValue)
+            return null;
+        
+        return _skills[p.Value];
+    }
+
+    private int? Next(int index, bool loop)
+    {
+        int p = index + 1;
+        if (loop)
+            p %= _skills.Length;
+
+        if (p >= _skills.Length)
+            return null;
+
+        return p;
+    }
+
+    private int? Prev(int index, bool loop)
+    {
+        int p = index - 1;
+        if (loop)
+            p = (p + _skills.Length) % _skills.Length;
+
+        if (p < 0)
+            return null;
+
+        return p;
+    }
+
     #endregion
 
     #region Formation
