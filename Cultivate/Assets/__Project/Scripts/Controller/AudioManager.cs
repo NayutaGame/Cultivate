@@ -88,13 +88,4 @@ public class AudioManager : Singleton<AudioManager>
     {
         Instance.SFXBus.setVolume((float)value / 100);
     }
-
-    public static void SetPreferredVolume()
-    {
-        SetMasterVolume(50);
-        SetMusicVolume(80);
-        SetSFXVolume(100);
-        
-        CanvasManager.Instance.AppCanvas.SettingsPanel.Refresh();
-    }
 }
