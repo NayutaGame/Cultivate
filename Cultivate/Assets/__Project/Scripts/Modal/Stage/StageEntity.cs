@@ -696,6 +696,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Register(this, RecordHighestMana);
         _env.ClosureDict.Register(this, RecordHighestJianYi);
         _env.ClosureDict.Register(this, OppoLoseArmorTimes);
+        _env.ClosureDict.Register(this, LastRotatedWuXing);
     }
 
     public void UnregisterEntityClosures()
@@ -705,6 +706,7 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Unregister(this, RecordHighestMana);
         _env.ClosureDict.Unregister(this, RecordHighestJianYi);
         _env.ClosureDict.Unregister(this, OppoLoseArmorTimes);
+        _env.ClosureDict.Unregister(this, LastRotatedWuXing);
     }
 
     public static string ActualHealKey = "ActualHeal";
@@ -767,5 +769,19 @@ public class StageEntity : Addressable, StageClosureListener
             if (entity.Opponent().Armor >= 0) return;
 
             entity.Memory.PerformOperation(OppoLoseArmorTimesKey, 0, record => record += 1);
+        });
+
+    public static string LastRotatedWuXingKey = "LastRotatedWuXing";
+    private static StageClosure LastRotatedWuXing =
+        new(StageClosureDict.DID_CYCLE, -1, async (owner, closure, closureDetails) =>
+        {
+            StageEntity entity = owner as StageEntity;
+            CycleDetails d = (CycleDetails)closureDetails;
+
+            if (entity != d.Owner) return;
+            if (!d.Rotate) return;
+
+            WuXing wuXing = d.WuXing;
+            entity.Memory.PerformOperation<WuXing?>(LastRotatedWuXingKey, null, record => record = wuXing);
         });
 }

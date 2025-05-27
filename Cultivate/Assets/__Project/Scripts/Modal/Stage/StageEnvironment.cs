@@ -614,6 +614,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask LoseArmorProcedure(LoseArmorDetails d)
     {
+        bool registeredHere = RegisterTempClosures(d);
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_ARMOR, d);
 
         if (d.Cancel)
@@ -634,6 +635,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         // 负变负，减甲
 
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_ARMOR, d);
+        UnregisterTempClosures(d, registeredHere);
     }
 
     public async UniTask ManaShortageProcedure(CostDetails d)

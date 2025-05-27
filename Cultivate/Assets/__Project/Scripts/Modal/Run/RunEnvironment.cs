@@ -1153,10 +1153,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         InitNeurons();
 
-        _newlyUnlockedAchievements.Traversal().Do(e =>
+        for (int i = 0; i < _newlyUnlockedAchievements.Count; i++)
         {
-            e = string.IsNullOrEmpty(e.GetName()) ? null : Encyclopedia.AchievementCategory[e.GetName()];
-        });
+            AchievementEntry entry = _newlyUnlockedAchievements[i];
+            entry = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.AchievementCategory[entry.GetId()];
+            _newlyUnlockedAchievements[i] = entry;
+        }
 
         InitializeCommonState();
     }

@@ -343,6 +343,8 @@ public class SkillCategory : Category<SkillEntry>
                                                         if (crit) await d.Src.GainBuffProcedure("暴击", induced: true);
                                                         if (lifeSteal) await d.Src.GainBuffProcedure("吸血", induced: true);
                                                         if (penetrate) await d.Src.GainBuffProcedure("穿透", induced: true);
+
+                                                        Debug.Log("here");
                                                         
                                                         d.CastResult["XieYiCrit"] = crit ? "暴击" : "暴击".ApplyInactive();
                                                         d.CastResult["XieYiLifeSteal"] = lifeSteal ? "吸血" : "吸血".ApplyInactive();
@@ -2186,9 +2188,12 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("腐朽", 20 - 5 * dj),
-                    new GainBuffProcedureDefinition("暴击", induced: true), // 下次攻击具有暴击，吸血，穿透
-                    new GainBuffProcedureDefinition("吸血", induced: true),
-                    new GainBuffProcedureDefinition("穿透", induced: true),
+                    new GainBuffProcedureDefinition("暴击", induced: true)
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"下次攻击具有暴击/吸血/穿透")),
+                    new GainBuffProcedureDefinition("吸血", induced: true)
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"")),
+                    new GainBuffProcedureDefinition("穿透", induced: true)
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"")),
                     new DepleteProcedureDefinition(),
                 }),
             
@@ -2310,8 +2315,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new CycleHighestProcedureDefinition(gain: 1 + dj)
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"流转最高五行\n额外获得{1 + dj}层")),
+                    new FollowingCycleProcedureDefinition(gain: 1 + dj)
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"跟随流转\n额外获得{1 + dj}层")),
                 }),
             
             new(id:                         "0119",
@@ -2333,7 +2338,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainBuffProcedureDefinition("常仪")
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"流转时：造成伤害")),
-                    new CycleHighestProcedureDefinition(gain: 1 + dj),
+                    new FollowingCycleProcedureDefinition(),
                     new SetActionPointProcedureDefinition(2)
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                 }),
@@ -2355,7 +2360,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new CycleHighestProcedureDefinition(),
+                    new FollowingCycleProcedureDefinition(),
                     new GainBuffProcedureDefinition("羲和")
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"使用牌时：流转对应五行")),
                 }),
@@ -3118,6 +3123,15 @@ public class SkillCategory : Category<SkillEntry>
                     new AttackProcedureDefinition(Fib.ToValue(4 + dj))
                         .AddClosure(Crit),
                 }),
+            new(id:                         "1008",
+                name:                       "看穿",
+                wuXing:                     null,
+                jingJieBound:               JingJie.LianQi2HuaShen,
+                cost:                       ChannelCostDefinition.FromDj(dj => 5 - dj),
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new GainBuffProcedureDefinition("穿透"),
+                }),
 
             // 8 24 52 105 204
             new(id:                         "1103",
@@ -3312,13 +3326,15 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "爱睡",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
-                cost:                       ChannelCostDefinition.FromDj(dj => 4 - dj),
-                descriptionGenerator:       (j, dj, costResult, castResult) =>
-                    $"气血回复至上限",
-                castGenerator:              async d =>
+                cost:                       ChannelCostDefinition.FromDj(dj => 5 - dj),
+                cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    int value = d.Caster.MaxHp - d.Caster.Hp;
-                    await d.HealProcedure(value, induced: false);
+                    new DirectProcedureDefinition(async d =>
+                        {
+                            int gap = d.Caster.MaxHp - d.Caster.Hp;
+                            await d.Caster.HealProcedure(gap);
+                        })
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"气血回复至上限")),
                 }),
             
             // 6 12 26 52 102

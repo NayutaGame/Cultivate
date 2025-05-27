@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-public class CycleHighestProcedureDefinition : ProcedureDefinition
+public class FollowingCycleProcedureDefinition : ProcedureDefinition
 {
     public bool Rotate;
     public int Gain;
     public int Recover;
     public bool Induced;
     
-    public CycleHighestProcedureDefinition(
+    public FollowingCycleProcedureDefinition(
         bool rotate = true,
         int gain = 0,
         int recover = 0,
@@ -22,7 +22,7 @@ public class CycleHighestProcedureDefinition : ProcedureDefinition
         Induced = induced;
     }
 
-    protected CycleHighestProcedureDefinition(
+    protected FollowingCycleProcedureDefinition(
         PreCondDefinition preCondDefinition,
         PostCondDefinition postCondDefinition,
         Action<Description, ProcedureDefinition, ResultDict, ResultDict> getDescription,
@@ -45,7 +45,7 @@ public class CycleHighestProcedureDefinition : ProcedureDefinition
         for (int i = 0; i < Closures.Count; i++)
             clonedClosures.Add(Closures[i]);
 
-        return new CycleHighestProcedureDefinition(
+        return new FollowingCycleProcedureDefinition(
             preCondDefinition: PreCondDefinition.Clone(),
             postCondDefinition: PostCondDefinition.Clone(),
             getDescription: _getDescription,
@@ -62,10 +62,10 @@ public class CycleHighestProcedureDefinition : ProcedureDefinition
 
     public override async UniTask Cast(CastDetails castDetails)
     {
-        WuXing? highestWuXing = castDetails.Caster.GetHighestWuXing();
-        if (!highestWuXing.HasValue)
+        WuXing? wuXing = castDetails.Caster.Memory.TryGetVariable<WuXing?>(StageEntity.LastRotatedWuXingKey, null);
+        if (!wuXing.HasValue)
             return;
-        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, highestWuXing.Value.Next));
+        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, wuXing.Value.Next));
     }
 
     public override void DefaultGetDescription(
@@ -74,10 +74,10 @@ public class CycleHighestProcedureDefinition : ProcedureDefinition
         ResultDict costResult,
         ResultDict castResult)
     {
-        CycleHighestProcedureDefinition pd = procedureDefinition as CycleHighestProcedureDefinition;
+        FollowingCycleProcedureDefinition pd = procedureDefinition as FollowingCycleProcedureDefinition;
         description.Sb.Append(pd.PostCondDefinition.Description);
         
-        description.Sb.Append($"流转最高五行");
+        description.Sb.Append($"跟随流转");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
