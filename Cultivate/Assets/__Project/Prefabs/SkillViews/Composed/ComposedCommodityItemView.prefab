@@ -73,8 +73,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 380}
+  m_AnchoredPosition: {x: 0, y: -159.32779}
+  m_SizeDelta: {x: 200, y: 61.3444}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8451619000142963623
 CanvasRenderer:
@@ -198,7 +198,7 @@ PrefabInstance:
     - target: {fileID: 333543882769091325, guid: b33e0dbe4e7a4d947b3a8b5a6cb49abf, type: 3}
       propertyPath: _interactBehaviour
       value: 
-      objectReference: {fileID: 3365564237662731169}
+      objectReference: {fileID: 8091257098068348961}
     - target: {fileID: 1267250964430901317, guid: b33e0dbe4e7a4d947b3a8b5a6cb49abf, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -154.5
@@ -343,10 +343,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ib: {fileID: 3365564237662731169}
+  _ib: {fileID: 8091257098068348961}
   AnnotationAddress: Canvas.SkillAnnotation
   HoverTransform: {fileID: 9108489489931938011}
---- !u!114 &3365564237662731169
+--- !u!114 &8091257098068348961
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -355,7 +355,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6678027437939021752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0533921ce9bac534f89b9ff88b9aadde, type: 3}
+  m_Script: {fileID: 11500000, guid: 30a23a871c055924a95509ec64a3c668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3371044105437309353
@@ -400,8 +400,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ib: {fileID: 3365564237662731169}
+  _ib: {fileID: 8091257098068348961}
   _skillView: {fileID: 9127284019832414529}
+--- !u!114 &7140328833066745657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6678027437939021752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 8091257098068348961}
+  HoverAudioId: CardHover
+  LeftClickAudioId: CardPlacement
+  RightClickAudioId: JingJieSwitch
 --- !u!114 &9127284019832414529 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 333543882769091325, guid: b33e0dbe4e7a4d947b3a8b5a6cb49abf, type: 3}

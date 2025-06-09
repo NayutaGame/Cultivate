@@ -29,14 +29,14 @@ public class AudioCategory : Category<AudioEntry>
             new("EnterSettings", "event:/SFX/UI/EnterSettings", AudioEntry.AudioType.SFX),
             new("EnterShop", "event:/SFX/UI/EnterShop", AudioEntry.AudioType.SFX),
             new("ExitSettings", "event:/SFX/UI/ExitSettings", AudioEntry.AudioType.SFX),
-            new("FinishGuide", "event:/SFX/UI/FinishGuide", AudioEntry.AudioType.SFX),
+            new("FinishGuide", "event:/SFX/UI/FinishGuide", AudioEntry.AudioType.SFX), //
             new("FormationHover", "event:/SFX/UI/FormationHover", AudioEntry.AudioType.SFX), //
             new("Forward", "event:/SFX/UI/Forward", AudioEntry.AudioType.SFX), //
             new("GainGold", "event:/SFX/UI/GainGold", AudioEntry.AudioType.SFX),
             new("GainMaxHealth", "event:/SFX/UI/GainMaxHealth", AudioEntry.AudioType.SFX),
             new("GainMingYuan", "event:/SFX/UI/GainMingYuan", AudioEntry.AudioType.SFX),
             new("GainSkill", "event:/SFX/UI/GainSkill", AudioEntry.AudioType.SFX),
-            new("ItemHover", "event:/SFX/UI/ItemHover", AudioEntry.AudioType.SFX),
+            new("ItemHover", "event:/SFX/UI/ItemHover", AudioEntry.AudioType.SFX), //
             new("JingJieSwitch", "event:/SFX/UI/JingJieSwitch", AudioEntry.AudioType.SFX), //
             new("LoseGold", "event:/SFX/UI/LoseGold", AudioEntry.AudioType.SFX),
             new("LoseMingYuan", "event:/SFX/UI/LoseMingYuan", AudioEntry.AudioType.SFX),

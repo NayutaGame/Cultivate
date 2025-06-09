@@ -11,4 +11,10 @@ public abstract class Guide
 
     public virtual void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
     { }
+
+    public void SetComplete(PanelDescriptor panelDescriptor)
+    {
+        RunManager.Instance.Environment.GuideFinishNeuron.Invoke(this);
+        panelDescriptor.MoveNextGuideDescriptor();
+    }
 }

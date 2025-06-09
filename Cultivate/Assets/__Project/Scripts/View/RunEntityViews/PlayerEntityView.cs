@@ -46,7 +46,11 @@ public class PlayerEntityView : XView
     #region IInteractable
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
-        => AudioManager.Play("CardHover");
+    {
+        SkillSlot slot = ib.Get<SkillSlot>();
+        if (slot.Skill != null)
+            AudioManager.Play("CardHover");
+    }
 
     private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {

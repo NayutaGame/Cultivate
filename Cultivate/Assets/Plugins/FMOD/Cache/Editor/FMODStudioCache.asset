@@ -702,7 +702,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -6444433781297489971}
   cacheVersion: 131847
-  cacheTime: 638850636434312565
+  cacheTime: 638850759444531610
   SerializableEventsDict:
   - key: event:/BGM/BGMLianQi
     index: 0
@@ -1050,10 +1050,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638850636434312565
+  lastModified: 638850759444531610
   FileSizes:
   - Name: Desktop
-    Value: 595104
+    Value: 591136
   Exists: 1
 --- !u!114 &3928210967971371097
 MonoBehaviour:

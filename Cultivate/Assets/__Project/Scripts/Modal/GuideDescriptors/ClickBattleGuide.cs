@@ -16,9 +16,4 @@ public class ClickBattleGuide : Guide
         if (signal is ClickCombatSignal)
             SetComplete(panelDescriptor);
     }
-
-    private void SetComplete(PanelDescriptor panelDescriptor)
-    {
-        panelDescriptor.MoveNextGuideDescriptor();
-    }
 }

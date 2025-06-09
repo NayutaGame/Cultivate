@@ -2,6 +2,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BattleEntityView : LegacySimpleView
 {
@@ -23,6 +24,8 @@ public class BattleEntityView : LegacySimpleView
         base.SetAddress(address);
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
+        FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        
         FormationList.SetAddress(GetAddress().Append(".ActiveFormations"));
     }
 
@@ -64,4 +67,11 @@ public class BattleEntityView : LegacySimpleView
 
     public Tween HideTween()
         => DOTween.Sequence();
+
+    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
+    {
+        SkillSlot slot = ib.Get<SkillSlot>();
+        if (slot.Skill != null)
+            AudioManager.Play("CardHover");
+    }
 }

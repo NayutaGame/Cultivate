@@ -30,9 +30,4 @@ public class EquipGuide : Guide
             return true;
         return _from.Contains(skill);
     }
-
-    private void SetComplete(PanelDescriptor panelDescriptor)
-    {
-        panelDescriptor.MoveNextGuideDescriptor();
-    }
 }

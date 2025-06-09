@@ -330,6 +330,22 @@ MonoBehaviour:
   _ib: {fileID: 5489096030302424017}
   AnnotationAddress: Canvas.SkillAnnotation
   HoverTransform: {fileID: 9108489489931938011}
+--- !u!114 &6471523544801009707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8815903167928728002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 5489096030302424017}
+  HoverAudioId: CardHover
+  LeftClickAudioId: CardPlacement
+  RightClickAudioId: JingJieSwitch
 --- !u!224 &8884815741749257926 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1252485361950958551, guid: 624e353993f651047b0108a03c633312, type: 3}

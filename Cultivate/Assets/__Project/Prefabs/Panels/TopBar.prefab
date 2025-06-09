@@ -145,6 +145,7 @@ MonoBehaviour:
   PropagateDifficultyText: {fileID: 6467682200951670821}
   PropagateDifficultyRT: {fileID: 3784332596930174680}
   MenuButton: {fileID: 3673891223710562803}
+  MenuButtonPropagatePointerEnter: {fileID: 425733598991413584}
 --- !u!1 &2905155066956528284
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +592,7 @@ GameObject:
   - component: {fileID: 7579177465415355369}
   - component: {fileID: 2886567964380264302}
   - component: {fileID: 3673891223710562803}
+  - component: {fileID: 425733598991413584}
   m_Layer: 0
   m_Name: MenuButton
   m_TagString: Untagged
@@ -700,6 +702,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &425733598991413584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7380514344436058200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fd728c3ed5c7f4ebb8c50a846c69fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8779766049504128126
 GameObject:
   m_ObjectHideFlags: 0

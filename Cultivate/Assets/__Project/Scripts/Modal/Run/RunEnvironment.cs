@@ -43,6 +43,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         EngageEnemyNeuron = new();
         AppendReportNeuron = new();
         CommitBattleNeuron = new();
+        GuideFinishNeuron = new();
     }
 
     public Neuron StartRunNeuron;
@@ -74,6 +75,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<EngageEnemyDetails> EngageEnemyNeuron;
     public Neuron AppendReportNeuron;
     public Neuron<bool> CommitBattleNeuron;
+    public Neuron<Guide> GuideFinishNeuron;
     
     #endregion
 

@@ -19,6 +19,7 @@ public class TopBar : MonoBehaviour
     public RectTransform PropagateDifficultyRT;
 
     public Button MenuButton;
+    public PropagatePointerEnter MenuButtonPropagatePointerEnter;
 
     private bool _hasAwoken;
     
@@ -39,6 +40,9 @@ public class TopBar : MonoBehaviour
     {
         MenuButton.onClick.RemoveAllListeners();
         MenuButton.onClick.AddListener(OpenMenu);
+        MenuButton.onClick.AddListener(AudioManager.PlayButtonPress);
+
+        MenuButtonPropagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
     }
 
     private void OnEnable()
@@ -57,9 +61,11 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.JingJieChangedNeuron.Add(RefreshJingJieText);
 
         PropagateJingJieText._onPointerEnter += PointerEnterJingJieText;
+        PropagateJingJieText._onPointerEnter += AudioManager.PlayItemHover;
         PropagateJingJieText._onPointerExit += PointerExitJingJieText;
 
         PropagateDifficultyText._onPointerEnter += PointerEnterDifficultyText;
+        PropagateDifficultyText._onPointerEnter += AudioManager.PlayItemHover;
         PropagateDifficultyText._onPointerExit += PointerExitDifficultyText;
         
         Refresh();
@@ -77,9 +83,11 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.JingJieChangedNeuron.Remove(RefreshJingJieText);
 
         PropagateJingJieText._onPointerEnter -= PointerEnterJingJieText;
+        PropagateJingJieText._onPointerEnter -= AudioManager.PlayItemHover;
         PropagateJingJieText._onPointerExit -= PointerExitJingJieText;
         
         PropagateDifficultyText._onPointerEnter -= PointerEnterDifficultyText;
+        PropagateDifficultyText._onPointerEnter -= AudioManager.PlayItemHover;
         PropagateDifficultyText._onPointerExit -= PointerExitDifficultyText;
     }
 

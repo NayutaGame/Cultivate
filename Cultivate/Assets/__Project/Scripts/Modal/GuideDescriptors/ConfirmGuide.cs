@@ -10,9 +10,4 @@ public class ConfirmGuide : Guide
         if (signal is ConfirmGuideSignal)
             SetComplete(panelDescriptor);
     }
-    
-    private void SetComplete(PanelDescriptor panelDescriptor)
-    {
-        panelDescriptor.MoveNextGuideDescriptor();
-    }
 }

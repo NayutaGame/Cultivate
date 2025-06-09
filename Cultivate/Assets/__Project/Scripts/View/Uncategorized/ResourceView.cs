@@ -58,6 +58,7 @@ public class ResourceView : MonoBehaviour
     private void PointerEnter(PointerEventData d)
     {
         if (d.dragging) return;
+        AudioManager.PlayItemHover();
         CanvasManager.Instance.TextHint.PointerEnter(_propagateTransform, d, _hintDelegate?.Invoke());
     }
 

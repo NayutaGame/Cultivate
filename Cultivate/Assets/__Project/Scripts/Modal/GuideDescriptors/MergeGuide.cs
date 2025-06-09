@@ -16,11 +16,6 @@ public class MergeGuide : Guide
             SetComplete(panelDescriptor);
     }
 
-    private void SetComplete(PanelDescriptor panelDescriptor)
-    {
-        panelDescriptor.MoveNextGuideDescriptor();
-    }
-
     public bool CheckComplete(out DeckIndex[] result)
     {
         result = new DeckIndex[2];

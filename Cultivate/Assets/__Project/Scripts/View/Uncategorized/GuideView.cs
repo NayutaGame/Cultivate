@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -24,7 +25,17 @@ public class GuideView : MonoBehaviour
     {
         _address = address;
     }
-    
+
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.GuideFinishNeuron.Add(AudioManager.PlayFinishGuide);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.GuideFinishNeuron.Remove(AudioManager.PlayFinishGuide);
+    }
+
     public void Refresh()
     {
         Guide guide = Get<Guide>();

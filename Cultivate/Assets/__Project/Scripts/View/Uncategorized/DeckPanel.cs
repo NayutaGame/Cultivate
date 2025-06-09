@@ -54,7 +54,6 @@ public class DeckPanel : Panel
         PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress("Run.Environment.Hand");
-        HandView.PointerEnterNeuron.Join(AudioManager.PlayCardHover);
         HandView.DropNeuron.Join(Merge, Unequip);
         
         HandView.DroppingNeuron.Join(RemoveMergePreresult);

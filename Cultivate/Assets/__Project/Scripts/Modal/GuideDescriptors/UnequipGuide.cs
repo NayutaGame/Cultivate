@@ -14,11 +14,6 @@ public class UnequipGuide : Guide
             SetComplete(panelDescriptor);
     }
 
-    private void SetComplete(PanelDescriptor panelDescriptor)
-    {
-        panelDescriptor.MoveNextGuideDescriptor();
-    }
-
     public bool CheckComplete(out DeckIndex from)
         => !RunManager.Instance.Environment.DeckIndexFromDescriptor(out from, _from, excludingHand: true);
 }
