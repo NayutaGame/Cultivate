@@ -10,6 +10,8 @@ public class DifficultyPickerView : MonoBehaviour
     [SerializeField] private TMP_Text DifficultyDescriptionText;
     [SerializeField] private Button PrevDifficultyButton;
     [SerializeField] private Button NextDifficultyButton;
+    [SerializeField] private PropagatePointerEnter PrevButtonPropagatePointerEnter;
+    [SerializeField] private PropagatePointerEnter NextButtonPropagatePointerEnter;
 
     private int _selectionIndex;
 
@@ -38,9 +40,15 @@ public class DifficultyPickerView : MonoBehaviour
 
         PrevDifficultyButton.onClick.RemoveAllListeners();
         PrevDifficultyButton.onClick.AddListener(PrevDifficulty);
+        PrevDifficultyButton.onClick.AddListener(AudioManager.PlayButtonPress);
 
         NextDifficultyButton.onClick.RemoveAllListeners();
         NextDifficultyButton.onClick.AddListener(NextDifficulty);
+        NextDifficultyButton.onClick.AddListener(AudioManager.PlayButtonPress);
+
+        PrevButtonPropagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        
+        NextButtonPropagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
 
         Refresh();
     }

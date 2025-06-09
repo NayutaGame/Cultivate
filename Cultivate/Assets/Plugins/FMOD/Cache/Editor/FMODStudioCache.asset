@@ -123,7 +123,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638846532175878749
+  lastModified: 638848213716095673
   FileSizes:
   - Name: Desktop
     Value: 2810
@@ -486,10 +486,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/SFX/UI/ButtonPress
   Guid:
-    Data1: 1079447309
-    Data2: 1258032274
-    Data3: 843064247
-    Data4: 212701902
+    Data1: -191447916
+    Data2: 1122431717
+    Data3: -123599695
+    Data4: 1525206728
   Banks:
   - {fileID: 3786016340767592077}
   IsStream: 0
@@ -702,7 +702,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -6444433781297489971}
   cacheVersion: 131847
-  cacheTime: 638846532178103304
+  cacheTime: 638850636434312565
   SerializableEventsDict:
   - key: event:/BGM/BGMLianQi
     index: 0
@@ -860,10 +860,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/SFX/UI/ButtonHover
   Guid:
-    Data1: -191447916
-    Data2: 1122431717
-    Data3: -123599695
-    Data4: 1525206728
+    Data1: 1079447309
+    Data2: 1258032274
+    Data3: 843064247
+    Data4: 212701902
   Banks:
   - {fileID: 3786016340767592077}
   IsStream: 0
@@ -1050,10 +1050,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638846532178103304
+  lastModified: 638850636434312565
   FileSizes:
   - Name: Desktop
-    Value: 603200
+    Value: 595104
   Exists: 1
 --- !u!114 &3928210967971371097
 MonoBehaviour:
@@ -1421,7 +1421,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638846532175878749
+  lastModified: 638848213716085672
   FileSizes:
   - Name: Desktop
     Value: 1378

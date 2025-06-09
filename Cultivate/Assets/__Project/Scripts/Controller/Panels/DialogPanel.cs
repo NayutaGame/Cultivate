@@ -24,8 +24,10 @@ public class DialogPanel : Panel
     [SerializeField] private RectTransform OptionsIdlePivot;
     [SerializeField] private CanvasGroup OptionsCanvasGroup;
     [SerializeField] private RectTransform OptionsTransform;
+    
     [SerializeField] private Button[] Buttons;
     [SerializeField] private TMP_Text[] Texts;
+    [SerializeField] private PropagatePointerEnter[] PropagatePointerEnters;
 
     private Address _address;
 
@@ -44,6 +46,16 @@ public class DialogPanel : Panel
         Buttons[1].onClick.AddListener(SelectOption1);
         Buttons[2].onClick.AddListener(SelectOption2);
         Buttons[3].onClick.AddListener(SelectOption3);
+        
+        Buttons[0].onClick.AddListener(AudioManager.PlayButtonPress);
+        Buttons[1].onClick.AddListener(AudioManager.PlayButtonPress);
+        Buttons[2].onClick.AddListener(AudioManager.PlayButtonPress);
+        Buttons[3].onClick.AddListener(AudioManager.PlayButtonPress);
+
+        PropagatePointerEnters[0]._onPointerEnter = AudioManager.PlayButtonHover;
+        PropagatePointerEnters[1]._onPointerEnter = AudioManager.PlayButtonHover;
+        PropagatePointerEnters[2]._onPointerEnter = AudioManager.PlayButtonHover;
+        PropagatePointerEnters[3]._onPointerEnter = AudioManager.PlayButtonHover;
     }
 
     protected override Animator InitAnimator()

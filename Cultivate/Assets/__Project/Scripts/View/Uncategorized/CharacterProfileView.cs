@@ -12,6 +12,9 @@ public class CharacterProfileView : XView
     {
         base.AwakeFunction();
         _selectBehaviour = GetBehaviour<SelectBehaviour>();
+        
+        GetInteractBehaviour().PointerEnterNeuron.Join(AudioManager.PlayButtonHover);
+        GetInteractBehaviour().LeftClickNeuron.Join(AudioManager.PlayButtonPress);
     }
 
     public override void Refresh()

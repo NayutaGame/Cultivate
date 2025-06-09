@@ -3,6 +3,7 @@ using CLLibrary;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -88,4 +89,23 @@ public class AudioManager : Singleton<AudioManager>
     {
         Instance.SFXBus.setVolume((float)value / 100);
     }
+
+    #region ShortCuts
+    
+    public static void PlayButtonPress()
+        => Play("ButtonPress");
+    
+    public static void PlayButtonPress(InteractBehaviour ib, PointerEventData d)
+        => Play("ButtonPress");
+
+    public static void PlayButtonHover(PointerEventData d)
+        => Play("ButtonHover");
+
+    public static void PlayButtonHover(InteractBehaviour ib, PointerEventData d)
+        => Play("ButtonHover");
+
+    public static void PlayCardHover(InteractBehaviour ib, PointerEventData d)
+        => Play("CardHover");
+
+    #endregion
 }

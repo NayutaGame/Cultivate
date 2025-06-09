@@ -12,10 +12,10 @@ public class RunConfigPanel : Panel
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
     
     [SerializeField] private DifficultyPickerView DifficultyPickerView;
-    [SerializeField] private Button ReturnButton;
-    [SerializeField] private Button StartRunButton;
+    [SerializeField] private XButton ReturnButton;
+    [SerializeField] private XButton StartRunButton;
 
-    [SerializeField] private Button PackConfigButton;
+    [SerializeField] private XButton PackConfigButton;
 
     [SerializeField] private PackConfigPanel PackConfigPanel;
 
@@ -27,14 +27,23 @@ public class RunConfigPanel : Panel
 
         DifficultyPickerView.Configure();
 
-        ReturnButton.onClick.RemoveAllListeners();
-        ReturnButton.onClick.AddListener(Return);
+        ReturnButton._button.onClick.RemoveAllListeners();
+        ReturnButton._button.onClick.AddListener(Return);
+        ReturnButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
 
-        StartRunButton.onClick.RemoveAllListeners();
-        StartRunButton.onClick.AddListener(StartRun);
+        ReturnButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+
+        StartRunButton._button.onClick.RemoveAllListeners();
+        StartRunButton._button.onClick.AddListener(StartRun);
+        StartRunButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+
+        StartRunButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         
-        PackConfigButton.onClick.RemoveAllListeners();
-        PackConfigButton.onClick.AddListener(EnterPackConfig);
+        PackConfigButton._button.onClick.RemoveAllListeners();
+        PackConfigButton._button.onClick.AddListener(EnterPackConfig);
+        PackConfigButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+
+        PackConfigButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
         CharacterListView.LeftClickNeuron.Join(Select);
@@ -126,6 +135,6 @@ public class RunConfigPanel : Panel
     private void RefreshStartRunButton()
     {
         CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
-        StartRunButton.interactable = characterProfile.IsUnlocked();
+        StartRunButton._button.interactable = characterProfile.IsUnlocked();
     }
 }

@@ -2,17 +2,18 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TitlePanel : Panel
 {
-    public Button ContinueButton;
-    public Button StartRunButton;
-    public Button StartPrologueButton;
-    public Button EntityEditorButton;
-    public Button SkillBrowserButton;
-    public Button SettingsButton;
-    public Button ExitButton;
+    public XButton ContinueButton;
+    public XButton StartRunButton;
+    public XButton StartPrologueButton;
+    public XButton EntityEditorButton;
+    public XButton SkillBrowserButton;
+    public XButton SettingsButton;
+    public XButton ExitButton;
 
     public GameObject TitleModel;
 
@@ -29,20 +30,37 @@ public class TitlePanel : Panel
     {
         base.AwakeFunction();
         
-        ContinueButton.onClick.RemoveAllListeners();
-        ContinueButton.onClick.AddListener(Continue);
-        StartRunButton.onClick.RemoveAllListeners();
-        StartRunButton.onClick.AddListener(StartRun);
-        StartPrologueButton.onClick.RemoveAllListeners();
-        StartPrologueButton.onClick.AddListener(StartPrologue);
-        SettingsButton.onClick.RemoveAllListeners();
-        SettingsButton.onClick.AddListener(OpenMenu);
-        EntityEditorButton.onClick.RemoveAllListeners();
-        EntityEditorButton.onClick.AddListener(OpenEntityEditorPanel);
-        SkillBrowserButton.onClick.RemoveAllListeners();
-        SkillBrowserButton.onClick.AddListener(OpenSkillBrowserPanel);
-        ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(ExitGame);
+        ContinueButton._button.onClick.RemoveAllListeners();
+        StartRunButton._button.onClick.RemoveAllListeners();
+        StartPrologueButton._button.onClick.RemoveAllListeners();
+        SettingsButton._button.onClick.RemoveAllListeners();
+        EntityEditorButton._button.onClick.RemoveAllListeners();
+        SkillBrowserButton._button.onClick.RemoveAllListeners();
+        ExitButton._button.onClick.RemoveAllListeners();
+        
+        ContinueButton._button.onClick.AddListener(Continue);
+        StartRunButton._button.onClick.AddListener(StartRun);
+        StartPrologueButton._button.onClick.AddListener(StartPrologue);
+        SettingsButton._button.onClick.AddListener(OpenMenu);
+        EntityEditorButton._button.onClick.AddListener(OpenEntityEditorPanel);
+        SkillBrowserButton._button.onClick.AddListener(OpenSkillBrowserPanel);
+        ExitButton._button.onClick.AddListener(ExitGame);
+        
+        ContinueButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        StartRunButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        StartPrologueButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        SettingsButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        EntityEditorButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        SkillBrowserButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        ExitButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+
+        ContinueButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        StartRunButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        StartPrologueButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        EntityEditorButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        SkillBrowserButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        SettingsButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        ExitButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
     }
 
     public override void Refresh()

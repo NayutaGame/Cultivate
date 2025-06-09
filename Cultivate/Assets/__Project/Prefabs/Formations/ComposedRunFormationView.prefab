@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 7236146047631481335}
   - component: {fileID: 4530968671583995229}
   - component: {fileID: 462853501740899809}
+  - component: {fileID: 2929121071269892294}
   m_Layer: 5
   m_Name: ComposedRunFormationView
   m_TagString: Untagged
@@ -219,6 +220,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e56bc29f3d98bf4081752f48f1cfa66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2929121071269892294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8155228337873847611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 3429236827418137952}
+  HoverAudioId: FormationHover
+  LeftClickAudioId: 
+  RightClickAudioId: JingJieSwitch
 --- !u!1001 &5167865163322209992
 PrefabInstance:
   m_ObjectHideFlags: 0

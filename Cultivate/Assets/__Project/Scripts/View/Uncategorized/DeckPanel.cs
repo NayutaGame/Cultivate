@@ -26,7 +26,7 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityOtherHalfShowPivot;
     [SerializeField] private RectTransform PlayerEntityOtherHalfHidePivot;
     
-    public Button SortButton;
+    public XButton SortButton;
     [SerializeField] private RectTransform SortButtonTransform;
     [SerializeField] private RectTransform SortButtonShowPivot;
     [SerializeField] private RectTransform SortButtonHidePivot;
@@ -54,7 +54,7 @@ public class DeckPanel : Panel
         PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
 
         HandView.SetAddress("Run.Environment.Hand");
-        HandView.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        HandView.PointerEnterNeuron.Join(AudioManager.PlayCardHover);
         HandView.DropNeuron.Join(Merge, Unequip);
         
         HandView.DroppingNeuron.Join(RemoveMergePreresult);
@@ -64,8 +64,11 @@ public class DeckPanel : Panel
         
         UnequipZone._onDrop = Unequip;
 
-        SortButton.onClick.RemoveAllListeners();
-        SortButton.onClick.AddListener(Sort);
+        SortButton._button.onClick.RemoveAllListeners();
+        SortButton._button.onClick.AddListener(Sort);
+        SortButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+
+        SortButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
     }
 
     private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
@@ -166,9 +169,6 @@ public class DeckPanel : Panel
             ((view as DelegatingView).GetDelegatedView() as SlotView).SkillView.SetHighlight(false);
         }
     }
-
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
-        => AudioManager.Play("CardHover");
 
     private void RemoveMergePreresult(InteractBehaviour from, PointerEventData d)
     {
