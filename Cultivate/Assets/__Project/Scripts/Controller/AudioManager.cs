@@ -107,6 +107,9 @@ public class AudioManager : Singleton<AudioManager>
     public static void PlayCardHover(InteractBehaviour ib, PointerEventData d)
         => Play("CardHover");
 
+    public static void PlayCardPlacement()
+        => Play("CardPlacement");
+
     public static void PlayFinishGuide(Guide guide)
         => Play("FinishGuide");
 
@@ -115,6 +118,33 @@ public class AudioManager : Singleton<AudioManager>
 
     public static void PlayItemHover()
         => Play("ItemHover");
+
+    public static void PlayEnterSettings()
+        => Play("EnterSettings");
+
+    public static void PlayExitSettings()
+        => Play("ExitSettings");
+
+    public static void PlayGainMingYuan(int value)
+        => Play("GainMingYuan");
+    
+    public static void PlayLoseMingYuan(int value)
+        => Play("LoseMingYuan");
+    
+    public static void PlayGainMaxHealth(int value)
+        => Play("GainMaxHealth");
+    
+    public static void PlayGainGold(int value)
+        => Play("GainGold");
+    
+    public static void PlayLoseGold(int value)
+        => Play("LoseGold");
+    
+    public static void PlayShowDiscovered()
+        => Play("ShowDiscovered");
+    
+    public static void PlayGainSkill()
+        => Play("GainSkill");
 
     #endregion
 }

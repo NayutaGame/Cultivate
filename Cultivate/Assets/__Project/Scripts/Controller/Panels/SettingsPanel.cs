@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -26,6 +27,16 @@ public class SettingsPanel : PopupPanel
     {
         ToTitleButton.gameObject.SetActive(false);
         ToDesktopButton.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        AudioManager.PlayEnterSettings();
+    }
+
+    private void OnDisable()
+    {
+        AudioManager.PlayExitSettings();
     }
 
     private Address _address;

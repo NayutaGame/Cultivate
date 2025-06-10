@@ -119,7 +119,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             { "Home",                  () => _home },
             { "Map",                   () => _map },
             { "Hand",                  () => _hand },
-            { "ActivePanel",           GetActivePanel },
+            { "ActivePanel",           GetPanel },
         };
         
         _startTime = DateTime.Now;
@@ -194,7 +194,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void SendEvent(int eventId, RunClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
     public RunResult GetResult() => _result;
-    public PanelDescriptor GetActivePanel() => Panel;
     public Sprite GetCurrEventIllustration() => _map.GetCurrEventIllustration();
     public TimeSpan GetRunfinishedTime() => _runFinishedTime;
     public TimeSpan GetPassedTime() => _loadedTime + (DateTime.Now - _startTime);
@@ -344,7 +343,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void SetGuideToFinish()
     {
-        GetActivePanel().SetGuideToFinish();
+        GetPanel().SetGuideToFinish();
     }
 
     public string GetJingJieHintText()
@@ -1001,17 +1000,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region PanelOperations
     
-    public PanelDescriptor Panel
+    public PanelDescriptor GetPanel() => _panel;
+    public void SetPanel(PanelDescriptor panel)
     {
-        get => _panel;
-        set
-        {
-            if (_panel == value)
-                return;
-            _panel?.Exit();
-            _panel = value;
-            _panel?.Enter();
-        }
+        if (_panel == panel)
+            return;
+        PanelChangedDetails panelChangedDetails = new(_panel, panel);
+        
+        if (_panel != null)
+            SendEvent(RunClosureDict.WIL_CHANGE_PANEL, panelChangedDetails);
+        _panel?.Exit();
+        _panel = panel;
+        _panel?.Enter();
+        if (_panel != null)
+            PanelChangedNeuron.Invoke(panelChangedDetails);
     }
 
     private bool PanelIsFinished(PanelDescriptor panel)
@@ -1022,7 +1024,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (RunIsFinished())
             return;
 
-        PanelDescriptor panel = Panel.ReceiveSignal(signal);
+        PanelDescriptor panel = _panel.ReceiveSignal(signal);
         
         if (PanelIsFinished(panel))
         {
@@ -1056,9 +1058,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             }
         }
         
-        PanelChangedDetails panelChangedDetails = new(Panel, panel);
-        Panel = panel;
-        PanelChangedNeuron.Invoke(panelChangedDetails);
+        SetPanel(panel);
     }
 
     public void GuideProcedure(DeckChangedDetails d)
@@ -1066,8 +1066,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void GuideProcedure(Signal signal)
     {
-        Guide guide = Panel.GetGuideDescriptor();
-        guide?.ReceiveSignal(Panel, signal);
+        Guide guide = _panel.GetGuideDescriptor();
+        guide?.ReceiveSignal(_panel, signal);
         if (guide != null)
             CanvasManager.Instance.RefreshGuide();
     }
@@ -1094,13 +1094,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(this);
         
-        PanelChangedDetails panelChangedDetails = new(Panel, resultPanel);
-        Panel = resultPanel;
+        SetPanel(resultPanel);
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
-
-        SendEvent(RunClosureDict.WIL_CHANGE_PANEL, panelChangedDetails);
-        PanelChangedNeuron.Invoke(panelChangedDetails);
     }
 
     public bool RunIsFinished()
@@ -1108,7 +1104,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void InitPanel()
     {
-        Panel = Map.CreatePanelFromCurrRoom();
+        SetPanel(Map.CreatePanelFromCurrRoom());
         Room newRoom = Map.GetCurrRoom();
         RoomChangedNeuron.Invoke(new(null, newRoom));
     }
@@ -1147,7 +1143,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             { "Home",                  () => _home },
             { "Map",                   () => _map },
             { "Hand",                  () => _hand },
-            { "ActivePanel",           GetActivePanel },
+            { "ActivePanel",           GetPanel },
         };
         
         _startTime = DateTime.Now;

@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -68,7 +70,7 @@ public class RunCanvas : Panel
 
     private void RefreshPanel()
     {
-        ChangePanel(RunManager.Instance.Environment.GetActivePanel());
+        ChangePanel(RunManager.Instance.Environment.GetPanel());
     }
 
     private void OnEnable()
@@ -91,8 +93,17 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.MergeNeuron.Add(MergeStaging);
         
         RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
+        RunManager.Instance.Environment.PanelChangedNeuron.Add(EnterPanelSound);
+        
+        RunManager.Instance.Environment.GainMingYuanNeuron.Add(AudioManager.PlayGainMingYuan);
         
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(MingYuanDamageStaging);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Add(AudioManager.PlayLoseMingYuan);
+        
+        RunManager.Instance.Environment.GainHealthNeuron.Add(AudioManager.PlayGainMaxHealth);
+        
+        RunManager.Instance.Environment.GainGoldNeuron.Add(AudioManager.PlayGainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Add(AudioManager.PlayLoseGold);
         
         RefreshPanel();
     }
@@ -117,8 +128,31 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.MergeNeuron.Remove(MergeStaging);
         
         RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
+        RunManager.Instance.Environment.PanelChangedNeuron.Remove(EnterPanelSound);
+        
+        RunManager.Instance.Environment.GainMingYuanNeuron.Remove(AudioManager.PlayGainMingYuan);
         
         RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(MingYuanDamageStaging);
+        RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(AudioManager.PlayLoseMingYuan);
+        
+        RunManager.Instance.Environment.GainHealthNeuron.Remove(AudioManager.PlayGainMaxHealth);
+        
+        RunManager.Instance.Environment.GainGoldNeuron.Remove(AudioManager.PlayGainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Remove(AudioManager.PlayLoseGold);
+    }
+
+    private readonly Dictionary<Type, string> _panelSoundMap = new Dictionary<Type, string>
+    {
+        { typeof(DialogPanelDescriptor), "EnterAdventure" },
+        { typeof(ShopPanelDescriptor), "EnterShop" }
+    };
+
+    private void EnterPanelSound(PanelChangedDetails d)
+    {
+        if (_panelSoundMap.TryGetValue(d.ToPanel.GetType(), out string soundName))
+        {
+            AudioManager.Play(soundName);
+        }
     }
 
     private void ChangePanel(PanelChangedDetails d)
@@ -156,7 +190,7 @@ public class RunCanvas : Panel
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
 
-        PanelDescriptor d = RunManager.Instance.Environment.GetActivePanel();
+        PanelDescriptor d = RunManager.Instance.Environment.GetPanel();
         bool showDeck = d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor ||
                         d is DiscoverSkillPanelDescriptor;
         
@@ -240,13 +274,14 @@ public class RunCanvas : Panel
         
         void SetShow(DelegatingView view)
         {
+            AudioManager.PlayGainSkill();
             view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
         }
         
         void SetIdle(DelegatingView view)
         {
+            AudioManager.PlayCardPlacement();
             view.GetAnimator().SetStateAsync(1);
-            // AudioManager.Play("CardPlacement");
         }
 
         b.PreferredDeckIndices.Do(deckIndex =>
@@ -278,7 +313,7 @@ public class RunCanvas : Panel
         {
             DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
             seq.AppendCallback(() => SetShow(view))
-                .AppendInterval(0.1f);
+                .AppendInterval(0.15f);
         }
         
         seq.AppendInterval(0.2f);

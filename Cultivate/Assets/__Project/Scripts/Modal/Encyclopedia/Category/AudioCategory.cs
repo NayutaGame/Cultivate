@@ -19,25 +19,25 @@ public class AudioCategory : Category<AudioEntry>
             new("BGMHuaShen", "event:/BGM/BGMHuaShen", AudioEntry.AudioType.Music),
 
             // SFX
-            new("Backward", "event:/SFX/UI/Backward", AudioEntry.AudioType.SFX), //
+            new("Backward", "event:/SFX/UI/Backward", AudioEntry.AudioType.SFX),
             new("ButtonHover", "event:/SFX/UI/ButtonHover", AudioEntry.AudioType.SFX),
             new("ButtonPress", "event:/SFX/UI/ButtonPress", AudioEntry.AudioType.SFX),
-            new("CardHover", "event:/SFX/UI/CardHover", AudioEntry.AudioType.SFX), //
-            new("CardPlacement", "event:/SFX/UI/CardPlacement", AudioEntry.AudioType.SFX), //
-            new("CardUpgrade", "event:/SFX/UI/CardUpgrade", AudioEntry.AudioType.SFX), //
+            new("CardHover", "event:/SFX/UI/CardHover", AudioEntry.AudioType.SFX),
+            new("CardPlacement", "event:/SFX/UI/CardPlacement", AudioEntry.AudioType.SFX),
+            new("CardUpgrade", "event:/SFX/UI/CardUpgrade", AudioEntry.AudioType.SFX),
             new("EnterAdventure", "event:/SFX/UI/EnterAdventure", AudioEntry.AudioType.SFX),
             new("EnterSettings", "event:/SFX/UI/EnterSettings", AudioEntry.AudioType.SFX),
             new("EnterShop", "event:/SFX/UI/EnterShop", AudioEntry.AudioType.SFX),
             new("ExitSettings", "event:/SFX/UI/ExitSettings", AudioEntry.AudioType.SFX),
-            new("FinishGuide", "event:/SFX/UI/FinishGuide", AudioEntry.AudioType.SFX), //
-            new("FormationHover", "event:/SFX/UI/FormationHover", AudioEntry.AudioType.SFX), //
-            new("Forward", "event:/SFX/UI/Forward", AudioEntry.AudioType.SFX), //
+            new("FinishGuide", "event:/SFX/UI/FinishGuide", AudioEntry.AudioType.SFX),
+            new("FormationHover", "event:/SFX/UI/FormationHover", AudioEntry.AudioType.SFX),
+            new("Forward", "event:/SFX/UI/Forward", AudioEntry.AudioType.SFX),
             new("GainGold", "event:/SFX/UI/GainGold", AudioEntry.AudioType.SFX),
             new("GainMaxHealth", "event:/SFX/UI/GainMaxHealth", AudioEntry.AudioType.SFX),
             new("GainMingYuan", "event:/SFX/UI/GainMingYuan", AudioEntry.AudioType.SFX),
             new("GainSkill", "event:/SFX/UI/GainSkill", AudioEntry.AudioType.SFX),
-            new("ItemHover", "event:/SFX/UI/ItemHover", AudioEntry.AudioType.SFX), //
-            new("JingJieSwitch", "event:/SFX/UI/JingJieSwitch", AudioEntry.AudioType.SFX), //
+            new("ItemHover", "event:/SFX/UI/ItemHover", AudioEntry.AudioType.SFX),
+            new("JingJieSwitch", "event:/SFX/UI/JingJieSwitch", AudioEntry.AudioType.SFX),
             new("LoseGold", "event:/SFX/UI/LoseGold", AudioEntry.AudioType.SFX),
             new("LoseMingYuan", "event:/SFX/UI/LoseMingYuan", AudioEntry.AudioType.SFX),
             new("ShowDiscovered", "event:/SFX/UI/ShowDiscovered", AudioEntry.AudioType.SFX),

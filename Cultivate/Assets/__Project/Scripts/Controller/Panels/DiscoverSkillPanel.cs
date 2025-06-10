@@ -111,6 +111,7 @@ public class DiscoverSkillPanel : Panel
         SkillList.TraversalActive().Do(item =>
         {
             seq.Append(item.GetAnimator().TweenFromSetState(DelegatingView3States.IDLE));
+            seq.AppendCallback(AudioManager.PlayShowDiscovered);
             seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
         });
         return seq;
@@ -143,6 +144,7 @@ public class DiscoverSkillPanel : Panel
         SkillList.TraversalActive().Do(item =>
         {
             seq.Append(item.GetAnimator().TweenFromSetState(DelegatingView3States.IDLE));
+            seq.AppendCallback(AudioManager.PlayShowDiscovered);
             seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
         });
         return seq;
