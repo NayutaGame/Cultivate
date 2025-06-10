@@ -7,82 +7,6 @@ public class MapCategory : Category<MapEntry>
     {
         AddRange(new List<MapEntry>()
         {
-            new(id: "标准无教程",
-                envJingJie: JingJie.LianQi,
-                slotCount: 3,
-                gold: 3,
-                skillJingJie: JingJie.LianQi,
-                skillCount: 0,
-                levels: new RoomDefinition[][]
-                {
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(0, "出门"),
-                        new BattleRoomDefinition(0, 3, 4),
-                        new AdventureRoomDefinition(0),
-                        // new RestRoomDescriptor(0),
-                        new BattleRoomDefinition(1, 4, 5),
-                        new AscensionRoomDefinition(1),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new BattleRoomDefinition(2, 5, 6),
-                        new AdventureRoomDefinition(2),
-                        new ShopRoomDefinition(2),
-                        new BattleRoomDefinition(3, 6, 7),
-                        new AdventureRoomDefinition(3),
-                        // new RestRoomDescriptor(3),
-                        new BattleRoomDefinition(4, 7, 8),
-                        new AscensionRoomDefinition(4),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new BattleRoomDefinition(5, 8, 8),
-                        new AdventureRoomDefinition(5),
-                        new ShopRoomDefinition(5),
-                        new BattleRoomDefinition(5, 8, 9),
-                        new AdventureRoomDefinition(5),
-                        new BattleRoomDefinition(6, 9, 9),
-                        new AdventureRoomDefinition(6),
-                        // new RestRoomDescriptor(6),
-                        new BattleRoomDefinition(7, 9, 10),
-                        new AscensionRoomDefinition(7),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new BattleRoomDefinition(8, 10, 10),
-                        new AdventureRoomDefinition(8),
-                        new BattleRoomDefinition(8, 10, 11),
-                        new AdventureRoomDefinition(8),
-                        new ShopRoomDefinition(8),
-                        new BattleRoomDefinition(9, 11, 11),
-                        new AdventureRoomDefinition(9),
-                        new BattleRoomDefinition(9, 11, 12),
-                        new AdventureRoomDefinition(9),
-                        // new RestRoomDescriptor(9),
-                        new BattleRoomDefinition(10, 12, 12),
-                        new AscensionRoomDefinition(10),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new BattleRoomDefinition(11, 12, 12),
-                        new AdventureRoomDefinition(11),
-                        new BattleRoomDefinition(11, 12, 12),
-                        new AdventureRoomDefinition(11),
-                        new BattleRoomDefinition(11, 12, 12),
-                        // new RestRoomDescriptor(11),
-                        new BattleRoomDefinition(12, 12, 12),
-                        new AdventureRoomDefinition(12),
-                        new BattleRoomDefinition(12, 12, 12),
-                        new AdventureRoomDefinition(12),
-                        new BattleRoomDefinition(12, 12, 12),
-                        // new RestRoomDescriptor(12),
-                        new ShopRoomDefinition(12),
-                        new BattleRoomDefinition(13, 12, 12),
-                        new SuccessRoomDefinition(13),
-                    },
-                }),
-            
             new(id: "标准",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
@@ -131,6 +55,96 @@ public class MapCategory : Category<MapEntry>
                         new DirectRoomDefinition(2, "教学10", pred: (profile, env) =>
                             !profile.DifficultyProfileList.Find("5").IsUnlocked()
                             && env.GetRunConfig().GetDifficulty() == 4),
+                        
+                        new BattleRoomDefinition(2, 5, 6),
+                        new AdventureRoomDefinition(2),
+                        new ShopRoomDefinition(2),
+                        new BattleRoomDefinition(3, 6, 7),
+                        new AdventureRoomDefinition(3),
+                        // new RestRoomDescriptor(3),
+                        new BattleRoomDefinition(4, 7, 8),
+                        new AscensionRoomDefinition(4),
+                    },
+                    new RoomDefinition[]
+                    {
+                        // 教学13 同境界合成
+                        
+                        new BattleRoomDefinition(5, 8, 8),
+                        new AdventureRoomDefinition(5),
+                        new ShopRoomDefinition(5),
+                        new BattleRoomDefinition(5, 8, 9),
+                        new AdventureRoomDefinition(5),
+                        new BattleRoomDefinition(6, 9, 9),
+                        new AdventureRoomDefinition(6),
+                        // new RestRoomDescriptor(6),
+                        new BattleRoomDefinition(7, 9, 10),
+                        new AscensionRoomDefinition(7),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new BattleRoomDefinition(8, 10, 10),
+                        new AdventureRoomDefinition(8),
+                        new BattleRoomDefinition(8, 10, 11),
+                        new AdventureRoomDefinition(8),
+                        new ShopRoomDefinition(8),
+                        new BattleRoomDefinition(9, 11, 11),
+                        new AdventureRoomDefinition(9),
+                        new BattleRoomDefinition(9, 11, 12),
+                        new AdventureRoomDefinition(9),
+                        // new RestRoomDescriptor(9),
+                        new BattleRoomDefinition(10, 12, 12),
+                        new AscensionRoomDefinition(10),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        new AdventureRoomDefinition(11),
+                        new BattleRoomDefinition(11, 12, 12),
+                        // new RestRoomDescriptor(11),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(12, 12, 12),
+                        // new RestRoomDescriptor(12),
+                        new ShopRoomDefinition(12),
+                        new BattleRoomDefinition(13, 12, 12),
+                        new SuccessRoomDefinition(13),
+                    },
+                }),
+            
+            new(id: "序章",
+                envJingJie: JingJie.LianQi,
+                slotCount: 3,
+                gold: 3,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(0, "漫画"),
+                        new DirectRoomDefinition(0, "教学1"),
+                        new DirectRoomDefinition(0, "教学2"),
+                        new DirectRoomDefinition(0, "教学3"),
+                        new DirectRoomDefinition(0, "教学4"),
+                        new DirectRoomDefinition(0, "教学5"),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(0, "序章出门"),
+                        
+                        new BattleRoomDefinition(0, 3, 4),
+                        new AdventureRoomDefinition(0),
+                        // new RestRoomDescriptor(0),
+                        new BattleRoomDefinition(1, 4, 5),
+                        new AscensionRoomDefinition(0),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(2, "教学6"),
                         
                         new BattleRoomDefinition(2, 5, 6),
                         new AdventureRoomDefinition(2),

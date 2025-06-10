@@ -28,6 +28,8 @@ public class ComicView : MonoBehaviour
         _handle?.Complete();
         _handle = Pages[_index].GetComponent<Image>().DOFade(1, 0.15f);
         _handle.SetAutoKill().Restart();
+        
+        AudioManager.PlayComicPanelProceed();
 
         _index++;
         

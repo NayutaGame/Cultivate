@@ -123,10 +123,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638848213716095673
+  lastModified: 638851472090588360
   FileSizes:
   - Name: Desktop
-    Value: 2810
+    Value: 2870
   Exists: 1
 --- !u!114 &-5797589842333413307
 MonoBehaviour:
@@ -526,6 +526,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-1265809549854241428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/ComicPanelProceed
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/UI/ComicPanelProceed
+  Guid:
+    Data1: 592259624
+    Data2: 1204018011
+    Data3: 1910580140
+    Data4: -1661478736
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1257355220835913208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,13 +723,14 @@ MonoBehaviour:
   - {fileID: -7530120699932136483}
   - {fileID: 1988864469016445681}
   - {fileID: -1646969681716883694}
+  - {fileID: -1265809549854241428}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8805596594247787075}
   StringsBanks:
   - {fileID: -6444433781297489971}
   cacheVersion: 131847
-  cacheTime: 638850825849896879
+  cacheTime: 638851476532396247
   SerializableEventsDict:
   - key: event:/BGM/BGMLianQi
     index: 0
@@ -792,6 +820,8 @@ MonoBehaviour:
     index: 42
   - key: event:/SFX/UI/EnterAdventure
     index: 43
+  - key: event:/SFX/UI/ComicPanelProceed
+    index: 44
 --- !u!114 &1988864469016445681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,10 +1080,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638850825849896879
+  lastModified: 638851476532396247
   FileSizes:
   - Name: Desktop
-    Value: 591136
+    Value: 561664
   Exists: 1
 --- !u!114 &3928210967971371097
 MonoBehaviour:
@@ -1421,7 +1451,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638848213716085672
+  lastModified: 638851472090588360
   FileSizes:
   - Name: Desktop
     Value: 1378

@@ -149,6 +149,9 @@ public class RunCanvas : Panel
 
     private void EnterPanelSound(PanelChangedDetails d)
     {
+        if (d.FromPanel == d.ToPanel)
+            return;
+        
         if (_panelSoundMap.TryGetValue(d.ToPanel.GetType(), out string soundName))
         {
             AudioManager.Play(soundName);

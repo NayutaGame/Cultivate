@@ -145,6 +145,9 @@ public class AudioManager : Singleton<AudioManager>
     
     public static void PlayGainSkill()
         => Play("GainSkill");
+    
+    public static void PlayComicPanelProceed()
+        => Play("ComicPanelProceed");
 
     #endregion
 }

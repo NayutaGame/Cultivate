@@ -25,6 +25,7 @@ public class AudioCategory : Category<AudioEntry>
             new("CardHover", "event:/SFX/UI/CardHover", AudioEntry.AudioType.SFX),
             new("CardPlacement", "event:/SFX/UI/CardPlacement", AudioEntry.AudioType.SFX),
             new("CardUpgrade", "event:/SFX/UI/CardUpgrade", AudioEntry.AudioType.SFX),
+            new("ComicPanelProceed", "event:/SFX/UI/ComicPanelProceed", AudioEntry.AudioType.SFX),
             new("EnterAdventure", "event:/SFX/UI/EnterAdventure", AudioEntry.AudioType.SFX),
             new("EnterSettings", "event:/SFX/UI/EnterSettings", AudioEntry.AudioType.SFX),
             new("EnterShop", "event:/SFX/UI/EnterShop", AudioEntry.AudioType.SFX),
