@@ -41,14 +41,14 @@ public class Utility : MonoBehaviour
     [MenuItem("Utility/Delete Profile", false, 0)]
     static void DeleteProfile(MenuCommand menuCommand)
     {
-        FileUtility.DeleteFile(ProfileList.Filename);
+        FileUtility.DeletePersistentFile(ProfileList.Filename);
         AssetDatabase.Refresh();
     }
 
     [MenuItem("Utility/Delete SettingsData", false, 0)]
     static void DeleteSettingsData(MenuCommand menuCommand)
     {
-        FileUtility.DeleteFile(SettingsData.Filename);
+        FileUtility.DeletePersistentFile(SettingsData.Filename);
         AssetDatabase.Refresh();
     }
 }

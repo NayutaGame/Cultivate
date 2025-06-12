@@ -52,7 +52,8 @@ public class LoseArmorProcedureDefinition : ProcedureDefinition
             listener: d.Skill,
             closures: ClosuresArray,
             castResult: d.CastResult,
-            induced: Induced);
+            induced: Induced,
+            spawnVFX: true);
 
     public override async UniTask Cast(CastDetails castDetails)
         => await castDetails.Env.LoseArmorProcedure(GetDetailsFromCastDetails(castDetails));

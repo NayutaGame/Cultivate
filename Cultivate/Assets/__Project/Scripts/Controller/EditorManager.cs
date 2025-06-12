@@ -151,12 +151,12 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     public void Save()
     {
-        FileUtility.WriteToFile(EntityEditableList, EntityEditableList.Filename);
+        FileUtility.WriteStreamingFile(EntityEditableList, EntityEditableList.Filename);
     }
 
     public void Load()
     {
-        EntityEditableList = FileUtility.ReadFromFile<EntityEditableList>(EntityEditableList.Filename);
+        EntityEditableList = FileUtility.ReadStreamingFile<EntityEditableList>(EntityEditableList.Filename);
     }
 
     public static RunEntity FindEntity(string name)

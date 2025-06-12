@@ -72,7 +72,7 @@ public class Settings : Addressable
     
     private void LoadOrDefault()
     {
-        if (!FileUtility.IsFileExists(SettingsData.Filename))
+        if (!FileUtility.IsPersistentFileExists(SettingsData.Filename))
         {
             DefaultSettingsData();
             SaveProcedure();
@@ -110,12 +110,12 @@ public class Settings : Addressable
     
     public void SaveProcedure()
     {
-        FileUtility.WriteToFile(_settingsData, SettingsData.Filename);
+        FileUtility.WritePersistentFile(_settingsData, SettingsData.Filename);
     }
 
     public void LoadProcedure()
     {
-        _settingsData = FileUtility.ReadFromFile<SettingsData>(SettingsData.Filename);
+        _settingsData = FileUtility.ReadPersistentFile<SettingsData>(SettingsData.Filename);
         // case存档损坏
     }
 

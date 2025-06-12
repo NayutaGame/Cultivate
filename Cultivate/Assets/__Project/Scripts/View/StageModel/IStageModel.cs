@@ -6,6 +6,7 @@ public abstract class IStageModel : MonoBehaviour
     public Transform BaseTransform;
     public Transform Transform;
     public Transform VFXTransform;
+    public Transform FootTransform;
 
     public Vector3 GetOrient() => Transform.right;
 
@@ -17,7 +18,8 @@ public abstract class IStageModel : MonoBehaviour
     public abstract Animation GetAnimationFromEvaded(bool induced);
     public abstract Animation GetAnimationFromAttack(bool induced, int times);
     public abstract Animation GetAnimationFromDamaged(bool induced);
-    public abstract Animation GetAnimationFromGainArmor(bool induced);
+    public abstract Animation GetAnimationFromGiveArmor(bool induced);
+    public abstract Animation GetAnimationFromRemoveArmor(bool induced);
     public abstract Animation GetAnimationFromHeal(bool induced);
     public abstract Animation GetAnimationFromGuard(bool induced);
     public abstract Animation GetAnimationFromUnguard(bool induced);

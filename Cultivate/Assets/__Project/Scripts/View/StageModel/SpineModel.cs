@@ -74,9 +74,15 @@ public class SpineModel : IStageModel
         return new SpineAnimation(this, 1, "damaged", "idle", SpineAnimation.IntervalType.NoInterval, 0, false, induced);
     }
 
-    public override Animation GetAnimationFromGainArmor(bool induced)
+    public override Animation GetAnimationFromGiveArmor(bool induced)
     {
         // return new GainArmorTweenAnimation(this, true, induced);
+        return new SpineAnimation(this, 1, "hail", "idle", SpineAnimation.IntervalType.NoInterval, 0, true, induced);
+    }
+
+    public override Animation GetAnimationFromRemoveArmor(bool induced)
+    {
+        // return new RemoveArmorTweenAnimation(this, true, induced);
         return new SpineAnimation(this, 1, "hail", "idle", SpineAnimation.IntervalType.NoInterval, 0, true, induced);
     }
 

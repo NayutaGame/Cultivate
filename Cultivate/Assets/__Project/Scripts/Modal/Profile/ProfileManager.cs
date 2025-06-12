@@ -23,7 +23,7 @@ public class ProfileManager : Addressable
 
     private void LoadOrDefault()
     {
-        if (!FileUtility.IsFileExists(ProfileList.Filename))
+        if (!FileUtility.IsPersistentFileExists(ProfileList.Filename))
         {
             _profileList = ProfileList.Default();
             SaveProcedure();
@@ -36,25 +36,25 @@ public class ProfileManager : Addressable
 
     public void SaveProcedure()
     {
-        FileUtility.WriteToFile(_profileList, ProfileList.Filename);
+        FileUtility.WritePersistentFile(_profileList, ProfileList.Filename);
     }
 
     public void SaveProcedureRemovingRunEnvironment()
     {
         GetCurrProfile().RunEnvironment = null;
-        FileUtility.WriteToFile(_profileList, ProfileList.Filename);
+        FileUtility.WritePersistentFile(_profileList, ProfileList.Filename);
     }
 
     public void SaveProcedure(RunEnvironment env)
     {
         env.WriteTime();
         GetCurrProfile().WriteRunEnvironment(env);
-        FileUtility.WriteToFile(_profileList, ProfileList.Filename);
+        FileUtility.WritePersistentFile(_profileList, ProfileList.Filename);
     }
 
     public void SaveProcedureForAchievements(AchievementEntry entry)
     {
-        ProfileList lastSavedProfileList = FileUtility.ReadFromFile<ProfileList>(ProfileList.Filename);
+        ProfileList lastSavedProfileList = FileUtility.ReadPersistentFile<ProfileList>(ProfileList.Filename);
         Profile profile = lastSavedProfileList.GetCurrent();
         
         var achievementProfile = profile.AchievementProfileList.First(ap => ap.GetEntry().GetId() == entry.GetId());
@@ -66,12 +66,12 @@ public class ProfileManager : Addressable
         }
         
         achievementProfile.SetUnlockedQuietly(true);
-        FileUtility.WriteToFile(lastSavedProfileList, ProfileList.Filename);
+        FileUtility.WritePersistentFile(lastSavedProfileList, ProfileList.Filename);
     }
 
     public void LoadProcedure()
     {
-        _profileList = FileUtility.ReadFromFile<ProfileList>(ProfileList.Filename);
+        _profileList = FileUtility.ReadPersistentFile<ProfileList>(ProfileList.Filename);
         // case存档损坏
     }
 

@@ -115,6 +115,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5142157325699606658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2830308700421783921}
+  m_Layer: 0
+  m_Name: FootTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2830308700421783921
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5142157325699606658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.86, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4363211736318339391}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5920321091654854996
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +177,7 @@ Transform:
   m_Children:
   - {fileID: 1493109378255806989}
   - {fileID: 5767766161815880041}
+  - {fileID: 2830308700421783921}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,7 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b03f564b23d41b4c9b4660ce490a8c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VFXTransform: {fileID: 5767766161815880041}
   BaseTransform: {fileID: 0}
   Transform: {fileID: 4363211736318339391}
+  VFXTransform: {fileID: 5767766161815880041}
+  FootTransform: {fileID: 2830308700421783921}
   SR: {fileID: 7268919021192703100}

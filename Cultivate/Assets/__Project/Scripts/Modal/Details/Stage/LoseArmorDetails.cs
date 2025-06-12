@@ -5,8 +5,10 @@ public class LoseArmorDetails : NestedStageClosureDetails
     public StageEntity Tgt;
     public int Value;
 
+    public bool SpawnVFX;
+
     public LoseArmorDetails(
-        StageEntity src, StageEntity tgt, int value, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
+        StageEntity src, StageEntity tgt, int value, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced, bool spawnVFX)
     {
         Src = src;
         Tgt = tgt;
@@ -15,7 +17,8 @@ public class LoseArmorDetails : NestedStageClosureDetails
         Closures = closures;
         CastResult = castResult;
         Induced = induced;
+        SpawnVFX = spawnVFX;
     }
     
-    public LoseArmorDetails Clone() => new(Src, Tgt, Value, Listener, Closures, CastResult, Induced);
+    public LoseArmorDetails ShallowClone() => new(Src, Tgt, Value, Listener, Closures, CastResult, Induced, SpawnVFX);
 }

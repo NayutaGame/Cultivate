@@ -19,6 +19,8 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject GainArmorVFXPrefab;
     public GameObject GuardedVFXPrefab;
     public GameObject FragileVFXPrefab;
+    public GameObject LoseArmorVFXPrefab;
+    public GameObject DodgeVFXPrefab;
 
     public Transform HomeAnchor;
     private PrefabEntry HomePrefabEntry;

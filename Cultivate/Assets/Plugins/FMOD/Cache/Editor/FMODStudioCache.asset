@@ -108,6 +108,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 57000
+--- !u!114 &-7487355170571698471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/LoseArmor
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/LoseArmor
+  Guid:
+    Data1: -1640223890
+    Data2: 1309110868
+    Data3: 1886681012
+    Data4: 616906601
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6537351804869027175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/ExitStage
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/UI/ExitStage
+  Guid:
+    Data1: -1672977690
+    Data2: 1107732992
+    Data3: -1988442473
+    Data4: -1332719991
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6444433781297489971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,10 +177,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638851472090588360
+  lastModified: 638852483664838479
   FileSizes:
   - Name: Desktop
-    Value: 2870
+    Value: 3314
   Exists: 1
 --- !u!114 &-5797589842333413307
 MonoBehaviour:
@@ -371,6 +425,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2623286168676305759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/GainArmor
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/GainArmor
+  Guid:
+    Data1: -1737526790
+    Data2: 1156600688
+    Data3: -1105602398
+    Data4: -976165319
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1958756036614923884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +472,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 8287968
   Exists: 1
+--- !u!114 &-1777723684791165316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/FullDefense
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/FullDefense
+  Guid:
+    Data1: 156085867
+    Data2: 1202078484
+    Data3: 2018009248
+    Data4: 1106236435
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1753776540746001611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,13 +832,23 @@ MonoBehaviour:
   - {fileID: 1988864469016445681}
   - {fileID: -1646969681716883694}
   - {fileID: -1265809549854241428}
+  - {fileID: 4633441351769702157}
+  - {fileID: 8548993990834095291}
+  - {fileID: -6537351804869027175}
+  - {fileID: 1422872811024731554}
+  - {fileID: 6544129822683417748}
+  - {fileID: -1777723684791165316}
+  - {fileID: -7487355170571698471}
+  - {fileID: 8408698221505683611}
+  - {fileID: -2623286168676305759}
+  - {fileID: 4443643993868794247}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8805596594247787075}
   StringsBanks:
   - {fileID: -6444433781297489971}
   cacheVersion: 131847
-  cacheTime: 638851476532396247
+  cacheTime: 638853231799157189
   SerializableEventsDict:
   - key: event:/BGM/BGMLianQi
     index: 0
@@ -822,6 +940,53 @@ MonoBehaviour:
     index: 43
   - key: event:/SFX/UI/ComicPanelProceed
     index: 44
+  - key: event:/SFX/UI/Sort
+    index: 45
+  - key: event:/SFX/UI/EnterStage
+    index: 46
+  - key: event:/SFX/UI/ExitStage
+    index: 47
+  - key: event:/SFX/VFX/Burn
+    index: 48
+  - key: event:/SFX/VFX/FragileDamaged
+    index: 49
+  - key: event:/SFX/VFX/FullDefense
+    index: 50
+  - key: event:/SFX/VFX/LoseArmor
+    index: 51
+  - key: event:/SFX/VFX/GainMana
+    index: 52
+  - key: event:/SFX/VFX/GainArmor
+    index: 53
+  - key: event:/SFX/VFX/Dodge
+    index: 54
+--- !u!114 &1422872811024731554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/Burn
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/Burn
+  Guid:
+    Data1: 867683139
+    Data2: 1262475187
+    Data3: 1407701426
+    Data4: 209003571
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1988864469016445681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,10 +1245,10 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638851476532396247
+  lastModified: 638853231799157189
   FileSizes:
   - Name: Desktop
-    Value: 561664
+    Value: 793344
   Exists: 1
 --- !u!114 &3928210967971371097
 MonoBehaviour:
@@ -1103,6 +1268,60 @@ MonoBehaviour:
     Data2: 1314802830
     Data3: -2087419977
     Data4: -1345232027
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4443643993868794247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/Dodge
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/Dodge
+  Guid:
+    Data1: 733495291
+    Data2: 1206990100
+    Data3: 1438938029
+    Data4: 737370609
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4633441351769702157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/Sort
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/UI/Sort
+  Guid:
+    Data1: 804528155
+    Data2: 1292870443
+    Data3: 597860521
+    Data4: -1600749696
   Banks:
   - {fileID: 3786016340767592077}
   IsStream: 0
@@ -1274,6 +1493,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &6544129822683417748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/FragileDamaged
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/FragileDamaged
+  Guid:
+    Data1: -1510958264
+    Data2: 1298472429
+    Data3: -1276487779
+    Data4: -186788816
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &6732555271401744721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,6 +1682,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8408698221505683611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/VFX/GainMana
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/VFX/GainMana
+  Guid:
+    Data1: 1828092104
+    Data2: 1079504476
+    Data3: -1157502332
+    Data4: -146023697
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8548993990834095291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/UI/EnterStage
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/UI/EnterStage
+  Guid:
+    Data1: -169809482
+    Data2: 1293056658
+    Data3: 1254582207
+    Data4: 1426214371
+  Banks:
+  - {fileID: 3786016340767592077}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8805596594247787075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1751,7 @@ MonoBehaviour:
   Path: ../../../FMODWorkspace/JourneyToPengLai/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638851472090588360
+  lastModified: 638852483664823456
   FileSizes:
   - Name: Desktop
     Value: 1378

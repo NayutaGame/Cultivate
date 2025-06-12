@@ -148,6 +148,15 @@ public class AudioManager : Singleton<AudioManager>
     
     public static void PlayComicPanelProceed()
         => Play("ComicPanelProceed");
+    
+    public static void PlaySort()
+        => Play("Sort");
+    
+    public static void PlayEnterStage()
+        => Play("EnterStage");
+    
+    public static void PlayExitStage()
+        => Play("ExitStage");
 
     #endregion
 }

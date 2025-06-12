@@ -29,7 +29,9 @@ public class AudioCategory : Category<AudioEntry>
             new("EnterAdventure", "event:/SFX/UI/EnterAdventure", AudioEntry.AudioType.SFX),
             new("EnterSettings", "event:/SFX/UI/EnterSettings", AudioEntry.AudioType.SFX),
             new("EnterShop", "event:/SFX/UI/EnterShop", AudioEntry.AudioType.SFX),
+            new("EnterStage", "event:/SFX/UI/EnterStage", AudioEntry.AudioType.SFX),
             new("ExitSettings", "event:/SFX/UI/ExitSettings", AudioEntry.AudioType.SFX),
+            new("ExitStage", "event:/SFX/UI/ExitStage", AudioEntry.AudioType.SFX),
             new("FinishGuide", "event:/SFX/UI/FinishGuide", AudioEntry.AudioType.SFX),
             new("FormationHover", "event:/SFX/UI/FormationHover", AudioEntry.AudioType.SFX),
             new("Forward", "event:/SFX/UI/Forward", AudioEntry.AudioType.SFX),
@@ -42,6 +44,7 @@ public class AudioCategory : Category<AudioEntry>
             new("LoseGold", "event:/SFX/UI/LoseGold", AudioEntry.AudioType.SFX),
             new("LoseMingYuan", "event:/SFX/UI/LoseMingYuan", AudioEntry.AudioType.SFX),
             new("ShowDiscovered", "event:/SFX/UI/ShowDiscovered", AudioEntry.AudioType.SFX),
+            new("Sort", "event:/SFX/UI/Sort", AudioEntry.AudioType.SFX),
 
             // VFX
             new("BuffVFX", "event:/SFX/VFX/BuffVFX", AudioEntry.AudioType.SFX),
@@ -57,6 +60,13 @@ public class AudioCategory : Category<AudioEntry>
             new("PiercingVFXMu", "event:/SFX/VFX/PiercingVFXMu", AudioEntry.AudioType.SFX),
             new("PiercingVFXShui", "event:/SFX/VFX/PiercingVFXShui", AudioEntry.AudioType.SFX),
             new("PiercingVFXTu", "event:/SFX/VFX/PiercingVFXTu", AudioEntry.AudioType.SFX),
+            new("GainArmor", "event:/SFX/VFX/GainArmor", AudioEntry.AudioType.SFX),
+            new("LoseArmor", "event:/SFX/VFX/LoseArmor", AudioEntry.AudioType.SFX),
+            new("Dodge", "event:/SFX/VFX/Dodge", AudioEntry.AudioType.SFX),
+            new("GainMana", "event:/SFX/VFX/GainMana", AudioEntry.AudioType.SFX),
+            new("FragileDamaged", "event:/SFX/VFX/FragileDamaged", AudioEntry.AudioType.SFX),
+            new("FullDefense", "event:/SFX/VFX/FullDefense", AudioEntry.AudioType.SFX),
+            new("Burn", "event:/SFX/VFX/Burn", AudioEntry.AudioType.SFX),
         });
     }
 }

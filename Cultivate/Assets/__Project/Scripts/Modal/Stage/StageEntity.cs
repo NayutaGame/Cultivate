@@ -620,10 +620,10 @@ public class StageEntity : Addressable, StageClosureListener
         => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value, null, castResult, null, induced));
     
     public async UniTask LoseArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value, null, null, castResult, induced));
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value, null, null, castResult, induced, true));
     
     public async UniTask RemoveArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value, null, null, castResult, induced));
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value, null, null, castResult, induced, true));
     
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
         => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive, null, castResult, null, induced));

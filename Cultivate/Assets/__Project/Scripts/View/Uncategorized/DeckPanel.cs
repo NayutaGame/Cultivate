@@ -66,6 +66,7 @@ public class DeckPanel : Panel
         SortButton._button.onClick.RemoveAllListeners();
         SortButton._button.onClick.AddListener(Sort);
         SortButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        SortButton._button.onClick.AddListener(AudioManager.PlaySort);
 
         SortButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
     }

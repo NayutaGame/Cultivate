@@ -71,7 +71,8 @@ public class StageEnvironment : Addressable, StageClosureListener
     {
         if (!_config.Animated)
             return;
-        
+
+        AudioManager.PlayExitStage();
         await PlayAsync(new WaitAnimation(3));
     }
 
@@ -358,7 +359,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             int ratio = d.Shatter ? 2 : 1;
             int negate = Mathf.Min(ratio * d.Value, d.Tgt.Armor);
             d.Value -= negate / ratio;
-            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, d.Induced));
+            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, true, false));
         }
 
         if (d.Tgt.Armor < 0)
@@ -387,7 +388,10 @@ public class StageEnvironment : Addressable, StageClosureListener
     private async UniTask EvadedProcedure(EvadedDetails d)
     {
         if (_config.Animated)
+        {
+            await PlayAsync(new EvadedVFXAnimation(d, false));
             await PlayAsync(d.Tgt.Model().GetAnimationFromEvaded(d.Induced));
+        }
         _result.TryAppend($"    攻击被闪避");
 
         await _closureDict.SendEvent(StageClosureDict.DID_EVADE, d);
@@ -420,7 +424,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         {
             int negate = Mathf.Min(d.Value, d.Tgt.Armor);
             d.Value -= negate;
-            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, d.Induced));
+            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, true, false));
         }
 
         if (d.Tgt.Armor < 0)
@@ -602,7 +606,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         if (_config.Animated)
         {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromGainArmor(d.Induced));
+            await PlayAsync(d.Src.Model().GetAnimationFromGiveArmor(d.Induced));
             await PlayAsync(TextAnimation.FromGainArmorDetails(d));
             await PlayAsync(new GainArmorVFXAnimation(d, false));
         }
@@ -623,12 +627,12 @@ public class StageEnvironment : Addressable, StageClosureListener
         d.Tgt.Armor -= d.Value;
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
 
-        // if (_config.Animated)
-        // {
-        //     await PlayAsync(d.Tgt.Model().GetAnimationFromGainArmor(d.Induced));
-        //     await PlayAsync(TextAnimation.FromLoseArmorDetails(d));
-        //     await PlayAsync(new LoseArmorVFXAnimation(d, false));
-        // }
+        if (_config.Animated)
+        {
+            await PlayAsync(d.Src.Model().GetAnimationFromRemoveArmor(d.Induced));
+            await PlayAsync(TextAnimation.FromLoseArmorDetails(d));
+            await PlayAsync(new LoseArmorVFXAnimation(d, false));
+        }
 
         // 正变正，护甲伤害
         // 正变负，碎盾
@@ -894,7 +898,8 @@ public class StageEnvironment : Addressable, StageClosureListener
     {
         if (!_config.Animated)
             return;
-        
+
+        AudioManager.PlayEnterStage();
         PlayAsync(_entities[0].Model().GetAnimationFromTrack0());
         PlayAsync(_entities[1].Model().GetAnimationFromTrack0());
         UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromEntering());

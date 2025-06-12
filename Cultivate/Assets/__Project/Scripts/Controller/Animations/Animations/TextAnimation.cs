@@ -241,6 +241,9 @@ public class TextAnimation : Animation
     public static TextAnimation FromGainArmorDetails(GainArmorDetails d)
         => new(d.Tgt.Model(), TextEffectType.GainArmor, $"护甲 +{d.Value}", false, d.Induced);
     
+    public static TextAnimation FromLoseArmorDetails(LoseArmorDetails d)
+        => new(d.Tgt.Model(), TextEffectType.LoseArmor, $"护甲 -{d.Value}", false, d.Induced);
+    
     public static TextAnimation FromGuardedDetails(GuardedDetails d)
         => new(d.Tgt.Model(), TextEffectType.Guarded, "完全防御", false, d.Induced);
     

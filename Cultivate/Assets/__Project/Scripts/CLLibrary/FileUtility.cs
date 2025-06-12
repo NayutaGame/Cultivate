@@ -9,16 +9,39 @@ namespace CLLibrary
 {
     public static class FileUtility
     {
-        public static bool IsFileExists(string filename)
+        public static bool IsStreamingFileExists(string filename)
         {
-            string fullFilePath = Application.streamingAssetsPath + filename;
+            string dataPath = Application.streamingAssetsPath;
+            return IsFileExists(dataPath, filename);
+        }
+
+        public static bool IsPersistentFileExists(string filename)
+        {
+            string dataPath = Application.persistentDataPath;
+            return IsFileExists(dataPath, filename);
+        }
+        
+        public static bool IsFileExists(string dataPath, string filename)
+        {
+            string fullFilePath = dataPath + filename;
             return File.Exists(fullFilePath);
         }
 
-        public static T ReadFromFile<T>(string filename) where T : new()
+        public static T ReadStreamingFile<T>(string filename) where T : new()
         {
-            // string fullFilePath = Application.persistentDataPath + filename;
-            string fullFilePath = Application.streamingAssetsPath + filename;
+            string dataPath = Application.streamingAssetsPath;
+            return ReadFile<T>(dataPath, filename);
+        }
+
+        public static T ReadPersistentFile<T>(string filename) where T : new()
+        {
+            string dataPath = Application.persistentDataPath;
+            return ReadFile<T>(dataPath, filename);
+        }
+        
+        public static T ReadFile<T>(string dataPath, string filename) where T : new()
+        {
+            string fullFilePath = dataPath + filename;
 
             string txt;
             if (!TryLoadFile(out txt, fullFilePath))
@@ -34,10 +57,21 @@ namespace CLLibrary
             return JsonUtility.FromJson<T>(json);
         }
 
-        public static void WriteToFile<T>(T toWrite, string filename)
+        public static void WriteStreamingFile<T>(T toWrite, string filename)
         {
-            // string fullFilePath = Application.persistentDataPath + filename;
-            string fullFilePath = Application.streamingAssetsPath + filename;
+            string dataPath = Application.streamingAssetsPath;
+            WriteFile(toWrite, dataPath, filename);
+        }
+
+        public static void WritePersistentFile<T>(T toWrite, string filename)
+        {
+            string dataPath = Application.persistentDataPath;
+            WriteFile(toWrite, dataPath, filename);
+        }
+        
+        public static void WriteFile<T>(T toWrite, string dataPath, string filename)
+        {
+            string fullFilePath = dataPath + filename;
 
             string json = JsonUtility.ToJson(toWrite);
             string txt = TxtFromJson(json);
@@ -49,10 +83,21 @@ namespace CLLibrary
             #endif
         }
 
-        public static void DeleteFile(string filename)
+        public static void DeleteStreamingFile(string filename)
         {
-            // string fullFilePath = Application.persistentDataPath + filename;
-            string fullFilePath = Application.streamingAssetsPath + filename;
+            string dataPath = Application.streamingAssetsPath;
+            DeleteFile(dataPath, filename);
+        }
+
+        public static void DeletePersistentFile(string filename)
+        {
+            string dataPath = Application.persistentDataPath;
+            DeleteFile(dataPath, filename);
+        }
+
+        public static void DeleteFile(string dataPath, string filename)
+        {
+            string fullFilePath = dataPath + filename;
 
             if (!File.Exists(fullFilePath))
                 return;

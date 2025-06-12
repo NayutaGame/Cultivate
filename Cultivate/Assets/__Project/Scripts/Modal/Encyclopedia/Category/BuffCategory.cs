@@ -738,7 +738,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (!(b.Owner == d.Src && d.Src != d.Tgt))
                             return;
                         b.Emphasize();
-                        await b.Owner.RemoveArmorProcedure(b.Stack, induced: false);
+                        await b.Owner.RemoveArmorProcedure(b.Stack, induced: true);
                     }),
                 }),
 

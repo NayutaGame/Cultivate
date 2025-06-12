@@ -99,6 +99,8 @@ MonoBehaviour:
   GainArmorVFXPrefab: {fileID: 4231482995727018640, guid: 53b62e12af3e4d64cb7b959a1129acfe, type: 3}
   GuardedVFXPrefab: {fileID: 3882701174276009160, guid: 34b46e873fc434b4cbfa2eb26f351b1f, type: 3}
   FragileVFXPrefab: {fileID: 1333619476989984813, guid: 21cc4438f0ed66944b9c3d935273690e, type: 3}
+  LoseArmorVFXPrefab: {fileID: 6065844356219096424, guid: 8870d3206d8a4e545a8cf1c4a6a21661, type: 3}
+  DodgeVFXPrefab: {fileID: 5615462012574240374, guid: d6d38f9c4f207ae4fbf9467c2ae36f0b, type: 3}
   HomeAnchor: {fileID: 6063789939908671654}
   HomeModel: {fileID: 0}
   AwayAnchor: {fileID: 5798137947473041208}
@@ -412,7 +414,7 @@ SpriteRenderer:
   m_Size: {x: 19.2, y: 10.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5207216032543523720

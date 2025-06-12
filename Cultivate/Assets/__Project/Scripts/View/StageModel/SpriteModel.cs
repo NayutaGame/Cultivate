@@ -37,9 +37,14 @@ public class SpriteModel : IStageModel
         return new DamagedTweenAnimation(this, false, induced);
     }
 
-    public override Animation GetAnimationFromGainArmor(bool induced)
+    public override Animation GetAnimationFromGiveArmor(bool induced)
     {
         return new GainArmorTweenAnimation(this, true, induced);
+    }
+
+    public override Animation GetAnimationFromRemoveArmor(bool induced)
+    {
+        return new RemoveArmorTweenAnimation(this, true, induced);
     }
 
     public override Animation GetAnimationFromHeal(bool induced)

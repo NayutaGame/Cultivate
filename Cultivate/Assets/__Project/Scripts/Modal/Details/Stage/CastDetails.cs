@@ -94,10 +94,10 @@ public class CastDetails : StageClosureDetails
         => await Env.GainArmorProcedure(new GainArmorDetails(Caster, Caster.Opponent(), value, Skill, CastResult, null, induced));
 
     public async UniTask LoseArmorProcedure(int value, bool induced)
-        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster, value, Skill, null, CastResult, induced));
+        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster, value, Skill, null, CastResult, induced, true));
 
     public async UniTask RemoveArmorProcedure(int value, bool induced)
-        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster.Opponent(), value, Skill, null, CastResult, induced));
+        => await Env.LoseArmorProcedure(new LoseArmorDetails(Caster, Caster.Opponent(), value, Skill, null, CastResult, induced, true));
 
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.GainBuffProcedure(new GainBuffDetails(Caster, Caster, buffEntry, stack, recursive, Skill, CastResult, null, induced));
