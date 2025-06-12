@@ -358,8 +358,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         {
             int ratio = d.Shatter ? 2 : 1;
             int negate = Mathf.Min(ratio * d.Value, d.Tgt.Armor);
-            d.Value -= negate / ratio;
-            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, true, false));
+            if (negate > 0)
+            {
+                d.Value -= negate / ratio;
+                await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, true, false));
+            }
         }
 
         if (d.Tgt.Armor < 0)
@@ -423,8 +426,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (d.Tgt.Armor >= 0)
         {
             int negate = Mathf.Min(d.Value, d.Tgt.Armor);
-            d.Value -= negate;
-            await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, true, false));
+            if (negate > 0)
+            {
+                d.Value -= negate;
+                await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, true, false));
+            }
         }
 
         if (d.Tgt.Armor < 0)

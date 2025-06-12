@@ -3364,7 +3364,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogPanelDescriptor A = new(
                         titleText: "结算",
                         detailedText: "用于测试Run结算",
-                        "胜利结算", "失败结算");
+                        "胜利结算", "失去所有命元", "失败结算");
 
                     A[0].SetSelect(option =>
                     {
@@ -3373,6 +3373,12 @@ public class RoomCategory : Category<RoomEntry>
                     });
 
                     A[1].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.SetDMingYuanProcedure(-20);
+                        return A;
+                    });
+
+                    A[2].SetSelect(option =>
                     {
                         RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                         return null;
