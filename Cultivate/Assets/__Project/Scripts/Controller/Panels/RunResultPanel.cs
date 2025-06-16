@@ -31,6 +31,10 @@ public class RunResultPanel : Panel
 
         ReturnButton.onClick.RemoveAllListeners();
         ReturnButton.onClick.AddListener(Return);
+
+        Address address = new Address("Run.Environment.ActivePanel");
+        MilestoneList.SetAddress(address.Append(".Milestones"));
+        UnlockList.SetAddress(address.Append(".Achievements"));
     }
 
     protected override Animator InitAnimator()
@@ -65,16 +69,13 @@ public class RunResultPanel : Panel
         DifficultyText.text = panelDescriptor.GetDifficulty();
         PlayTimeText.text = panelDescriptor.GetPlayTime();
 
-        Address address = new Address("Run.Environment.ActivePanel");
-        MilestoneList.SetAddress(address.Append(".Milestones"));
-
         _details = new(panelDescriptor.GetInitialExperience(), panelDescriptor.GetInitialLevel(), panelDescriptor.GetExperienceGain());
 
         // ExperienceSlider.value = _details.InitialExperience;
         ExperienceGainText.text = $"+0";
         LevelText.text = $"{_details.InitialLevel}";
 
-        // UnlockList.SetModel(...);
+        // MilestoneList.Sync();
     }
 
     private Tween ScoringAnimation()

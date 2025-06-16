@@ -11,6 +11,24 @@ public class AchievementCategory : Category<AchievementEntry>
     {
         AddRange(new List<AchievementEntry>()
         {
+            // new(id: "ACH000",
+            //     name: "测试成就",
+            //     conditionDescription: "第一次取得胜利",
+            //     rewardDescription: "第一次取得胜利",
+            //     lockIndex: LockIndex.FromSlot("徐福", 0),
+            //     runClosures: new RunClosure[]
+            //     {
+            //         new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
+            //             AchievementProfile p = (AchievementProfile)owner;
+            //             RunCommitDetails d = (RunCommitDetails)details;
+            //
+            //             if (p.IsUnlocked()) return;
+            //             if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
+            //
+            //             p.Unlock();
+            //         })
+            //     }),
+            
             new(id: "ACH001",
                 name: "徐福专精",
                 conditionDescription: "以徐福取得难度8的胜利",
@@ -21,12 +39,12 @@ public class AchievementCategory : Category<AchievementEntry>
                     new(RunClosureDict.DID_COMMIT_RUN, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         RunCommitDetails d = (RunCommitDetails)details;
-
+            
                         if (p.IsUnlocked()) return;
                         if (d.RunEnvironment.GetRunConfig().GetCharacter() != (CharacterEntry)"徐福") return;
                         if (d.RunEnvironment.GetRunConfig().GetDifficulty() < 8) return;
                         if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
-
+            
                         p.Unlock();
                     })
                 }),

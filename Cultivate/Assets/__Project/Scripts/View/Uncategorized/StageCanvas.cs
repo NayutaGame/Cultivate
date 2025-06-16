@@ -2,13 +2,13 @@
 using CLLibrary;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StageCanvas : MonoBehaviour
 {
-    public TMP_Text SpeedText;
-    public Slider SpeedSlider;
-    // public Button SkipButton;
+    [SerializeField] private StagePanelSpeedButton SpeedButton;
+    [SerializeField] private DiamondButton SkipButton;
 
     [SerializeField] private StageEntityView HomeStageEntityView;
     [SerializeField] private StageEntityView AwayStageEntityView;
@@ -17,16 +17,38 @@ public class StageCanvas : MonoBehaviour
 
     private Address _address;
 
+    private int _speedIndex;
+    private int SpeedIndex
+    {
+        get => _speedIndex;
+        set
+        {
+            _speedIndex = (value + SPEED_CALI.Length) % SPEED_CALI.Length;
+
+            float speed = SPEED_CALI[_speedIndex];
+            SpeedButton.Text.text = $"x{speed}";
+            StageManager.Instance.SetSpeed(speed);
+        }
+    }
+
+    private void IncreaseSpeed(InteractBehaviour ib, PointerEventData d) => SpeedIndex++;
+    private void DecreaseSpeed(InteractBehaviour ib, PointerEventData d) => SpeedIndex--;
+    private void ResetSpeed() => SpeedIndex = 1;
+    
+    private readonly float[] SPEED_CALI = new float[] { 0.5f, 1f, 2f, 4f, 8f };
+
     public void Configure()
     {
         _address = new Address("Stage");
         // _animationQueue = new();
 
-        SpeedSlider.onValueChanged.RemoveAllListeners();
-        SpeedSlider.onValueChanged.AddListener(SpeedChanged);
-
-        // SkipButton.onClick.RemoveAllListeners();
-        // SkipButton.onClick.AddListener(Skip);
+        SpeedButton.CheckAwake();
+        SpeedButton.LeftClickNeuron.Join(IncreaseSpeed);
+        SpeedButton.RightClickNeuron.Join(DecreaseSpeed);
+        ResetSpeed();
+        
+        SkipButton.CheckAwake();
+        SkipButton.LeftClickNeuron.Join(Skip);
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
@@ -40,25 +62,7 @@ public class StageCanvas : MonoBehaviour
         AwayStageEntityView.Refresh();
     }
 
-    private void SpeedChanged(float value)
-    {
-        int intValue = Mathf.RoundToInt(value);
-        float speed;
-        if (intValue == -1)
-        {
-            speed = 0.5f;
-            SpeedText.text = "0.5倍速";
-        }
-        else
-        {
-            speed = Mathf.Pow(2, intValue);
-            SpeedText.text = $"{Mathf.RoundToInt(speed)}倍速";
-        }
-
-        StageManager.Instance.SetSpeed(speed);
-    }
-
-    private void Skip()
+    private void Skip(InteractBehaviour ib, PointerEventData d)
     {
         StageManager.Instance.Skip();
     }
@@ -67,7 +71,7 @@ public class StageCanvas : MonoBehaviour
     {
         TimelineView.InitialSetup();
 
-        SpeedSlider.value = 0;
+        ResetSpeed();
         Refresh();
     }
 

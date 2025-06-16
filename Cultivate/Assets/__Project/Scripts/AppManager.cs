@@ -74,6 +74,7 @@ public class AppManager : Singleton<AppManager>, Addressable
             // Browser
             { "FormationInventory", () => FormationInventory },
             { "SkillInventory", () => SkillInventory },
+            { "AchievementList", () => ProfileManager.GetCurrProfile().AchievementProfileList },
             { "InventoryFromExpandedPack", () => InventoryFromExpandedPack },
         };
 

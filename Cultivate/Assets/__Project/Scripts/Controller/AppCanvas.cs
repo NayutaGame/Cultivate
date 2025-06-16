@@ -7,6 +7,7 @@ public class AppCanvas : MonoBehaviour
     [SerializeField] public RunConfigPanel RunConfigPanel;
     [SerializeField] public EntityEditorPanel EntityEditorPanel;
     [SerializeField] public SkillBrowserPanel SkillBrowserPanel;
+    [SerializeField] public AchievementBrowserPanel AchievementBrowserPanel;
     
     [SerializeField] public SettingsPanel SettingsPanel;
 
@@ -16,6 +17,7 @@ public class AppCanvas : MonoBehaviour
         RunConfigPanel.CheckAwake();
         EntityEditorPanel.CheckAwake();
         SkillBrowserPanel.CheckAwake();
+        AchievementBrowserPanel.CheckAwake();
         
         SettingsPanel.CheckAwake();
     }

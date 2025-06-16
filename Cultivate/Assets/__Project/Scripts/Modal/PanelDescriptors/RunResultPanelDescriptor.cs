@@ -9,10 +9,10 @@ public class RunResultPanelDescriptor : PanelDescriptor
     private RunResult _result;                     // 结果状态
     private RunConfig _config;                     // 角色配置
     private TimeSpan _playTime;                    // 游戏时长
-    private AchievementProfile[] _newUnlocks;      // 新解锁成就
     private Profile _profile;                      // 玩家存档
 
     private ListModel<RunMilestone> _milestones;
+    private ListModel<AchievementProfile> _newUnlocks;
 
     private int _initialExperience;
     private int _finalExperience;
@@ -26,6 +26,7 @@ public class RunResultPanelDescriptor : PanelDescriptor
         {
             { "Guide",                    GetGuideDescriptor },
             { "Milestones",               () => _milestones },
+            { "Achievements",             () => _newUnlocks },
         };
 
         Debug.Assert(env != null, "RunEnvironment cannot be null");
@@ -34,14 +35,17 @@ public class RunResultPanelDescriptor : PanelDescriptor
         _result = env.GetResult();
         _config = env.GetRunConfig();
         _playTime = env.GetRunfinishedTime();
-        _newUnlocks = env.TraversalNewlyUnlockedAchievements().ToArray();
+        
+        AchievementProfile[] newUnlocks = env.TraversalNewlyUnlockedAchievements().ToArray();
+        _newUnlocks = new(newUnlocks);
+        
         _profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         
         RunMilestone[] milestones = _result.GetCompletedMilestones(env);
         _milestones = new();
         _milestones.AddRange(milestones);
         _experienceGain = milestones.Sum(m => m.ExperienceGain) + 
-                          _newUnlocks.Sum(ap => ap.GetEntry().GetExperienceGain());
+                          newUnlocks.Sum(ap => ap.GetEntry().GetExperienceGain());
 
         _initialExperience = _profile.GetExperience();
         _initialLevel = _profile.GetLevel();
@@ -77,6 +81,4 @@ public class RunResultPanelDescriptor : PanelDescriptor
     public int GetExperienceGain() => _experienceGain;
     public int GetInitialLevel() => _initialLevel;
     public int GetFinalLevel() => _finalLevel;
-
-    public AchievementProfile[] GetAchievements() => _newUnlocks;
 }

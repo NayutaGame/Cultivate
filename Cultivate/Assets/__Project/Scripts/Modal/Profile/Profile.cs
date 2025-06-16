@@ -22,6 +22,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     [SerializeField] private AchievementProfileList _achievementProfileList;
     public AchievementProfileList AchievementProfileList => _achievementProfileList;
 
+    // 战斗记录
     // [SerializeField] private ResultProfileList _resultProfileList;
     // public ResultProfileList ResultProfileList => _resultProfileList;
 

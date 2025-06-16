@@ -49,6 +49,8 @@ public class InteractBehaviour : MonoBehaviour
         DraggingEnterNeuron.Active = value;
         DraggingExitNeuron.Active = value;
         DraggingMoveNeuron.Active = value;
+        PointerDownNeuron.Active = value;
+        PointerUpNeuron.Active = value;
         
         if (Image != null)
             Image.raycastTarget = value;
@@ -72,6 +74,8 @@ public class InteractBehaviour : MonoBehaviour
         DraggingEnterNeuron.Join(DraggingEnterLog);
         DraggingExitNeuron.Join(DraggingExitLog);
         // DraggingMoveNeuron.Join(DraggingMoveLog);
+        PointerDownNeuron.Join(PointerDownLog);
+        PointerUpNeuron.Join(PointerUpLog);
     }
     
     private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetView().name} PointerEnter");
@@ -87,6 +91,9 @@ public class InteractBehaviour : MonoBehaviour
     private void DraggingEnterLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetView().name} DraggingEnter");
     private void DraggingExitLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetView().name} DraggingExit");
     private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetView().name} DraggingMove");
+    private void PointerDownLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetView().name} PointerDown");
+    private void PointerUpLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetView().name} PointerUp");
+    
 
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
@@ -101,6 +108,8 @@ public class InteractBehaviour : MonoBehaviour
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerDownNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> PointerUpNeuron = new();
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
@@ -179,5 +188,15 @@ public class InteractBehaviour : MonoBehaviour
         } else if (eventData.button == PointerEventData.InputButton.Right) {
             RightClickNeuron.Invoke(this, eventData);
         }
+    }
+
+    public virtual void OnPointerDown(PointerEventData eventData)
+    {
+        PointerDownNeuron.Invoke(this, eventData);
+    }
+
+    public virtual void OnPointerUp(PointerEventData eventData)
+    {
+        PointerUpNeuron.Invoke(this, eventData);
     }
 }

@@ -12,6 +12,7 @@ public class TitlePanel : Panel
     public XButton StartPrologueButton;
     public XButton EntityEditorButton;
     public XButton SkillBrowserButton;
+    public XButton AchievementBrowserButton;
     public XButton SettingsButton;
     public XButton ExitButton;
 
@@ -36,6 +37,7 @@ public class TitlePanel : Panel
         SettingsButton._button.onClick.RemoveAllListeners();
         EntityEditorButton._button.onClick.RemoveAllListeners();
         SkillBrowserButton._button.onClick.RemoveAllListeners();
+        AchievementBrowserButton._button.onClick.RemoveAllListeners();
         ExitButton._button.onClick.RemoveAllListeners();
         
         ContinueButton._button.onClick.AddListener(Continue);
@@ -44,6 +46,7 @@ public class TitlePanel : Panel
         SettingsButton._button.onClick.AddListener(OpenMenu);
         EntityEditorButton._button.onClick.AddListener(OpenEntityEditorPanel);
         SkillBrowserButton._button.onClick.AddListener(OpenSkillBrowserPanel);
+        AchievementBrowserButton._button.onClick.AddListener(OpenAchievementBrowserPanel);
         ExitButton._button.onClick.AddListener(ExitGame);
         
         ContinueButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
@@ -52,6 +55,7 @@ public class TitlePanel : Panel
         SettingsButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         EntityEditorButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         SkillBrowserButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        AchievementBrowserButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         ExitButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
 
         ContinueButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
@@ -59,6 +63,7 @@ public class TitlePanel : Panel
         StartPrologueButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         EntityEditorButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         SkillBrowserButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        AchievementBrowserButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         SettingsButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         ExitButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
     }
@@ -92,6 +97,7 @@ public class TitlePanel : Panel
         
         EntityEditorButton.gameObject.SetActive(!audienceIsPlayer);
         SkillBrowserButton.gameObject.SetActive(!audienceIsPlayer);
+        AchievementBrowserButton.gameObject.SetActive(!audienceIsPlayer);
     }
 
     private void FirstRun()
@@ -128,6 +134,11 @@ public class TitlePanel : Panel
     private void OpenSkillBrowserPanel()
     {
         CanvasManager.Instance.AppCanvas.SkillBrowserPanel.Show();
+    }
+
+    private void OpenAchievementBrowserPanel()
+    {
+        CanvasManager.Instance.AppCanvas.AchievementBrowserPanel.Show();
     }
 
     private void OpenMenu()
