@@ -495,8 +495,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         PlacementProcedure();
         FormationProcedure();
         SecondPlacementProcedure();
-
-        return StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(_home, _away, _config));
+        
+        return StageResult.FromConfig(StageConfig.ForSimulate(_home, _away, _config));
     }
 
     private void PlacementProcedure()
@@ -739,9 +739,24 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
     }
 
-    public void Combat()
+    public void CombatNormal()
     {
-        StageEnvironment.Combat(StageConfig.ForCombat(_home, _away, _config));
+        SetGuideToFinish();
+        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForCombatNormal(_home, _away, _config));
+    }
+
+    public void CombatOnlyAnimation()
+    {
+        SetGuideToFinish();
+        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForCombatOnlyAnimation(_home, _away, _config));
+    }
+
+    public void CombatOnlyResult()
+    {
+        SetGuideToFinish();
+        
+        StageResult result = StageResult.FromConfig(StageConfig.ForCombatOnlyResult(_home, _away, _config));
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new SkipCombatSignal(result.Flag == 1));
     }
     
     public void SetDMingYuanProcedure(int value)

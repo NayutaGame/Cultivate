@@ -50,7 +50,7 @@ public class Arena : ListModel<RunEntity>, Addressable
     {
         for (int y = 0; y < ArenaSize; y++)
         for (int x = 0; x < ArenaSize; x++)
-            _results[y * ArenaSize + x] = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(this[y], this[x], null));
+            _results[y * ArenaSize + x] = StageResult.FromConfig(StageConfig.ForSimulate(this[y], this[x], null));
     }
 
     public void ShowReport(int i)

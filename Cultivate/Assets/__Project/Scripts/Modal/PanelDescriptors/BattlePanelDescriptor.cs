@@ -68,9 +68,4 @@ public class BattlePanelDescriptor : PanelDescriptor
 
         return this;
     }
-
-    public void Combat()
-    {
-        RunManager.Instance.Environment.Combat();
-    }
 }

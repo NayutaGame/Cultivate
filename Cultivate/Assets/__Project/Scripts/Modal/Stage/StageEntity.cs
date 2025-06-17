@@ -382,14 +382,6 @@ public class StageEntity : Addressable, StageClosureListener
         _env.ClosureDict.Unregister(this, _closures);
     }
 
-    public void WriteResult()
-    {
-        // for (int i = 0; i < _skills.Length; i++)
-        // {
-        //     SkillSlot slot = _runEntity.GetSlot(i + _runEntity.Start);
-        // }
-    }
-
     public async UniTask BuffRecorder(StageClosureListener listener, StageClosure closure, ClosureDetails closureDetails)
     {
         GainBuffDetails d = (GainBuffDetails)closureDetails;

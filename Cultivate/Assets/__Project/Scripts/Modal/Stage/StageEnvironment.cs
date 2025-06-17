@@ -55,16 +55,27 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         _closureDict.Unregister(this, closures);
 
-        await EndStageProcedure();
-
-        await ForcedCommitProcedure();
+        if (!_shouldSkip)
+        {
+            await EndStageProcedure();
+            await ForcedCommitProcedure();
+        }
 
         UnregisterSkillClosures();
         UnregisterEntityClosures();
         UnregisterAchievementClosures();
         UnregisterConfigClosures();
 
-        await AnimationToFinishProcedure();
+        if (!_shouldSkip)
+        {
+            if (_config.WriteResult)
+                RunManager.Instance.Environment.DepleteProcedure();
+        
+            await AnimationToFinishProcedure();
+        }
+
+        if (_shouldSkip)
+            Debug.Log("CoreProcedure is skipped");
     }
 
     private async UniTask AnimationToFinishProcedure()
@@ -88,7 +99,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
 
         foreach (var d in details)
+        {
+            if (_shouldSkip)
+                return;
             await GainFormationProcedure(d);
+        }
     }
 
     private async UniTask GainFormationProcedure(GainFormationDetails d)
@@ -349,7 +364,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         bool isEvaded = !d.Penetrate && d.Evade;
         if (isEvaded)
         {
-            await EvadedProcedure(EvadedDetails.FromAttackDetails(d));
+            await EvadedStaging(EvadedDetails.FromAttackDetails(d));
             await _closureDict.SendEvent(StageClosureDict.UNDAMAGED, DamageDetails.FromAttackDetailsUndamaged(d));
             return;
         }
@@ -388,7 +403,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         _result.TryAppend($"    敌方气血[护甲]变成了${d.Tgt.Hp}[{d.Tgt.Armor}]");
     }
 
-    private async UniTask EvadedProcedure(EvadedDetails d)
+    private async UniTask EvadedStaging(EvadedDetails d)
     {
         if (_config.Animated)
         {
@@ -744,10 +759,18 @@ public class StageEnvironment : Addressable, StageClosureListener
     private async UniTask StartStageProcedure()
     {
         foreach (var e in _entities)
+        {
+            if (_shouldSkip)
+                return;
             await _closureDict.SendEvent(StageClosureDict.WIL_STAGE, new StageDetails(e));
+        }
 
         foreach (var e in _entities)
+        {
+            if (_shouldSkip)
+                return;
             await e.StartStageExecuteProcedure();
+        }
     }
 
     private async UniTask BodyProcedure()
@@ -755,6 +778,8 @@ public class StageEnvironment : Addressable, StageClosureListener
         int whosTurn = 0;
         for (int turnCount = 0; turnCount < MAX_TURN_COUNT; turnCount++)
         {
+            if (_shouldSkip)
+                return;
             StageEntity actor = _entities[whosTurn];
 
             _result.TryAppend($"--------第{turnCount}回合, {actor.GetName()}行动--------\n");
@@ -848,6 +873,9 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private StageKernel _kernel;
 
+    private bool _shouldSkip;
+    public void SetShouldSkip() => _shouldSkip = true;
+
     private StageResult _result;
     public StageResult Result => _result;
 
@@ -875,30 +903,13 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         _kernel = config.Kernel;
 
+        _shouldSkip = false;
+
         _result = new(_config);
     }
 
     public static StageEnvironment FromConfig(StageConfig config)
         => new(config);
-
-    public static StageTimeline CalcTimeline(StageConfig config)
-        => CalcSimulateResult(StageConfig.ForTimeline(config.Home, config.Away, config.RunConfig)).Timeline;
-
-    public static StageResult CalcSimulateResult(StageConfig config)
-    {
-        StageEnvironment env = FromConfig(config);
-        env.CoreProcedure().GetAwaiter().GetResult();
-        if (env._result.WriteResult)
-            env.WriteResult();
-        return env._result;
-    }
-
-    public static void Combat(StageConfig config)
-    {
-        AppManager.Instance.RunManager.Environment.SetGuideToFinish();
-        CanvasManager.Instance.RefreshGuide();
-        AppManager.Instance.Push(AppStateMachine.STAGE, config);
-    }
 
     public async UniTask EnteringProcedure()
     {
@@ -953,12 +964,6 @@ public class StageEnvironment : Addressable, StageClosureListener
         Result.HomeLeftHp = Home.Hp;
         Result.AwayLeftHp = Away.Hp;
         Result.TryAppend(Result.Flag == 1 ? $"主场胜利\n" : $"客场胜利\n");
-    }
-
-    public void WriteResult()
-    {
-        _entities[0].WriteResult();
-        RunManager.Instance.Environment.DepleteProcedure();
     }
 
     private async UniTask WriteShortage(StageClosureListener listener, StageClosure closure, ClosureDetails stageClosureDetails)
@@ -1056,14 +1061,14 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private void RegisterAchievementClosures()
     {
-        if (!_config.EffectAchievements)
+        if (!_config.WriteResult)
             return;
         AppManager.Instance.ProfileManager.GetCurrProfile().RegisterStageClosures(_closureDict);
     }
 
     private void UnregisterAchievementClosures()
     {
-        if (!_config.EffectAchievements)
+        if (!_config.WriteResult)
             return;
         AppManager.Instance.ProfileManager.GetCurrProfile().UnregisterStageClosures(_closureDict);
     }

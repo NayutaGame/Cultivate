@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
@@ -56,7 +57,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     public void SetEnvironmentFromConfig(StageConfig config)
     {
         _environment = StageEnvironment.FromConfig(config);
-        Timeline = StageEnvironment.CalcTimeline(config);
+        Timeline = StageResult.FromConfig(StageConfig.ForTimeline(config.Home, config.Away, config.RunConfig)).Timeline;
     }
 
     public async UniTask Enter()
@@ -70,12 +71,13 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         DisableVFX();
 
-        if (!_environment.Result.WriteResult)
+        if (!_environment.Result.WillEffectResult)
             return;
 
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new BattleResultSignal(_environment.Result.Flag == 1));
+        StageConfig config = _environment.GetConfig();
+        StageResult result = StageResult.FromConfig(StageConfig.ForCombatOnlyResult(config.Home, config.Away, config.RunConfig));
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new BattleResultSignal(result.Flag == 1));
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
-        _environment.WriteResult();
     }
 
     public void Pause()
@@ -92,9 +94,12 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     public void SetSpeed(float speed)
         => StageAnimationController.SetSpeed(speed);
-
+    
     public void Skip()
-        => StageAnimationController.Skip();
+    {
+        _environment?.SetShouldSkip();
+        // StageAnimationController.Skip();
+    }
 
     public void DisableVFX()
     {

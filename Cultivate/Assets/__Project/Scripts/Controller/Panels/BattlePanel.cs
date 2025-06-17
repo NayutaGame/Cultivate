@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
@@ -41,7 +42,7 @@ public class BattlePanel : Panel
 
         CombatButton.Configure();
         CombatButton.LeftClickNeuron.Join(Combat);
-        CombatButton.RightClickNeuron.Join(Skip);
+        CombatButton.RightClickNeuron.Join(NextCombatAction);
     }
     
     public static readonly int DEFAULT = -1;
@@ -214,17 +215,36 @@ public class BattlePanel : Panel
         return Vector3.Distance(reactionPosition, mouseWorldPosition).Remap(2, 10, 1, 0.1f);
     }
 
+    private Action[] CombatActions = new Action[] { CombatNormal, CombatOnlyAnimation, CombatOnlyResult, };
+    private int _index;
+
     private void Combat(PointerEventData eventData)
     {
         RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
-        BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
-        d.Combat();
+        CanvasManager.Instance.RefreshGuide();
+        CombatActions[_index]();
     }
 
-    private void Skip(PointerEventData eventData)
+    private void NextCombatAction(PointerEventData d)
     {
-        RunEnvironment env = RunManager.Instance.Environment;
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new SkipCombatSignal(env.GetSimulateResult().Flag == 1));
+        _index++;
+        if (_index >= CombatActions.Length)
+            _index = 0;
+    }
+
+    private static void CombatNormal()
+    {
+        RunManager.Instance.Environment.CombatNormal();
+    }
+
+    private static void CombatOnlyAnimation()
+    {
+        RunManager.Instance.Environment.CombatOnlyAnimation();
+    }
+
+    private static void CombatOnlyResult()
+    {
+        RunManager.Instance.Environment.CombatOnlyResult();
     }
 
     private void SetVictory(bool victory)

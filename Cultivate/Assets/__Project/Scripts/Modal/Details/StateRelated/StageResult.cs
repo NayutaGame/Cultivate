@@ -9,7 +9,7 @@ public class StageResult : Addressable
     private StageTimeline _timeline;
     public StageTimeline Timeline => _timeline;
 
-    public bool WriteResult;
+    public bool WillEffectResult;
 
     public int HomeLeftHp;
     public int AwayLeftHp;
@@ -32,7 +32,7 @@ public class StageResult : Addressable
         if (config.GenerateTimeline)
             _timeline = new StageTimeline();
 
-        WriteResult = config.WriteResult;
+        WillEffectResult = config.WillEffectResult;
     }
 
     // use Closure
@@ -48,4 +48,11 @@ public class StageResult : Addressable
 
     public override string ToString()
         => _reportBuilder?.ToString();
+    
+    public static StageResult FromConfig(StageConfig config)
+    {
+        StageEnvironment env = StageEnvironment.FromConfig(config);
+        env.CoreProcedure().GetAwaiter().GetResult();
+        return env.Result;
+    }
 }

@@ -28,7 +28,7 @@ public class Puzzle
         // _away.FormationProcedure();
         // _eventDict.SendEvent(RunEventDict.DID_UPDATE, d);
     
-        return StageEnvironment.CalcSimulateResult(StageConfig.ForPuzzle(_home, _away, _kernel));
+        return StageResult.FromConfig(StageConfig.ForPuzzle(_home, _away, _kernel));
     }
 
     public Puzzle(string description, string condition,

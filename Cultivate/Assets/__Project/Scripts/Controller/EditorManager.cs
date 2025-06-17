@@ -90,7 +90,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     public void Combat()
     {
-        StageEnvironment.Combat(StageConfig.ForEditor(Home, Away, _config));
+        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForEditor(Home, Away, _config));
     }
 
     private void SimulateProcedure()
@@ -105,7 +105,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         FormationProcedure();
         SecondPlacementProcedure();
         
-        SimulateResult = StageEnvironment.CalcSimulateResult(StageConfig.ForSimulate(Home, Away, _config));
+        SimulateResult = StageResult.FromConfig(StageConfig.ForSimulate(Home, Away, _config));
     }
 
     private void PlacementProcedure()
