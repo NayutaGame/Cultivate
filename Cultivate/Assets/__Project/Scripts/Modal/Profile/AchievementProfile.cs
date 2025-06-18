@@ -10,7 +10,6 @@ public class AchievementProfile : ISerializationCallbackReceiver, RunClosureList
 
     [SerializeField] private SerializableDictionary _memory;
 
-    public AchievementEntry Entry => _entry;
     public SerializableDictionary Memory => _memory;
 
     public AchievementProfile(AchievementEntry entry, bool isDeveloper = false)
