@@ -58,4 +58,10 @@ public class SerializableDictionary : ISerializationCallbackReceiver
         get => _dict[key];
         set => _dict[key] = value;
     }
+
+    public void Clear()
+    {
+        _dict.Clear();
+        _data.Clear();
+    }
 }

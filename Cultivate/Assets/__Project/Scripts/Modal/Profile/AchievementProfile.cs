@@ -36,6 +36,12 @@ public class AchievementProfile : ISerializationCallbackReceiver, RunClosureList
     {
         _unlocked = value;
     }
+    
+    public void Reset()
+    {
+        _unlocked = false;
+        _memory.Clear();
+    }
 
     // public int GetProgress() => _progress;
     // public void SetProgress(int value) => _progress = value;

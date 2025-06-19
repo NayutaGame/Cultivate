@@ -1,6 +1,10 @@
 
+using UnityEngine;
+
 public class UnlockIcon : XView
 {
+    [SerializeField] public CanvasGroup CanvasGroup;
+    
     // 锁住
     //     已解锁
     //

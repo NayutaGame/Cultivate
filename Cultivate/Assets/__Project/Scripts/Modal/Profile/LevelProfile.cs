@@ -30,7 +30,7 @@ public class LevelProfile
         const int EXPERIENCE_PER_LEVEL = 1000;
 
         int levelUpCount = _experience / EXPERIENCE_PER_LEVEL;
-        _experience = _experience % EXPERIENCE_PER_LEVEL;
+        _experience -= levelUpCount * EXPERIENCE_PER_LEVEL;
 
         _level += levelUpCount;
     }

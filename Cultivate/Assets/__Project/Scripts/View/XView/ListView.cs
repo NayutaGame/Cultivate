@@ -104,7 +104,7 @@ public class ListView : XView
         {
             _container = transform.GetChild(0).GetComponent<RectTransform>();
         }
-        _layoutGroup = _container.GetComponent<LayoutGroup>();
+        _layoutGroup ??= _container.GetComponent<LayoutGroup>();
     }
 
     public override void SetAddress(Address address)
@@ -176,6 +176,7 @@ public class ListView : XView
     {
         if (_layoutGroup == null)
             return;
+            
         _layoutGroup.CalculateLayoutInputHorizontal();
         _layoutGroup.CalculateLayoutInputVertical();
         _layoutGroup.SetLayoutHorizontal();

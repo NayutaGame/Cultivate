@@ -257,4 +257,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public (int, int) GainExperienceDryRun(int experienceGain)
         => _levelProfile.GainExperienceDryRun(experienceGain);
+
+    public void ResetAchievementProfiles()
+    {
+        _achievementProfileList.Traversal().Do(achievementProfile =>
+            achievementProfile.Reset());
+        AppManager.Instance.ProfileManager.SaveProcedure();
+    }
 }

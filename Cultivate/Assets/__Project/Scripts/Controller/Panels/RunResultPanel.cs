@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -17,8 +18,8 @@ public class RunResultPanel : Panel
     [SerializeField] private ListView MilestoneList;
     
     [SerializeField] private TMP_Text LevelText;
-    [SerializeField] private TMP_Text ExperienceText;
     [SerializeField] private TMP_Text ExperienceGainText;
+    [SerializeField] private TMP_Text ExperienceText;
 
     [SerializeField] private ListView UnlockList;
 
@@ -68,29 +69,108 @@ public class RunResultPanel : Panel
         CharacterNameText.text = panelDescriptor.GetCharacterName();
         DifficultyText.text = panelDescriptor.GetDifficulty();
         PlayTimeText.text = panelDescriptor.GetPlayTime();
+    }
 
-        _details = new(panelDescriptor.GetInitialExperience(), panelDescriptor.GetInitialLevel(), panelDescriptor.GetExperienceGain());
+    private Tween MilestoneAnimation()
+    {
+        InitMilestoneList();
+        Sequence seq = DOTween.Sequence();
 
-        // ExperienceSlider.value = _details.InitialExperience;
-        ExperienceGainText.text = $"+0";
-        LevelText.text = $"{_details.InitialLevel}";
+        MilestoneList.Traversal().Do(item => {
+            DelegatingView view = item as DelegatingView;
+            // AudioManager.PlayCardPlacement();
+            seq.Append(view.GetDelegatedView().GetRect().DOMove(view.GetRect().position, 0.15f))
+                .Join((view.GetDelegatedView() as MilestoneView).CanvasGroup.DOFade(1, 0.15f))
+                .AppendCallback(() => view.GetAnimator().SetState(DelegatingView4States.IDLE));
+        });
 
-        // MilestoneList.Sync();
+        seq.AppendInterval(0.2f);
+
+        return seq;
+        
+        // _animationQueue.QueueAnimation(seq);
+    }
+    
+    private void InitMilestoneList()
+    {
+        void SetInitialState(DelegatingView view, Vector3 position)
+        {
+            view.GetAnimator().SetState(DelegatingView4States.FREE);
+            view.GetDelegatedView().GetRect().position = position;
+            MilestoneView delegatedView = view.GetDelegatedView() as MilestoneView;
+            delegatedView.CanvasGroup.alpha = 0;
+        }
+        
+        MilestoneList.Sync();
+        MilestoneList.ForceLayoutRebuild();
+
+        MilestoneList.Traversal().Do(item =>
+        {
+            DelegatingView view = item as DelegatingView;
+            SetInitialState(view, view.GetRect().position + Vector3.right * 0.5f);
+        });
+    }
+
+    private Tween UnlockAnimation()
+    {
+        InitUnlockList();
+        Sequence seq = DOTween.Sequence();
+
+        UnlockList.Traversal().Do(item => {
+            DelegatingView view = item as DelegatingView;
+            // AudioManager.PlayCardPlacement();
+            seq.Append(view.GetDelegatedView().GetRect().DOMove(view.GetRect().position, 0.15f))
+                .Join((view.GetDelegatedView() as UnlockIcon).CanvasGroup.DOFade(1, 0.15f))
+                .AppendCallback(() => view.GetAnimator().SetState(DelegatingView4States.IDLE));
+        });
+
+        seq.AppendInterval(0.2f);
+
+        return seq;
+    }
+
+    private void InitUnlockList()
+    {
+        void SetInitialState(DelegatingView view, Vector3 position)
+        {
+            view.GetAnimator().SetState(DelegatingView4States.FREE);
+            view.GetDelegatedView().GetRect().position = position;
+            UnlockIcon delegatedView = view.GetDelegatedView() as UnlockIcon;
+            delegatedView.CanvasGroup.alpha = 0;
+        }
+        
+        UnlockList.Sync();
+        UnlockList.ForceLayoutRebuild();
+
+        UnlockList.Traversal().Do(item =>
+        {
+            DelegatingView view = item as DelegatingView;
+            SetInitialState(view, view.GetRect().position + Vector3.up * 0.25f);
+        });
     }
 
     private Tween ScoringAnimation()
     {
+        InitScoring();
+        
         const float SPEED = 500;
         float totalTime = _details.ExperienceGain / SPEED;
 
         _experienceProgress = 0;
-        _levelProgress = 0;
-
         return DOTween.To(Getter, Setter, _details.ExperienceGain, totalTime).SetEase(Ease.Linear);
     }
 
+    private void InitScoring()
+    {
+        RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetPanel() as RunResultPanelDescriptor;
+        _details = new(panelDescriptor.GetInitialExperience(), panelDescriptor.GetInitialLevel(), panelDescriptor.GetExperienceGain());
+
+        LevelText.text = $"{_details.InitialLevel}";
+        ExperienceGainText.text = $"{_details.ExperienceGain}";
+        ExperienceText.text = $"{_details.InitialExperience}";
+    }
+
     private int _experienceProgress;
-    private int _levelProgress;
 
     public int Getter()
     {
@@ -101,12 +181,14 @@ public class RunResultPanel : Panel
     {
         _experienceProgress = value;
 
-        int total = _details.InitialExperience + _experienceProgress;
-        _levelProgress = total / 1000;
-        LevelText.text = $"{_details.InitialLevel + _levelProgress}";
+        int totalExperience = _details.InitialExperience + _experienceProgress;
+        int levelCarry = totalExperience / 1000;
+        int totalLevel = _details.InitialLevel + levelCarry;
+        int restExperience = totalExperience - levelCarry * 1000;
 
-        // ExperienceSlider.value = currValue;
-        ExperienceGainText.text = $"+{_experienceProgress}";
+        LevelText.text = $"{totalLevel}";
+        ExperienceGainText.text = $"+{_details.ExperienceGain - _experienceProgress}";
+        ExperienceText.text = $"{restExperience}";
     }
 
     private void Return()
@@ -114,10 +196,18 @@ public class RunResultPanel : Panel
         RunManager.Instance.ReturnToTitle();
     }
 
+    private Tween SetActiveTween()
+    {
+        gameObject.SetActive(true);
+        return DOTween.Sequence();
+    }
+
     public override Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(SetActiveTween())
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE))
-            // .Append(ScoringAnimation())
+            .Append(MilestoneAnimation())
+            .Append(UnlockAnimation())
+            .Append(ScoringAnimation())
         ;
 }

@@ -8,6 +8,7 @@ public class AchievementBrowserPanel : Panel
 
     public ListView AchievementInventoryView;
 
+    [SerializeField] private Button ResetAchievementButton;
     [SerializeField] private Button ReturnButton;
 
     public override void AwakeFunction()
@@ -19,6 +20,9 @@ public class AchievementBrowserPanel : Panel
 
         ReturnButton.onClick.RemoveAllListeners();
         ReturnButton.onClick.AddListener(Hide);
+        
+        ResetAchievementButton.onClick.RemoveAllListeners();
+        ResetAchievementButton.onClick.AddListener(ResetAchievement);
     }
 
     public override void Refresh()
@@ -34,5 +38,10 @@ public class AchievementBrowserPanel : Panel
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    public void ResetAchievement()
+    {
+        AppManager.Instance.ProfileManager.GetCurrProfile().ResetAchievementProfiles();
     }
 }

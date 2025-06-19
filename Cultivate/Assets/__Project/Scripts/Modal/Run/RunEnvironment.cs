@@ -1106,12 +1106,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         _result.SetOutcome(state);
         _runFinishedTime = GetPassedTime();
-        
-        RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(this);
-        
-        SetPanel(resultPanel);
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
+        
+        RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(this);
+        SetPanel(resultPanel);
     }
 
     public bool RunIsFinished()
