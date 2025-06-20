@@ -65,17 +65,14 @@ public class StageEnvironment : Addressable, StageClosureListener
         UnregisterEntityClosures();
         UnregisterAchievementClosures();
         UnregisterConfigClosures();
+        
+        if (_config.WriteResult)
+            RunManager.Instance.Environment.DepleteProcedure();
 
         if (!_shouldSkip)
         {
-            if (_config.WriteResult)
-                RunManager.Instance.Environment.DepleteProcedure();
-        
             await AnimationToFinishProcedure();
         }
-
-        if (_shouldSkip)
-            Debug.Log("CoreProcedure is skipped");
     }
 
     private async UniTask AnimationToFinishProcedure()

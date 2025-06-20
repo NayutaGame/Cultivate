@@ -1,19 +1,26 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Tween = DG.Tweening.Tween;
+using UnityEngine.UI;
 
 public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] public RectTransform _target;
-
-    private Animator _animator;
+    [SerializeField] public Image IconPlaceHolder;
+    [SerializeField] public Sprite[] Icons;
 
     [HideInInspector] public Neuron<PointerEventData> LeftClickNeuron = new();
     [HideInInspector] public Neuron<PointerEventData> RightClickNeuron = new();
-    
+
+    public void Configure(int index)
+    {
+        IconPlaceHolder.sprite = Icons[index];
+        UpdateState();
+    }
+
     private bool _isAttractive;
     public void SetAttractive(bool value)
     {
@@ -21,50 +28,36 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             return;
         
         _isAttractive = value;
-        if (_animator.State == 3)
+        UpdateState();
+    }
+    
+    private bool _isHover;
+    public void SetHover(bool value)
+    {
+        if (_isHover == value)
             return;
 
-        if (!_isAttractive)
-        {
-            if (_animator.State != 1)
-                _animator.SetStateAsync(1);
-        }
-        else
-        {
-            if (_animator.State != 2)
-                _animator.SetStateAsync(2);
-        }
+        _isHover = value;
+        UpdateState();
     }
 
-    public void Configure()
-    {
-        _animator ??= InitAnimator();
-        
-        LeftClickNeuron.Join(ClickVFX);
-    }
+    private Tween _handle;
 
-    protected virtual Animator InitAnimator()
+    private void UpdateState()
     {
-        // 0 for no state, 1 for idle, 2 for attractive, 3 for hover
-        Animator animator = new(4, "CombatButton");
-        animator[0, 1] = IdleTween;
-        animator[2, 1] = IdleTween;
-        animator[3, 1] = IdleTween;
-        animator[0, 2] = AttractiveTween;
-        animator[1, 2] = AttractiveTween;
-        animator[3, 2] = AttractiveTween;
-        animator[0, 3] = HoverTween;
-        animator[1, 3] = HoverTween;
-        animator[2, 3] = HoverTween;
+        int index = (_isAttractive ? 1 : 0) + (_isHover ? 2 : 0);
         
-        return animator;
+        _handle?.Kill();
+        _handle = TweenSelector[index](_target);
+        _handle.SetAutoKill();
+        _handle.Restart();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
-        => _animator.SetStateAsync(3);
+        => SetHover(true);
 
     public void OnPointerExit(PointerEventData eventData)
-        => _animator.SetStateAsync(!_isAttractive ? 1 : 2);
+        => SetHover(false);
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -75,17 +68,20 @@ public class CombatButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
     }
 
-    private Tween IdleTween()
-        => TweenAnimation.Jump(_target);
-    
-    private Tween AttractiveTween()
-        => TweenAnimation.Beats(_target);
-
-    private Tween HoverTween()
-        => _target.DOScale(1.2f * Vector3.one, 0.2f).SetEase(Ease.OutQuad);
-
-    private void ClickVFX(PointerEventData d)
+    private static Func<RectTransform, Tween>[] TweenSelector = new Func<RectTransform, Tween>[4]
     {
-        
-    }
+        IdleTween, AttractiveTween, HoverTween, AttractiveHoverTween
+    };
+
+    private static Tween IdleTween(RectTransform target)
+        => TweenAnimation.Jump(target);
+    
+    private static Tween AttractiveTween(RectTransform target)
+        => TweenAnimation.Beats(target);
+
+    private static Tween HoverTween(RectTransform target)
+        => target.DOScale(1.2f * Vector3.one, 0.2f).SetEase(Ease.OutQuad);
+
+    private static Tween AttractiveHoverTween(RectTransform target)
+        => TweenAnimation.HarshBeats(target);
 }

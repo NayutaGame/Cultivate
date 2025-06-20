@@ -43,6 +43,9 @@ public static class TweenAnimation
             .Join(text.DOFade(0, 0.15f).From(1).SetEase(Ease.InQuad));
     }
 
+    public static Tween Jump(RectTransform target)
+        => target.DOScale(Vector3.one, 0.85f).From(1.1f).SetLoops(99999, LoopType.Yoyo).SetEase(Ease.InQuad);
+
     public static Tween Beats(RectTransform target)
         => DOTween.Sequence()
             .Append(target.DOScale(0.9f, 0.1f).SetEase(Ease.InQuad))
@@ -50,7 +53,23 @@ public static class TweenAnimation
             .Append(target.DOScale(1f, 0.2f).SetEase(Ease.OutQuad))
             .AppendInterval(0.6f)
             .SetLoops(99999, loopType: LoopType.Restart);
-
-    public static Tween Jump(RectTransform target)
-        => target.DOScale(Vector3.one, 0.85f).From(1.1f).SetLoops(99999, LoopType.Yoyo).SetEase(Ease.InQuad);
+    
+    public static Tween HarshBeats(RectTransform target)
+        => DOTween.Sequence()
+            .Append(target.DOScale(1.1f, 0.05f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(0.9f, 0.05f).SetEase(Ease.OutQuad))
+            .Append(target.DOScale(1.1f, 0.05f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(0.9f, 0.05f).SetEase(Ease.OutQuad))
+            .Append(target.DOScale(1.1f, 0.05f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(0.95f, 0.4f).SetEase(Ease.OutQuad))
+            .Append(target.DOScale(1.1f, 0.05f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(0.9f, 0.05f).SetEase(Ease.OutQuad))
+            .Append(target.DOScale(1.1f, 0.05f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(0.9f, 0.05f).SetEase(Ease.OutQuad))
+            .Append(target.DOScale(1.1f, 0.05f).SetEase(Ease.InQuad))
+            .Append(target.DOScale(0.95f, 0.4f).SetEase(Ease.OutQuad))
+            .Append(target.DOScale(1.25f, 0.01f).SetEase(Ease.OutQuad))
+            .AppendInterval(0.3f)
+            .Append(target.DOScale(0.9f, 0.2f).SetEase(Ease.OutQuad))
+            .SetLoops(99999, loopType: LoopType.Restart);
 }

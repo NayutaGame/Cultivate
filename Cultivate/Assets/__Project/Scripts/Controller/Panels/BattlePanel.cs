@@ -40,7 +40,8 @@ public class BattlePanel : Panel
 
         EnemyView.SetAddress(_address.Append(".Enemy"));
 
-        CombatButton.Configure();
+        _index = 0;
+        CombatButton.Configure(_index);
         CombatButton.LeftClickNeuron.Join(Combat);
         CombatButton.RightClickNeuron.Join(NextCombatAction);
     }
@@ -230,6 +231,7 @@ public class BattlePanel : Panel
         _index++;
         if (_index >= CombatActions.Length)
             _index = 0;
+        CombatButton.IconPlaceHolder.sprite = CombatButton.Icons[_index];
     }
 
     private static void CombatNormal()
