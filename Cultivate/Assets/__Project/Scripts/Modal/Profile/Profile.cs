@@ -96,6 +96,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public bool HasSave()
         => _runEnvironment != null && _runEnvironment.IsLegit;
+
+    public bool DifficultyIsUnlocked(DifficultyEntry difficultyEntry)
+    {
+        return DifficultyProfileList.Find(difficultyEntry).IsUnlocked();
+    }
     
     private Dictionary<LockIndex, AchievementProfile> BuildAchievementCache()
     {

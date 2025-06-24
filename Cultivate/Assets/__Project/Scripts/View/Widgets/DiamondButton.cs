@@ -19,11 +19,32 @@ public class DiamondButton : XView
     [SerializeField] private Image HoverEffect2;
     [SerializeField] private Image PressEffect;
 
+    private bool _isInteractable;
+    public void SetInteractable(bool value)
+    {
+        _isInteractable = value;
+        if (Content != null)
+            Content.SetActive(_isInteractable);
+        if (Frame != null)
+            Frame.SetActive(_isInteractable);
+        if (ContentNoninteractable != null)
+            ContentNoninteractable.SetActive(!_isInteractable);
+        if (FrameNoninteractable != null)
+            FrameNoninteractable.SetActive(!_isInteractable);
+        RefreshIb();
+    }
+
+    [SerializeField] private GameObject Content;
+    [SerializeField] private GameObject ContentNoninteractable;
+    [SerializeField] private GameObject Frame;
+    [SerializeField] private GameObject FrameNoninteractable;
+
     protected override void AwakeFunction()
     {
         LeftClickNeuron = new();
         RightClickNeuron = new();
         base.AwakeFunction();
+        SetInteractable(true);
     }
 
     protected override Animator InitAnimator()
@@ -33,6 +54,46 @@ public class DiamondButton : XView
         animator[ANY, HOVER] = EnterHover;
         animator[ANY, PRESS] = EnterPress;
         return animator;
+    }
+
+    private void RefreshIb()
+    {
+        InteractBehaviour ib = GetInteractBehaviour();
+        if (ib != null)
+            InitInteractBehaviour(ib);
+        
+        if (_isInteractable)
+        {
+            ib.PointerEnterNeuron.Join(PointerEnter);
+            ib.PointerExitNeuron.Join(PointerExit);
+            ib.PointerDownNeuron.Join(PointerDown);
+            ib.PointerUpNeuron.Join(PointerUp);
+            if (AudioManager.Instance != null)
+            {
+                ib.PointerEnterNeuron.Join(AudioManager.PlayButtonHover);
+                ib.LeftClickNeuron.Join(AudioManager.PlayButtonPress);
+                ib.RightClickNeuron.Join(AudioManager.PlayButtonPress);
+            }
+        
+            ib.LeftClickNeuron.Join(LeftClickNeuron);
+            ib.RightClickNeuron.Join(RightClickNeuron);
+        }
+        else
+        {
+            ib.PointerEnterNeuron.Remove(PointerEnter);
+            ib.PointerExitNeuron.Remove(PointerExit);
+            ib.PointerDownNeuron.Remove(PointerDown);
+            ib.PointerUpNeuron.Remove(PointerUp);
+            if (AudioManager.Instance != null)
+            {
+                ib.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+                ib.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+                ib.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
+            }
+        
+            ib.LeftClickNeuron.Remove(LeftClickNeuron);
+            ib.RightClickNeuron.Remove(RightClickNeuron);
+        }
     }
 
     protected override void InitInteractBehaviour(InteractBehaviour ib)

@@ -18,28 +18,28 @@ public class MapCategory : Category<MapEntry>
                     new RoomDefinition[]
                     {
                         new DirectRoomDefinition(0, "漫画", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学1", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学2", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学3", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学4", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学5", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         
                         new DirectRoomDefinition(0, "教学8", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("3").IsUnlocked()
+                            !profile.DifficultyIsUnlocked("3")
                             && env.GetRunConfig().GetDifficulty() == 2),
                     },
                     new RoomDefinition[]
                     {
                         new DirectRoomDefinition(0, "出门", pred: (profile, env) =>
-                            profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "序章出门", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         
                         new BattleRoomDefinition(0, 3, 4),
                         new AdventureRoomDefinition(0),
@@ -50,10 +50,10 @@ public class MapCategory : Category<MapEntry>
                     new RoomDefinition[]
                     {
                         new DirectRoomDefinition(2, "教学6", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         
                         new DirectRoomDefinition(2, "教学10", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("5").IsUnlocked()
+                            !profile.DifficultyIsUnlocked("5")
                             && env.GetRunConfig().GetDifficulty() == 4),
                         
                         new BattleRoomDefinition(2, 5, 6),
@@ -225,28 +225,28 @@ public class MapCategory : Category<MapEntry>
                     new RoomDefinition[]
                     {
                         new DirectRoomDefinition(0, "漫画", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学1", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学2", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学3", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学4", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "教学5", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         
                         new DirectRoomDefinition(0, "教学8", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("3").IsUnlocked()
+                            !profile.DifficultyIsUnlocked("3")
                             && env.GetRunConfig().GetDifficulty() == 2),
                     },
                     new RoomDefinition[]
                     {
                         new DirectRoomDefinition(0, "出门", pred: (profile, env) =>
-                            profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            profile.DifficultyIsUnlocked("1")),
                         new DirectRoomDefinition(0, "序章出门", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         
                         new BattleRoomDefinition(0, 3, 4),
                         new AdventureRoomDefinition(0),
@@ -257,10 +257,10 @@ public class MapCategory : Category<MapEntry>
                     new RoomDefinition[]
                     {
                         new DirectRoomDefinition(2, "教学6", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("1").IsUnlocked()),
+                            !profile.DifficultyIsUnlocked("1")),
                         
                         new DirectRoomDefinition(2, "教学10", pred: (profile, env) =>
-                            !profile.DifficultyProfileList.Find("5").IsUnlocked()
+                            !profile.DifficultyIsUnlocked("5")
                             && env.GetRunConfig().GetDifficulty() == 4),
                         
                         new BattleRoomDefinition(2, 5, 6),

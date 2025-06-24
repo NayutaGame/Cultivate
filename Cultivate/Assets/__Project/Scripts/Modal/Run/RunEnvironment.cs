@@ -198,6 +198,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public TimeSpan GetRunfinishedTime() => _runFinishedTime;
     public TimeSpan GetPassedTime() => _loadedTime + (DateTime.Now - _startTime);
     public RunReport GetRunReport() => _runReport;
+    public BoundedInt GetGold() => _gold;
+    public MingYuan GetMingYuan() => _home.GetMingYuan();
 
     public void SetHome(RunEntity home)
     {
@@ -264,12 +266,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         list.Do(e => _closureDict.Unregister(listener, e));
     }
-
-    public BoundedInt GetGold()
-        => _gold;
-
-    public MingYuan GetMingYuan()
-        => _home.GetMingYuan();
 
     public RunSkill SkillFromDeckIndex(DeckIndex deckIndex)
     {
@@ -1016,7 +1012,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     #region PanelOperations
     
     public PanelDescriptor GetPanel() => _panel;
-    public void SetPanel(PanelDescriptor panel)
+    private void SetPanel(PanelDescriptor panel)
     {
         if (_panel == panel)
             return;
