@@ -1,10 +1,10 @@
 
 public class PanelChangedDetails : RunClosureDetails
 {
-    public PanelDescriptor FromPanel;
-    public PanelDescriptor ToPanel;
+    public Cell FromPanel;
+    public Cell ToPanel;
     
-    public PanelChangedDetails(PanelDescriptor fromPanel, PanelDescriptor toPanel)
+    public PanelChangedDetails(Cell fromPanel, Cell toPanel)
     {
         FromPanel = fromPanel;
         ToPanel = toPanel;

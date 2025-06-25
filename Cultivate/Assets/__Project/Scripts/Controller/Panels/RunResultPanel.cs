@@ -51,9 +51,9 @@ public class RunResultPanel : Panel
     
     public override void Refresh()
     {
-        RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetPanel() as RunResultPanelDescriptor;
+        RunResultCell cell = RunManager.Instance.Environment.GetPanel() as RunResultCell;
         
-        if (panelDescriptor.GetRunOutcome() == RunResult.RunOutcome.Victorious)
+        if (cell.GetRunOutcome() == RunResult.RunOutcome.Victorious)
         {
             OutcomeText.text = "胜利";
             SpriteEntry winIllustration = "RunResultIllustrationWin";
@@ -66,9 +66,9 @@ public class RunResultPanel : Panel
             ResultIllustration.sprite = loseIllustration.Sprite;
         }
         
-        CharacterNameText.text = panelDescriptor.GetCharacterName();
-        DifficultyText.text = panelDescriptor.GetDifficulty();
-        PlayTimeText.text = panelDescriptor.GetPlayTime();
+        CharacterNameText.text = cell.GetCharacterName();
+        DifficultyText.text = cell.GetDifficulty();
+        PlayTimeText.text = cell.GetPlayTime();
     }
 
     private Tween MilestoneAnimation()
@@ -162,8 +162,8 @@ public class RunResultPanel : Panel
 
     private void InitScoring()
     {
-        RunResultPanelDescriptor panelDescriptor = RunManager.Instance.Environment.GetPanel() as RunResultPanelDescriptor;
-        _details = new(panelDescriptor.GetInitialExperience(), panelDescriptor.GetInitialLevel(), panelDescriptor.GetExperienceGain());
+        RunResultCell cell = RunManager.Instance.Environment.GetPanel() as RunResultCell;
+        _details = new(cell.GetInitialExperience(), cell.GetInitialLevel(), cell.GetExperienceGain());
 
         LevelText.text = $"{_details.InitialLevel}";
         ExperienceGainText.text = $"{_details.ExperienceGain}";

@@ -72,7 +72,7 @@ public class DialogPanel : Panel
 
     public override void Refresh()
     {
-        DialogPanelDescriptor d = _address.Get<DialogPanelDescriptor>();
+        DialogCell d = _address.Get<DialogCell>();
 
         Illustration.sprite = RunManager.Instance.Environment.GetCurrEventIllustration();
 

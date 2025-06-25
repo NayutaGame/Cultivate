@@ -9,12 +9,12 @@ public abstract class Guide
         _comment = comment;
     }
 
-    public virtual void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public virtual void ReceiveSignal(Cell cell, Signal signal)
     { }
 
-    public void SetComplete(PanelDescriptor panelDescriptor)
+    public void SetComplete(Cell cell)
     {
         RunManager.Instance.Environment.GuideFinishNeuron.Invoke(this);
-        panelDescriptor.MoveNextGuideDescriptor();
+        cell.MoveNextGuideDescriptor();
     }
 }

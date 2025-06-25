@@ -143,8 +143,8 @@ public class RunCanvas : Panel
 
     private readonly Dictionary<Type, string> _panelSoundMap = new Dictionary<Type, string>
     {
-        { typeof(DialogPanelDescriptor), "EnterAdventure" },
-        { typeof(ShopPanelDescriptor), "EnterShop" }
+        { typeof(DialogCell), "EnterAdventure" },
+        { typeof(ShopCell), "EnterShop" }
     };
 
     private void EnterPanelSound(PanelChangedDetails d)
@@ -161,13 +161,13 @@ public class RunCanvas : Panel
     private void ChangePanel(PanelChangedDetails d)
         => ChangePanelAsync(d);
     
-    private void ChangePanel(PanelDescriptor toPanel)
+    private void ChangePanel(Cell toPanel)
         => ChangePanelAsync(toPanel);
 
     private async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
         => await ChangePanelAsync(panelChangedDetails.ToPanel);
     
-    private async UniTask ChangePanelAsync(PanelDescriptor toPanel)
+    private async UniTask ChangePanelAsync(Cell toPanel)
     {
         await _animationQueue.WaitForQueueToComplete();
         
@@ -193,9 +193,9 @@ public class RunCanvas : Panel
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
 
-        PanelDescriptor d = RunManager.Instance.Environment.GetPanel();
-        bool showDeck = d is BattlePanelDescriptor || d is CardPickerPanelDescriptor || d is PuzzlePanelDescriptor ||
-                        d is DiscoverSkillPanelDescriptor;
+        Cell d = RunManager.Instance.Environment.GetPanel();
+        bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
+                        d is DiscoverSkillCell;
         
         await DeckPanel.GetAnimator().SetStateAsync(showDeck ? 2 : 0);
     }

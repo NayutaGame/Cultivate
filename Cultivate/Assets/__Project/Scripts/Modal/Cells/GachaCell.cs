@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CLLibrary;
 
-public class GachaPanelDescriptor : PanelDescriptor
+public class GachaCell : Cell
 {
     private SkillEntryDescriptorListModel _items;
     public SkillEntryDescriptorListModel GetItems() => _items;
@@ -13,7 +13,7 @@ public class GachaPanelDescriptor : PanelDescriptor
 
     private float _priceMultiplier;
 
-    public GachaPanelDescriptor(float priceMultiplier)
+    public GachaCell(float priceMultiplier)
     {
         _accessors = new()
         {
@@ -27,9 +27,9 @@ public class GachaPanelDescriptor : PanelDescriptor
     public bool ItemsIsEmpty
         => _items.Count() <= 0;
 
-    public override void DefaultEnter(PanelDescriptor panelDescriptor)
+    public override void DefaultEnter(Cell cell)
     {
-        base.DefaultEnter(panelDescriptor);
+        base.DefaultEnter(cell);
 
         _items = new();
 
@@ -84,7 +84,7 @@ public class GachaPanelDescriptor : PanelDescriptor
         RunManager.Instance.Environment.GachaProcedure(details);
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ExitShopSignal)
         {

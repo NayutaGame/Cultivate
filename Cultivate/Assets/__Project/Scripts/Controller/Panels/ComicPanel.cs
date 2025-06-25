@@ -56,8 +56,8 @@ public class ComicPanel : Panel
     {
         ImageButton.onClick.RemoveAllListeners();
         ImageButton.onClick.AddListener(ClickedSignal);
-        ComicPanelDescriptor panelDescriptor = _address.Get<ComicPanelDescriptor>();
-        SetPrefabEntry(panelDescriptor._prefabEntry);
+        ComicCell cell = _address.Get<ComicCell>();
+        SetPrefabEntry(cell._prefabEntry);
     }
     
     private void SetPrefabEntry(PrefabEntry targetPrefabEntry)

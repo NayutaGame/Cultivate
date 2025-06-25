@@ -1,10 +1,10 @@
 
-public class ComicPanelDescriptor : PanelDescriptor
+public class ComicCell : Cell
 {
     public PrefabEntry _prefabEntry;
-    public PanelDescriptor Next;
+    public Cell Next;
 
-    public ComicPanelDescriptor(string prefabName)
+    public ComicCell(string prefabName)
     {
         _accessors = new()
         {
@@ -14,7 +14,7 @@ public class ComicPanelDescriptor : PanelDescriptor
         _prefabEntry = prefabName;
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is FinishedComicSignal finishedComicSignal)
             return Next;

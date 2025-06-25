@@ -43,7 +43,7 @@ public class ArbitraryCardPickerPanel : Panel
 
     public override void Refresh()
     {
-        ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
+        ArbitraryCardPickerCell d = _address.Get<ArbitraryCardPickerCell>();
 
         DetailedText.text = d.GetDetailedText() +
                             $"可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
@@ -67,7 +67,7 @@ public class ArbitraryCardPickerPanel : Panel
         }
         else
         {
-            ArbitraryCardPickerPanelDescriptor d = _address.Get<ArbitraryCardPickerPanelDescriptor>();
+            ArbitraryCardPickerCell d = _address.Get<ArbitraryCardPickerCell>();
             SkillEntryDescriptor skill = selectBehaviour.Get<SkillEntryDescriptor>();
             
             if (!d.CanSelect(skill))

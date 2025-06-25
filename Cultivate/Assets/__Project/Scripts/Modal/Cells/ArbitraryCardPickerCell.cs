@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
+public class ArbitraryCardPickerCell : Cell
 {
     private string _titleText;
     public string GetTitleText() => _titleText;
@@ -21,19 +21,19 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
     public bool HasSpace(int occupied)
         => _bound.End - 1 > occupied;
 
-    private Func<List<SkillEntryDescriptor>, PanelDescriptor> _confirmOperation;
-    public ArbitraryCardPickerPanelDescriptor SetConfirmOperation(Func<List<SkillEntryDescriptor>, PanelDescriptor> confirmOperation)
+    private Func<List<SkillEntryDescriptor>, Cell> _confirmOperation;
+    public ArbitraryCardPickerCell SetConfirmOperation(Func<List<SkillEntryDescriptor>, Cell> confirmOperation)
     {
         _confirmOperation = confirmOperation;
         return this;
     }
 
-    public ArbitraryCardPickerPanelDescriptor(
+    public ArbitraryCardPickerCell(
         string titleText = null,
         string detailedText = null,
         Bound? bound = null,
         SkillEntryDescriptor descriptor = null,
-        Func<List<SkillEntryDescriptor>, PanelDescriptor> confirmOperation = null)
+        Func<List<SkillEntryDescriptor>, Cell> confirmOperation = null)
     {
         _accessors = new()
         {
@@ -59,7 +59,7 @@ public class ArbitraryCardPickerPanelDescriptor : PanelDescriptor
             _inventory.Add(skill);
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ConfirmSkillsSignal selectedSkillsSignal && _confirmOperation != null)
         {

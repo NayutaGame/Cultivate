@@ -17,26 +17,26 @@ public struct PanelS : IEquatable<PanelS>
         return new(0);
     }
 
-    public static PanelS FromPanelDescriptor(PanelDescriptor panelDescriptor)
+    public static PanelS FromPanelDescriptor(Cell cell)
     {
-        return new(Dict[panelDescriptor.GetType()]);
+        return new(Dict[cell.GetType()]);
     }
 
     public static Dictionary<Type, int> Dict = new()
     {
         // 0 for hide
-        { typeof(BattlePanelDescriptor),                1 },
-        { typeof(PuzzlePanelDescriptor),                2 },
-        { typeof(DialogPanelDescriptor),                3 },
-        { typeof(DiscoverSkillPanelDescriptor),         4 },
-        { typeof(CardPickerPanelDescriptor),            5 },
-        { typeof(ShopPanelDescriptor),                  6 },
-        { typeof(BarterPanelDescriptor),                7 },
-        { typeof(GachaPanelDescriptor),                 8 },
-        { typeof(ArbitraryCardPickerPanelDescriptor),   9 },
-        { typeof(ImagePanelDescriptor),                10 },
-        { typeof(ComicPanelDescriptor),                11 },
-        { typeof(RunResultPanelDescriptor),            12 },
+        { typeof(BattleCell),                1 },
+        { typeof(PuzzleCell),                2 },
+        { typeof(DialogCell),                3 },
+        { typeof(DiscoverSkillCell),         4 },
+        { typeof(CardPickerCell),            5 },
+        { typeof(ShopCell),                  6 },
+        { typeof(BarterCell),                7 },
+        { typeof(GachaCell),                 8 },
+        { typeof(ArbitraryCardPickerCell),   9 },
+        { typeof(ImageCell),                10 },
+        { typeof(ComicCell),                11 },
+        { typeof(RunResultCell),            12 },
     };
 
     public bool Equals(PanelS other)

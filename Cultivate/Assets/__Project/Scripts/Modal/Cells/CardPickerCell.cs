@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class CardPickerPanelDescriptor : PanelDescriptor
+public class CardPickerCell : Cell
 {
     private string _titleText;
     public string GetTitleText() => _titleText;
@@ -17,8 +17,8 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public bool HasSpace(int occupied)
         => _bound.End - 1 > occupied;
 
-    private Func<List<DeckIndex>, PanelDescriptor> _confirmOperation;
-    public CardPickerPanelDescriptor SetConfirmOperation(Func<List<DeckIndex>, PanelDescriptor> select)
+    private Func<List<DeckIndex>, Cell> _confirmOperation;
+    public CardPickerCell SetConfirmOperation(Func<List<DeckIndex>, Cell> select)
     {
         _confirmOperation = select;
         return this;
@@ -26,11 +26,11 @@ public class CardPickerPanelDescriptor : PanelDescriptor
 
     private RunSkillDescriptor _descriptor;
 
-    public CardPickerPanelDescriptor(
+    public CardPickerCell(
         string titleText = null,
         string detailedText = null,
         Bound? bound = null,
-        Func<List<DeckIndex>, PanelDescriptor> confirmOperation = null,
+        Func<List<DeckIndex>, Cell> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {
         _accessors = new()
@@ -51,7 +51,7 @@ public class CardPickerPanelDescriptor : PanelDescriptor
     public bool CanSelect(SkillSlot slot)
         => slot.Skill != null && CanSelect(slot.Skill);
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ConfirmDeckSignal confirmDeckSignal && _confirmOperation != null)
         {
@@ -61,18 +61,18 @@ public class CardPickerPanelDescriptor : PanelDescriptor
         return this;
     }
 
-    public static CardPickerPanelDescriptor GetTemplate()
+    public static CardPickerCell GetTemplate()
     {
-        CardPickerPanelDescriptor template = new CardPickerPanelDescriptor(
+        CardPickerCell template = new CardPickerCell(
             titleText:          "选择",
             detailedText:       "请选择一张牌",
             bound:              new Bound(0, 2),
             descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.Swift));
         
-        DialogPanelDescriptor win = new(
+        DialogCell win = new(
             titleText: "成功",
             detailedText: "成功对话。");
-        DialogPanelDescriptor lose = new(
+        DialogCell lose = new(
             titleText: "失败",
             detailedText: "失败对话。");
 

@@ -49,7 +49,7 @@ public class CardPickerPanel : Panel
 
     public override void Refresh()
     {
-        CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
+        CardPickerCell d = _address.Get<CardPickerCell>();
         
         TitleText.text = d.GetTitleText();
         ContentText.text = d.GetDetailedText(_selections.Count);
@@ -68,7 +68,7 @@ public class CardPickerPanel : Panel
         }
         else
         {
-            CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
+            CardPickerCell d = _address.Get<CardPickerCell>();
             object obj = selectBehaviour.Get<object>();
             if (obj is RunSkill skill && !d.CanSelect(skill))
                 return;
@@ -98,7 +98,7 @@ public class CardPickerPanel : Panel
     
     private void ConfirmSelections()
     {
-        CardPickerPanelDescriptor d = _address.Get<CardPickerPanelDescriptor>();
+        CardPickerCell d = _address.Get<CardPickerCell>();
         List<DeckIndex> indices = new List<DeckIndex>();
         _selections.Do(selectBehaviour =>
         {

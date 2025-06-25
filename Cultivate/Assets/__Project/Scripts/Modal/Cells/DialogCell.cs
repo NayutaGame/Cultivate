@@ -1,5 +1,5 @@
 
-public class DialogPanelDescriptor : PanelDescriptor
+public class DialogCell : Cell
 {
     private string _titleText;
     public string GetTitleText() => _titleText;
@@ -15,13 +15,13 @@ public class DialogPanelDescriptor : PanelDescriptor
     public DialogOption this[int i] => _options[i];
 
     private Reward _reward;
-    public DialogPanelDescriptor SetReward(Reward reward)
+    public DialogCell SetReward(Reward reward)
     {
         _reward = reward;
         return this;
     }
 
-    public DialogPanelDescriptor(string titleText, string detailedText, params DialogOption[] options)
+    public DialogCell(string titleText, string detailedText, params DialogOption[] options)
     {
         _accessors = new()
         {
@@ -33,13 +33,13 @@ public class DialogPanelDescriptor : PanelDescriptor
         _options = options.Length > 0 ? options : new DialogOption[] { DialogOption.FromText("确认") };
     }
 
-    public override void DefaultEnter(PanelDescriptor panelDescriptor)
+    public override void DefaultEnter(Cell cell)
     {
-        base.DefaultEnter(panelDescriptor);
+        base.DefaultEnter(cell);
         _reward?.Claim();
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class ShopPanelDescriptor : PanelDescriptor
+public class ShopCell : Cell
 {
     private int _ladder;
     private float _priceMultiplier;
@@ -18,7 +18,7 @@ public class ShopPanelDescriptor : PanelDescriptor
     private SpriteEntry _spriteEntry;
     public SpriteEntry GetSprite() => _spriteEntry;
 
-    private ShopPanelDescriptor(int ladder, float priceMultiplier = 1, string title = null, SpriteEntry spriteEntry = null)
+    private ShopCell(int ladder, float priceMultiplier = 1, string title = null, SpriteEntry spriteEntry = null)
     {
         _accessors = new()
         {
@@ -32,9 +32,9 @@ public class ShopPanelDescriptor : PanelDescriptor
         _spriteEntry = spriteEntry ?? "收藏家";
     }
 
-    public override void DefaultEnter(PanelDescriptor panelDescriptor)
+    public override void DefaultEnter(Cell cell)
     {
-        base.DefaultEnter(panelDescriptor);
+        base.DefaultEnter(cell);
 
         _commodities = new CommodityListModel();
         
@@ -73,7 +73,7 @@ public class ShopPanelDescriptor : PanelDescriptor
         RunManager.Instance.Environment.BuySkillProcedure(d);
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ExitShopSignal)
         {
@@ -83,17 +83,17 @@ public class ShopPanelDescriptor : PanelDescriptor
         return this;
     }
 
-    public static ShopPanelDescriptor FromDefault(int ladder)
+    public static ShopCell FromDefault(int ladder)
         => FromShouCangJia(ladder);
 
-    public static ShopPanelDescriptor FromShouCangJia(int ladder)
+    public static ShopCell FromShouCangJia(int ladder)
         => new(ladder, priceMultiplier: 2, "收藏家", "收藏家");
 
-    public static ShopPanelDescriptor FromYiBaoZhai(int ladder)
+    public static ShopCell FromYiBaoZhai(int ladder)
     {
         int goldReward = RoomDefinition.GetGoldRewardFromLadder(ladder);
 
-        ShopPanelDescriptor B = new ShopPanelDescriptor(ladder, 2, "易宝斋", "收藏家");
+        ShopCell B = new ShopCell(ladder, 2, "易宝斋", "收藏家");
         B.SetEnter(panelDescriptor =>
         {
             panelDescriptor.DefaultEnter(panelDescriptor);
@@ -102,16 +102,16 @@ public class ShopPanelDescriptor : PanelDescriptor
         return B;
     }
 
-    public static ShopPanelDescriptor FromHeiShi(int ladder)
+    public static ShopCell FromHeiShi(int ladder)
     {
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
-        ShopPanelDescriptor B = new(ladder, 2, "黑市", "黑市");
+        ShopCell B = new(ladder, 2, "黑市", "黑市");
         B.SetEnter(panelDescriptor =>
         {
-            ShopPanelDescriptor shop = (ShopPanelDescriptor)panelDescriptor;
+            ShopCell shop = (ShopCell)panelDescriptor;
             CommodityListModel commodities = new CommodityListModel();
 
             SkillEntryCollectionDescriptor descriptor = new(
@@ -139,16 +139,16 @@ public class ShopPanelDescriptor : PanelDescriptor
         return B;
     }
 
-    public static ShopPanelDescriptor FromBiYeJi(int ladder)
+    public static ShopCell FromBiYeJi(int ladder)
     {
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = new Bound(JingJie.LianQi,
             (jingJieFromLadder - 2).ClampLower(JingJie.LianQi) + 1);
 
-        ShopPanelDescriptor B = new(ladder, 0.5f, "毕业季", "毕业季");
+        ShopCell B = new(ladder, 0.5f, "毕业季", "毕业季");
         B.SetEnter(panelDescriptor =>
         {
-            ShopPanelDescriptor shop = (ShopPanelDescriptor)panelDescriptor;
+            ShopCell shop = (ShopCell)panelDescriptor;
             CommodityListModel commodities = new CommodityListModel();
 
             SkillEntryCollectionDescriptor descriptor = new(

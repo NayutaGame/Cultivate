@@ -13,21 +13,21 @@ public class DialogOption
         return this;
     }
 
-    private Func<DialogOption, PanelDescriptor> _select;
-    public DialogOption SetSelect(Func<DialogOption, PanelDescriptor> select)
+    private Func<DialogOption, Cell> _select;
+    public DialogOption SetSelect(Func<DialogOption, Cell> select)
     {
         _select = select;
         return this;
     }
 
-    private DialogOption(string text, Func<DialogOption, PanelDescriptor> select)
+    private DialogOption(string text, Func<DialogOption, Cell> select)
     {
         Text = text;
         _runCostDetails = RunCostDetails.Default;
         _select = select ?? DefaultSelect;
     }
 
-    public static DialogOption FromTextAndSelect(string text, Func<DialogOption, PanelDescriptor> select)
+    public static DialogOption FromTextAndSelect(string text, Func<DialogOption, Cell> select)
     {
         return new(text, select);
     }
@@ -42,13 +42,13 @@ public class DialogOption
         return _runCostDetails.CanCost();
     }
 
-    public PanelDescriptor Select()
+    public Cell Select()
     {
         _runCostDetails.Cost();
         return _select(this);
     }
 
-    private PanelDescriptor DefaultSelect(DialogOption dialogOption)
+    private Cell DefaultSelect(DialogOption dialogOption)
     {
         _runCostDetails.Cost();
         return null;

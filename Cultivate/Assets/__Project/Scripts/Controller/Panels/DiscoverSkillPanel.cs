@@ -28,7 +28,7 @@ public class DiscoverSkillPanel : Panel
 
     private void RefreshInfo()
     {
-        DiscoverSkillPanelDescriptor d = _address.Get<DiscoverSkillPanelDescriptor>();
+        DiscoverSkillCell d = _address.Get<DiscoverSkillCell>();
 
         TitleText.text = d.GetTitleText();
         DescriptionText.text = d.GetDescriptionText();

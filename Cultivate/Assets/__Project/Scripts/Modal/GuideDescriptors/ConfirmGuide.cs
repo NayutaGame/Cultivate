@@ -5,9 +5,9 @@ public class ConfirmGuide : Guide
     {
     }
 
-    public override void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public override void ReceiveSignal(Cell cell, Signal signal)
     {
         if (signal is ConfirmGuideSignal)
-            SetComplete(panelDescriptor);
+            SetComplete(cell);
     }
 }

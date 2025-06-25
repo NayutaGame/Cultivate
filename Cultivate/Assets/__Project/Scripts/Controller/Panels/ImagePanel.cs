@@ -35,8 +35,8 @@ public class ImagePanel : Panel
 
     public override void Refresh()
     {
-        ImagePanelDescriptor panelDescriptor = _address.Get<ImagePanelDescriptor>();
-        ImageButton.image.sprite = panelDescriptor.GetSprite();
+        ImageCell cell = _address.Get<ImageCell>();
+        ImageButton.image.sprite = cell.GetSprite();
     }
 
     private void ClickedSignal()

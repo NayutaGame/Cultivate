@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class PuzzlePanelDescriptor : PanelDescriptor
+public class PuzzleCell : Cell
 {
     private Puzzle _puzzle;
 
@@ -10,7 +10,7 @@ public class PuzzlePanelDescriptor : PanelDescriptor
     public string GetCondition() => _puzzle.Condition;
     public StageResult GetResult() => _puzzle?.GetResult();
 
-    public PuzzlePanelDescriptor(Puzzle puzzle)
+    public PuzzleCell(Puzzle puzzle)
     {
         _accessors = new()
         {
@@ -70,14 +70,14 @@ public class PuzzlePanelDescriptor : PanelDescriptor
         }
     }
     
-    private Func<PuzzleResultSignal, PanelDescriptor> _operation;
-    public PuzzlePanelDescriptor SetOperation(Func<PuzzleResultSignal, PanelDescriptor> operation)
+    private Func<PuzzleResultSignal, Cell> _operation;
+    public PuzzleCell SetOperation(Func<PuzzleResultSignal, Cell> operation)
     {
         _operation = operation;
         return this;
     }
     
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is PuzzleResultSignal puzzleResultSignal)
         {
@@ -91,7 +91,7 @@ public class PuzzlePanelDescriptor : PanelDescriptor
         return this;
     }
 
-    public static PuzzlePanelDescriptor GetTemplate()
+    public static PuzzleCell GetTemplate()
     {
         Puzzle puzzle = new(
             description: "尝试帮助少年击中目标",
@@ -133,9 +133,9 @@ public class PuzzlePanelDescriptor : PanelDescriptor
             })
         );
         
-        PuzzlePanelDescriptor template = new(puzzle);
-        DialogPanelDescriptor pass = new DialogPanelDescriptor("通过", "通过对话");
-        DialogPanelDescriptor noPass = new DialogPanelDescriptor("未通过", "未通过对话");
+        PuzzleCell template = new(puzzle);
+        DialogCell pass = new DialogCell("通过", "通过对话");
+        DialogCell noPass = new DialogCell("未通过", "未通过对话");
         template.SetOperation(s =>
         {
             if (s.Flag == 1)

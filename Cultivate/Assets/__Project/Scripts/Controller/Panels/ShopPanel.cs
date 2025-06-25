@@ -26,7 +26,7 @@ public class ShopPanel : Panel
 
     public override void Refresh()
     {
-        ShopPanelDescriptor pd = _address.Get<ShopPanelDescriptor>();
+        ShopCell pd = _address.Get<ShopCell>();
         TitleText.text = pd.GetTitle();
         Illustration.sprite = pd.GetSprite().Sprite;
 
@@ -58,11 +58,11 @@ public class ShopPanel : Panel
     {
         CanvasManager.Instance.SkillAnnotation.PointerExit();
         
-        ShopPanelDescriptor shopPanelDescriptor = _address.Get<ShopPanelDescriptor>();
+        ShopCell shopCell = _address.Get<ShopCell>();
         Commodity commodity = ib.Get<Commodity>();
         int commodityIndex = CommodityListView.IndexFromView(ib.GetView()).Value;
         BuySkillDetails details = new(commodity, commodityIndex);
-        shopPanelDescriptor.BuySkillProcedure(details);
+        shopCell.BuySkillProcedure(details);
     }
 
     private void ExitShop()

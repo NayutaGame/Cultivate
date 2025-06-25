@@ -3,12 +3,12 @@ using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class BarterPanelDescriptor : PanelDescriptor
+public class BarterCell : Cell
 {
     private BarterInventory _inventory;
     public BarterInventory GetInventory() => _inventory;
 
-    public BarterPanelDescriptor()
+    public BarterCell()
     {
         _accessors = new()
         {
@@ -17,9 +17,9 @@ public class BarterPanelDescriptor : PanelDescriptor
         };
     }
 
-    public override void DefaultEnter(PanelDescriptor panelDescriptor)
+    public override void DefaultEnter(Cell cell)
     {
-        base.DefaultEnter(panelDescriptor);
+        base.DefaultEnter(cell);
 
         RunEnvironment env = RunManager.Instance.Environment;
 
@@ -81,7 +81,7 @@ public class BarterPanelDescriptor : PanelDescriptor
         RunManager.Instance.Environment.ExchangeSkillProcedure(d);
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ExitShopSignal)
         {

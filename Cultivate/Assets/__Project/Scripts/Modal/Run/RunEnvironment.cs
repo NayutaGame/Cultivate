@@ -84,7 +84,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [NonSerialized] private Memory _memory;
     [NonSerialized] private RunClosureDict _closureDict;
     [NonSerialized] private Dirty<StageResult> _simulateResult;
-    [NonSerialized] private PanelDescriptor _panel;
+    [NonSerialized] private Cell _panel;
     [NonSerialized] private RunEntity _away;
     [NonSerialized] private bool _awayIsDummy;
 
@@ -1011,8 +1011,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region PanelOperations
     
-    public PanelDescriptor GetPanel() => _panel;
-    private void SetPanel(PanelDescriptor panel)
+    public Cell GetPanel() => _panel;
+    private void SetPanel(Cell panel)
     {
         if (_panel == panel)
             return;
@@ -1027,7 +1027,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             PanelChangedNeuron.Invoke(panelChangedDetails);
     }
 
-    private bool PanelIsFinished(PanelDescriptor panel)
+    private bool PanelIsFinished(Cell panel)
         => panel == null;
     
     public void ReceiveSignalProcedure(Signal signal)
@@ -1035,7 +1035,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (RunIsFinished())
             return;
 
-        PanelDescriptor panel = _panel.ReceiveSignal(signal);
+        Cell panel = _panel.ReceiveSignal(signal);
+        if (RunIsFinished())
+            return;
         
         if (PanelIsFinished(panel))
         {
@@ -1105,7 +1107,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
         
-        RunResultPanelDescriptor resultPanel = new RunResultPanelDescriptor(this);
+        RunResultCell resultPanel = new RunResultCell(this);
         SetPanel(resultPanel);
     }
 
@@ -1245,8 +1247,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void AppendPickDiscoveredSkillReport(PanelChangedDetails d)
     {
-        DiscoverSkillPanelDescriptor panelDescriptor = d.ToPanel as DiscoverSkillPanelDescriptor;
-        if (panelDescriptor == null)
+        DiscoverSkillCell cell = d.ToPanel as DiscoverSkillCell;
+        if (cell == null)
             return;
         
         TestReport oldReport = _runReport.GetCurrReport();

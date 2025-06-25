@@ -11,9 +11,9 @@ public class ClickBattleGuide : Guide
         _position = position;
     }
 
-    public override void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public override void ReceiveSignal(Cell cell, Signal signal)
     {
         if (signal is ClickCombatSignal)
-            SetComplete(panelDescriptor);
+            SetComplete(cell);
     }
 }

@@ -31,7 +31,7 @@ public class GachaPanel : Panel
     {
         ListView.Sync();
         
-        GachaPanelDescriptor d = _address.Get<GachaPanelDescriptor>();
+        GachaCell d = _address.Get<GachaCell>();
         PriceTag.text = $"每抽 {d.GetPrice()} 金";
         BuyButton.interactable = !d.ItemsIsEmpty;
     }
@@ -50,9 +50,9 @@ public class GachaPanel : Panel
     {
         CanvasManager.Instance.SkillAnnotation.PointerExit();
         
-        GachaPanelDescriptor gachaPanelDescriptor = _address.Get<GachaPanelDescriptor>();
-        gachaPanelDescriptor.GachaProcedure();
-        BuyButton.interactable = !gachaPanelDescriptor.ItemsIsEmpty;
+        GachaCell gachaCell = _address.Get<GachaCell>();
+        gachaCell.GachaProcedure();
+        BuyButton.interactable = !gachaCell.ItemsIsEmpty;
     }
 
     private void ExitShop()

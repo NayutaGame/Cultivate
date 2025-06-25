@@ -1,13 +1,13 @@
 
 using UnityEngine;
 
-public class ImagePanelDescriptor : PanelDescriptor
+public class ImageCell : Cell
 {
     private SpriteEntry _spriteEntry;
     public Sprite GetSprite() => _spriteEntry.Sprite;
-    public PanelDescriptor Next;
+    public Cell Next;
 
-    public ImagePanelDescriptor(string spriteName)
+    public ImageCell(string spriteName)
     {
         _accessors = new()
         {
@@ -17,7 +17,7 @@ public class ImagePanelDescriptor : PanelDescriptor
         _spriteEntry = spriteName;
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ClickedSignal clickedSignal)
             return Next;

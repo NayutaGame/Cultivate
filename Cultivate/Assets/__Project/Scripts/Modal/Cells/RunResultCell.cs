@@ -4,7 +4,7 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class RunResultPanelDescriptor : PanelDescriptor
+public class RunResultCell : Cell
 {
     private RunResult _result;                     // 结果状态
     private RunConfig _config;                     // 角色配置
@@ -20,7 +20,7 @@ public class RunResultPanelDescriptor : PanelDescriptor
     private int _initialLevel;
     private int _finalLevel;
 
-    public RunResultPanelDescriptor(RunEnvironment env)
+    public RunResultCell(RunEnvironment env)
     {
         _accessors = new()
         {
@@ -53,14 +53,14 @@ public class RunResultPanelDescriptor : PanelDescriptor
         (_finalLevel, _finalExperience) = _profile.GainExperienceDryRun(_experienceGain);
     }
 
-    public override void DefaultEnter(PanelDescriptor panelDescriptor)
+    public override void DefaultEnter(Cell cell)
     {
-        base.DefaultEnter(panelDescriptor);
+        base.DefaultEnter(cell);
 
         AppManager.Instance.ProfileManager.WriteRunResultToCurrent(RunManager.Instance.Environment, _result, _experienceGain);
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ReturnToTitleSignal returnToTitleSignal)
         {

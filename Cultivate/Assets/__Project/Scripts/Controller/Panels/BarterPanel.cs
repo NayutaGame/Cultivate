@@ -52,9 +52,9 @@ public class BarterPanel : Panel
 
     private void ExchangeSkill(BarterItem barterItem)
     {
-        BarterPanelDescriptor barterPanelDescriptor = _address.Get<BarterPanelDescriptor>();
+        BarterCell barterCell = _address.Get<BarterCell>();
         ExchangeSkillDetails details = new(barterItem);
-        barterPanelDescriptor.ExchangeSkillProcedure(details);
+        barterCell.ExchangeSkillProcedure(details);
         // AudioManager.Instance.Play("钱币");
     }
 

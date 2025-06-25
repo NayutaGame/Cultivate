@@ -205,7 +205,88 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "测试墨染",
+            new(id: "发现",
+                envJingJie: JingJie.LianQi,
+                slotCount: 12,
+                gold: 0,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new AscensionRoomDefinition(0),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new DirectRoomDefinition(4, "发现一张牌"),
+                        new AscensionRoomDefinition(4),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new DirectRoomDefinition(7, "发现一张牌"),
+                        new AscensionRoomDefinition(7),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new DirectRoomDefinition(10, "发现一张牌"),
+                        new AscensionRoomDefinition(10),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new DirectRoomDefinition(13, "发现一张牌"),
+                        new SuccessRoomDefinition(13),
+                    },
+                }),
+            
+            new(id: "测试",
+                envJingJie: JingJie.ZhuJi,
+                slotCount: 5,
+                gold: 0,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 5,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                    },
+                }),
+            
+            new(id: "墨染测试",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
                 gold: 3,
@@ -322,87 +403,6 @@ public class MapCategory : Category<MapEntry>
                     },
                 }),
             
-            new(id: "发现",
-                envJingJie: JingJie.LianQi,
-                slotCount: 12,
-                gold: 0,
-                skillJingJie: JingJie.LianQi,
-                skillCount: 0,
-                levels: new RoomDefinition[][]
-                {
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new AscensionRoomDefinition(0),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new DirectRoomDefinition(4, "发现一张牌"),
-                        new AscensionRoomDefinition(4),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new DirectRoomDefinition(7, "发现一张牌"),
-                        new AscensionRoomDefinition(7),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new DirectRoomDefinition(10, "发现一张牌"),
-                        new AscensionRoomDefinition(10),
-                    },
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new DirectRoomDefinition(13, "发现一张牌"),
-                        new SuccessRoomDefinition(13),
-                    },
-                }),
-            
-            new(id: "测试",
-                envJingJie: JingJie.ZhuJi,
-                slotCount: 5,
-                gold: 0,
-                skillJingJie: JingJie.LianQi,
-                skillCount: 5,
-                levels: new RoomDefinition[][]
-                {
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(0, "以物易物"),
-                        new DirectRoomDefinition(0, "以物易物"),
-                        new DirectRoomDefinition(0, "以物易物"),
-                    },
-                }),
-            
             new(id: "结算测试",
                 envJingJie: JingJie.LianQi,
                 slotCount: 4,
@@ -462,6 +462,40 @@ public class MapCategory : Category<MapEntry>
                         new AscensionRoomDefinition(7),
                         new AscensionRoomDefinition(10),
                         new AdventureRoomDefinition(12),
+                    },
+                }),
+            
+            new(id: "商店测试",
+                envJingJie: JingJie.LianQi,
+                slotCount: 3,
+                gold: 3,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new AscensionRoomDefinition(0),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new ShopRoomDefinition(2),
+                        new AscensionRoomDefinition(4),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new ShopRoomDefinition(5),
+                        new AscensionRoomDefinition(7),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new ShopRoomDefinition(8),
+                        new AscensionRoomDefinition(10),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new ShopRoomDefinition(12),
+                        new SuccessRoomDefinition(13),
                     },
                 }),
             

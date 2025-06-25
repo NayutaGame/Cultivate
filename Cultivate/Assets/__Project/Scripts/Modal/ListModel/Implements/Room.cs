@@ -33,7 +33,7 @@ public class Room : ISerializationCallbackReceiver
 
     public int Ladder => _roomDefinition.Ladder;
 
-    public PanelDescriptor CreatePanel(Map map)
+    public Cell CreatePanel(Map map)
     {
         _entry ??= _roomDefinition.Draw(map, this);
         return _entry.Create(map, this);

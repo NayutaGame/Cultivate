@@ -1,7 +1,7 @@
 
 using System;
 
-public class BattlePanelDescriptor : PanelDescriptor
+public class BattleCell : Cell
 {
     private RunEntity _template;
 
@@ -15,7 +15,7 @@ public class BattlePanelDescriptor : PanelDescriptor
         RunManager.Instance.Environment.FieldChangedNeuron.Invoke();
     }
 
-    public BattlePanelDescriptor(RunEntity template)
+    public BattleCell(RunEntity template)
     {
         _accessors = new()
         {
@@ -25,34 +25,34 @@ public class BattlePanelDescriptor : PanelDescriptor
         _template = template;
     }
 
-    public override void DefaultEnter(PanelDescriptor panelDescriptor)
+    public override void DefaultEnter(Cell cell)
     {
-        base.DefaultEnter(panelDescriptor);
+        base.DefaultEnter(cell);
         SetEnemy(RunEntity.FromTemplate(_template));
     }
 
-    public override void DefaultExit(PanelDescriptor panelDescriptor)
+    public override void DefaultExit(Cell cell)
     {
-        base.DefaultExit(panelDescriptor);
+        base.DefaultExit(cell);
         SetEnemy(null);
         RunManager.Instance.Environment.ClearSlotResults();
     }
 
-    private Func<PanelDescriptor> _winOperation;
-    public BattlePanelDescriptor SetWinOperation(Func<PanelDescriptor> win)
+    private Func<Cell> _winOperation;
+    public BattleCell SetWinOperation(Func<Cell> win)
     {
         _winOperation = win;
         return this;
     }
 
-    private Func<PanelDescriptor> _loseOperation;
-    public BattlePanelDescriptor SetLoseOperation(Func<PanelDescriptor> lose)
+    private Func<Cell> _loseOperation;
+    public BattleCell SetLoseOperation(Func<Cell> lose)
     {
         _loseOperation = lose;
         return this;
     }
 
-    public override PanelDescriptor DefaultReceiveSignal(Signal signal)
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is BattleResultSignal battleResultSignal)
         {

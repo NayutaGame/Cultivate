@@ -10,10 +10,10 @@ public class EquipGuide : Guide
         _to = to;
     }
 
-    public override void ReceiveSignal(PanelDescriptor panelDescriptor, Signal signal)
+    public override void ReceiveSignal(Cell cell, Signal signal)
     {
         if (signal is DeckChangedSignal fieldChangedSignal && CheckComplete(fieldChangedSignal))
-            SetComplete(panelDescriptor);
+            SetComplete(cell);
     }
 
     public bool GetFlowOfIndices(out DeckIndex[] result)

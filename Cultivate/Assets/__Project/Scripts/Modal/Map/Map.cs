@@ -95,7 +95,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
         InsertedRoomPool.Shuffle();
     }
 
-    public PanelDescriptor CreatePanelFromCurrRoom()
+    public Cell CreatePanelFromCurrRoom()
     {
         var panel = GetCurrRoom().CreatePanel(this);
         GetCurrRoom().SetState(Room.RoomState.Curr);

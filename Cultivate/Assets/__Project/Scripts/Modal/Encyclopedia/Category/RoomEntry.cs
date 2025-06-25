@@ -21,7 +21,7 @@ public class RoomEntry : Entry
     public bool WithInPool => _withInPool;
 
     [NonSerialized] private Func<Map, Room, bool> _canCreate;
-    [NonSerialized] private Func<Map, Room, PanelDescriptor> _create;
+    [NonSerialized] private Func<Map, Room, Cell> _create;
 
     [NonSerialized] private SpriteEntry _spriteEntry;
 
@@ -31,7 +31,7 @@ public class RoomEntry : Entry
         Bound ladderBound,
         Bound difficultyBound,
         bool withInPool,
-        Func<Map, Room, PanelDescriptor> create,
+        Func<Map, Room, Cell> create,
         Func<Map, Room, bool> canCreate = null
         ) : base(id)
     {
@@ -46,7 +46,7 @@ public class RoomEntry : Entry
     }
 
     public bool CanCreate(Map map, Room room) => _canCreate(map, room);
-    public PanelDescriptor Create(Map map, Room room) => _create(map, room);
+    public Cell Create(Map map, Room room) => _create(map, room);
 
     public static implicit operator RoomEntry(string id) => Encyclopedia.RoomCategory[id];
     

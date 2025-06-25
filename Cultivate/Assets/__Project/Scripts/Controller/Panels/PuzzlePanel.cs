@@ -37,7 +37,7 @@ public class PuzzlePanel : Panel
         Home.Refresh();
         Away.Refresh();
 
-        PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
+        PuzzleCell d = _address.Get<PuzzleCell>();
         if (d.GetResult() is { } result)
         {
             Description.text = d.GetDescription();
@@ -66,7 +66,7 @@ public class PuzzlePanel : Panel
 
     private void Callback()
     {
-        PuzzlePanelDescriptor d = _address.Get<PuzzlePanelDescriptor>();
+        PuzzleCell d = _address.Get<PuzzleCell>();
         RunManager.Instance.Environment.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
     }
     
