@@ -44,4 +44,13 @@ public class AchievementBrowserPanel : Panel
     {
         AppManager.Instance.ProfileManager.GetCurrProfile().ResetAchievementProfiles();
     }
+    private void OnEnable()
+    {
+        AppManager.Instance.PushEscFunc(Hide);
+    }
+
+    private void OnDisable()
+    {
+        AppManager.Instance.PopEscFunc();
+    }
 }

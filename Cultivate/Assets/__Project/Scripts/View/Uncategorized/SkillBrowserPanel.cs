@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,5 +51,15 @@ public class SkillBrowserPanel : Panel
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        AppManager.Instance.PushEscFunc(Hide);
+    }
+
+    private void OnDisable()
+    {
+        AppManager.Instance.PopEscFunc();
     }
 }

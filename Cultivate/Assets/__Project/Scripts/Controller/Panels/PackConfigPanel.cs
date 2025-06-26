@@ -50,7 +50,7 @@ public class PackConfigPanel : PopupPanel
         SelectionListView.Refresh();
         RefreshConfirmButton();
     }
-
+    
     public Neuron<PackSelectionClickedDetails> PackSelectionClickedEvent = new();
     public Neuron<PackConstraintClickedDetails> PackConstraintClickedEvent = new();
 
@@ -92,6 +92,8 @@ public class PackConfigPanel : PopupPanel
         ConstraintListView.RefreshPivots();
         
         SelectionListView.RefreshPivots();
+        
+        AppManager.Instance.PushEscFunc(Return);
     }
 
     private void OnDisable()
@@ -100,6 +102,8 @@ public class PackConfigPanel : PopupPanel
         PackConstraintClickedEvent.Remove(AppManager.Instance.ConfigManager.PackConstraintClickedProcedure);
         AppManager.Instance.ConfigManager.EquipPackNeuron.Remove(EquipPackStaging);
         AppManager.Instance.ConfigManager.UnequipPackNeuron.Remove(UnequipPackStaging);
+        
+        AppManager.Instance.PopEscFunc();
     }
 
     private void EquipPackStaging(PackEquipDetails d)

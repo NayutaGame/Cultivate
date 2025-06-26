@@ -11,6 +11,11 @@ public class DiamondButton : XView
     public static readonly int IDLE = 0;
     public static readonly int HOVER = 1;
     public static readonly int PRESS = 2;
+    
+    [SerializeField] private GameObject Content;
+    [SerializeField] private GameObject ContentNoninteractable;
+    [SerializeField] private GameObject Frame;
+    [SerializeField] public GameObject FrameNoninteractable;
 
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron;
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron;
@@ -33,11 +38,6 @@ public class DiamondButton : XView
             FrameNoninteractable.SetActive(!_isInteractable);
         RefreshIb();
     }
-
-    [SerializeField] private GameObject Content;
-    [SerializeField] private GameObject ContentNoninteractable;
-    [SerializeField] private GameObject Frame;
-    [SerializeField] private GameObject FrameNoninteractable;
 
     protected override void AwakeFunction()
     {

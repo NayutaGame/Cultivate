@@ -21,6 +21,9 @@ public class TextHint : MonoBehaviour
         Text.text = text;
     }
 
+    public void PointerExit()
+        => gameObject.SetActive(false);
+
     public void PointerExit(PointerEventData d)
         => gameObject.SetActive(false);
 

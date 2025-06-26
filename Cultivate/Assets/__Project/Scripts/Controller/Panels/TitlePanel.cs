@@ -2,19 +2,21 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class TitlePanel : Panel
 {
     public XButton ContinueButton;
     public XButton StartRunButton;
     public XButton StartPrologueButton;
+    public XButton SettingsButton;
+    public XButton ExitButton;
+    
     public XButton EntityEditorButton;
     public XButton SkillBrowserButton;
     public XButton AchievementBrowserButton;
-    public XButton SettingsButton;
-    public XButton ExitButton;
+    public XButton UnlockNextDifficultyButton;
+    public XButton DeleteProfileButton;
+    public XButton UnlockEverythingButton;
 
     public GameObject TitleModel;
 
@@ -35,37 +37,41 @@ public class TitlePanel : Panel
         StartRunButton._button.onClick.RemoveAllListeners();
         StartPrologueButton._button.onClick.RemoveAllListeners();
         SettingsButton._button.onClick.RemoveAllListeners();
+        ExitButton._button.onClick.RemoveAllListeners();
         EntityEditorButton._button.onClick.RemoveAllListeners();
         SkillBrowserButton._button.onClick.RemoveAllListeners();
         AchievementBrowserButton._button.onClick.RemoveAllListeners();
-        ExitButton._button.onClick.RemoveAllListeners();
+        UnlockNextDifficultyButton._button.onClick.RemoveAllListeners();
         
         ContinueButton._button.onClick.AddListener(Continue);
         StartRunButton._button.onClick.AddListener(StartRun);
         StartPrologueButton._button.onClick.AddListener(StartPrologue);
         SettingsButton._button.onClick.AddListener(OpenMenu);
+        ExitButton._button.onClick.AddListener(ExitGame);
         EntityEditorButton._button.onClick.AddListener(OpenEntityEditorPanel);
         SkillBrowserButton._button.onClick.AddListener(OpenSkillBrowserPanel);
         AchievementBrowserButton._button.onClick.AddListener(OpenAchievementBrowserPanel);
-        ExitButton._button.onClick.AddListener(ExitGame);
+        UnlockNextDifficultyButton._button.onClick.AddListener(TryUnlockNextDifficulty);
         
         ContinueButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         StartRunButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         StartPrologueButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         SettingsButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        ExitButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         EntityEditorButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         SkillBrowserButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
         AchievementBrowserButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
-        ExitButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
+        UnlockNextDifficultyButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
 
         ContinueButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         StartRunButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         StartPrologueButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         EntityEditorButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        ExitButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         SkillBrowserButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         AchievementBrowserButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
         SettingsButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
-        ExitButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        UnlockNextDifficultyButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
     }
 
     public override void Refresh()
@@ -98,6 +104,18 @@ public class TitlePanel : Panel
         EntityEditorButton.gameObject.SetActive(!audienceIsPlayer);
         SkillBrowserButton.gameObject.SetActive(!audienceIsPlayer);
         AchievementBrowserButton.gameObject.SetActive(!audienceIsPlayer);
+        UnlockNextDifficultyButton.gameObject.SetActive(!audienceIsPlayer);
+    }
+
+    private void OnEnable()
+    {
+        AppManager.Instance.ClearEscStack();
+        AppManager.Instance.PushEscFunc(ExitGame);
+    }
+
+    private void OnDisable()
+    {
+        AppManager.Instance.PopEscFunc();
     }
 
     private void FirstRun()
@@ -126,6 +144,16 @@ public class TitlePanel : Panel
         await CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetStateAsync(1);
     }
 
+    private void OpenMenu()
+    {
+        AppManager.Instance.Push(AppStateMachine.MENU);
+    }
+
+    private void ExitGame()
+    {
+        AppManager.ExitGame();
+    }
+
     private void OpenEntityEditorPanel()
     {
         CanvasManager.Instance.AppCanvas.EntityEditorPanel.Show();
@@ -141,14 +169,9 @@ public class TitlePanel : Panel
         CanvasManager.Instance.AppCanvas.AchievementBrowserPanel.Show();
     }
 
-    private void OpenMenu()
+    private void TryUnlockNextDifficulty()
     {
-        AppManager.Instance.Push(AppStateMachine.MENU);
-    }
-
-    private void ExitGame()
-    {
-        AppManager.ExitGame();
+        AppManager.Instance.ProfileManager.GetCurrProfile().TryUnlockNextDifficulty();
     }
 
     public override Tween EnterIdle()

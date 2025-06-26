@@ -32,17 +32,21 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
         // needs to fix order according to encyclopedia before using
     }
 
-    public void TryUnlockNextDifficulty(RunEnvironment env, RunResult result)
+    public void UnlockDifficulty(DifficultyEntry difficultyEntry)
     {
-        if (result.GetOutcome() != RunResult.RunOutcome.Victorious)
-            return;
+        Find(difficultyEntry).SetUnlocked(true);
+    }
 
-        DifficultyEntry curr = env.GetRunConfig().DifficultyProfile.GetEntry();
-        DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
+    public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
+    {
+        DifficultyEntry highestUnlocked = this[0].GetEntry();
+        foreach (DifficultyProfile difficultyProfile in Traversal())
+        {
+            if (!difficultyProfile.IsUnlocked())
+                return highestUnlocked;
+            highestUnlocked = difficultyProfile.GetEntry();
+        }
 
-        if (next == null)
-            return;
-
-        Find(next).SetUnlocked(true);
+        return highestUnlocked;
     }
 }

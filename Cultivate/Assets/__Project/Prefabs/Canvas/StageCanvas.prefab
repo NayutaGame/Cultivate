@@ -4153,13 +4153,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 2804603430622683572}
-  HoverEffect1: {fileID: 1431276351619054925}
-  HoverEffect2: {fileID: 8914475648070062232}
-  PressEffect: {fileID: 1737174775401350149}
   Content: {fileID: 0}
   ContentNoninteractable: {fileID: 0}
   Frame: {fileID: 0}
   FrameNoninteractable: {fileID: 0}
+  HoverEffect1: {fileID: 1431276351619054925}
+  HoverEffect2: {fileID: 8914475648070062232}
+  PressEffect: {fileID: 1737174775401350149}
   Text: {fileID: 8434850849349981401}
 --- !u!114 &1431276351619054925 stripped
 MonoBehaviour:

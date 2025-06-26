@@ -106,6 +106,8 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.LoseGoldNeuron.Add(AudioManager.PlayLoseGold);
         
         RefreshPanel();
+        
+        AppManager.Instance.PushEscFunc(TopBar.OpenMenu);
     }
 
     private void OnDisable()
@@ -139,6 +141,8 @@ public class RunCanvas : Panel
         
         RunManager.Instance.Environment.GainGoldNeuron.Remove(AudioManager.PlayGainGold);
         RunManager.Instance.Environment.LoseGoldNeuron.Remove(AudioManager.PlayLoseGold);
+        
+        AppManager.Instance.PopEscFunc();
     }
 
     private readonly Dictionary<Type, string> _panelSoundMap = new Dictionary<Type, string>

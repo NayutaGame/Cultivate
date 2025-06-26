@@ -97,6 +97,22 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public bool HasSave()
         => _runEnvironment != null && _runEnvironment.IsLegit;
 
+    public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
+    {
+        return DifficultyProfileList.GetCurrentHighestUnlockedDifficulty();
+    }
+
+    public void TryUnlockNextDifficulty()
+    {
+        DifficultyEntry curr = GetCurrentHighestUnlockedDifficulty();
+        DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
+
+        if (next == null)
+            return;
+        
+        _difficultyProfileList.UnlockDifficulty(next);
+    }
+
     public bool DifficultyIsUnlocked(DifficultyEntry difficultyEntry)
     {
         return DifficultyProfileList.Find(difficultyEntry).IsUnlocked();
@@ -212,13 +228,18 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void WriteRunResult(RunEnvironment env, RunResult result, int experienceGain)
     {
-        // 存档经验
         _levelProfile.GainExperience(experienceGain);
         
-        // 尝试解锁下一难度
-        _difficultyProfileList.TryUnlockNextDifficulty(env, result);
+        if (result.GetOutcome() == RunResult.RunOutcome.Victorious)
+        {
+            DifficultyEntry curr = env.GetRunConfig().DifficultyProfile.GetEntry();
+            DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
 
-        Debug.Log($"写入RunResult: {result.GetOutcome()}");
+            if (next == null)
+                return;
+        
+            _difficultyProfileList.UnlockDifficulty(next);
+        }
     }
 
     public CharacterProfile FirstCharacterProfile()

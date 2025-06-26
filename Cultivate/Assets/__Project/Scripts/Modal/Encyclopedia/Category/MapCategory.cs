@@ -792,6 +792,23 @@ public class MapCategory : Category<MapEntry>
                         new AdventureRoomDefinition(12),
                     },
                 }),
+            
+            new(id: "教学10",
+                envJingJie: JingJie.YuanYing,
+                slotCount: 8,
+                gold: 53,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 0,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(2, "教学10"),
+                        // new DirectRoomDefinition(2, "教学10", pred: (profile, env) =>
+                        //     !profile.DifficultyIsUnlocked("5")
+                        //     && env.GetRunConfig().GetDifficulty() == 4),
+                    },
+                }),
         });
     }
 

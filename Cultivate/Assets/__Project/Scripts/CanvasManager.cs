@@ -102,6 +102,21 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         GuideView.Refresh();
     }
 
+    public void CloseAnnotation()
+    {
+        CharacterAnnotation.PointerExit();
+        SkillAnnotation.PointerExit();
+        BuffAnnotation.PointerExit();
+        FormationAnnotation.PointerExit();
+        RoomAnnotation.PointerExit();
+        PackAnnotation.PointerExit();
+        AchievementAnnotation.PointerExit();
+        SkipButtonInactiveAnnotation.PointerExit();
+        CycleAnnotation.PointerExit();
+        TextHint.PointerExit();
+        PackPreview.ClosePreview();
+    }
+
     private List<RaycastResult> _results;
 
     public bool RayCastIsHit(PointerEventData d)

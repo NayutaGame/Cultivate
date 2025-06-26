@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
@@ -60,6 +61,13 @@ public class RunConfigPanel : Panel
     private void OnEnable()
     {
         Refresh();
+        AppManager.Instance.PushEscFunc(Return);
+
+    }
+
+    private void OnDisable()
+    {
+        AppManager.Instance.PopEscFunc();
     }
 
     private void Return()

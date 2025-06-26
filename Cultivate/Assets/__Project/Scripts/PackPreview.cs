@@ -16,12 +16,11 @@ public class PackPreview : XView
     }
 
     public void Sync()
-    {
-        _listView.Sync();
-    }
+        => _listView.Sync();
 
-    private void ClosePreview(PointerEventData d)
-    {
-        gameObject.SetActive(false);
-    }
+    public void ClosePreview()
+        => gameObject.SetActive(false);
+
+    public void ClosePreview(PointerEventData d)
+        => gameObject.SetActive(false);
 }

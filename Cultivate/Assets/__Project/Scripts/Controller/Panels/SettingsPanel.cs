@@ -1,5 +1,4 @@
 
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,11 +31,15 @@ public class SettingsPanel : PopupPanel
     private void OnEnable()
     {
         AudioManager.PlayEnterSettings();
+        
+        AppManager.Instance.PushEscFunc(Return);
     }
 
     private void OnDisable()
     {
         AudioManager.PlayExitSettings();
+        
+        AppManager.Instance.PopEscFunc();
     }
 
     private Address _address;

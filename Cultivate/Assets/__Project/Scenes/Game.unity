@@ -2167,7 +2167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9942fc50061f6a945870c8aea151180a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: 0
+  _target: 2
   AppCanvas: {fileID: 1627659553}
   RandomManager: {fileID: 1379607458}
   AudioManager: {fileID: 2059320725}

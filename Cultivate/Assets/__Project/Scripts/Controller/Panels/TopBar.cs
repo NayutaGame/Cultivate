@@ -136,7 +136,7 @@ public class TopBar : MonoBehaviour
         JingJieText.text = $"{RunManager.Instance.Environment.JingJie.ToString()}期";
     }
 
-    private void OpenMenu()
+    public void OpenMenu()
     {
         AppManager.Instance.Push(AppStateMachine.MENU);
     }

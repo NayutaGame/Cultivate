@@ -1,9 +1,7 @@
 
 using CLLibrary;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class StageCanvas : MonoBehaviour
 {
@@ -65,10 +63,27 @@ public class StageCanvas : MonoBehaviour
         AwayStageEntityView.Refresh();
     }
 
-    private void Skip(InteractBehaviour ib, PointerEventData d)
+    private void OnEnable()
     {
-        StageManager.Instance.Skip();
+        bool hasClearDifficulty0 = AppManager.Instance.ProfileManager.GetCurrProfile().DifficultyIsUnlocked("1");
+        if (hasClearDifficulty0)
+            AppManager.Instance.PushEscFunc(Skip);
+        else
+            AppManager.Instance.PushEscFunc(Empty);
     }
+
+    private void OnDisable()
+    {
+        AppManager.Instance.PopEscFunc();
+    }
+    
+    private void Empty() { }
+
+    private void Skip()
+        => StageManager.Instance.Skip();
+
+    private void Skip(InteractBehaviour ib, PointerEventData d)
+        => StageManager.Instance.Skip();
 
     public void InitialSetup()
     {

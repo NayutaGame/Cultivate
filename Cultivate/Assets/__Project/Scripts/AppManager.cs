@@ -131,10 +131,25 @@ public class AppManager : Singleton<AppManager>, Addressable
         Push(AppStateMachine.TITLE);
     }
 
+    public Stack<Action> EscFuncStack = new();
+    public void ClearEscStack() => EscFuncStack.Clear();
+    public void PushEscFunc(Action func) => EscFuncStack.Push(func);
+    public void PopEscFunc()
+    {
+        CanvasManager.Instance.CloseAnnotation();
+        EscFuncStack.Pop();
+    }
+
+    public void InvokeEscFunc()
+    {
+        if (EscFuncStack.Count > 0)
+            EscFuncStack.Peek()?.Invoke();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-            ExitGame();
+            InvokeEscFunc();
     }
 
     public void Push(int state, object args = null) => _appStateMachine.Push(true, state, args);
