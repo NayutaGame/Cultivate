@@ -6,9 +6,9 @@ using UnityEngine;
 [Serializable]
 public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackReceiver
 {
-    private PackProfileList(bool isDeveloper = false)
+    private PackProfileList()
     {
-        Encyclopedia.PackCategory.Traversal.Do(entry => Add(new PackProfile(entry, isDeveloper)));
+        Encyclopedia.PackCategory.Traversal.Do(entry => Add(new PackProfile(entry)));
     }
 
     public PackProfile Find(PackEntry entry)
@@ -17,8 +17,10 @@ public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackRec
     public static PackProfileList Default()
         => new();
 
-    public static PackProfileList Developer()
-        => new(true);
+    public void UnlockEverything()
+    {
+        
+    }
 
     public void OnBeforeSerialize()
     {

@@ -6,9 +6,9 @@ using UnityEngine;
 [Serializable]
 public class AchievementProfileList : ListModel<AchievementProfile>, ISerializationCallbackReceiver
 {
-    private AchievementProfileList(bool isDeveloper = false)
+    private AchievementProfileList()
     {
-        Encyclopedia.AchievementCategory.Traversal.Do(entry => Add(new AchievementProfile(entry, isDeveloper)));
+        Encyclopedia.AchievementCategory.Traversal.Do(entry => Add(new AchievementProfile(entry)));
     }
 
     private AchievementProfile Find(AchievementEntry entry)
@@ -17,8 +17,10 @@ public class AchievementProfileList : ListModel<AchievementProfile>, ISerializat
     public static AchievementProfileList Default()
         => new();
 
-    public static AchievementProfileList Developer()
-        => new(true);
+    public void UnlockEverything()
+    {
+        Traversal().Do(achievementProfile => achievementProfile.SetUnlockedQuietly(true));
+    }
 
     public bool IsUnlocked(AchievementEntry entry)
         => Find(entry).IsUnlocked();

@@ -79,14 +79,15 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public static Profile Default()
         => new();
 
-    public static Profile Developer()
-        => new(
-            LevelProfile.Developer(),
-            CharacterProfileList.Developer(),
-            DifficultyProfileList.Developer(),
-            PackProfileList.Developer(),
-            AchievementProfileList.Developer(),
-            true);
+    public void UnlockEverything()
+    {
+        _levelProfile.UnlockEverything();
+        _characterProfileList.UnlockEverything();
+        _difficultyProfileList.UnlockEverything();
+        _packProfileList.UnlockEverything();
+        _achievementProfileList.UnlockEverything();
+        _finishedFirstRun = true;
+    }
 
     public bool IsFirstRunFinished()
         => _finishedFirstRun;

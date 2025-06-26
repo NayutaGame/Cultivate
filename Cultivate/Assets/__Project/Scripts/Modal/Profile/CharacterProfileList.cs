@@ -9,7 +9,7 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
     private CharacterProfileList(bool isDeveloper = false)
     {
         Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(
-            new CharacterProfile(entry, isDeveloper)));
+            new CharacterProfile(entry)));
 
         // Find("徐福").SetUnlocked(true);
     }
@@ -20,8 +20,14 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
     public static CharacterProfileList Default()
         => new();
 
-    public static CharacterProfileList Developer()
-        => new(true);
+    public void UnlockEverything()
+    {
+        Traversal().Do(characterProfile =>
+        {
+            characterProfile._level = 10;
+            characterProfile._experience = 1000;
+        });
+    }
 
     public void OnBeforeSerialize()
     {

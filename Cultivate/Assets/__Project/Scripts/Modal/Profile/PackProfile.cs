@@ -7,7 +7,7 @@ public class PackProfile : ISerializationCallbackReceiver
 {
     [SerializeField] private PackEntry _entry;
 
-    public PackProfile(PackEntry entry, bool isDeveloper = false)
+    public PackProfile(PackEntry entry)
     {
         _entry = entry;
     }

@@ -54,6 +54,7 @@ public class RunConfigPanel : Panel
     {
         DifficultyPickerView.Refresh();
         CharacterListView.Refresh();
+        AppManager.Instance.ConfigManager.SelectFirstCharacter();
         RefreshAllSelection();
         DetailedCharacterProfileView.Refresh();
     }

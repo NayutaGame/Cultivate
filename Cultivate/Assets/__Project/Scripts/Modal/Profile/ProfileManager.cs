@@ -25,13 +25,24 @@ public class ProfileManager : Addressable
     {
         if (!FileUtility.IsPersistentFileExists(ProfileList.Filename))
         {
-            _profileList = ProfileList.Default();
-            SaveProcedure();
+            NewProfileProcedure();
         }
         else
         {
             LoadProcedure();
         }
+    }
+
+    public void NewProfileProcedure()
+    {
+        _profileList = ProfileList.Default();
+        SaveProcedure();
+    }
+
+    public void UnlockEverythingProcedure()
+    {
+        GetCurrProfile().UnlockEverything();
+        SaveProcedure();
     }
 
     public void SaveProcedure()

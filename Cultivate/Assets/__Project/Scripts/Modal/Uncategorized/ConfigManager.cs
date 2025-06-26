@@ -25,8 +25,7 @@ public class ConfigManager : Addressable
         };
 
         InitPack();
-
-        SelectCharacterProcedure(new CharacterSelectDetails(AppManager.Instance.ProfileManager.GetCurrProfile().FirstCharacterProfile()));
+        SelectFirstCharacter();
     }
 
     private void InitPack()
@@ -49,6 +48,11 @@ public class ConfigManager : Addressable
     public Neuron<CharacterSelectDetails> CharacterSelectNeuron = new();
 
     public CharacterProfile SelectedCharacter => _character;
+
+    public void SelectFirstCharacter()
+    {
+        SelectCharacterProcedure(new CharacterSelectDetails(AppManager.Instance.ProfileManager.GetCurrProfile().FirstCharacterProfile()));
+    }
 
     public void SelectCharacterProcedure(CharacterSelectDetails d)
     {

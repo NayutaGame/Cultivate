@@ -1133,6 +1133,13 @@ public class RoomCategory : Category<RoomEntry>
                                       "你还没来得及思考这其中的意义，便遭遇了怪物。"
                     );
                     
+                    DialogCell Dialog3 = new DialogCell(
+                        titleText: "流转",
+                        detailedText: $"五行都有一个专属的Buff（锋锐，格挡，力量，灼烧，坚毅），都有着独特的效果。" +
+                                      $"\n善于利用相生规则，可以最大化利用五行的Buff。" +
+                                      $"\n具体的五行流转顺序可以将鼠标瞄到屏幕上方状态栏的标注查看。"
+                    );
+                    
                     RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10"));
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌10");
                     
@@ -1174,7 +1181,6 @@ public class RoomCategory : Category<RoomEntry>
                         RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: false);
                     };
                     
-                    
                     A.SetWinOperation(() =>
                     {
                         RunManager.Instance.Environment.RemoveSkillProcedure("0705");
@@ -1182,7 +1188,7 @@ public class RoomCategory : Category<RoomEntry>
                         RunManager.Instance.Environment.RemoveSkillProcedure("0707");
                         RunManager.Instance.Environment.RemoveSkillProcedure("0708");
                         RunManager.Instance.Environment.RemoveSkillProcedure("0709");
-                        return null;
+                        return Dialog3;
                     });
 
                     A.SetLoseOperation(() =>
@@ -1192,11 +1198,12 @@ public class RoomCategory : Category<RoomEntry>
                         RunManager.Instance.Environment.RemoveSkillProcedure("0707");
                         RunManager.Instance.Environment.RemoveSkillProcedure("0708");
                         RunManager.Instance.Environment.RemoveSkillProcedure("0709");
-                        return null;
+                        return Dialog3;
                     });
 
                     Dialog[0].SetSelect(option => Dialog2);
                     Dialog2[0].SetSelect(option => A);
+                    Dialog3[0].SetSelect(option => null);
                     
                     return Dialog;
                 }),

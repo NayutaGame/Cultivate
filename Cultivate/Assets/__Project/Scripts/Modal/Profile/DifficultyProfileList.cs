@@ -6,9 +6,9 @@ using UnityEngine;
 [Serializable]
 public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializationCallbackReceiver
 {
-    private DifficultyProfileList(bool isDeveloper = false)
+    private DifficultyProfileList()
     {
-        Encyclopedia.DifficultyCategory.Traversal.Do(entry => Add(new DifficultyProfile(entry, isDeveloper)));
+        Encyclopedia.DifficultyCategory.Traversal.Do(entry => Add(new DifficultyProfile(entry)));
 
         Find("0").SetUnlocked(true);
     }
@@ -19,8 +19,10 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
     public static DifficultyProfileList Default()
         => new();
 
-    public static DifficultyProfileList Developer()
-        => new(true);
+    public void UnlockEverything()
+    {
+        Traversal().Do(difficultyProfile => difficultyProfile.SetUnlocked(true));
+    }
 
     public void OnBeforeSerialize()
     {

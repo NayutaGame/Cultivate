@@ -27,7 +27,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         DifficultyProfile = difficultyProfile;
         PacksToStartWith = packsToStartWith ?? GetCharacter().GetDefaultPacks();
         // MapEntry = mapEntry ?? "标准无教程";
-        // MapEntry = mapEntry ?? "标准";
+        MapEntry = mapEntry ?? "标准";
         // MapEntry = mapEntry ?? "发现";
         
         // MapEntry = mapEntry ?? "测试";
@@ -39,7 +39,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         // MapEntry = mapEntry ?? "结算测试";
         // MapEntry = mapEntry ?? "排局3";
         // MapEntry = mapEntry ?? "商店测试";
-        MapEntry = mapEntry ?? "教学10";
+        // MapEntry = mapEntry ?? "教学10";
     }
 
     public void OnBeforeSerialize() { }

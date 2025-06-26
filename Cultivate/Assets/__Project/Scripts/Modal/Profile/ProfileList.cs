@@ -22,14 +22,7 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
             { "Current",           GetCurrent },
         };
 
-        if (AppManager.Instance.AudienceIsDeveloper())
-        {
-            Add(Profile.Developer());
-        }
-        else
-        {
-            Add(Profile.Default());
-        }
+        Add(Profile.Default());
 
         CurrentIndex = 0;
 

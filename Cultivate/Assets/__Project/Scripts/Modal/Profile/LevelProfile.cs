@@ -19,9 +19,12 @@ public class LevelProfile
 
     public static LevelProfile Default()
         => new(1, 0);
-    
-    public static LevelProfile Developer()
-        => new(10, 1000);
+
+    public void UnlockEverything()
+    {
+        _level = 10;
+        _experience = 1000;
+    }
 
     public void GainExperience(int experienceGain)
     {

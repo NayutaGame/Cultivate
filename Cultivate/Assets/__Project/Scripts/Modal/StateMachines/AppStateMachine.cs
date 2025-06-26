@@ -174,6 +174,8 @@ public class AppStateMachine
     {
         StageConfig stageConfig = args as StageConfig;
         
+        CanvasManager.Instance.RefreshGuide();
+        
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
         CanvasManager.Instance.RunCanvas.GetAnimator().SetState(0);
         

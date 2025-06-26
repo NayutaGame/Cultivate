@@ -12,10 +12,10 @@ public class AchievementProfile : ISerializationCallbackReceiver, RunClosureList
 
     public SerializableDictionary Memory => _memory;
 
-    public AchievementProfile(AchievementEntry entry, bool isDeveloper = false)
+    public AchievementProfile(AchievementEntry entry)
     {
         _entry = entry;
-        _unlocked = isDeveloper;
+        _unlocked = false;
 
         _memory = new();
     }

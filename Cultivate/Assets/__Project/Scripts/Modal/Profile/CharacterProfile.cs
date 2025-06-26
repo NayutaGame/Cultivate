@@ -8,14 +8,14 @@ public class CharacterProfile : ISerializationCallbackReceiver
     private const int PACK_SLOT_COUNT = 7;
 
     [SerializeField] private CharacterEntry _entry;
-    [SerializeField] private int _level;
-    [SerializeField] private int _experience;
+    [SerializeField] public int _level;
+    [SerializeField] public int _experience;
 
-    public CharacterProfile(CharacterEntry entry, bool isDeveloper = false)
+    public CharacterProfile(CharacterEntry entry)
     {
         _entry = entry;
-        _level = isDeveloper ? 10 : 1;
-        _experience = isDeveloper ? 1000 : 0;
+        _level = 1;
+        _experience = 0;
     }
     
     public CharacterEntry GetEntry() => _entry;

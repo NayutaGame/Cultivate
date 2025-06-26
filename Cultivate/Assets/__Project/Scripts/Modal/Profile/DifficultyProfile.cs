@@ -8,10 +8,10 @@ public class DifficultyProfile : ISerializationCallbackReceiver
     [SerializeField] private DifficultyEntry _entry;
     [SerializeField] private bool _unlocked;
 
-    public DifficultyProfile(DifficultyEntry entry, bool isDeveloper = false)
+    public DifficultyProfile(DifficultyEntry entry)
     {
         _entry = entry;
-        _unlocked = isDeveloper;
+        _unlocked = false;
     }
     
     public DifficultyEntry GetEntry() => _entry;
