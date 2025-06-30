@@ -58,7 +58,7 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
     }
     
     public CycleDetails GetDetailsFromCastDetails(CastDetails d, WuXing toRotateWuXing)
-        => new(d.Caster, Rotate, toRotateWuXing, Gain, Recover, d.Skill, ClosuresArray, d.CastResult, Induced);
+        => new(d.Env, d.Caster, Rotate, toRotateWuXing, Gain, Recover, d.Skill, ClosuresArray, d.CastResult, Induced);
 
     public override async UniTask Cast(CastDetails castDetails)
     {

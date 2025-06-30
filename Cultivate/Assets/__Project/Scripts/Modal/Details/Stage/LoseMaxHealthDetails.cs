@@ -4,15 +4,21 @@ public class LoseMaxHealthDetails : NestedStageClosureDetails
     public StageEntity Entity;
     public int Value;
 
-    public LoseMaxHealthDetails(StageEntity entity, int value, StageClosureListener listener, ResultDict castResult, StageClosure[] closures, bool induced)
+    public LoseMaxHealthDetails(
+        StageEnvironment env,
+        StageEntity entity,
+        int value,
+        StageClosureListener listener,
+        ResultDict castResult,
+        StageClosure[] closures,
+        bool induced) : base(env, induced)
     {
         Entity = entity;
         Value = value;
         Listener = listener;
         CastResult = castResult;
         Closures = closures;
-        Induced = induced;
     }
     
-    public LoseMaxHealthDetails ShallowClone() => new(Entity, Value, Listener, CastResult, Closures, Induced);
+    public LoseMaxHealthDetails ShallowClone() => new(Env, Entity, Value, Listener, CastResult, Closures, Induced);
 }

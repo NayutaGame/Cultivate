@@ -12,7 +12,7 @@ public class StageEntity : Addressable, StageClosureListener
     
     public async UniTask TurnProcedure(int turnCount)
     {
-        TurnDetails d = new TurnDetails(this, turnCount);
+        TurnDetails d = new TurnDetails(_env, this, turnCount);
         ResetActionPoint();
 
         string thisTurnAttackedKey = "thisTurnAttacked";
@@ -31,7 +31,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     private async UniTask ActionProcedure(int currActionCount)
     {
-        ActionDetails d = new ActionDetails(this, currActionCount);
+        ActionDetails d = new ActionDetails(_env, this, currActionCount);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_ACTION, d);
         if (d.Cancel)
             return;
@@ -80,7 +80,7 @@ public class StageEntity : Addressable, StageClosureListener
     private async UniTask ExecuteProcedure()
     {
         StageSkill skill = _skills[_p];
-        ExecuteDetails d = new ExecuteDetails(this, skill);
+        ExecuteDetails d = new ExecuteDetails(_env, this, skill);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_EXECUTE, d);
 
         for (int i = 0; i < d.CastTimes; i++)
@@ -156,7 +156,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     private async UniTask StepProcedure()
     {
-        StartStepDetails startD = new StartStepDetails(this, _p);
+        StartStepDetails startD = new StartStepDetails(_env, this, _p);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_STEP, startD);
         if (startD.Cancel)
             return;
@@ -170,8 +170,8 @@ public class StageEntity : Addressable, StageClosureListener
             if (!within)
             {
                 _p = (_p + _skills.Length) % _skills.Length;
-                await _env.ClosureDict.SendEvent(StageClosureDict.DID_ROUND, new RoundDetails(this));
-                await _env.ClosureDict.SendEvent(StageClosureDict.WIL_ROUND, new RoundDetails(this));
+                await _env.ClosureDict.SendEvent(StageClosureDict.DID_ROUND, new RoundDetails(_env, this));
+                await _env.ClosureDict.SendEvent(StageClosureDict.WIL_ROUND, new RoundDetails(_env, this));
             }
 
             if (_skills[_p].Exhausted)
@@ -189,7 +189,7 @@ public class StageEntity : Addressable, StageClosureListener
             break;
         }
 
-        await _env.ClosureDict.SendEvent(StageClosureDict.DID_STEP, new EndStepDetails(this, _p));
+        await _env.ClosureDict.SendEvent(StageClosureDict.DID_STEP, new EndStepDetails(_env, this, _p));
     }
 
     private bool SlotIsUnwritten(SkillSlot slot)
@@ -578,7 +578,7 @@ public class StageEntity : Addressable, StageClosureListener
         ResultDict castResult = null,
         StageClosure[] closures = null,
         bool induced = false)
-        => await _env.AttackProcedure(new AttackDetails(this, Opponent(), value, times, initiator, wuXing, crit, lifeSteal, penetrate, doesntConsumeJianYi, shatter, false, recursive, castResult, closures, induced));
+        => await _env.AttackProcedure(new AttackDetails(_env, this, Opponent(), value, times, initiator, wuXing, crit, lifeSteal, penetrate, doesntConsumeJianYi, shatter, false, recursive, castResult, closures, induced));
     
     public async UniTask IndirectProcedure(
         int value,
@@ -588,55 +588,55 @@ public class StageEntity : Addressable, StageClosureListener
         bool recursive = true,
         ResultDict castResult = null,
         bool induced = false)
-        => await _env.IndirectProcedure(new IndirectDetails(this, Opponent(), value, initiator, wuXing, lifeSteal, recursive, castResult, induced));
+        => await _env.IndirectProcedure(new IndirectDetails(_env, this, Opponent(), value, initiator, wuXing, lifeSteal, recursive, castResult, induced));
     
     public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, ResultDict castResult = null, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(this, this, value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(_env, this, this, value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
     
     public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, ResultDict castResult, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(_env, this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
     
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, StageSkill srcSkill = null, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseHealthProcedure(new LoseHealthDetails(this, value, causedByAttack, srcSkill, null, castResult, induced));
+        => await _env.LoseHealthProcedure(new LoseHealthDetails(_env, this, value, causedByAttack, srcSkill, null, castResult, induced));
     
     public async UniTask HealProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.HealProcedure(new HealDetails(this, this, value, false, null, castResult, null, induced));
+        => await _env.HealProcedure(new HealDetails(_env, this, this, value, false, null, castResult, null, induced));
     
     public async UniTask HealOppoProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.HealProcedure(new HealDetails(this, Opponent(), value, false, null, castResult, null, induced));
+        => await _env.HealProcedure(new HealDetails(_env, this, Opponent(), value, false, null, castResult, null, induced));
     
     public async UniTask GainArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.GainArmorProcedure(new GainArmorDetails(this, this, value, null, castResult, null, induced));
+        => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, this, value, null, castResult, null, induced));
     
     public async UniTask GiveArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.GainArmorProcedure(new GainArmorDetails(this, Opponent(), value, null, castResult, null, induced));
+        => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, Opponent(), value, null, castResult, null, induced));
     
     public async UniTask LoseArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, this, value, null, null, castResult, induced, true));
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, this, value, null, null, castResult, induced, true));
     
     public async UniTask RemoveArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(this, Opponent(), value, null, null, castResult, induced, true));
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, Opponent(), value, null, null, castResult, induced, true));
     
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
-        => await _env.GainBuffProcedure(new GainBuffDetails(this, this, buffEntry, stack, recursive, null, castResult, null, induced));
+        => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, this, buffEntry, stack, recursive, null, castResult, null, induced));
     
     public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
-        => await _env.GainBuffProcedure(new GainBuffDetails(this, Opponent(), buffEntry, stack, recursive, null, castResult, null, induced));
+        => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, Opponent(), buffEntry, stack, recursive, null, castResult, null, induced));
     
     public async UniTask LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
-        => await _env.LoseBuffProcedure(new LoseBuffDetails(this, this, buffEntry, stack, recursive, induced));
+        => await _env.LoseBuffProcedure(new LoseBuffDetails(_env, this, this, buffEntry, stack, recursive, induced));
     
     public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
-        => await _env.LoseBuffProcedure(new LoseBuffDetails(this, Opponent(), buffEntry, stack, recursive, induced));
+        => await _env.LoseBuffProcedure(new LoseBuffDetails(_env, this, Opponent(), buffEntry, stack, recursive, induced));
     
     public async UniTask CycleProcedure(WuXing wuXing, bool rotate = true, int gain = 0, int recover = 0, ResultDict castResult = null, bool induced = false)
-        => await _env.CycleProcedure(new CycleDetails(this, rotate, wuXing, gain, recover, null, null, castResult, induced));
+        => await _env.CycleProcedure(new CycleDetails(_env, this, rotate, wuXing, gain, recover, null, null, castResult, induced));
     
     public async UniTask DispelProcedure(int stack, ResultDict castResult = null, bool induced = false)
-        => await _env.DispelProcedure(new DispelDetails(this, stack, null, null, castResult, induced));
+        => await _env.DispelProcedure(new DispelDetails(_env, this, stack, null, null, castResult, induced));
 
     public async UniTask LoseMaxHealthProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseMaxHealthProcedure(new LoseMaxHealthDetails(this, value, null, castResult, null, induced));
+        => await _env.LoseMaxHealthProcedure(new LoseMaxHealthDetails(_env, this, value, null, castResult, null, induced));
 
     public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {

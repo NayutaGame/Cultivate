@@ -8,7 +8,15 @@ public class LoseArmorDetails : NestedStageClosureDetails
     public bool SpawnVFX;
 
     public LoseArmorDetails(
-        StageEntity src, StageEntity tgt, int value, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced, bool spawnVFX)
+        StageEnvironment env,
+        StageEntity src,
+        StageEntity tgt,
+        int value,
+        StageClosureListener listener,
+        StageClosure[] closures,
+        ResultDict castResult,
+        bool induced,
+        bool spawnVFX) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -16,9 +24,8 @@ public class LoseArmorDetails : NestedStageClosureDetails
         Listener = listener;
         Closures = closures;
         CastResult = castResult;
-        Induced = induced;
         SpawnVFX = spawnVFX;
     }
     
-    public LoseArmorDetails ShallowClone() => new(Src, Tgt, Value, Listener, Closures, CastResult, Induced, SpawnVFX);
+    public LoseArmorDetails ShallowClone() => new(Env, Src, Tgt, Value, Listener, Closures, CastResult, Induced, SpawnVFX);
 }

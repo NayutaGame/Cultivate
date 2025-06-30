@@ -11,6 +11,7 @@ public class CycleDetails : NestedStageClosureDetails
     public int Flow;
 
     public CycleDetails(
+        StageEnvironment env,
         StageEntity owner,
         bool rotate,
         WuXing wuXing,
@@ -19,7 +20,7 @@ public class CycleDetails : NestedStageClosureDetails
         StageClosureListener listener,
         StageClosure[] closures,
         ResultDict castResult,
-        bool induced)
+        bool induced) : base(env, induced)
     {
         Owner = owner;
         Rotate = rotate;
@@ -30,8 +31,7 @@ public class CycleDetails : NestedStageClosureDetails
         Listener = listener;
         Closures = closures;
         CastResult = castResult;
-        Induced = induced;
     }
 
-    public CycleDetails ShallowClone() => new(Owner, Rotate, WuXing, Gain, Recover, Listener, Closures, CastResult, Induced);
+    public CycleDetails ShallowClone() => new(Env, Owner, Rotate, WuXing, Gain, Recover, Listener, Closures, CastResult, Induced);
 }

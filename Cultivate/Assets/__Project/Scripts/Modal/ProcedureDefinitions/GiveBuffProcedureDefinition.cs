@@ -59,6 +59,7 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
 
     public GainBuffDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             buffEntry: BuffEntry,

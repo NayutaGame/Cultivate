@@ -46,6 +46,7 @@ public class RemoveHealthProcedureDefinition : ProcedureDefinition
 
     public LoseHealthDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             victim: d.Caster.Opponent(),
             value: Value,
             causedByAttack: false,

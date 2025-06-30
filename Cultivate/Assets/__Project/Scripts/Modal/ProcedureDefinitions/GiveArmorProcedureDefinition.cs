@@ -46,6 +46,7 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
     
     public GainArmorDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             value: Value,

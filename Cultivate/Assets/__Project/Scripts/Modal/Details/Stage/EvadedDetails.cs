@@ -12,16 +12,15 @@ public class EvadedDetails : StageClosureDetails
         set => _value = Mathf.Max(0, value);
     }
 
-    public EvadedDetails(StageEntity src, StageEntity tgt, int value, bool induced)
+    public EvadedDetails(StageEnvironment env, StageEntity src, StageEntity tgt, int value, bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
-        Induced = induced;
     }
 
-    public EvadedDetails Clone() => new(Src, Tgt, _value, Induced);
+    public EvadedDetails Clone() => new(Env, Src, Tgt, _value, Induced);
 
     public static EvadedDetails FromAttackDetails(AttackDetails d)
-        => new(d.Src, d.Tgt, d.Value, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, d.Value, d.Induced);
 }

@@ -45,6 +45,7 @@ public class GainMaxHealthProcedureDefinition : ProcedureDefinition
     
     public GainMaxHealthDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             entity: d.Caster,
             value: Value,
             listener: d.Skill,

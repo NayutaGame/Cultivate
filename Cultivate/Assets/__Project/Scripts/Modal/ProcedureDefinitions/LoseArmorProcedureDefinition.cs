@@ -46,6 +46,7 @@ public class LoseArmorProcedureDefinition : ProcedureDefinition
 
     public LoseArmorDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             src: d.Caster,
             tgt: d.Caster,
             value: Value,

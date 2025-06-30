@@ -59,7 +59,7 @@ public class ChannelCostDefinition : CostDefinition
     public override async UniTask ApplyCost(CostDetails d)
     {
         int oldProgress = d.Counter;
-        ChannelDetails channelDetails = new ChannelDetails(d.Entity, d.Skill, oldProgress, d.Value, 1);
+        ChannelDetails channelDetails = new ChannelDetails(d.Env, d.Entity, d.Skill, oldProgress, d.Value, 1);
         await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_CHANNEL, channelDetails);
 
         int newProgress = oldProgress - channelDetails.ProgressGain;

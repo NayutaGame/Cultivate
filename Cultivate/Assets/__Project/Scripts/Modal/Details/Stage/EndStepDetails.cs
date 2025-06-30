@@ -5,7 +5,7 @@ public class EndStepDetails : StageClosureDetails
     public int P;
     public StageSkill Skill;
 
-    public EndStepDetails(StageEntity owner, int p)
+    public EndStepDetails(StageEnvironment env, StageEntity owner, int p) : base(env)
     {
         Owner = owner;
         P = p;

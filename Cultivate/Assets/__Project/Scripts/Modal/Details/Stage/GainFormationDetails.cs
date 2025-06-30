@@ -5,12 +5,12 @@ public class GainFormationDetails : StageClosureDetails
     public RunFormation _formation;
     public bool _recursive;
 
-    public GainFormationDetails(StageEntity owner, RunFormation formation, bool recursive = true)
+    public GainFormationDetails(StageEnvironment env, StageEntity owner, RunFormation formation, bool recursive = true) : base(env)
     {
         Owner = owner;
         _formation = formation;
         _recursive = recursive;
     }
 
-    public GainFormationDetails Clone() => new(Owner, _formation, _recursive);
+    public GainFormationDetails Clone() => new(Env, Owner, _formation, _recursive);
 }

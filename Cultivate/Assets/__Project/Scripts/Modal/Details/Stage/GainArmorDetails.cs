@@ -5,7 +5,15 @@ public class GainArmorDetails : NestedStageClosureDetails
     public StageEntity Tgt;
     public int Value;
 
-    public GainArmorDetails(StageEntity src, StageEntity tgt, int value, StageClosureListener listener, ResultDict castResult, StageClosure[] closures, bool induced)
+    public GainArmorDetails(
+        StageEnvironment env,
+        StageEntity src,
+        StageEntity tgt,
+        int value,
+        StageClosureListener listener,
+        ResultDict castResult,
+        StageClosure[] closures,
+        bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -13,8 +21,7 @@ public class GainArmorDetails : NestedStageClosureDetails
         Listener = listener;
         CastResult = castResult;
         Closures = closures;
-        Induced = induced;
     }
     
-    public GainArmorDetails ShallowClone() => new(Src, Tgt, Value, Listener, CastResult, Closures, Induced);
+    public GainArmorDetails ShallowClone() => new(Env, Src, Tgt, Value, Listener, CastResult, Closures, Induced);
 }

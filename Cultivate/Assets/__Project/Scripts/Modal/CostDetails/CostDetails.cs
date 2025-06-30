@@ -1,7 +1,6 @@
 
 public class CostDetails : StageClosureDetails
 {
-    public StageEnvironment Env;
     public StageEntity Entity;
     public StageSkill Skill;
 
@@ -26,9 +25,8 @@ public class CostDetails : StageClosureDetails
     public CostDetails(
         StageEnvironment env,
         StageEntity entity,
-        StageSkill skill)
+        StageSkill skill) : base(env)
     {
-        Env = env;
         Entity = entity;
         Skill = skill;
         CostResult = new();

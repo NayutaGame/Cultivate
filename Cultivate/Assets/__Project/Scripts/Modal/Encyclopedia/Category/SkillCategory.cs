@@ -1710,7 +1710,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0426",
-                name:                       "长明",
+                name:                       "常夏",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 skillTypeComposite:         SkillType.Defend,
@@ -1869,7 +1869,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0425",
-                name:                       "常夏",
+                name:                       "炎爆",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.HuaShenOnly,
                 skillTypeComposite:         SkillType.Attack,
@@ -1932,7 +1932,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "0502",
-                name:                       "八极拳",
+                name:                       "泰山落",
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 skillTypeComposite:         SkillType.Attack | SkillType.Defend,

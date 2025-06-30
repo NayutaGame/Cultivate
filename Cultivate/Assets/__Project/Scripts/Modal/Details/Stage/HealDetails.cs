@@ -7,6 +7,7 @@ public class HealDetails : NestedStageClosureDetails
     public bool Penetrate;
 
     public HealDetails(
+        StageEnvironment env,
         StageEntity src,
         StageEntity tgt,
         int value,
@@ -14,7 +15,7 @@ public class HealDetails : NestedStageClosureDetails
         StageClosureListener listener,
         ResultDict castResult,
         StageClosure[] closures,
-        bool induced)
+        bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -23,8 +24,7 @@ public class HealDetails : NestedStageClosureDetails
         Listener = listener;
         CastResult = castResult;
         Closures = closures;
-        Induced = induced;
     }
 
-    public HealDetails ShallowClone() => new(Src, Tgt, Value, Penetrate, Listener, CastResult, Closures, Induced);
+    public HealDetails ShallowClone() => new(Env, Src, Tgt, Value, Penetrate, Listener, CastResult, Closures, Induced);
 }

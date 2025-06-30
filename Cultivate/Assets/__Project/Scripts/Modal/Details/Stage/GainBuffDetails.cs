@@ -8,6 +8,7 @@ public class GainBuffDetails : NestedStageClosureDetails
     public bool Recursive;
 
     public GainBuffDetails(
+        StageEnvironment env,
         StageEntity src,
         StageEntity tgt,
         BuffEntry buffEntry,
@@ -16,7 +17,7 @@ public class GainBuffDetails : NestedStageClosureDetails
         StageClosureListener listener,
         ResultDict castResult,
         StageClosure[] closures,
-        bool induced)
+        bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -26,8 +27,7 @@ public class GainBuffDetails : NestedStageClosureDetails
         Listener = listener;
         CastResult = castResult;
         Closures = closures;
-        Induced = induced;
     }
 
-    public GainBuffDetails ShallowClone() => new(Src, Tgt, BuffEntry, Stack, Recursive, Listener, CastResult, Closures, Induced);
+    public GainBuffDetails ShallowClone() => new(Env, Src, Tgt, BuffEntry, Stack, Recursive, Listener, CastResult, Closures, Induced);
 }

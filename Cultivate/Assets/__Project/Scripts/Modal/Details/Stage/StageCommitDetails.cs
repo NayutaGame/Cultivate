@@ -1,7 +1,6 @@
 
 public class StageCommitDetails : StageClosureDetails
 {
-    public StageEnvironment Env;
     public int Turn;
     public int Whosturn;
     public bool Forced;
@@ -10,9 +9,8 @@ public class StageCommitDetails : StageClosureDetails
     
     public int Flag;
 
-    public StageCommitDetails(StageEnvironment env, int turn, int whosTurn, bool forced)
+    public StageCommitDetails(StageEnvironment env, int turn, int whosTurn, bool forced) : base(env)
     {
-        Env = env;
         Turn = turn;
         Whosturn = whosTurn;
         Forced = forced;

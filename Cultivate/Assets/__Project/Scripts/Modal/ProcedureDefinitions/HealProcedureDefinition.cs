@@ -52,6 +52,7 @@ public class HealProcedureDefinition : ProcedureDefinition
     
     public HealDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             src: d.Caster,
             tgt: d.Caster,
             value: Value,

@@ -91,7 +91,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         foreach (var entity in _entities)
         foreach (var runFormation in entity.RunFormations())
             if (runFormation.IsActivated())
-                details.Add(new GainFormationDetails(entity, runFormation));
+                details.Add(new GainFormationDetails(this, entity, runFormation));
 
         details.Sort((lhs, rhs) => lhs._formation.GetEntry().GetOrder() - rhs._formation.GetEntry().GetOrder());
 
@@ -373,7 +373,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             if (negate > 0)
             {
                 d.Value -= negate / ratio;
-                await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, true, false));
+                await LoseArmorProcedure(new LoseArmorDetails(this, d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, true, false));
             }
         }
 
@@ -421,7 +421,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
         ResultDict castResult, WuXing? wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
-        => await IndirectProcedure(new IndirectDetails(src, tgt, value, srcSkill, wuXing, lifesteal, recursive, castResult, induced));
+        => await IndirectProcedure(new IndirectDetails(this, src, tgt, value, srcSkill, wuXing, lifesteal, recursive, castResult, induced));
 
     public async UniTask IndirectProcedure(IndirectDetails indirectDetails)
     {
@@ -441,7 +441,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             if (negate > 0)
             {
                 d.Value -= negate;
-                await LoseArmorProcedure(new LoseArmorDetails(d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, true, false));
+                await LoseArmorProcedure(new LoseArmorDetails(this, d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, true, false));
             }
         }
 
@@ -495,7 +495,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask LoseHealthProcedure(
         StageEntity owner, int value, bool causedByAttack, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
-        => await LoseHealthProcedure(new LoseHealthDetails(owner, value, causedByAttack, listener, closures, castResult, induced));
+        => await LoseHealthProcedure(new LoseHealthDetails(this, owner, value, causedByAttack, listener, closures, castResult, induced));
 
     public async UniTask LoseHealthProcedure(LoseHealthDetails d)
     {
@@ -512,7 +512,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     public async UniTask HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate,
         StageClosureListener initiator, ResultDict castResult, StageClosure[] closures, bool induced)
-        => await HealProcedure(new(src, tgt, value, penetrate, initiator, castResult, closures, induced));
+        => await HealProcedure(new(this, src, tgt, value, penetrate, initiator, castResult, closures, induced));
 
     public async UniTask HealProcedure(HealDetails d)
     {
@@ -532,7 +532,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             int gap = finalMaxHp - d.Tgt.MaxHp;
             if (gap > 0)
             {
-                GainMaxHealthDetails gainMaxHealthDetails = new(d.Tgt, gap, d.Listener, d.CastResult, d.Closures, d.Induced);
+                GainMaxHealthDetails gainMaxHealthDetails = new(this, d.Tgt, gap, d.Listener, d.CastResult, d.Closures, d.Induced);
                 await GainMaxHealthProcedure(gainMaxHealthDetails);
             }
             
@@ -592,7 +592,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     }
 
     public async UniTask BurnProcedure(StageEntity owner, int value, bool induced)
-        => await BurnProcedure(new BurnDetails(owner, value, induced));
+        => await BurnProcedure(new BurnDetails(this, owner, value, induced));
 
     public async UniTask BurnProcedure(BurnDetails d)
     {
@@ -681,7 +681,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     }
 
     public async UniTask ExhaustProcedure(StageEntity owner, StageSkill skill)
-        => await ExhaustProcedure(new ExhaustDetails(owner, skill));
+        => await ExhaustProcedure(new ExhaustDetails(this, owner, skill));
 
     public async UniTask ExhaustProcedure(ExhaustDetails d)
     {
@@ -759,7 +759,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         {
             if (_shouldSkip)
                 return;
-            await _closureDict.SendEvent(StageClosureDict.WIL_STAGE, new StageDetails(e));
+            await _closureDict.SendEvent(StageClosureDict.WIL_STAGE, new StageDetails(this, e));
         }
 
         foreach (var e in _entities)
@@ -799,8 +799,8 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask EndStageProcedure()
     {
-        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(_entities[1]));
-        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(_entities[0]));
+        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(this, _entities[1]));
+        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(this, _entities[0]));
     }
 
     private async UniTask<int> CommitProcedure(int turn, int whosTurn)

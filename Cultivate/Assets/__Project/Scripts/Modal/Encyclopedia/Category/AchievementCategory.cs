@@ -89,7 +89,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         GainBuffDetails d = (GainBuffDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        if (d.Tgt != StageManager.Instance.Environment.Home) return;
+                        if (d.Tgt != d.Env.Home) return;
                         int count = d.Tgt.TraversalBuffs().Count();
                         string key = "MaxBuffCount";
                         p.Memory.PerformOperation(key, 0, c => Mathf.Max(c, count));
@@ -122,7 +122,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         AchievementProfile p = (AchievementProfile)owner;
                         StageCommitDetails d = (StageCommitDetails)details;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
 
                         if (p.IsUnlocked()) return;
                         int HighestMana = home.Memory.TryGetVariable(StageEntity.HighestManaKey, 0);
@@ -197,7 +197,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int depleteCardCount = home.TraversalSkills().Count(s =>
                             s.Entry.GetSkillTypeComposite().Contains(SkillType.Deplete));
                             
@@ -244,7 +244,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int usedStartStageCardsCount = home.TraversalSkills().Count(s => s.Entry.HasStartStageCast());
                         const string USED_START_STAGE_CARDS_COUNT_KEY = "UsedStartStageCardsCount";
                         p.Memory.PerformMax(USED_START_STAGE_CARDS_COUNT_KEY, usedStartStageCardsCount);
@@ -269,7 +269,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int uniqueWuXingCount = home.TraversalSkills().Select(s => s.Entry.GetWuXing()).Distinct().Count();
                             
                         const string USED_UNIQUE_WUXING_KEY = "UsedUniqueWuXingCards";
@@ -295,7 +295,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         string[] toBeActivated = new string[]{ "金灵阵", "木灵阵", "水灵阵", "火灵阵", "土灵阵" };
                         
                         int activatedWuXingCount = home.TraversalFormations()
@@ -495,7 +495,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         const string MAX_WUXING_BUFF_KEY = "MaxWuXingBuffStacks";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         home.Memory.SetVariable(MAX_WUXING_BUFF_KEY, 0);
                     }),
 
@@ -505,7 +505,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         if (p.IsUnlocked()) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
 
                         Buff maxWuXingBuff = d.Tgt.TraversalBuffs()
@@ -526,7 +526,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         const string MAX_WUXING_BUFF_KEY = "MaxWuXingBuffStacks";
                         int maxBuffStacks = home.Memory.TryGetVariable(MAX_WUXING_BUFF_KEY, 0);
                         if (maxBuffStacks < 20) return;
@@ -572,7 +572,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int huaShenFormationCount = home.TraversalFormations()
                             .Count(f => f.GetActivatedJingJie() == JingJie.HuaShen);
 
@@ -613,7 +613,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         const string MAX_DAMAGE_KEY = "MaxSingleDamage";
                         home.Memory.SetVariable(MAX_DAMAGE_KEY, 0);
                     }),
@@ -623,7 +623,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         DamageDetails d = (DamageDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
 
                         const string MAX_DAMAGE_KEY = "MaxSingleDamage";
@@ -638,7 +638,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         const string MAX_DAMAGE_KEY = "MaxSingleDamage";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int maxDamage = home.Memory.TryGetVariable(MAX_DAMAGE_KEY, 0);
 
                         if (maxDamage < 100) return;
@@ -682,7 +682,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (home.Hp != 1) return;
 
                         p.Unlock();
@@ -744,7 +744,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         if (p.IsUnlocked()) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Caster != home) return;
 
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
@@ -757,7 +757,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
@@ -806,7 +806,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (home.Hp > 0) return;
 
                         p.Unlock();
@@ -850,7 +850,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int count = home.TraversalSkills().Count(s =>
                         {
                             CostDescription costDescription = s.Entry.GetLiteralCostDescription(s.GetJingJie());
@@ -877,7 +877,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int count = home.AttackCount;
                         if (count > 0) return;
                         p.Unlock();
@@ -898,7 +898,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int huashenCardsCount = home.TraversalSkills().Count(s => s.GetJingJie() == JingJie.HuaShen);
                         if (huashenCardsCount < 12) return;
                         p.Unlock();
@@ -919,7 +919,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int count = home.TraversalFormations().Count(f => f.IsActivated());
                         if (count < 7) return;
                         p.Unlock();
@@ -939,7 +939,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         if (p.IsUnlocked()) return;
                         
-                        if (d.Src != StageManager.Instance.Environment.Home) return;
+                        if (d.Src != d.Env.Home) return;
 
                         const string TOTAL_ATTACKS_KEY = "TotalAttackCounts";
                         int totalAttacks = p.Memory.PerformAggregate(TOTAL_ATTACKS_KEY, d.Times);
@@ -961,7 +961,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         const string MAX_DAMAGE_KEY = "MaxSingleDamageDealt";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         home.Memory.SetVariable(MAX_DAMAGE_KEY, 0);
                     }),
 
@@ -970,7 +970,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         DamageDetails d = (DamageDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Src != home) return;
 
                         const string MAX_DAMAGE_KEY = "MaxSingleDamageDealt";
@@ -985,7 +985,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         const string MAX_DAMAGE_KEY = "MaxSingleDamageDealt";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
                         
                         int maxDamage = home.Memory.TryGetVariable(MAX_DAMAGE_KEY, 0);
@@ -1007,7 +1007,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         GainBuffDetails d = (GainBuffDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
                         if (d.BuffEntry.GetName() != "灵气") return;
 
@@ -1030,7 +1030,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         AchievementProfile p = (AchievementProfile)owner;
                         if (p.IsUnlocked()) return;
                         
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         const string INITIAL_HP_KEY = "InitialHP";
                         home.Memory.SetVariable(INITIAL_HP_KEY, home.Hp);
                     }),
@@ -1042,7 +1042,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         const string INITIAL_HP_KEY = "InitialHP";
                         int initialHp = home.Memory.TryGetVariable(INITIAL_HP_KEY, 0);
                         int finalHp = home.Hp;
@@ -1066,7 +1066,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int count = home.TraversalSkills().Count(s => s.TotalStageCastedCount > 6);
                         if (count < 1) return;
                         p.Unlock();
@@ -1085,7 +1085,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         const string CANNOT_UNLOCK_YOU_LONG_DUN_KEY = "CannotUnlockYouLongDun";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         home.Memory.SetVariable(CANNOT_UNLOCK_YOU_LONG_DUN_KEY, 0);
                     }),
 
@@ -1094,7 +1094,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         DamageDetails d = (DamageDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
 
                         const string CANNOT_UNLOCK_YOU_LONG_DUN_KEY = "CannotUnlockYouLongDun";
@@ -1106,7 +1106,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         GainArmorDetails d = (GainArmorDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
                         if (d.Value <= 0) return;
 
@@ -1121,7 +1121,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         const string CANNOT_UNLOCK_YOU_LONG_DUN_KEY = "CannotUnlockYouLongDun";
                         int cannotUnlockYouLongDun = home.Memory.TryGetVariable(CANNOT_UNLOCK_YOU_LONG_DUN_KEY, 1);
                         if (cannotUnlockYouLongDun == 1) return;
@@ -1141,7 +1141,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         const string MAX_ZHANYI_STACKS_KEY = "MaxZhanYiStacks";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         home.Memory.SetVariable(MAX_ZHANYI_STACKS_KEY, 0);
                     }),
 
@@ -1150,7 +1150,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         GainBuffDetails d = (GainBuffDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
                         if (d.BuffEntry.GetName() != "战意") return;
 
@@ -1171,7 +1171,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         const string MAX_ZHANYI_STACKS_KEY = "MaxZhanYiStacks";
                         int maxZhanyiStacks = home.Memory.TryGetVariable(MAX_ZHANYI_STACKS_KEY, 0);
 
@@ -1193,7 +1193,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         BurnDetails d = (BurnDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
                         // 累计燃命伤害
@@ -1217,7 +1217,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         const string MAX_ARMOR_KEY = "MaxArmorValue";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         home.Memory.SetVariable(MAX_ARMOR_KEY, 0);
                     }),
 
@@ -1226,7 +1226,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         GainArmorDetails d = (GainArmorDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Tgt != home) return;
 
                         int armor = home.Armor;
@@ -1246,7 +1246,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         const string MAX_ARMOR_KEY = "MaxArmorValue";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int maxArmor = home.Memory.TryGetVariable(MAX_ARMOR_KEY, 0);
                         if (maxArmor < 300) return;
                         p.Unlock();
@@ -1266,7 +1266,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         if (p.IsUnlocked()) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Caster != home) return;
 
                         const string LAST_CASTED_SKILL_INDEX = "LastCastedSkillIndex";
@@ -1279,7 +1279,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.Flag != 1) return;
 
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
                         int count = home.AttackCount;
@@ -1308,7 +1308,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageCommitDetails d = (StageCommitDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
                         int count = home.TraversalSkills().Count(s => s.GetSkillType().Contains(SkillType.Deplete));
@@ -1334,7 +1334,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         const string WUXING_CYCLE_COUNT_KEY = "WuXingCycleCount";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = details.Env.Home;
                         home.Memory.SetVariable(WUXING_CYCLE_COUNT_KEY, 0);
                     }),
 
@@ -1343,7 +1343,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         CycleDetails d = (CycleDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
                         const string WUXING_CYCLE_COUNT_KEY = "WuXingCycleCount";
@@ -1358,7 +1358,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         const string WUXING_CYCLE_COUNT_KEY = "WuXingCycleCount";
-                        StageEntity home = StageManager.Instance.Environment.Home;
+                        StageEntity home = d.Env.Home;
                         int cycleCount = home.Memory.TryGetVariable(WUXING_CYCLE_COUNT_KEY, 0);
 
                         if (cycleCount < 10) return;

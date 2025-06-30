@@ -5,7 +5,7 @@ public class ExecuteDetails : StageClosureDetails
     public StageSkill Skill;
     public int CastTimes;
 
-    public ExecuteDetails(StageEntity caster, StageSkill skill)
+    public ExecuteDetails(StageEnvironment env, StageEntity caster, StageSkill skill) : base(env)
     {
         Caster = caster;
         Skill = skill;

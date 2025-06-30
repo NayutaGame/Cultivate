@@ -4,7 +4,7 @@ public class ActionDetails : StageClosureDetails
     public StageEntity Owner;
     public int CurrActionPoint;
 
-    public ActionDetails(StageEntity owner, int currActionPoint)
+    public ActionDetails(StageEnvironment env, StageEntity owner, int currActionPoint) : base(env)
     {
         Owner = owner;
         CurrActionPoint = currActionPoint;

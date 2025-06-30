@@ -65,6 +65,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
 
     public AttackDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             value: Value,

@@ -46,6 +46,7 @@ public class DispelProcedureDefinition : ProcedureDefinition
 
     public DispelDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             entity: d.Caster,
             value: Value,
             listener: d.Skill,

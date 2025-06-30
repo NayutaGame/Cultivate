@@ -12,15 +12,15 @@ public class GuardedDetails : StageClosureDetails
         set => _value = Mathf.Max(0, value);
     }
 
-    public GuardedDetails(StageEntity src, StageEntity tgt, int value)
+    public GuardedDetails(StageEnvironment env, StageEntity src, StageEntity tgt, int value) : base(env)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
     }
 
-    public GuardedDetails Clone() => new(Src, Tgt, _value);
+    public GuardedDetails Clone() => new(Env, Src, Tgt, _value);
 
     public static GuardedDetails FromAttackDetails(AttackDetails d)
-        => new(d.Src, d.Tgt, d.Value);
+        => new(d.Env, d.Src, d.Tgt, d.Value);
 }

@@ -31,6 +31,7 @@ public class IndirectDetails : StageClosureDetails
     /// <param name="castResult">结果描述</param>
     /// <param name="induced">是否是间接行为</param>
     public IndirectDetails(
+        StageEnvironment env,
         StageEntity src,
         StageEntity tgt,
         int value,
@@ -39,7 +40,7 @@ public class IndirectDetails : StageClosureDetails
         bool lifeSteal,
         bool recursive,
         ResultDict castResult,
-        bool induced)
+        bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -49,8 +50,7 @@ public class IndirectDetails : StageClosureDetails
         LifeSteal = lifeSteal;
         Recursive = recursive;
         CastResult = castResult;
-        Induced = induced;
     }
 
-    public IndirectDetails Clone() => new(Src, Tgt, _value, SrcSkill, WuXing, LifeSteal, Recursive, CastResult, Induced);
+    public IndirectDetails Clone() => new(Env, Src, Tgt, _value, SrcSkill, WuXing, LifeSteal, Recursive, CastResult, Induced);
 }

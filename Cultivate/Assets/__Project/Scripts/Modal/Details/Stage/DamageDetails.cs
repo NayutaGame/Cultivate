@@ -31,6 +31,7 @@ public class DamageDetails : NestedStageClosureDetails
     /// <param name="castResult">结果描述</param>
     /// <param name="induced">是否是间接行为</param>
     public DamageDetails(
+        StageEnvironment env,
         StageEntity src,
         StageEntity tgt,
         int value,
@@ -41,7 +42,7 @@ public class DamageDetails : NestedStageClosureDetails
         StageClosureListener listener,
         StageClosure[] closures,
         ResultDict castResult,
-        bool induced)
+        bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -53,18 +54,17 @@ public class DamageDetails : NestedStageClosureDetails
         Listener = listener;
         Closures = closures;
         CastResult = castResult;
-        Induced = induced;
     }
 
     public static DamageDetails FromAttackDetails(AttackDetails d)
-        => new(d.Src, d.Tgt, d.Value, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, d.Value, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.Induced);
 
     public static DamageDetails FromIndirectDetails(IndirectDetails d)
-        => new(d.Src, d.Tgt, d.Value, false, d.LifeSteal, false, d.Recursive, d.SrcSkill, null, d.CastResult, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, d.Value, false, d.LifeSteal, false, d.Recursive, d.SrcSkill, null, d.CastResult, d.Induced);
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
-        => new(d.Src, d.Tgt, 0, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, 0, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.Induced);
     
     public static DamageDetails FromBurn(BurnDetails d)
-        => new(d.Owner, d.Owner, d.Value, false, false, false, true, null, null, null, d.Induced);
+        => new(d.Env, d.Owner, d.Owner, d.Value, false, false, false, true, null, null, null, d.Induced);
 }

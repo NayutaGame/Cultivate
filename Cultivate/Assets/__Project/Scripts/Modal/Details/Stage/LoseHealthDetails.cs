@@ -5,7 +5,15 @@ public class LoseHealthDetails : NestedStageClosureDetails
     public int Value;
     public bool CausedByAttack;
 
-    public LoseHealthDetails(StageEntity victim, int value, bool causedByAttack, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
+    public LoseHealthDetails(
+        StageEnvironment env,
+        StageEntity victim,
+        int value,
+        bool causedByAttack,
+        StageClosureListener listener,
+        StageClosure[] closures,
+        ResultDict castResult,
+        bool induced) : base(env, induced)
     {
         Victim = victim;
         Value = value;
@@ -13,6 +21,5 @@ public class LoseHealthDetails : NestedStageClosureDetails
         Listener = listener;
         Closures = closures;
         CastResult = castResult;
-        Induced = induced;
     }
 }

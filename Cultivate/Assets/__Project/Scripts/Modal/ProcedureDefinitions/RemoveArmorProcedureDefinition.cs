@@ -46,6 +46,7 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
 
     public LoseArmorDetails GetDetailsFromCastDetails(CastDetails d)
         => new(
+            env: d.Env,
             src: d.Caster,
             tgt: d.Caster.Opponent(),
             value: Value,

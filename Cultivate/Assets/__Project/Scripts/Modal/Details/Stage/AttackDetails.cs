@@ -50,6 +50,7 @@ public class AttackDetails : NestedStageClosureDetails
     /// <param name="castResult">结果描述</param>
     /// <param name="induced">该行为是间接行为，不会引起额外的角色动画</param>
     public AttackDetails(
+        StageEnvironment env,
         StageEntity src,
         StageEntity tgt,
         int value,
@@ -65,7 +66,7 @@ public class AttackDetails : NestedStageClosureDetails
         bool recursive,
         ResultDict castResult,
         StageClosure[] closures,
-        bool induced)
+        bool induced) : base(env, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -82,10 +83,10 @@ public class AttackDetails : NestedStageClosureDetails
         Recursive = recursive;
         CastResult = castResult;
         Closures = closures ?? Array.Empty<StageClosure>();
-        Induced = induced;
     }
 
     public AttackDetails ShallowClone() => new(
+        Env,
         Src,
         Tgt,
         Value,
