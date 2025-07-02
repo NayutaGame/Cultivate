@@ -706,7 +706,7 @@ public class SkillCategory : Category<SkillEntry>
                                                         AttackDetails d = closureDetails as AttackDetails;
                                                         int stack = d.Src.GetStackOfBuff("灵气");
                                                         await d.Src.LoseBuffProcedure("灵气", stack);
-                                                        d.Times += stack;
+                                                        d.Times += stack - 1;
                                                     }, key: "DuoDuanCeShiClosure", description: $"每耗1灵气，多1次", checkListener: true);
 
     private static readonly StageClosure FuShiClosure = new(StageClosureDict.WIL_LOSE_ARMOR, 0,

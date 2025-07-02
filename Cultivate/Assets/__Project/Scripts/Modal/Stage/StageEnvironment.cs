@@ -46,6 +46,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await EnteringProcedure();
 
         await MingYuanPenaltyProcedure();
+        
         await FormationProcedure();
         await StartStageProcedure();
 

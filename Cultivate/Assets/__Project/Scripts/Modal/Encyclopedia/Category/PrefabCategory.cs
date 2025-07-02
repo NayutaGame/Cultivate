@@ -12,6 +12,7 @@ public class PrefabCategory : Category<PrefabEntry>
             new("ConfigModel徐福", "Prefabs/ConfigModels/徐福"),
             new("ConfigModel子非鱼", "Prefabs/ConfigModels/子非鱼"),
             new("ConfigModel子非燕", "Prefabs/ConfigModels/子非燕"),
+            new("ConfigModel彼此卿", "Prefabs/ConfigModels/彼此卿"),
             
             // Run Models
             new("RunModel缺失模型", "Prefabs/RunModels/缺失模型"),
@@ -39,6 +40,7 @@ public class PrefabCategory : Category<PrefabEntry>
             new("StageModel子非鱼", "Prefabs/StageModels/子非鱼"),
             new("StageModel子非燕", "Prefabs/StageModels/子非燕"),
             new("StageModel风雨晴", "Prefabs/StageModels/风雨晴"),
+            new("StageModel彼此卿", "Prefabs/StageModels/彼此卿"),
             new("StageModel梦乃遥", "Prefabs/StageModels/梦乃遥"),
             
             new("StageModel噬金甲", "Prefabs/StageModels/噬金甲"),
