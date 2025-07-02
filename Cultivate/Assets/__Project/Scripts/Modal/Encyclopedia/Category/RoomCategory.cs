@@ -3438,7 +3438,7 @@ public class RoomCategory : Category<RoomEntry>
                     b.Add();
                     b.Invoke();
                     
-                    RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局1");
+                    RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局1");
                     BattleCell A = new(template);
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);
@@ -3471,7 +3471,7 @@ public class RoomCategory : Category<RoomEntry>
                     b.Add();
                     b.Invoke();
                     
-                    RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局2");
+                    RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局2");
                     BattleCell A = new(template);
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);
@@ -3506,7 +3506,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity template = EditorManager.Instance.EntityEditableList.Traversal().FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局3");
+                    RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局3");
                     BattleCell A = new(template);
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);

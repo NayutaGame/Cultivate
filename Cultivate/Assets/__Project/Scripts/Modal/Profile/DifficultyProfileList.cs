@@ -8,7 +8,7 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
 {
     private DifficultyProfileList()
     {
-        Encyclopedia.DifficultyCategory.Traversal.Do(entry => Add(new DifficultyProfile(entry)));
+        Encyclopedia.DifficultyCategory.Do(entry => Add(new DifficultyProfile(entry)));
 
         Find("0").SetUnlocked(true);
     }
@@ -21,7 +21,7 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
 
     public void UnlockEverything()
     {
-        Traversal().Do(difficultyProfile => difficultyProfile.SetUnlocked(true));
+        this.Do(difficultyProfile => difficultyProfile.SetUnlocked(true));
     }
 
     public void OnBeforeSerialize()
@@ -42,7 +42,7 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
     public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
     {
         DifficultyEntry highestUnlocked = this[0].GetEntry();
-        foreach (DifficultyProfile difficultyProfile in Traversal())
+        foreach (DifficultyProfile difficultyProfile in this)
         {
             if (!difficultyProfile.IsUnlocked())
                 return highestUnlocked;

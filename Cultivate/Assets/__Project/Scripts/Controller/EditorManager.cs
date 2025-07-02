@@ -160,7 +160,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     }
 
     public static RunEntity FindEntity(string name)
-        => Instance.EntityEditableList.Traversal().FirstObj(e => e.GetEntry().GetName() == name);
+        => Instance.EntityEditableList.FirstObj(e => e.GetEntry().GetName() == name);
 
     // public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
     // {

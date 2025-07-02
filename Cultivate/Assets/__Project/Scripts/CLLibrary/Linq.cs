@@ -139,10 +139,5 @@ namespace CLLibrary
         {
             foreach (T e in enumerable) yield return func(e);
         }
-
-        public static IEnumerable<T> Traversal<T>(this IEnumerable<T> enumerable)
-        {
-            foreach (T item in enumerable) yield return item;
-        }
     }
 }

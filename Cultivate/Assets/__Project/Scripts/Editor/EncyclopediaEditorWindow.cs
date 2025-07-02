@@ -59,7 +59,7 @@ public class EncyclopediaEditorWindow : EditorWindow
 
         if (_currentTab == Tab.Buff)
         {
-            var buffs = Encyclopedia.BuffCategory.Traversal.ToList();
+            var buffs = Encyclopedia.BuffCategory.ToList();
             for (int i = 0; i < buffs.Count; i++)
             {
                 if (GUILayout.Toggle(_selectedBuffIndex == i, buffs[i].GetName(), EditorStyles.radioButton))
@@ -70,7 +70,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         }
         else
         {
-            var skills = Encyclopedia.SkillCategory.Traversal.ToList();
+            var skills = Encyclopedia.SkillCategory.ToList();
             for (int i = 0; i < skills.Count; i++)
             {
                 if (GUILayout.Toggle(_selectedSkillIndex == i, skills[i].GetName(), EditorStyles.radioButton))
@@ -93,7 +93,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         {
             if (_selectedBuffIndex >= 0)
             {
-                var buff = Encyclopedia.BuffCategory.Traversal.ElementAt(_selectedBuffIndex);
+                var buff = Encyclopedia.BuffCategory.ElementAt(_selectedBuffIndex);
                 DrawBuffDetails(buff);
             }
         }
@@ -101,7 +101,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         {
             if (_selectedSkillIndex >= 0)
             {
-                var skill = Encyclopedia.SkillCategory.Traversal.ElementAt(_selectedSkillIndex);
+                var skill = Encyclopedia.SkillCategory.ElementAt(_selectedSkillIndex);
                 DrawSkillDetails(skill);
             }
         }

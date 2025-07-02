@@ -16,7 +16,16 @@ public class BuffAnnotationView : XView
     {
         base.Refresh();
 
-        Buff buff = Get<Buff>();
+        object obj = Get<object>();
+        if (InterpretAsBuff(obj as Buff)) return;
+        if (InterpretAsBuffEntry(obj as BuffEntry)) return;
+    }
+
+    private bool InterpretAsBuff(Buff buff)
+    {
+        if (buff is null)
+            return false;
+        
         Icon.sprite = buff.GetEntry().GetSprite();
         TitleText.text = $"{buff.GetName()} {buff.Stack}";
         DescriptionText.text = buff.GetEntry().GetLiteralDescription().ToString();
@@ -30,5 +39,29 @@ public class BuffAnnotationView : XView
 
         if (hasTrivia)
             TriviaText.text = trivia;
+
+        return true;
+    }
+
+    private bool InterpretAsBuffEntry(BuffEntry buff)
+    {
+        if (buff is null)
+            return false;
+        
+        Icon.sprite = buff.GetSprite();
+        TitleText.text = $"{buff.GetName()}";
+        DescriptionText.text = buff.GetLiteralDescription().ToString();
+        AnnotationText.text = buff.GetCascadeAnnotated();
+
+        string trivia = buff.GetTrivia();
+        bool hasTrivia = trivia != null;
+
+        LowerSeparator.SetActive(hasTrivia);
+        TriviaText.gameObject.SetActive(hasTrivia);
+
+        if (hasTrivia)
+            TriviaText.text = trivia;
+
+        return true;
     }
 }

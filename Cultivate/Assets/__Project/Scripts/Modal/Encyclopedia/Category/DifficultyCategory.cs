@@ -122,7 +122,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
     public DifficultyEntry GetNext(DifficultyEntry entry)
     {
         int index = List.IndexOf(entry);
-        if (index == -1 || index == List.Count - 1)
+        if (index == -1 || index == List.Count() - 1)
             return null;
         return List[index + 1];
     }

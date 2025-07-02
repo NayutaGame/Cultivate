@@ -85,8 +85,8 @@ public class Settings : Addressable
 
     private void ApplySettingsData()
     {
-        foreach (var tab in _tabs.Traversal())
-        foreach (var widget in tab.Widgets.Traversal())
+        foreach (var tab in _tabs)
+        foreach (var widget in tab.Widgets)
             if (widget is SwitchModel switchModel)
                 switchModel.Value = switchModel.Value;
             else if (widget is ToggleModel toggleModel)
@@ -98,8 +98,8 @@ public class Settings : Addressable
     private void DefaultSettingsData()
     {
         _settingsData = new();
-        foreach (var tab in _tabs.Traversal())
-        foreach (var widget in tab.Widgets.Traversal())
+        foreach (var tab in _tabs)
+        foreach (var widget in tab.Widgets)
             if (widget is SwitchModel switchModel)
                 _settingsData._dict[widget.Name] = switchModel.DefaultValue;
             else if (widget is ToggleModel toggleModel)
@@ -209,7 +209,7 @@ public class Settings : Addressable
         SettingsTab soundTab = _tabs.GetSoundTab();
         Assert.IsTrue(soundTab != null);
         
-        foreach (var widget in soundTab.Widgets.Traversal())
+        foreach (var widget in soundTab.Widgets)
             if (widget is SwitchModel switchModel)
                 switchModel.Value = switchModel.DefaultValue;
             else if (widget is ToggleModel toggleModel)

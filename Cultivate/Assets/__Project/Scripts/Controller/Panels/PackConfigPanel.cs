@@ -257,7 +257,7 @@ public class PackConfigPanel : PopupPanel
         {
             // 不存在已装备的卡牌
             // 高亮所有合法选择
-            configManager.PackSelections.Traversal()
+            configManager.PackSelections
             .FilterObj(pack => 
                 configManager.IsCompatible(pack, constraint) && 
                 !pack.IsEquipped)

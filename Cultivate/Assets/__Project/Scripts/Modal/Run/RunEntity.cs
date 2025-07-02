@@ -69,11 +69,11 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     
     public string GetReactionKeyFromSkill(RunSkill skill)
     {
-        int? smirkIdx = _smirkAgainstSlots.Traversal().FirstIdx(s => s.Skill?.GetEntry() == skill.GetEntry());
+        int? smirkIdx = _smirkAgainstSlots.FirstIdx(s => s.Skill?.GetEntry() == skill.GetEntry());
         if (smirkIdx.HasValue)
             return SMIRK_KEY;
         
-        int? afraidIdx = _afraidAgainstSlots.Traversal().FirstIdx(s => s.Skill?.GetEntry() == skill.GetEntry());
+        int? afraidIdx = _afraidAgainstSlots.FirstIdx(s => s.Skill?.GetEntry() == skill.GetEntry());
         if (afraidIdx.HasValue)
             return AFRAID_KEY;
         
@@ -152,7 +152,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
     public void RegisterSecondPlacementProcedure()
     {
-        _formations.Traversal().Do(f =>
+        _formations.Do(f =>
         {
             RunManager.Instance.Environment.RegisterList(f.GetEntry().RunClosures, this);
         });
@@ -160,7 +160,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
     public void UnregisterSecondPlacementProcedure()
     {
-        _formations.Traversal().Do(f =>
+        _formations.Do(f =>
         {
             RunManager.Instance.Environment.UnregisterList(f.GetEntry().RunClosures, this);
         });
@@ -171,7 +171,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     #region Formation
 
     [NonSerialized] private ListModel<RunFormation> _formations;
-    public IEnumerable<RunFormation> TraversalFormations => _formations.Traversal();
+    public IEnumerable<RunFormation> TraversalFormations => _formations;
     [NonSerialized] private FilteredListModel<RunFormation> _showingFormations;
     [NonSerialized] private FilteredListModel<RunFormation> _activeFormations;
     [NonSerialized] private bool _allowFormation;
@@ -180,7 +180,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     {
         _formations = new();
 
-        for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
+        for(int i = 0; i < Encyclopedia.FormationCategory.Count(); i++)
         {
             _formations.Add(RunFormation.From(Encyclopedia.FormationCategory[i], 0));
         }
@@ -195,7 +195,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
         RunManager.Instance.Environment.SendEvent(RunClosureDict.WIL_FORMATION, d);
 
-        for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
+        for(int i = 0; i < Encyclopedia.FormationCategory.Count(); i++)
         {
             Assert.IsTrue(_formations[i].GetEntry().GetFormationGroupEntry() == Encyclopedia.FormationCategory[i]);
 
@@ -224,7 +224,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     {
         _allowFormation = false;
         
-        for(int i = 0; i < Encyclopedia.FormationCategory.GetCount(); i++)
+        for(int i = 0; i < Encyclopedia.FormationCategory.Count(); i++)
         {
             Assert.IsTrue(_formations[i].GetEntry().GetFormationGroupEntry() == Encyclopedia.FormationCategory[i]);
             
@@ -275,9 +275,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         _slots = slots?.Clone() ?? SlotListModel.Default();
         
         _smirkAgainstSlots = smirkAgainstSlots ?? SlotListModel.DefaultWithSize(3);
-        _smirkAgainstSlots.Traversal().Do(s => s.Hidden = false);
+        _smirkAgainstSlots.Do(s => s.Hidden = false);
         _afraidAgainstSlots = afraidAgainstSlots ?? SlotListModel.DefaultWithSize(3);
-        _afraidAgainstSlots.Traversal().Do(s => s.Hidden = false);
+        _afraidAgainstSlots.Do(s => s.Hidden = false);
 
         if (slotCount == null)
         {
@@ -334,9 +334,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         SetSlotCount(_slotCount);
         
         _smirkAgainstSlots ??= SlotListModel.DefaultWithSize(3);
-        _smirkAgainstSlots.Traversal().Do(s => s.Hidden = false);
+        _smirkAgainstSlots.Do(s => s.Hidden = false);
         _afraidAgainstSlots ??= SlotListModel.DefaultWithSize(3);
-        _afraidAgainstSlots.Traversal().Do(s => s.Hidden = false);
+        _afraidAgainstSlots.Do(s => s.Hidden = false);
 
         Init();
     }
@@ -352,7 +352,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
             f.GetMin() <= f.GetProgress() &&
             _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
         _activeFormations = new(_formations, f => f.IsActivated());
-        _slots.Traversal().Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
+        _slots.Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
     }
 
     #endregion

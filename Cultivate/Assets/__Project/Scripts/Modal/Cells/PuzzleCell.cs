@@ -46,7 +46,7 @@ public class PuzzleCell : Cell
         }
 
         List<RunSkill> toRemove = new();
-        foreach (RunSkill skill in env.Hand.Traversal())
+        foreach (RunSkill skill in env.Hand)
         {
             if (skill is { Borrowed: true })
                 toRemove.Add(skill);

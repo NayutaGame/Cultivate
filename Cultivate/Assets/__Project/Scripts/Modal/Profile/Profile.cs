@@ -123,7 +123,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     {
         var cache = new Dictionary<LockIndex, AchievementProfile>();
         
-        foreach (AchievementProfile achievementProfile in _achievementProfileList.Traversal())
+        foreach (AchievementProfile achievementProfile in _achievementProfileList)
         {
             LockIndex? lockIndex = achievementProfile.GetEntry().GetLockIndex();
             if (lockIndex == null)
@@ -212,11 +212,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     private void UpdateAchievementProfiles()
     {
         // 获取所有已有成就的ID
-        var existingIds = new HashSet<string>(_achievementProfileList.Traversal()
+        var existingIds = new HashSet<string>(_achievementProfileList
             .Select(p => p.GetEntry().GetId()));
 
         // 遍历Encyclopedia中的所有成就
-        foreach (var achievementEntry in Encyclopedia.AchievementCategory.Traversal)
+        foreach (var achievementEntry in Encyclopedia.AchievementCategory)
         {
             // 如果是新成就，添加对应的Profile
             if (!existingIds.Contains(achievementEntry.GetId()))
@@ -250,28 +250,28 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void RegisterRunClosures(RunClosureDict runClosureDict)
     {
-        _achievementProfileList.Traversal().Do(achievementProfile =>
+        _achievementProfileList.Do(achievementProfile =>
             achievementProfile.GetEntry().GetRunClosures().Do(runClosure =>
                 runClosureDict.Register(achievementProfile, runClosure)));
     }
 
     public void UnregisterRunClosures(RunClosureDict runClosureDict)
     {
-        _achievementProfileList.Traversal().Do(achievementProfile =>
+        _achievementProfileList.Do(achievementProfile =>
             achievementProfile.GetEntry().GetRunClosures().Do(runClosure =>
                 runClosureDict.Unregister(achievementProfile, runClosure)));
     }
 
     public void RegisterStageClosures(StageClosureDict stageClosureDict)
     {
-        _achievementProfileList.Traversal().Do(achievementProfile =>
+        _achievementProfileList.Do(achievementProfile =>
             achievementProfile.GetEntry().GetStageClosures().Do(stageClosure =>
                 stageClosureDict.Register(achievementProfile, stageClosure)));
     }
 
     public void UnregisterStageClosures(StageClosureDict stageClosureDict)
     {
-        _achievementProfileList.Traversal().Do(achievementProfile =>
+        _achievementProfileList.Do(achievementProfile =>
             achievementProfile.GetEntry().GetStageClosures().Do(stageClosure =>
                 stageClosureDict.Unregister(achievementProfile, stageClosure)));
     }
@@ -287,7 +287,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void ResetAchievementProfiles()
     {
-        _achievementProfileList.Traversal().Do(achievementProfile =>
+        _achievementProfileList.Do(achievementProfile =>
             achievementProfile.Reset());
         AppManager.Instance.ProfileManager.SaveProcedure();
     }

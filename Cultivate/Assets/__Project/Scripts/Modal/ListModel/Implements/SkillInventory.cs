@@ -70,7 +70,7 @@ public class SkillInventory : ListModel<RunSkill>
     public SkillInventory Clone()
     {
         SkillInventory cloned = new();
-        cloned.AddRange(Traversal());
+        cloned.AddRange(this);
         return cloned;
     }
 }

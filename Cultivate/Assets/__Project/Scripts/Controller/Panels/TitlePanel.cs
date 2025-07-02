@@ -15,6 +15,7 @@ public class TitlePanel : Panel
     
     public XButton EntityEditorButton;
     public XButton SkillBrowserButton;
+    public XButton BuffBrowserButton;
     public XButton AchievementBrowserButton;
     public XButton UnlockNextDifficultyButton;
     public XButton DeleteProfileButton;
@@ -44,6 +45,7 @@ public class TitlePanel : Panel
             ExitButton,
             EntityEditorButton,
             SkillBrowserButton,
+            BuffBrowserButton,
             AchievementBrowserButton,
             UnlockNextDifficultyButton,
             DeleteProfileButton,
@@ -59,6 +61,7 @@ public class TitlePanel : Panel
             ExitGame,
             OpenEntityEditorPanel,
             OpenSkillBrowserPanel,
+            OpenBuffBrowserPanel,
             OpenAchievementBrowserPanel,
             TryUnlockNextDifficulty,
             DeleteProfile,
@@ -103,6 +106,7 @@ public class TitlePanel : Panel
         
         EntityEditorButton.gameObject.SetActive(!audienceIsPlayer);
         SkillBrowserButton.gameObject.SetActive(!audienceIsPlayer);
+        BuffBrowserButton.gameObject.SetActive(!audienceIsPlayer);
         AchievementBrowserButton.gameObject.SetActive(!audienceIsPlayer);
         UnlockNextDifficultyButton.gameObject.SetActive(!audienceIsPlayer);
         DeleteProfileButton.gameObject.SetActive(!audienceIsPlayer);
@@ -164,6 +168,11 @@ public class TitlePanel : Panel
     private void OpenSkillBrowserPanel()
     {
         CanvasManager.Instance.AppCanvas.SkillBrowserPanel.Show();
+    }
+
+    private void OpenBuffBrowserPanel()
+    {
+        CanvasManager.Instance.AppCanvas.BuffBrowserPanel.Show();
     }
 
     private void OpenAchievementBrowserPanel()

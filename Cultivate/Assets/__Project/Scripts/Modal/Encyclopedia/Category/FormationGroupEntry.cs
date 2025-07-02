@@ -51,13 +51,13 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         if (formationEntries != null)
             _subFormationEntries.AddRange(formationEntries);
 
-        _subFormationEntries.Traversal().Do(f => f.SetFormationGroupEntry(this));
+        _subFormationEntries.Do(f => f.SetFormationGroupEntry(this));
 
         _min = FormationWithLowestJingJie().GetRequirement() - TOLERANCE;
         _max = FormationWithHighestJingJie().GetRequirement();
 
         _markListModel = new();
-        _markListModel.AddRange(_subFormationEntries.Traversal().Map(e =>
+        _markListModel.AddRange(_subFormationEntries.Map(e =>
             new MarkModel(e.GetRequirement(), e.GetJingJie().ToString())));
 
         _spriteEntry = id;
@@ -91,7 +91,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     public string GetTriviaFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetTrivia();
     public JingJie GetIncrementedJingJie(JingJie jingJie)
     {
-        int index = _subFormationEntries.Traversal().FirstIdx(e => e.GetJingJie() == jingJie).Value;
+        int index = _subFormationEntries.FirstIdx(e => e.GetJingJie() == jingJie).Value;
         index--;
         if (index < 0)
             index += _subFormationEntries.Count();
@@ -115,6 +115,6 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     public void GenerateAnnotations()
     {
-        _subFormationEntries.Traversal().Do(e => e.GenerateAnnotations());
+        _subFormationEntries.Do(e => e.GenerateAnnotations());
     }
 }

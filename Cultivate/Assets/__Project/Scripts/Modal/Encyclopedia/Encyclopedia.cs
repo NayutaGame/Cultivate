@@ -31,6 +31,7 @@ public class Encyclopedia : Addressable
         {
             { "FormationCategory", () => FormationCategory },
             { "SkillCategory", () => SkillCategory },
+            { "BuffCategory", () => BuffCategory },
         };
 
         Fib.Init();

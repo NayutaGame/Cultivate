@@ -64,7 +64,7 @@ public class EntityEditorEntityView : XView
         if (EntityDropdown != null)
         {
             EntityDropdown.options = new();
-            Encyclopedia.EntityCategory.Traversal.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.GetName())));
+            Encyclopedia.EntityCategory.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.GetName())));
             EntityDropdown.onValueChanged.AddListener(EntryChanged);
         }
 

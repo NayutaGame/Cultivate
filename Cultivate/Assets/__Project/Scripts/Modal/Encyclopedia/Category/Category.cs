@@ -1,10 +1,12 @@
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
-public class Category<T> where T : Entry
+public class Category<T> : IEnumerable<T>, Addressable where T : Entry
 {
-    private List<T> _list;
-    protected List<T> List => _list;
+    private ListModel<T> _list;
+    protected ListModel<T> List => _list;
 
     private Dictionary<string, T> _dict;
 
@@ -19,8 +21,15 @@ public class Category<T> where T : Entry
         List.Add(item);
     }
 
+    private Dictionary<string, Func<object>> _accessors;
+    public object Get(string s) => _accessors[s]();
     public Category()
     {
+        _accessors = new()
+        {
+            { "List", () => _list },
+        };
+        
         _list = new();
         _dict = new();
     }
@@ -33,16 +42,7 @@ public class Category<T> where T : Entry
             _dict[item.GetId()] = item;
     }
 
-    public IEnumerable<T> Traversal
-    {
-        get
-        {
-            foreach (var item in _list)
-                yield return item;
-        }
-    }
-
-    public int GetCount() => _list.Count;
+    public int Count() => _list.Count();
 
     public T this[int i] => _list[i];
     public T this[string key]
@@ -64,4 +64,10 @@ public class Category<T> where T : Entry
 
     public int IndexOf(T item)
         => _list.IndexOf(item);
+    
+    public IEnumerator<T> GetEnumerator()
+        => _list.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator()
+        => GetEnumerator();
 }

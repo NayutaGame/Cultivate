@@ -8,7 +8,7 @@ public class PackProfileList : ListModel<PackProfile>, ISerializationCallbackRec
 {
     private PackProfileList()
     {
-        Encyclopedia.PackCategory.Traversal.Do(entry => Add(new PackProfile(entry)));
+        Encyclopedia.PackCategory.Do(entry => Add(new PackProfile(entry)));
     }
 
     public PackProfile Find(PackEntry entry)

@@ -8,7 +8,7 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
 {
     private CharacterProfileList(bool isDeveloper = false)
     {
-        Encyclopedia.CharacterCategory.Traversal.Do(entry => Add(
+        Encyclopedia.CharacterCategory.Do(entry => Add(
             new CharacterProfile(entry)));
 
         // Find("徐福").SetUnlocked(true);
@@ -22,7 +22,7 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
 
     public void UnlockEverything()
     {
-        Traversal().Do(characterProfile =>
+        this.Do(characterProfile =>
         {
             characterProfile._level = 10;
             characterProfile._experience = 1000;

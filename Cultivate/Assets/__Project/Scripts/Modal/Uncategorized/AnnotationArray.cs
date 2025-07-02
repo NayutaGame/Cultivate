@@ -36,7 +36,7 @@ public class AnnotationArray
         List<Annotatable> annotations = new();
         string descriptionString = description.ToString();
 
-        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
+        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory)
         {
             if (!descriptionString.Contains(keywordEntry.GetName()))
                 continue;
@@ -44,7 +44,7 @@ public class AnnotationArray
             annotations.Add(keywordEntry);
         }
 
-        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
+        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory)
         {
             if (!descriptionString.Contains(buffEntry.GetName()))
                 continue;
@@ -74,7 +74,7 @@ public class AnnotationArray
                 break;
         }
 
-        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory.Traversal)
+        foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory)
         {
             if (!descriptionString.Contains(keywordEntry.GetName()))
                 continue;
@@ -82,7 +82,7 @@ public class AnnotationArray
             annotations.Add(keywordEntry);
         }
 
-        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory.Traversal)
+        foreach (BuffEntry buffEntry in Encyclopedia.BuffCategory)
         {
             if (!descriptionString.Contains(buffEntry.GetName()))
                 continue;

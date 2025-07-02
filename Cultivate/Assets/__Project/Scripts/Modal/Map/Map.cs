@@ -61,7 +61,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     {
         EntityPool = new();
         int difficulty = RunManager.Instance.Environment.GetRunConfig().GetDifficulty();
-        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.Traversal().FilterObj(
+        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.FilterObj(
             e => e.IsInPool() && e.GetAllowedDifficulty().Contains(difficulty)));
         EntityPool.Shuffle();
     }
@@ -70,7 +70,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     {
         RoomPool = new();
         int difficulty = env.GetRunConfig().GetDifficulty();
-        RoomPool.Populate(Encyclopedia.RoomCategory.Traversal.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
+        RoomPool.Populate(Encyclopedia.RoomCategory.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
         RoomPool.Shuffle();
     }
 

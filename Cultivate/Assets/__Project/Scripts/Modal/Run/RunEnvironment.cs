@@ -1197,7 +1197,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
 
         b.Append("\n手牌区：\n");
-        foreach (RunSkill skill in Hand.Traversal())
+        foreach (RunSkill skill in Hand)
         {
             b.Append($"【{skill.GetEntry().GetName()}】");
         }

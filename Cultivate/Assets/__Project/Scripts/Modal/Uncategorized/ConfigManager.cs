@@ -40,7 +40,7 @@ public class ConfigManager : Addressable
         _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), "PackConstraints任意", 6));
 
         _packSelections = new();
-        Encyclopedia.PackCategory.Traversal.Do(pack => _packSelections.Add(new ConfigPack(pack)));
+        Encyclopedia.PackCategory.Do(pack => _packSelections.Add(new ConfigPack(pack)));
     }
 
     #region 角色配置
@@ -70,14 +70,14 @@ public class ConfigManager : Addressable
     public PackPreset WriteCurrentIntoPackPreset()
     {
         List<PackEntry> packEntries = new();
-        _packConstraints.Traversal().Do(c => packEntries.Add(c.Pack.Entry));
+        _packConstraints.Do(c => packEntries.Add(c.Pack.Entry));
         return new PackPreset(packEntries);
     }
 
     public void LoadPackPreset(PackPreset preset)
     {
-        _packConstraints.Traversal().Do(c => c.Pack = null);
-        _packSelections.Traversal().Do(p => p.IsEquipped = false);
+        _packConstraints.Do(c => c.Pack = null);
+        _packSelections.Do(p => p.IsEquipped = false);
 
         for(int i = 0; i < preset.PackEntries.Count; i++)
         {
@@ -254,8 +254,8 @@ public class ConfigManager : Addressable
 
     public List<PackEntry> GetEquippedPacks()
     {
-        Assert.IsTrue(_packConstraints.Traversal().All(c => c.Pack != null));
-        return _packConstraints.Traversal().Map(c => c.Pack.Entry).ToList();
+        Assert.IsTrue(_packConstraints.All(c => c.Pack != null));
+        return _packConstraints.Map(c => c.Pack.Entry).ToList();
     }
 
     public bool IsConfigurationValid()

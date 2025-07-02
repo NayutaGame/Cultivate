@@ -48,5 +48,5 @@ public class PackEntry : Entry, IPack
     public static implicit operator PackEntry(string id) => Encyclopedia.PackCategory[id];
 
     public static PackEntry FromName(string name)
-        => Encyclopedia.PackCategory.Traversal.FirstObj(e => e.GetName() == name);
+        => Encyclopedia.PackCategory.FirstObj(e => e.GetName() == name);
 }

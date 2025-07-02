@@ -1015,12 +1015,12 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private void RegisterSkillClosures()
     {
-        _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Register(s, s.Entry.Closures)));
+        _entities.Do(e => e._skills.Do(s => _closureDict.Register(s, s.Entry.Closures)));
     }
 
     private void UnregisterSkillClosures()
     {
-        _entities.Do(e => e._skills.Traversal().Do(s => _closureDict.Unregister(s, s.Entry.Closures)));
+        _entities.Do(e => e._skills.Do(s => _closureDict.Unregister(s, s.Entry.Closures)));
     }
 
     private void RegisterEntityClosures()

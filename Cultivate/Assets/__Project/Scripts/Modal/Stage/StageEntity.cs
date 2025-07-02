@@ -406,8 +406,7 @@ public class StageEntity : Addressable, StageClosureListener
     #region Skill
     
     public StageSkill[] _skills;
-    public IEnumerable<StageSkill> TraversalSkills()
-        => _skills.Traversal();
+    public IEnumerable<StageSkill> TraversalSkills() => _skills;
 
     public IEnumerable<StageSkill> NextSkills(int index, bool loop = false)
     {
@@ -484,8 +483,7 @@ public class StageEntity : Addressable, StageClosureListener
     #region Formation
 
     private ListModel<Formation> _formations;
-    public IEnumerable<Formation> TraversalFormations()
-        => _formations.Traversal();
+    public IEnumerable<Formation> TraversalFormations() => _formations;
 
     public void AddFormation(Formation f)
     {
@@ -501,7 +499,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public async UniTask RemoveAllFormations()
     {
-        await _formations.Traversal().Do(async f => f.Unregister());
+        await _formations.Do(async f => f.Unregister());
         _formations.Clear();
     }
 
@@ -510,8 +508,7 @@ public class StageEntity : Addressable, StageClosureListener
     #region Buff
 
     private ListModel<Buff> _buffs;
-    public IEnumerable<Buff> TraversalBuffs()
-        => _buffs.Traversal();
+    public IEnumerable<Buff> TraversalBuffs() => _buffs;
     public int IndexOfBuff(Buff b) => _buffs.IndexOf(b);
 
     public void AddBuff(Buff b)
@@ -528,7 +525,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public async UniTask RemoveAllBuffs()
     {
-        await _buffs.Traversal().Do(async b => b.Unregister());
+        await _buffs.Do(async b => b.Unregister());
         _buffs.Clear();
     }
 

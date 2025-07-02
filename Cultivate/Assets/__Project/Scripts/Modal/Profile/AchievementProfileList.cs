@@ -8,7 +8,7 @@ public class AchievementProfileList : ListModel<AchievementProfile>, ISerializat
 {
     private AchievementProfileList()
     {
-        Encyclopedia.AchievementCategory.Traversal.Do(entry => Add(new AchievementProfile(entry)));
+        Encyclopedia.AchievementCategory.Do(entry => Add(new AchievementProfile(entry)));
     }
 
     private AchievementProfile Find(AchievementEntry entry)
@@ -19,7 +19,7 @@ public class AchievementProfileList : ListModel<AchievementProfile>, ISerializat
 
     public void UnlockEverything()
     {
-        Traversal().Do(achievementProfile => achievementProfile.SetUnlockedQuietly(true));
+        this.Do(achievementProfile => achievementProfile.SetUnlockedQuietly(true));
     }
 
     public bool IsUnlocked(AchievementEntry entry)

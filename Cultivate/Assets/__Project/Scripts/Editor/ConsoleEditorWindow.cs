@@ -52,7 +52,7 @@ public class ConsoleEditorWindow : EditorWindow
 
     private void DrawCharacterDropdown()
     {
-        var characters = Encyclopedia.CharacterCategory.Traversal.ToList();
+        var characters = Encyclopedia.CharacterCategory.ToList();
         var characterNames = characters.Select(c => c.GetName()).ToArray();
         
         EditorGUILayout.BeginHorizontal();
@@ -93,7 +93,7 @@ public class ConsoleEditorWindow : EditorWindow
     {
         EditorGUILayout.LabelField("卡包解锁状态", EditorStyles.boldLabel);
         
-        var packs = Encyclopedia.PackCategory.Traversal.ToList();
+        var packs = Encyclopedia.PackCategory.ToList();
         int columns = 4; // 每行显示的数量
         
         for (int i = 0; i < packs.Count; i += columns)
@@ -153,7 +153,7 @@ public class ConsoleEditorWindow : EditorWindow
         EditorGUILayout.Space(5);
         
         // 使用当前选中的过滤器
-        var skills = Encyclopedia.SkillCategory.Traversal
+        var skills = Encyclopedia.SkillCategory
             .Where(_filterTabs[_currentFilterTab].Predicate);
 
         var distribution = skills
@@ -291,7 +291,7 @@ public class ConsoleEditorWindow : EditorWindow
     {
         var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         
-        foreach (var achievementProfile in profile.AchievementProfileList.Traversal())
+        foreach (var achievementProfile in profile.AchievementProfileList)
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             

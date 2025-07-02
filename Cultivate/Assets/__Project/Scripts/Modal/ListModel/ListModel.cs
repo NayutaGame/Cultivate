@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -7,7 +8,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class ListModel<T> : IListModel
+public class ListModel<T> : IListModel, IEnumerable<T>
 {
     [SerializeReference] private List<T> _list;
 
@@ -101,12 +102,6 @@ public class ListModel<T> : IListModel
         _list = new List<T>(initialItems);
     }
 
-    public IEnumerable<T> Traversal()
-    {
-        foreach (T item in _list)
-            yield return item;
-    }
-
     public T First(Predicate<T> pred)
         => _list.FirstObj(pred);
 
@@ -128,4 +123,10 @@ public class ListModel<T> : IListModel
 
     public int IndexOf(T item)
         => _list.IndexOf(item);
+    
+    public IEnumerator<T> GetEnumerator()
+        => _list.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator()
+        => GetEnumerator();
 }
