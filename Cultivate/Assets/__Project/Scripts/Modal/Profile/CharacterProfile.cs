@@ -32,6 +32,9 @@ public class CharacterProfile : ISerializationCallbackReceiver
         return achievementProfile.IsUnlocked();
     }
 
+    public bool IsDemoLocked()
+        => _entry != CharacterEntry.FromName("徐福") && AppManager.Instance.PackageIsDemo();
+
     public bool SlotIsUnlocked(int slotIndex)
     {
         var profile = AppManager.Instance.ProfileManager.GetCurrProfile();

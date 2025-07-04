@@ -17,6 +17,9 @@ public class DifficultyProfile : ISerializationCallbackReceiver
     public DifficultyEntry GetEntry() => _entry;
     public bool IsUnlocked() => _unlocked;
     public void SetUnlocked(bool value) => _unlocked = value;
+    
+    public bool IsDemoLocked()
+        => _entry._order >= 3 && AppManager.Instance.PackageIsDemo();
 
     public void OnBeforeSerialize() { }
 

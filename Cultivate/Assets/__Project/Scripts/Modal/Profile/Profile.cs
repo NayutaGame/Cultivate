@@ -47,14 +47,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     private Dictionary<string, Func<object>> _accessors;
     public object Get(string s) => _accessors[s]();
-    private Profile(
-        LevelProfile levelProfile = null,
-        CharacterProfileList characterProfileList = null,
-        DifficultyProfileList difficultyProfileList = null,
-        PackProfileList packProfileList = null,
-        AchievementProfileList achievementProfileList = null,
-        // bool finishedFirstRun = true)
-        bool finishedFirstRun = false)
+    private Profile()
     {
         _accessors = new()
         {
@@ -65,13 +58,12 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             { "AchievementProfileList", () => _achievementProfileList },
         };
 
-        _levelProfile = levelProfile ?? LevelProfile.Default();
-        _characterProfileList = characterProfileList ?? CharacterProfileList.Default();
-        _difficultyProfileList = difficultyProfileList ?? DifficultyProfileList.Default();
-        _packProfileList = packProfileList ?? PackProfileList.Default();
-        _achievementProfileList = achievementProfileList ?? AchievementProfileList.Default();
-        
-        _finishedFirstRun = finishedFirstRun;
+        _levelProfile = LevelProfile.Default();
+        _characterProfileList = CharacterProfileList.Default();
+        _difficultyProfileList = DifficultyProfileList.Default();
+        _packProfileList = PackProfileList.Default();
+        _achievementProfileList = AchievementProfileList.Default();
+        _finishedFirstRun = false;
         
         _achievementCache = new Dirty<Dictionary<LockIndex, AchievementProfile>>(BuildAchievementCache);
     }

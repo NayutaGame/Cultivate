@@ -8,10 +8,11 @@ using DG.Tweening;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {
-    public static string Version = "20250109";
+    public static string Version = "20250703";
     
     private Thread _mainThread;
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);
@@ -23,11 +24,22 @@ public class AppManager : Singleton<AppManager>, Addressable
         Player,
     }
 
-    [SerializeField] private TargetAudience _target;
-    public TargetAudience Target => _target;
-    public bool AudienceIsDeveloper() => _target == TargetAudience.Developer;
-    public bool AudienceIsTester() => _target == TargetAudience.Tester;
-    public bool AudienceIsPlayer() => _target == TargetAudience.Player;
+    [SerializeField] private TargetAudience _targetAudience;
+    public TargetAudience Audience => _targetAudience;
+    public bool AudienceIsDeveloper() => _targetAudience == TargetAudience.Developer;
+    public bool AudienceIsTester() => _targetAudience == TargetAudience.Tester;
+    public bool AudienceIsPlayer() => _targetAudience == TargetAudience.Player;
+    
+    public enum TargetPackage
+    {
+        Official,
+        Demo,
+    }
+
+    [SerializeField] private TargetPackage _targetPackage;
+    public TargetPackage Package => _targetPackage;
+    public bool PackageIsOfficial() => _targetPackage == TargetPackage.Official;
+    public bool PackageIsDemo() => _targetPackage == TargetPackage.Demo;
 
     [SerializeField] private AppCanvas AppCanvas;
 

@@ -7,6 +7,7 @@ public class CharacterProfileView : XView
 {
     [NonSerialized] private SelectBehaviour _selectBehaviour;
     [SerializeField] private Image CharacterIcon;
+    [SerializeField] private Image IsDemoLockedIcon;
 
     protected override void AwakeFunction()
     {
@@ -25,5 +26,7 @@ public class CharacterProfileView : XView
         CharacterIcon.sprite = p.GetEntry().GetCharacterIconSprite();
         _selectBehaviour.SetSelectionSprite(p.GetEntry().GetCharacterIconSelectSprite());
         CharacterIcon.color = p.IsUnlocked() ? Color.white : Color.gray;
+        
+        IsDemoLockedIcon.gameObject.SetActive(p.IsDemoLocked());
     }
 }

@@ -1,11 +1,9 @@
 
-using System;
 using System.Collections.Generic;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class RunConfigPanel : Panel
 {
@@ -139,11 +137,17 @@ public class RunConfigPanel : Panel
 
         DetailedCharacterProfileView.SetAddress(currentCharacterSelectBehaviour.GetAddress());
         DetailedCharacterProfileView.Refresh();
+
+        RefreshStartRunButton();
     }
 
     private void RefreshStartRunButton()
     {
         CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
-        StartRunButton._button.interactable = characterProfile.IsUnlocked();
+
+        bool interactable = characterProfile.IsUnlocked() &&
+                            !characterProfile.IsDemoLocked() &&
+                            !DifficultyPickerView.GetSelection().IsDemoLocked();
+        StartRunButton._button.interactable = interactable;
     }
 }

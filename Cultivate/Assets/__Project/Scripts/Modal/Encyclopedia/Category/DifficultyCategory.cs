@@ -21,7 +21,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("2", order: 2, description: "可以开始使用阵法", inheritedDifficultyNames: new string[] { "1" }, finalJingJie: JingJie.YuanYing,
+            new("2", order: 2, description: "解锁阵法规则", inheritedDifficultyNames: new string[] { "1" }, finalJingJie: JingJie.YuanYing,
                 homeAllowFormation: true, awayAllowFormation: false, allowRotate: false,
                 stageClosures: new StageClosure[]
                 {
@@ -61,7 +61,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("6", order: 6, description: "难度6", inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
+            new("6", order: 6, description: "解锁墨染规则", inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
@@ -71,7 +71,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("7", order: 7, description: "难度7", inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
+            new("7", order: 7, description: "敌人获得先手", inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
@@ -81,7 +81,7 @@ public class DifficultyCategory : Category<DifficultyEntry>
                         StageDetails d = (StageDetails)eventDetails;
                     }),
                 }),
-            new("8", order: 8, description: "敌人获得先手", inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
+            new("8", order: 8, description: "解锁天道规则", inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
                 homeAllowFormation: true, awayAllowFormation: true, allowRotate: true,
                 stageClosures: new StageClosure[]
                 {
