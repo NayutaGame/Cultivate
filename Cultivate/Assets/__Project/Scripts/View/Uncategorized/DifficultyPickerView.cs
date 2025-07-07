@@ -13,7 +13,8 @@ public class DifficultyPickerView : MonoBehaviour
     [SerializeField] private PropagatePointerEnter PrevButtonPropagatePointerEnter;
     [SerializeField] private PropagatePointerEnter NextButtonPropagatePointerEnter;
 
-    [SerializeField] private Image DemoSticker;
+    [SerializeField] private Image DemoMask;
+    [SerializeField] private Image DemoText;
 
     private int _selectionIndex;
 
@@ -76,7 +77,8 @@ public class DifficultyPickerView : MonoBehaviour
         if (hasNext)
             NextDifficultyButton.interactable = profiles[nextIndex].IsUnlocked();
         
-        DemoSticker.gameObject.SetActive(curr.IsDemoLocked());
+        DemoMask.gameObject.SetActive(curr.IsDemoLocked());
+        DemoText.gameObject.SetActive(curr.IsDemoLocked());
     }
 
     private void PrevDifficulty()

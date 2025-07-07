@@ -9,7 +9,7 @@ public class CharacterCategory : Category<CharacterEntry>
         AddRange(new List<CharacterEntry>()
         {
             new("徐福",
-                abilityDescription: "命元上限+2，战斗中使用的最左边的一次性牌，战斗后返还",
+                abilityDescription: "命元上限+2\n战斗中使用的最左边的一次性牌，战斗后返还",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0003"],
@@ -183,7 +183,7 @@ public class CharacterCategory : Category<CharacterEntry>
             // new("斩心鬼", abilityDescription: "拥有一把奇怪的剑，此剑吞噬其他卡牌之后威力变得更强"),
 
             new("子非燕",
-                abilityDescription: "流转步数为2",
+                abilityDescription: "??????????",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0002"],
                     Encyclopedia.PackCategory["0003"],

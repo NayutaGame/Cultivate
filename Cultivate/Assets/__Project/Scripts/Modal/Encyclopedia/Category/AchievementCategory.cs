@@ -690,7 +690,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 }),
             
             new(id: "ACH026",
-                name: "返朴归真",
+                name: "返璞归真",
                 conditionDescription: "达到化神境界",
                 rewardDescription: "彼此卿可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 4),

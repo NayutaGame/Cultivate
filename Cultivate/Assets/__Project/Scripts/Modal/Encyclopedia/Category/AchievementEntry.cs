@@ -14,6 +14,7 @@ public class AchievementEntry : Entry
     [NonSerialized] private RunClosure[] _runClosures;
     [NonSerialized] private StageClosure[] _stageClosures;
     [NonSerialized] private LockIndex? _lockIndex;
+    [NonSerialized] private SpriteEntry _spriteEntry;
 
     public string GetName() => _name;
     public string GetConditionDescription() => _conditionDescription;
@@ -22,6 +23,7 @@ public class AchievementEntry : Entry
     public RunClosure[] GetRunClosures() => _runClosures;
     public StageClosure[] GetStageClosures() => _stageClosures;
     public LockIndex? GetLockIndex() => _lockIndex;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
 
     public AchievementEntry(
         string id,
@@ -41,6 +43,7 @@ public class AchievementEntry : Entry
         _lockIndex = lockIndex;
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
+        _spriteEntry = $"UnlockIcon{GetName()}";
     }
 
     public static implicit operator AchievementEntry(string id) 
