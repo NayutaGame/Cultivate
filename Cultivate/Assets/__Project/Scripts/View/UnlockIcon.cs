@@ -14,7 +14,7 @@ public class UnlockIcon : XView
 
         AchievementProfile p = Get<AchievementProfile>();
         ContentImage.sprite = p.GetEntry().GetSprite();
-        LockIcon.gameObject.SetActive(p.IsUnlocked());
+        LockIcon.gameObject.SetActive(!p.IsUnlocked());
     }
 
     // 锁住

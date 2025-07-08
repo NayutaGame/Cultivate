@@ -280,9 +280,9 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
-                        new DirectRoomDefinition(0, "以物易物"),
-                        new DirectRoomDefinition(0, "以物易物"),
-                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(2, "教学6"),
+                        new DirectRoomDefinition(2, "教学6"),
+                        new DirectRoomDefinition(2, "教学6"),
                     },
                 }),
             

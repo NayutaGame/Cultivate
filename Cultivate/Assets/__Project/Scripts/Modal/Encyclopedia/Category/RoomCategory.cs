@@ -1022,12 +1022,19 @@ public class RoomCategory : Category<RoomEntry>
                         new ConfirmGuide("想提前确认合成之后的卡牌效果时，可以右键点击卡牌查看。"),
                         new ConfirmGuide("用现有的牌击败对手吧"),
                     });
-                    
+
                     DialogCell Dialog = new DialogCell(
-                            titleText: "同名合成",
-                            detailedText: "回想起来一些以前修行时的法术。对之前合成的规则有些疑问，正好可以试验一下。");
+                        titleText: "同名合成",
+                        detailedText: "回想起来一些以前修行时的法术。对之前合成的规则有些疑问，正好可以试验一下。");
+
+                    DialogCell Dialog2 = new DialogCell(
+                        titleText: "同名合成",
+                        detailedText: "炼丹真是深奥，同名牌竟然也可以合成。");
                     
                     Dialog[0].SetSelect(option => A);
+
+                    A.SetWinOperation(() => Dialog2);
+                    A.SetLoseOperation(() => Dialog2);
                     
                     return Dialog;
                 }),

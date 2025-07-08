@@ -26,20 +26,28 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         CharacterProfile = characterProfile;
         DifficultyProfile = difficultyProfile;
         PacksToStartWith = packsToStartWith ?? GetCharacter().GetDefaultPacks();
-        // MapEntry = mapEntry ?? "标准无教程";
-        // MapEntry = mapEntry ?? "标准";
-        // MapEntry = mapEntry ?? "发现";
+
+        if (!AppManager.Instance.AudienceIsDeveloper())
+        {
+            MapEntry = mapEntry ?? "标准";
+        }
+        else
+        {
+            // MapEntry = mapEntry ?? "标准无教程";
+            MapEntry = mapEntry ?? "标准";
+            // MapEntry = mapEntry ?? "发现";
         
-        // MapEntry = mapEntry ?? "测试";
-        // MapEntry = mapEntry ?? "墨染测试";
-        MapEntry = mapEntry ?? "动画测试";
-        // MapEntry = mapEntry ?? "境界测试";
-        // MapEntry = mapEntry ?? "多段测试";
-        // MapEntry = mapEntry ?? "拖拽测试";
-        // MapEntry = mapEntry ?? "结算测试";
-        // MapEntry = mapEntry ?? "排局3";
-        // MapEntry = mapEntry ?? "商店测试";
-        // MapEntry = mapEntry ?? "教学10";
+            // MapEntry = mapEntry ?? "测试";
+            // MapEntry = mapEntry ?? "墨染测试";
+            // MapEntry = mapEntry ?? "动画测试";
+            // MapEntry = mapEntry ?? "境界测试";
+            // MapEntry = mapEntry ?? "多段测试";
+            // MapEntry = mapEntry ?? "拖拽测试";
+            // MapEntry = mapEntry ?? "结算测试";
+            // MapEntry = mapEntry ?? "排局3";
+            // MapEntry = mapEntry ?? "商店测试";
+            // MapEntry = mapEntry ?? "教学10";
+        }
     }
 
     public void OnBeforeSerialize() { }
