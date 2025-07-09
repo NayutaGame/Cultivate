@@ -107,7 +107,8 @@ public class StageEnvironment : Addressable, StageClosureListener
     private async UniTask GainFormationProcedure(GainFormationDetails d)
     {
         await _closureDict.SendEvent(StageClosureDict.WIL_GAIN_FORMATION, d);
-        if (d.Cancel) return;
+        if (d.Cancel)
+            return;
         
         Formation formation = new Formation(d.Owner, d._formation);
         d.Owner.AddFormation(formation);
@@ -640,8 +641,12 @@ public class StageEnvironment : Addressable, StageClosureListener
         bool registeredHere = RegisterTempClosures(d);
         await _closureDict.SendEvent(StageClosureDict.WIL_LOSE_ARMOR, d);
 
+        d.Cancel |= d.Value <= 0;
         if (d.Cancel)
+        {
+            UnregisterTempClosures(d, registeredHere);
             return;
+        }
 
         d.Tgt.Armor -= d.Value;
         _result.TryAppend($"    护甲变成了[{d.Tgt.Armor}]");
