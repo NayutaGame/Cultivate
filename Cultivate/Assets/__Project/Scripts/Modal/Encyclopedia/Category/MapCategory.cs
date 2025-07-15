@@ -7,6 +7,24 @@ public class MapCategory : Category<MapEntry>
     {
         AddRange(new List<MapEntry>()
         {
+            new(id: "测试",
+                envJingJie: JingJie.ZhuJi,
+                slotCount: 5,
+                gold: 0,
+                skillJingJie: JingJie.LianQi,
+                skillCount: 5,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                        new DirectRoomDefinition(0, "以物易物"),
+                    },
+                }),
+            
             new(id: "标准",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
@@ -267,22 +285,6 @@ public class MapCategory : Category<MapEntry>
                         new DirectRoomDefinition(13, "发现一张牌"),
                         new DirectRoomDefinition(13, "发现一张牌"),
                         new SuccessRoomDefinition(13),
-                    },
-                }),
-            
-            new(id: "测试",
-                envJingJie: JingJie.ZhuJi,
-                slotCount: 5,
-                gold: 0,
-                skillJingJie: JingJie.LianQi,
-                skillCount: 5,
-                levels: new RoomDefinition[][]
-                {
-                    new RoomDefinition[]
-                    {
-                        new DirectRoomDefinition(2, "教学6"),
-                        new DirectRoomDefinition(2, "教学6"),
-                        new DirectRoomDefinition(2, "教学6"),
                     },
                 }),
             

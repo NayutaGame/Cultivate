@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -21,9 +20,9 @@ public class Grabber : MonoBehaviour
     }
 
     private GrabState _state;
-    private DelegatingView _view;
+    private SlotView _view;
 
-    public void SetHover(DelegatingView view)
+    public void SetHover(SlotView view)
     {
         if (_state == GrabState.Drag)
             return;
@@ -33,10 +32,10 @@ public class Grabber : MonoBehaviour
         
         _state = GrabState.Hover;
         _view = view;
-        _view.GetDelegatedView().GetRect().SetParent(GetRect());
+        _view.GetContentView().GetRect().SetParent(GetRect());
     }
 
-    public void SetDrag(DelegatingView view)
+    public void SetDrag(SlotView view)
     {
         if (_state == GrabState.Drag)
             return;
@@ -50,23 +49,23 @@ public class Grabber : MonoBehaviour
         
         _state = GrabState.Drag;
         _view = view;
-        _view.GetDelegatedView().GetRect().SetParent(GetRect());
+        _view.GetContentView().GetRect().SetParent(GetRect());
     }
 
-    public void Release(DelegatingView view)
+    public void Release(SlotView view)
     {
         _state = GrabState.Empty;
         if (_view == null || view != _view)
             return;
         
-        AnimatedListView parent = _view.GetParentListView();
+        ListView parent = _view.GetParentListView();
         if (parent != null)
         {
             parent.RecoverDelegatingView(_view);
         }
         else
         {
-            _view.GetDelegatedView().GetRect().SetParent(_view.GetRect());
+            _view.GetContentView().GetRect().SetParent(_view.GetRect());
         }
         
         _view = null;

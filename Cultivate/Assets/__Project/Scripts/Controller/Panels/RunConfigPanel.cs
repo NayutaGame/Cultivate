@@ -59,9 +59,9 @@ public class RunConfigPanel : Panel
 
     private void OnEnable()
     {
+        CharacterListView.Sync();
         Refresh();
         AppManager.Instance.PushEscFunc(Return);
-
     }
 
     private void OnDisable()
@@ -95,7 +95,7 @@ public class RunConfigPanel : Panel
     }
     
     private void Select(InteractBehaviour ib, PointerEventData eventData)
-        => Select(ib.GetView().GetBehaviour<SelectBehaviour>());
+        => Select((ib.GetView() as SlotView).GetContentView().GetBehaviour<SelectBehaviour>());
     
     private void Select(SelectBehaviour selectBehaviour)
     {
@@ -123,15 +123,15 @@ public class RunConfigPanel : Panel
         int? index = CharacterListView.Traversal().FirstIdx(v => v.Get<CharacterProfile>() == characterProfile);
         if (index == null)
             return null;
-        return CharacterListView.ViewFromIndex(index.Value).GetBehaviour<SelectBehaviour>();
+        return CharacterListView.ViewFromIndex(index.Value).GetContentView().GetBehaviour<SelectBehaviour>();
     }
 
     private void RefreshAllSelection()
     {
         SelectBehaviour currentCharacterSelectBehaviour = GetCurrentCharacterSelectBehaviour();
-        foreach (var view in CharacterListView.Traversal())
+        foreach (var slotView in CharacterListView.Traversal())
         {
-            SelectBehaviour s = view.GetBehaviour<SelectBehaviour>();
+            SelectBehaviour s = slotView.GetContentView().GetBehaviour<SelectBehaviour>();
             s.SetSelect(s == currentCharacterSelectBehaviour);
         }
 

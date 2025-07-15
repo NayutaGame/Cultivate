@@ -55,12 +55,12 @@ public class BarterCell : Cell
         
         _inventory = new();
         for (int i = 0; i < fromSkills.Length; i++)
-            _inventory.Add(new BarterItem(fromSkills[i], toSkills[i]));
+            _inventory.Add(new BarterItem(fromSkills[i], toSkills[i], Exchange));
     }
-
-    public void ExchangeSkillProcedure(ExchangeSkillDetails d)
+    
+    private void Exchange(BarterItem barterItem)
     {
-        BarterItem barterItem = d.BarterItem;
+        ExchangeSkillDetails details = new(barterItem);
         if (!_inventory.Contains(barterItem))
             return;
         
@@ -74,11 +74,11 @@ public class BarterCell : Cell
         b.RecordDeckIndex(deckIndex);
         b.Add();
 
-        d.BarterItemIndex = _inventory.IndexOf(barterItem);
+        details.BarterItemIndex = _inventory.IndexOf(barterItem);
         _inventory.Remove(barterItem);
 
-        d.DeckIndex = deckIndex;
-        RunManager.Instance.Environment.ExchangeSkillProcedure(d);
+        details.DeckIndex = deckIndex;
+        RunManager.Instance.Environment.ExchangeSkillProcedure(details);
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)

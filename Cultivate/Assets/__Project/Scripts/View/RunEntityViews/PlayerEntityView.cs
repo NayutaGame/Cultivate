@@ -11,7 +11,6 @@ public class PlayerEntityView : XView
         base.SetAddress(address);
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         FieldView.DropNeuron.Join(Equip, Swap);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
@@ -58,7 +57,7 @@ public class PlayerEntityView : XView
             return;
 
         EquipDetails equipDetails = new(from.Get<RunSkill>(), to.Get<SkillSlot>());
-        CanvasManager.Instance.RunCanvas.EquipEvent.Invoke(equipDetails);
+        RunManager.Instance.Environment.EquipProcedure(equipDetails);
     }
 
     private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
@@ -71,7 +70,7 @@ public class PlayerEntityView : XView
             return;
 
         SwapDetails swapDetails = new(fromSkillSlot, to.Get<SkillSlot>());
-        CanvasManager.Instance.RunCanvas.SwapEvent.Invoke(swapDetails);
+        RunManager.Instance.Environment.SwapProcedure(swapDetails);
     }
 
     #endregion

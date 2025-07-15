@@ -162,6 +162,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3730836485673369251}
   - component: {fileID: 4162078557098956384}
+  - component: {fileID: 7012232081393593569}
+  - component: {fileID: 7144425679283061081}
+  - component: {fileID: 5010536248859474266}
   m_Layer: 0
   m_Name: StageFormationView
   m_TagString: Untagged
@@ -209,6 +212,49 @@ MonoBehaviour:
   Glow: {fileID: 8075901007188913733}
   Background: {fileID: 1677805338478869753}
   Icon: {fileID: 1394822568673548365}
+--- !u!114 &7012232081393593569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 0}
+  AnnotationAddress: Canvas.FormationAnnotation
+  HoverTransform: {fileID: 0}
+--- !u!114 &7144425679283061081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e56bc29f3d98bf4081752f48f1cfa66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5010536248859474266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193414529329671437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 0}
+  HoverAudioId: FormationHover
+  LeftClickAudioId: 
+  RightClickAudioId: JingJieSwitch
 --- !u!1 &6246781757783261440
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ShopPanel : Panel
 {
     public TMP_Text TitleText;
-    public ListView CommodityListView;
+    public ListView ListView;
     public Image Illustration;
     public Button ExitButton;
 
@@ -17,8 +17,7 @@ public class ShopPanel : Panel
         base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
-        CommodityListView.SetAddress(_address.Append(".Commodities"));
-        CommodityListView.LeftClickNeuron.Join(BuySkill);
+        ListView.SetAddress(_address.Append(".Commodities"));
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(ExitShop);
@@ -30,21 +29,20 @@ public class ShopPanel : Panel
         TitleText.text = pd.GetTitle();
         Illustration.sprite = pd.GetSprite().Sprite;
 
-        CommodityListView.Refresh();
+        ListView.Refresh();
     }
 
     private void GainGold(int value)
-        => CommodityListView.Refresh();
+        => ListView.Refresh();
 
     private void LoseGold(int value)
-        => CommodityListView.Refresh();
+        => ListView.Refresh();
 
     private void OnEnable()
     {
         RunManager.Instance.Environment.BuySkillNeuron.Add(CanvasManager.Instance.RunCanvas.BuySkillStaging);
         RunManager.Instance.Environment.GainGoldNeuron.Add(GainGold);
         RunManager.Instance.Environment.LoseGoldNeuron.Add(LoseGold);
-        CommodityListView.Sync();
     }
 
     private void OnDisable()
@@ -52,17 +50,6 @@ public class ShopPanel : Panel
         RunManager.Instance.Environment.BuySkillNeuron.Remove(CanvasManager.Instance.RunCanvas.BuySkillStaging);
         RunManager.Instance.Environment.GainGoldNeuron.Remove(GainGold);
         RunManager.Instance.Environment.LoseGoldNeuron.Remove(LoseGold);
-    }
-    
-    private void BuySkill(InteractBehaviour ib, PointerEventData eventData)
-    {
-        CanvasManager.Instance.SkillAnnotation.PointerExit();
-        
-        ShopCell shopCell = _address.Get<ShopCell>();
-        Commodity commodity = ib.Get<Commodity>();
-        int commodityIndex = CommodityListView.IndexFromView(ib.GetView()).Value;
-        BuySkillDetails details = new(commodity, commodityIndex);
-        shopCell.BuySkillProcedure(details);
     }
 
     private void ExitShop()
@@ -72,7 +59,7 @@ public class ShopPanel : Panel
 
     public XView CommodityItemFromIndex(int commodityIndex)
     {
-        return CommodityListView.ViewFromIndex(commodityIndex);
+        return ListView.ViewFromIndex(commodityIndex);
     }
 
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)

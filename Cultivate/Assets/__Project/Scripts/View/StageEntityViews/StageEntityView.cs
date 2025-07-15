@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StageEntityView : LegacySimpleView
+public class StageEntityView : XView
 {
-    [SerializeField] public AnimatedListView Formations;
-    [SerializeField] public AnimatedListView Buffs;
+    [SerializeField] public ListView Formations;
+    [SerializeField] public ListView Buffs;
     [SerializeField] private ProceduralProgressBar HealthBar;
     [SerializeField] private TMP_Text HealthText;
     [SerializeField] private Image ArmorIcon;

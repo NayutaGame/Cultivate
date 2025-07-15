@@ -21,14 +21,6 @@ public class ReactionView : MonoBehaviour
     private float _targetIntensity;
     public float GetTargetIntensity() => _targetIntensity;
 
-    private void OnEnable()
-    {
-    }
-
-    private void OnDisable()
-    {
-    }
-
     private Tween _handle;
     public bool IsAnimating => _handle != null && _handle.active;
 

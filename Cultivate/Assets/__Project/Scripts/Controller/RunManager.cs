@@ -7,7 +7,6 @@ using UnityEngine;
 public class RunManager : Singleton<RunManager>, Addressable
 {
     [NonSerialized] public RunEnvironment Environment;
-    public Arena Arena;
 
     public SpriteRenderer BackgroundRenderer;
 
@@ -20,10 +19,7 @@ public class RunManager : Singleton<RunManager>, Addressable
         _accessors = new()
         {
             { "Environment",           () => Environment },
-            { "Arena",                 () => Arena },
         };
-
-        Arena = new();
     }
 
     public void SetEnvironmentFromConfig(RunConfig config)

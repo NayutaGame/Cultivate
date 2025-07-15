@@ -5,18 +5,18 @@ using UnityEngine.EventSystems;
 public class PackPreview : XView
 {
     [SerializeField] private PropagateClick _propagateClick;
-    [SerializeField] private ListView _listView;
+    [SerializeField] private ListView ListView;
 
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
         
         _propagateClick._onPointerClick = ClosePreview;
-        _listView.SetAddress("InventoryFromExpandedPack");
+        ListView.SetAddress("InventoryFromExpandedPack");
     }
 
     public void Sync()
-        => _listView.Sync();
+        => ListView.Sync();
 
     public void ClosePreview()
         => gameObject.SetActive(false);

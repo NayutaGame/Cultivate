@@ -17,7 +17,7 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityShowPivot;
     [SerializeField] private RectTransform PlayerEntityHidePivot;
 
-    public AnimatedListView HandView;
+    public ListView HandView;
     [SerializeField] private RectTransform HandTransform;
     [SerializeField] private RectTransform HandShowPivot;
     [SerializeField] private RectTransform HandHidePivot;
@@ -61,6 +61,8 @@ public class DeckPanel : Panel
         HandView.DraggingEnterNeuron.Join(DraggingEnter);
         HandView.DraggingExitNeuron.Join(DraggingExit);
         
+        HandView.ItemCountChanged.Join(RefreshLayoutSpacing);
+        
         UnequipZone._onDrop = Unequip;
 
         SortButton._button.onClick.RemoveAllListeners();
@@ -87,6 +89,20 @@ public class DeckPanel : Panel
         CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(0, null);
     }
 
+    private void RefreshLayoutSpacing()
+    {
+        HorizontalLayoutGroup horizontalLayoutGroup = HandView.GetLayoutGroup() as HorizontalLayoutGroup;
+        float L = HandView.GetRect().rect.width;
+        float l = 150;
+        int n = HandView.GetCount();
+        float s;
+        if (n < L / l)
+            s = 0;
+        else
+            s = -(n * l - L) / (n - 1);
+        horizontalLayoutGroup.spacing = s;
+    }
+
     protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show, 2 for locked
@@ -100,8 +116,6 @@ public class DeckPanel : Panel
     private void OnEnable()
     {
         RunManager.Instance.Environment.FieldChangedNeuron.Add(PlayerEntity.OnFieldChange);
-        PlayerEntity.Sync();
-        HandView.Sync();
         CharacterIconView.Refresh();
     }
 
@@ -131,20 +145,20 @@ public class DeckPanel : Panel
         PlayerEntity.FieldView.TraversalActive().Do(HighlightSlot);
         HandView.TraversalActive().Do(HighlightSkill);
         
-        void HighlightSkill(XView view)
+        void HighlightSkill(SlotView view)
         {
             ISkill runSkill = view.Get<ISkill>();
             if (runSkill == null || !pred(runSkill))
                 return;
-            ((view as DelegatingView).GetDelegatedView() as SkillView).SetHighlight(true);
+            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
         }
         
-        void HighlightSlot(XView view)
+        void HighlightSlot(SlotView view)
         {
             SkillSlot skillSlot = view.Get<SkillSlot>();
             if (skillSlot == null || skillSlot.Skill == null || !pred(skillSlot.Skill))
                 return;
-            ((view as DelegatingView).GetDelegatedView() as SlotView).SkillView.SetHighlight(true);
+            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
         }
     }
 
@@ -153,20 +167,20 @@ public class DeckPanel : Panel
         PlayerEntity.FieldView.TraversalActive().Do(UnhighlightSlot);
         HandView.TraversalActive().Do(UnhighlightSkill);
         
-        void UnhighlightSkill(XView view)
+        void UnhighlightSkill(SlotView view)
         {
             ISkill runSkill = view.Get<ISkill>();
             if (runSkill == null)
                 return;
-            ((view as DelegatingView).GetDelegatedView() as SkillView).SetHighlight(false);
+            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
         }
         
-        void UnhighlightSlot(XView view)
+        void UnhighlightSlot(SlotView view)
         {
             SkillSlot skillSlot = view.Get<SkillSlot>();
             if (skillSlot == null)
                 return;
-            ((view as DelegatingView).GetDelegatedView() as SlotView).SkillView.SetHighlight(false);
+            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
         }
     }
 
@@ -188,7 +202,7 @@ public class DeckPanel : Panel
             return;
 
         UnequipDetails unequipDetails = UnequipDetails.FromSlot(skillSlot);
-        CanvasManager.Instance.RunCanvas.UnequipEvent.Invoke(unequipDetails);
+        RunManager.Instance.Environment.UnequipProcedure(unequipDetails);
     }
 
     private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
@@ -197,12 +211,12 @@ public class DeckPanel : Panel
             return;
 
         MergeDetails mergeDetails = new(from.Get<RunSkill>(), to.Get<RunSkill>());
-        CanvasManager.Instance.RunCanvas.MergeEvent.Invoke(mergeDetails);
+        RunManager.Instance.Environment.MergeProcedure(mergeDetails);
     }
 
     #endregion
 
-    public XView SkillItemFromDeckIndex(DeckIndex deckIndex)
+    public SlotView SkillItemFromDeckIndex(DeckIndex deckIndex)
     {
         if (deckIndex.InField)
             return PlayerEntity.FieldView.ViewFromIndex(deckIndex.Index);
@@ -210,7 +224,7 @@ public class DeckPanel : Panel
         return HandView.ViewFromIndex(deckIndex.Index);
     }
 
-    public XView LatestSkillItem()
+    public SlotView LatestSkillItem()
         => HandView.LastView();
 
     private Tween _animationHandle;
@@ -224,7 +238,8 @@ public class DeckPanel : Panel
         _animationHandle = DOTween.Sequence()
             .AppendCallback(() =>
             {
-                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
+                (HandView.GetLayoutGroup() as HorizontalLayoutGroup).spacing = -170;
+                // HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
                 HandView.RefreshPivotsAsync();
             })
             .AppendInterval(0.2f)
@@ -232,7 +247,8 @@ public class DeckPanel : Panel
             {
                 HandView.Get<SkillInventory>().SortByComparisonId(0);
                 HandView.Refresh();
-                HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
+                RefreshLayoutSpacing();
+                // HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
                 HandView.RefreshPivotsAsync();
             });
         

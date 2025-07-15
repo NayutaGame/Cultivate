@@ -10,8 +10,8 @@ public class PackConfigPanel : PopupPanel
 {
     [SerializeField] private GameObject BlockingCurtain;
     
-    [SerializeField] private AnimatedListView ConstraintListView;
-    [SerializeField] private AnimatedListView SelectionListView;
+    [SerializeField] private ListView ConstraintListView;
+    [SerializeField] private ListView SelectionListView;
     [SerializeField] private Button ConfirmButton;
     [SerializeField] private Button CancelButton;
 
@@ -108,29 +108,29 @@ public class PackConfigPanel : PopupPanel
 
     private void EquipPackStaging(PackEquipDetails d)
     {
-        void SetPosition(DelegatingView view, XView otherView)
+        void SetPosition(SlotView view, XView otherView)
         {
             view.GetAnimator().SetState(3);
-            view.GetDelegatedView().GetRect().position = otherView.GetRect().position;
-            view.GetDelegatedView().GetRect().localScale = otherView.GetRect().localScale;
+            view.GetContentView().GetRect().position = otherView.GetRect().position;
+            view.GetContentView().GetRect().localScale = otherView.GetRect().localScale;
         }
 
-        void SetIdle(DelegatingView view)
+        void SetIdle(SlotView view)
         {
-            view.GetAnimator().SetStateAsync(1);
+            view.GetAnimator().SetStateAsync(SlotView.IDLE);
             // AudioManager.Play("CardPlacement");
         }
         
         // ConstraintListView 设定动画
-        DelegatingView constraintView = ConstraintListView.ViewFromIndex(d.ConstraintIndex) as DelegatingView;
-        DelegatingView selectionView = SelectionListView.ViewFromIndex(d.SelectionIndex) as DelegatingView;
+        SlotView constraintView = ConstraintListView.ViewFromIndex(d.ConstraintIndex);
+        SlotView selectionView = SelectionListView.ViewFromIndex(d.SelectionIndex);
         
         constraintView.Refresh();
         selectionView.Refresh();
         
-        SetPosition(constraintView, selectionView.GetDelegatedView());
-        constraintView.GetAnimator().SetStateAsync(1);
-        selectionView.GetAnimator().SetState(1);
+        SetPosition(constraintView, selectionView.GetContentView());
+        constraintView.GetAnimator().SetStateAsync(SlotView.IDLE);
+        selectionView.GetAnimator().SetState(SlotView.IDLE);
         
         // SelectionListView 归零 变暗
         
@@ -139,27 +139,27 @@ public class PackConfigPanel : PopupPanel
 
     private void UnequipPackStaging(PackUnequipDetails d)
     {
-        void SetPosition(DelegatingView view, XView otherView)
+        void SetPosition(SlotView view, XView otherView)
         {
             view.GetAnimator().SetState(3);
-            view.GetDelegatedView().GetRect().position = otherView.GetRect().position;
-            view.GetDelegatedView().GetRect().localScale = otherView.GetRect().localScale;
+            view.GetContentView().GetRect().position = otherView.GetRect().position;
+            view.GetContentView().GetRect().localScale = otherView.GetRect().localScale;
         }
 
-        void SetIdle(DelegatingView view)
+        void SetIdle(SlotView view)
         {
-            view.GetAnimator().SetStateAsync(1);
+            view.GetAnimator().SetStateAsync(SlotView.IDLE);
             // AudioManager.Play("CardPlacement");
         }
         
         // ConstraintListView 设定动画
-        DelegatingView constraintView = ConstraintListView.ViewFromIndex(d.ConstraintIndex) as DelegatingView;
-        DelegatingView selectionView = SelectionListView.ViewFromIndex(d.SelectionIndex) as DelegatingView;
+        SlotView constraintView = ConstraintListView.ViewFromIndex(d.ConstraintIndex);
+        SlotView selectionView = SelectionListView.ViewFromIndex(d.SelectionIndex);
         
         constraintView.Refresh();
         selectionView.Refresh();
         
-        SetPosition(selectionView, constraintView.GetDelegatedView());
+        SetPosition(selectionView, constraintView.GetContentView());
         selectionView.GetAnimator().SetStateAsync(1);
         constraintView.GetAnimator().SetState(1);
         
@@ -205,12 +205,12 @@ public class PackConfigPanel : PopupPanel
         if (pack.IsEquipped)
         {
             // 如果卡包已装备，高亮其当前所在槽位
-            ConstraintListView.TraversalActive().Do(view =>
+            ConstraintListView.TraversalActive().Do(slotView =>
             {
-                PackConstraint constraint = view.Get<PackConstraint>();
+                PackConstraint constraint = slotView.Get<PackConstraint>();
                 if (constraint.Pack == pack)
                 {
-                    view.GetBehaviour<HighlightBehaviour>()?.SetHighlight(true);
+                    slotView.GetContentView().GetBehaviour<HighlightBehaviour>()?.SetHighlight(true);
                 }
             });
         }
@@ -220,11 +220,11 @@ public class PackConfigPanel : PopupPanel
             PackConstraint firstValidSlot = configManager.GetFirstValidUnlockedSlot(pack);
             if (firstValidSlot == null) return;
 
-            ConstraintListView.TraversalActive().Do(view =>
+            ConstraintListView.TraversalActive().Do(slotView =>
             {
-                if (view.Get<PackConstraint>() == firstValidSlot)
+                if (slotView.Get<PackConstraint>() == firstValidSlot)
                 {
-                    view.GetBehaviour<HighlightBehaviour>()?.SetHighlight(true);
+                    slotView.GetContentView().GetBehaviour<HighlightBehaviour>()?.SetHighlight(true);
                 }
             });
         }
@@ -234,9 +234,9 @@ public class PackConfigPanel : PopupPanel
     {
         ConstraintListView.TraversalActive().Do(Unhighlight);
         
-        void Unhighlight(XView view)
+        void Unhighlight(SlotView slotView)
         {
-            view.GetBehaviour<HighlightBehaviour>().SetHighlight(false);
+            slotView.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
         }
     }
 
@@ -264,25 +264,25 @@ public class PackConfigPanel : PopupPanel
                 .Do(pack => validPacks.Add(pack));
         }
 
-        SelectionListView.TraversalActive().Do(Highlight);
+        // SelectionListView.TraversalActive().Do(Highlight);
 
-        void Highlight(XView view)
+        void Highlight(SlotView slotView)
         {
-            ConfigPack pack = view.Get<ConfigPack>();
+            ConfigPack pack = slotView.Get<ConfigPack>();
             if (validPacks.Contains(pack))
             {
-                view.GetBehaviour<HighlightBehaviour>().SetHighlight(true);
+                slotView.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
             }
         }
     }
 
     private void UnhoverConstraint(InteractBehaviour ib, PointerEventData d)
     {
-        SelectionListView.TraversalActive().Do(Unhighlight);
+        // SelectionListView.TraversalActive().Do(Unhighlight);
         
-        void Unhighlight(XView view)
+        void Unhighlight(SlotView slotView)
         {
-            view.GetBehaviour<HighlightBehaviour>().SetHighlight(false);
+            slotView.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
         }
     }
 

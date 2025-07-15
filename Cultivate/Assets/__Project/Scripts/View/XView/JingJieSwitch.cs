@@ -10,17 +10,25 @@ public class JingJieSwitch : XBehaviour
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-        BindInteractBehaviour();
+        SetInteractBehaviour(_ib);
     }
 
-    private void BindInteractBehaviour()
+    public override void SetInteractBehaviour(InteractBehaviour ib)
     {
-        if (_ib == null)
-            return;
+        if (_ib != null)
+        {
+            _ib.BeginDragNeuron.Remove(ResetJingJie);
+            _ib.PointerExitNeuron.Remove(ResetJingJie);
+            _ib.RightClickNeuron.Remove(NextJingJie);
+        }
 
-        _ib.BeginDragNeuron.Join(ResetJingJie);
-        _ib.PointerExitNeuron.Join(ResetJingJie);
-        _ib.RightClickNeuron.Join(NextJingJie);
+        _ib = ib;
+        if (_ib != null)
+        {
+            _ib.BeginDragNeuron.Join(ResetJingJie);
+            _ib.PointerExitNeuron.Join(ResetJingJie);
+            _ib.RightClickNeuron.Join(NextJingJie);
+        }
     }
     
     private void ResetJingJie(InteractBehaviour ib, PointerEventData d)

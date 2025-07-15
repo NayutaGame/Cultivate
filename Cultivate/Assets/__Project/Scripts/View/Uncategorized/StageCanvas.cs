@@ -99,7 +99,7 @@ public class StageCanvas : MonoBehaviour
         entityView.Buffs.AddItem();
         entityView.Buffs.ForceLayoutRebuild();
         
-        (entityView.Buffs.LastView() as DelegatingView).Align();
+        entityView.Buffs.LastView().Align();
     }
     
     public void LoseBuffStaging(bool tgtIsHome, int buffIndex)
@@ -109,10 +109,10 @@ public class StageCanvas : MonoBehaviour
         entityView.Buffs.ForceLayoutRebuild();
 
         int i = 0;
-        entityView.Buffs.Traversal().Do(v =>
+        entityView.Buffs.Traversal().Do(slotView =>
         {
             if (i >= buffIndex)
-                (v as DelegatingView).Align();
+                slotView.Align();
             i++;
         });
         
@@ -126,6 +126,6 @@ public class StageCanvas : MonoBehaviour
         entityView.Formations.AddItem();
         entityView.Formations.ForceLayoutRebuild();
         
-        (entityView.Formations.LastView() as DelegatingView).Align();
+        entityView.Formations.LastView().Align();
     }
 }

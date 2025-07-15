@@ -357,9 +357,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 529978078669234200}
-  - component: {fileID: 4886093480126312862}
   - component: {fileID: 6422294263586690588}
-  - component: {fileID: 9203051572044680544}
   - component: {fileID: 4778428653906400107}
   m_Layer: 5
   m_Name: EntityBarView
@@ -393,18 +391,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &4886093480126312862
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108923873393925487}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &6422294263586690588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,22 +403,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f2d254ef8932b4d95b7d67f1aa75ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactBehaviour: {fileID: 9203051572044680544}
+  _interactBehaviour: {fileID: 0}
   LadderText: {fileID: 229500277212770914}
   NameText: {fileID: 328300260318751242}
   JingJieText: {fileID: 330612139291796175}
---- !u!114 &9203051572044680544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108923873393925487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30a23a871c055924a95509ec64a3c668, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4778428653906400107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,7 +480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

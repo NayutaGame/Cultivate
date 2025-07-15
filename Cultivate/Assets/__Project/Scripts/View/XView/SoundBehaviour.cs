@@ -25,20 +25,31 @@ public class SoundBehaviour : XBehaviour
         if (!string.IsNullOrEmpty(RightClickAudioId))
             _rightClickAudioEntry = RightClickAudioId;
         
-        BindInteractBehaviour();
+        SetInteractBehaviour(_ib);
     }
 
-    private void BindInteractBehaviour()
+    public override void SetInteractBehaviour(InteractBehaviour ib)
     {
-        if (_ib == null)
-            return;
-        
-        if (_hoverAudioEntry != null)
-            _ib.PointerEnterNeuron.Join(Hover);
-        if (_leftClickAudioEntry != null)
-            _ib.LeftClickNeuron.Join(LeftClick);
-        if (_rightClickAudioEntry != null)
-            _ib.RightClickNeuron.Join(RightClick);
+        if (_ib != null)
+        {
+            if (_hoverAudioEntry != null)
+                _ib.PointerEnterNeuron.Remove(Hover);
+            if (_leftClickAudioEntry != null)
+                _ib.LeftClickNeuron.Remove(LeftClick);
+            if (_rightClickAudioEntry != null)
+                _ib.RightClickNeuron.Remove(RightClick);
+        }
+
+        _ib = ib;
+        if (_ib != null)
+        {
+            if (_hoverAudioEntry != null)
+                _ib.PointerEnterNeuron.Join(Hover);
+            if (_leftClickAudioEntry != null)
+                _ib.LeftClickNeuron.Join(LeftClick);
+            if (_rightClickAudioEntry != null)
+                _ib.RightClickNeuron.Join(RightClick);
+        }
     }
     
     private void Hover(InteractBehaviour ib, PointerEventData d)

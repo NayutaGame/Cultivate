@@ -3,8 +3,9 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
-public class BattleEntityView : LegacySimpleView
+public class BattleEntityView : XView
 {
     public TMP_Text NameText;
     public ListView FieldView;
@@ -24,8 +25,6 @@ public class BattleEntityView : LegacySimpleView
         base.SetAddress(address);
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        
         FormationList.SetAddress(GetAddress().Append(".ActiveFormations"));
     }
 

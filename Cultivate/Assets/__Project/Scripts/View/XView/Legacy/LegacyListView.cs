@@ -230,6 +230,7 @@ public class LegacyListView : LegacySimpleView
         ModifiedGate += Modified;
         ResyncGate += Resync;
     }
+    
     private void OnDisable()
     {
         InsertGate -= InsertItem;

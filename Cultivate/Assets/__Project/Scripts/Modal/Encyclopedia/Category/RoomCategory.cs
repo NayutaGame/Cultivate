@@ -1113,6 +1113,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetWinOperation(() =>
                     {
+                        RunManager.Instance.Environment.SetHealthProcedure(40);
+                        RunManager.Instance.Environment.Home.SetSlotCount(3);
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         return null;
                     });

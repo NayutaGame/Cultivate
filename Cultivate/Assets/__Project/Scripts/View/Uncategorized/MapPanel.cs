@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class MapPanel : Panel
 {
-    [SerializeField] private LegacyListView RoomListView;
+    [SerializeField] private ListView RoomListView;
     
     [SerializeField] private RectTransform BodyTransform;
     [SerializeField] private RectTransform BodyShowPivot;
@@ -39,8 +39,6 @@ public class MapPanel : Panel
     {
         RunManager.Instance.Environment.RoomChangedNeuron.Add(RoomChanged);
         RunManager.Instance.Environment.LevelChangedNeuron.Add(LevelChanged);
-        RoomListView.Sync();
-        RoomListView.Refresh();
     }
 
     private void OnDisable()

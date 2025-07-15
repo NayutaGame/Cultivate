@@ -79,12 +79,6 @@ public class EntityEditorPanel : Panel
         ReturnButton.onClick.AddListener(Hide);
     }
 
-    private void OnEnable()
-    {
-        EntityBrowser.Sync();
-        SkillBrowser.Sync();
-    }
-
     public override void Refresh()
     {
         AwayEntityView.Refresh();
@@ -161,7 +155,7 @@ public class EntityEditorPanel : Panel
     }
 
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
-        => SelectEntity(ib.GetView().GetBehaviour<SelectBehaviour>());
+        => SelectEntity((ib.GetView() as SlotView).GetContentView().GetBehaviour<SelectBehaviour>());
 
     private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
         => SelectEntity(null);
@@ -175,7 +169,7 @@ public class EntityEditorPanel : Panel
             _selection.SetSelectAsync(false);
 
         _selection = selectBehaviour;
-        _selectionIndex = EntityBrowser.IndexFromView(_selection == null ? null : _selection.GetView());
+        _selectionIndex = EntityBrowser.IndexFromView(_selection == null ? null : _selection.GetView() as SlotView);
 
         // TODO: submit form
         EditorManager.Instance.SetSelectionIndex(_selectionIndex);

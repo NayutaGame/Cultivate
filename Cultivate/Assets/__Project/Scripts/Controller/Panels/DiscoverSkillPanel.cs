@@ -13,16 +13,15 @@ public class DiscoverSkillPanel : Panel
     [SerializeField] private RectTransform DetailedTextTransform;
     [SerializeField] private RectTransform DetailedTextIdlePivot;
     [SerializeField] private TMP_Text DescriptionText;
-    [SerializeField] public ListView SkillList;
+    [SerializeField] public ListView ListView;
 
     private Address _address;
 
     public override void AwakeFunction()
     {
         _address = new Address("Run.Environment.ActivePanel");
-        SkillList.SetAddress(_address.Append(".Skills"));
-        SkillList.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        SkillList.LeftClickNeuron.Join(PickDiscoveredSkill);
+        ListView.SetAddress(_address.Append(".Skills"));
+        ListView.LeftClickNeuron.Join(PickDiscoveredSkill);
         base.AwakeFunction();
     }
 
@@ -32,11 +31,6 @@ public class DiscoverSkillPanel : Panel
 
         TitleText.text = d.GetTitleText();
         DescriptionText.text = d.GetDescriptionText();
-    }
-
-    public void LayoutRebuild()
-    {
-        (SkillList as AnimatedListView).RefreshPivotsAsync();
     }
 
     private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();
@@ -59,7 +53,7 @@ public class DiscoverSkillPanel : Panel
     private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
     {
         SkillEntryDescriptor skill = ib.Get<SkillEntryDescriptor>();
-        int pickedIndex = SkillList.IndexFromView(ib.GetView()).Value;
+        int pickedIndex = ListView.IndexFromView(ib.GetView() as SlotView).Value;
         PickDiscoveredSkillDetails details = new(skill, pickedIndex);
         PickDiscoveredSkillEvent.Invoke(details);
     }
@@ -67,19 +61,18 @@ public class DiscoverSkillPanel : Panel
     public void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
     {
         // AudioManager.Play("CardPlacement");
-
-        SkillList.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
+        ListView.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
         CanvasManager.Instance.SkillAnnotation.PointerExit();
         
         int pickedIndex = d.PickedIndex;
-        DelegatingView discoveredView = SkillList.ViewFromIndex(pickedIndex) as DelegatingView;
-        RectTransform rect = discoveredView.GetDelegatedView().GetRect();
+        SlotView slotView = ListView.ViewFromIndex(pickedIndex) as SlotView;
+        RectTransform rect = slotView.GetContentView().GetRect();
 
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();
-        DelegatingView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem() as DelegatingView;
+        SlotView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem();
         view.SetMoveFromRectToIdle(rect);
         
-        discoveredView.GetAnimator().SetState(0);
+        slotView.GetAnimator().SetState(0);
 
         CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(2));
     }
@@ -97,20 +90,20 @@ public class DiscoverSkillPanel : Panel
             .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
             .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
             .Append(EnterIdlePrepare())
-            .AppendCallback(SkillList.EnableAutoUpdateLayout);
+            .AppendCallback(ListView.EnableAutoUpdateLayout);
 
     public Tween EnterIdlePrepare()
     {
-        SkillList.DisableAutoUpdateLayout();
-        SkillList.Sync();
+        ListView.DisableAutoUpdateLayout();
+        ListView.Sync();
         RefreshInfo();
         gameObject.SetActive(true);
-        SkillList.ForceLayoutRebuild();
+        ListView.ForceLayoutRebuild();
         TraversalSetHide();
         Sequence seq = DOTween.Sequence();
-        SkillList.TraversalActive().Do(item =>
+        ListView.TraversalActive().Do(item =>
         {
-            seq.Append(item.GetAnimator().TweenFromSetState(DelegatingView3States.IDLE));
+            seq.Append(item.GetAnimator().TweenFromSetState(SlotView.IDLE));
             seq.AppendCallback(AudioManager.PlayShowDiscovered);
             seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
         });
@@ -125,25 +118,26 @@ public class DiscoverSkillPanel : Panel
         => DOTween.Sequence()
             // .Append(TraversalEnterHide())
             .Append(TraversalEnterIdle())
-            .AppendCallback(SkillList.EnableAutoUpdateLayout);
+            .AppendCallback(ListView.EnableAutoUpdateLayout);
 
     public void TraversalSetHide()
     {
-        SkillList.TraversalActive().Do(item =>
+        ListView.TraversalActive().Do(slotView =>
         {
-            item.GetAnimator().SetState(DelegatingView3States.HIDE);
+            slotView.GetAnimator().SetState(SlotView.FREE);
+            slotView.GetContentView().GetRect().localScale = Vector3.zero;
         });
     }
 
     public Tween TraversalEnterIdle()
     {
-        SkillList.DisableAutoUpdateLayout();
-        SkillList.Sync();
+        ListView.DisableAutoUpdateLayout();
+        ListView.Sync();
         RefreshInfo();
         Sequence seq = DOTween.Sequence();
-        SkillList.TraversalActive().Do(item =>
+        ListView.TraversalActive().Do(item =>
         {
-            seq.Append(item.GetAnimator().TweenFromSetState(DelegatingView3States.IDLE));
+            seq.Append(item.GetAnimator().TweenFromSetState(SlotView.IDLE));
             seq.AppendCallback(AudioManager.PlayShowDiscovered);
             seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
         });
@@ -153,11 +147,11 @@ public class DiscoverSkillPanel : Panel
     public Tween TraversalEnterHide()
     {
         Sequence seq = DOTween.Sequence();
-        SkillList.TraversalActive().Do(item =>
+        ListView.TraversalActive().Do(item =>
         {
             seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(false));
         });
-        SkillList.TraversalActive().Do(item =>
+        ListView.TraversalActive().Do(item =>
         {
             seq.Join(item.GetAnimator().TweenFromSetState(0));
         });

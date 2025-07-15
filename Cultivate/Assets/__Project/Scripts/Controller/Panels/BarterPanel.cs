@@ -1,11 +1,9 @@
 
-using CLLibrary;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
-    public AnimatedListView BarterItemListView;
+    public ListView ListView;
 
     public Button ExitButton;
 
@@ -16,14 +14,7 @@ public class BarterPanel : Panel
         base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
-        BarterItemListView.SetAddress(_address.Append(".Inventory"));
-
-        // suspicious
-        BarterItemListView.Traversal().Do(v =>
-        {
-            BarterItemView barterItemView = (v as DelegatingView).GetDelegatedView() as BarterItemView;
-            barterItemView.ExchangeSkillEvent.Join(ExchangeSkill);
-        });
+        ListView.SetAddress(_address.Append(".Inventory"));
 
         ExitButton.onClick.RemoveAllListeners();
         ExitButton.onClick.AddListener(ExitShop);
@@ -32,7 +23,6 @@ public class BarterPanel : Panel
     private void OnEnable()
     {
         RunManager.Instance.Environment.ExchangeSkillNeuron.Add(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
-        BarterItemListView.Sync();
     }
 
     private void OnDisable()
@@ -42,27 +32,16 @@ public class BarterPanel : Panel
 
     public override void Refresh()
     {
-        BarterItemListView.Refresh();
+        ListView.Refresh();
     }
 
     public XView BarterItemFromIndex(int commodityIndex)
     {
-        return BarterItemListView.ViewFromIndex(commodityIndex);
-    }
-
-    private void ExchangeSkill(BarterItem barterItem)
-    {
-        BarterCell barterCell = _address.Get<BarterCell>();
-        ExchangeSkillDetails details = new(barterItem);
-        barterCell.ExchangeSkillProcedure(details);
-        // AudioManager.Instance.Play("钱币");
+        return ListView.ViewFromIndex(commodityIndex);
     }
 
     private void ExitShop()
     {
         RunManager.Instance.Environment.ExitShopProcedure();
     }
-
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
-        => AudioManager.Play("CardHover");
 }

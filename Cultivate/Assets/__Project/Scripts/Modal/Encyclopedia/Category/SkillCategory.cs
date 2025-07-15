@@ -2065,7 +2065,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new GainMaxHealthProcedureDefinition(16 + 8 * dj, induced: true),
                     new TrySetValueProcedureDefinition("WengChengConvert", (12 - 2 * j).ToString()),
-                    new GainArmorProcedureDefinition(0, induced: true)
+                    new GainArmorProcedureDefinition(0, induced: false)
                         .AddClosure(WengChengClosure),
                 }),
 
@@ -2845,7 +2845,6 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.JinDan2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    
                     new DirectProcedureDefinition(async d =>
                         {
                             StageSkill toCast = d.Skill.PrevSkill(true);
@@ -2860,8 +2859,8 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new GainBuffProcedureDefinition("童趣")
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"复制对手下一次获得的增益")),
+                    new GainBuffProcedureDefinition("童趣", stack: 1 + dj)
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"复制对手下{1 + dj}次获得的增益")),
                 }),
 
             new(id:                         "0611",

@@ -7,8 +7,6 @@ public class BarterItemView : XView
     public SkillView RightSkillView;
     public GlowingButton ExchangeButton;
 
-    public Neuron<BarterItem> ExchangeSkillEvent = new();
-
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -42,7 +40,7 @@ public class BarterItemView : XView
 
     private void Exchange()
     {
-        BarterItem barterItem = Get<BarterItem>();
-        ExchangeSkillEvent.Invoke(barterItem);
+        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        Get<BarterItem>().Exchange();
     }
 }

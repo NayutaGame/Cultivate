@@ -30,11 +30,6 @@ public class ArbitraryCardPickerPanel : Panel
         SkillListView.LeftClickNeuron.Join(ToggleSkill);
     }
 
-    private void OnEnable()
-    {
-        SkillListView.Sync();
-    }
-
     public void OnDisable()
     {
         _selections.Do(b => b.SetSelect(false));
@@ -54,7 +49,10 @@ public class ArbitraryCardPickerPanel : Panel
     }
 
     private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)
-        => ToggleSkill(ib.GetView().GetBehaviour<SelectBehaviour>());
+    {
+        SlotView slotView = ib.GetView() as SlotView;
+        ToggleSkill(slotView.GetContentView().GetBehaviour<SelectBehaviour>());
+    }
 
     private void ToggleSkill(SelectBehaviour selectBehaviour)
     {

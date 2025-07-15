@@ -11,7 +11,6 @@ using UnityEngine.EventSystems;
 public class BattlePanel : Panel
 {
     [SerializeField] private BattleEntityView EnemyView;
-    [SerializeField] private ReactionView ReactionView;
     
     [SerializeField] private TMP_Text HomeHealth;
     [SerializeField] private PropagatePointer HomePropagatePointer;
@@ -125,13 +124,6 @@ public class BattlePanel : Panel
     {
         ReactionDict ??= new Dictionary<string, Sprite>()
             { { RunEntity.NORMAL_KEY, null }, { RunEntity.SMIRK_KEY, Encyclopedia.SpriteCategory["Smirk"].Sprite }, { RunEntity.AFRAID_KEY, Encyclopedia.SpriteCategory["Afraid"].Sprite }, };
-        // CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.BeginDragNeuron.Join(ReactionFromBeginDrag);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.EndDragNeuron.Join(ReactionFromEndDrag);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DragNeuron.Join(ReactionFromDrag);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.PlayerEntity.SkillList.DropNeuron.Join(ReactionFromDrop);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.HandView.BeginDragNeuron.Join(ReactionFromBeginDrag);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.HandView.EndDragNeuron.Join(ReactionFromEndDrag);
-        // CanvasManager.Instance.RunCanvas.DeckPanel.HandView.DragNeuron.Join(ReactionFromDrag);
         
         HomePropagatePointer._onPointerEnter = PointerEnterHomeHealth;
         HomePropagatePointer._onPointerExit = PointerExitHomeHealth;
@@ -159,61 +151,6 @@ public class BattlePanel : Panel
         
         RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshEnemy);
         RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshOperationPanel);
-    }
-
-    private void ReactionFromBeginDrag(LegacyInteractBehaviour ib, PointerEventData d)
-    {
-        object obj = ib.GetSimpleView().Get<object>();
-        RunSkill skill;
-
-        if (obj is SkillSlot slot)
-        {
-            skill = slot.Skill;
-            if (skill == null)
-                return;
-            
-            IEntity entity = EnemyView.Get<IEntity>();
-            string reactionKey = entity.GetReactionKeyFromSkill(skill);
-            Sprite reactionSprite = ReactionDict[reactionKey];
-            ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
-            return;
-        }
-
-        if (obj is RunSkill runSkill)
-        {
-            skill = runSkill;
-            
-            IEntity entity = EnemyView.Get<IEntity>();
-            string reactionKey = entity.GetReactionKeyFromSkill(skill);
-            Sprite reactionSprite = ReactionDict[reactionKey];
-            ReactionView.BeginDrag(reactionSprite, IntensityFromMousePosition(d.position));
-            return;
-        }
-
-        Assert.IsTrue(false, $"BeginDrag, {obj}");
-    }
-
-    private void ReactionFromEndDrag(LegacyInteractBehaviour ib, PointerEventData d)
-    {
-        ReactionView.EndDrag();
-    }
-
-    private void ReactionFromDrop(LegacyInteractBehaviour from, LegacyInteractBehaviour to, PointerEventData d)
-    {
-        ReactionView.EndDrag();
-    }
-
-    private void ReactionFromDrag(LegacyInteractBehaviour ib, PointerEventData d)
-    {
-        float intensity = IntensityFromMousePosition(d.position);
-        ReactionView.Drag(intensity);
-    }
-
-    private float IntensityFromMousePosition(Vector2 mouseUIPosition)
-    {
-        Vector3 reactionPosition = ReactionView.transform.position;
-        Vector3 mouseWorldPosition = CanvasManager.Instance.UI2World(mouseUIPosition);
-        return Vector3.Distance(reactionPosition, mouseWorldPosition).Remap(2, 10, 1, 0.1f);
     }
 
     private Action[] CombatActions = new Action[] { CombatNormal, CombatOnlyAnimation, CombatOnlyResult, };

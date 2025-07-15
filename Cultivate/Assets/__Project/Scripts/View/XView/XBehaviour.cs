@@ -35,4 +35,6 @@ public class XBehaviour : MonoBehaviour
 
     public T Get<T>() where T : class => _view.Get<T>();
     public virtual Address GetAddress() => _view.GetAddress();
+    
+    public virtual void SetInteractBehaviour(InteractBehaviour ib) { }
 }

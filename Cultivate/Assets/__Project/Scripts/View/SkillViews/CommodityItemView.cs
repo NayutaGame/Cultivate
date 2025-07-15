@@ -1,6 +1,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CommodityItemView : XView
 {
@@ -8,11 +9,13 @@ public class CommodityItemView : XView
     public TMP_Text PriceText;
     public GameObject DiscountSign;
     public TMP_Text DiscountText;
+    public PropagateClick BuyPropagator;
 
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
         SkillView.SetAddress(GetAddress().Append(".Skill"));
+        BuyPropagator._onPointerClick = Buy;
     }
 
     public override void Refresh()
@@ -47,5 +50,11 @@ public class CommodityItemView : XView
         {
             PriceText.color = Color.red;
         }
+    }
+
+    private void Buy(PointerEventData d)
+    {
+        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        Get<Commodity>().Buy();
     }
 }

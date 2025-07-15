@@ -9,7 +9,7 @@ public class GachaPanel : Panel
     public TMP_Text PriceTag;
     public Button BuyButton;
     public Button ExitButton;
-    public AnimatedListView ListView;
+    public ListView ListView;
 
     private Address _address;
 

@@ -76,12 +76,11 @@ public class RunResultPanel : Panel
         InitMilestoneList();
         Sequence seq = DOTween.Sequence();
 
-        MilestoneList.Traversal().Do(item => {
-            DelegatingView view = item as DelegatingView;
+        MilestoneList.Traversal().Do(slotView => {
             // AudioManager.PlayCardPlacement();
-            seq.Append(view.GetDelegatedView().GetRect().DOMove(view.GetRect().position, 0.15f))
-                .Join((view.GetDelegatedView() as MilestoneView).CanvasGroup.DOFade(1, 0.15f))
-                .AppendCallback(() => view.GetAnimator().SetState(DelegatingView4States.IDLE));
+            seq.Append(slotView.GetContentView().GetRect().DOMove(slotView.GetRect().position, 0.15f))
+                .Join((slotView.GetContentView() as MilestoneView).CanvasGroup.DOFade(1, 0.15f))
+                .AppendCallback(() => slotView.GetAnimator().SetState(SlotView.IDLE));
         });
 
         seq.AppendInterval(0.2f);
@@ -93,21 +92,20 @@ public class RunResultPanel : Panel
     
     private void InitMilestoneList()
     {
-        void SetInitialState(DelegatingView view, Vector3 position)
+        void SetInitialState(SlotView view, Vector3 position)
         {
-            view.GetAnimator().SetState(DelegatingView4States.FREE);
-            view.GetDelegatedView().GetRect().position = position;
-            MilestoneView delegatedView = view.GetDelegatedView() as MilestoneView;
+            view.GetAnimator().SetState(SlotView.FREE);
+            view.GetContentView().GetRect().position = position;
+            MilestoneView delegatedView = view.GetContentView() as MilestoneView;
             delegatedView.CanvasGroup.alpha = 0;
         }
         
         MilestoneList.Sync();
         MilestoneList.ForceLayoutRebuild();
 
-        MilestoneList.Traversal().Do(item =>
+        MilestoneList.Traversal().Do(slotView =>
         {
-            DelegatingView view = item as DelegatingView;
-            SetInitialState(view, view.GetRect().position + Vector3.right * 0.5f);
+            SetInitialState(slotView, slotView.GetRect().position + Vector3.right * 0.5f);
         });
     }
 
@@ -116,12 +114,11 @@ public class RunResultPanel : Panel
         InitUnlockList();
         Sequence seq = DOTween.Sequence();
 
-        UnlockList.Traversal().Do(item => {
-            DelegatingView view = item as DelegatingView;
+        UnlockList.Traversal().Do(slotView => {
             // AudioManager.PlayCardPlacement();
-            seq.Append(view.GetDelegatedView().GetRect().DOMove(view.GetRect().position, 0.15f))
-                .Join((view.GetDelegatedView() as UnlockIcon).CanvasGroup.DOFade(1, 0.15f))
-                .AppendCallback(() => view.GetAnimator().SetState(DelegatingView4States.IDLE));
+            seq.Append(slotView.GetContentView().GetRect().DOMove(slotView.GetRect().position, 0.15f))
+                .Join((slotView.GetContentView() as UnlockIcon).CanvasGroup.DOFade(1, 0.15f))
+                .AppendCallback(() => slotView.GetAnimator().SetState(SlotView.IDLE));
         });
 
         seq.AppendInterval(0.2f);
@@ -131,21 +128,20 @@ public class RunResultPanel : Panel
 
     private void InitUnlockList()
     {
-        void SetInitialState(DelegatingView view, Vector3 position)
+        void SetInitialState(SlotView view, Vector3 position)
         {
-            view.GetAnimator().SetState(DelegatingView4States.FREE);
-            view.GetDelegatedView().GetRect().position = position;
-            UnlockIcon delegatedView = view.GetDelegatedView() as UnlockIcon;
-            delegatedView.CanvasGroup.alpha = 0;
+            view.GetAnimator().SetState(SlotView.FREE);
+            view.GetContentView().GetRect().position = position;
+            UnlockIcon contentView = view.GetContentView() as UnlockIcon;
+            contentView.CanvasGroup.alpha = 0;
         }
         
         UnlockList.Sync();
         UnlockList.ForceLayoutRebuild();
 
-        UnlockList.Traversal().Do(item =>
+        UnlockList.Traversal().Do(slotView =>
         {
-            DelegatingView view = item as DelegatingView;
-            SetInitialState(view, view.GetRect().position + Vector3.up * 0.25f);
+            SetInitialState(slotView, slotView.GetRect().position + Vector3.up * 0.25f);
         });
     }
 

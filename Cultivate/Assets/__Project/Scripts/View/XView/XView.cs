@@ -7,7 +7,7 @@ public class XView : MonoBehaviour
     private RectTransform _rect;
     public RectTransform GetRect() => _rect;
 
-    [SerializeField] private InteractBehaviour _interactBehaviour;
+    [SerializeField] protected InteractBehaviour _interactBehaviour;
     public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
     
     private XBehaviour[] _behaviours;
@@ -47,12 +47,11 @@ public class XView : MonoBehaviour
 
         _animator = InitAnimator();
         
-        InteractBehaviour ib = GetInteractBehaviour();
-        if (ib != null)
+        if (_interactBehaviour != null)
         {
-            ib.SetView(this);
-            ib.CheckAwake();
-            InitInteractBehaviour(ib);
+            _interactBehaviour.SetView(this);
+            _interactBehaviour.CheckAwake();
+            SetInteractBehaviour(_interactBehaviour);
         }
     }
 
@@ -61,7 +60,11 @@ public class XView : MonoBehaviour
         return null;
     }
 
-    protected virtual void InitInteractBehaviour(InteractBehaviour ib) { }
+    public virtual void SetInteractBehaviour(InteractBehaviour ib)
+    {
+        _interactBehaviour = ib;
+        _behaviours.Do(b => b.SetInteractBehaviour(ib));
+    }
 
     private Address _address;
     public virtual Address GetAddress() => _address;

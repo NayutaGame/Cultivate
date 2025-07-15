@@ -80,16 +80,9 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.SkillSetJingJieNeuron.Add(SkillSetJingJieStaging);
         RunManager.Instance.Environment.ReplaceSkillNeuron.Add(ReplaceSkillStaging);
         
-        EquipEvent.Add(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Add(EquipStaging);
-        
-        SwapEvent.Add(RunManager.Instance.Environment.SwapProcedure);
         RunManager.Instance.Environment.SwapNeuron.Add(SwapStaging);
-        
-        UnequipEvent.Add(RunManager.Instance.Environment.UnequipProcedure);
         RunManager.Instance.Environment.UnequipNeuron.Add(UnequipStaging);
-        
-        MergeEvent.Add(RunManager.Instance.Environment.MergeProcedure);
         RunManager.Instance.Environment.MergeNeuron.Add(MergeStaging);
         
         RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
@@ -117,16 +110,9 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.SkillSetJingJieNeuron.Remove(SkillSetJingJieStaging);
         RunManager.Instance.Environment.ReplaceSkillNeuron.Remove(ReplaceSkillStaging);
         
-        EquipEvent.Remove(RunManager.Instance.Environment.EquipProcedure);
         RunManager.Instance.Environment.EquipNeuron.Remove(EquipStaging);
-        
-        SwapEvent.Remove(RunManager.Instance.Environment.SwapProcedure);
         RunManager.Instance.Environment.SwapNeuron.Remove(SwapStaging);
-        
-        UnequipEvent.Remove(RunManager.Instance.Environment.UnequipProcedure);
         RunManager.Instance.Environment.UnequipNeuron.Remove(UnequipStaging);
-        
-        MergeEvent.Remove(RunManager.Instance.Environment.MergeProcedure);
         RunManager.Instance.Environment.MergeNeuron.Remove(MergeStaging);
         
         RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
@@ -200,7 +186,7 @@ public class RunCanvas : Panel
         Cell d = RunManager.Instance.Environment.GetPanel();
         bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
                         d is DiscoverSkillCell;
-        
+
         await DeckPanel.GetAnimator().SetStateAsync(showDeck ? 2 : 0);
     }
 
@@ -216,76 +202,28 @@ public class RunCanvas : Panel
         GetAnimator().SetState(0);
     }
 
-    public Neuron<EquipDetails> EquipEvent = new();
-    public Neuron<SwapDetails> SwapEvent = new();
-    public Neuron<UnequipDetails> UnequipEvent = new();
-    public Neuron<MergeDetails> MergeEvent = new();
-
     #region Staging
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
             .AppendCallback(() => gameObject.SetActive(true));
-
-    private void GainSingleSkillStaging(GainSkillBuilder b)
-    {
-        // void SetPosition(DelegatingView view, Vector3 position)
-        // {
-        //     view.GetAnimator().SetState(DelegatingView5States.FREE);
-        //     view.GetDelegatedView().GetRect().position = position;
-        //     view.GetDelegatedView().GetRect().localScale = Vector3.zero;
-        // }
-        //
-        // void SetShow(DelegatingView view)
-        // {
-        //     view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
-        // }
-        //
-        // void SetIdle(DelegatingView view)
-        // {
-        //     view.GetAnimator().SetStateAsync(1);
-        //     // AudioManager.Play("CardPlacement");
-        // }
-        //
-        // if (b.DeckIndex.InField)
-        // {
-        //     DeckPanel.PlayerEntity.FieldView.Modified(b.DeckIndex.Index);
-        // }
-        // else
-        // {
-        //     DeckPanel.HandView.InsertItem(b.DeckIndex.Index);
-        // }
-        //
-        // DelegatingView view = DeckPanel.SkillItemFromDeckIndex(b.DeckIndex) as DelegatingView;
-        // Vector3 position = Vector3.zero;
-        //
-        // SetPosition(view, position);
-        //
-        // Sequence seq = DOTween.Sequence()
-        //     .AppendInterval(0.05f)
-        //     .AppendCallback(() => SetShow(view))
-        //     .AppendInterval(0.3f)
-        //     .AppendCallback(() => SetIdle(view));
-        //
-        // _animationQueue.QueueAnimation(seq);
-    }
     
     private void GainSkillStaging(GainSkillBuilder b)
     {
-        void SetPosition(DelegatingView view, Vector3 position)
+        void SetPosition(SlotView view, Vector3 position)
         {
             view.GetAnimator().SetState(4);
-            view.GetDelegatedView().GetRect().position = position;
-            view.GetDelegatedView().GetRect().localScale = Vector3.zero;
+            view.GetContentView().GetRect().position = position;
+            view.GetContentView().GetRect().localScale = Vector3.zero;
         }
         
-        void SetShow(DelegatingView view)
+        void SetShow(SlotView view)
         {
             AudioManager.PlayGainSkill();
-            view.GetAnimator().SetTweenAsync(view.GetDelegatedView().GetRect().DOScale(1, 0.15f));
+            view.GetAnimator().SetTweenAsync(view.GetContentView().GetRect().DOScale(1, 0.15f));
         }
         
-        void SetIdle(DelegatingView view)
+        void SetIdle(SlotView view)
         {
             AudioManager.PlayCardPlacement();
             view.GetAnimator().SetStateAsync(1);
@@ -308,7 +246,7 @@ public class RunCanvas : Panel
         
         for (int i = 0; i < b.PreferredDeckIndices.Count; i++)
         {
-            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(b.PreferredDeckIndices[i].Reify()) as DelegatingView;
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(b.PreferredDeckIndices[i].Reify()) as SlotView;
             Vector3 showPosition = position + i * offset * Vector3.left;
             SetPosition(view, showPosition);
         }
@@ -318,7 +256,7 @@ public class RunCanvas : Panel
         
         foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
         {
-            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as SlotView;
             seq.AppendCallback(() => SetShow(view))
                 .AppendInterval(0.15f);
         }
@@ -327,7 +265,7 @@ public class RunCanvas : Panel
         
         foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
         {
-            DelegatingView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as DelegatingView;
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as SlotView;
             seq.AppendCallback(() => SetIdle(view))
                 .AppendInterval(0.1f);
         }
@@ -375,10 +313,10 @@ public class RunCanvas : Panel
     {
         if (d.IsReplace)
         {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
             to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
             
             from.SetMoveFromRectToIdle(to.GetRect());
             
@@ -386,10 +324,10 @@ public class RunCanvas : Panel
         }
         else
         {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
             to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
             
             from.GetAnimator().SetStateAsync(1);
             
@@ -405,10 +343,10 @@ public class RunCanvas : Panel
     {
         if (d.IsReplace)
         {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
             to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
             
             from.SetMoveFromRectToIdle(to.GetRect());
             
@@ -417,10 +355,10 @@ public class RunCanvas : Panel
         }
         else
         {
-            DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-            DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
             to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
             
             DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
             DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
@@ -435,12 +373,12 @@ public class RunCanvas : Panel
     {
         DeckPanel.HandView.AddItem();
         
-        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
-        DelegatingView to = DeckPanel.LatestSkillItem() as DelegatingView;
+        SlotView from = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView to = DeckPanel.LatestSkillItem();
         
         DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         
-        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+        to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
         
         from.GetAnimator().SetStateAsync(1);
         
@@ -453,10 +391,10 @@ public class RunCanvas : Panel
     {
         CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(2, null);
         
-        DelegatingView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as DelegatingView;
-        DelegatingView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as DelegatingView;
+        SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
+        SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
         
-        to.SetMoveFromRectToIdle(from.GetDelegatedView().GetRect());
+        to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
         from.GetAnimator().SetStateAsync(1);
         
         DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
@@ -472,14 +410,14 @@ public class RunCanvas : Panel
 
     public void BuySkillStaging(BuySkillDetails d)
     {
-        void SetPosition(DelegatingView view, Vector3 position, Vector3 localScale)
+        void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
         {
             view.GetAnimator().SetState(4);
-            view.GetDelegatedView().GetRect().position = position;
-            view.GetDelegatedView().GetRect().localScale = localScale;
+            view.GetContentView().GetRect().position = position;
+            view.GetContentView().GetRect().localScale = localScale;
         }
         
-        void SetIdle(DelegatingView view)
+        void SetIdle(SlotView view)
         {
             view.GetAnimator().SetStateAsync(1);
         }
@@ -489,10 +427,10 @@ public class RunCanvas : Panel
         
         DeckPanel.HandView.AddItem();
         
-        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
-        DelegatingView commodityView = ShopPanel.CommodityItemFromIndex(d.CommodityIndex) as DelegatingView;
+        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView commodityView = ShopPanel.CommodityItemFromIndex(d.CommodityIndex) as SlotView;
         
-        ShopPanel.CommodityListView.RemoveItemAt(d.CommodityIndex);
+        ShopPanel.ListView.RemoveItemAt(d.CommodityIndex);
         
         SetPosition(view, commodityView.GetRect().position, commodityView.GetRect().localScale);
         SetIdle(view);
@@ -500,26 +438,27 @@ public class RunCanvas : Panel
 
     public void ExchangeSkillStaging(ExchangeSkillDetails d)
     {
-        void SetPosition(DelegatingView view, Vector3 position, Vector3 localScale)
+        void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
         {
             view.GetAnimator().SetState(4);
-            view.GetDelegatedView().GetRect().position = position;
-            view.GetDelegatedView().GetRect().localScale = localScale;
+            view.GetContentView().GetRect().position = position;
+            view.GetContentView().GetRect().localScale = localScale;
         }
         
-        void SetIdle(DelegatingView view)
+        void SetIdle(SlotView view)
         {
             view.GetAnimator().SetStateAsync(1);
         }
         
         // AudioManager.Play("CardPlacement");
+        // AudioManager.Instance.Play("钱币");
         
-        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
-        DelegatingView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as DelegatingView;
+        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as SlotView;
         
         DeckPanel.HandView.Modified(d.DeckIndex.Index);
-        BarterPanel.BarterItemListView.RemoveItemAt(d.BarterItemIndex);
-        BarterPanel.BarterItemListView.Sync();
+        BarterPanel.ListView.RemoveItemAt(d.BarterItemIndex);
+        BarterPanel.ListView.Sync();
         
         SetPosition(view, barterItemView.GetRect().position, barterItemView.GetRect().localScale);
         SetIdle(view);
@@ -527,14 +466,14 @@ public class RunCanvas : Panel
 
     public void GachaStaging(GachaDetails d)
     {
-        void SetPosition(DelegatingView view, Vector3 position, Vector3 localScale)
+        void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
         {
             view.GetAnimator().SetState(4);
-            view.GetDelegatedView().GetRect().position = position;
-            view.GetDelegatedView().GetRect().localScale = localScale;
+            view.GetContentView().GetRect().position = position;
+            view.GetContentView().GetRect().localScale = localScale;
         }
         
-        void SetIdle(DelegatingView view)
+        void SetIdle(SlotView view)
         {
             view.GetAnimator().SetStateAsync(1);
         }
@@ -543,8 +482,8 @@ public class RunCanvas : Panel
         
         DeckPanel.HandView.AddItem();
         
-        DelegatingView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as DelegatingView;
-        DelegatingView gachaItemView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as DelegatingView;
+        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView gachaItemView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as SlotView;
         
         GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
         

@@ -60,7 +60,7 @@ public class DiamondButton : XView
     {
         InteractBehaviour ib = GetInteractBehaviour();
         if (ib != null)
-            InitInteractBehaviour(ib);
+            SetInteractBehaviour(ib);
         
         if (_isInteractable)
         {
@@ -96,21 +96,41 @@ public class DiamondButton : XView
         }
     }
 
-    protected override void InitInteractBehaviour(InteractBehaviour ib)
+    public override void SetInteractBehaviour(InteractBehaviour ib)
     {
-        ib.PointerEnterNeuron.Join(PointerEnter);
-        ib.PointerExitNeuron.Join(PointerExit);
-        ib.PointerDownNeuron.Join(PointerDown);
-        ib.PointerUpNeuron.Join(PointerUp);
-        if (AudioManager.Instance != null)
+        if (_interactBehaviour != null)
         {
-            ib.PointerEnterNeuron.Join(AudioManager.PlayButtonHover);
-            ib.LeftClickNeuron.Join(AudioManager.PlayButtonPress);
-            ib.RightClickNeuron.Join(AudioManager.PlayButtonPress);
-        }
+            ib.PointerEnterNeuron.Remove(PointerEnter);
+            ib.PointerExitNeuron.Remove(PointerExit);
+            ib.PointerDownNeuron.Remove(PointerDown);
+            ib.PointerUpNeuron.Remove(PointerUp);
+            if (AudioManager.Instance != null)
+            {
+                ib.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+                ib.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+                ib.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
+            }
         
-        ib.LeftClickNeuron.Join(LeftClickNeuron);
-        ib.RightClickNeuron.Join(RightClickNeuron);
+            ib.LeftClickNeuron.Join(LeftClickNeuron);
+            ib.RightClickNeuron.Join(RightClickNeuron);
+        }
+        base.SetInteractBehaviour(ib);
+        if (_interactBehaviour != null)
+        {
+            ib.PointerEnterNeuron.Join(PointerEnter);
+            ib.PointerExitNeuron.Join(PointerExit);
+            ib.PointerDownNeuron.Join(PointerDown);
+            ib.PointerUpNeuron.Join(PointerUp);
+            if (AudioManager.Instance != null)
+            {
+                ib.PointerEnterNeuron.Join(AudioManager.PlayButtonHover);
+                ib.LeftClickNeuron.Join(AudioManager.PlayButtonPress);
+                ib.RightClickNeuron.Join(AudioManager.PlayButtonPress);
+            }
+        
+            ib.LeftClickNeuron.Join(LeftClickNeuron);
+            ib.RightClickNeuron.Join(RightClickNeuron);
+        }
     }
 
     private Tween EnterIdle()

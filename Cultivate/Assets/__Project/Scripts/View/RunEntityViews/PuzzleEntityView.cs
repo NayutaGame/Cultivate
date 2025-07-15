@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PuzzleEntityView : LegacySimpleView
+public class PuzzleEntityView : XView
 {
     public TMP_Text NameText;
     public ListView SkillList;
-    public LegacyListView FormationList;
+    public ListView FormationList;
     
     [SerializeField] public RectTransform SkillListTransform;
     [SerializeField] private RectTransform SkillListShowPivot;

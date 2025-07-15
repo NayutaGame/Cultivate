@@ -29,9 +29,6 @@ public class EntityEditorEntityView : XView
     public ListView FieldView;
     public ListView FormationListView;
 
-    public ListView SmirkAgainstListView;
-    public ListView AfraidAgainstListView;
-
     public GameObject Blank;
 
     public override void SetAddress(Address address)
@@ -103,28 +100,6 @@ public class EntityEditorEntityView : XView
 
         if (FormationListView != null)
             FormationListView.SetAddress(GetAddress().Append(".ShowingFormations"));
-
-        if (SmirkAgainstListView != null)
-        {
-            SmirkAgainstListView.SetAddress(GetAddress().Append(".SmirkAgainstSlots"));
-            // SmirkAgainstListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-            // SmirkAgainstListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-            // SmirkAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-            //     CanvasManager.Instance.FormationAnnotation.PointerExit);
-            // SmirkAgainstListView.RightClickNeuron.Join(RightClickSlotNeuron);
-            // SmirkAgainstListView.DropNeuron.Join(DropSmirkAgainstSlotNeuron);
-        }
-
-        if (AfraidAgainstListView != null)
-        {
-            AfraidAgainstListView.SetAddress(GetAddress().Append(".AfraidAgainstSlots"));
-            // AfraidAgainstListView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-            // AfraidAgainstListView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-            // AfraidAgainstListView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-            //     CanvasManager.Instance.FormationAnnotation.PointerExit);
-            // AfraidAgainstListView.RightClickNeuron.Join(RightClickSlotNeuron);
-            // AfraidAgainstListView.DropNeuron.Join(DropAfraidAgainstSlotNeuron);
-        }
     }
 
     #region Accessors
@@ -194,8 +169,6 @@ public class EntityEditorEntityView : XView
         SetInPool(entity.IsInPool());
         FieldView.Sync();
         FormationListView.Refresh();
-        SmirkAgainstListView.Refresh();
-        AfraidAgainstListView.Refresh();
     }
 
     private void EntryChanged(int entityEntryIndex)

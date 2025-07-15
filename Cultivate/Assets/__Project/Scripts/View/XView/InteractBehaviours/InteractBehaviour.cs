@@ -1,8 +1,10 @@
 
+using System.Diagnostics;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class InteractBehaviour : MonoBehaviour
 {
@@ -136,9 +138,9 @@ public class InteractBehaviour : MonoBehaviour
             PointerExitNeuron.Invoke(this, eventData);
             return;
         }
-        
-        if (eventData.pointerDrag == gameObject)
-            return;
+
+        // if (eventData.pointerDrag == gameObject)
+        //     return;
 
         InteractBehaviour dragging = eventData.pointerDrag.GetComponent<InteractBehaviour>();
         if (dragging == null)

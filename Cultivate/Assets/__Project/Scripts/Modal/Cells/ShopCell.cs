@@ -1,5 +1,4 @@
 
-using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
@@ -54,13 +53,13 @@ public class ShopCell : Cell
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
             float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-            _commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, currJingJie), price, discount));
+            _commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, currJingJie), price, Buy, discount));
         }
     }
 
-    public void BuySkillProcedure(BuySkillDetails d)
+    private void Buy(Commodity commodity)
     {
-        Commodity commodity = d.Commodity;
+        BuySkillDetails details = new(commodity, _commodities.IndexOf(commodity));
         if (!_commodities.Contains(commodity))
             return;
 
@@ -70,7 +69,7 @@ public class ShopCell : Cell
         RunManager.Instance.Environment.SetDGoldProcedure(-commodity.FinalPrice);
         _commodities.Remove(commodity);
 
-        RunManager.Instance.Environment.BuySkillProcedure(d);
+        RunManager.Instance.Environment.BuySkillProcedure(details);
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)
@@ -129,8 +128,7 @@ public class ShopCell : Cell
                 int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
                 float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie), price,
-                    discount));
+                commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie), price, shop.Buy, discount));
             }
 
             B.SetCommodities(commodities);
@@ -166,8 +164,7 @@ public class ShopCell : Cell
                 int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
                 float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price,
-                    discount));
+                commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price, shop.Buy, discount));
             }
 
             B.SetCommodities(commodities);
