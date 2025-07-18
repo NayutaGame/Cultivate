@@ -8,6 +8,8 @@ public class Encyclopedia : Addressable
     public static AudioCategory AudioCategory;
     public static PrefabCategory PrefabCategory;
 
+    public static TagCategory TagCategory;
+    
     public static KeywordCategory KeywordCategory;
     public static BuffCategory BuffCategory;
     public static SkillCategory SkillCategory;
@@ -23,23 +25,22 @@ public class Encyclopedia : Addressable
     
     public static AchievementCategory AchievementCategory;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "FormationCategory",          thisObject => FormationCategory },
+        { "SkillCategory",              thisObject => SkillCategory },
+        { "BuffCategory",               thisObject => BuffCategory },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Encyclopedia()
     {
-        _accessors = new()
-        {
-            { "FormationCategory", () => FormationCategory },
-            { "SkillCategory", () => SkillCategory },
-            { "BuffCategory", () => BuffCategory },
-        };
-
         Fib.Init();
-        SkillType.Init();
 
         SpriteCategory = new();
         AudioCategory = new();
         PrefabCategory = new();
+
+        TagCategory = new();
 
         KeywordCategory = new();
         BuffCategory = new();

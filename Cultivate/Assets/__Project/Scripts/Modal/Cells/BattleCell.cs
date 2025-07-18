@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 
 public class BattleCell : Cell
 {
@@ -15,13 +16,14 @@ public class BattleCell : Cell
         RunManager.Instance.Environment.FieldChangedNeuron.Invoke();
     }
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((BattleCell)thisObject).GetGuideDescriptor() },
+        { "Enemy",                      thisObject => ((BattleCell)thisObject).GetEnemy() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public BattleCell(RunEntity template)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Enemy",                    GetEnemy },
-        };
         _template = template;
     }
 

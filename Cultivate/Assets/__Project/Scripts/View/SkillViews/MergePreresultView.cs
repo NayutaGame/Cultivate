@@ -238,7 +238,7 @@ public class MergePreresultView : XView
             return;
         }
 
-        var skillTypeComposite = _mergeTarget.ResultEntry.GetSkillTypeComposite();
+        var tagComposite = _mergeTarget.ResultEntry.GetTagComposite();
         
         // List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
         //

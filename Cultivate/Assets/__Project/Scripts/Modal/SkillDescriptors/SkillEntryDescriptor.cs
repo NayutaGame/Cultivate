@@ -12,20 +12,20 @@ public class SkillEntryDescriptor : ISkill
     private WuXing? _wuXing;
     private JingJie? _jingJie;
     public JingJie? JingJie => _jingJie;
-    private SkillTypeComposite _skillTypeComposite;
+    private TagComposite _tagComposite;
 
     public SkillEntryDescriptor(
         Predicate<SkillEntry> pred = null,
         SkillEntry entry = null,
         WuXing? wuXing = null,
         JingJie? jingJie = null,
-        SkillTypeComposite skillTypeComposite = null)
+        TagComposite tagComposite = null)
     {
         _pred = pred;
         _entry = entry;
         _wuXing = wuXing;
         _jingJie = jingJie;
-        _skillTypeComposite = skillTypeComposite;
+        _tagComposite = tagComposite;
     }
 
     public static SkillEntryDescriptor FromRunSkill(RunSkill runSkill)
@@ -69,7 +69,7 @@ public class SkillEntryDescriptor : ISkill
         if (_jingJie != null && !skillEntry.JingJieContains(_jingJie.Value))
             return false;
 
-        if (_skillTypeComposite != null && !skillEntry.GetSkillTypeComposite().Contains(_skillTypeComposite))
+        if (_tagComposite != null && !skillEntry.GetTagComposite().Contains(_tagComposite))
             return false;
 
         return true;
@@ -89,7 +89,7 @@ public class SkillEntryDescriptor : ISkill
         if (_jingJie != null && skill.JingJie != _jingJie)
             return false;
 
-        if (_skillTypeComposite != null && !skill.GetEntry().GetSkillTypeComposite().Contains(_skillTypeComposite))
+        if (_tagComposite != null && !skill.GetEntry().GetTagComposite().Contains(_tagComposite))
             return false;
 
         return true;
@@ -122,8 +122,8 @@ public class SkillEntryDescriptor : ISkill
     public string GetName()
         => _entry?.GetName();
 
-    public SkillTypeComposite GetSkillTypeComposite()
-        => _entry?.GetSkillTypeComposite();
+    public TagComposite GetTagComposite()
+        => _entry?.GetTagComposite();
 
     public string GetCascadeAnnotated()
         => _entry?.GetCascadeAnnotated();

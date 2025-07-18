@@ -48,7 +48,7 @@ public class GachaPanel : Panel
 
     private void Gacha()
     {
-        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        CanvasManager.Instance.CloseAnnotation();
         
         GachaCell gachaCell = _address.Get<GachaCell>();
         gachaCell.GachaProcedure();

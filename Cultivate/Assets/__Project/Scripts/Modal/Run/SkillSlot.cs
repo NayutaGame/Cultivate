@@ -1,12 +1,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class SkillSlot : Addressable, ISerializationCallbackReceiver
+public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
 {
     [NonSerialized] public Neuron EnvironmentChangedNeuron = new();
     [NonSerialized] public PlacedSkill PlacedSkill;
@@ -18,15 +17,14 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
     [SerializeField] private bool _hidden;
     [SerializeReference] private RunSkill _skill;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Skill",                      thisObject => ((SkillSlot)thisObject)._skill },
+        { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public SkillSlot(int index)
     {
-        _accessors = new()
-        {
-            { "Skill",         () => _skill },
-        };
-
         _index = index;
         _hidden = true;
     }
@@ -79,13 +77,22 @@ public class SkillSlot : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _accessors = new()
-        {
-            { "Skill",         () => _skill },
-        };
         EnvironmentChangedNeuron = new();
     }
     
     public DeckIndex ToDeckIndex()
         => DeckIndex.FromField(_index);
+
+    public bool CanShowAnnotation()
+        => _skill != null;
+    
+    public JingJie GetJingJie() => _skill.GetJingJie();
+    public JingJie GetLowestJingJie() => _skill.GetLowestJingJie();
+    public JingJie GetHighestJingJie() => _skill.GetHighestJingJie();
+    public Sprite GetSprite() => _skill.GetSprite();
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie) => _skill.GetLiteralCostDescription(showingJingJie);
+    public string GetName() => _skill.GetName();
+    public string GetHighlight(JingJie showingJingJie) => _skill.GetHighlight(showingJingJie);
+    public TagComposite GetTagComposite() => _skill.GetTagComposite();
+    public Sprite GetJingJieSprite(JingJie showingJingJie) => _skill.GetJingJieSprite(showingJingJie);
 }

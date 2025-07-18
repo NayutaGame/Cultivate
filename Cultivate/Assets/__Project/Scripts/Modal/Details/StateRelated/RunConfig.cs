@@ -11,18 +11,16 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
     [SerializeReference] public List<PackEntry> PacksToStartWith;
     [SerializeField] public MapEntry MapEntry;
     
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "CharacterProfile",           thisObject => ((RunConfig)thisObject).CharacterProfile },
+    };
+    public object Get(string s) => Accessor[s](this);
     public RunConfig(CharacterProfile characterProfile,
         DifficultyProfile difficultyProfile,
         List<PackEntry> packsToStartWith = null,
         MapEntry mapEntry = null)
     {
-        _accessors = new()
-        {
-            { "CharacterProfile", () => CharacterProfile },
-        };
-        
         CharacterProfile = characterProfile;
         DifficultyProfile = difficultyProfile;
         PacksToStartWith = packsToStartWith ?? GetCharacter().GetDefaultPacks();
@@ -55,11 +53,6 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _accessors = new()
-        {
-            { "CharacterProfile", () => CharacterProfile },
-        };
-        
         MapEntry = string.IsNullOrEmpty(MapEntry.GetId()) ? null : Encyclopedia.MapCategory[MapEntry.GetId()];
 
         for (int i = 0; i < PacksToStartWith.Count; i++)

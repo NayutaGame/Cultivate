@@ -12,15 +12,13 @@ public class PackConstraint : Addressable
 
     public bool IsEmpty => Pack == null;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Pack",                       thisObject => ((PackConstraint)thisObject).Pack },
+    };
+    public object Get(string s) => Accessor[s](this);
     public PackConstraint(PackDescriptor descriptor, SpriteEntry spriteEntry, int slotIndex)
     {
-        _accessors = new()
-        {
-            { "Pack", () => Pack },
-        };
-        
         Descriptor = descriptor;
         SpriteEntry = spriteEntry;
         Pack = null;

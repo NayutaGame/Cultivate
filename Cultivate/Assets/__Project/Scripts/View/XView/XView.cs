@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
@@ -10,11 +12,19 @@ public class XView : MonoBehaviour
     [SerializeField] protected InteractBehaviour _interactBehaviour;
     public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
     
-    private XBehaviour[] _behaviours;
-    public XBehaviour[] GetBehaviours() => _behaviours;
+    private List<XBehaviour> _behaviours;
+    public List<XBehaviour> GetBehaviours() => _behaviours;
     public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
-    public ItemBehaviour GetItemBehaviour() => Get<ItemBehaviour>();
-    // public SelectBehaviour GetSelectBehaviour() => Get<SelectBehaviour>();
+
+    public void JoinBehaviour(XBehaviour behaviour)
+    {
+        if (_behaviours.Contains(behaviour))
+            return;
+        
+        _behaviours.Add(behaviour);
+        behaviour.SetView(this);
+        behaviour.CheckAwake();
+    }
     
     private bool _hasAwoken;
     private Animator _animator;
@@ -38,7 +48,7 @@ public class XView : MonoBehaviour
     {
         _rect ??= GetComponent<RectTransform>();
 
-        _behaviours ??= GetComponents<XBehaviour>();
+        _behaviours ??= GetComponents<XBehaviour>().ToList();
         _behaviours.Do(b =>
         {
             b.SetView(this);

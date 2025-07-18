@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
@@ -17,14 +19,14 @@ public class ShopCell : Cell
     private SpriteEntry _spriteEntry;
     public SpriteEntry GetSprite() => _spriteEntry;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((ShopCell)thisObject).GetGuideDescriptor() },
+        { "Commodities",                thisObject => ((ShopCell)thisObject).GetCommodities() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     private ShopCell(int ladder, float priceMultiplier = 1, string title = null, SpriteEntry spriteEntry = null)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Commodities",              GetCommodities },
-        };
-
         _ladder = ladder;
         _priceMultiplier = priceMultiplier;
         _title = title ?? "商店";

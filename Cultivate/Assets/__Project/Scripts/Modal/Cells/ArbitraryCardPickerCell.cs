@@ -28,6 +28,12 @@ public class ArbitraryCardPickerCell : Cell
         return this;
     }
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((ArbitraryCardPickerCell)thisObject).GetGuideDescriptor() },
+        { "Inventory",                  thisObject => ((ArbitraryCardPickerCell)thisObject).GetInventory() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public ArbitraryCardPickerCell(
         string titleText = null,
         string detailedText = null,
@@ -35,12 +41,6 @@ public class ArbitraryCardPickerCell : Cell
         SkillEntryDescriptor descriptor = null,
         Func<List<SkillEntryDescriptor>, Cell> confirmOperation = null)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Inventory",                GetInventory },
-        };
-
         _titleText = titleText ?? "选牌";
         _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);

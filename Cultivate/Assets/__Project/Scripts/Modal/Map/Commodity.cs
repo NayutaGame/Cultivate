@@ -1,5 +1,5 @@
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,14 +11,13 @@ public class Commodity : Addressable
     private Action<Commodity> BuyFunc;
     public int FinalPrice;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Skill",         thisObject => ((Commodity)thisObject).Skill },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Commodity(SkillEntryDescriptor skill, int price, Action<Commodity> buyFunc, float discount = 1f)
     {
-        _accessors = new()
-        {
-            { "Skill",         () => Skill },
-        };
         Skill = skill;
         Price = price;
         Discount = discount;

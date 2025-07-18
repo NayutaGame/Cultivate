@@ -15,7 +15,7 @@ public class AchievementBrowserPanel : Panel
     {
         base.AwakeFunction();
 
-        _address = new Address("App.AchievementList");
+        _address = new Address("App.Profile.Curr.AchievementProfileList");
         AchievementInventoryView.SetAddress(_address);
 
         ReturnButton.onClick.RemoveAllListeners();

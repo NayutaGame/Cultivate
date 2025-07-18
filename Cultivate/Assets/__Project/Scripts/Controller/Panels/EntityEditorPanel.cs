@@ -40,7 +40,7 @@ public class EntityEditorPanel : Panel
         SearchBar.onEndEdit.AddListener(OnSearchBarValueChanged);
 
         SkillBrowser.SetAddress(new Address("Editor.FilteredSkillInventory"));
-        SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit, CanvasManager.Instance.FormationAnnotation.PointerExit);
+        SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.CloseAnnotation);
         SkillBrowser.DropNeuron.Join(Unequip);
 
         AwayEntityView.SetAddress(null);

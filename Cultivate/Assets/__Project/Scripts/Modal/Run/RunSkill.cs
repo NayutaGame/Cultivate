@@ -5,7 +5,7 @@ using Sirenix.Utilities;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISkill, ISerializationCallbackReceiver
+public class RunSkill : ISkill, ISerializationCallbackReceiver, AnnotatableSkill
 {
     [SerializeField] private SkillEntry _entry;
     [SerializeReference] private SkillSlot _skillSlot;
@@ -38,6 +38,11 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
         set => _borrowed = value;
     }
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     private RunSkill(SkillEntry entry, JingJie jingJie, int runUsedTimes, int runEquippedTimes, List<SkillEntry> appliedMutators)
     {
         _entry = entry;
@@ -85,8 +90,8 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
     public string GetName()
         => _entry.GetName();
 
-    public SkillTypeComposite GetSkillTypeComposite()
-        => _entry.GetSkillTypeComposite();
+    public TagComposite GetTagComposite()
+        => _entry.GetTagComposite();
 
     public string GetCascadeAnnotated()
         => _entry.GetCascadeAnnotated();
@@ -96,6 +101,12 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
 
     public JingJie GetJingJie()
         => _jingJie;
+
+    public JingJie GetLowestJingJie()
+        => _entry.LowestJingJie;
+
+    public JingJie GetHighestJingJie()
+        => _entry.HighestJingJie;
 
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
     {
@@ -190,4 +201,7 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver
             }
         }
     }
+
+    public bool CanShowAnnotation()
+        => true;
 }

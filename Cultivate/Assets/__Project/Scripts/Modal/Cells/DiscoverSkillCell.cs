@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using CLLibrary;
 
 public class DiscoverSkillCell : Cell
@@ -20,18 +22,18 @@ public class DiscoverSkillCell : Cell
     private SkillEntryCollectionDescriptor _descriptor;
     private JingJie _preferredJingJie;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((DiscoverSkillCell)thisObject).GetGuideDescriptor() },
+        { "Skills",                     thisObject => ((DiscoverSkillCell)thisObject).GetSkills() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     private DiscoverSkillCell(
         string titleText = null,
         string descriptionText = null,
         SkillEntryCollectionDescriptor descriptor = null,
         JingJie? preferredJingJie = null)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Skills",                   GetSkills },
-        };
-
         _titleText = titleText ?? "灵感";
         _descriptionText = descriptionText ?? "请选择一张卡作为奖励";
 

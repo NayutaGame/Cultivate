@@ -62,7 +62,7 @@ public class DiscoverSkillPanel : Panel
     {
         // AudioManager.Play("CardPlacement");
         ListView.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
-        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        CanvasManager.Instance.CloseAnnotation();
         
         int pickedIndex = d.PickedIndex;
         SlotView slotView = ListView.ViewFromIndex(pickedIndex) as SlotView;

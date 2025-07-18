@@ -882,18 +882,15 @@ public class StageEnvironment : Addressable, StageClosureListener
     private StageResult _result;
     public StageResult Result => _result;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
-
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Home",                       thisObject => ((StageEnvironment)thisObject)._entities[0] },
+        { "Away",                       thisObject => ((StageEnvironment)thisObject)._entities[1] },
+        { "Report",                     thisObject => ((StageEnvironment)thisObject)._result },
+    };
+    public object Get(string s) => Accessor[s](this);
     private StageEnvironment(StageConfig config)
     {
-        _accessors = new()
-        {
-            { "Home", () => _entities[0] },
-            { "Away", () => _entities[1] },
-            { "Report", () => _result },
-        };
-
         _config = config;
 
         _closureDict = new();

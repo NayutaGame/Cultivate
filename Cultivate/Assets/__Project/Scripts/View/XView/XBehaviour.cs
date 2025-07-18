@@ -29,8 +29,6 @@ public class XBehaviour : MonoBehaviour
 
     public XView GetView() => _view;
     public InteractBehaviour GetInteractBehaviour() => _view.GetInteractBehaviour();
-    // public SelectBehaviour GetSelectBehaviour() => View.GetSelectBehaviour();
-    public XBehaviour[] GetBehaviours() => _view.GetBehaviours();
     public T GetBehaviour<T>() where T : XBehaviour => _view.GetBehaviour<T>();
 
     public T Get<T>() where T : class => _view.Get<T>();

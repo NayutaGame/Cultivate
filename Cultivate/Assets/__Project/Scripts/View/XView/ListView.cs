@@ -152,6 +152,8 @@ public class ListView : XView
         
         slotView.gameObject.SetActive(false);
         slotView.CheckAwake();
+        BindItemBehaviour(slotView);
+        
         BindSlotAndContent(slotView, contentView);
     }
 
@@ -159,14 +161,20 @@ public class ListView : XView
     {
         contentView.gameObject.SetActive(false);
         contentView.CheckAwake();
+        
         SlotView slotView = AllocSlotView();
+        BindItemBehaviour(slotView);
+        
         BindSlotAndContent(slotView, contentView);
     }
 
     private void InitDynamically(int prefabIndex)
     {
-        SlotView slotView = AllocSlotView();
         XView contentView = AllocContentView(prefabIndex);
+        
+        SlotView slotView = AllocSlotView();
+        BindItemBehaviour(slotView, prefabIndex);
+        
         BindSlotAndContent(slotView, contentView);
     }
     
@@ -177,6 +185,8 @@ public class ListView : XView
         DisableAllItems();
 
         _model = Get<IListModel>();
+        if (_model == null)
+            return;
         for (int i = 0; i < _model.Count(); i++)
             InnerInsertItem(i);
 
@@ -215,6 +225,9 @@ public class ListView : XView
         if (AutoUpdateLayout)
             RefreshPivotsAsync();
     }
+
+    public void RemoveLast()
+        => RemoveItemAt(_activePool.Count - 1);
 
     private void InnerRemoveItemAt(int index)
     {
@@ -257,6 +270,13 @@ public class ListView : XView
         return contentView;
     }
 
+    private void BindItemBehaviour(SlotView slotView, int? prefabIndex = null)
+    {
+        ItemBehaviour itemBehaviour = slotView.GetOrAddComponent<ItemBehaviour>();
+        itemBehaviour.PrefabIndex = prefabIndex ?? 0;
+        slotView.JoinBehaviour(itemBehaviour);
+    }
+
     private void BindSlotAndContent(SlotView slotView, XView contentView)
     {
         slotView.AllowHover = AllowHover;
@@ -272,10 +292,12 @@ public class ListView : XView
         slotRect.pivot = contentRect.pivot;
         slotRect.anchoredPosition = contentRect.anchoredPosition;
 
-        
-        int prefabIndex = slotView.GetItemBehaviour()?.PrefabIndex ?? 0;
-        slotView.GetOrAddComponent<ItemBehaviour>().PrefabIndex = prefabIndex;
+        contentRect.anchorMin = new Vector2(0.5f, 0.5f);
+        contentRect.anchorMax = new Vector2(0.5f, 0.5f);
 
+        
+
+        int prefabIndex = slotView.GetBehaviour<ItemBehaviour>().PrefabIndex;
         _inactivePools[prefabIndex].Add(slotView);
         BindInteractBehaviour(slotView.GetInteractBehaviour());
         slotView.SetParentListView(this);

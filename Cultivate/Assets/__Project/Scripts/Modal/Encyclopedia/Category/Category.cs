@@ -21,15 +21,13 @@ public class Category<T> : IEnumerable<T>, Addressable where T : Entry
         List.Add(item);
     }
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "List",                       thisObject => ((Category<T>)thisObject)._list },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Category()
     {
-        _accessors = new()
-        {
-            { "List", () => _list },
-        };
-        
         _list = new();
         _dict = new();
     }

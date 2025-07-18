@@ -59,9 +59,22 @@ public class AppManager : Singleton<AppManager>, Addressable
     [NonSerialized] public SkillInventory SkillInventory;
     [NonSerialized] public InventoryFromExpandedPack InventoryFromExpandedPack;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
-
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "App",                        thisObject => ((AppManager)thisObject) },
+        { "Settings",                   thisObject => ((AppManager)thisObject).Settings },
+        { "Encyclopedia",               thisObject => ((AppManager)thisObject).Encyclopedia },
+        { "Editor",                     thisObject => ((AppManager)thisObject).EditorManager },
+        { "Profile",                    thisObject => ((AppManager)thisObject).ProfileManager },
+        { "Config",                     thisObject => ((AppManager)thisObject).ConfigManager },
+        { "Run",                        thisObject => ((AppManager)thisObject).RunManager },
+        { "Stage",                      thisObject => ((AppManager)thisObject).StageManager },
+        { "Canvas",                     thisObject => CanvasManager.Instance },
+        { "FormationInventory",         thisObject => ((AppManager)thisObject).FormationInventory },
+        { "SkillInventory",             thisObject => ((AppManager)thisObject).SkillInventory },
+        { "InventoryFromExpandedPack",  thisObject => ((AppManager)thisObject).InventoryFromExpandedPack },
+    };
+    public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -69,28 +82,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         _mainThread = Thread.CurrentThread;
         DOTween.SetTweensCapacity(500, 500);
 
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "App", () => Instance },
-
-            { "Settings", () => Settings },
-            { "Encyclopedia", () => Encyclopedia },
-            { "Editor", () => EditorManager.Instance },
-            { "Profile", () => ProfileManager },
-            { "Config", () => ConfigManager },
-            { "Run", () => RunManager.Instance },
-            { "Stage", () => StageManager.Instance },
-
-            { "Canvas", () => CanvasManager.Instance },
-
-            // Browser
-            { "FormationInventory", () => FormationInventory },
-            { "SkillInventory", () => SkillInventory },
-            { "AchievementList", () => ProfileManager.GetCurrProfile().AchievementProfileList },
-            { "InventoryFromExpandedPack", () => InventoryFromExpandedPack },
-        };
-
-        foreach (var kvp in _accessors)
+        foreach (var kvp in Accessor)
             Address.AddToRoot(kvp.Key, kvp.Value);
 
         Application.targetFrameRate = 60;
@@ -134,7 +126,6 @@ public class AppManager : Singleton<AppManager>, Addressable
             });
         }
         
-        CanvasManager.Instance.PackPreview.Sync();
         CanvasManager.Instance.PackPreview.gameObject.SetActive(true);
     }
 

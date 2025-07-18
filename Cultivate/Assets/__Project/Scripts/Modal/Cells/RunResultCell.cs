@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
@@ -20,15 +21,15 @@ public class RunResultCell : Cell
     private int _initialLevel;
     private int _finalLevel;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((RunResultCell)thisObject).GetGuideDescriptor() },
+        { "Milestones",                 thisObject => ((RunResultCell)thisObject)._milestones },
+        { "Achievements",               thisObject => ((RunResultCell)thisObject)._newUnlocks },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public RunResultCell(RunEnvironment env)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Milestones",               () => _milestones },
-            { "Achievements",             () => _newUnlocks },
-        };
-
         Debug.Assert(env != null, "RunEnvironment cannot be null");
         Debug.Assert(env.GetResult() != null, "RunResult cannot be null");
 

@@ -1,5 +1,5 @@
 
-public class KeywordEntry : Entry, Annotatable
+public class KeywordEntry : Entry, LegacyAnnotatable
 {
     private string _description;
     private AnnotationArray _cascade;

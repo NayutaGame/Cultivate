@@ -14,16 +14,14 @@ public class ConfigManager : Addressable
     private ListModel<ConfigPack> _packSelections;
     public ListModel<ConfigPack> PackSelections => _packSelections;
     
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "PackConstraints",            thisObject => ((ConfigManager)thisObject)._packConstraints },
+        { "PackSelections",             thisObject => ((ConfigManager)thisObject)._packSelections },
+    };
+    public object Get(string s) => Accessor[s](this);
     public ConfigManager()
     {
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "PackConstraints", () => _packConstraints },
-            { "PackSelections", () => _packSelections },
-        };
-
         InitPack();
         SelectFirstCharacter();
     }

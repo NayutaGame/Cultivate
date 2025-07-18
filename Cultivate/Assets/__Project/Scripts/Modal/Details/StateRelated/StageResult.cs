@@ -17,15 +17,13 @@ public class StageResult : Addressable
     // 0 正在打， 1 主场胜利， 2 客场胜利
     public int Flag;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Timeline",                   thisObject => ((StageResult)thisObject)._timeline },
+    };
+    public object Get(string s) => Accessor[s](this);
     public StageResult(StageConfig config)
     {
-        _accessors = new()
-        {
-            { "Timeline",              () => _timeline },
-        };
-
         if (config.GenerateReport)
             _reportBuilder = new StringBuilder();
 

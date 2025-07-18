@@ -133,11 +133,11 @@ public class EncyclopediaEditorWindow : EditorWindow
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("技能类型", EditorStyles.boldLabel);
-        var types = skill.GetSkillTypeComposite().ToString().Split(',');
-        foreach (var type in types)
-        {
-            EditorGUILayout.LabelField($"• {type.Trim()}");
-        }
+        // var types = skill.GetSkillTypeComposite().ToString().Split(',');
+        // foreach (var type in types)
+        // {
+        //     EditorGUILayout.LabelField($"• {type.Trim()}");
+        // }
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("消耗描述", EditorStyles.boldLabel);

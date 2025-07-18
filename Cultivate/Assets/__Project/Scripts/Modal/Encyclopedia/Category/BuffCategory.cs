@@ -843,7 +843,7 @@ public class BuffCategory : Category<BuffEntry>
                         CastDetails d = (CastDetails)closureDetails;
 
                         if (d.Caster != b.Owner) return;
-                        if (d.Skill.GetSkillType().Contains(SkillType.Attack))
+                        if (d.Skill.GetTagComposite().Contains(TagCategory.Attack))
                         {
                             b.Emphasize();
                             await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
@@ -1600,7 +1600,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Caster) return;
                         if (d.FromWanJian) return;
 
-                        if (!d.Skill.GetSkillType().Contains(SkillType.Attack)) return;
+                        if (!d.Skill.GetTagComposite().Contains(TagCategory.Attack)) return;
                         d.Skill = d.Caster.EmptyAction;
                         b.Emphasize();
                     }),
@@ -1613,7 +1613,7 @@ public class BuffCategory : Category<BuffEntry>
                         b.Emphasize();
                         foreach (StageSkill skill in d.Owner.TraversalSkills())
                         {
-                            if (!skill.GetSkillType().Contains(SkillType.Attack)) continue;
+                            if (!skill.GetTagComposite().Contains(TagCategory.Attack)) continue;
                             await b.Owner.CastProcedure(skill, fromWanJian: true);
                         }
                     }),
@@ -1785,7 +1785,7 @@ public class BuffCategory : Category<BuffEntry>
                         EndStepDetails d = (EndStepDetails)closureDetails;
                         if (b.Owner == d.Owner)
                         {
-                            if (!d.Skill.GetSkillType().Contains(SkillType.Attack))
+                            if (!d.Skill.GetTagComposite().Contains(TagCategory.Attack))
                             {
                                 b.Emphasize();
                                 await d.Owner.GainBuffProcedure("跳行动");
@@ -1911,7 +1911,7 @@ public class BuffCategory : Category<BuffEntry>
                         Buff b = (Buff)owner;
                         EndStepDetails d = (EndStepDetails)closureDetails;
                         if (b.Owner != d.Owner) return;
-                        if (d.Skill != null && d.Skill.GetSkillType().Contains(SkillType.Mana))
+                        if (d.Skill != null && d.Skill.GetTagComposite().Contains(TagCategory.Mana))
                         {
                             b.Emphasize();
                             b.Owner.SetActionPoint(2);

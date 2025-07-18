@@ -8,18 +8,18 @@ public class RunSkillDescriptor
     
     private WuXing? _wuXing;
     private Bound? _jingJieBound;
-    private SkillTypeComposite _skillTypeComposite;
+    private TagComposite _tagComposite;
 
     public RunSkillDescriptor(
         Predicate<RunSkill> pred = null,
         WuXing? wuXing = null,
         Bound? jingJieBound = null,
-        SkillTypeComposite skillTypeComposite = null)
+        TagComposite tagComposite = null)
     {
         _pred = pred;
         _wuXing = wuXing;
         _jingJieBound = jingJieBound;
-        _skillTypeComposite = skillTypeComposite;
+        _tagComposite = tagComposite;
     }
     
     public bool Contains(RunSkill runSkill)
@@ -33,7 +33,7 @@ public class RunSkillDescriptor
         if (_jingJieBound != null && !_jingJieBound.Value.Contains(runSkill.JingJie))
             return false;
 
-        if (_skillTypeComposite != null && !runSkill.GetSkillTypeComposite().Contains(_skillTypeComposite))
+        if (_tagComposite != null && !runSkill.GetTagComposite().Contains(_tagComposite))
             return false;
 
         return true;
@@ -42,6 +42,6 @@ public class RunSkillDescriptor
     public static RunSkillDescriptor FromJingJieBound(JingJie low, JingJie highExclusive)
         => new(jingJieBound: new Bound(low, highExclusive));
 
-    public static RunSkillDescriptor FromSkillTypeComposite(SkillTypeComposite skillTypeComposite)
-        => new(skillTypeComposite: skillTypeComposite);
+    public static RunSkillDescriptor FromTagComposite(TagComposite tagComposite)
+        => new(tagComposite: tagComposite);
 }

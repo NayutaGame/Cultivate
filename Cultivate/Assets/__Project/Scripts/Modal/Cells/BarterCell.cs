@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -8,13 +10,14 @@ public class BarterCell : Cell
     private BarterInventory _inventory;
     public BarterInventory GetInventory() => _inventory;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((BarterCell)thisObject).GetGuideDescriptor() },
+        { "Inventory",                  thisObject => ((BarterCell)thisObject).GetInventory() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public BarterCell()
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Inventory",                GetInventory },
-        };
     }
 
     public override void DefaultEnter(Cell cell)

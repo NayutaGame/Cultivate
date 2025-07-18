@@ -8,7 +8,7 @@ public interface ISkill
     Sprite GetSprite();
     WuXing? GetWuXing();
     string GetName();
-    SkillTypeComposite GetSkillTypeComposite();
+    TagComposite GetTagComposite();
     string GetCascadeAnnotated();
     string GetTrivia();
     

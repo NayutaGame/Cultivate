@@ -1,4 +1,7 @@
 
+using System;
+using System.Collections.Generic;
+
 public class DialogCell : Cell
 {
     private string _titleText;
@@ -21,13 +24,13 @@ public class DialogCell : Cell
         return this;
     }
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((DialogCell)thisObject).GetGuideDescriptor() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public DialogCell(string titleText, string detailedText, params DialogOption[] options)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-        };
-
         _titleText = titleText;
         _detailedText = detailedText;
         _options = options.Length > 0 ? options : new DialogOption[] { DialogOption.FromText("确认") };

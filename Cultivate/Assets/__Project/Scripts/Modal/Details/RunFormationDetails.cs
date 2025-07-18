@@ -13,7 +13,7 @@ public class RunFormationDetails : RunClosureDetails
         Owner = entity;
 
         WuXingCounts = new int[WuXing.Length];
-        TypeCounts = new int[SkillType.Length];
+        TypeCounts = new int[TagCategory.Length];
 
         foreach (SkillSlot slot in entity.TraversalCurrentSlots())
         {
@@ -24,13 +24,13 @@ public class RunFormationDetails : RunClosureDetails
             if (wuXing != null)
                 WuXingCounts[wuXing.Value]++;
             
-            int skillTypeComposite = entry.GetSkillTypeComposite().Value;
-            for (int i = 0; i < SkillType.Length; i++)
+            long tagComposite = entry.GetTagComposite().Value;
+            for (int i = 0; i < TagCategory.Length; i++)
             {
-                if ((skillTypeComposite & 0b1) == 1)
+                if ((tagComposite & 0b1) == 1)
                     TypeCounts[i]++;
 
-                skillTypeComposite = skillTypeComposite >> 1;
+                tagComposite = tagComposite >> 1;
             }
         }
         

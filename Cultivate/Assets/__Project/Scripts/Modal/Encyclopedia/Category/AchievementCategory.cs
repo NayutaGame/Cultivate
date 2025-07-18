@@ -61,7 +61,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageCommitDetails d = (StageCommitDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        int attackCount = d.Env.Home._skills.Count(s => s.Entry.GetSkillTypeComposite().Contains(SkillType.Attack));
+                        int attackCount = d.Env.Home._skills.Count(s => s.Entry.GetTagComposite().Contains(TagCategory.Attack));
                         if (attackCount < 5) return;
                         if (d.Flag != 1) return;
 
@@ -150,7 +150,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         
                         int depleteCardCounts = RunManager.Instance.Environment.TraversalSkills().Count(runSkill =>
-                            runSkill.GetEntry().GetSkillTypeComposite().Contains(SkillType.Deplete));
+                            runSkill.GetEntry().GetTagComposite().Contains(TagCategory.Deplete));
 
                         string key = "MaxDepleteCardCounts";
                         p.Memory.PerformOperation(key, 0, v => Mathf.Max(depleteCardCounts, v));
@@ -199,7 +199,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         StageEntity home = d.Env.Home;
                         int depleteCardCount = home.TraversalSkills().Count(s =>
-                            s.Entry.GetSkillTypeComposite().Contains(SkillType.Deplete));
+                            s.Entry.GetTagComposite().Contains(TagCategory.Deplete));
                             
                         const string USED_DEPLETE_KEY = "UsedDepleteCards";
                         p.Memory.PerformOperation(USED_DEPLETE_KEY, 0, v => Mathf.Max(depleteCardCount, v));
@@ -1290,7 +1290,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (lastCastedSkillIndex == -1) return;
 
                         StageSkill lastCastedSkill = home._skills[lastCastedSkillIndex];
-                        bool lastCastedSkillIsAttack = lastCastedSkill.GetSkillType().Contains(SkillType.Attack);
+                        bool lastCastedSkillIsAttack = lastCastedSkill.GetTagComposite().Contains(TagCategory.Attack);
                         if (!lastCastedSkillIsAttack) return;
                         p.Unlock();
                     })
@@ -1311,7 +1311,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
-                        int count = home.TraversalSkills().Count(s => s.GetSkillType().Contains(SkillType.Deplete));
+                        int count = home.TraversalSkills().Count(s => s.GetTagComposite().Contains(TagCategory.Deplete));
                         
                         const string TOTAL_DEPLETE_USED_KEY = "TotalDepleteSkillsUsed";
                         int totalDepleteUsed = p.Memory.PerformAggregate(TOTAL_DEPLETE_USED_KEY, count);

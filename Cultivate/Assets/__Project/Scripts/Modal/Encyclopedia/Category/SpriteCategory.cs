@@ -166,6 +166,17 @@ public class SpriteCategory : Category<SpriteEntry>
             new("气血阵", "Images/Formation/Icons/气血阵"),
             new("燃命阵", "Images/Formation/Icons/燃命阵"),
             
+            // TagIcons
+            new("Tag金", "Images/TagIcons/金"),
+            new("Tag水", "Images/TagIcons/水"),
+            new("Tag木", "Images/TagIcons/木"),
+            new("Tag火", "Images/TagIcons/火"),
+            new("Tag土", "Images/TagIcons/土"),
+            new("Tag攻击", "Images/TagIcons/攻击"),
+            new("Tag防御", "Images/TagIcons/防御"),
+            new("Tag灵气", "Images/TagIcons/灵气"),
+            new("Tag气血", "Images/TagIcons/气血"),
+            
             // RoomIcons
             new("AdventureRoomIcon", "Images/RoomIcons/AdventureRoomIcon"),
             new("AscensionRoomIcon", "Images/RoomIcons/AscensionRoomIcon"),

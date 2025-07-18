@@ -109,19 +109,17 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     [SerializeField] public bool IsLegit = true;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Config",                     thisObject => ((RunEnvironment)thisObject)._config },
+        { "Home",                       thisObject => ((RunEnvironment)thisObject)._home },
+        { "Map",                        thisObject => ((RunEnvironment)thisObject)._map },
+        { "Hand",                       thisObject => ((RunEnvironment)thisObject)._hand },
+        { "ActivePanel",                thisObject => ((RunEnvironment)thisObject).GetPanel() },
+    };
+    public object Get(string s) => Accessor[s](this);
     private RunEnvironment(RunConfig config)
     {
-        _accessors = new()
-        {
-            { "Config",                () => _config },
-            { "Home",                  () => _home },
-            { "Map",                   () => _map },
-            { "Hand",                  () => _hand },
-            { "ActivePanel",           GetPanel },
-        };
-        
         _startTime = DateTime.Now;
         
         InitNeurons();
@@ -441,7 +439,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             if (skill == null)
                 continue;
             
-            bool depleted = skill.GetEntry().GetSkillTypeComposite().Contains(SkillType.Deplete);
+            bool depleted = skill.GetEntry().GetTagComposite().Contains(TagCategory.Deplete);
             if (!depleted)
                 continue;
 
@@ -1148,15 +1146,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         if (!IsLegit)
             return;
-
-        _accessors = new()
-        {
-            { "Config",                () => _config },
-            { "Home",                  () => _home },
-            { "Map",                   () => _map },
-            { "Hand",                  () => _hand },
-            { "ActivePanel",           GetPanel },
-        };
         
         _startTime = DateTime.Now;
         _loadedTime = TimeSpan.FromMilliseconds(_miliseconds);

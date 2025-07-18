@@ -42,8 +42,8 @@ public class StageNote : ISkill
     public string GetName()
         => Skill.Entry.GetName();
 
-    public SkillTypeComposite GetSkillTypeComposite()
-        => Skill.Entry.GetSkillTypeComposite();
+    public TagComposite GetTagComposite()
+        => Skill.Entry.GetTagComposite();
 
     public string GetCascadeAnnotated()
         => Skill.Entry.GetCascadeAnnotated();

@@ -546,13 +546,13 @@ public class RoomCategory : Category<RoomEntry>
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
                         ShopCell.FromYiBaoZhai(room.Ladder + 3),
                         new DialogCell("剑池", $"获得2张{currJingJie}攻击牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie}攻击牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Attack, count: 2))),
+                            .SetReward(new DrawSkillReward($"2张{currJingJie}攻击牌", new(jingJie: currJingJie, tagComposite: TagCategory.Attack, count: 2))),
                         new DialogCell("风雨楼", $"获得2张{currJingJie}防御牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie}防御牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Defend, count: 2))),
+                            .SetReward(new DrawSkillReward($"2张{currJingJie}防御牌", new(jingJie: currJingJie, tagComposite: TagCategory.Defend, count: 2))),
                         new DialogCell($"百草堂", $"得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限")
                             .SetReward(new ResourceReward(health: 4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder))),
                         new DialogCell("星宫", $"获得2张{currJingJie}灵气牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie}灵气牌", new(jingJie: currJingJie, skillTypeComposite: SkillType.Mana, count: 2))),
+                            .SetReward(new DrawSkillReward($"2张{currJingJie}灵气牌", new(jingJie: currJingJie, tagComposite: TagCategory.Mana, count: 2))),
                         new DialogCell("天机阁", $"从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌")
                             .SetEnter(panelDescriptor =>
                             {
@@ -1484,12 +1484,12 @@ public class RoomCategory : Category<RoomEntry>
                         titleText:          "提交",
                         detailedText:        "请提交一张二动牌",
                         bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Swift));
+                        descriptor:         RunSkillDescriptor.FromTagComposite(TagCategory.Swift));
                     CardPickerCell C = new CardPickerCell(
                         titleText:          "提交",
                         detailedText:        "请提交一张治疗牌",
                         bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromSkillTypeComposite(SkillType.Health));
+                        descriptor:         RunSkillDescriptor.FromTagComposite(TagCategory.Health));
 
                     DialogCell BWin = new(
                         titleText: "迷路",
@@ -1677,7 +1677,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         SkillEntryCollectionDescriptor descriptor = new(
                             jingJie: RunManager.Instance.Environment.JingJie,
-                            skillTypeComposite: SkillType.Mana,
+                            tagComposite: TagCategory.Mana,
                             count: 3,
                             distinct: true,
                             consume: false);
@@ -1759,7 +1759,7 @@ public class RoomCategory : Category<RoomEntry>
                             "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张二动牌",
                             new(jingJie: RunManager.Instance.Environment.JingJie,
-                                skillTypeComposite: SkillType.Swift)));
+                                tagComposite: TagCategory.Swift)));
                     DialogCell C = new DialogCell(
                             titleText: "无穷",
                             detailedText: "你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
@@ -1768,7 +1768,7 @@ public class RoomCategory : Category<RoomEntry>
                                           "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张自指牌",
                             new(jingJie: RunManager.Instance.Environment.JingJie,
-                                skillTypeComposite: SkillType.ZiZhi)));
+                                tagComposite: TagCategory.ZiZhi)));
                     DialogCell D = new DialogCell(
                             titleText: "无穷",
                             detailedText: "考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
@@ -1776,7 +1776,7 @@ public class RoomCategory : Category<RoomEntry>
                                           "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张升华牌",
                             new(jingJie: RunManager.Instance.Environment.JingJie,
-                                skillTypeComposite: SkillType.Exhaust)));
+                                tagComposite: TagCategory.Exhaust)));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);

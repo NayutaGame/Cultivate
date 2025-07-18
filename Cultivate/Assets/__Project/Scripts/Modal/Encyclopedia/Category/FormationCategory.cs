@@ -557,9 +557,9 @@ public class FormationCategory : Category<FormationGroupEntry>
             
             new(id: "攻击阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Attack),
+                contributorPred: s => s.GetTagComposite().Contains(TagCategory.Attack),
                 progressDescription: "携带越多攻击牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Attack._index] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[TagCategory.Attack.Index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
@@ -639,9 +639,9 @@ public class FormationCategory : Category<FormationGroupEntry>
             
             new(id: "防御阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Defend),
+                contributorPred: s => s.GetTagComposite().Contains(TagCategory.Defend),
                 progressDescription: "携带越多防御牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Defend._index] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[TagCategory.Defend.Index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
@@ -726,9 +726,9 @@ public class FormationCategory : Category<FormationGroupEntry>
             
             new(id: "灵气阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Mana),
+                contributorPred: s => s.GetTagComposite().Contains(TagCategory.Mana),
                 progressDescription: "携带越多灵气牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Mana._index] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[TagCategory.Mana.Index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(
@@ -799,9 +799,9 @@ public class FormationCategory : Category<FormationGroupEntry>
             
             new(id: "气血阵",
                 order: 0,
-                contributorPred: s => s.GetSkillTypeComposite().Contains(SkillType.Health),
+                contributorPred: s => s.GetTagComposite().Contains(TagCategory.Health),
                 progressDescription: "携带越多气血牌越强大",
-                progressEvaluator: (e, d) => d.TypeCounts[SkillType.Health._index] + d.Proficiency,
+                progressEvaluator: (e, d) => d.TypeCounts[TagCategory.Health.Index] + d.Proficiency,
                 formationEntries: new[]
                 {
                     new FormationEntry(

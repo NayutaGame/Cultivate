@@ -10,15 +10,15 @@ public class PuzzleCell : Cell
     public string GetCondition() => _puzzle.Condition;
     public StageResult GetResult() => _puzzle?.GetResult();
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((PuzzleCell)thisObject).GetGuideDescriptor() },
+        { "Home",                       thisObject => ((PuzzleCell)thisObject)._puzzle.Home },
+        { "Away",                       thisObject => ((PuzzleCell)thisObject)._puzzle.Away },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public PuzzleCell(Puzzle puzzle)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Home",                     () => _puzzle.Home },
-            { "Away",                     () => _puzzle.Away },
-        };
-
         _puzzle = puzzle;
 
         foreach (SkillSlot slot in _puzzle.Home.TraversalCurrentSlots())

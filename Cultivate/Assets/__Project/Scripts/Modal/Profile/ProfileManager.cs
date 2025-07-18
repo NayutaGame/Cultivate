@@ -9,15 +9,14 @@ public class ProfileManager : Addressable
     private ProfileList _profileList;
     public ProfileList ProfileList => _profileList;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "ProfileList",                thisObject => ((ProfileManager)thisObject)._profileList },
+        { "Curr",                       thisObject => ((ProfileManager)thisObject).GetCurrProfile() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public ProfileManager()
     {
-        _accessors = new()
-        {
-            { "ProfileList",           () => _profileList },
-        };
-
         LoadOrDefault();
     }
 

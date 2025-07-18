@@ -82,8 +82,8 @@ public class StageSkill : StageClosureListener
     public StageSkill Clone()
         => new(_owner, _slotIndex, _runSlotIndex, _entry, _jingJie, _exhausted, _realStageCastedCount, _bonusStageCastedCount);
 
-    public SkillTypeComposite GetSkillType()
-        => _entry.GetSkillTypeComposite();
+    public TagComposite GetTagComposite()
+        => _entry.GetTagComposite();
     public int J
         => GetJingJie();
     public int Dj
@@ -134,11 +134,11 @@ public class StageSkill : StageClosureListener
     }
     
     public bool NoOtherAttack
-        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Attack) || skill._exhausted);
+        => _owner._skills.All(skill => skill == this || !skill.GetTagComposite().Contains(TagCategory.Attack) || skill._exhausted);
     public bool NoOtherLingQi
-        => _owner._skills.All(skill => skill == this || !skill.GetSkillType().Contains(SkillType.Mana));
+        => _owner._skills.All(skill => skill == this || !skill.GetTagComposite().Contains(TagCategory.Mana));
     public bool NoAttackAdjacents
-        => !PrevSkill(false).GetSkillType().Contains(SkillType.Attack) && !NextSkill(false).GetSkillType().Contains(SkillType.Attack);
+        => !PrevSkill(false).GetTagComposite().Contains(TagCategory.Attack) && !NextSkill(false).GetTagComposite().Contains(TagCategory.Attack);
 
     public IEnumerable<StageSkill> NextSkills(bool loop = false)
     {

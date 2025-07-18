@@ -10,16 +10,14 @@ public class Settings : Addressable
     private SettingsTabListModel _tabs;
     private SettingsTab _selectedTab;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Tabs",                       thisObject => ((Settings)thisObject)._tabs },
+        { "CurrentWidgets",             thisObject => ((Settings)thisObject)._selectedTab.Widgets },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Settings()
     {
-        _accessors = new()
-        {
-            { "Tabs",                           () => _tabs },
-            { "CurrentWidgets",                 () => _selectedTab.Widgets },
-        };
-
         _tabs = new();
         _tabs.AddRange(new SettingsTab[]
         {

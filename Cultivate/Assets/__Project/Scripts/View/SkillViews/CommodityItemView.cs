@@ -54,7 +54,7 @@ public class CommodityItemView : XView
 
     private void Buy(PointerEventData d)
     {
-        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        CanvasManager.Instance.CloseAnnotation();
         Get<Commodity>().Buy();
     }
 }

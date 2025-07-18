@@ -31,14 +31,14 @@ public class SkillAnnotationView : XView
         WuXing? wuXing = skill.GetWuXing();
         SetWuXing(wuXing);
 
-        List<SkillType> skillTypes = skill.GetSkillTypeComposite().SkillTypes;
-
-        bool isActive = wuXing != null || skillTypes.Count > 0;
-        
-        TypeTagGameObject.SetActive(isActive);
-        
-        for (int i = 0; i < TypeTagList.Length; i++)
-            TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
+        // List<SkillType> skillTypes = skill.GetSkillTypeComposite().SkillTypes;
+        //
+        // bool isActive = wuXing != null || skillTypes.Count > 0;
+        //
+        // TypeTagGameObject.SetActive(isActive);
+        //
+        // for (int i = 0; i < TypeTagList.Length; i++)
+        //     TypeTagList[i].SetText(i < skillTypes.Count ? skillTypes[i]._name : null);
 
         DescriptionText.text = skill.GetCascadeAnnotated();
 

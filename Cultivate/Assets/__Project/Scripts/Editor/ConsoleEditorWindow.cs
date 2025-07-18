@@ -38,7 +38,7 @@ public class ConsoleEditorWindow : EditorWindow
             new FilterTab("引导消耗", s => 
                 s.GetLiteralCostDescription(s.LowestJingJie).Type == CostType.Channel),
             new FilterTab("灵气牌", s => 
-                s.GetSkillTypeComposite().Contains(SkillType.Mana)),
+                s.GetTagComposite().Contains(TagCategory.Mana)),
         };
     }
 

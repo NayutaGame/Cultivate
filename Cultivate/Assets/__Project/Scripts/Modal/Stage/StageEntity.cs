@@ -269,7 +269,7 @@ public class StageEntity : Addressable, StageClosureListener
     public int ExhaustedCount
         => TraversalSkills().Count(skill => skill.Exhausted);
     public int AttackCount
-        => TraversalSkills().Count(skill => skill.GetSkillType().Contains(SkillType.Attack));
+        => TraversalSkills().Count(skill => skill.GetTagComposite().Contains(TagCategory.Attack));
 
     public async UniTask<bool> OppoHasFragile(bool useFocus = false)
     {
@@ -313,17 +313,15 @@ public class StageEntity : Addressable, StageClosureListener
     private StageSkill _manaShortageAction;
     public StageSkill ManaShortageAction => _manaShortageAction;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Skills",                     thisObject => ((StageEntity)thisObject)._skills },
+        { "Formations",                 thisObject => ((StageEntity)thisObject)._formations },
+        { "Buffs",                      thisObject => ((StageEntity)thisObject)._buffs },
+    };
+    public object Get(string s) => Accessor[s](this);
     public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
     {
-        _accessors = new()
-        {
-            { "Skills", () => _skills },
-            { "Formations", () => _formations },
-            { "Buffs", () => _buffs },
-        };
-
         Memory = new();
 
         HpChangedNeuron = new();

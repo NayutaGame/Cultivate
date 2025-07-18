@@ -13,15 +13,13 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
     [NonSerialized] private int CurrentIndex;
     public Profile GetCurrent() => Get(CurrentIndex) as Profile;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Current",                    thisObject => ((ProfileList)thisObject).GetCurrent() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public ProfileList()
     {
-        _accessors = new()
-        {
-            { "Current",           GetCurrent },
-        };
-
         Add(Profile.Default());
 
         CurrentIndex = 0;
@@ -36,11 +34,6 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
 
     public void OnAfterDeserialize()
     {
-        _accessors = new()
-        {
-            { "Current",           GetCurrent },
-        };
-        
         // version migrating
     }
 }

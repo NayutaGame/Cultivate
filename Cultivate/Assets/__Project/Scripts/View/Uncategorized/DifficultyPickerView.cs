@@ -25,7 +25,7 @@ public class DifficultyPickerView : MonoBehaviour
 
     public void Configure()
     {
-        _address = new Address("Profile.ProfileList.Current.DifficultyProfileList");
+        _address = new Address("Profile.Curr.DifficultyProfileList");
 
         DifficultyProfileList profiles = _address.Get<DifficultyProfileList>();
 

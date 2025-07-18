@@ -658,8 +658,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
+  FirstCounter: 0.5
+  SecondCounter: 2
   AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 0}
+  AnnotationViewType: 2
 --- !u!114 &7613878159742721782
 MonoBehaviour:
   m_ObjectHideFlags: 0

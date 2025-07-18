@@ -64,18 +64,17 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     [NonSerialized] private RunConfig _config;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "EntityEditableList",         thisObject => ((EditorManager)thisObject).EntityEditableList },
+        { "Home",                       thisObject => ((EditorManager)thisObject).Home },
+        { "FilteredSkillInventory",     thisObject => ((EditorManager)thisObject).FilteredSkillInventory },
+    };
+    public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
         
-        _accessors = new()
-        {
-            { "EntityEditableList", () => EntityEditableList },
-            { "Home", () => Home },
-            { "FilteredSkillInventory", () => FilteredSkillInventory },
-        };
         EnvironmentChangedNeuron = new();
 
         Load();

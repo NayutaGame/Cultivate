@@ -84,7 +84,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4375321197770695835}
   - component: {fileID: 1912249710443386929}
-  - component: {fileID: 2727677855102342692}
   m_Layer: 5
   m_Name: FormationList
   m_TagString: Untagged
@@ -138,22 +137,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2727677855102342692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2344576479088959034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a765ac1341e3a7479be2f8136737e1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractBehaviour: {fileID: 0}
-  Container: {fileID: 4375321197770695835}
-  Prefabs:
-  - {fileID: 6193414529329671437, guid: b17ac2899272ca3469077984b7c043fc, type: 3}
 --- !u!1 &2353932997415342740
 GameObject:
   m_ObjectHideFlags: 0

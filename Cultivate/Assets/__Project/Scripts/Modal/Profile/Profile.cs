@@ -45,19 +45,17 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         return JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(_runEnvironment));
     }
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "LevelProfile",               thisObject => ((Profile)thisObject)._levelProfile },
+        { "CharacterProfileList",       thisObject => ((Profile)thisObject)._characterProfileList },
+        { "DifficultyProfileList",      thisObject => ((Profile)thisObject)._difficultyProfileList },
+        { "PackProfileList",            thisObject => ((Profile)thisObject)._packProfileList },
+        { "AchievementProfileList",     thisObject => ((Profile)thisObject)._achievementProfileList },
+    };
+    public object Get(string s) => Accessor[s](this);
     private Profile()
     {
-        _accessors = new()
-        {
-            { "LevelProfile", () => _levelProfile },
-            { "CharacterProfileList", () => _characterProfileList },
-            { "DifficultyProfileList", () => _difficultyProfileList },
-            { "PackProfileList", () => _packProfileList },
-            { "AchievementProfileList", () => _achievementProfileList },
-        };
-
         _levelProfile = LevelProfile.Default();
         _characterProfileList = CharacterProfileList.Default();
         _difficultyProfileList = DifficultyProfileList.Default();
@@ -186,15 +184,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _accessors = new()
-        {
-            { "LevelProfile", () => _levelProfile },
-            { "CharacterProfileList", () => _characterProfileList },
-            { "DifficultyProfileList", () => _difficultyProfileList },
-            { "PackProfileList", () => _packProfileList },
-            { "AchievementProfileList", () => _achievementProfileList },
-        };
-
         // 更新成就列表
         UpdateAchievementProfiles();
         

@@ -1,4 +1,6 @@
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ImageCell : Cell
@@ -7,13 +9,13 @@ public class ImageCell : Cell
     public Sprite GetSprite() => _spriteEntry.Sprite;
     public Cell Next;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((ImageCell)thisObject).GetGuideDescriptor() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public ImageCell(string spriteName)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-        };
-
         _spriteEntry = spriteName;
     }
 

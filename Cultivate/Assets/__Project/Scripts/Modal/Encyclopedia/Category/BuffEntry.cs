@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffEntry : Entry, Annotatable
+public class BuffEntry : Entry, LegacyAnnotatable
 {
     public string GetName() => GetId();
     

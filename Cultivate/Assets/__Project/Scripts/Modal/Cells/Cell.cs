@@ -26,8 +26,7 @@ public abstract class Cell : Addressable
         return this;
     }
 
-    protected Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    public abstract object Get(string s);
 
     private Guide[] _guideDescriptors;
     private int _index;

@@ -31,16 +31,14 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     private SpriteEntry _spriteEntry;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "SubFormations",              thisObject => ((FormationGroupEntry)thisObject)._subFormationEntries },
+        { "Marks",                      thisObject => ((FormationGroupEntry)thisObject)._markListModel },
+    };
+    public object Get(string s) => Accessor[s](this);
     public FormationGroupEntry(string id, int order, Predicate<ISkill> contributorPred, string progressDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
     {
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "SubFormations", () => _subFormationEntries },
-            { "Marks", () => _markListModel },
-        };
-
         _order = order;
         _contributorPred = contributorPred;
         _progressDescription = progressDescription;

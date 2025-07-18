@@ -26,6 +26,11 @@ public class CardPickerCell : Cell
 
     private RunSkillDescriptor _descriptor;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((CardPickerCell)thisObject).GetGuideDescriptor() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public CardPickerCell(
         string titleText = null,
         string detailedText = null,
@@ -33,11 +38,6 @@ public class CardPickerCell : Cell
         Func<List<DeckIndex>, Cell> confirmOperation = null,
         RunSkillDescriptor descriptor = null)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-        };
-
         _titleText = titleText ?? "选择";
         _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);
@@ -67,7 +67,7 @@ public class CardPickerCell : Cell
             titleText:          "选择",
             detailedText:       "请选择一张牌",
             bound:              new Bound(0, 2),
-            descriptor:         new RunSkillDescriptor(skillTypeComposite: SkillType.Swift));
+            descriptor:         new RunSkillDescriptor(tagComposite: TagCategory.Swift));
         
         DialogCell win = new(
             titleText: "成功",

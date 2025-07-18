@@ -10,15 +10,13 @@ public class StageTimeline : Addressable
     private List<StageNote> _notes;
     private int _pointer;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Notes",                      thisObject => ((StageTimeline)thisObject)._notes },
+    };
+    public object Get(string s) => Accessor[s](this);
     public StageTimeline()
     {
-        _accessors = new()
-        {
-            { "Notes",                 () => _notes },
-        };
-
         _notes = new List<StageNote>();
         _pointer = -1;
     }

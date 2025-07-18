@@ -39,18 +39,15 @@ public class StageManager : Singleton<StageManager>, Addressable
     public StageTimeline Timeline;
     private UniTask _task;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Environment",                thisObject => ((StageManager)thisObject)._environment },
+        { "Timeline",                   thisObject => ((StageManager)thisObject).Timeline },
+    };
+    public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
-        
-        _accessors = new()
-        {
-            { "Environment", () => _environment },
-            { "Timeline",    () => Timeline },
-        };
-
         StageAnimationController = new();
     }
 

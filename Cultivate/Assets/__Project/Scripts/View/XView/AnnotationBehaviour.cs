@@ -5,17 +5,19 @@ using UnityEngine.EventSystems;
 public class AnnotationBehaviour : XBehaviour
 {
     [SerializeField] private InteractBehaviour _ib;
+    [SerializeField] private float FirstCounter = 0f;
+    [SerializeField] private float SecondCounter = 0f;
+    [SerializeField] private string AnnotationAddress;
+    [SerializeField] private AnnotationViewType AnnotationViewType;
     
-    public string AnnotationAddress;
-    private AnnotationView _annotation;
-    public AnnotationView GetAnnotationView() => _annotation;
-    public RectTransform HoverTransform;
+    private AnnotationView _annotationView;
+    public AnnotationView GetAnnotationView() => _annotationView;
 
     public override void AwakeFunction()
     {
         base.AwakeFunction();
 
-        _annotation = new Address(AnnotationAddress).Get<AnnotationView>();
+        _annotationView = new Address(AnnotationAddress).Get<AnnotationView>();
         SetInteractBehaviour(_ib);
     }
 
@@ -23,26 +25,29 @@ public class AnnotationBehaviour : XBehaviour
     {
         if (_ib != null)
         {
-            _ib.PointerEnterNeuron.Remove(PointerEnter);
-            _ib.PointerExitNeuron.Remove(_annotation.PointerExit);
-            _ib.PointerMoveNeuron.Remove(_annotation.PointerMove);
-            _ib.BeginDragNeuron.Remove(_annotation.PointerExit);
+            _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+            _ib.PointerExitNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
+            _ib.BeginDragNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
         }
 
         _ib = ib;
         if (_ib != null)
         {
-            _ib.PointerEnterNeuron.Join(PointerEnter);
-            _ib.PointerExitNeuron.Join(_annotation.PointerExit);
-            _ib.PointerMoveNeuron.Join(_annotation.PointerMove);
-            _ib.BeginDragNeuron.Join(_annotation.PointerExit);
+            _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+            _ib.PointerExitNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
+            _ib.BeginDragNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
         }
     }
 
-    public void PointerEnter(InteractBehaviour ib, PointerEventData d)
+    public void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
     {
-        RectTransform rect = ib.GetView().GetRect();
-        RectTransform hoverRect = HoverTransform;
-        _annotation.PointerEnter(rect, hoverRect, ib.GetAddress());
+        AnnotationDetails annotationDetails = new AnnotationDetails(
+            AnnotationViewType,
+            ib.GetAddress(),
+            ib.GetView(),
+            FirstCounter,
+            SecondCounter,
+            AnnotationDetails.AlignmentMethod.CenterAlignment);
+        CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
     }
 }

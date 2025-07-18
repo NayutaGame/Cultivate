@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
-public class SkillEntry : Entry, Annotatable, ISkill
+public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
 {
     private string _name;
     
@@ -19,7 +19,7 @@ public class SkillEntry : Entry, Annotatable, ISkill
     public JingJie LowestJingJie => _jingJieBound.Start;
     public JingJie HighestJingJie => _jingJieBound.End - 1;
 
-    private SkillTypeComposite _skillTypeComposite;
+    private TagComposite _tagComposite;
     
     public StageClosure[] Closures;
 
@@ -46,11 +46,16 @@ public class SkillEntry : Entry, Annotatable, ISkill
     public SkillDefinition GetSkillDefinitionFromDj(int dj)
         => _skillDefinitions[dj.Clamp(0, HighestJingJie - LowestJingJie)];
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public SkillEntry(string id,
         string name,
         CLLibrary.Bound jingJieBound,
         WuXing? wuXing = null,
-        SkillTypeComposite skillTypeComposite = null,
+        TagComposite tagComposite = null,
         
         StageClosure[] closures = null,
         
@@ -68,7 +73,8 @@ public class SkillEntry : Entry, Annotatable, ISkill
         _name = name;
         _jingJieBound = jingJieBound;
         _wuXing = wuXing;
-        _skillTypeComposite = skillTypeComposite ?? 0;
+        
+        _tagComposite = (tagComposite ?? 0) | TagComposite.FromWuXing(wuXing);
 
         Closures = closures ?? Array.Empty<StageClosure>();
         
@@ -134,11 +140,13 @@ public class SkillEntry : Entry, Annotatable, ISkill
     public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
     public WuXing? GetWuXing() => WuXing;
     public string GetName() => _name;
-    public SkillTypeComposite GetSkillTypeComposite() => _skillTypeComposite;
+    public TagComposite GetTagComposite() => _tagComposite;
     public string GetCascadeAnnotated() => GetSkillDefinitionFromDj(0).Cascade.GetCascadeAnnotated();
     public string GetTrivia() => _trivia;
 
     public JingJie GetJingJie() => LowestJingJie;
+    public JingJie GetLowestJingJie() => LowestJingJie;
+    public JingJie GetHighestJingJie() => HighestJingJie;
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
         => GetSkillDefinitionFromDj(showingJingJie - LowestJingJie).GetLiteralCostDescription();
     public string GetHighlight(JingJie showingJingJie) => GetHighlight(showingJingJie, null, null);
@@ -151,6 +159,9 @@ public class SkillEntry : Entry, Annotatable, ISkill
 
         return LowestJingJie;
     }
+
+    public bool CanShowAnnotation()
+        => true;
     
     public bool MatchSearchText(string searchText)
     {
@@ -178,8 +189,8 @@ public class SkillEntry : Entry, Annotatable, ISkill
             return true;
             
         // 4. 技能类型匹配
-        if (_skillTypeComposite.ToString().ToLower().Contains(searchText))
-            return true;
+        // if (_tagComposite.ToString().ToLower().Contains(searchText))
+        //     return true;
             
         // 5. 描述文本匹配
         string description = GetLiteralDescription().ToString().ToLower();

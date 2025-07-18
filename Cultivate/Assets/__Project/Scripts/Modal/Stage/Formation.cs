@@ -19,15 +19,13 @@ public class Formation : StageClosureListener, IFormationModel, Addressable, IEm
     public Neuron GetEmphasisNeuron()
         => _emphasisNeuron;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Marks",                      thisObject => ((Formation)thisObject).GetEntry().GetMarks() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Formation(StageEntity owner, RunFormation runFormation)
     {
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "Marks", () => GetEntry().GetMarks() },
-        };
-
         _owner = owner;
         _runFormation = runFormation;
 

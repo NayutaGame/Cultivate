@@ -15,9 +15,6 @@ public class PackPreview : XView
         ListView.SetAddress("InventoryFromExpandedPack");
     }
 
-    public void Sync()
-        => ListView.Sync();
-
     public void ClosePreview()
         => gameObject.SetActive(false);
 

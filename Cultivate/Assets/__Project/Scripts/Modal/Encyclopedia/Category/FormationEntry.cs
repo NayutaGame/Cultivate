@@ -37,8 +37,11 @@ public class FormationEntry : IFormationModel, Addressable
 
     public ListModel<MarkModel> GetMarks() => _formationGroupEntry.GetMarks();
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Marks",                      thisObject => ((FormationEntry)thisObject).GetMarks() },
+    };
+    public object Get(string s) => Accessor[s](this);
     /// <summary>
     /// 定义一个Formation
     /// </summary>
@@ -52,11 +55,6 @@ public class FormationEntry : IFormationModel, Addressable
         params StageClosure[] stageClosures
     )
     {
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "Marks", GetMarks },
-        };
-
         _jingJie = jingJie;
         _rewardDescription = rewardDescription;
         _trivia = trivia;

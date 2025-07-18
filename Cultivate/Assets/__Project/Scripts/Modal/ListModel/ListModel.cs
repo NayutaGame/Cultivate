@@ -28,6 +28,7 @@ public class ListModel<T> : IListModel, IEnumerable<T>
     public event Func<UniTask> ResyncEvent;
     public int Count() => _list.Count;
     public object Get(int index) => _list[index];
+    public T GetLast() => _list[^1];
 
     public virtual void Add(T item)
     {
@@ -54,6 +55,11 @@ public class ListModel<T> : IListModel, IEnumerable<T>
     public virtual void Remove(T item)
     {
         RemoveAt(_list.IndexOf(item));
+    }
+
+    public virtual void RemoveLast()
+    {
+        RemoveAt(_list.Count - 1);
     }
 
     public virtual void RemoveAt(int index)

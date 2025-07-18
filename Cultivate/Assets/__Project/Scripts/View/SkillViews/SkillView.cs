@@ -34,7 +34,7 @@ public class SkillView : XView
     {
         base.Refresh();
 
-        ISkill skill = Get<ISkill>();
+        AnnotatableSkill skill = Get<AnnotatableSkill>();
         SetShowingJingJie(skill.GetJingJie());
     }
 
@@ -45,12 +45,12 @@ public class SkillView : XView
     {
         _showingJingJie = jingJie;
 
-        ISkill skill = Get<ISkill>();
+        AnnotatableSkill skill = Get<AnnotatableSkill>();
         SetSprite(skill.GetSprite());
         SetCostDescription(skill.GetLiteralCostDescription(_showingJingJie));
         SetName(skill.GetName());
         SetDescription(skill.GetHighlight(_showingJingJie));
-        SetSkillTypeComposite(skill.GetSkillTypeComposite());
+        SetTagComposite(skill.GetTagComposite());
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
     }
 
@@ -118,7 +118,7 @@ public class SkillView : XView
         DescriptionText.text = description;
     }
 
-    protected virtual void SetSkillTypeComposite(SkillTypeComposite skillTypeComposite)
+    protected virtual void SetTagComposite(TagComposite tagComposite)
     {
         // List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
         //

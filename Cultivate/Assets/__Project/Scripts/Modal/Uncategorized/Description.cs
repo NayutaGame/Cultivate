@@ -35,7 +35,7 @@ public class Description
     public string GetHighlight(AnnotationArray cascade)
     {
         StringBuilder sb = new(_sb.ToString());
-        foreach (Annotatable annotatable in cascade.GetArray())
+        foreach (LegacyAnnotatable annotatable in cascade.GetArray())
             sb = sb.Replace(annotatable.GetName(), $"<style=\"Highlight\">{annotatable.GetName()}</style>");
 
         return sb.ToString();

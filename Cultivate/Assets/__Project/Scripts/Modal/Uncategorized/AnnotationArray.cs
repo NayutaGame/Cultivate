@@ -5,10 +5,10 @@ using CLLibrary;
 
 public class AnnotationArray
 {
-    private Annotatable[] _array;
-    public Annotatable[] GetArray() => _array;
+    private LegacyAnnotatable[] _array;
+    public LegacyAnnotatable[] GetArray() => _array;
 
-    private AnnotationArray(Annotatable[] array)
+    private AnnotationArray(LegacyAnnotatable[] array)
     {
         _array = array;
     }
@@ -16,7 +16,7 @@ public class AnnotationArray
     public string HighlightFromDescription(string description)
     {
         StringBuilder sb = new(description);
-        foreach (Annotatable annotatable in _array)
+        foreach (LegacyAnnotatable annotatable in _array)
             sb = sb.Replace(annotatable.GetName(), $"<style=\"Highlight\">{annotatable.GetName()}</style>");
 
         return sb.ToString();
@@ -25,7 +25,7 @@ public class AnnotationArray
     public string GetCascadeAnnotated()
     {
         StringBuilder sb = new();
-        foreach (Annotatable annotatable in _array)
+        foreach (LegacyAnnotatable annotatable in _array)
             sb.Append($"<style=\"Highlight\">{annotatable.GetName()}</style>\n{annotatable.GetHighlight()}\n\n");
 
         return sb.ToString();
@@ -33,7 +33,7 @@ public class AnnotationArray
     
     public static AnnotationArray FromDescription(Description description)
     {
-        List<Annotatable> annotations = new();
+        List<LegacyAnnotatable> annotations = new();
         string descriptionString = description.ToString();
 
         foreach (KeywordEntry keywordEntry in Encyclopedia.KeywordCategory)
@@ -49,7 +49,7 @@ public class AnnotationArray
             if (!descriptionString.Contains(buffEntry.GetName()))
                 continue;
 
-            Annotatable duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
+            LegacyAnnotatable duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
             if (duplicate != null)
                 continue;
 
@@ -61,7 +61,7 @@ public class AnnotationArray
     
     public static AnnotationArray FromDescriptionAndCostType(Description description, CostType costType)
     {
-        List<Annotatable> annotations = new();
+        List<LegacyAnnotatable> annotations = new();
         string descriptionString = description.ToString();
 
         switch (costType)
@@ -87,7 +87,7 @@ public class AnnotationArray
             if (!descriptionString.Contains(buffEntry.GetName()))
                 continue;
 
-            Annotatable duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
+            LegacyAnnotatable duplicate = annotations.FirstObj(annotation => annotation.GetName() == buffEntry.GetName());
             if (duplicate != null)
                 continue;
 

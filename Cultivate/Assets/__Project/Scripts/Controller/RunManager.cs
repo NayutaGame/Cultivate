@@ -10,17 +10,11 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public SpriteRenderer BackgroundRenderer;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
-    protected override void AwakeFunction()
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        base.AwakeFunction();
-        
-        _accessors = new()
-        {
-            { "Environment",           () => Environment },
-        };
-    }
+        { "Environment",                thisObject => ((RunManager)thisObject).Environment },
+    };
+    public object Get(string s) => Accessor[s](this);
 
     public void SetEnvironmentFromConfig(RunConfig config)
     {

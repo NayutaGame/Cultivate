@@ -240,8 +240,16 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
     #region Core
     
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Slots",                      thisObject => ((RunEntity)thisObject)._filteredSlots },
+        { "RunFormations",              thisObject => ((RunEntity)thisObject)._formations },
+        { "ShowingFormations",          thisObject => ((RunEntity)thisObject)._showingFormations },
+        { "ActiveFormations",           thisObject => ((RunEntity)thisObject)._activeFormations },
+        { "SmirkAgainstSlots",          thisObject => ((RunEntity)thisObject)._smirkAgainstSlots },
+        { "AfraidAgainstSlots",         thisObject => ((RunEntity)thisObject)._afraidAgainstSlots },
+    };
+    public object Get(string s) => Accessor[s](this);
     private RunEntity(
         EntityEntry entry = null,
         MingYuan mingYuan = null,
@@ -255,16 +263,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         Bound? allowedDifficulty = null,
         bool? inPool = null)
     {
-        _accessors = new()
-        {
-            { "Slots", () => _filteredSlots },
-            { "RunFormations", () => _formations },
-            { "ShowingFormations", () => _showingFormations },
-            { "ActiveFormations", () => _activeFormations },
-            { "SmirkAgainstSlots", () => _smirkAgainstSlots },
-            { "AfraidAgainstSlots", () => _afraidAgainstSlots },
-        };
-
         EnvironmentChangedNeuron = new();
         
         _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
@@ -317,16 +315,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
     public void OnAfterDeserialize()
     {
-        _accessors = new()
-        {
-            { "Slots", () => _filteredSlots },
-            { "RunFormations", () => _formations },
-            { "ShowingFormations", () => _showingFormations },
-            { "ActiveFormations", () => _activeFormations },
-            { "SmirkAgainstSlots", () => _smirkAgainstSlots },
-            { "AfraidAgainstSlots", () => _afraidAgainstSlots },
-        };
-
         EnvironmentChangedNeuron = new();
         
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];

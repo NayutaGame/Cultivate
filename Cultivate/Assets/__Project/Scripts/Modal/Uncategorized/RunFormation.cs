@@ -35,15 +35,14 @@ public class RunFormation : IFormationModel, Addressable, IEmphasizable
     public Neuron GetEmphasisNeuron()
         => _emphasisNeuron;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Marks",                      thisObject => ((RunFormation)thisObject)._entry.GetMarks() },
+    };
+    
+    public object Get(string s) => Accessor[s](this);
     private RunFormation(FormationGroupEntry entry, int progress, bool activated, FormationEntry formationEntry)
     {
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "Marks", () => _entry.GetMarks() },
-        };
-
         _entry = entry;
         _progress = progress;
         _activated = activated;

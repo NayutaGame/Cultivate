@@ -19,15 +19,13 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     #region Core
     
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "CurrLevel",                  thisObject => ((Map)thisObject).GetCurrLevel() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Map(MapEntry entry)
     {
-        _accessors = new()
-        {
-            { "CurrLevel", GetCurrLevel },
-        };
-
         _entry = entry;
     }
     
@@ -127,11 +125,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _accessors = new()
-        {
-            { "CurrLevel", GetCurrLevel },
-        };
-        
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.MapCategory[_entry.GetName()];
     }
 }

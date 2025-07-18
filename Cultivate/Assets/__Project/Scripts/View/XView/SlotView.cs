@@ -6,7 +6,21 @@ using UnityEngine.Rendering;
 
 public class SlotView : XView
 {
+    public static readonly int ANY = -1;
+    public static readonly int FREE = 0;
+    public static readonly int IDLE = 1;
+    public static readonly int HOVER = 2;
+    public static readonly int FOLLOW = 3;
+    
     [SerializeField] private XView _contentView;
+    private ListView _parentListView;
+    
+    [SerializeField] private bool _useGrabber = true;
+    [SerializeField] public Configuration IdleConfiguration = new(localScale: Vector3.one);
+    [SerializeField] public Configuration HoverConfiguration = new(localScale: 1.2f * Vector3.one);
+    private bool _allowHover;
+    private bool _allowDrag;
+    
     public XView GetContentView() => _contentView;
     public void SetContentView(XView contentView)
     {
@@ -14,7 +28,6 @@ public class SlotView : XView
         _contentView.SetInteractBehaviour(_interactBehaviour);
     }
 
-    private ListView _parentListView;
     public ListView GetParentListView() => _parentListView;
     public void SetParentListView(ListView parentListView) => _parentListView = parentListView;
 
@@ -34,7 +47,7 @@ public class SlotView : XView
     {
         GetContentView().GetRect().position = rect.position;
         GetContentView().GetRect().localScale = rect.localScale;
-        GetAnimator().SetStateAsync(1);
+        GetAnimator().SetStateAsync(IDLE);
     }
 
     public void Align()
@@ -42,26 +55,25 @@ public class SlotView : XView
         GetContentView().GetRect().position = GetRect().position;
     }
     
-    
-    public static readonly int ANY = -1;
-    public static readonly int FREE = 0;
-    public static readonly int IDLE = 1;
-    public static readonly int HOVER = 2;
-    public static readonly int FOLLOW = 3;
-    
-    
     protected override Animator InitAnimator()
     {
         Animator animator = new(4, name);
-        animator[ANY, IDLE] = EnterIdle;
-        animator[ANY, HOVER] = EnterHover;
-        animator[ANY, FOLLOW] = EnterFollow;
+        if (_useGrabber)
+        {
+            animator[ANY, IDLE] = EnterIdleUseGrabber;
+            animator[ANY, HOVER] = EnterHoverUseGrabber;
+            animator[ANY, FOLLOW] = EnterFollowUseGrabber;
+        }
+        else
+        {
+            animator[ANY, IDLE] = EnterIdle;
+            animator[ANY, HOVER] = EnterHover;
+            animator[ANY, FOLLOW] = EnterFollow;
+        }
         animator[ANY, FREE] = EnterFree;
         animator[FREE, ANY] = ExitFree;
         return animator;
     }
-
-    private bool _allowHover;
     
     public bool AllowHover
     {
@@ -73,7 +85,6 @@ public class SlotView : XView
         }
     }
     
-    private bool _allowDrag;
 
     public bool AllowDrag
     {
@@ -94,6 +105,7 @@ public class SlotView : XView
             ib.BeginDragNeuron.Remove(BeginDrag);
             ib.EndDragNeuron.Remove(EndDrag);
             ib.DragNeuron.Remove(Drag);
+            ib.DragNeuron.Remove(DragUseGrabber);
             ib.DraggingExitNeuron.Remove(DraggingExit);
         }
         base.SetInteractBehaviour(ib);
@@ -109,7 +121,10 @@ public class SlotView : XView
             {
                 ib.BeginDragNeuron.Join(BeginDrag);
                 ib.EndDragNeuron.Join(EndDrag);
-                ib.DragNeuron.Join(Drag);
+                if (_useGrabber)
+                    ib.DragNeuron.Join(DragUseGrabber);
+                else
+                    ib.DragNeuron.Join(Drag);
             }
             else
             {
@@ -118,20 +133,29 @@ public class SlotView : XView
         }
     }
 
-    [SerializeField] public Configuration IdleConfiguration = new(localScale: Vector3.one);
-    [SerializeField] public Configuration HoverConfiguration = new(localScale: 1.2f * Vector3.one);
-
-    public Tween EnterIdle()
+    private Tween EnterIdle()
         => DOTween.Sequence()
-            .AppendCallback(GrabberRelease)
             .Append(GoToConfiguration(IdleConfiguration));
 
     private Tween EnterHover()
         => DOTween.Sequence()
-            .AppendCallback(GrabberSetHover)
             .Append(GoToConfiguration(HoverConfiguration));
 
     private Tween EnterFollow()
+        => DOTween.Sequence()
+            .Append(new FollowAnimation(GetContentView().GetRect(), GetRect()).GetHandle());
+
+    private Tween EnterIdleUseGrabber()
+        => DOTween.Sequence()
+            .AppendCallback(GrabberRelease)
+            .Append(GoToConfiguration(IdleConfiguration));
+
+    private Tween EnterHoverUseGrabber()
+        => DOTween.Sequence()
+            .AppendCallback(GrabberSetHover)
+            .Append(GoToConfiguration(HoverConfiguration));
+
+    private Tween EnterFollowUseGrabber()
         => DOTween.Sequence()
             .AppendCallback(GrabberSetDrag)
             .Append(new FollowAnimation(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
@@ -170,6 +194,11 @@ public class SlotView : XView
     }
     
     private void Drag(InteractBehaviour ib, PointerEventData eventData)
+    {
+        GetContentView().GetRect().position = CanvasManager.Instance.UI2World(eventData.position);
+    }
+    
+    private void DragUseGrabber(InteractBehaviour ib, PointerEventData eventData)
     {
         CanvasManager.Instance.GetGrabber().SetPosition(eventData);
     }

@@ -1,6 +1,6 @@
 
+using System;
 using System.Collections.Generic;
-using CLLibrary;
 
 public class GachaCell : Cell
 {
@@ -13,14 +13,14 @@ public class GachaCell : Cell
 
     private float _priceMultiplier;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((GachaCell)thisObject).GetGuideDescriptor() },
+        { "Items",                      thisObject => ((GachaCell)thisObject).GetItems() },
+    };
+    public override object Get(string s) => Accessor[s](this);
     public GachaCell(float priceMultiplier)
     {
-        _accessors = new()
-        {
-            { "Guide",                    GetGuideDescriptor },
-            { "Items",                    GetItems },
-        };
-
         _priceMultiplier = priceMultiplier;
     }
 

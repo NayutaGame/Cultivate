@@ -441,7 +441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 3429236827418137952}
   AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 9108489489931938011}
+  HoverTransform: {fileID: 0}
 --- !u!114 &7111089330985632216
 MonoBehaviour:
   m_ObjectHideFlags: 0

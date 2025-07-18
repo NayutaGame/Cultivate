@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CanvasManager : Singleton<CanvasManager>, Addressable
@@ -19,7 +18,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("General")] public StageCanvas StageCanvas;
     [TabGroup("General")] [SerializeField] private Camera Camera;
     [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
-
+    
+    [TabGroup("Annotations")] public AnnotationManager AnnotationManager;
     [TabGroup("Annotations")] public AnnotationView CharacterAnnotation;
     [TabGroup("Annotations")] public AnnotationView SkillAnnotation;
     [TabGroup("Annotations")] public AnnotationView BuffAnnotation;
@@ -56,24 +56,23 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     public Grabber GetGrabber()
         => Grabber;
 
-    private Dictionary<string, Func<object>> _accessors;
-    public object Get(string s) => _accessors[s]();
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "CharacterAnnotation",          thisObject => ((CanvasManager)thisObject).CharacterAnnotation },
+        { "SkillAnnotation",              thisObject => ((CanvasManager)thisObject).SkillAnnotation },
+        { "BuffAnnotation",               thisObject => ((CanvasManager)thisObject).BuffAnnotation },
+        { "FormationAnnotation",          thisObject => ((CanvasManager)thisObject).FormationAnnotation },
+        { "RoomAnnotation",               thisObject => ((CanvasManager)thisObject).RoomAnnotation },
+        { "PackAnnotation",               thisObject => ((CanvasManager)thisObject).PackAnnotation },
+        { "AchievementAnnotation",        thisObject => ((CanvasManager)thisObject).AchievementAnnotation },
+        { "SkipButtonInactiveAnnotation", thisObject => ((CanvasManager)thisObject).SkipButtonInactiveAnnotation },
+        { "CycleAnnotation",              thisObject => ((CanvasManager)thisObject).CycleAnnotation },
+        { "AnnotationManager",            thisObject => ((CanvasManager)thisObject).GetAnnotationManager() },
+    };
+    public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
-        
-        _accessors = new Dictionary<string, Func<object>>()
-        {
-            { "CharacterAnnotation", () => CharacterAnnotation },
-            { "SkillAnnotation", () => SkillAnnotation },
-            { "BuffAnnotation", () => BuffAnnotation },
-            { "FormationAnnotation", () => FormationAnnotation },
-            { "RoomAnnotation", () => RoomAnnotation },
-            { "PackAnnotation", () => PackAnnotation },
-            { "AchievementAnnotation", () => AchievementAnnotation },
-            { "SkipButtonInactiveAnnotation", () => SkipButtonInactiveAnnotation },
-            { "CycleAnnotation", () => CycleAnnotation },
-        };
 
         _volume.profile.TryGet(out _vignette);
         
@@ -90,6 +89,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         CycleAnnotation.CheckAwake();
         PackPreview.CheckAwake();
         MergePreresultView.CheckAwake();
+        AnnotationManager.CheckAwake();
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
         
@@ -102,18 +102,24 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         GuideView.Refresh();
     }
 
+    public AnnotationManager GetAnnotationManager()
+        => AnnotationManager;
+
+    public void CloseAnnotation(InteractBehaviour ib, PointerEventData d)
+        => CloseAnnotation();
+
     public void CloseAnnotation()
     {
-        CharacterAnnotation.PointerExit();
-        SkillAnnotation.PointerExit();
-        BuffAnnotation.PointerExit();
-        FormationAnnotation.PointerExit();
-        RoomAnnotation.PointerExit();
-        PackAnnotation.PointerExit();
-        AchievementAnnotation.PointerExit();
-        SkipButtonInactiveAnnotation.PointerExit();
-        CycleAnnotation.PointerExit();
-        TextHint.PointerExit();
+        // CharacterAnnotation.PointerExit();
+        // SkillAnnotation.PointerExit();
+        // BuffAnnotation.PointerExit();
+        // FormationAnnotation.PointerExit();
+        // RoomAnnotation.PointerExit();
+        // PackAnnotation.PointerExit();
+        // AchievementAnnotation.PointerExit();
+        // SkipButtonInactiveAnnotation.PointerExit();
+        // CycleAnnotation.PointerExit();
+        // TextHint.PointerExit();
         PackPreview.ClosePreview();
     }
 

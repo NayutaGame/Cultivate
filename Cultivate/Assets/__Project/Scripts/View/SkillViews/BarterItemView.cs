@@ -40,7 +40,7 @@ public class BarterItemView : XView
 
     private void Exchange()
     {
-        CanvasManager.Instance.SkillAnnotation.PointerExit();
+        CanvasManager.Instance.CloseAnnotation();
         Get<BarterItem>().Exchange();
     }
 }
