@@ -16,8 +16,8 @@ public class AnnotationSwitchBehaviour : XBehaviour
         if (ib == null)
             return;
 
-        AnnotationView annotationView = _annotationBehaviour.GetAnnotationView();
-        FormationAnnotationView formationAnnotationView = annotationView.GetView() as FormationAnnotationView;
+        LegacyAnnotationView annotationView = _annotationBehaviour.GetAnnotationView();
+        LegacyFormationAnnotationView formationAnnotationView = annotationView.GetView() as LegacyFormationAnnotationView;
         ib.RightClickNeuron.Join(formationAnnotationView.SwitchShowingJingJie);
     }
 }

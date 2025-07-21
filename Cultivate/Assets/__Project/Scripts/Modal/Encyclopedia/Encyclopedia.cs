@@ -30,6 +30,7 @@ public class Encyclopedia : Addressable
         { "FormationCategory",          thisObject => FormationCategory },
         { "SkillCategory",              thisObject => SkillCategory },
         { "BuffCategory",               thisObject => BuffCategory },
+        { "KeywordCategory",            thisObject => KeywordCategory },
     };
     public object Get(string s) => Accessor[s](this);
     public Encyclopedia()

@@ -10,14 +10,14 @@ public class AnnotationBehaviour : XBehaviour
     [SerializeField] private string AnnotationAddress;
     [SerializeField] private AnnotationViewType AnnotationViewType;
     
-    private AnnotationView _annotationView;
-    public AnnotationView GetAnnotationView() => _annotationView;
+    private LegacyAnnotationView _annotationView;
+    public LegacyAnnotationView GetAnnotationView() => _annotationView;
 
     public override void AwakeFunction()
     {
         base.AwakeFunction();
 
-        _annotationView = new Address(AnnotationAddress).Get<AnnotationView>();
+        _annotationView = new Address(AnnotationAddress).Get<LegacyAnnotationView>();
         SetInteractBehaviour(_ib);
     }
 
@@ -43,11 +43,18 @@ public class AnnotationBehaviour : XBehaviour
     {
         AnnotationDetails annotationDetails = new AnnotationDetails(
             AnnotationViewType,
+            null,
             ib.GetAddress(),
-            ib.GetView(),
             FirstCounter,
             SecondCounter,
-            AnnotationDetails.AlignmentMethod.CenterAlignment);
+            new RectTransformAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView())));
         CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+    }
+
+    private RectTransform GetAlignRectTransform(XView view)
+    {
+        if (view is SlotView slotView)
+            return slotView.GetContentView().GetRect();
+        return view.GetRect();
     }
 }

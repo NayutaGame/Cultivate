@@ -86,7 +86,7 @@ MonoBehaviour:
   FirstCounter: 0.5
   SecondCounter: 2
   AnnotationAddress: Canvas.SkillAnnotation
-  AnnotationViewType: 2
+  AnnotationViewType: 1
 --- !u!114 &4907099803564948086
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -617,6 +617,7 @@ MonoBehaviour:
   CostIcon: {fileID: 3408072221450400803}
   NameText: {fileID: 6480292514034159028}
   DescriptionText: {fileID: 8988538271510993848}
+  PropagateLink: {fileID: 0}
   JingJieImage: {fileID: 5110590691908895039}
 --- !u!114 &5287357458454229239
 MonoBehaviour:
@@ -661,7 +662,7 @@ MonoBehaviour:
   FirstCounter: 0.5
   SecondCounter: 2
   AnnotationAddress: Canvas.SkillAnnotation
-  AnnotationViewType: 2
+  AnnotationViewType: 1
 --- !u!114 &7613878159742721782
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -43,14 +44,26 @@ public class AnnotationManager : XView, Addressable
     {
         if (!CanShow(d))
             return;
-        _handle?.Kill();
-        _handle = DOTween.Sequence()
-            .AppendInterval(d.FirstCounter)
-            .AppendCallback(() => ShowCounter(d))
-            .Append(DOTween.To(GetFillAmount, SetFillAmount, 0, d.SecondCounter).SetEase(Ease.Linear))
-            .AppendCallback(() => FinishCounter(d));
-        _handle.SetAutoKill();
-        _handle.Restart();
+
+        if (_annotationStack.Count() > 0 && d.ParentAnnotationDetails != _annotationStack.GetLast())
+            return;
+
+        if (d.FirstCounter == 0 && d.SecondCounter == 0)
+        {
+            _handle?.Kill();
+            FinishCounter(d);
+        }
+        else
+        {
+            _handle?.Kill();
+            _handle = DOTween.Sequence()
+                .AppendInterval(d.FirstCounter)
+                .AppendCallback(() => ShowCounter(d))
+                .Append(DOTween.To(GetFillAmount, SetFillAmount, 0, d.SecondCounter).SetEase(Ease.Linear))
+                .AppendCallback(() => FinishCounter(d));
+            _handle.SetAutoKill();
+            _handle.Restart();
+        }
     }
 
     private bool CanShow(AnnotationDetails d)
@@ -72,18 +85,9 @@ public class AnnotationManager : XView, Addressable
 
     private void ShowCounter(AnnotationDetails d)
     {
-        Vector3[] fourCornersArray = new Vector3[4];
-        GetTargetRect(d).GetWorldCorners(fourCornersArray);
-        ProgressCircle.transform.position = fourCornersArray[2];
+        ProgressCircle.transform.position = d.AnnotationAlignmentDetails.GetProgressCirclePosition();
         ProgressCircle.fillAmount = 1;
         ProgressCircle.gameObject.SetActive(true);
-    }
-
-    private RectTransform GetTargetRect(AnnotationDetails d)
-    {
-        if (d.View is SlotView slotView)
-            return slotView.GetContentView().GetRect();
-        return d.View.GetRect();
     }
 
     private void HideCounter()
@@ -95,19 +99,19 @@ public class AnnotationManager : XView, Addressable
     {
         ProgressCircle.gameObject.SetActive(false);
         EnqueueAnnotation(d);
-        EnableBackground();
     }
 
     public void EnqueueAnnotation(AnnotationDetails d)
     {
         _annotationStack.Add(d);
         Annotations.AddItem();
-        Register();
+        Align();
+        RegisterCoverForSecondLast();
     }
 
     public void DequeueAnnotation()
     {
-        Unregister();
+        UnregisterCoverForSecondLast();
         _annotationStack.RemoveLast();
         Annotations.RemoveLast();
     }
@@ -116,49 +120,51 @@ public class AnnotationManager : XView, Addressable
     {
         while (dequeueIndex < Annotations.GetCount() - 1)
             DequeueAnnotation();
-        
-        bool nothingLeft = dequeueIndex == -1;
-        if (nothingLeft)
-            DisableBackground();
     }
 
-    private void EnableBackground()
-    {
-        Background.gameObject.SetActive(true);
-        InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
-        backgroundIb.PointerEnterNeuron.Join(PointerEnter);
-    }
-
-    private void DisableBackground()
-    {
-        Background.gameObject.SetActive(false);
-        InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
-        backgroundIb.PointerEnterNeuron.Remove(PointerEnter);
-    }
-
-    private void Register()
+    private void Align()
     {
         AnnotationDetails d = _annotationStack.GetLast();
         SlotView slotView = Annotations.LastView();
-        XView contentView = slotView.GetContentView();
-        RectTransform targetRect = GetTargetRect(d);
-        RectTransform annotationRect = slotView.GetRect();
 
-        Vector3 displacement = contentView.GetComponent<AnnotationView>().GetCriticalDisplacement();
-        annotationRect.position = targetRect.position - displacement;
+        Vector3 displacement = slotView.GetContentView().GetComponent<AnnotationView>().GetCriticalDisplacement(d.AnnotationAlignmentDetails);
+        
+        slotView.GetRect().position = d.AnnotationAlignmentDetails.GetCenterPosition() - displacement;
         slotView.GetAnimator().SetState(SlotView.IDLE);
-        
-        InteractBehaviour slotIb = slotView.GetInteractBehaviour();
-        slotIb.PointerEnterNeuron.Join(PointerEnter);
     }
 
-    private void Unregister()
+    private void RegisterCoverForSecondLast()
     {
-        AnnotationDetails d = _annotationStack.GetLast();
-        SlotView slotView = Annotations.LastView();
+        int count = Annotations.GetCount();
+        if (count > 1)
+        {
+            AnnotationView v = Annotations.ViewFromIndex(Annotations.GetCount() - 2).GetContentView() as AnnotationView;
+            v.Cover.raycastTarget = true;
+            v.CoverIb.PointerEnterNeuron.Join(PointerEnter);
+        }
+        else
+        {
+            Background.gameObject.SetActive(true);
+            InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
+            backgroundIb.PointerEnterNeuron.Join(PointerEnter);
+        }
+    }
 
-        InteractBehaviour slotIb = slotView.GetInteractBehaviour();
-        slotIb.PointerEnterNeuron.Remove(PointerEnter);
+    private void UnregisterCoverForSecondLast()
+    {
+        int count = Annotations.GetCount();
+        if (count > 1)
+        {
+            AnnotationView v = Annotations.ViewFromIndex(Annotations.GetCount() - 2).GetContentView() as AnnotationView;
+            v.Cover.raycastTarget = false;
+            v.CoverIb.PointerEnterNeuron.Remove(PointerEnter);
+        }
+        else
+        {
+            Background.gameObject.SetActive(false);
+            InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
+            backgroundIb.PointerEnterNeuron.Remove(PointerEnter);
+        }
     }
 
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
@@ -168,13 +174,7 @@ public class AnnotationManager : XView, Addressable
 
     private int GetDequeueIndex(InteractBehaviour ib)
     {
-        for (int i = 0; i < Annotations.GetCount(); i++)
-        {
-            SlotView slotView = Annotations.ViewFromIndex(i);
-            if (slotView.GetInteractBehaviour() == ib)
-                return i;
-        }
-
-        return -1;
+        return Annotations.TraversalActive().FirstIdx(slotView =>
+            (slotView.GetContentView() as AnnotationView).CoverIb == ib) ?? -1;
     }
 }

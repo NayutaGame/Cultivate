@@ -1,31 +1,25 @@
 
 public class AnnotationDetails
 {
-    public enum AlignmentMethod
-    {
-        CenterAlignment,
-        RectAlignment,
-    }
-    
     public AnnotationViewType AnnotationViewType;
+    public AnnotationDetails ParentAnnotationDetails;
     public Address Address;
-    public XView View;
     public float FirstCounter;
     public float SecondCounter;
-    public AlignmentMethod Alignment;
+    public AnnotationAlignmentDetails AnnotationAlignmentDetails;
 
     public AnnotationDetails(AnnotationViewType annotationViewType,
+        AnnotationDetails parentAnnotationDetails,
         Address address,
-        XView view,
         float firstCounter,
         float secondCounter,
-        AlignmentMethod alignment)
+        AnnotationAlignmentDetails annotationAlignmentDetails)
     {
         AnnotationViewType = annotationViewType;
+        ParentAnnotationDetails = parentAnnotationDetails;
         Address = address;
-        View = view;
         FirstCounter = firstCounter;
         SecondCounter = secondCounter;
-        Alignment = alignment;
+        AnnotationAlignmentDetails = annotationAlignmentDetails;
     }
 }

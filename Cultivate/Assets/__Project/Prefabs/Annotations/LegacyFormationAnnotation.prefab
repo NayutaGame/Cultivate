@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 7313628777035012753}
   - component: {fileID: 6225798194779178087}
   m_Layer: 5
-  m_Name: FormationAnnotation
+  m_Name: LegacyFormationAnnotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

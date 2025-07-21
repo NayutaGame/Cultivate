@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class AchievementAnnotationView : XView
+public class LegacyAchievementAnnotationView : XView
 {
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text UnlockStatusText;

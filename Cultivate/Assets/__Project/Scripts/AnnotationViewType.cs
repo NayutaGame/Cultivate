@@ -2,13 +2,13 @@
 public enum AnnotationViewType
 {
     Auto,
-    CharacterAnnotation,
     SkillAnnotation,
+    TextAnnotation,
+    CharacterAnnotation,
     BuffAnnotation,
     FormationAnnotation,
     RoomAnnotation,
     PackAnnotation,
     AchievementAnnotation,
     CycleAnnotation,
-    TextAnnotation,
 }

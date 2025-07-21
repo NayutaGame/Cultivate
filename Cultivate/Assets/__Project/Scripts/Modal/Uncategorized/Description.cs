@@ -2,6 +2,16 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
+/**
+    SkillDefinition
+        => ProcedureDefinitions
+        => GetDescription()
+            => ProcessEnvironment
+            => ApplyReplaceValues
+            => ApplyResult
+        => ProcessReturn
+        => ProcessHighlightAnnotatable
+ */
 public class Description
 {
     private StringBuilder _sb;
@@ -36,8 +46,11 @@ public class Description
     {
         StringBuilder sb = new(_sb.ToString());
         foreach (LegacyAnnotatable annotatable in cascade.GetArray())
-            sb = sb.Replace(annotatable.GetName(), $"<style=\"Highlight\">{annotatable.GetName()}</style>");
-
+        {
+            string name = annotatable.GetName();
+            string replacement = $"<link=\"{name}\"><style=\"Highlight\">{name}</style></link>";
+            sb = sb.Replace(name, replacement);
+        }
         return sb.ToString();
     }
 

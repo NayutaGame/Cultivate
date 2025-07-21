@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 2489627513974668238}
   - component: {fileID: 2042902288517563651}
   m_Layer: 5
-  m_Name: TextHint
+  m_Name: LegacyTextHint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

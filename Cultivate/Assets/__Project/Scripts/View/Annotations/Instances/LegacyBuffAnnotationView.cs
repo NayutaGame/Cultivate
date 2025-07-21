@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuffAnnotationView : XView
+public class LegacyBuffAnnotationView : XView
 {
     [SerializeField] private Image Icon;
     [SerializeField] private TMP_Text TitleText;

@@ -20,15 +20,15 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
     
     [TabGroup("Annotations")] public AnnotationManager AnnotationManager;
-    [TabGroup("Annotations")] public AnnotationView CharacterAnnotation;
-    [TabGroup("Annotations")] public AnnotationView SkillAnnotation;
-    [TabGroup("Annotations")] public AnnotationView BuffAnnotation;
-    [TabGroup("Annotations")] public AnnotationView FormationAnnotation;
-    [TabGroup("Annotations")] public AnnotationView RoomAnnotation;
-    [TabGroup("Annotations")] public AnnotationView PackAnnotation;
-    [TabGroup("Annotations")] public AnnotationView AchievementAnnotation;
-    [TabGroup("Annotations")] public AnnotationView SkipButtonInactiveAnnotation;
-    [TabGroup("Annotations")] public AnnotationView CycleAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView CharacterAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView SkillAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView BuffAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView FormationAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView RoomAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView PackAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView AchievementAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView SkipButtonInactiveAnnotation;
+    [TabGroup("Annotations")] public LegacyAnnotationView CycleAnnotation;
     [TabGroup("Annotations")] public TextHint TextHint;
     [TabGroup("Annotations")] public PackPreview PackPreview;
     
@@ -52,6 +52,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
         return WuXingColors[wuXing.Value._index];
     }
+
+    public Camera GetCamera()
+        => Camera;
 
     public Grabber GetGrabber()
         => Grabber;

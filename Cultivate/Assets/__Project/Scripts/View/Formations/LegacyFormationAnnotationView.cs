@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FormationAnnotationView : XView
+public class LegacyFormationAnnotationView : XView
 {
     private JingJie _showingJingJie;
     private int _showingMark;

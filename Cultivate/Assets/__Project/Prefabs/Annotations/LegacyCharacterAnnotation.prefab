@@ -824,7 +824,7 @@ GameObject:
   - component: {fileID: 2531857529354059317}
   - component: {fileID: 1486914069730440849}
   m_Layer: 5
-  m_Name: CharacterAnnotation
+  m_Name: LegacyCharacterAnnotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

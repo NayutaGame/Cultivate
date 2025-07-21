@@ -8333,8 +8333,8 @@ MonoBehaviour:
   SlotPrefab: {fileID: 6359906681201007938, guid: ba7eabd1c2e265f499a95e66aef96048, type: 3}
   Prefabs:
   - {fileID: 4585215156409062315, guid: 256b3e5de7a128345b059ed54c6937a8, type: 3}
-  - {fileID: 4585215156409062315, guid: 256b3e5de7a128345b059ed54c6937a8, type: 3}
   - {fileID: 6613488373725718453, guid: 00718c3beab835b46ba9a9def91cdd54, type: 3}
+  - {fileID: 6613488373725718453, guid: ecfe41776901ff34eae04e7673ed4ffa, type: 3}
   AllowHover: 1
   AllowDrag: 0
   AutoUpdateItem: 1

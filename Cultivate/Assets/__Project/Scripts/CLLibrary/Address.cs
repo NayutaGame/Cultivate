@@ -69,6 +69,10 @@ public class Address : IEquatable<Address>
                 {
                     curr = _root[s](AppManager.Instance);
                 }
+                else if (curr is IDictionary dictionary)
+                {
+                    curr = dictionary[s];
+                }
                 else
                 {
                     Debug.Log($"{this} @ {s}");

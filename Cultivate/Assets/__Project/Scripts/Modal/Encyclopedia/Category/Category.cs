@@ -24,6 +24,7 @@ public class Category<T> : IEnumerable<T>, Addressable where T : Entry
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "List",                       thisObject => ((Category<T>)thisObject)._list },
+        { "Dict",                       thisObject => ((Category<T>)thisObject)._dict },
     };
     public object Get(string s) => Accessor[s](this);
     public Category()

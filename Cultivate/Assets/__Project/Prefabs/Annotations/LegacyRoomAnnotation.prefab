@@ -824,7 +824,7 @@ GameObject:
   - component: {fileID: 4571343936182410582}
   - component: {fileID: 1486914069730440849}
   m_Layer: 5
-  m_Name: RoomAnnotation
+  m_Name: LegacyRoomAnnotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

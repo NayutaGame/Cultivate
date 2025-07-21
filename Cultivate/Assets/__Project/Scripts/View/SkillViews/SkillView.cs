@@ -1,6 +1,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SkillView : XView
@@ -12,6 +13,7 @@ public class SkillView : XView
     [SerializeField] private Image CostIcon;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
+    [SerializeField] public PropagateLink PropagateLink;
     [SerializeField] private Image JingJieImage;
 
     private HighlightBehaviour _highlightBehaviour;
@@ -50,7 +52,6 @@ public class SkillView : XView
         SetCostDescription(skill.GetLiteralCostDescription(_showingJingJie));
         SetName(skill.GetName());
         SetDescription(skill.GetHighlight(_showingJingJie));
-        SetTagComposite(skill.GetTagComposite());
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
     }
 
@@ -116,22 +117,6 @@ public class SkillView : XView
     protected virtual void SetDescription(string description)
     {
         DescriptionText.text = description;
-    }
-
-    protected virtual void SetTagComposite(TagComposite tagComposite)
-    {
-        // List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
-        //
-        // for (int i = 0; i < skillTypes.Count; i++)
-        // {
-        //     TypeViews[i].SetActive(true);
-        //     TypeTexts[i].text = skillTypes[i].ToString();
-        // }
-        //
-        // for (int i = skillTypes.Count; i < TypeViews.Length; i++)
-        // {
-        //     TypeViews[i].SetActive(false);
-        // }
     }
 
     protected virtual void SetJingJieSprite(Sprite jingJieSprite)
