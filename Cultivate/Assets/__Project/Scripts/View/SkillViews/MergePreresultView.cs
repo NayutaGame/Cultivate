@@ -44,7 +44,7 @@ public class MergePreresultView : XView
         _animator ??= InitAnimator();
     }
 
-    private Animator InitAnimator()
+    protected override Animator InitAnimator()
     {
         // 0 for hide, 1 for show, 2 for success merge
         Animator animator = new(3, "Merge Preresult View");

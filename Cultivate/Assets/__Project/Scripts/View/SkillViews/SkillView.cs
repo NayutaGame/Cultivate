@@ -13,7 +13,6 @@ public class SkillView : XView
     [SerializeField] private Image CostIcon;
     [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
-    [SerializeField] public PropagateLink PropagateLink;
     [SerializeField] private Image JingJieImage;
 
     private HighlightBehaviour _highlightBehaviour;

@@ -8335,6 +8335,7 @@ MonoBehaviour:
   - {fileID: 4585215156409062315, guid: 256b3e5de7a128345b059ed54c6937a8, type: 3}
   - {fileID: 6613488373725718453, guid: 00718c3beab835b46ba9a9def91cdd54, type: 3}
   - {fileID: 6613488373725718453, guid: ecfe41776901ff34eae04e7673ed4ffa, type: 3}
+  - {fileID: 6613488373725718453, guid: 58b91deb5b448f043860ed5b56ee9aaf, type: 3}
   AllowHover: 1
   AllowDrag: 0
   AutoUpdateItem: 1
@@ -10912,7 +10913,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40822abb166f25a4993209689eb275cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _criticalRect: {fileID: 0}
 --- !u!114 &7971903264885538901
 MonoBehaviour:
   m_ObjectHideFlags: 0

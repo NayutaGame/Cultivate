@@ -41,13 +41,12 @@ public class EmphasizableSlotView : SlotView
             .Append(GetContentView().GetRect().DOScale(1f, _emphasisDuration).SetEase(Ease.InQuad));
 
 
-    public static readonly int ANY = -1;
-    public static readonly int FREE = 0;
-    public static readonly int IDLE = 1;
-    public static readonly int HOVER = 2;
-    public static readonly int FOLLOW = 3;
-    public static readonly int PING = 4;
-    
+    private new static readonly int ANY = -1;
+    private new static readonly int FREE = 0;
+    private new static readonly int IDLE = 1;
+    private new static readonly int HOVER = 2;
+    private new static readonly int FOLLOW = 3;
+    private static readonly int PING = 4;
     
     protected override Animator InitAnimator()
     {

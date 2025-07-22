@@ -68,17 +68,6 @@ public abstract class LegacyView : MonoBehaviour
             InteractBehaviour.SetInteractable(true);
         GetView().SetVisible(true);
     }
-
-    public void SetIdle(LegacyInteractBehaviour ib, PointerEventData d)
-        => _sm.SetState(1);
-
-    public void SetInactive(LegacyInteractBehaviour ib, PointerEventData d)
-        => _sm.SetState(0);
-
-    public void SetVisible(bool value)
-    {
-        GetView().SetVisible(value);
-    }
     
     public abstract Address GetAddress();
     public abstract T Get<T>() where T : class;

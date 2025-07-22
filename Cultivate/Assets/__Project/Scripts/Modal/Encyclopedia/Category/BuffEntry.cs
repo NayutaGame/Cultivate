@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffEntry : Entry, LegacyAnnotatable
+public class BuffEntry : Entry, LegacyAnnotatable, AnnotatableBuff
 {
     public string GetName() => GetId();
     
@@ -23,7 +23,14 @@ public class BuffEntry : Entry, LegacyAnnotatable
 
     private SpriteEntry _spriteEntry;
     public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
-
+    
+    public bool CanShowAnnotation() => true;
+    
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     /// <summary>
     /// 定义一个Buff
     /// </summary>

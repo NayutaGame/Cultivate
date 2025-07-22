@@ -3527,5 +3527,5 @@ public class RoomCategory : Category<RoomEntry>
         });
     }
 
-    public virtual RoomEntry DefaultEntry() => this["不存在的事件"];
+    public override RoomEntry DefaultEntry() => this["不存在的事件"];
 }

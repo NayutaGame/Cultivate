@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -45,7 +46,8 @@ public class AnnotationManager : XView, Addressable
         if (!CanShow(d))
             return;
 
-        if (_annotationStack.Count() > 0 && d.ParentAnnotationDetails != _annotationStack.GetLast())
+        bool orderValid = IsOrderValid(d);
+        if (!orderValid)
             return;
 
         if (d.FirstCounter == 0 && d.SecondCounter == 0)
@@ -64,6 +66,26 @@ public class AnnotationManager : XView, Addressable
             _handle.SetAutoKill();
             _handle.Restart();
         }
+    }
+
+    private bool IsOrderValid(AnnotationDetails d)
+    {
+        bool openedFromOutsideAndNoAnnotationOpened =
+            d.InvokerRectTransform == null && Annotations.GetCount() == 0;
+
+        if (openedFromOutsideAndNoAnnotationOpened)
+            return true;
+
+        bool openedNestedly = d.InvokerRectTransform != null;
+        Assert.IsTrue(Annotations.GetCount() > 0);
+        
+        RectTransform lastAnnotationViewRect = Annotations.LastView().GetContentView().GetRect();
+        bool isChildOfLastView = d.InvokerRectTransform.IsChildOf(lastAnnotationViewRect);
+
+        if (openedNestedly && isChildOfLastView)
+            return true;
+
+        return false;
     }
 
     private bool CanShow(AnnotationDetails d)

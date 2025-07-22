@@ -10,10 +10,16 @@ using System.Text.RegularExpressions;
             => ApplyReplaceValues
             => ApplyResult
         => ProcessReturn
-        => ProcessHighlightAnnotatable
+        => Highlight => Highlighted
+        
+    BuffView
+        => RawDescription
+        => Highlight => Highlighted
  */
 public class Description
 {
+    private static readonly Regex ReplacingWhatsInBrackets = new(@"\[(.*?)\]", RegexOptions.Compiled);
+    
     private StringBuilder _sb;
     public StringBuilder Sb => _sb;
 
@@ -102,8 +108,6 @@ public class Description
         _sb.Clear();
         _sb.Append($"<style=\"{style}\">{content}</style>");
     }
-
-    private static readonly Regex ReplacingWhatsInBrackets = new(@"\[(.*?)\]", RegexOptions.Compiled);
 
     public void ApplyReplaceValues(ResultDict castResult)
     {
