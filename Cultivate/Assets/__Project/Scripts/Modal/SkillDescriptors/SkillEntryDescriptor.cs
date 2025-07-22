@@ -125,9 +125,6 @@ public class SkillEntryDescriptor : ISkill
     public TagComposite GetTagComposite()
         => _entry?.GetTagComposite();
 
-    public string GetCascadeAnnotated()
-        => _entry?.GetCascadeAnnotated();
-
     public string GetTrivia()
         => _entry?.GetTrivia();
 
@@ -136,9 +133,6 @@ public class SkillEntryDescriptor : ISkill
 
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
         => _entry?.GetLiteralCostDescription(showingJingJie) ?? CostDescription.Empty;
-
-    public string GetHighlight(JingJie showingJingJie)
-        => _entry?.GetHighlight(showingJingJie);
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
         => _entry?.GetJingJieSprite(showingJingJie);

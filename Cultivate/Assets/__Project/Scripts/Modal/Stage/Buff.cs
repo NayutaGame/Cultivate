@@ -15,7 +15,6 @@ public class Buff : StageClosureListener, IEmphasizable
         => _emphasisNeuron;
 
     public string GetName() => _entry.GetName();
-    public string GetCascadeAnnotated() => _entry.GetCascadeAnnotated();
     public string GetTrivia() => _entry.GetTrivia();
 
     private int _stack;

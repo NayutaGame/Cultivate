@@ -75,9 +75,9 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
         ResultDict castResult)
     {
         FollowingCycleProcedureDefinition pd = procedureDefinition as FollowingCycleProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         
-        description.Sb.Append($"跟随流转");
+        description.Join($"跟随流转");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -86,7 +86,7 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

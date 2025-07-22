@@ -28,8 +28,8 @@ public class LegacyBuffAnnotationView : XView
         
         Icon.sprite = buff.GetEntry().GetSprite();
         TitleText.text = $"{buff.GetName()} {buff.Stack}";
-        DescriptionText.text = buff.GetEntry().GetLiteralDescription().ToString();
-        AnnotationText.text = buff.GetCascadeAnnotated();
+        DescriptionText.text = buff.GetEntry().GetDescription().GetHighlightedString();
+        // AnnotationText.text = buff.GetCascadeAnnotated();
 
         string trivia = buff.GetTrivia();
         bool hasTrivia = trivia != null;
@@ -50,8 +50,8 @@ public class LegacyBuffAnnotationView : XView
         
         Icon.sprite = buff.GetSprite();
         TitleText.text = $"{buff.GetName()}";
-        DescriptionText.text = buff.GetLiteralDescription().ToString();
-        AnnotationText.text = buff.GetCascadeAnnotated();
+        DescriptionText.text = buff.GetDescription().GetHighlightedString();
+        // AnnotationText.text = buff.GetCascadeAnnotated();
 
         string trivia = buff.GetTrivia();
         bool hasTrivia = trivia != null;

@@ -58,6 +58,8 @@ public class Encyclopedia : Addressable
         
         AchievementCategory = new();
         
+        Description.BuildSymbolizeRegex();
+        
         KeywordCategory.Init();
         BuffCategory.Init();
         SkillCategory.Init();

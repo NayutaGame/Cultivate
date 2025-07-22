@@ -78,10 +78,10 @@ public class CycleProcedureDefinition : ProcedureDefinition
         ResultDict castResult)
     {
         CycleProcedureDefinition pd = procedureDefinition as CycleProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         
         if (pd.Gain != 0)
-            description.Sb.Append($"{pd.WuXing._elementaryBuff}+{pd.Gain}");
+            description.Join($"{pd.WuXing._elementaryBuff}+{pd.Gain}");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -90,7 +90,7 @@ public class CycleProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

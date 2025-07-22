@@ -76,20 +76,20 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         GainBuffProcedureDefinition pd = procedureDefinition as GainBuffProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
 
         if (pd.Stack != 0)
         {
             if (pd.BuffEntry.Friendly)
             {
-                description.Sb.Append("获得");
+                description.Join("获得");
             }
             else
             {
-                description.Sb.Append("遭受");
+                description.Join("遭受");
             }
 
-            description.Sb.Append($"{pd.Stack}{pd.BuffEntry.GetName()}");
+            description.Join($"{pd.Stack}{pd.BuffEntry.GetName()}");
         }
         
         if (pd.Closures != null)
@@ -99,7 +99,7 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

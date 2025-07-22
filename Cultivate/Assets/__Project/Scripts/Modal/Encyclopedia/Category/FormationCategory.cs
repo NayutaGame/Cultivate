@@ -19,7 +19,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
                                                                                     "\n4张：击伤时：施加6减甲" +
                                                                                     "\n6张：开局效果额外触发一次" +
                                                                                     "\n9张：死亡不会停止战斗",
@@ -49,7 +49,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
                         "\n4张：击伤时：施加6减甲" +
                         "\n6张：开局效果额外触发一次" +
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
@@ -78,7 +78,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
                         "\n4张：击伤时：施加6减甲" +
                         "\n6张：开局效果额外触发一次".ApplyInactive() +
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
@@ -99,7 +99,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1暴击" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
                         "\n4张：击伤时：施加6减甲".ApplyInactive() +
                         "\n6张：开局效果额外触发一次".ApplyInactive() +
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
@@ -119,7 +119,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1暴击".ApplyInactive() +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1暴击".ApplyInactive() +
                         "\n4张：击伤时：施加6减甲".ApplyInactive() +
                         "\n6张：开局效果额外触发一次".ApplyInactive() +
                         "\n9张：死亡不会停止战斗".ApplyInactive()),
@@ -136,7 +136,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1免费" +
+                        rawRewardDescription:                                          "2张：开局：获得1免费" +
                                                                                     "\n4张：开局及每轮：获得1吸血" +
                                                                                     "\n6张：所有耗蓝-1" +
                                                                                     "\n9张：第一次二动时，行动八次，之后如果受伤则死亡",
@@ -171,7 +171,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1免费" +
+                        rawRewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血" +
                         "\n6张：所有耗蓝-1" +
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
@@ -193,7 +193,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1免费" +
+                        rawRewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血" +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
@@ -214,7 +214,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1免费" +
+                        rawRewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
@@ -233,7 +233,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局：获得1免费".ApplyInactive() +
+                        rawRewardDescription:                                          "2张：开局：获得1免费".ApplyInactive() +
                         "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
                         "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive()),
@@ -250,7 +250,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1穿透" +
                                                                                     "\n4张：第一张牌使用两次" +
                                                                                     "\n6张：所有牌算作使用过一次" +
                                                                                     "\n9张：永久穿透和集中",
@@ -274,7 +274,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1穿透" +
                         "\n4张：第一张牌使用两次" +
                         "\n6张：所有牌算作使用过一次" +
                         "\n9张：永久穿透和集中".ApplyInactive(),
@@ -297,7 +297,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1穿透" +
                         "\n4张：第一张牌使用两次" +
                         "\n6张：所有牌算作使用过一次".ApplyInactive() +
                         "\n9张：永久穿透和集中".ApplyInactive(),
@@ -318,7 +318,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1穿透" +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1穿透" +
                         "\n4张：第一张牌使用两次".ApplyInactive() +
                         "\n6张：所有牌算作使用过一次".ApplyInactive() +
                         "\n9张：永久穿透和集中".ApplyInactive(),
@@ -338,7 +338,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：开局及每轮：获得1穿透".ApplyInactive() +
+                        rawRewardDescription:                                          "2张：开局及每轮：获得1穿透".ApplyInactive() +
                         "\n4张：第一张牌使用两次".ApplyInactive() +
                         "\n6张：所有牌算作使用过一次".ApplyInactive() +
                         "\n9张：永久穿透和集中".ApplyInactive()),
@@ -355,7 +355,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
+                        rawRewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                                                                                     "\n4张：燃命时：灼烧+1" +
                                                                                     "\n6张：每回合：剑意+1" +
                                                                                     "\n9张：每轮气血恢复至上限",
@@ -377,7 +377,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
+                        rawRewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                         "\n4张：燃命时：灼烧+1" +
                         "\n6张：每回合：剑意+1" +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -398,7 +398,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
+                        rawRewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                         "\n4张：燃命时：灼烧+1" +
                         "\n6张：每回合：剑意+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -418,7 +418,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
+                        rawRewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗" +
                         "\n4张：燃命时：灼烧+1".ApplyInactive() +
                         "\n6张：每回合：剑意+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive(),
@@ -437,7 +437,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗".ApplyInactive() +
+                        rawRewardDescription:                                          "2张：使用第一张火属性牌后暂时移出本场战斗".ApplyInactive() +
                         "\n4张：燃命时：灼烧+1".ApplyInactive() +
                         "\n6张：每回合：剑意+1".ApplyInactive() +
                         "\n9张：每轮气血恢复至上限".ApplyInactive()),
@@ -454,7 +454,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                9,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：每轮：净化2" +
+                        rawRewardDescription:                                          "2张：每轮：净化2" +
                                                                                     "\n4张：第一次造成伤害时，获得护甲" +
                                                                                     "\n6张：最后两张都有终结效果" +
                                                                                     "\n9张：可以抵挡一次禁制Debuff",
@@ -489,7 +489,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：每轮：净化2" +
+                        rawRewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：第一次造成伤害时，获得护甲" +
                         "\n6张：最后两张都有终结效果" +
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
@@ -510,7 +510,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：每轮：净化2" +
+                        rawRewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：第一次造成伤害时，获得护甲" +
                         "\n6张：最后两张都有终结效果".ApplyInactive() +
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
@@ -530,7 +530,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.ZhuJi,
                         requirement:                                                2,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：每轮：净化2" +
+                        rawRewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：第一次造成伤害时，获得护甲".ApplyInactive() +
                         "\n6张：最后两张都有终结效果".ApplyInactive() +
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
@@ -549,7 +549,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "2张：每轮：净化2".ApplyInactive() +
+                        rawRewardDescription:                                          "2张：每轮：净化2".ApplyInactive() +
                         "\n4张：第一次造成伤害时，获得护甲".ApplyInactive() +
                         "\n6张：最后两张都有终结效果".ApplyInactive() +
                         "\n9张：可以抵挡一次禁制Debuff".ApplyInactive()),
@@ -566,7 +566,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                8,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
+                        rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n6张：开局：力量+2" +
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌",
                         stageClosures: new StageClosure[]
@@ -586,7 +586,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
+                        rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n6张：开局：力量+2" +
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -605,7 +605,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
+                        rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n6张：开局：力量+2".ApplyInactive() +
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -623,7 +623,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲".ApplyInactive() +
+                        rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲".ApplyInactive() +
                                                                                     "\n6张：开局：力量+2".ApplyInactive() +
                                                                                     "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -648,7 +648,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                8,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次失去护甲时，返还" +
+                        rawRewardDescription:                                          "4张：第一次失去护甲时，返还" +
                                                                                     "\n6张：吟唱时，一次取得2点进度" +
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动",
                         runClosures: new RunClosure[]
@@ -682,7 +682,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                6,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次失去护甲时，返还" +
+                        rawRewardDescription:                                          "4张：第一次失去护甲时，返还" +
                                                                                     "\n6张：吟唱时，一次取得2点进度" +
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -701,7 +701,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                4,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次失去护甲时，返还" +
+                        rawRewardDescription:                                          "4张：第一次失去护甲时，返还" +
                                                                                     "\n6张：吟唱时，一次取得2点进度".ApplyInactive() +
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -719,7 +719,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "4张：第一次失去护甲时，返还".ApplyInactive() +
+                        rawRewardDescription:                                          "4张：第一次失去护甲时，返还".ApplyInactive() +
                                                                                     "\n6张：吟唱时，一次取得2点进度".ApplyInactive() +
                                                                                     "\n8张：第一个空位置入一张观棋烂柯，可以使敌人一回合无法行动".ApplyInactive()),
                 }),
@@ -735,7 +735,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：获得4灵气" +
+                        rawRewardDescription:                                          "3张：开局：获得4灵气" +
                                                                                     "\n5张：每回合：获得1灵气" +
                                                                                     "\n7张：获得灵气时：每1，回复2气血",
                         stageClosures: new StageClosure[]
@@ -755,7 +755,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：获得4灵气" +
+                        rawRewardDescription:                                          "3张：开局：获得4灵气" +
                         "\n5张：每回合：获得1灵气" +
                         "\n7张：获得灵气时：每1，回复2气血".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -774,7 +774,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                3,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：获得4灵气" +
+                        rawRewardDescription:                                          "3张：开局：获得4灵气" +
                         "\n5张：每回合：获得1灵气".ApplyInactive() +
                         "\n7张：获得灵气时：每1，回复2气血".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -792,7 +792,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：获得4灵气".ApplyInactive() +
+                        rawRewardDescription:                                          "3张：开局：获得4灵气".ApplyInactive() +
                         "\n5张：每回合：获得1灵气".ApplyInactive() +
                         "\n7张：获得灵气时：每1，回复2气血".ApplyInactive()),
                 }),
@@ -808,7 +808,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.HuaShen,
                         requirement:                                                7,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
+                        rawRewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
                                                                                     "\n5张：第二轮：气血回复到上限" +
                                                                                     "\n7张：受到治疗时：力量+1",
                         stageClosures: new StageClosure[]
@@ -830,7 +830,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.YuanYing,
                         requirement:                                                5,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
+                        rawRewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
                         "\n5张：第二轮：气血回复到上限" +
                         "\n7张：受到治疗时：力量+1".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -851,7 +851,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.JinDan,
                         requirement:                                                3,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
+                        rawRewardDescription:                                          "3张：开局：气血及上限变为1.2倍" +
                         "\n5张：第二轮：气血回复到上限".ApplyInactive() +
                         "\n7张：受到治疗时：力量+1".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -871,7 +871,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         jingJie:                                                    JingJie.LianQi,
                         requirement:                                                0,
                         trivia:                                                     null,
-                        rewardDescription:                                          "3张：开局：气血及上限变为1.2倍".ApplyInactive() +
+                        rawRewardDescription:                                          "3张：开局：气血及上限变为1.2倍".ApplyInactive() +
                         "\n5张：第二轮：气血回复到上限".ApplyInactive() +
                         "\n7张：受到治疗时：力量+1".ApplyInactive()),
                 }),
@@ -880,6 +880,9 @@ public class FormationCategory : Category<FormationGroupEntry>
 
     public void Init()
     {
-        List.Do(entry => entry.GenerateAnnotations());
+        List.Do(entry =>
+        {
+            entry.GenerateDescription();
+        });
     }
 }

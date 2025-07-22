@@ -30,8 +30,19 @@ public class StageClosure
     }
 
     public string Key;
+    private string _rawDescription;
     private Description _description;
-    public Description Description => _description.Clone();
+    public Description Description
+    {
+        get
+        {
+            if (_description != null)
+                return _description.Clone();
+
+            _description = new Description(_rawDescription);
+            return _description.Clone();
+        }
+    }
 
     private bool _checkListener;
 
@@ -40,14 +51,14 @@ public class StageClosure
         int order,
         Func<StageClosureListener, StageClosure, StageClosureDetails, UniTask> func,
         string key = null,
-        string description = null,
+        string rawDescription = null,
         bool checkListener = false)
     {
         EventId = eventId;
         Order = order;
         _func = func;
         Key = key;
-        _description = description;
+        _rawDescription = rawDescription;
         _checkListener = checkListener;
     }
 }

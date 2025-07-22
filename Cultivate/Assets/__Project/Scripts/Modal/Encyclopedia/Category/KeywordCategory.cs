@@ -46,6 +46,9 @@ public class KeywordCategory : Category<KeywordEntry>
 
     public void Init()
     {
-        List.Do(entry => entry.GenerateCascade());
+        List.Do(entry =>
+        {
+            entry.GenerateDescription();
+        });
     }
 }

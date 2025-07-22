@@ -9,7 +9,7 @@ public class StageNote : ISkill
     public StageSkill Skill;
 
     [NonSerialized] public CostDescription ActualCostDescription;
-    [NonSerialized] public string ActualDescription;
+    [NonSerialized] public Description ActualDescription;
 
     public StageNote(int entityIndex, int temporalIndex, StageSkill skill, int currCounter = 0, int maxCounter = 0)
     {
@@ -45,9 +45,6 @@ public class StageNote : ISkill
     public TagComposite GetTagComposite()
         => Skill.Entry.GetTagComposite();
 
-    public string GetCascadeAnnotated()
-        => Skill.Entry.GetCascadeAnnotated();
-
     public string GetTrivia()
         => Skill.Entry.GetTrivia();
 
@@ -58,11 +55,11 @@ public class StageNote : ISkill
         => GetJingJie() == showingJingJie && ActualCostDescription != null
             ? ActualCostDescription
             : Skill.Entry.GetLiteralCostDescription(showingJingJie);
-
-    public string GetHighlight(JingJie showingJingJie)
+    
+    public Description GetDescription(JingJie showingJingJie)
         => GetJingJie() == showingJingJie && ActualDescription != null
             ? ActualDescription
-            : Skill.Entry.GetHighlight(showingJingJie);
+            : Skill.Entry.GetDescription(showingJingJie);
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)
         => Skill.Entry.GetJingJieSprite(showingJingJie);

@@ -9,7 +9,7 @@ public interface AnnotatableSkill : Annotatable
     Sprite GetSprite();
     CostDescription GetLiteralCostDescription(JingJie showingJingJie);
     string GetName();
-    string GetHighlight(JingJie showingJingJie);
+    Description GetDescription(JingJie showingJingJie);
     TagComposite GetTagComposite();
     Sprite GetJingJieSprite(JingJie showingJingJie);
 }

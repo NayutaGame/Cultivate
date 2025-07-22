@@ -47,7 +47,7 @@ public class StageTimeline : Addressable
         return null;
     }
 
-    public void AppendNote(int entityIndex, StageSkill skill, CostDescription actualCostDescription, string actualDescription)
+    public void AppendNote(int entityIndex, StageSkill skill, CostDescription actualCostDescription, Description actualDescription)
     {
         int count = _notes.Count;
         StageNote stageNote = new StageNote(entityIndex, count, skill);

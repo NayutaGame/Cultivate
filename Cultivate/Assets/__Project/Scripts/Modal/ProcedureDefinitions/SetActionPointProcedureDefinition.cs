@@ -44,14 +44,14 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         SetActionPointProcedureDefinition pd = procedureDefinition as SetActionPointProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         
         if (ActionPoint == 2)
-            description.Sb.Append($"二动");
+            description.Join($"二动");
         else if (ActionPoint == 3)
-            description.Sb.Append($"三动");
+            description.Join($"三动");
         else if (ActionPoint == 4)
-            description.Sb.Append($"四动");
+            description.Join($"四动");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -60,7 +60,7 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

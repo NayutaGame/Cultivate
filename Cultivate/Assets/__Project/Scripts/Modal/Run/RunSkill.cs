@@ -93,9 +93,6 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver, AnnotatableSkill
     public TagComposite GetTagComposite()
         => _entry.GetTagComposite();
 
-    public string GetCascadeAnnotated()
-        => _entry.GetCascadeAnnotated();
-
     public string GetTrivia()
         => _entry.GetTrivia();
 
@@ -120,16 +117,16 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver, AnnotatableSkill
         return GetEntry().GetLiteralCostDescription(showingJingJie);
     }
 
-    public string GetHighlight(JingJie showingJingJie)
+    public Description GetDescription(JingJie showingJingJie)
     {
         if (_jingJie != showingJingJie)
-            return GetEntry().GetHighlight(showingJingJie);
+            return GetEntry().GetDescription(showingJingJie);
         
-        string actualDescription = _skillSlot?.ActualDescription;
+        Description actualDescription = _skillSlot?.ActualDescription;
         if (actualDescription != null)
             return actualDescription;
 
-        return SkillDefinition.GetLiteralDescriptionHighlighted();
+        return SkillDefinition.GetLiteralDescription();
     }
 
     public Sprite GetJingJieSprite(JingJie showingJingJie)

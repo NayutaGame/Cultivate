@@ -60,9 +60,9 @@ public class DispelProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         DispelProcedureDefinition pd = procedureDefinition as DispelProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         if (pd.Value > 0)
-            description.Sb.Append($"净化{pd.Value}");
+            description.Join($"净化{pd.Value}");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -71,7 +71,7 @@ public class DispelProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

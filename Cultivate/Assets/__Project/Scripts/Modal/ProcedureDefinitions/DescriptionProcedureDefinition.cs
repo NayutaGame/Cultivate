@@ -37,7 +37,7 @@ public class DescriptionProcedureDefinition : ProcedureDefinition
     {
         DescriptionProcedureDefinition pd = procedureDefinition as DescriptionProcedureDefinition;
         
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -46,7 +46,7 @@ public class DescriptionProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

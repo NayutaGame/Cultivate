@@ -59,10 +59,10 @@ public class LoseMaxHealthProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         LoseMaxHealthProcedureDefinition pd = procedureDefinition as LoseMaxHealthProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         
         if (pd.Value != 0)
-            description.Sb.Append($"失去{pd.Value}气血上限");
+            description.Join($"失去{pd.Value}气血上限");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -71,7 +71,7 @@ public class LoseMaxHealthProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

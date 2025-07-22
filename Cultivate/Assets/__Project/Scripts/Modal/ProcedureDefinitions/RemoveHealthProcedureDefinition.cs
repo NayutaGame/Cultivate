@@ -61,8 +61,8 @@ public class RemoveHealthProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         RemoveHealthProcedureDefinition pd = procedureDefinition as RemoveHealthProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"对手失去{pd.Value}气血");
+        description.Join(pd.PostCondDefinition.Description);
+        description.Join($"对手失去{pd.Value}气血");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -71,7 +71,7 @@ public class RemoveHealthProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

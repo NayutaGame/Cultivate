@@ -62,10 +62,10 @@ public class LoseArmorProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         LoseArmorProcedureDefinition pd = procedureDefinition as LoseArmorProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         
         if (pd.Value > 0)
-            description.Sb.Append($"失去{pd.Value}护甲");
+            description.Join($"失去{pd.Value}护甲");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -74,7 +74,7 @@ public class LoseArmorProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

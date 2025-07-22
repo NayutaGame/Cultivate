@@ -42,7 +42,7 @@ public class TextAnnotationView : AnnotationView
         AnnotatableText text = d.Address.Get<AnnotatableText>();
         
         Title.text = text.GetTitle();
-        Description.text = text.GetDescription();
+        Description.text = text.GetDescription().GetHighlightedString();
     }
 
     // 如果需要link回调，可以添加类似SkillAnnotationView的LinkCallback方法

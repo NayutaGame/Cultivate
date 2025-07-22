@@ -13,18 +13,11 @@ public class FormationEntry : IFormationModel, Addressable
     private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
 
-    private string _rewardDescription;
-    public string GetRewardDescription() => _rewardDescription;
-    public string GetHighlightedRewardDescription() => GetHighlight();
-    public string GetRewardDescriptionAnnotation() => _annotationArray.GetCascadeAnnotated();
+    private string _rawRewardDescription;
+    private Description _rewardDescription;
     
-    private AnnotationArray _annotationArray;
-    public void GenerateAnnotations()
-        => _annotationArray = AnnotationArray.FromDescription(GetRewardDescription());
-    public string GetHighlight(string description)
-        => _annotationArray.HighlightFromDescription(description);
-    public string GetHighlight()
-        => GetHighlight(GetRewardDescription());
+    public void GenerateDescription()
+        => _rewardDescription = new Description(_rawRewardDescription);
 
     private string _trivia;
     public string GetTrivia() => _trivia;
@@ -47,16 +40,16 @@ public class FormationEntry : IFormationModel, Addressable
     /// </summary>
     /// <param name="jingJie">境界</param>
     /// <param name="conditionDescription">条件的描述</param>
-    /// <param name="rewardDescription">奖励的描述</param>
+    /// <param name="rawRewardDescription">奖励的描述</param>
     /// <param name="runClosures">事件捕获</param>
     /// <param name="stageClosures">事件捕获</param>
-    public FormationEntry(JingJie jingJie, string rewardDescription, string trivia, int requirement,
+    public FormationEntry(JingJie jingJie, string rawRewardDescription, string trivia, int requirement,
         RunClosure[] runClosures = null,
         params StageClosure[] stageClosures
     )
     {
         _jingJie = jingJie;
-        _rewardDescription = rewardDescription;
+        _rawRewardDescription = rawRewardDescription;
         _trivia = trivia;
         _requirement = requirement;
         // _sprite = Resources.Load<Sprite>($"Sprites/Buff/{Name}");
@@ -70,13 +63,10 @@ public class FormationEntry : IFormationModel, Addressable
     public JingJie GetLowestJingJie() => _formationGroupEntry.GetLowestJingJie();
     public JingJie? GetActivatedJingJie() => _jingJie;
     public string GetConditionDescription() => _formationGroupEntry.GetConditionDescription();
-    public string GetRewardDescriptionFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRewardDescriptionFromJingJie(jingJie);
-
-    public string GetHighlightedRewardDescriptionFromJingJie(JingJie jingJie)
-        => _formationGroupEntry.GetHighlightedRewardDescriptionFromJingJie(jingJie);
-
-    public string GetRewardDescriptionAnnotationFromJingJie(JingJie jingJie)
-        => _formationGroupEntry.GetRewardDescriptionAnnotationFromJingJie(jingJie);
+    
+    public Description GetRewardDescription() => _rewardDescription;
+    public Description GetRewardDescription(JingJie jingJie)
+        => _formationGroupEntry.GetRewardDescription(jingJie);
 
     public string GetTriviaFromJingJie(JingJie jingJie) => _formationGroupEntry.GetTriviaFromJingJie(jingJie);
     public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationGroupEntry.GetIncrementedJingJie(jingJie);

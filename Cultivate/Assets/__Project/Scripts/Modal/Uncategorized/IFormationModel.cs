@@ -7,10 +7,8 @@ public interface IFormationModel : IMarkedSliderModel
     JingJie GetLowestJingJie();
     JingJie? GetActivatedJingJie();
     string GetConditionDescription();
-    string GetRewardDescriptionFromJingJie(JingJie jingJie);
 
-    string GetHighlightedRewardDescriptionFromJingJie(JingJie jingJie);
-    string GetRewardDescriptionAnnotationFromJingJie(JingJie jingJie);
+    Description GetRewardDescription(JingJie jingJie);
     
     string GetTriviaFromJingJie(JingJie jingJie);
     JingJie GetIncrementedJingJie(JingJie jingJie);

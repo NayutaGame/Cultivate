@@ -3,32 +3,25 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class KeywordEntry : Entry, AnnotatableText, LegacyAnnotatable
+public class KeywordEntry : Entry, AnnotatableText
 {
-    private string _description;
-    private AnnotationArray _cascade;
+    private string _rawDescription;
+    private Description _description;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
     };
     public object Get(string s) => Accessor[s](this);
-    public KeywordEntry(string id, string description) : base(id)
+    public KeywordEntry(string id, string rawDescription) : base(id)
     {
-        _description = description;
+        _rawDescription = rawDescription;
     }
     
     public string GetName() => GetId();
-    public Description GetLiteralDescription() => _description;
 
-    public string GetHighlight()
-        => GetLiteralDescription().GetHighlight(_cascade);
-    
-    public string GetCascadeAnnotated()
-        => _cascade.GetCascadeAnnotated();
-    
-    public void GenerateCascade()
-        => _cascade = AnnotationArray.FromDescription(GetLiteralDescription());
+    public void GenerateDescription()
+        => _description = new Description(_rawDescription);
 
     public static KeywordEntry FromName(string name)
         => Encyclopedia.KeywordCategory.FirstObj(e => e.GetName() == name) ?? Encyclopedia.KeywordCategory.DefaultEntry();
@@ -39,6 +32,6 @@ public class KeywordEntry : Entry, AnnotatableText, LegacyAnnotatable
     public string GetTitle()
         => GetName();
 
-    public string GetDescription()
+    public Description GetDescription()
         => _description;
 }

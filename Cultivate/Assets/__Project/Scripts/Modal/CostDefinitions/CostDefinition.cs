@@ -49,7 +49,7 @@ public abstract class CostDefinition
     {
         Description description = new();
     
-        description.Sb.Append(PostCondDefinition.Description);
+        description.Join(PostCondDefinition.Description);
         
         if (Closures != null)
             foreach (StageClosure c in Closures)
@@ -57,7 +57,7 @@ public abstract class CostDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(costResult);
                 closureDescription.ApplyResult(costResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(costResult, this);

@@ -228,7 +228,7 @@ public class MergePreresultView : XView
         }
         
         JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry.LowestJingJie;
-        DescriptionText.text = _mergeTarget.ResultEntry.GetHighlight(jingJie);
+        DescriptionText.text = _mergeTarget.ResultEntry.GetDescription(jingJie).GetHighlightedString();
     }
     
     protected virtual void SetSkillTypeCompositeFromMergePreresult()

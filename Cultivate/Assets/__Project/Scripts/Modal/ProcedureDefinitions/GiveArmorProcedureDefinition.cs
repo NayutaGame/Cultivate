@@ -61,8 +61,8 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         GiveArmorProcedureDefinition pd = procedureDefinition as GiveArmorProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"给予{pd.Value}护甲");
+        description.Join(pd.PostCondDefinition.Description);
+        description.Join($"给予{pd.Value}护甲");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -71,7 +71,7 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

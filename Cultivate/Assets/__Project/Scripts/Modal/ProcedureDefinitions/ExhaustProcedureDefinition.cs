@@ -36,8 +36,8 @@ public class ExhaustProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         ExhaustProcedureDefinition pd = procedureDefinition as ExhaustProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"升华");
+        description.Join(pd.PostCondDefinition.Description);
+        description.Join($"升华");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -46,7 +46,7 @@ public class ExhaustProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

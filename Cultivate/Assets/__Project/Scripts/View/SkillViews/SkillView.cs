@@ -50,7 +50,7 @@ public class SkillView : XView
         SetSprite(skill.GetSprite());
         SetCostDescription(skill.GetLiteralCostDescription(_showingJingJie));
         SetName(skill.GetName());
-        SetDescription(skill.GetHighlight(_showingJingJie));
+        SetDescription(skill.GetDescription(_showingJingJie));
         SetJingJieSprite(skill.GetJingJieSprite(_showingJingJie));
     }
 
@@ -113,9 +113,9 @@ public class SkillView : XView
         NameText.text = name;
     }
 
-    protected virtual void SetDescription(string description)
+    protected virtual void SetDescription(Description description)
     {
-        DescriptionText.text = description;
+        DescriptionText.text = description.GetHighlightedString();
     }
 
     protected virtual void SetJingJieSprite(Sprite jingJieSprite)

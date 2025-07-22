@@ -49,8 +49,8 @@ public class LegacyFormationAnnotationView : XView
             markView.SetState(activated, showing);
         });
 
-        RewardDescriptionText.text = formation.GetHighlightedRewardDescriptionFromJingJie(_showingJingJie);
-        AnnotationText.text = formation.GetRewardDescriptionAnnotationFromJingJie(_showingJingJie);
+        RewardDescriptionText.text = formation.GetRewardDescription(_showingJingJie).GetHighlightedString();
+        // AnnotationText.text = formation.GetRewardDescriptionAnnotationFromJingJie(_showingJingJie);
 
         SetTrivia(formation.GetTriviaFromJingJie(_showingJingJie));
     }

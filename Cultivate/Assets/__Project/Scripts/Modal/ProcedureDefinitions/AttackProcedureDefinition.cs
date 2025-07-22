@@ -99,14 +99,14 @@ public class AttackProcedureDefinition : ProcedureDefinition
     {
         AttackProcedureDefinition pd = procedureDefinition as AttackProcedureDefinition;
         
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
 
         if (pd.Value > 0)
         {
-            description.Sb.Append($"{pd.Value}攻");
+            description.Join($"{pd.Value}攻");
             if (pd.Times > 1)
             {
-                description.Sb.Append($"x{pd.Times}");
+                description.Join($"x{pd.Times}");
             }
         }
         
@@ -117,7 +117,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

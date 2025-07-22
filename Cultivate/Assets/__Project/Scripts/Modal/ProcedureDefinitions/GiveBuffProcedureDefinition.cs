@@ -76,17 +76,17 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         GiveBuffProcedureDefinition pd = procedureDefinition as GiveBuffProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
+        description.Join(pd.PostCondDefinition.Description);
         if (pd.BuffEntry.Friendly)
         {
-            description.Sb.Append("给予");
+            description.Join("给予");
         }
         else
         {
-            description.Sb.Append("施加");
+            description.Join("施加");
         }
 
-        description.Sb.Append($"{pd.Stack}{pd.BuffEntry.GetName()}");
+        description.Join($"{pd.Stack}{pd.BuffEntry.GetName()}");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -95,7 +95,7 @@ public class GiveBuffProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

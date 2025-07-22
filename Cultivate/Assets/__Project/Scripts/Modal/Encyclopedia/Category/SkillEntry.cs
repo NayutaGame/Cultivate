@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
-public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
+public class SkillEntry : Entry, ISkill, AnnotatableSkill
 {
     private string _name;
     
@@ -22,13 +22,6 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
     private TagComposite _tagComposite;
     
     public StageClosure[] Closures;
-
-    public Description GetLiteralDescription() => GetSkillDefinitionFromDj(0).GetLiteralDescription();
-
-    public string GetHighlight()
-        => GetSkillDefinitionFromDj(0).GetLiteralDescriptionHighlighted();
-    public string GetHighlight(JingJie jingJie, ResultDict costResult, ResultDict castResult)
-        => GetSkillDefinitionFromDj(jingJie - LowestJingJie).GetActualDescriptionHighlighted(costResult, castResult);
     
     private string _trivia;
 
@@ -43,8 +36,6 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
 
     private SpriteEntry _spriteEntry;
     private SkillDefinition[] _skillDefinitions;
-    public SkillDefinition GetSkillDefinitionFromDj(int dj)
-        => _skillDefinitions[dj.Clamp(0, HighestJingJie - LowestJingJie)];
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -89,6 +80,17 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
         for (int i = 0; i < _skillDefinitions.Length; i++)
             _hasStartStageCast |= _skillDefinitions[i].HasStartStageCast;
     }
+    
+    public SkillDefinition GetSkillDefinitionFromDj(int dj)
+        => _skillDefinitions[dj.Clamp(0, HighestJingJie - LowestJingJie)];
+    
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+        => GetSkillDefinitionFromDj(showingJingJie - LowestJingJie).GetLiteralCostDescription();
+    
+    public Description GetDescription(JingJie showingJingJie)
+        => GetSkillDefinitionFromDj(showingJingJie - LowestJingJie).GetLiteralDescription();
+    public Description GetDescription()
+        => GetSkillDefinitionFromDj(0).GetLiteralDescription();
 
     private CostDefinition DefaultCost(int j, int dj)
         => new EmptyCostDefinition();
@@ -141,15 +143,11 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
     public WuXing? GetWuXing() => WuXing;
     public string GetName() => _name;
     public TagComposite GetTagComposite() => _tagComposite;
-    public string GetCascadeAnnotated() => GetSkillDefinitionFromDj(0).Cascade.GetCascadeAnnotated();
     public string GetTrivia() => _trivia;
 
     public JingJie GetJingJie() => LowestJingJie;
     public JingJie GetLowestJingJie() => LowestJingJie;
     public JingJie GetHighestJingJie() => HighestJingJie;
-    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
-        => GetSkillDefinitionFromDj(showingJingJie - LowestJingJie).GetLiteralCostDescription();
-    public string GetHighlight(JingJie showingJingJie) => GetHighlight(showingJingJie, null, null);
     public Sprite GetJingJieSprite(JingJie showingJingJie) => CanvasManager.Instance.JingJieSprites[showingJingJie];
     public JingJie NextJingJie(JingJie showingJingJie)
     {
@@ -193,7 +191,7 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill, LegacyAnnotatable
         //     return true;
             
         // 5. 描述文本匹配
-        string description = GetLiteralDescription().ToString().ToLower();
+        string description = GetDescription().GetRawString().ToLower();
         if (description.Contains(searchText))
             return true;
             

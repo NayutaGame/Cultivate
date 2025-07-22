@@ -68,8 +68,8 @@ public class HealOppoProcedureDefinition : ProcedureDefinition
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {
         HealOppoProcedureDefinition pd = procedureDefinition as HealOppoProcedureDefinition;
-        description.Sb.Append(pd.PostCondDefinition.Description);
-        description.Sb.Append($"敌方气血+{pd.Value}");
+        description.Join(pd.PostCondDefinition.Description);
+        description.Join($"敌方气血+{pd.Value}");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
@@ -78,7 +78,7 @@ public class HealOppoProcedureDefinition : ProcedureDefinition
                 Description closureDescription = c.Description;
                 closureDescription.ApplyReplaceValues(castResult);
                 closureDescription.ApplyResult(castResult, c.Key);
-                description.Sb.Append(closureDescription);
+                description.Join(closureDescription);
             }
         
         description.ApplyStyle(castResult, pd);

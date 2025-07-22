@@ -78,13 +78,9 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     public JingJie GetLowestJingJie() => FormationWithLowestJingJie().GetJingJie();
     public JingJie? GetActivatedJingJie() => null;
     public string GetConditionDescription() => _progressDescription;
-    public string GetRewardDescriptionFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRewardDescription();
 
-    public string GetHighlightedRewardDescriptionFromJingJie(JingJie jingJie)
-        => FirstFormationWithJingJie(jingJie).GetHighlightedRewardDescription();
-
-    public string GetRewardDescriptionAnnotationFromJingJie(JingJie jingJie)
-        => FirstFormationWithJingJie(jingJie).GetRewardDescriptionAnnotation();
+    public Description GetRewardDescription(JingJie jingJie)
+        => FirstFormationWithJingJie(jingJie).GetRewardDescription();
     
     public string GetTriviaFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetTrivia();
     public JingJie GetIncrementedJingJie(JingJie jingJie)
@@ -110,9 +106,12 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         => address.Append(".Marks");
 
     #endregion
-
-    public void GenerateAnnotations()
+    
+    public void GenerateDescription()
     {
-        _subFormationEntries.Do(e => e.GenerateAnnotations());
+        _subFormationEntries.Do(e =>
+        {
+            e.GenerateDescription();
+        });
     }
 }

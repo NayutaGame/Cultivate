@@ -11,7 +11,7 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     [NonSerialized] public PlacedSkill PlacedSkill;
 
     [NonSerialized] public CostDescription ActualCostDescription;
-    [NonSerialized] public string ActualDescription;
+    [NonSerialized] public Description ActualDescription;
     
     [SerializeField] private int _index;
     [SerializeField] private bool _hidden;
@@ -92,7 +92,7 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     public Sprite GetSprite() => _skill.GetSprite();
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie) => _skill.GetLiteralCostDescription(showingJingJie);
     public string GetName() => _skill.GetName();
-    public string GetHighlight(JingJie showingJingJie) => _skill.GetHighlight(showingJingJie);
+    public Description GetDescription(JingJie showingJingJie) => _skill.GetDescription(showingJingJie);
     public TagComposite GetTagComposite() => _skill.GetTagComposite();
     public Sprite GetJingJieSprite(JingJie showingJingJie) => _skill.GetJingJieSprite(showingJingJie);
 }

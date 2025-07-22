@@ -104,7 +104,7 @@ public class StageEntity : Addressable, StageClosureListener
             await skillDefinition.Cast(castDetails);
 
             CostDescription actualCostDescription = CostDescription.Empty;
-            string actualDescription = skillDefinition.GetActualDescriptionHighlighted(_costDetails?.CostResult, castResult);
+            Description actualDescription = skillDefinition.GetActualDescription(_costDetails?.CostResult, castResult);
             _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
             _env.Result.TryAppend($"\n");
         }
@@ -130,7 +130,7 @@ public class StageEntity : Addressable, StageClosureListener
         await skillDefinition.Cast(castDetails);
         
         CostDescription actualCostDescription = _costDetails.CostDescription.Clone();
-        string actualDescription = skillDefinition.GetActualDescriptionHighlighted(_costDetails?.CostResult, castResult);
+        Description actualDescription = skillDefinition.GetActualDescription(_costDetails?.CostResult, castResult);
         _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
         _env.Result.TryAppend($"\n");
 
@@ -144,7 +144,7 @@ public class StageEntity : Addressable, StageClosureListener
         castDetails.Clear();
     }
 
-    private void TryWriteResultToSlot(bool shouldWriteToSlot, StageSkill skill, CostDescription actualCostDescription, string actualDescription)
+    private void TryWriteResultToSlot(bool shouldWriteToSlot, StageSkill skill, CostDescription actualCostDescription, Description actualDescription)
     {
         if (!shouldWriteToSlot) return;
         SkillSlot slot = skill.GetSlot();
@@ -195,7 +195,7 @@ public class StageEntity : Addressable, StageClosureListener
     private bool SlotIsUnwritten(SkillSlot slot)
         => slot.ActualCostDescription == null;
 
-    private void WriteResultToSlot(SkillSlot slot, CostDescription actualCostDescription, string actualDescription)
+    private void WriteResultToSlot(SkillSlot slot, CostDescription actualCostDescription, Description actualDescription)
     {
         slot.ActualCostDescription = actualCostDescription;
         slot.ActualDescription = actualDescription;

@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffEntry : Entry, LegacyAnnotatable, AnnotatableBuff
+public class BuffEntry : Entry, AnnotatableBuff
 {
     public string GetName() => GetId();
     
-    private string _description;
-    public Description GetLiteralDescription() => _description;
+    private string _rawDescription;
+    private Description _description;
+    public Description GetDescription() => _description;
 
     public readonly BuffStackRule BuffStackRule;
     public readonly bool Friendly;
@@ -35,7 +36,7 @@ public class BuffEntry : Entry, LegacyAnnotatable, AnnotatableBuff
     /// 定义一个Buff
     /// </summary>
     /// <param name="id">名称</param>
-    /// <param name="description">描述</param>
+    /// <param name="rawDescription">描述</param>
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
     /// <param name="dispellable">是否可驱散</param>
@@ -44,7 +45,7 @@ public class BuffEntry : Entry, LegacyAnnotatable, AnnotatableBuff
     /// <param name="closures">事件捕获</param>
     public BuffEntry(
         string id,
-        string description,
+        string rawDescription,
         BuffStackRule buffStackRule,
         bool friendly,
         bool dispellable,
@@ -53,7 +54,7 @@ public class BuffEntry : Entry, LegacyAnnotatable, AnnotatableBuff
         params StageClosure[] closures
     ) : base(id)
     {
-        _description = description;
+        _rawDescription = rawDescription;
         BuffStackRule = buffStackRule;
         Friendly = friendly;
         Dispellable = dispellable;
@@ -64,14 +65,8 @@ public class BuffEntry : Entry, LegacyAnnotatable, AnnotatableBuff
         _spriteEntry = $"Buff{GetName()}";
     }
     
-    private AnnotationArray _cascade;
-    public void GenerateCascade()
-        => _cascade = AnnotationArray.FromDescription(GetLiteralDescription());
-    public string GetHighlight()
-        => GetLiteralDescription().GetHighlight(_cascade);
-    
-    public string GetCascadeAnnotated()
-        => _cascade.GetCascadeAnnotated();
+    public void GenerateDescription()
+        => _description = new Description(_rawDescription);
 
     public static implicit operator BuffEntry(string id) => Encyclopedia.BuffCategory[id];
 
