@@ -27,10 +27,11 @@ public class Encyclopedia : Addressable
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "FormationCategory",          thisObject => FormationCategory },
-        { "SkillCategory",              thisObject => SkillCategory },
-        { "BuffCategory",               thisObject => BuffCategory },
         { "KeywordCategory",            thisObject => KeywordCategory },
+        { "BuffCategory",               thisObject => BuffCategory },
+        { "SkillCategory",              thisObject => SkillCategory },
+        { "FormationCategory",          thisObject => FormationCategory },
+        { "CharacterCategory",          thisObject => CharacterCategory },
     };
     public object Get(string s) => Accessor[s](this);
     public Encyclopedia()
@@ -63,8 +64,11 @@ public class Encyclopedia : Addressable
         KeywordCategory.Init();
         BuffCategory.Init();
         SkillCategory.Init();
-        DifficultyCategory.Init();
+        PackCategory.Init();
         FormationCategory.Init();
+        CharacterCategory.Init();
+        DifficultyCategory.Init();
+        AchievementCategory.Init();
 
         JingJieToAudio = new()
         {

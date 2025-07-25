@@ -8,6 +8,7 @@ public class KeywordCategory : Category<KeywordEntry>
     {
         AddRange(new List<KeywordEntry>()
         {
+            new("气血", "当归零时，战斗失败"),
             new("金流转", "将所有坚毅转化成锋锐"),
             new("水流转", "将所有锋锐转化成格挡"),
             new("木流转", "将所有格挡转化成力量"),

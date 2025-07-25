@@ -14,9 +14,12 @@ public class EncounterRoomDefinition : RoomDefinition
     {
     }
 
+    public override string GetTitle()
+        => "相遇房间";
+
     public override SpriteEntry GetSprite()
         => "EncounterRoomIcon";
 
-    public override string GetDescription()
-        => "将会遭遇其他角色";
+    public override Description GetDescription()
+        => new("将会遭遇其他角色");
 }

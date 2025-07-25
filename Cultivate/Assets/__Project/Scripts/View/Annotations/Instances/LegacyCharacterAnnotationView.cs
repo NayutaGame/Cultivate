@@ -16,7 +16,7 @@ public class LegacyCharacterAnnotationView : XView
 
         CharacterProfile characterProfile = Get<CharacterProfile>();
         TitleText.text = characterProfile.GetEntry().GetName();
-        DescriptionText.text = characterProfile.GetEntry().AbilityDescription;
+        DescriptionText.text = characterProfile.GetEntry().GetAbilityDescription().GetHighlightedString();
         // Debug.Log(characterProfile.GetEntry().GetName());
 
         // Buff buff = Get<Buff>();

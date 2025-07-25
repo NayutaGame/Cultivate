@@ -50,7 +50,7 @@ public class BuffAnnotationView : AnnotationView
         AnnotationDetails d = Get<AnnotationDetails>();
         AnnotatableBuff buff = d.Address.Get<AnnotatableBuff>();
         Title.text = buff.GetName();
-        // Description.text = ;
+        Description.text = buff.GetDescription().GetHighlightedString();
         Trivia.text = buff.GetTrivia();
 
         BuffView.Refresh();

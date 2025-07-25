@@ -31,8 +31,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH001",
                 name: "徐福专精",
-                conditionDescription: "以徐福取得难度8的胜利",
-                rewardDescription: "徐福可以修改第一个卡包",
+                rawConditionDescription: "以徐福取得难度8的胜利",
+                rawRewardDescription: "徐福可以修改第一个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 0),
                 runClosures: new RunClosure[]
                 {
@@ -51,8 +51,8 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH002",
                 name: "剑心通明",
-                conditionDescription: "置入5张攻击牌，并取胜",
-                rewardDescription: "徐福可以修改第二个卡包",
+                rawConditionDescription: "置入5张攻击牌，并取胜",
+                rawRewardDescription: "徐福可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 1),
                 stageClosures: new StageClosure[]
                 {
@@ -71,8 +71,8 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH003",
                 name: "五彩缤纷",
-                conditionDescription: "拥有10种不同的Buff，并取胜",
-                rewardDescription: "徐福可以修改第三个卡包",
+                rawConditionDescription: "拥有10种不同的Buff，并取胜",
+                rawRewardDescription: "徐福可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 2),
                 stageClosures: new StageClosure[]
                 {
@@ -113,8 +113,8 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH004",
                 name: "灵气灌顶",
-                conditionDescription: "灵气达到20，并取胜",
-                rewardDescription: "徐福可以修改第四个卡包",
+                rawConditionDescription: "灵气达到20，并取胜",
+                rawRewardDescription: "徐福可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 3),
                 stageClosures: new StageClosure[]
                 {
@@ -137,8 +137,8 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH005",
                 name: "不染凡尘",
-                conditionDescription: "手牌和准备区共计3张丹药牌",
-                rewardDescription: "徐福可以修改第五个卡包",
+                rawConditionDescription: "手牌和准备区共计3张丹药牌",
+                rawRewardDescription: "徐福可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 4),
                 runClosures: new RunClosure[]
                 {
@@ -163,8 +163,8 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH006",
                 name: "道基初成",
-                conditionDescription: "累计游玩了10局游戏",
-                rewardDescription: "徐福可以修改第六个卡包",
+                rawConditionDescription: "累计游玩了10局游戏",
+                rawRewardDescription: "徐福可以修改第六个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 5),
                 runClosures: new RunClosure[]
                 {
@@ -185,8 +185,8 @@ public class AchievementCategory : Category<AchievementEntry>
 
             new(id: "ACH007",
                 name: "丹火正旺",
-                conditionDescription: "携带了至少2种丹药牌，并取胜",
-                rewardDescription: "徐福可以修改第七个卡包",
+                rawConditionDescription: "携带了至少2种丹药牌，并取胜",
+                rawRewardDescription: "徐福可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("徐福", 6),
                 stageClosures: new StageClosure[]
                 {
@@ -212,8 +212,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH008",
                 name: "子非鱼专精",
-                conditionDescription: "以子非鱼取得难度8的胜利",
-                rewardDescription: "子非鱼可以修改第一个卡包",
+                rawConditionDescription: "以子非鱼取得难度8的胜利",
+                rawRewardDescription: "子非鱼可以修改第一个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 0),
                 runClosures: new RunClosure[]
                 {
@@ -232,8 +232,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH009",
                 name: "风驰电掣",
-                conditionDescription: "置入3张开局牌，并取胜",
-                rewardDescription: "子非鱼可以修改第二个卡包",
+                rawConditionDescription: "置入3张开局牌，并取胜",
+                rawRewardDescription: "子非鱼可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 1),
                 stageClosures: new StageClosure[]
                 {
@@ -257,8 +257,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH010",
                 name: "五行化生",
-                conditionDescription: "置入5种不同五行的牌，并取胜",
-                rewardDescription: "子非鱼可以修改第三个卡包",
+                rawConditionDescription: "置入5种不同五行的牌，并取胜",
+                rawRewardDescription: "子非鱼可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 2),
                 stageClosures: new StageClosure[]
                 {
@@ -283,8 +283,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH011",
                 name: "国士无双",
-                conditionDescription: "激活5种五行的阵法，并取胜",
-                rewardDescription: "子非鱼可以修改第四个卡包",
+                rawConditionDescription: "激活5种五行的阵法，并取胜",
+                rawRewardDescription: "子非鱼可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 3),
                 stageClosures: new StageClosure[]
                 {
@@ -313,8 +313,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH012",
                 name: "顺风顺水",
-                conditionDescription: "到达金丹期之前，命元没有受到过伤害",
-                rewardDescription: "子非鱼可以修改第五个卡包",
+                rawConditionDescription: "到达金丹期之前，命元没有受到过伤害",
+                rawRewardDescription: "子非鱼可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 4),
                 runClosures: new RunClosure[]
                 {
@@ -360,8 +360,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH013",
                 name: "杀伐果断",
-                conditionDescription: "累计击败100名敌人",
-                rewardDescription: "子非鱼可以修改第六个卡包",
+                rawConditionDescription: "累计击败100名敌人",
+                rawRewardDescription: "子非鱼可以修改第六个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 5),
                 stageClosures: new StageClosure[]
                 {
@@ -382,8 +382,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH014",
                 name: "斡旋造化",
-                conditionDescription: "一次性流转了20层五行buff",
-                rewardDescription: "子非鱼可以修改第七个卡包",
+                rawConditionDescription: "一次性流转了20层五行buff",
+                rawRewardDescription: "子非鱼可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("子非鱼", 6),
                 stageClosures: new StageClosure[]
                 {
@@ -401,8 +401,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH015",
                 name: "子非燕专精",
-                conditionDescription: "以子非燕取得难度8的胜利",
-                rewardDescription: "子非燕可以修改第一个卡包",
+                rawConditionDescription: "以子非燕取得难度8的胜利",
+                rawRewardDescription: "子非燕可以修改第一个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 0),
                 runClosures: new RunClosure[]
                 {
@@ -421,8 +421,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH016",
                 name: "破而后立",
-                conditionDescription: "累计合成了20张卡牌",
-                rewardDescription: "子非燕可以修改第二个卡包",
+                rawConditionDescription: "累计合成了20张卡牌",
+                rawRewardDescription: "子非燕可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 1),
                 runClosures: new RunClosure[]
                 {
@@ -442,8 +442,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH017",
                 name: "千机百变",
-                conditionDescription: "手牌和准备区中，共计多于20张牌",
-                rewardDescription: "子非燕可以修改第三个卡包",
+                rawConditionDescription: "手牌和准备区中，共计多于20张牌",
+                rawRewardDescription: "子非燕可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 2),
                 runClosures: new RunClosure[]
                 {
@@ -462,8 +462,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH018",
                 name: "一日筑基",
-                conditionDescription: "到达筑基时，只有练气卡牌",
-                rewardDescription: "子非燕可以修改第四个卡包",
+                rawConditionDescription: "到达筑基时，只有练气卡牌",
+                rawRewardDescription: "子非燕可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 3),
                 runClosures: new RunClosure[]
                 {
@@ -485,8 +485,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH019",
                 name: "乾坤大挪移",
-                conditionDescription: "任一五行buff大于20，并取胜",
-                rewardDescription: "子非燕可以修改第五个卡包",
+                rawConditionDescription: "任一五行buff大于20，并取胜",
+                rawRewardDescription: "子非燕可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 4),
                 stageClosures: new StageClosure[]
                 {
@@ -537,8 +537,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH020",
                 name: "财运亨通",
-                conditionDescription: "累计获得1000金钱",
-                rewardDescription: "子非燕可以修改第六个卡包",
+                rawConditionDescription: "累计获得1000金钱",
+                rawRewardDescription: "子非燕可以修改第六个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 5),
                 runClosures: new RunClosure[]
                 {
@@ -560,8 +560,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH021",
                 name: "九莲宝灯",
-                conditionDescription: "激活一个化神阵法，并取胜",
-                rewardDescription: "子非燕可以修改第七个卡包",
+                rawConditionDescription: "激活一个化神阵法，并取胜",
+                rawRewardDescription: "子非燕可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("子非燕", 6),
                 stageClosures: new StageClosure[]
                 {
@@ -584,8 +584,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH022",
                 name: "彼此卿专精",
-                conditionDescription: "以彼此卿取得难度8的胜利",
-                rewardDescription: "彼此卿可以修改第一个卡包",
+                rawConditionDescription: "以彼此卿取得难度8的胜利",
+                rawRewardDescription: "彼此卿可以修改第一个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 0),
                 runClosures: new RunClosure[]
                 {
@@ -604,8 +604,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH023",
                 name: "雷劫余韵",
-                conditionDescription: "受到了超过100点伤害的一击，并取胜",
-                rewardDescription: "彼此卿可以修改第二个卡包",
+                rawConditionDescription: "受到了超过100点伤害的一击，并取胜",
+                rawRewardDescription: "彼此卿可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 1),
                 stageClosures: new StageClosure[]
                 {
@@ -649,8 +649,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH024",
                 name: "妙手空空",
-                conditionDescription: "利用幻化复制了高于自己境界的牌",
-                rewardDescription: "彼此卿可以修改第三个卡包",
+                rawConditionDescription: "利用幻化复制了高于自己境界的牌",
+                rawRewardDescription: "彼此卿可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 2),
                 runClosures: new RunClosure[]
                 {
@@ -670,8 +670,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH025",
                 name: "精打细算",
-                conditionDescription: "以1点气血结束战斗，并取胜",
-                rewardDescription: "彼此卿可以修改第四个卡包",
+                rawConditionDescription: "以1点气血结束战斗，并取胜",
+                rawRewardDescription: "彼此卿可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 3),
                 stageClosures: new StageClosure[]
                 {
@@ -691,8 +691,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH026",
                 name: "返璞归真",
-                conditionDescription: "达到化神境界",
-                rewardDescription: "彼此卿可以修改第五个卡包",
+                rawConditionDescription: "达到化神境界",
+                rawRewardDescription: "彼此卿可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 4),
                 runClosures: new RunClosure[]
                 {
@@ -710,8 +710,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH027",
                 name: "身强体壮",
-                conditionDescription: "累计额外获得100点气血，不包含境界提升带来的气血提升",
-                rewardDescription: "彼此卿可以修改第六个卡包",
+                rawConditionDescription: "累计额外获得100点气血，不包含境界提升带来的气血提升",
+                rawRewardDescription: "彼此卿可以修改第六个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 5),
                 runClosures: new RunClosure[]
                 {
@@ -733,8 +733,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH028",
                 name: "斗转星移",
-                conditionDescription: "使用复制的牌击败对手",
-                rewardDescription: "彼此卿可以修改第七个卡包",
+                rawConditionDescription: "使用复制的牌击败对手",
+                rawRewardDescription: "彼此卿可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 6),
                 stageClosures: new StageClosure[]
                 {
@@ -774,8 +774,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH029",
                 name: "风雨晴专精",
-                conditionDescription: "以风雨晴取得难度8的胜利",
-                rewardDescription: "风雨晴可以修改第一个卡包",
+                rawConditionDescription: "以风雨晴取得难度8的胜利",
+                rawRewardDescription: "风雨晴可以修改第一个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 0),
                 runClosures: new RunClosure[]
                 {
@@ -794,8 +794,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH030",
                 name: "逆天改命",
-                conditionDescription: "生命低于0，并取胜",
-                rewardDescription: "风雨晴可以修改第二个卡包",
+                rawConditionDescription: "生命低于0，并取胜",
+                rawRewardDescription: "风雨晴可以修改第二个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 1),
                 stageClosures: new StageClosure[]
                 {
@@ -815,8 +815,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH031",
                 name: "缘法天成",
-                conditionDescription: "手牌和准备区中，共计多于5张无属性牌",
-                rewardDescription: "风雨晴可以修改第三个卡包",
+                rawConditionDescription: "手牌和准备区中，共计多于5张无属性牌",
+                rawRewardDescription: "风雨晴可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 2),
                 runClosures: new RunClosure[]
                 {
@@ -838,8 +838,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH032",
                 name: "真元澎湃",
-                conditionDescription: "置入3张灵气消耗大于3的牌，并取胜",
-                rewardDescription: "风雨晴可以修改第四个卡包",
+                rawConditionDescription: "置入3张灵气消耗大于3的牌，并取胜",
+                rawRewardDescription: "风雨晴可以修改第四个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 3),
                 stageClosures: new StageClosure[]
                 {
@@ -864,8 +864,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH033",
                 name: "逍遥游",
-                conditionDescription: "没有置入任何攻击牌，并取胜",
-                rewardDescription: "风雨晴可以修改第五个卡包",
+                rawConditionDescription: "没有置入任何攻击牌，并取胜",
+                rawRewardDescription: "风雨晴可以修改第五个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 4),
                 stageClosures: new StageClosure[]
                 {
@@ -886,8 +886,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH034",
                 name: "金碧辉煌",
-                conditionDescription: "置入12张化神牌，并取胜",
-                rewardDescription: "风雨晴可以修改第六个卡包",
+                rawConditionDescription: "置入12张化神牌，并取胜",
+                rawRewardDescription: "风雨晴可以修改第六个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 5),
                 stageClosures: new StageClosure[]
                 {
@@ -907,8 +907,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH035",
                 name: "七星连珠",
-                conditionDescription: "激活7个阵法，并取胜",
-                rewardDescription: "风雨晴可以修改第七个卡包",
+                rawConditionDescription: "激活7个阵法，并取胜",
+                rawRewardDescription: "风雨晴可以修改第七个卡包",
                 lockIndex: LockIndex.FromSlot("风雨晴", 6),
                 stageClosures: new StageClosure[]
                 {
@@ -928,8 +928,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH101",
                 name: "百炼成钢",
-                conditionDescription: "累计在战斗中攻击1000次",
-                rewardDescription: "可以使用无常路引卡包",
+                rawConditionDescription: "累计在战斗中攻击1000次",
+                rawRewardDescription: "可以使用无常路引卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("无常路引")),
                 stageClosures: new StageClosure[]
                 {
@@ -951,8 +951,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH102",
                 name: "剑气冲霄",
-                conditionDescription: "一击造成100伤害，并取胜",
-                rewardDescription: "可以使用大音希声卡包",
+                rawConditionDescription: "一击造成100伤害，并取胜",
+                rawRewardDescription: "可以使用大音希声卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("大音希声")),
                 stageClosures: new StageClosure[]
                 {
@@ -997,8 +997,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH103",
                 name: "气贯长虹",
-                conditionDescription: "累计在战斗中获得300灵气",
-                rewardDescription: "可以使用天河引气录卡包",
+                rawConditionDescription: "累计在战斗中获得300灵气",
+                rawRewardDescription: "可以使用天河引气录卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("天河引气录")),
                 stageClosures: new StageClosure[]
                 {
@@ -1021,8 +1021,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH104",
                 name: "生生不息",
-                conditionDescription: "结束时气血高于初始，并取胜",
-                rewardDescription: "可以使用御虚诀卡包",
+                rawConditionDescription: "结束时气血高于初始，并取胜",
+                rawRewardDescription: "可以使用御虚诀卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("御虚诀")),
                 stageClosures: new StageClosure[]
                 {
@@ -1054,8 +1054,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH105",
                 name: "融会贯通",
-                conditionDescription: "有一张牌使用多于6次，并取胜",
-                rewardDescription: "可以使用大椿功卡包",
+                rawConditionDescription: "有一张牌使用多于6次，并取胜",
+                rawRewardDescription: "可以使用大椿功卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("大椿功")),
                 stageClosures: new StageClosure[]
                 {
@@ -1075,8 +1075,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH106",
                 name: "凌波微步",
-                conditionDescription: "没有任何护甲并且没有受到伤害，并取胜",
-                rewardDescription: "可以使用游龙遁卡包",
+                rawConditionDescription: "没有任何护甲并且没有受到伤害，并取胜",
+                rawRewardDescription: "可以使用游龙遁卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("游龙遁")),
                 stageClosures: new StageClosure[]
                 {
@@ -1131,8 +1131,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH107",
                 name: "倾国倾城",
-                conditionDescription: "一场战斗中，战意层数大于20，并取得胜利",
-                rewardDescription: "可以使用归鸿十二步卡包",
+                rawConditionDescription: "一场战斗中，战意层数大于20，并取得胜利",
+                rawRewardDescription: "可以使用归鸿十二步卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("归鸿十二步")),
                 stageClosures: new StageClosure[]
                 {
@@ -1183,8 +1183,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH108",
                 name: "无欲则刚",
-                conditionDescription: "累计通过燃命受到2000伤害",
-                rewardDescription: "可以使用大焚天秘乘卡包",
+                rawConditionDescription: "累计通过燃命受到2000伤害",
+                rawRewardDescription: "可以使用大焚天秘乘卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("大焚天秘乘")),
                 stageClosures: new StageClosure[]
                 {
@@ -1207,8 +1207,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH109",
                 name: "巍然矗立",
-                conditionDescription: "护甲超过300，并取胜",
-                rewardDescription: "可以使用须弥妙法卡包",
+                rawConditionDescription: "护甲超过300，并取胜",
+                rawRewardDescription: "可以使用须弥妙法卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("须弥妙法")),
                 stageClosures: new StageClosure[]
                 {
@@ -1255,8 +1255,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH110",
                 name: "一锤定音",
-                conditionDescription: "置入正好一张攻击牌，并用其取胜",
-                rewardDescription: "可以使用锻体四则卡包",
+                rawConditionDescription: "置入正好一张攻击牌，并用其取胜",
+                rawRewardDescription: "可以使用锻体四则卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("锻体四则")),
                 stageClosures: new StageClosure[]
                 {
@@ -1298,8 +1298,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH111",
                 name: "腾云驾雾",
-                conditionDescription: "累计携带过50丹药牌",
-                rewardDescription: "可以使用丹兵道卡包",
+                rawConditionDescription: "累计携带过50丹药牌",
+                rawRewardDescription: "可以使用丹兵道卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("丹兵道")),
                 stageClosures: new StageClosure[]
                 {
@@ -1324,8 +1324,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH112",
                 name: "流转达人",
-                conditionDescription: "流转超过10次，并取胜",
-                rewardDescription: "可以使用化哉卡包",
+                rawConditionDescription: "流转超过10次，并取胜",
+                rawRewardDescription: "可以使用化哉卡包",
                 lockIndex: LockIndex.FromPack(PackEntry.FromName("化哉")),
                 stageClosures: new StageClosure[]
                 {
@@ -1369,8 +1369,8 @@ public class AchievementCategory : Category<AchievementEntry>
             // 角色锁
             new(id: "ACH201",
                 name: "初窥门径",
-                conditionDescription: "存档等级达到2级",
-                rewardDescription: "可以使用子非鱼角色",
+                rawConditionDescription: "存档等级达到2级",
+                rawRewardDescription: "可以使用子非鱼角色",
                 lockIndex: LockIndex.FromCharacter("子非鱼"),
                 runClosures: new RunClosure[]
                 {
@@ -1388,8 +1388,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH202",
                 name: "略有小成",
-                conditionDescription: "存档等级达到3级",
-                rewardDescription: "可以使用子非燕角色",
+                rawConditionDescription: "存档等级达到3级",
+                rawRewardDescription: "可以使用子非燕角色",
                 lockIndex: LockIndex.FromCharacter("子非燕"),
                 runClosures: new RunClosure[]
                 {
@@ -1407,8 +1407,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH203",
                 name: "渐入佳境",
-                conditionDescription: "存档等级达到5级",
-                rewardDescription: "可以使用风雨晴角色",
+                rawConditionDescription: "存档等级达到5级",
+                rawRewardDescription: "可以使用风雨晴角色",
                 lockIndex: LockIndex.FromCharacter("风雨晴"),
                 runClosures: new RunClosure[]
                 {
@@ -1426,8 +1426,8 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH204",
                 name: "出神入化",
-                conditionDescription: "存档等级达到7级",
-                rewardDescription: "可以使用彼此卿角色",
+                rawConditionDescription: "存档等级达到7级",
+                rawRewardDescription: "可以使用彼此卿角色",
                 lockIndex: LockIndex.FromCharacter("彼此卿"),
                 runClosures: new RunClosure[]
                 {
@@ -1461,6 +1461,14 @@ public class AchievementCategory : Category<AchievementEntry>
             //             p.Unlock();
             //         })
             //     }),
+        });
+    }
+
+    public void Init()
+    {
+        List.Do(entry =>
+        {
+            entry.GenerateDescription();
         });
     }
 

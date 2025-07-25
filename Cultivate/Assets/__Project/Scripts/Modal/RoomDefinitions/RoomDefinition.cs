@@ -40,8 +40,9 @@ public abstract class RoomDefinition
     
     public abstract RoomEntry Draw(Map map, Room room);
 
+    public abstract string GetTitle();
     public abstract SpriteEntry GetSprite();
-    public abstract string GetDescription();
+    public abstract Description GetDescription();
 
     [SerializeField] private int _ladder;
     public int Ladder => _ladder;

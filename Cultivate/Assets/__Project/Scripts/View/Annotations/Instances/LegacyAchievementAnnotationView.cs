@@ -21,6 +21,6 @@ public class LegacyAchievementAnnotationView : XView
         
         NameText.text = achievement.GetEntry().GetName();
         UnlockStatusText.text = achievement.IsUnlocked() ? "已解锁" : "未解锁";
-        ConditionDescriptionText.text = achievement.GetEntry().GetConditionDescription();
+        ConditionDescriptionText.text = achievement.GetEntry().GetConditionDescription().GetHighlightedString();
     }
 }

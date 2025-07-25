@@ -14,27 +14,19 @@ public class FormationIconView : XView
     {
         base.Refresh();
 
-        IFormationModel formation = Get<IFormationModel>();
-        bool formationIsNull = formation == null;
-        gameObject.SetActive(!formationIsNull);
-        if (formationIsNull)
-            return;
+        AnnotatableFormation formation = Get<AnnotatableFormation>();
         
         if (formation is RunFormation rf)
         {
             if (ProgressText != null)
             {
-                JingJie nextActivatingJingJie = rf.GetNextActivatingJingJie();
                 int progress = rf.GetProgress();
-                int requirement = formation.GetRequirementFromJingJie(nextActivatingJingJie);
                 ProgressText.text = $"{progress}";
             }
         }
-        
-        JingJie? activatedJingJie = formation.GetActivatedJingJie();
-        SpriteEntry spriteEntry = activatedJingJie == null ? "未激活阵法背景" : $"{activatedJingJie.Value.Name}阵法背景";
-        Background.sprite = spriteEntry.Sprite;
+
+        Background.sprite = formation.GetBackgroundSprite().Sprite;
         Glow.sprite = Encyclopedia.SpriteCategory["普通阵法发光"].Sprite;
-        Icon.sprite = formation.GetSprite().Sprite;
+        Icon.sprite = formation.GetIconSprite().Sprite;
     }
 }

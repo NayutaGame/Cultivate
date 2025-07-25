@@ -27,7 +27,7 @@ public class FormationGroupBarView : LegacySimpleView
             return;
         }
 
-        IFormationModel formation = Get<IFormationModel>();
+        AnnotatableFormation formation = Get<AnnotatableFormation>();
 
         bool formationIsNull = formation == null;
         gameObject.SetActive(!formationIsNull);

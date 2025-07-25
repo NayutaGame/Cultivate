@@ -11,6 +11,8 @@ public class StageCanvas : MonoBehaviour
     [SerializeField] private StageEntityView HomeStageEntityView;
     [SerializeField] private StageEntityView AwayStageEntityView;
 
+    [SerializeField] private XView SkipButtonInactiveHint;
+
     public TimelineView TimelineView;
 
     private Address _address;
@@ -53,6 +55,8 @@ public class StageCanvas : MonoBehaviour
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
+        
+        SkipButtonInactiveHint.SetAddress(_address.Append(".SkipButtonInactiveHint"));
 
         TimelineView.Configure();
     }

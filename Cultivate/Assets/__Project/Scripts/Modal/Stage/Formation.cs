@@ -6,7 +6,7 @@ using CLLibrary;
 /// <summary>
 /// Formation
 /// </summary>
-public class Formation : StageClosureListener, IFormationModel, Addressable, IEmphasizable
+public class Formation : StageClosureListener, IEmphasizable, AnnotatableFormation
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -19,6 +19,8 @@ public class Formation : StageClosureListener, IFormationModel, Addressable, IEm
     public Neuron GetEmphasisNeuron()
         => _emphasisNeuron;
 
+    public bool CanShowAnnotation() => true;
+    
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Marks",                      thisObject => ((Formation)thisObject).GetEntry().GetMarks() },
@@ -49,32 +51,20 @@ public class Formation : StageClosureListener, IFormationModel, Addressable, IEm
 
     public bool IsActivated()
         => _runFormation.IsActivated();
+    
+    public JingJie? GetActivatedJingJie()
+        => _runFormation.GetActivatedJingJie();
 
-    #region IFormationModel
+    #region AnnotatableFormation
 
     public string GetName() => _runFormation.GetName();
-    public JingJie GetLowestJingJie() => _runFormation.GetLowestJingJie();
-    public JingJie? GetActivatedJingJie() => _runFormation.GetActivatedJingJie();
     public string GetConditionDescription() => _runFormation.GetConditionDescription();
-
-    public Description GetRewardDescription(JingJie jingJie)
-        => _runFormation.GetRewardDescription(jingJie);
-
-    public string GetTriviaFromJingJie(JingJie jingJie) => _runFormation.GetTriviaFromJingJie(jingJie);
-    public JingJie GetIncrementedJingJie(JingJie jingJie) => _runFormation.GetIncrementedJingJie(jingJie);
-    public int GetRequirementFromJingJie(JingJie jingJie) => _runFormation.GetRequirementFromJingJie(jingJie);
-    public Predicate<ISkill> GetContributorPred() => _runFormation.GetContributorPred();
-    public SpriteEntry GetSprite() => _runFormation.GetSprite();
-
-    #endregion
-
-    #region IMarkedSliderModel
-
-    public int GetMin() => _runFormation.GetMin();
-    public int GetMax() => _runFormation.GetMax();
-    public int? GetValue() => _runFormation.GetValue();
-    public Address GetMarkListModelAddress(Address address)
-        => address.Append(".Marks");
+    public int[] GetCriticalProgresses() => _runFormation.GetCriticalProgresses();
+    public int GetProgress() => _runFormation.GetProgress();
+    public Description GetRewardDescription(int progress) => _runFormation.GetRewardDescription(progress);
+    public string GetTrivia(int progress) => _runFormation.GetTrivia(progress);
+    public SpriteEntry GetBackgroundSprite() => _runFormation.GetBackgroundSprite();
+    public SpriteEntry GetIconSprite() => _runFormation.GetIconSprite();
 
     #endregion
 }

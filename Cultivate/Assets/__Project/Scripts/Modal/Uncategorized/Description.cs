@@ -1,7 +1,5 @@
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CLLibrary;
@@ -13,7 +11,7 @@ public class Description
     private static readonly Regex SplitterRegex = new Regex(@"(?:\n|\|\|)+", RegexOptions.Compiled);
     private static readonly Regex TrimReturnRegex = new Regex(@"^(?:\n|\|\|)+|(?:\n|\|\|)+$", RegexOptions.Compiled);
     private static Regex SymbolizeRegex;
-    private static readonly Regex FindSymbolRegex = new Regex(@"\[(buff|keyword):([^\]]+)\]", RegexOptions.Compiled);
+    private static readonly Regex FindSymbolRegex = new Regex(@"\[(buff|keyword|skill|character):([^\]]+)\]", RegexOptions.Compiled);
     
     private Dirty<string> CalcHighlightedString;
     private StringBuilder _sb;
@@ -22,15 +20,17 @@ public class Description
     {
         var patterns = new List<string>();
         
-        foreach (BuffEntry buff in Encyclopedia.BuffCategory)
-        {
-            patterns.Add(Regex.Escape(buff.GetName()));
-        }
-        
         foreach (KeywordEntry keyword in Encyclopedia.KeywordCategory)
-        {
             patterns.Add(Regex.Escape(keyword.GetName()));
-        }
+        
+        foreach (BuffEntry buff in Encyclopedia.BuffCategory)
+            patterns.Add(Regex.Escape(buff.GetName()));
+
+        foreach (SkillEntry skill in Encyclopedia.SkillCategory)
+            patterns.Add(Regex.Escape(skill.GetName()));
+
+        foreach (CharacterEntry character in Encyclopedia.CharacterCategory)
+            patterns.Add(Regex.Escape(character.GetName()));
         
         string pattern = string.Join("|", patterns);
         SymbolizeRegex = new Regex($@"(?<!\[)({pattern})(?!\])", RegexOptions.Compiled);
@@ -55,14 +55,17 @@ public class Description
         {
             string keyword = match.Value;
             
-            if (Encyclopedia.BuffCategory.ContainsKey(keyword))
-            {
-                return $"[buff:{keyword}]";
-            }
-            else if (Encyclopedia.KeywordCategory.ContainsKey(keyword))
-            {
+            if (Encyclopedia.KeywordCategory.ContainsKey(keyword))
                 return $"[keyword:{keyword}]";
-            }
+            
+            if (Encyclopedia.BuffCategory.ContainsKey(keyword))
+                return $"[buff:{keyword}]";
+            
+            if (Encyclopedia.SkillCategory.ContainsKey(keyword))
+                return $"[skill:{keyword}]";
+            
+            if (Encyclopedia.CharacterCategory.ContainsKey(keyword))
+                return $"[character:{keyword}]";
             
             return keyword;
         });

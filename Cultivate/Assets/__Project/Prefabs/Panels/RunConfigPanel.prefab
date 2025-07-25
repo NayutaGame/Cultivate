@@ -2626,6 +2626,7 @@ GameObject:
   - component: {fileID: 4902952996442020553}
   - component: {fileID: 4902952996442020555}
   - component: {fileID: 4902952996442020554}
+  - component: {fileID: 8987564751516855864}
   m_Layer: 5
   m_Name: AbilityDescriptionText
   m_TagString: Untagged
@@ -2675,7 +2676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2750,6 +2751,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8987564751516855864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4902952996442020552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e81a4a53b3d5397409c3f4e18caa9ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 4902952996442020554}
 --- !u!1 &4984576452255565219
 GameObject:
   m_ObjectHideFlags: 0

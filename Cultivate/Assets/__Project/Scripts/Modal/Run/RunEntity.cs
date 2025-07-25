@@ -335,10 +335,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
         InitFormations();
 
-        _showingFormations = new(_formations, f =>
-            _allowFormation &&
-            f.GetMin() <= f.GetProgress() &&
-            _slotCount >= f.GetRequirementFromJingJie(f.GetLowestJingJie()));
+        _showingFormations = new(_formations, f => _allowFormation);
         _activeFormations = new(_formations, f => f.IsActivated());
         _slots.Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
     }

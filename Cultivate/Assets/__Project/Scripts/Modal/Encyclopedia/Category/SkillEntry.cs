@@ -14,7 +14,7 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill
     private WuXing? _wuXing;
     public WuXing? WuXing => _wuXing;
     
-    private CLLibrary.Bound _jingJieBound;
+    private Bound _jingJieBound;
     public bool JingJieContains(JingJie jingJie) => _jingJieBound.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieBound.Start;
     public JingJie HighestJingJie => _jingJieBound.End - 1;
@@ -115,6 +115,9 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill
     }
 
     public static implicit operator SkillEntry(string id) => Encyclopedia.SkillCategory[id];
+
+    public static SkillEntry FromId(string id)
+        => Encyclopedia.SkillCategory[id];
 
     public static SkillEntry FromName(string name)
         => Encyclopedia.SkillCategory.FirstObj(e => e._name == name) ?? Encyclopedia.SkillCategory.DefaultEntry();

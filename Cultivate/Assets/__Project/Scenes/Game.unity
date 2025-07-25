@@ -8312,10 +8312,10 @@ RectTransform:
   m_Father: {fileID: 76066466}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -573.13, y: 62.48}
-  m_SizeDelta: {x: 288.42, y: 386.45}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330830089449426651
 MonoBehaviour:
@@ -8336,6 +8336,12 @@ MonoBehaviour:
   - {fileID: 6613488373725718453, guid: 00718c3beab835b46ba9a9def91cdd54, type: 3}
   - {fileID: 6613488373725718453, guid: ecfe41776901ff34eae04e7673ed4ffa, type: 3}
   - {fileID: 6613488373725718453, guid: 58b91deb5b448f043860ed5b56ee9aaf, type: 3}
+  - {fileID: 1921744115998550485, guid: 940f2b41f8a9b0247a9f41af5348a5f1, type: 3}
+  - {fileID: 6443575077379706196, guid: e7a2d3551e51e7143ab3ddb2d3d76af7, type: 3}
+  - {fileID: 6613488373725718453, guid: e65e20c86a3f9f5479f3fc617a346837, type: 3}
+  - {fileID: 6613488373725718453, guid: 9d6e0d05f77f0414f81511302b177bf0, type: 3}
+  - {fileID: 6613488373725718453, guid: a78eb27253283b24babf570a328c438a, type: 3}
+  - {fileID: 6613488373725718453, guid: c59c9870d1f784744875ed4f68d050ad, type: 3}
   AllowHover: 1
   AllowDrag: 0
   AutoUpdateItem: 1

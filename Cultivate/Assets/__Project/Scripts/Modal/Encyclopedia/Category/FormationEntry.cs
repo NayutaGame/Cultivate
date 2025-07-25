@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class FormationEntry : IFormationModel, Addressable
+public class FormationEntry : Addressable
 {
     private FormationGroupEntry _formationGroupEntry;
     public FormationGroupEntry GetFormationGroupEntry() => _formationGroupEntry;
@@ -57,32 +57,9 @@ public class FormationEntry : IFormationModel, Addressable
         StageClosures = stageClosures ?? Array.Empty<StageClosure>();
     }
 
-    #region IFormationModel
-
-    public string GetName() => _formationGroupEntry.GetName();
-    public JingJie GetLowestJingJie() => _formationGroupEntry.GetLowestJingJie();
     public JingJie? GetActivatedJingJie() => _jingJie;
-    public string GetConditionDescription() => _formationGroupEntry.GetConditionDescription();
     
+    public string GetName() => _formationGroupEntry.GetName();
+    public string GetConditionDescription() => _formationGroupEntry.GetConditionDescription();
     public Description GetRewardDescription() => _rewardDescription;
-    public Description GetRewardDescription(JingJie jingJie)
-        => _formationGroupEntry.GetRewardDescription(jingJie);
-
-    public string GetTriviaFromJingJie(JingJie jingJie) => _formationGroupEntry.GetTriviaFromJingJie(jingJie);
-    public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationGroupEntry.GetIncrementedJingJie(jingJie);
-    public int GetRequirementFromJingJie(JingJie jingJie) => _formationGroupEntry.GetRequirementFromJingJie(jingJie);
-    public Predicate<ISkill> GetContributorPred() => _formationGroupEntry.GetContributorPred();
-    public SpriteEntry GetSprite() => _formationGroupEntry.GetSprite();
-
-    #endregion
-
-    #region IMarkedSliderModel
-
-    public int GetMin() => _formationGroupEntry.GetMin();
-    public int GetMax() => _formationGroupEntry.GetMax();
-    public int? GetValue() => null;
-    public Address GetMarkListModelAddress(Address address)
-        => address.Append(".Marks");
-
-    #endregion
 }

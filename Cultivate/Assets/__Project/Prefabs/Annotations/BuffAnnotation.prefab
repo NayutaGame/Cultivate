@@ -525,6 +525,7 @@ GameObject:
   - component: {fileID: 6504977068517084338}
   - component: {fileID: 2135430155288763852}
   - component: {fileID: 6961194824641024306}
+  - component: {fileID: 2804537661897197668}
   m_Layer: 0
   m_Name: DescriptionText
   m_TagString: Untagged
@@ -649,6 +650,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2804537661897197668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4940747121145528158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e81a4a53b3d5397409c3f4e18caa9ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 6961194824641024306}
 --- !u!1 &6613488373725718453
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,6 +805,7 @@ MonoBehaviour:
   Cover: {fileID: 6488999581130361273}
   BuffView: {fileID: 3884255475407383442}
   Title: {fileID: 514262015026149338}
+  Description: {fileID: 6961194824641024306}
   Trivia: {fileID: 514262014048597483}
 --- !u!1 &7328025967777460638
 GameObject:

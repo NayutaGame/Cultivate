@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PackConstraint : Addressable
+public class PackConstraint : AnnotatablePack
 {
     public PackDescriptor Descriptor;
     public SpriteEntry SpriteEntry;
@@ -31,6 +31,24 @@ public class PackConstraint : Addressable
     public bool IsUnlocked()
         => AppManager.Instance.ConfigManager.ConstraintIsUnlocked(this);
 
-    public string GetUnlockCondition()
+    public Description GetUnlockCondition()
         => AppManager.Instance.ConfigManager.GetConstraintUnlockCondition(this);
+
+    public bool CanShowAnnotation()
+        => Pack != null;
+
+    public string GetName()
+        => Pack.GetName();
+
+    public WuXing? GetWuXing()
+        => Pack.GetWuXing();
+
+    public Description GetDescription()
+        => Pack.GetDescription();
+
+    public string GetTrivia()
+        => Pack.GetTrivia();
+
+    public Sprite GetSprite()
+        => Pack.GetSprite();
 }

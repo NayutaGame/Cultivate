@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CharacterEntry : Entry
+public class CharacterEntry : Entry, AnnotatableCharacter
 {
     public string GetName() => GetId();
     
     [NonSerialized] public string Description;
-    [NonSerialized] public string AbilityDescription;
+    [NonSerialized] private string _rawAbilityDescription;
+    [NonSerialized] private Description _abilityDescription;
 
     [NonSerialized] public RunClosure[] _runClosures;
     [NonSerialized] public StageClosure[] _stageClosures;
@@ -21,15 +22,20 @@ public class CharacterEntry : Entry
 
     [NonSerialized] public PackPreset _packPreset;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public CharacterEntry(string id, string description = null,
-        string abilityDescription = null,
+        string rawAbilityDescription = null,
         string unlockConditionDescription = null,
         PackPreset packPreset = null,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id)
     {
         Description = description ?? "没有描述";
-        AbilityDescription = abilityDescription ?? "没有技能描述";
+        _rawAbilityDescription = rawAbilityDescription ?? "没有技能描述";
         _packPreset = packPreset ?? PackPreset.Default;
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
@@ -46,6 +52,15 @@ public class CharacterEntry : Entry
         return _packPreset.PackEntries;
     }
 
+    public string GetTitle()
+        => GetName();
+
+    public Description GetAbilityDescription()
+        => _abilityDescription;
+    
+    public void GenerateDescription()
+        => _abilityDescription = new Description(_rawAbilityDescription);
+
     public static implicit operator CharacterEntry(string id) => Encyclopedia.CharacterCategory[id];
 
     // public static CharacterEntry FromName(string name)
@@ -58,4 +73,7 @@ public class CharacterEntry : Entry
     public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
     public Sprite GetCharacterIconSprite() => _characterIconSprite.Sprite;
     public Sprite GetCharacterIconSelectSprite() => _characterIconSelectSprite.Sprite;
+
+    public bool CanShowAnnotation()
+        => true;
 }

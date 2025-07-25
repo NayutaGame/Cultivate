@@ -25,11 +25,14 @@ public class AdventureRoomDefinition : RoomDefinition
         return entry;
     }
 
+    public override string GetTitle()
+        => "奇遇房间";
+
     public override SpriteEntry GetSprite()
         => "AdventureRoomIcon";
 
-    public override string GetDescription()
-        => "将会遭遇事件";
+    public override Description GetDescription()
+        => new("将会遭遇事件");
 
     public AdventureRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {

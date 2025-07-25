@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class RunFormation : IFormationModel, Addressable, IEmphasizable
+public class RunFormation : IEmphasizable, AnnotatableFormation 
 {
-    private FormationGroupEntry _entry;
+    private FormationGroupEntry _formationGroupEntry;
     private int _progress;
     private bool _activated;
     private FormationEntry _formationEntry;
@@ -16,11 +16,11 @@ public class RunFormation : IFormationModel, Addressable, IEmphasizable
     {
         _progress = progress;
 
-        FormationEntry firstActivated = _entry.FirstActivatedFormation(_progress);
+        FormationEntry firstActivated = _formationGroupEntry.FirstActivatedFormation(_progress);
         if (firstActivated == null || firstActivated.GetJingJie() <= JingJie.LianQi)
         {
             _activated = false;
-            _formationEntry = _entry.FormationWithLowestJingJie();
+            _formationEntry = _formationGroupEntry.FormationWithLowestJingJie();
         }
         else
         {
@@ -35,15 +35,16 @@ public class RunFormation : IFormationModel, Addressable, IEmphasizable
     public Neuron GetEmphasisNeuron()
         => _emphasisNeuron;
 
+    public bool CanShowAnnotation() => true;
+    
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Marks",                      thisObject => ((RunFormation)thisObject)._entry.GetMarks() },
+        { "Marks",                      thisObject => ((RunFormation)thisObject)._formationGroupEntry.GetMarks() },
     };
-    
     public object Get(string s) => Accessor[s](this);
-    private RunFormation(FormationGroupEntry entry, int progress, bool activated, FormationEntry formationEntry)
+    private RunFormation(FormationGroupEntry formationGroupEntry, int progress, bool activated, FormationEntry formationEntry)
     {
-        _entry = entry;
+        _formationGroupEntry = formationGroupEntry;
         _progress = progress;
         _activated = activated;
         _formationEntry = formationEntry;
@@ -62,45 +63,28 @@ public class RunFormation : IFormationModel, Addressable, IEmphasizable
 
         return new(entry, progress, true, firstActivated);
     }
-    
-    public JingJie GetNextActivatingJingJie()
-    {
-        JingJie? activatedJingJie = GetActivatedJingJie();
-        JingJie highestJingJie = GetEntry().GetFormationGroupEntry().SubFormationEntries[0].GetJingJie();
-        if (!activatedJingJie.HasValue)
-            return GetLowestJingJie();
-        
-        if (activatedJingJie != highestJingJie)
-            return GetIncrementedJingJie(activatedJingJie.Value);
-        
-        return highestJingJie;
-    }
 
-    #region IFormationModel
+    public JingJie? GetActivatedJingJie() => IsActivated() ? _formationEntry.GetActivatedJingJie() : null;
+    
+    public Predicate<ISkill> GetContributorPred() => _formationGroupEntry.GetContributorPred();
+    
+    #region AnnotatableFormation
 
     public string GetName() => _formationEntry.GetName();
-    public JingJie GetLowestJingJie() => _formationEntry.GetLowestJingJie();
-    public JingJie? GetActivatedJingJie() => IsActivated() ? _formationEntry.GetActivatedJingJie() : null;
     public string GetConditionDescription() => _formationEntry.GetConditionDescription();
 
-    public Description GetRewardDescription(JingJie jingJie)
-        => _formationEntry.GetRewardDescription(jingJie);
+    public int[] GetCriticalProgresses() => _formationGroupEntry.GetCriticalProgresses();
 
-    public string GetTriviaFromJingJie(JingJie jingJie) => _formationEntry.GetTriviaFromJingJie(jingJie);
-    public JingJie GetIncrementedJingJie(JingJie jingJie) => _formationEntry.GetIncrementedJingJie(jingJie);
-    public int GetRequirementFromJingJie(JingJie jingJie) => _formationEntry.GetRequirementFromJingJie(jingJie);
-    public Predicate<ISkill> GetContributorPred() => _formationEntry.GetContributorPred();
-    public SpriteEntry GetSprite() => _formationEntry.GetSprite();
+    public Description GetRewardDescription(int progress) => _formationGroupEntry.GetRewardDescription(progress);
+    public string GetTrivia(int progress) => _formationGroupEntry.GetTrivia(progress);
+    
+    public SpriteEntry GetBackgroundSprite()
+    {
+        JingJie? activatedJingJie = GetActivatedJingJie();
+        return activatedJingJie.HasValue ? $"{activatedJingJie.Value.Name}阵法背景" : "未激活阵法背景";
+    }
 
-    #endregion
-
-    #region IMarkedSliderModel
-
-    public int GetMin() => _entry.GetMin();
-    public int GetMax() => _entry.GetMax();
-    public int? GetValue() => _progress.Clamp(GetMin(), GetMax());
-    public Address GetMarkListModelAddress(Address address)
-        => address.Append(".Marks");
+    public SpriteEntry GetIconSprite() => _formationGroupEntry.GetIconSprite();
 
     #endregion
 }

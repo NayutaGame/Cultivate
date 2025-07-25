@@ -13,9 +13,12 @@ public class RestRoomDefinition : RoomDefinition
     {
     }
 
+    public override string GetTitle()
+        => "休息房间";
+
     public override SpriteEntry GetSprite()
         => "RestRoomIcon";
 
-    public override string GetDescription()
-        => "可以休息";
+    public override Description GetDescription()
+        => new("可以休息");
 }

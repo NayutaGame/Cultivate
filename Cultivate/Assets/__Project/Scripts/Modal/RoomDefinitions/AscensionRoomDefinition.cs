@@ -13,9 +13,12 @@ public class AscensionRoomDefinition : RoomDefinition
     {
     }
 
+    public override string GetTitle()
+        => "突破房间";
+
     public override SpriteEntry GetSprite()
         => "AscensionRoomIcon";
 
-    public override string GetDescription()
-        => "将会突破境界";
+    public override Description GetDescription()
+        => new("将会突破境界");
 }

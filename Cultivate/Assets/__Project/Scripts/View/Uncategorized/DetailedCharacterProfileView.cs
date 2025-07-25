@@ -28,7 +28,7 @@ public class DetailedCharacterProfileView : XView
 
         CharacterProfile p = Get<CharacterProfile>();
         NameText.text = p.GetEntry().GetName();
-        AbilityDescriptionText.text = p.GetEntry().AbilityDescription;
+        AbilityDescriptionText.text = p.GetEntry().GetAbilityDescription().GetHighlightedString();
 
         UnlockConditionText.gameObject.SetActive(!p.IsUnlocked());
 
@@ -36,7 +36,7 @@ public class DetailedCharacterProfileView : XView
         var achievementProfile = AppManager.Instance.ProfileManager.GetCurrProfile().GetAchievementProfileFromLockIndex(lockIndex);
         if (achievementProfile != null)
         {
-            UnlockConditionText.text = achievementProfile.GetEntry().GetConditionDescription();
+            UnlockConditionText.text = achievementProfile.GetEntry().GetConditionDescription().GetHighlightedString();
         }
         else
         {

@@ -1,10 +1,11 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class Room : ISerializationCallbackReceiver
+public class Room : ISerializationCallbackReceiver, AnnotatableRoom
 {
     public enum RoomState
     {
@@ -18,6 +19,12 @@ public class Room : ISerializationCallbackReceiver
     [SerializeField] private RoomEntry _entry;
     [SerializeReference] private RunEntity _predrewRunEntity;
 
+
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Room(RoomDefinition roomDefinition)
     {
         _roomDefinition = roomDefinition;
@@ -45,4 +52,13 @@ public class Room : ISerializationCallbackReceiver
     {
         _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.RoomCategory[_entry.GetName()];
     }
+
+    public bool CanShowAnnotation()
+        => true;
+
+    public string GetTitle()
+        => GetDescriptor().GetTitle();
+
+    public Description GetDescription()
+        => GetDescriptor().GetDescription();
 }

@@ -46,8 +46,7 @@ public class AnnotationManager : XView, Addressable
         if (!CanShow(d))
             return;
 
-        bool orderValid = IsOrderValid(d);
-        if (!orderValid)
+        if (!IsOrderValid(d))
             return;
 
         if (d.FirstCounter == 0 && d.SecondCounter == 0)
@@ -70,19 +69,19 @@ public class AnnotationManager : XView, Addressable
 
     private bool IsOrderValid(AnnotationDetails d)
     {
-        bool openedFromOutsideAndNoAnnotationOpened =
-            d.InvokerRectTransform == null && Annotations.GetCount() == 0;
+        bool openedFromOutside = d.InvokerRectTransform == null;
+        bool noAnnotationOpened = Annotations.GetCount() == 0;
 
-        if (openedFromOutsideAndNoAnnotationOpened)
+        if (openedFromOutside && noAnnotationOpened)
             return true;
-
-        bool openedNestedly = d.InvokerRectTransform != null;
-        Assert.IsTrue(Annotations.GetCount() > 0);
+        
+        Assert.IsTrue(!noAnnotationOpened);
+        Assert.IsTrue(!openedFromOutside);
         
         RectTransform lastAnnotationViewRect = Annotations.LastView().GetContentView().GetRect();
         bool isChildOfLastView = d.InvokerRectTransform.IsChildOf(lastAnnotationViewRect);
 
-        if (openedNestedly && isChildOfLastView)
+        if (!openedFromOutside && isChildOfLastView)
             return true;
 
         return false;

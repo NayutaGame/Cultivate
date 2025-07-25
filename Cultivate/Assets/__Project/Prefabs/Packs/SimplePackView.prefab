@@ -951,8 +951,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
+  FirstCounter: 0.5
+  SecondCounter: 2
   AnnotationAddress: Canvas.PackAnnotation
-  HoverTransform: {fileID: 0}
+  AnnotationViewType: 8
+  UseRectAlignment: 1
 --- !u!1 &7462785318709384297
 GameObject:
   m_ObjectHideFlags: 0

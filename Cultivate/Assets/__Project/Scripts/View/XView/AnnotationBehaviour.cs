@@ -9,6 +9,7 @@ public class AnnotationBehaviour : XBehaviour
     [SerializeField] private float SecondCounter = 0f;
     [SerializeField] private string AnnotationAddress;
     [SerializeField] private AnnotationViewType AnnotationViewType;
+    [SerializeField] private bool UseRectAlignment = true;
     
     private LegacyAnnotationView _annotationView;
     public LegacyAnnotationView GetAnnotationView() => _annotationView;
@@ -41,13 +42,17 @@ public class AnnotationBehaviour : XBehaviour
 
     public void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
     {
+        AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
+            ? new RectTransformAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
+            : new MouseAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()).rect);
+        
         AnnotationDetails annotationDetails = new AnnotationDetails(
             AnnotationViewType,
             null,
             ib.GetAddress(),
             FirstCounter,
             SecondCounter,
-            new RectTransformAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView())));
+            alignmentDetails);
         CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
     }
 

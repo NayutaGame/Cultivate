@@ -23,11 +23,14 @@ public class ShopRoomDefinition : RoomDefinition
         return entry;
     }
 
+    public override string GetTitle()
+        => "商店房间";
+
     public override SpriteEntry GetSprite()
         => "ShopRoomIcon";
 
-    public override string GetDescription()
-        => "可以购买东西";
+    public override Description GetDescription()
+        => new("可以购买东西");
 
     public ShopRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {

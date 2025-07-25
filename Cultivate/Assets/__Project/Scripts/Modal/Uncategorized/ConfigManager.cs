@@ -235,7 +235,7 @@ public class ConfigManager : Addressable
         return AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack);
     }
 
-    public string GetPackUnlockCondition(PackEntry pack)
+    public Description GetPackUnlockCondition(PackEntry pack)
     {
         return AppManager.Instance.ProfileManager.GetCurrProfile().GetPackUnlockCondition(_character.GetEntry(), pack);
     }
@@ -245,7 +245,7 @@ public class ConfigManager : Addressable
         return AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
     }
 
-    public string GetConstraintUnlockCondition(PackConstraint constraint)
+    public Description GetConstraintUnlockCondition(PackConstraint constraint)
     {
         return AppManager.Instance.ProfileManager.GetCurrProfile().GetConstraintUnlockCondition(_character.GetEntry(), constraint.SlotIndex);
     }

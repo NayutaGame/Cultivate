@@ -82,4 +82,7 @@ public struct WuXing : IEquatable<WuXing>
             return i0.Value.Next;
         return null;
     }
+
+    public SpriteEntry GetIconSprite()
+        => SpriteEntry.FromId($"Tag{_name}");
 }

@@ -1,8 +1,9 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class StageNote : ISkill
+public class StageNote : ISkill, AnnotatableSkill
 {
     public int EntityIndex;
     public int TemporalIndex;
@@ -10,7 +11,12 @@ public class StageNote : ISkill
 
     [NonSerialized] public CostDescription ActualCostDescription;
     [NonSerialized] public Description ActualDescription;
-
+    
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public StageNote(int entityIndex, int temporalIndex, StageSkill skill, int currCounter = 0, int maxCounter = 0)
     {
         EntityIndex = entityIndex;
@@ -66,4 +72,13 @@ public class StageNote : ISkill
 
     public JingJie NextJingJie(JingJie showingJingJie)
         => Skill.Entry.NextJingJie(showingJingJie);
+
+    public bool CanShowAnnotation()
+        => true;
+
+    public JingJie GetLowestJingJie()
+        => Skill.Entry.GetLowestJingJie();
+
+    public JingJie GetHighestJingJie()
+        => Skill.Entry.GetHighestJingJie();
 }

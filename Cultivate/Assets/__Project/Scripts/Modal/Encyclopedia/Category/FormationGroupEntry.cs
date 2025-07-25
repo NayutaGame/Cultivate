@@ -1,10 +1,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class FormationGroupEntry : Entry, Addressable, IFormationModel
+public class FormationGroupEntry : Entry, Addressable
 {
     public string GetName() => GetId();
     
@@ -28,6 +29,8 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
 
     private ListModel<MarkModel> _markListModel;
     public ListModel<MarkModel> GetMarks() => _markListModel;
+    
+    private int[] _criticalProgresses;
 
     private SpriteEntry _spriteEntry;
 
@@ -45,10 +48,7 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         _progressEvaluator = progressEvaluator;
 
         _subFormationEntries = new ListModel<FormationEntry>();
-
-        if (formationEntries != null)
-            _subFormationEntries.AddRange(formationEntries);
-
+        _subFormationEntries.AddRange(formationEntries);
         _subFormationEntries.Do(f => f.SetFormationGroupEntry(this));
 
         _min = FormationWithLowestJingJie().GetRequirement() - TOLERANCE;
@@ -58,8 +58,13 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
         _markListModel.AddRange(_subFormationEntries.Map(e =>
             new MarkModel(e.GetRequirement(), e.GetJingJie().ToString())));
 
+        _criticalProgresses = _subFormationEntries.Map(e => e.GetRequirement()).ToArray();
+        
+
         _spriteEntry = id;
     }
+    
+    public int[] GetCriticalProgresses() => _criticalProgresses;
 
     public FormationEntry FirstActivatedFormation(int progress)
         => _subFormationEntries.First(e => progress >= e.GetRequirement());
@@ -73,37 +78,22 @@ public class FormationGroupEntry : Entry, Addressable, IFormationModel
     public FormationEntry FirstFormationWithJingJie(JingJie jingJie)
         => _subFormationEntries.First(e => e.GetJingJie() == jingJie);
 
+    public FormationEntry FirstFormationWithProgress(int progress)
+        => _subFormationEntries.First(e => e.GetRequirement() <= progress);
+
+    public JingJie? GetActivatedJingJie() => null;
+    public Predicate<ISkill> GetContributorPred() => _contributorPred;
+    
     #region IFormationModel
 
-    public JingJie GetLowestJingJie() => FormationWithLowestJingJie().GetJingJie();
-    public JingJie? GetActivatedJingJie() => null;
     public string GetConditionDescription() => _progressDescription;
 
-    public Description GetRewardDescription(JingJie jingJie)
-        => FirstFormationWithJingJie(jingJie).GetRewardDescription();
+    public Description GetRewardDescription(int progress)
+        => FirstFormationWithProgress(progress).GetRewardDescription();
     
-    public string GetTriviaFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetTrivia();
-    public JingJie GetIncrementedJingJie(JingJie jingJie)
-    {
-        int index = _subFormationEntries.FirstIdx(e => e.GetJingJie() == jingJie).Value;
-        index--;
-        if (index < 0)
-            index += _subFormationEntries.Count();
-        return _subFormationEntries[index].GetJingJie();
-    }
-    public int GetRequirementFromJingJie(JingJie jingJie) => FirstFormationWithJingJie(jingJie).GetRequirement();
-    public Predicate<ISkill> GetContributorPred() => _contributorPred;
-    public SpriteEntry GetSprite() => _spriteEntry;
-
-    #endregion
-
-    #region IMarkedSliderModel
-
-    public int GetMin() => _min;
-    public int GetMax() => _max;
-    public int? GetValue() => null;
-    public Address GetMarkListModelAddress(Address address)
-        => address.Append(".Marks");
+    public string GetTrivia(int progress) => FirstFormationWithProgress(progress).GetTrivia();
+    
+    public SpriteEntry GetIconSprite() => _spriteEntry;
 
     #endregion
     

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 using System.Linq;
-using System.Text;
 
 [Serializable]
 public class Profile : Addressable, ISerializationCallbackReceiver
@@ -143,14 +142,14 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         return SlotIsUnlocked(character, slotIndex) && character._packPreset.PackEntries[slotIndex] == pack;
     }
 
-    public string GetPackUnlockCondition(CharacterEntry character, PackEntry pack)
+    public Description GetPackUnlockCondition(CharacterEntry character, PackEntry pack)
     {
         LockIndex lockIndex = LockIndex.FromPack(pack);
         AchievementProfile achievementProfile = GetAchievementProfileFromLockIndex(lockIndex);
         return achievementProfile.GetEntry().GetConditionDescription();
     }
 
-    public string GetConstraintUnlockCondition(CharacterEntry character, int slotIndex)
+    public Description GetConstraintUnlockCondition(CharacterEntry character, int slotIndex)
     {
         LockIndex lockIndex = LockIndex.FromSlot(character, slotIndex);
         AchievementProfile achievementProfile = GetAchievementProfileFromLockIndex(lockIndex);

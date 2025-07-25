@@ -1,16 +1,22 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CharacterProfile : ISerializationCallbackReceiver
+public class CharacterProfile : ISerializationCallbackReceiver, AnnotatableCharacter
 {
     private const int PACK_SLOT_COUNT = 7;
 
     [SerializeField] private CharacterEntry _entry;
     [SerializeField] public int _level;
     [SerializeField] public int _experience;
-
+    
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public CharacterProfile(CharacterEntry entry)
     {
         _entry = entry;
@@ -68,4 +74,13 @@ public class CharacterProfile : ISerializationCallbackReceiver
     {
         _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.CharacterCategory[_entry.GetId()];
     }
+
+    public bool CanShowAnnotation()
+        => true;
+
+    public string GetTitle()
+        => GetEntry().GetName();
+
+    public Description GetAbilityDescription()
+        => GetEntry().GetAbilityDescription();
 }

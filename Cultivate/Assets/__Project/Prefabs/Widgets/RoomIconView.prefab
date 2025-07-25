@@ -105,5 +105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
+  FirstCounter: 0
+  SecondCounter: 0
   AnnotationAddress: Canvas.RoomAnnotation
-  HoverTransform: {fileID: 0}
+  AnnotationViewType: 6
+  UseRectAlignment: 1

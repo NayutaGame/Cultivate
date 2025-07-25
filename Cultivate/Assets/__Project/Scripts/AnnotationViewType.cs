@@ -5,10 +5,17 @@ public enum AnnotationViewType
     SkillAnnotation,
     TextAnnotation,
     BuffAnnotation,
-    CharacterAnnotation,
     FormationAnnotation,
+    LineAnnotation,
     RoomAnnotation,
+    CharacterAnnotation,
     PackAnnotation,
+    
     AchievementAnnotation,
+    
+    TagAnnotation,
+    CostAnnotation,
+    JingJieAnnotation,
     CycleAnnotation,
+    // WuXingAnnotation
 }

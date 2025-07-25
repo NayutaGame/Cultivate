@@ -5,11 +5,12 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class PackEntry : Entry, IPack
+public class PackEntry : Entry
 {
     [NonSerialized] public string Name;
     [NonSerialized] public WuXing? WuXing;
-    [NonSerialized] public string Description;
+    [NonSerialized] public string _rawDescription;
+    [NonSerialized] public Description _description;
     [NonSerialized] public string Trivia;
     [NonSerialized] public SkillEntry[] Cards;
     [NonSerialized] public SkillEntry[] StartCards;
@@ -19,7 +20,7 @@ public class PackEntry : Entry, IPack
     public PackEntry(string id,
         string name,
         WuXing? wuXing,
-        string description = null,
+        string rawDescription = null,
         string trivia = null,
         string[] cardNames = null,
         string[] startCardNames = null
@@ -27,7 +28,7 @@ public class PackEntry : Entry, IPack
     {
         Name = name;
         WuXing = wuXing;
-        Description = description ?? "没有描述";
+        _rawDescription = rawDescription ?? "没有描述";
         Trivia = trivia ?? "没有趣闻";
         Cards = cardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
         StartCards = startCardNames?.Map(SkillEntry.FromNameOrId).ToArray() ?? Array.Empty<SkillEntry>();
@@ -35,9 +36,12 @@ public class PackEntry : Entry, IPack
         _spriteEntry = $"Pack{GetName()}";
     }
     
+    public void GenerateDescription()
+        => _description = new Description(_rawDescription);
+    
     public string GetName() => Name;
     public WuXing? GetWuXing() => WuXing;
-    public string GetDescription() => Description;
+    public Description GetDescription() => _description;
     public string GetTrivia() => Trivia;
     
     public Sprite GetSprite() => _spriteEntry?.Sprite;

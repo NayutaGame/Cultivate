@@ -13,38 +13,38 @@ public class LegacyPackAnnotationView : XView
     {
         base.Refresh();
 
-        IPack pack = Get<IPack>();
-
-        if (pack != null)
-        {
-            ConfigAsPack(pack);
-            gameObject.SetActive(true);
-            return;
-        }
-
-        PackConstraint packConstraint = Get<PackConstraint>();
-
-        if (packConstraint != null)
-        {
-            pack = packConstraint.Pack;
-            if (pack != null)
-            {
-                ConfigAsPack(pack);
-                gameObject.SetActive(true);
-                return;
-            }
-        }
-        
-        gameObject.SetActive(false);
+        // IPack pack = Get<IPack>();
+        //
+        // if (pack != null)
+        // {
+        //     ConfigAsPack(pack);
+        //     gameObject.SetActive(true);
+        //     return;
+        // }
+        //
+        // PackConstraint packConstraint = Get<PackConstraint>();
+        //
+        // if (packConstraint != null)
+        // {
+        //     pack = packConstraint.Pack;
+        //     if (pack != null)
+        //     {
+        //         ConfigAsPack(pack);
+        //         gameObject.SetActive(true);
+        //         return;
+        //     }
+        // }
+        //
+        // gameObject.SetActive(false);
     }
 
-    private void ConfigAsPack(IPack pack)
-    {
-        NameText.text = pack.GetName();
-        SetWuXing(pack.GetWuXing());
-        DescriptionText.text = pack.GetDescription();
-        SetTrivia(pack.GetTrivia());
-    }
+    // private void ConfigAsPack(IPack pack)
+    // {
+    //     NameText.text = pack.GetName();
+    //     SetWuXing(pack.GetWuXing());
+    //     DescriptionText.text = pack.GetDescription();
+    //     SetTrivia(pack.GetTrivia());
+    // }
 
     private void SetTrivia(string trivia)
     {

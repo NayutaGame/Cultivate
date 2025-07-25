@@ -17,11 +17,14 @@ public class DirectRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
         return _roomEntry;
     }
 
+    public override string GetTitle()
+        => _roomEntry.GetName();
+
     public override SpriteEntry GetSprite()
         => "AdventureRoomIcon";
 
-    public override string GetDescription()
-        => "将会遭遇事件";
+    public override Description GetDescription()
+        => new("将会遭遇事件");
     
     public void OnBeforeSerialize() { }
 

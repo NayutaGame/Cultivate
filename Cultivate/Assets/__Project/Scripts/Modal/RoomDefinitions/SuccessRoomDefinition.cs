@@ -13,9 +13,12 @@ public class SuccessRoomDefinition : RoomDefinition
     {
     }
 
+    public override string GetTitle()
+        => "胜利房间";
+
     public override SpriteEntry GetSprite()
         => "AscensionRoomIcon";
 
-    public override string GetDescription()
-        => "将会取得游戏胜利";
+    public override Description GetDescription()
+        => new("将会取得游戏胜利");
 }

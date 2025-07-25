@@ -48,11 +48,14 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
         return "战斗";
     }
 
+    public override string GetTitle()
+        => "战斗房间";
+
     public override SpriteEntry GetSprite()
         => _spriteEntry;
 
-    public override string GetDescription()
-        => "将会发生战斗";
+    public override Description GetDescription()
+        => new("将会发生战斗");
     
     public void OnBeforeSerialize() { }
 

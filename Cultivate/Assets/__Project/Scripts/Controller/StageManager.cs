@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
@@ -39,10 +38,14 @@ public class StageManager : Singleton<StageManager>, Addressable
     public StageTimeline Timeline;
     private UniTask _task;
 
+    private AnnotatableLine GetSkipButtonInactiveHint()
+        => new ("通关一次后解锁");
+
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Environment",                thisObject => ((StageManager)thisObject)._environment },
         { "Timeline",                   thisObject => ((StageManager)thisObject).Timeline },
+        { "SkipButtonInactiveHint",     thisObject => ((StageManager)thisObject).GetSkipButtonInactiveHint() },
     };
     public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()

@@ -300,8 +300,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
+  FirstCounter: 0.5
+  SecondCounter: 2
   AnnotationAddress: Canvas.AchievementAnnotation
-  HoverTransform: {fileID: 0}
+  AnnotationViewType: 9
+  UseRectAlignment: 1
 --- !u!225 &2893177524455415213
 CanvasGroup:
   m_ObjectHideFlags: 0

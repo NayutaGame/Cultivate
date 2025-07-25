@@ -15,9 +15,9 @@ public class LegacyRoomAnnotationView : XView
         base.Refresh();
 
         Room room = Get<Room>();
-        DescriptionText.text = room.GetDescriptor().GetDescription();
+        DescriptionText.text = room.GetDescriptor().GetDescription().GetHighlightedString();
         // Debug.Log(characterProfile.GetEntry().GetName());
-
+        //
         // Buff buff = Get<Buff>();
         // TitleText.text = $"{buff.GetName()} {buff.Stack}";
         // DescriptionText.text = buff.GetEntry().GetDescription();

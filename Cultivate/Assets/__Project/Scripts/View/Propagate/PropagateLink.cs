@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class PropagateLink : MonoBehaviour, IPointerMoveHandler
 {
     [SerializeField] private TMP_Text Text;
-    [SerializeField] private Image Image;
     private Neuron<TMP_Text, TMP_LinkInfo> _neuron = new();
 
     private void Awake()
@@ -21,14 +20,14 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
     {
         _neuron.Join(func);
         bool acceptRaycast = _neuron.Count > 0;
-        Image.raycastTarget = acceptRaycast;
+        Text.raycastTarget = acceptRaycast;
     }
 
     public void UnregisterCallback(Action<TMP_Text, TMP_LinkInfo> func)
     {
         _neuron.Remove(func);
         bool acceptRaycast = _neuron.Count > 0;
-        Image.raycastTarget = acceptRaycast;
+        Text.raycastTarget = acceptRaycast;
     }
     
     public void OnPointerMove(PointerEventData eventData)
@@ -90,6 +89,18 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
             CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
             return;
         }
+
+        if (TryInterpretAsSkill(linkId, criticalCharInfo, alignRect, out annotationDetails))
+        {
+            CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+            return;
+        }
+
+        if (TryInterpretAsCharacter(linkId, criticalCharInfo, alignRect, out annotationDetails))
+        {
+            CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+            return;
+        }
         
         if (annotationDetails == null)
             return;
@@ -97,13 +108,14 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
 
     private bool TryInterpretAsKeyword(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
     {
-        KeywordEntry keywordEntry = KeywordEntry.FromName(linkId);
-        if (keywordEntry == null)
+        if (!Encyclopedia.KeywordCategory.ContainsKey(linkId))
         {
             annotationDetails = null;
             return false;
         }
-
+        
+        KeywordEntry keywordEntry = KeywordEntry.FromName(linkId);
+        
         int characterIndex = keywordEntry.GetName().IndexOf(criticalCharInfo.character);
         annotationDetails = new AnnotationDetails(
             AnnotationViewType.TextAnnotation,
@@ -117,17 +129,61 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
 
     private bool TryInterpretAsBuff(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
     {
-        BuffEntry buffEntry = linkId;
-        if (buffEntry == null)
+        if (!Encyclopedia.BuffCategory.ContainsKey(linkId))
         {
             annotationDetails = null;
             return false;
         }
+        
+        BuffEntry buffEntry = linkId;
+        
         int characterIndex = buffEntry.GetName().IndexOf(criticalCharInfo.character);
         annotationDetails = new AnnotationDetails(
             AnnotationViewType.BuffAnnotation,
             GetComponent<RectTransform>(),
             new Address($"Encyclopedia.BuffCategory.Dict.{linkId}"),
+            0,
+            0,
+            new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
+        return true;
+    }
+
+    private bool TryInterpretAsSkill(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
+    {
+        if (!Encyclopedia.SkillCategory.ContainsKey(linkId))
+        {
+            annotationDetails = null;
+            return false;
+        }
+        
+        SkillEntry skillEntry = SkillEntry.FromId(linkId);
+        
+        int characterIndex = skillEntry.GetName().IndexOf(criticalCharInfo.character);
+        annotationDetails = new AnnotationDetails(
+            AnnotationViewType.SkillAnnotation,
+            GetComponent<RectTransform>(),
+            new Address($"Encyclopedia.SkillCategory.Dict.{linkId}"),
+            0,
+            0,
+            new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
+        return true;
+    }
+
+    private bool TryInterpretAsCharacter(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
+    {
+        if (!Encyclopedia.CharacterCategory.ContainsKey(linkId))
+        {
+            annotationDetails = null;
+            return false;
+        }
+        
+        CharacterEntry characterEntry = linkId;
+        
+        int characterIndex = characterEntry.GetName().IndexOf(criticalCharInfo.character);
+        annotationDetails = new AnnotationDetails(
+            AnnotationViewType.CharacterAnnotation,
+            GetComponent<RectTransform>(),
+            new Address($"Encyclopedia.CharacterCategory.Dict.{linkId}"),
             0,
             0,
             new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));

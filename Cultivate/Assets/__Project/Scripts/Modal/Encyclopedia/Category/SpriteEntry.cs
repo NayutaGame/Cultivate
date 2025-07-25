@@ -13,4 +13,5 @@ public class SpriteEntry : Entry
     }
 
     public static implicit operator SpriteEntry(string id) => Encyclopedia.SpriteCategory[id];
+    public static SpriteEntry FromId(string id) => Encyclopedia.SpriteCategory[id];
 }

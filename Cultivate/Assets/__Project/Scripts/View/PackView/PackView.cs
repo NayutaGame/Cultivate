@@ -17,18 +17,9 @@ public class PackView : XView
     {
         base.Refresh();
 
-        ConfigPack pack = Get<ConfigPack>();
-        SetName(pack.GetName());
-        Image.sprite = pack.GetSprite();
-
-        if (!ParentedByConstraint)
-        {
-            EquippedGameObject.SetActive(pack.Equipped());
-            bool locked = !pack.IsUnlocked();
-            LockGameObject.SetActive(locked);
-            if (locked)
-                UnlockConditionText.text = pack.GetUnlockCondition();
-        }
+        object obj = Get<object>();
+        if (InterpretAsConfigPack(obj)) return;
+        if (InterpretAsPackConstraint(obj)) return;
     }
 
     public void RefreshFromParentedConstraint(PackConstraint constraint)
@@ -37,11 +28,48 @@ public class PackView : XView
         bool locked = !constraint.IsUnlocked();
         LockGameObject.SetActive(locked);
         if (locked)
-            UnlockConditionText.text = constraint.GetUnlockCondition();
+            UnlockConditionText.text = constraint.GetUnlockCondition().GetHighlightedString();
     }
 
-    protected virtual void SetName(string name)
+    private bool InterpretAsConfigPack(object obj)
     {
-        NameText.text = name;
+        ConfigPack pack = obj as ConfigPack;
+        if (pack == null)
+            return false;
+        
+        NameText.text = pack.GetName();
+        Image.sprite = pack.GetSprite();
+
+        if (!ParentedByConstraint)
+        {
+            EquippedGameObject.SetActive(pack.Equipped());
+            bool locked = !pack.IsUnlocked();
+            LockGameObject.SetActive(locked);
+            if (locked)
+                UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
+        }
+
+        return true;
+    }
+
+    private bool InterpretAsPackConstraint(object obj)
+    {
+        PackConstraint pack = obj as PackConstraint;
+        if (pack == null)
+            return false;
+        
+        NameText.text = pack.GetName();
+        Image.sprite = pack.GetSprite();
+
+        if (!ParentedByConstraint)
+        {
+            EquippedGameObject.SetActive(false);
+            bool locked = !pack.IsUnlocked();
+            LockGameObject.SetActive(locked);
+            if (locked)
+                UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
+        }
+
+        return true;
     }
 }

@@ -9,7 +9,7 @@ public class CharacterCategory : Category<CharacterEntry>
         AddRange(new List<CharacterEntry>()
         {
             new("徐福",
-                abilityDescription: "命元上限+2\n战斗中使用的最左边的一次性牌，战斗后返还",
+                rawAbilityDescription: "命元上限+2\n战斗中使用的最左边的一次性牌，战斗后返还",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0003"],
@@ -38,7 +38,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
 
             new("子非鱼",
-                abilityDescription: "第一次获得五行Buff时，根据境界额外获得1/2/3/4/5点",
+                rawAbilityDescription: "第一次获得五行Buff时，根据境界额外获得1/2/3/4/5点",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0004"],
@@ -66,7 +66,7 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             
             new("风雨晴",
-                abilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
+                rawAbilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0003"],
@@ -101,8 +101,8 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             
             new("彼此卿",
-                abilityDescription: "可以模仿一张对手的卡牌" +
-                                   "\n如果战斗中使用了模仿，战后奖励时可选择模仿的卡牌",
+                rawAbilityDescription: "子非鱼游戏开始时，获得一张幻化。可以模仿一张对手的卡牌" +
+                                       "\n如果战斗中使用了模仿，战后奖励时可选择模仿的卡牌",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0004"],
@@ -183,7 +183,7 @@ public class CharacterCategory : Category<CharacterEntry>
             // new("斩心鬼", abilityDescription: "拥有一把奇怪的剑，此剑吞噬其他卡牌之后威力变得更强"),
 
             new("子非燕",
-                abilityDescription: "??????????",
+                rawAbilityDescription: "拥有一把奇怪的剑，此剑吞噬其他卡牌之后威力变得更强",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0002"],
                     Encyclopedia.PackCategory["0003"],
@@ -283,6 +283,14 @@ public class CharacterCategory : Category<CharacterEntry>
             //             }
             //         }),
             //     }),
+        });
+    }
+
+    public void Init()
+    {
+        List.Do(entry =>
+        {
+            entry.GenerateDescription();
         });
     }
 }

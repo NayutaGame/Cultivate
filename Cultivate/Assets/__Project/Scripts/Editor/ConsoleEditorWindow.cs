@@ -297,7 +297,7 @@ public class ConsoleEditorWindow : EditorWindow
             
             // 成就名称和描述
             EditorGUILayout.LabelField(achievementProfile.GetEntry().GetName(), EditorStyles.boldLabel);
-            EditorGUILayout.LabelField(achievementProfile.GetEntry().GetConditionDescription());
+            EditorGUILayout.LabelField(achievementProfile.GetEntry().GetConditionDescription().GetRawString());
             
             // 解锁状态
             bool isUnlocked = achievementProfile.IsUnlocked();
@@ -310,7 +310,7 @@ public class ConsoleEditorWindow : EditorWindow
             }
             
             // 显示解锁效果
-            EditorGUILayout.LabelField($"解锁效果：{achievementProfile.GetEntry().GetRewardDescription()}");
+            EditorGUILayout.LabelField($"解锁效果：{achievementProfile.GetEntry().GetRewardDescription().GetRawString()}");
             
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space(5);
