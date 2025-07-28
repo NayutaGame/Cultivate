@@ -39,6 +39,8 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     public int GetHealth() => _health;
     public void SetHealth(int value) => _health = value;
     public BoundedInt GetHealthBounded() => new(GetHealth());
+    public AnnotatableLine GetHealthDescription()
+        => new($"开始战斗时气血上限为{GetHealth()}");
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;
     public int GetSlotCount() => _slotCount;
@@ -245,6 +247,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         { "Slots",                      thisObject => ((RunEntity)thisObject)._filteredSlots },
         { "RunFormations",              thisObject => ((RunEntity)thisObject)._formations },
         { "ShowingFormations",          thisObject => ((RunEntity)thisObject)._showingFormations },
+        { "HealthDescription",          thisObject => ((RunEntity)thisObject).GetHealthDescription() },
         { "ActiveFormations",           thisObject => ((RunEntity)thisObject)._activeFormations },
         { "SmirkAgainstSlots",          thisObject => ((RunEntity)thisObject)._smirkAgainstSlots },
         { "AfraidAgainstSlots",         thisObject => ((RunEntity)thisObject)._afraidAgainstSlots },

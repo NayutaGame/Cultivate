@@ -222,8 +222,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
-  AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 0}
+  FirstCounter: 0.5
+  SecondCounter: 2
+  AnnotationAddress: 
+  AnnotationViewType: 1
+  UseRectAlignment: 1
 --- !u!1 &6862243894135901390
 GameObject:
   m_ObjectHideFlags: 0

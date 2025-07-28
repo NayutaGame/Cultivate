@@ -15,6 +15,6 @@ public class EntityBarView : XView
 
         LadderText.text = entity.GetLadder().ToString();
         NameText.text = entity.GetEntry()?.GetName() ?? "未命名";
-        JingJieText.text = entity.GetJingJie().ToString();
+        JingJieText.text = entity.GetJingJie().GetName();
     }
 }

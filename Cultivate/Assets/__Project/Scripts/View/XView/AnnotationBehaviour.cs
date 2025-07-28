@@ -7,18 +7,12 @@ public class AnnotationBehaviour : XBehaviour
     [SerializeField] private InteractBehaviour _ib;
     [SerializeField] private float FirstCounter = 0f;
     [SerializeField] private float SecondCounter = 0f;
-    [SerializeField] private string AnnotationAddress;
     [SerializeField] private AnnotationViewType AnnotationViewType;
     [SerializeField] private bool UseRectAlignment = true;
-    
-    private LegacyAnnotationView _annotationView;
-    public LegacyAnnotationView GetAnnotationView() => _annotationView;
 
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-
-        _annotationView = new Address(AnnotationAddress).Get<LegacyAnnotationView>();
         SetInteractBehaviour(_ib);
     }
 
@@ -48,7 +42,7 @@ public class AnnotationBehaviour : XBehaviour
         
         AnnotationDetails annotationDetails = new AnnotationDetails(
             AnnotationViewType,
-            null,
+            GetView().GetRect(),
             ib.GetAddress(),
             FirstCounter,
             SecondCounter,

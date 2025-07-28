@@ -16,21 +16,9 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("General")] public AppCanvas AppCanvas;
     [TabGroup("General")] public RunCanvas RunCanvas;
     [TabGroup("General")] public StageCanvas StageCanvas;
+    [TabGroup("General")] public AnnotationManager AnnotationManager;
     [TabGroup("General")] [SerializeField] private Camera Camera;
     [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
-    
-    [TabGroup("Annotations")] public AnnotationManager AnnotationManager;
-    [TabGroup("Annotations")] public LegacyAnnotationView CharacterAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView SkillAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView BuffAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView FormationAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView RoomAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView PackAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView AchievementAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView SkipButtonInactiveAnnotation;
-    [TabGroup("Annotations")] public LegacyAnnotationView CycleAnnotation;
-    [TabGroup("Annotations")] public TextHint TextHint;
-    [TabGroup("Annotations")] public PackPreview PackPreview;
     
     [TabGroup("Others")]public Grabber Grabber;
     [TabGroup("Others")]public MergePreresultView MergePreresultView;
@@ -61,15 +49,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "CharacterAnnotation",          thisObject => ((CanvasManager)thisObject).CharacterAnnotation },
-        { "SkillAnnotation",              thisObject => ((CanvasManager)thisObject).SkillAnnotation },
-        { "BuffAnnotation",               thisObject => ((CanvasManager)thisObject).BuffAnnotation },
-        { "FormationAnnotation",          thisObject => ((CanvasManager)thisObject).FormationAnnotation },
-        { "RoomAnnotation",               thisObject => ((CanvasManager)thisObject).RoomAnnotation },
-        { "PackAnnotation",               thisObject => ((CanvasManager)thisObject).PackAnnotation },
-        { "AchievementAnnotation",        thisObject => ((CanvasManager)thisObject).AchievementAnnotation },
-        { "SkipButtonInactiveAnnotation", thisObject => ((CanvasManager)thisObject).SkipButtonInactiveAnnotation },
-        { "CycleAnnotation",              thisObject => ((CanvasManager)thisObject).CycleAnnotation },
         { "AnnotationManager",            thisObject => ((CanvasManager)thisObject).GetAnnotationManager() },
     };
     public object Get(string s) => Accessor[s](this);
@@ -81,16 +60,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         
         _results = new();
 
-        CharacterAnnotation.CheckAwake();
-        SkillAnnotation.CheckAwake();
-        BuffAnnotation.CheckAwake();
-        FormationAnnotation.CheckAwake();
-        RoomAnnotation.CheckAwake();
-        PackAnnotation.CheckAwake();
-        AchievementAnnotation.CheckAwake();
-        SkipButtonInactiveAnnotation.CheckAwake();
-        CycleAnnotation.CheckAwake();
-        PackPreview.CheckAwake();
         MergePreresultView.CheckAwake();
         AnnotationManager.CheckAwake();
         
@@ -113,17 +82,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public void CloseAnnotation()
     {
-        // CharacterAnnotation.PointerExit();
-        // SkillAnnotation.PointerExit();
-        // BuffAnnotation.PointerExit();
-        // FormationAnnotation.PointerExit();
-        // RoomAnnotation.PointerExit();
-        // PackAnnotation.PointerExit();
-        // AchievementAnnotation.PointerExit();
-        // SkipButtonInactiveAnnotation.PointerExit();
-        // CycleAnnotation.PointerExit();
-        // TextHint.PointerExit();
-        PackPreview.ClosePreview();
     }
 
     private List<RaycastResult> _results;

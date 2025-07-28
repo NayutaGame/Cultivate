@@ -139,11 +139,9 @@ MonoBehaviour:
   Gold: {fileID: 8493412847900645391}
   Health: {fileID: 5407775051557479670}
   JingJieText: {fileID: 2500656310281601456}
-  PropagateJingJieText: {fileID: 7481817103762819201}
-  PropagateJingJieRT: {fileID: 4516882433124664718}
+  JingJieAnnotationProvider: {fileID: 6482350953503862742}
   DifficultyText: {fileID: 3767078979536271319}
-  PropagateDifficultyText: {fileID: 6467682200951670821}
-  PropagateDifficultyRT: {fileID: 3784332596930174680}
+  DifficultyAnnotationProvider: {fileID: 2366928312298414109}
   MenuButton: {fileID: 3673891223710562803}
   MenuButtonPropagatePointerEnter: {fileID: 425733598991413584}
 --- !u!1 &2905155066956528284
@@ -263,8 +261,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 2062502652829888291}
-  AnnotationAddress: Canvas.CycleAnnotation
-  HoverTransform: {fileID: 0}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationViewType: 13
+  UseRectAlignment: 1
 --- !u!1 &3883595420915725168
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,9 +276,12 @@ GameObject:
   - component: {fileID: 3784332596930174680}
   - component: {fileID: 5216645797993110969}
   - component: {fileID: 5606778608404710031}
-  - component: {fileID: 6467682200951670821}
+  - component: {fileID: 2366928312298414109}
+  - component: {fileID: 9046377750440170530}
+  - component: {fileID: 3921566737987413683}
+  - component: {fileID: 1769949451789177426}
   m_Layer: 0
-  m_Name: PropagateDifficultyText
+  m_Name: DifficultyAnnotationProvider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,7 +346,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6467682200951670821
+--- !u!114 &2366928312298414109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -352,7 +355,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 3883595420915725168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 1769949451789177426}
+--- !u!114 &9046377750440170530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883595420915725168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 1769949451789177426}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationViewType: 5
+  UseRectAlignment: 0
+--- !u!114 &3921566737987413683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883595420915725168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 1769949451789177426}
+  HoverAudioId: ItemHover
+  LeftClickAudioId: 
+  RightClickAudioId: 
+--- !u!114 &1769949451789177426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883595420915725168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3891331126435313728
@@ -366,9 +415,12 @@ GameObject:
   - component: {fileID: 4516882433124664718}
   - component: {fileID: 1849877992846443403}
   - component: {fileID: 800173506694044731}
-  - component: {fileID: 7481817103762819201}
+  - component: {fileID: 6482350953503862742}
+  - component: {fileID: 640807280663020127}
+  - component: {fileID: 7753779106388052542}
+  - component: {fileID: 4252867049943462025}
   m_Layer: 0
-  m_Name: PropagateJingJieText
+  m_Name: JingJieAnnotationProvider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,7 +485,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7481817103762819201
+--- !u!114 &6482350953503862742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -442,7 +494,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 3891331126435313728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 4252867049943462025}
+--- !u!114 &640807280663020127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891331126435313728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 4252867049943462025}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationViewType: 5
+  UseRectAlignment: 0
+--- !u!114 &7753779106388052542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891331126435313728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 4252867049943462025}
+  HoverAudioId: ItemHover
+  LeftClickAudioId: 
+  RightClickAudioId: 
+--- !u!114 &4252867049943462025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891331126435313728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5751195463020976458

@@ -41,8 +41,8 @@ public class TimelineView : Singleton<TimelineView>
 
     private void ConfigureNeuron(InteractBehaviour ib)
     {
-        ib.PointerEnterNeuron.Join(StageManager.Instance.Pause);
-        ib.PointerExitNeuron.Join(StageManager.Instance.Resume);
+        ib.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
+        ib.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
     }
 
     public void InitialSetup()

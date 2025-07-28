@@ -609,9 +609,11 @@ GameObject:
   - component: {fileID: 8277581699931491293}
   - component: {fileID: 1305295302598313253}
   - component: {fileID: 8866577375806340026}
-  - component: {fileID: 324601032618712518}
+  - component: {fileID: 8654913623493038663}
+  - component: {fileID: 7608312577236800091}
+  - component: {fileID: 6999077340669623883}
   m_Layer: 0
-  m_Name: PropagatePointer
+  m_Name: HomeHealthAnnotationProvider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -675,7 +677,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &324601032618712518
+--- !u!114 &8654913623493038663
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -684,9 +686,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 5267406392741157629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 7608312577236800091}
+--- !u!114 &7608312577236800091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5267406392741157629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6999077340669623883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5267406392741157629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 7608312577236800091}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationViewType: 5
+  UseRectAlignment: 0
 --- !u!1 &5845578875715309312
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,9 +730,11 @@ GameObject:
   - component: {fileID: 7925087302526669420}
   - component: {fileID: 388518768263980449}
   - component: {fileID: 5998757107769719095}
-  - component: {fileID: 2444267538767773329}
+  - component: {fileID: 7991750262952191433}
+  - component: {fileID: 5194138216671862047}
+  - component: {fileID: 1941131929460912014}
   m_Layer: 0
-  m_Name: PropagatePointer
+  m_Name: AwayHealthAnnotationProvider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -764,7 +798,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2444267538767773329
+--- !u!114 &7991750262952191433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -773,9 +807,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 5845578875715309312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 5194138216671862047}
+--- !u!114 &5194138216671862047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845578875715309312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1941131929460912014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845578875715309312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 5194138216671862047}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationViewType: 5
+  UseRectAlignment: 0
 --- !u!1 &5909595003293638442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,11 +1075,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyView: {fileID: 4253511819125662354}
   HomeHealth: {fileID: 824685915812255268}
-  HomePropagatePointer: {fileID: 324601032618712518}
-  HomeHealthTransform: {fileID: 8277581699931491293}
+  HomeHealthAnnotationProvider: {fileID: 8654913623493038663}
   AwayHealth: {fileID: 5383006118710765990}
-  AwayPropagatePointer: {fileID: 2444267538767773329}
-  AwayHealthTransform: {fileID: 7925087302526669420}
+  AwayHealthAnnotationProvider: {fileID: 7991750262952191433}
   CombatButton: {fileID: 6440139639276801742}
   VictoryStamp: {fileID: 1985658454072767149}
   WinColor: {r: 0.21176471, g: 0.85490197, b: 0.48235294, a: 1}

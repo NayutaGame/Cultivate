@@ -1059,20 +1059,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1185833340277898451, guid: 624e353993f651047b0108a03c633312, type: 3}
   m_PrefabInstance: {fileID: 3950694402480914647}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &530019119804745803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2785268027005598724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 0}
-  _skillView: {fileID: 333543882769091325}
 --- !u!114 &6056473062961928594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1086,8 +1072,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
-  AnnotationAddress: Canvas.SkillAnnotation
-  HoverTransform: {fileID: 0}
+  FirstCounter: 0.5
+  SecondCounter: 2
+  AnnotationViewType: 1
+  UseRectAlignment: 1
 --- !u!114 &6492430437140334285
 MonoBehaviour:
   m_ObjectHideFlags: 0

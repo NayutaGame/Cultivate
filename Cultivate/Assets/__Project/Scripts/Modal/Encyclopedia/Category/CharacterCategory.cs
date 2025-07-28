@@ -101,8 +101,8 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
             
             new("彼此卿",
-                rawAbilityDescription: "子非鱼游戏开始时，获得一张幻化。可以模仿一张对手的卡牌" +
-                                       "\n如果战斗中使用了模仿，战后奖励时可选择模仿的卡牌",
+                rawAbilityDescription: "游戏开始时，获得一张幻化。可以模仿一张对手的卡牌" +
+                                       "\n如果战斗中模仿了一张牌，战后奖励时可选择模仿的卡牌",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory["0001"],
                     Encyclopedia.PackCategory["0004"],

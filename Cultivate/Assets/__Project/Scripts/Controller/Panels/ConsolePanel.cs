@@ -77,7 +77,7 @@ public class ConsolePanel : Panel
         ReduceHealthButton.onClick.AddListener(ReduceHealth);
 
         JingJieDropdown.options = new();
-        JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
+        JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.GetName())));
 
         JingJieDropdown.onValueChanged.RemoveAllListeners();
         JingJieDropdown.onValueChanged.AddListener(JingJieChanged);

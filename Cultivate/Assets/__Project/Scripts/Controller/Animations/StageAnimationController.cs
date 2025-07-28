@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class StageAnimationController
 {
-    private AnimationHandle _mainTrack;
-    private List<AnimationHandle> _sideTracks;
-    
     // shift
     // home
     // away
@@ -20,7 +18,20 @@ public class StageAnimationController
     // bullet time at killing moment
     // camera shake when attack with large value
     
+    private AnimationHandle _mainTrack;
+    private List<AnimationHandle> _sideTracks;
     private float _speed = 1;
+
+    private bool _hovering = false;
+    private bool _annotating = false;
+
+    public StageAnimationController()
+    {
+        StageManager.SetHoverToTrue.Join(SetHoveringToTrue);
+        StageManager.SetHoverToFalse.Join(SetHoveringToFalse);
+        StageManager.SetAnnotatingToTrue.Join(SetAnnotatingToTrue);
+        StageManager.SetAnnotatingToFalse.Join(SetAnnotatingToFalse);
+    }
 
     public async UniTask Play(Animation animation)
     {
@@ -47,14 +58,50 @@ public class StageAnimationController
         await _mainTrack.NextKey(_speed);
     }
 
-    public void Pause()
+    public void SetHoveringToTrue(InteractBehaviour ib, PointerEventData d)
+    {
+        _hovering = true;
+        CheckPause();
+    }
+
+    public void SetHoveringToFalse(InteractBehaviour ib, PointerEventData d)
+    {
+        _hovering = false;
+        CheckPause();
+    }
+
+    public void SetAnnotatingToTrue()
+    {
+        _annotating = true;
+        CheckPause();
+    }
+
+    public void SetAnnotatingToFalse()
+    {
+        _annotating = false;
+        CheckPause();
+    }
+
+    private void CheckPause()
+    {
+        if (_hovering || _annotating)
+        {
+            Pause();
+        }
+        else
+        {
+            Resume();
+        }
+    }
+
+    private void Pause()
     {
         StageManager.Instance.HomeModel.SetSpeed(0);
         StageManager.Instance.AwayModel.SetSpeed(0);
         _mainTrack?.Pause();
     }
 
-    public void Resume()
+    private void Resume()
     {
         StageManager.Instance.HomeModel.SetSpeed(_speed);
         StageManager.Instance.AwayModel.SetSpeed(_speed);

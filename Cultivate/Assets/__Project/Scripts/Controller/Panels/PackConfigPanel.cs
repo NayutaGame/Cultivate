@@ -29,13 +29,11 @@ public class PackConfigPanel : PopupPanel
         ConstraintListView.LeftClickNeuron.Join(PackConstraintClicked);
         ConstraintListView.PointerEnterNeuron.Join(HoverConstraint);
         ConstraintListView.PointerExitNeuron.Join(UnhoverConstraint);
-        ConstraintListView.RightClickNeuron.Join(ExpandPackFromConstraint);
 
         SelectionListView.SetAddress(new Address("Config.PackSelections"));
         SelectionListView.LeftClickNeuron.Join(PackSelectionClicked);
         SelectionListView.PointerEnterNeuron.Join(HoverSelection);
         SelectionListView.PointerExitNeuron.Join(UnhoverSelection);
-        SelectionListView.RightClickNeuron.Join(ExpandPackFromSelection);
         
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(Confirm);
@@ -64,20 +62,6 @@ public class PackConfigPanel : PopupPanel
     {
         PackConstraintClickedDetails packConstraintClickedDetails = new(ib.Get<PackConstraint>());
         PackConstraintClickedEvent.Invoke(packConstraintClickedDetails);
-    }
-
-    private void ExpandPackFromConstraint(InteractBehaviour ib, PointerEventData data)
-    {
-        PackConstraint constraint = ib.Get<PackConstraint>();
-
-        AppManager.Instance.SetExpandedPack(constraint.Pack.Entry);
-    }
-
-    private void ExpandPackFromSelection(InteractBehaviour ib, PointerEventData data)
-    {
-        ConfigPack pack = ib.Get<ConfigPack>();
-
-        AppManager.Instance.SetExpandedPack(pack.Entry);
     }
 
     private void OnEnable()

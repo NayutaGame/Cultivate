@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 
 public class Encyclopedia : Addressable
 {
@@ -27,6 +28,7 @@ public class Encyclopedia : Addressable
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
+        { "TagCategory",                thisObject => TagCategory },
         { "KeywordCategory",            thisObject => KeywordCategory },
         { "BuffCategory",               thisObject => BuffCategory },
         { "SkillCategory",              thisObject => SkillCategory },
@@ -60,7 +62,10 @@ public class Encyclopedia : Addressable
         AchievementCategory = new();
         
         Description.BuildSymbolizeRegex();
+        SkillCategory.RefreshNameDict();
+        JingJie.Traversal.Do(j => j.Init());
         
+        TagCategory.Init();
         KeywordCategory.Init();
         BuffCategory.Init();
         SkillCategory.Init();

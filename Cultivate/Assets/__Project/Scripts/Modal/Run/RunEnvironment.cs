@@ -113,9 +113,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         { "Config",                     thisObject => ((RunEnvironment)thisObject)._config },
         { "Home",                       thisObject => ((RunEnvironment)thisObject)._home },
+        { "Away",                       thisObject => ((RunEnvironment)thisObject)._away },
         { "Map",                        thisObject => ((RunEnvironment)thisObject)._map },
         { "Hand",                       thisObject => ((RunEnvironment)thisObject)._hand },
         { "ActivePanel",                thisObject => ((RunEnvironment)thisObject).GetPanel() },
+        { "MingYuanDescription",        thisObject => ((RunEnvironment)thisObject).GetMingYuanDescription() },
+        { "GoldDescription",            thisObject => ((RunEnvironment)thisObject).GetGoldDescription() },
+        { "HealthDescription",          thisObject => ((RunEnvironment)thisObject).GetHealthDescription() },
+        { "JingJieDescription",         thisObject => ((RunEnvironment)thisObject).GetJingJieDescription() },
+        { "DifficultyDescription",      thisObject => ((RunEnvironment)thisObject).GetDifficultyDescription() },
     };
     public object Get(string s) => Accessor[s](this);
     private RunEnvironment(RunConfig config)
@@ -340,15 +346,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GetPanel().SetGuideToFinish();
     }
 
-    public string GetJingJieHintText()
-    {
-        return "有五个境界：\n练气，筑基\n金丹，元婴\n化神";
-    }
+    private AnnotatableLine GetMingYuanDescription()
+        => new(GetMingYuan().GetMingYuanPenaltyText());
 
-    public string GetDifficultyHintText()
-    {
-        return _config.DifficultyProfile.GetEntry().InheritedDescription;
-    }
+    private AnnotatableLine GetGoldDescription()
+        => new("金钱");
+
+    private AnnotatableLine GetHealthDescription()
+        => new("气血上限\n战斗开始的气血");
+
+    private AnnotatableLine GetJingJieDescription()
+        => new("有五个境界：练气，筑基，金丹，元婴，化神");
+
+    private AnnotatableLine GetDifficultyDescription()
+        => new(_config.DifficultyProfile.GetEntry().InheritedDescription);
 
     public bool IsFinalJingJie()
         => _jingJie == _config.DifficultyProfile.GetEntry().FinalJingJie;

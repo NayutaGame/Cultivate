@@ -107,14 +107,14 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver, AnnotatableSkill
 
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
     {
+        if (_jingJie != showingJingJie)
+            return GetEntry().GetLiteralCostDescription(showingJingJie);
+        
         CostDescription actualCostDescription = _skillSlot?.ActualCostDescription;
         if (actualCostDescription != null)
             return actualCostDescription;
-
-        if (_jingJie == showingJingJie)
-            return SkillDefinition.GetLiteralCostDescription();
-        
-        return GetEntry().GetLiteralCostDescription(showingJingJie);
+            
+        return SkillDefinition.GetLiteralCostDescription();
     }
 
     public Description GetDescription(JingJie showingJingJie)

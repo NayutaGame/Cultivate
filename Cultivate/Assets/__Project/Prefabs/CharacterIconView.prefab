@@ -236,7 +236,7 @@ MonoBehaviour:
   _ib: {fileID: 3836593868854003027}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: Canvas.CharacterAnnotation
+  AnnotationAddress: 
   AnnotationViewType: 7
   UseRectAlignment: 1
 --- !u!114 &8025067070832918378

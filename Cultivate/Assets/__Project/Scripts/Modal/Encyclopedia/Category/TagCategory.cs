@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using CLLibrary;
 
 public class TagCategory : Category<TagEntry>
 {
@@ -7,19 +8,27 @@ public class TagCategory : Category<TagEntry>
     {
         AddRange(new List<TagEntry>()
         {
-            new("金", 0, 1 << 0),
-            new("水", 1, 1 << 1),
-            new("木", 2, 1 << 2),
-            new("火", 3, 1 << 3),
-            new("土", 4, 1 << 4),
-            new("攻击", 5, 1 << 5),
-            new("防御", 6, 1 << 6),
-            new("灵气", 7, 1 << 7),
-            new("气血", 8, 1 << 8),
-            new("二动", 9, 1 << 9),
-            new("升华", 10, 1 << 10),
-            new("一次性", 11, 1 << 11),
-            new("自指", 12, 1 << 12),
+            new("金", 0, 1 << 0, ""),
+            new("水", 1, 1 << 1, ""),
+            new("木", 2, 1 << 2, ""),
+            new("火", 3, 1 << 3, ""),
+            new("土", 4, 1 << 4, ""),
+            new("攻击", 5, 1 << 5, ""),
+            new("防御", 6, 1 << 6, ""),
+            new("灵气", 7, 1 << 7, ""),
+            new("气血", 8, 1 << 8, ""),
+            new("二动", 9, 1 << 9, ""),
+            new("升华", 10, 1 << 10, ""),
+            new("一次性", 11, 1 << 11, ""),
+            new("自指", 12, 1 << 12, ""),
+        });
+    }
+
+    public void Init()
+    {
+        List.Do(entry =>
+        {
+            entry.GenerateDescription();
         });
     }
     

@@ -302,7 +302,7 @@ MonoBehaviour:
   _ib: {fileID: 0}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: Canvas.AchievementAnnotation
+  AnnotationAddress: 
   AnnotationViewType: 9
   UseRectAlignment: 1
 --- !u!225 &2893177524455415213

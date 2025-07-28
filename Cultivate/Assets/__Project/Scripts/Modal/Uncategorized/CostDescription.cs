@@ -12,7 +12,7 @@ public class CostDescription
         get => _value;
         set => _value = value.ClampLower(0);
     }
-
+    
     public CostDescription(CostType type, CostState state, int value)
     {
         Type = type;

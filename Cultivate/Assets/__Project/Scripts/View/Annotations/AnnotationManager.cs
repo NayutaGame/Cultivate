@@ -69,26 +69,25 @@ public class AnnotationManager : XView, Addressable
 
     private bool IsOrderValid(AnnotationDetails d)
     {
-        bool openedFromOutside = d.InvokerRectTransform == null;
         bool noAnnotationOpened = Annotations.GetCount() == 0;
-
-        if (openedFromOutside && noAnnotationOpened)
+        if (noAnnotationOpened)
             return true;
-        
-        Assert.IsTrue(!noAnnotationOpened);
-        Assert.IsTrue(!openedFromOutside);
-        
-        RectTransform lastAnnotationViewRect = Annotations.LastView().GetContentView().GetRect();
-        bool isChildOfLastView = d.InvokerRectTransform.IsChildOf(lastAnnotationViewRect);
 
-        if (!openedFromOutside && isChildOfLastView)
+        RectTransform lastAnnotationViewRect = Annotations.LastView().GetContentView().GetRect();
+        
+        bool isChildOfLastView = d.InvokerRectTransform.IsChildOf(lastAnnotationViewRect);
+        if (isChildOfLastView)
             return true;
 
         return false;
     }
 
     private bool CanShow(AnnotationDetails d)
-        => d.Address.Get<Annotatable>().CanShowAnnotation();
+    {
+        if (d.AnnotationViewType == AnnotationViewType.CycleAnnotation)
+            return true;
+        return d.Address.Get<Annotatable>().CanShowAnnotation();
+    }
 
     public void StopShowAnnotation(InteractBehaviour ib, PointerEventData d)
         => StopShowAnnotation();
@@ -122,12 +121,19 @@ public class AnnotationManager : XView, Addressable
         EnqueueAnnotation(d);
     }
 
+    public static Neuron AnnotationOpened = new();
+    public static Neuron AnnotationClosed = new();
+
     public void EnqueueAnnotation(AnnotationDetails d)
     {
         _annotationStack.Add(d);
         Annotations.AddItem();
+        Canvas.ForceUpdateCanvases();
         Align();
         RegisterCoverForSecondLast();
+
+        if (Annotations.GetCount() > 0)
+            AnnotationOpened.Invoke();
     }
 
     public void DequeueAnnotation()
@@ -135,6 +141,9 @@ public class AnnotationManager : XView, Addressable
         UnregisterCoverForSecondLast();
         _annotationStack.RemoveLast();
         Annotations.RemoveLast();
+
+        if (Annotations.GetCount() == 0)
+            AnnotationClosed.Invoke();
     }
 
     private void DequeueUntilLevel(int dequeueIndex)

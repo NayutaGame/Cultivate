@@ -357,7 +357,9 @@ GameObject:
   - component: {fileID: 172499908645970617}
   - component: {fileID: 172499908645970599}
   - component: {fileID: 172499908645970616}
-  - component: {fileID: 4377560320671923165}
+  - component: {fileID: 7242069315636104003}
+  - component: {fileID: 8294711995312187638}
+  - component: {fileID: 3017362948577800438}
   m_Layer: 0
   m_Name: ArmorIcon
   m_TagString: Untagged
@@ -424,7 +426,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4377560320671923165
+--- !u!114 &7242069315636104003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -433,9 +435,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 172499908645970618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 8294711995312187638}
+--- !u!114 &8294711995312187638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172499908645970618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3017362948577800438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172499908645970618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 8294711995312187638}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationAddress: 
+  AnnotationViewType: 5
+  UseRectAlignment: 0
 --- !u!1 &172499909538855786
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,8 +792,7 @@ MonoBehaviour:
   HealthText: {fileID: 4375530236320545620}
   ArmorIcon: {fileID: 4375530236599502182}
   ArmorText: {fileID: 4375530235687825702}
-  ArmorPropagatePointer: {fileID: 2304999578431003459}
-  ArmorRectTransform: {fileID: 4375530236599502183}
+  ArmorView: {fileID: 1887983989382837317}
 --- !u!1 &1870309612183241272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,7 +1498,9 @@ GameObject:
   - component: {fileID: 4375530236599502183}
   - component: {fileID: 4375530236599502201}
   - component: {fileID: 4375530236599502182}
-  - component: {fileID: 2304999578431003459}
+  - component: {fileID: 1887983989382837317}
+  - component: {fileID: 7587718519836617415}
+  - component: {fileID: 6271886419272833551}
   m_Layer: 0
   m_Name: ArmorIcon
   m_TagString: Untagged
@@ -1533,7 +1567,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2304999578431003459
+--- !u!114 &1887983989382837317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1542,9 +1576,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 4375530236599502180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 7587718519836617415}
+--- !u!114 &7587718519836617415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4375530236599502180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6271886419272833551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4375530236599502180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 7587718519836617415}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationAddress: 
+  AnnotationViewType: 5
+  UseRectAlignment: 0
 --- !u!1 &4375530236943948980
 GameObject:
   m_ObjectHideFlags: 0
@@ -2580,8 +2645,7 @@ MonoBehaviour:
   HealthText: {fileID: 172499908283210890}
   ArmorIcon: {fileID: 172499908645970616}
   ArmorText: {fileID: 172499907678607096}
-  ArmorPropagatePointer: {fileID: 4377560320671923165}
-  ArmorRectTransform: {fileID: 172499908645970617}
+  ArmorView: {fileID: 7242069315636104003}
 --- !u!1 &9018913888915442079
 GameObject:
   m_ObjectHideFlags: 0
@@ -6616,7 +6680,7 @@ MonoBehaviour:
   _ib: {fileID: 4567558842911613015}
   FirstCounter: 0
   SecondCounter: 0
-  AnnotationAddress: Canvas.SkipButtonInactiveAnnotation
+  AnnotationAddress: 
   AnnotationViewType: 5
   UseRectAlignment: 0
 --- !u!114 &4567558842911613015 stripped

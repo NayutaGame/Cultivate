@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 981941239966407486}
   - component: {fileID: 889809101195549983}
   - component: {fileID: 2063168413437541289}
-  - component: {fileID: 4907099803564948086}
   - component: {fileID: 4699010823766619127}
   m_Layer: 0
   m_Name: EnemyFieldContentView
@@ -83,22 +82,8 @@ MonoBehaviour:
   _ib: {fileID: 0}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: Canvas.SkillAnnotation
   AnnotationViewType: 1
---- !u!114 &4907099803564948086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267362520892108290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637b7bb92a0d96240a4ccaa132416877, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 0}
-  _skillView: {fileID: 7412299649035220851}
+  UseRectAlignment: 1
 --- !u!114 &4699010823766619127
 MonoBehaviour:
   m_ObjectHideFlags: 0

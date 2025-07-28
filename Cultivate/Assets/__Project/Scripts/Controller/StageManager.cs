@@ -80,17 +80,22 @@ public class StageManager : Singleton<StageManager>, Addressable
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
     }
 
-    public void Pause()
-        => StageAnimationController.Pause();
+    private void OnEnable()
+    {
+        AnnotationManager.AnnotationOpened.Join(SetAnnotatingToTrue);
+        AnnotationManager.AnnotationClosed.Join(SetAnnotatingToFalse);
+    }
 
-    public void Pause(InteractBehaviour ib, PointerEventData eventData)
-        => Pause();
+    private void OnDisable()
+    {
+        AnnotationManager.AnnotationOpened.Remove(SetAnnotatingToTrue);
+        AnnotationManager.AnnotationClosed.Remove(SetAnnotatingToFalse);
+    }
 
-    public void Resume()
-        => StageAnimationController.Resume();
-
-    public void Resume(InteractBehaviour ib, PointerEventData eventData)
-        => Resume();
+    public static Neuron<InteractBehaviour, PointerEventData> SetHoverToTrue = new();
+    public static Neuron<InteractBehaviour, PointerEventData> SetHoverToFalse = new();
+    public static Neuron SetAnnotatingToTrue = new();
+    public static Neuron SetAnnotatingToFalse = new();
 
     public void SetSpeed(float speed)
         => StageAnimationController.SetSpeed(speed);

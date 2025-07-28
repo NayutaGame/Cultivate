@@ -5275,7 +5275,10 @@ GameObject:
   - component: {fileID: 3707083764538645517}
   - component: {fileID: 4642599804279864853}
   - component: {fileID: 4439095202621607486}
-  - component: {fileID: 6719025443701863627}
+  - component: {fileID: 5905095666950250705}
+  - component: {fileID: 7110927336269509512}
+  - component: {fileID: 7216633383617087406}
+  - component: {fileID: 2465787810969772559}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -5342,7 +5345,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6719025443701863627
+--- !u!114 &5905095666950250705
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5351,7 +5354,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 6155153776222976890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681e7e478b3acd8439f88049e1826349, type: 3}
+  m_Script: {fileID: 11500000, guid: 716855af5cc514544abb93e27ac42230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactBehaviour: {fileID: 2465787810969772559}
+--- !u!114 &7110927336269509512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6155153776222976890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 2465787810969772559}
+  FirstCounter: 0
+  SecondCounter: 0
+  AnnotationViewType: 5
+  UseRectAlignment: 0
+--- !u!114 &7216633383617087406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6155153776222976890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 2465787810969772559}
+  HoverAudioId: ItemHover
+  LeftClickAudioId: 
+  RightClickAudioId: 
+--- !u!114 &2465787810969772559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6155153776222976890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e9e959a084e614192cb2a8df82270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7401456619271666691
@@ -5407,11 +5456,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa25a11bfa591cc47ad5db3f5aa8584b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propagateTransform: {fileID: 3707083764538645517}
-  _propagatePointer: {fileID: 6719025443701863627}
   _textTransform: {fileID: 8515182870123939123}
   _text: {fileID: 8208820578036969252}
   _emitterTransform: {fileID: 4143773158943779563}
   _emitter: {fileID: 4143773158143428075}
   _attractor: {fileID: 4143773159727297450}
+  AnnotationProvider: {fileID: 5905095666950250705}
   _gapText: {fileID: 3342989224583935390}

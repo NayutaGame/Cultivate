@@ -8,8 +8,6 @@ using CLLibrary;
 
 public class StageEntity : Addressable, StageClosureListener
 {
-    public Memory Memory;
-    
     public async UniTask TurnProcedure(int turnCount)
     {
         TurnDetails d = new TurnDetails(_env, this, turnCount);
@@ -144,16 +142,6 @@ public class StageEntity : Addressable, StageClosureListener
         castDetails.Clear();
     }
 
-    private void TryWriteResultToSlot(bool shouldWriteToSlot, StageSkill skill, CostDescription actualCostDescription, Description actualDescription)
-    {
-        if (!shouldWriteToSlot) return;
-        SkillSlot slot = skill.GetSlot();
-        if (slot == null) return;
-        if (!SlotIsUnwritten(slot)) return;
-        
-        WriteResultToSlot(slot, actualCostDescription, actualDescription);
-    }
-
     private async UniTask StepProcedure()
     {
         StartStepDetails startD = new StartStepDetails(_env, this, _p);
@@ -192,17 +180,8 @@ public class StageEntity : Addressable, StageClosureListener
         await _env.ClosureDict.SendEvent(StageClosureDict.DID_STEP, new EndStepDetails(_env, this, _p));
     }
 
-    private bool SlotIsUnwritten(SkillSlot slot)
-        => slot.ActualCostDescription == null;
-
-    private void WriteResultToSlot(SkillSlot slot, CostDescription actualCostDescription, Description actualDescription)
-    {
-        slot.ActualCostDescription = actualCostDescription;
-        slot.ActualDescription = actualDescription;
-    }
-
+    public Memory Memory;
     public MingYuan MingYuan;
-
     public Neuron<int, int> HpChangedNeuron;
     public Neuron<int> ArmorChangedNeuron;
 
@@ -242,34 +221,45 @@ public class StageEntity : Addressable, StageClosureListener
         }
     }
 
-    // public abstract GameObject GetPrefab();
     public string GetName() => _index == 0 ? "主场" : "客场";
     public StageEntity Opponent() => _env.Entities[1 - _index];
     public IStageModel Model() => _index == 0 ? StageManager.Instance.HomeModel : StageManager.Instance.AwayModel;
 
     public int _p;
     private int _actionPoint;
+    private CostDetails _costDetails;
+    private CostDefinition _costDefinition;
+    
     public int GetActionPoint() => _actionPoint;
     public void SetActionPoint(int value) => _actionPoint = Mathf.Max(_actionPoint, value);
     public void ResetActionPoint() => _actionPoint = 1;
-    private CostDetails _costDetails;
-    private CostDefinition _costDefinition;
 
     public int GetFullHealthThreshold()
         => Mathf.RoundToInt((100 - GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
     public int GetLowHealthThreshold()
         => Mathf.RoundToInt((25 + GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
 
-    public bool IsFullHealth
-        => Hp >= GetFullHealthThreshold() || GetStackOfBuff("天人形态") > 0;
-    public bool IsLowHealth
-        => Hp <= GetLowHealthThreshold() || GetStackOfBuff("天人形态") > 0;
-    public bool Forward
-        => GetStackOfBuff("鹤回翔") == 0;
-    public int ExhaustedCount
-        => TraversalSkills().Count(skill => skill.Exhausted);
-    public int AttackCount
-        => TraversalSkills().Count(skill => skill.GetTagComposite().Contains(TagCategory.Attack));
+    private AnnotatableLine GetArmorDescription()
+    {
+        if (Armor > 0)
+        {
+            return new("可以抵消受到的攻击伤害");
+        }
+        else if (Armor == 0)
+        {
+            return new("没有护甲时，受到的攻击伤害不变");
+        }
+        else // armor < 0
+        {
+            return new("会加深下一次受到的攻击伤害");
+        }
+    }
+
+    public bool IsFullHealth => Hp >= GetFullHealthThreshold() || GetStackOfBuff("天人形态") > 0;
+    public bool IsLowHealth => Hp <= GetLowHealthThreshold() || GetStackOfBuff("天人形态") > 0;
+    public bool Forward => GetStackOfBuff("鹤回翔") == 0;
+    public int ExhaustedCount => TraversalSkills().Count(skill => skill.Exhausted);
+    public int AttackCount => TraversalSkills().Count(skill => skill.GetTagComposite().Contains(TagCategory.Attack));
 
     public async UniTask<bool> OppoHasFragile(bool useFocus = false)
     {
@@ -281,15 +271,12 @@ public class StageEntity : Addressable, StageClosureListener
     }
 
     public bool HasChannelRecord;
-    
     public bool HasZhiQiRecord;
     public bool HasChanRaoRecord;
     public bool HasRuanRuoRecord;
     public bool HasNeiShangRecord;
     public bool HasFuXiuRecord;
-
     public bool TriggeredFirstTimeRecord;
-
     public bool DeathCauseIsAttack;
 
     private int _index;
@@ -318,6 +305,7 @@ public class StageEntity : Addressable, StageClosureListener
         { "Skills",                     thisObject => ((StageEntity)thisObject)._skills },
         { "Formations",                 thisObject => ((StageEntity)thisObject)._formations },
         { "Buffs",                      thisObject => ((StageEntity)thisObject)._buffs },
+        { "ArmorDescription",           thisObject => ((StageEntity)thisObject).GetArmorDescription() },
     };
     public object Get(string s) => Accessor[s](this);
     public StageEntity(StageEnvironment env, RunEntity runEntity, int index)
@@ -378,6 +366,25 @@ public class StageEntity : Addressable, StageClosureListener
         RemoveAllBuffs().GetAwaiter().GetResult();
         
         _env.ClosureDict.Unregister(this, _closures);
+    }
+    
+    private void TryWriteResultToSlot(bool shouldWriteToSlot, StageSkill skill, CostDescription actualCostDescription, Description actualDescription)
+    {
+        if (!shouldWriteToSlot) return;
+        SkillSlot slot = skill.GetSlot();
+        if (slot == null) return;
+        if (!SlotIsUnwritten(slot)) return;
+        
+        WriteResultToSlot(slot, actualCostDescription, actualDescription);
+    }
+
+    private bool SlotIsUnwritten(SkillSlot slot)
+        => slot.ActualCostDescription == null;
+
+    private void WriteResultToSlot(SkillSlot slot, CostDescription actualCostDescription, Description actualDescription)
+    {
+        slot.ActualCostDescription = actualCostDescription;
+        slot.ActualDescription = actualDescription;
     }
 
     public async UniTask BuffRecorder(StageClosureListener listener, StageClosure closure, ClosureDetails closureDetails)

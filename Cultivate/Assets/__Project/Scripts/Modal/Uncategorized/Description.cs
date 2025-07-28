@@ -11,7 +11,7 @@ public class Description
     private static readonly Regex SplitterRegex = new Regex(@"(?:\n|\|\|)+", RegexOptions.Compiled);
     private static readonly Regex TrimReturnRegex = new Regex(@"^(?:\n|\|\|)+|(?:\n|\|\|)+$", RegexOptions.Compiled);
     private static Regex SymbolizeRegex;
-    private static readonly Regex FindSymbolRegex = new Regex(@"\[(buff|keyword|skill|character):([^\]]+)\]", RegexOptions.Compiled);
+    private static readonly Regex FindSymbolRegex = new Regex(@"\[(tag|buff|keyword|skill|character|jingJie):([^\]]+)\]", RegexOptions.Compiled);
     
     private Dirty<string> CalcHighlightedString;
     private StringBuilder _sb;
@@ -19,6 +19,9 @@ public class Description
     public static void BuildSymbolizeRegex()
     {
         var patterns = new List<string>();
+        
+        foreach (TagEntry keyword in Encyclopedia.TagCategory)
+            patterns.Add(Regex.Escape(keyword.GetName()));
         
         foreach (KeywordEntry keyword in Encyclopedia.KeywordCategory)
             patterns.Add(Regex.Escape(keyword.GetName()));
@@ -31,6 +34,9 @@ public class Description
 
         foreach (CharacterEntry character in Encyclopedia.CharacterCategory)
             patterns.Add(Regex.Escape(character.GetName()));
+        
+        foreach (JingJie jingJie in JingJie.Traversal)
+            patterns.Add(Regex.Escape(jingJie.GetName()));
         
         string pattern = string.Join("|", patterns);
         SymbolizeRegex = new Regex($@"(?<!\[)({pattern})(?!\])", RegexOptions.Compiled);
@@ -55,17 +61,23 @@ public class Description
         {
             string keyword = match.Value;
             
+            if (Encyclopedia.TagCategory.ContainsKey(keyword))
+                return $"[tag:{keyword}]";
+            
             if (Encyclopedia.KeywordCategory.ContainsKey(keyword))
                 return $"[keyword:{keyword}]";
             
             if (Encyclopedia.BuffCategory.ContainsKey(keyword))
                 return $"[buff:{keyword}]";
-            
-            if (Encyclopedia.SkillCategory.ContainsKey(keyword))
+
+            if (Encyclopedia.SkillCategory.ContainsName(keyword))
                 return $"[skill:{keyword}]";
             
             if (Encyclopedia.CharacterCategory.ContainsKey(keyword))
                 return $"[character:{keyword}]";
+            
+            if (JingJie.ContainsName(keyword))
+                return $"[jingJie:{keyword}]";
             
             return keyword;
         });

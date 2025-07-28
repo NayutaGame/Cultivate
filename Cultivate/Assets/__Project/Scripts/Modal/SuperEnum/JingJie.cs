@@ -2,40 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using CLLibrary;
+using UnityEngine.PlayerLoop;
 
 [Serializable]
 public struct JingJie : IEquatable<JingJie>
 {
-    private static JingJie[] _list;
-
-    [SerializeField] private int _index;
-    public int Index => _index;
-    [SerializeField] public string _name;
-    public string Name => _name;
-
-    private JingJie(int index, string name)
-    {
-        _index = index;
-        _name = name;
-    }
-
     static JingJie()
     {
         _list = new JingJie[]
         {
-            new(0, "练气"),
-            new(1, "筑基"),
-            new(2, "金丹"),
-            new(3, "元婴"),
-            new(4, "化神"),
-            new(5, "返虚"),
+            new(0, "练气", "灰", "初入修仙之路，体内开始凝聚灵气，为筑基打下基础。"),
+            new(1, "筑基", "绿", "灵气充盈，根基稳固，正式踏上修仙大道。"),
+            new(2, "金丹", "蓝", "凝结金丹，法力大增，可御空飞行，寿元延长。"),
+            new(3, "元婴", "紫", "元婴出窍，神识外放，可探查千里，实力飞跃。"),
+            new(4, "化神", "金", "化神境界，神通广大，可移山填海，寿元千年。"),
+            new(5, "返虚", "红", "返虚境界，超脱凡尘，接近仙人，实力通天彻地。"),
         };
     }
+    
+    private static JingJie[] _list;
 
-    private static readonly string[] COLOR_NAMES = new string[] { "灰", "绿", "蓝", "紫", "金", "红" };
+    [SerializeField] private int _index;
+    [NonSerialized] private string _name;
+    [NonSerialized] private string _colorName;
+    [NonSerialized] private string _rawDescription;
+    [NonSerialized] private Description _description;
+    [NonSerialized] private SpriteEntry _sprite;
 
-    public string GetColorName()
-        => COLOR_NAMES[_index];
+    private JingJie(int index, string name, string colorName, string rawDescription)
+    {
+        _index = index;
+        _name = name;
+        _colorName = colorName;
+        _rawDescription = rawDescription;
+        _sprite = null;
+        _description = null;
+    }
+
+    public void Init()
+    {
+        _sprite = $"JingJie{_name}";
+        _description = new(_rawDescription);
+    }
+    
+    public int Ordinal() => _index;
+    public string GetName() => _list[_index]._name;
+    public string GetColorName() => _list[_index]._colorName;
+    public Sprite GetSprite() => _sprite.Sprite;
+    public Description GetDescription() => _description;
 
     public static int Length => _list.Length;
 
@@ -55,6 +70,18 @@ public struct JingJie : IEquatable<JingJie>
         }
     }
 
+    public static bool ContainsName(string name)
+    {
+        int? idx = Traversal.FirstIdx(j => j.GetName() == name);
+        return idx != null;
+    }
+
+    public static JingJie? FromName(string name)
+    {
+        int? idx = Traversal.FirstIdx(j => j.GetName() == name);
+        return idx;
+    }
+
     public static bool operator ==(JingJie i0, JingJie i1) => i0.Equals(i1);
     public static bool operator !=(JingJie i0, JingJie i1) => !i0.Equals(i1);
 
@@ -65,8 +92,6 @@ public struct JingJie : IEquatable<JingJie>
     public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => _list[index];
     public static implicit operator CLLibrary.Bound(JingJie jingJie) => new(jingJie._index);
-
-    public override string ToString() => _name;
 
     public static CLLibrary.Bound LianQi2HuaShen => new(0, 5);
     public static CLLibrary.Bound LianQiOnly => new(0, 1);

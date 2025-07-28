@@ -213,7 +213,7 @@ public class ConsoleEditorWindow : EditorWindow
     private void DrawAnalyticsTableRow(JingJie jingJie, Dictionary<SkillDistributionKey, List<SkillEntry>> distribution)
     {
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label(jingJie.ToString(), GUILayout.Width(100));
+        GUILayout.Label(jingJie.GetName(), GUILayout.Width(100));
         
         foreach (WuXing wuxing in WuXing.Traversal)
         {

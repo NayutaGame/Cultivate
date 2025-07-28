@@ -71,7 +71,7 @@ public class EntityEditorEntityView : XView
         if (JingJieDropdown != null)
         {
             JingJieDropdown.options = new();
-            JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.ToString())));
+            JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.GetName())));
             JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
         }
 

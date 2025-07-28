@@ -78,13 +78,8 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
 
         string linkId = linkInfo.GetLinkID();
         AnnotationDetails annotationDetails = null;
-        if (TryInterpretAsKeyword(linkId, criticalCharInfo, alignRect, out annotationDetails))
-        {
-            CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
-            return;
-        }
 
-        if (TryInterpretAsBuff(linkId, criticalCharInfo, alignRect, out annotationDetails))
+        if (TryInterpretAsCharacter(linkId, criticalCharInfo, alignRect, out annotationDetails))
         {
             CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
             return;
@@ -96,7 +91,19 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
             return;
         }
 
-        if (TryInterpretAsCharacter(linkId, criticalCharInfo, alignRect, out annotationDetails))
+        if (TryInterpretAsBuff(linkId, criticalCharInfo, alignRect, out annotationDetails))
+        {
+            CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+            return;
+        }
+        
+        if (TryInterpretAsKeyword(linkId, criticalCharInfo, alignRect, out annotationDetails))
+        {
+            CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+            return;
+        }
+        
+        if (TryInterpretAsTag(linkId, criticalCharInfo, alignRect, out annotationDetails))
         {
             CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
             return;
@@ -104,6 +111,27 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
         
         if (annotationDetails == null)
             return;
+    }
+
+    private bool TryInterpretAsTag(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
+    {
+        if (!Encyclopedia.TagCategory.ContainsKey(linkId))
+        {
+            annotationDetails = null;
+            return false;
+        }
+
+        TagEntry tagEntry = TagEntry.FromName(linkId);
+        
+        int characterIndex = tagEntry.GetName().IndexOf(criticalCharInfo.character);
+        annotationDetails = new AnnotationDetails(
+            AnnotationViewType.TagAnnotation,
+            GetComponent<RectTransform>(),
+            new Address($"Encyclopedia.TagCategory.Dict.{linkId}"),
+            0,
+            0,
+            new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
+        return true;
     }
 
     private bool TryInterpretAsKeyword(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
@@ -150,19 +178,20 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
 
     private bool TryInterpretAsSkill(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
     {
-        if (!Encyclopedia.SkillCategory.ContainsKey(linkId))
+        if (!Encyclopedia.SkillCategory.ContainsName(linkId))
         {
             annotationDetails = null;
             return false;
         }
-        
-        SkillEntry skillEntry = SkillEntry.FromId(linkId);
+
+        SkillEntry skillEntry = Encyclopedia.SkillCategory.FromName(linkId);
+        string skillId = skillEntry.GetId();
         
         int characterIndex = skillEntry.GetName().IndexOf(criticalCharInfo.character);
         annotationDetails = new AnnotationDetails(
             AnnotationViewType.SkillAnnotation,
             GetComponent<RectTransform>(),
-            new Address($"Encyclopedia.SkillCategory.Dict.{linkId}"),
+            new Address($"Encyclopedia.SkillCategory.Dict.{skillId}"),
             0,
             0,
             new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
@@ -189,4 +218,25 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
             new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
         return true;
     }
+
+    // private bool TryInterpretAsJingJie(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect, out AnnotationDetails annotationDetails)
+    // {
+    //     if (!JingJie.ContainsName(linkId))
+    //     {
+    //         annotationDetails = null;
+    //         return false;
+    //     }
+    //
+    //     JingJie jingJie = JingJie.FromName(linkId).Value;
+    //     
+    //     int characterIndex = jingJie.GetName().IndexOf(criticalCharInfo.character);
+    //     annotationDetails = new AnnotationDetails(
+    //         AnnotationViewType.JingJieAnnotation,
+    //         GetComponent<RectTransform>(),
+    //         new Address($"Encyclopedia.CharacterCategory.Dict.{linkId}"),
+    //         0,
+    //         0,
+    //         new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
+    //     return true;
+    // }
 }

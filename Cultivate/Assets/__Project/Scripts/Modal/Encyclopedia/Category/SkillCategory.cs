@@ -2730,7 +2730,7 @@ public class SkillCategory : Category<SkillEntry>
                     new GainBuffProcedureDefinition("灵气"),
                 }),
 
-            new(id:                         "0003",
+            new(id:                         "SKILL_0003",
                 name:                       "幻化",
                 wuXing:                     null,
                 jingJieBound:               JingJie.HuaShenOnly,
@@ -3054,7 +3054,7 @@ public class SkillCategory : Category<SkillEntry>
             
             // 3 5 8 13 21
             new(id:                         "1001",
-                name:                       "攻击",
+                name:                       "打击",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
@@ -3064,7 +3064,7 @@ public class SkillCategory : Category<SkillEntry>
             
             // 3 5 8 13 21
             new(id:                         "1002",
-                name:                       "防御",
+                name:                       "防卫",
                 wuXing:                     null,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 cast:                       (j, dj) => new ProcedureDefinition[]
@@ -4972,6 +4972,40 @@ public class SkillCategory : Category<SkillEntry>
             entry.CreateSprite();
         });
     }
+    
+    public bool ContainsName(string name)
+    {
+        return _nameDict.ContainsKey(name);
+    }
+
+    public SkillEntry FromName(string name)
+    {
+        return _nameDict.GetValueOrDefault(name);
+    }
+
+    public void RefreshNameDict()
+    {
+        if (_nameDict == null)
+        {
+            _nameDict = new Dictionary<string, SkillEntry>();
+        }
+        else
+        {
+            _nameDict.Clear();
+        }
+        
+        // 遍历所有SkillEntry，用name作为key建立字典
+        foreach (SkillEntry skillEntry in this)
+        {
+            string name = skillEntry.GetName();
+            if (!string.IsNullOrEmpty(name))
+            {
+                _nameDict[name] = skillEntry;
+            }
+        }
+    }
+
+    private Dictionary<string, SkillEntry> _nameDict;
 
     public override SkillEntry DefaultEntry() => this["0000"];
 }

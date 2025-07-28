@@ -1,4 +1,5 @@
 
+using System;
 using Renge.PPB;
 using TMPro;
 using UnityEngine;
@@ -13,9 +14,7 @@ public class StageEntityView : XView
     [SerializeField] private TMP_Text HealthText;
     [SerializeField] private Image ArmorIcon;
     [SerializeField] private TMP_Text ArmorText;
-
-    [SerializeField] private PropagatePointer ArmorPropagatePointer;
-    [SerializeField] private RectTransform ArmorRectTransform;
+    [SerializeField] private XView ArmorView;
 
     public override void SetAddress(Address address)
     {
@@ -34,20 +33,20 @@ public class StageEntityView : XView
         }
 
         Formations.SetAddress(GetAddress().Append(".Formations"));
-        Formations.PointerEnterNeuron.Join(StageManager.Instance.Pause);
-        Formations.PointerExitNeuron.Join(StageManager.Instance.Resume);
 
         Buffs.SetAddress(GetAddress().Append(".Buffs"));
-        Buffs.PointerEnterNeuron.Join(StageManager.Instance.Pause);
-        Buffs.PointerExitNeuron.Join(StageManager.Instance.Resume);
 
         HealthBar.PublicValidate();
+        
+        ArmorView.SetAddress(GetAddress().Append(".ArmorDescription"));
     }
 
     private void OnEnable()
     {
-        ArmorPropagatePointer._onPointerEnter = PointerEnter;
-        ArmorPropagatePointer._onPointerExit = PointerExit;
+        Formations.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
+        Formations.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
+        Buffs.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
+        Buffs.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
     }
 
     private void OnDisable()
@@ -57,41 +56,11 @@ public class StageEntityView : XView
             e1.HpChangedNeuron.Remove(HpChanged);
             e1.ArmorChangedNeuron.Remove(ArmorChanged);
         }
-        ArmorPropagatePointer._onPointerEnter -= PointerEnter;
-        ArmorPropagatePointer._onPointerExit -= PointerExit;
-    }
-
-    private void PointerEnter(PointerEventData d)
-    {
-        if (d.dragging) return;
-        StageManager.Instance.Pause();
-        CanvasManager.Instance.TextHint.PointerEnter(ArmorRectTransform, d, GetArmorHint());
-    }
-
-    private void PointerExit(PointerEventData d)
-    {
-        if (d.dragging) return;
-        StageManager.Instance.Resume();
-        CanvasManager.Instance.TextHint.PointerExit(d);
-    }
-
-    private string GetArmorHint()
-    {
-        StageEntity entity = Get<StageEntity>();
-        int armor = entity.Armor;
         
-        if (armor > 0)
-        {
-            return "护甲\n可以抵消受到的攻击伤害";
-        }
-        else if (armor == 0)
-        {
-            return "没有护甲时，受到的攻击伤害不变";
-        }
-        else // armor < 0
-        {
-            return "破甲\n会加深下一次受到的攻击伤害";
-        }
+        Formations.PointerEnterNeuron.Remove(StageManager.SetHoverToTrue);
+        Formations.PointerExitNeuron.Remove(StageManager.SetHoverToFalse);
+        Buffs.PointerEnterNeuron.Remove(StageManager.SetHoverToTrue);
+        Buffs.PointerExitNeuron.Remove(StageManager.SetHoverToFalse);
     }
 
     public override void Refresh()

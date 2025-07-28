@@ -82,7 +82,7 @@ MonoBehaviour:
   _ib: {fileID: 0}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: Canvas.PackAnnotation
+  AnnotationAddress: 
   AnnotationViewType: 8
   UseRectAlignment: 1
 --- !u!1 &6181189619793093448

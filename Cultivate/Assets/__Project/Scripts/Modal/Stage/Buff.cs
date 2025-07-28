@@ -1,8 +1,10 @@
 
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using CLLibrary;
 
-public class Buff : StageClosureListener, IEmphasizable
+public class Buff : StageClosureListener, IEmphasizable, AnnotatableBuff
 {
     private StageEntity _owner;
     public StageEntity Owner => _owner;
@@ -15,6 +17,8 @@ public class Buff : StageClosureListener, IEmphasizable
         => _emphasisNeuron;
 
     public string GetName() => _entry.GetName();
+    public Description GetDescription() => _entry.GetDescription();
+
     public string GetTrivia() => _entry.GetTrivia();
 
     private int _stack;
@@ -22,6 +26,11 @@ public class Buff : StageClosureListener, IEmphasizable
     public void SetStack(int value)
         => _stack = value;
 
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public Buff(StageEntity owner, BuffEntry entry)
     {
         _owner = owner;
@@ -51,4 +60,7 @@ public class Buff : StageClosureListener, IEmphasizable
 
     public async UniTask LoseStackProcedure(int stack = 1)
         => await _owner.Env.LoseBuffProcedure(new(_owner.Env, _owner, _owner, GetEntry(), stack, true, true));
+
+    public bool CanShowAnnotation()
+        => true;
 }

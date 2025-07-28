@@ -56,7 +56,7 @@ public class FormationGroupEntry : Entry, Addressable
 
         _markListModel = new();
         _markListModel.AddRange(_subFormationEntries.Map(e =>
-            new MarkModel(e.GetRequirement(), e.GetJingJie().ToString())));
+            new MarkModel(e.GetRequirement(), e.GetJingJie().GetName())));
 
         _criticalProgresses = _subFormationEntries.Map(e => e.GetRequirement()).ToArray();
         

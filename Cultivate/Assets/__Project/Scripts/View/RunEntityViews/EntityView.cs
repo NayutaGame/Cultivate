@@ -24,7 +24,7 @@ public class EntityView : LegacySimpleView
         if (NameText != null)
             NameText.text = entity.GetEntry()?.GetName() ?? "未命名";
         if (JingJieText != null)
-            JingJieText.text = entity.GetJingJie().ToString();
+            JingJieText.text = entity.GetJingJie().GetName();
         if (HPText != null)
             HPText.text = entity.GetHealth().ToString();
         if (DescriptionText != null)

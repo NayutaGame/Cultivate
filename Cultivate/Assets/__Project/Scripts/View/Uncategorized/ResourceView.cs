@@ -9,14 +9,12 @@ using UnityEngine.Serialization;
 
 public class ResourceView : MonoBehaviour
 {
-    [SerializeField] private RectTransform _propagateTransform;
-    [SerializeField] private PropagatePointer _propagatePointer;
-    
     [SerializeField] private RectTransform _textTransform;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private RectTransform _emitterTransform;
     [SerializeField] private ParticleSystem _emitter;
     [SerializeField] private UIParticleAttractor _attractor;
+    [SerializeField] private XView AnnotationProvider;
 
     private int _unit;
     private BoundedInt _value;
@@ -24,27 +22,22 @@ public class ResourceView : MonoBehaviour
 
     private Func<BoundedInt> _getFunc;
     public Func<BoundedInt> GetFunc() => _getFunc;
-    private Func<string> _hintDelegate;
 
     private void OnEnable()
     {
-        _propagatePointer._onPointerEnter += PointerEnter;
-        _propagatePointer._onPointerExit += PointerExit;
         _attractor.onAttracted.AddListener(OnAttracted);
     }
 
     private void OnDisable()
     {
-        _propagatePointer._onPointerEnter -= PointerEnter;
-        _propagatePointer._onPointerExit -= PointerExit;
         _attractor.onAttracted.RemoveListener(OnAttracted);
     }
 
-    public void Configure(int unit, Func<BoundedInt> getFunc, Func<string> hintDelegate)
+    public void Configure(int unit, Func<BoundedInt> getFunc, Address hintAddress)
     {
         _unit = unit;
         _getFunc = getFunc;
-        _hintDelegate = hintDelegate;
+        AnnotationProvider.SetAddress(hintAddress);
     }
 
     public void Refresh()
@@ -53,19 +46,6 @@ public class ResourceView : MonoBehaviour
         _text.text = _value?.ToString();
 
         _gapStart = 0;
-    }
-    
-    private void PointerEnter(PointerEventData d)
-    {
-        if (d.dragging) return;
-        AudioManager.PlayItemHover();
-        CanvasManager.Instance.TextHint.PointerEnter(_propagateTransform, d, _hintDelegate?.Invoke());
-    }
-
-    private void PointerExit(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 
     public void Gain(Vector2 position, int value)

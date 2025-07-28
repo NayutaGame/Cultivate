@@ -10,12 +10,10 @@ public enum AnnotationViewType
     RoomAnnotation,
     CharacterAnnotation,
     PackAnnotation,
-    
     AchievementAnnotation,
-    
-    TagAnnotation,
     CostAnnotation,
     JingJieAnnotation,
+    TagAnnotation, /* WuXingAnnotation, */
+    
     CycleAnnotation,
-    // WuXingAnnotation
 }

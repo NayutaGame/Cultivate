@@ -9,6 +9,14 @@ public class SpriteCategory : Category<SpriteEntry>
         {
             new("缺失卡面插画", "Images/MissingSprite"),
             
+            // JingJie Icons
+            new("JingJie练气", "Images/JingJieIcons/练气"),
+            new("JingJie筑基", "Images/JingJieIcons/筑基"),
+            new("JingJie金丹", "Images/JingJieIcons/金丹"),
+            new("JingJie元婴", "Images/JingJieIcons/元婴"),
+            new("JingJie化神", "Images/JingJieIcons/化神"),
+            new("JingJie返虚", "Images/JingJieIcons/返虚"),
+            
             // BuffIcons
             new("Buff不存在", "Images/BuffIcons/不存在"),
             new("Buff缺失插画", "Images/BuffIcons/缺失插画"),

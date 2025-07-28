@@ -81,7 +81,7 @@ public class RunFormation : IEmphasizable, AnnotatableFormation
     public SpriteEntry GetBackgroundSprite()
     {
         JingJie? activatedJingJie = GetActivatedJingJie();
-        return activatedJingJie.HasValue ? $"{activatedJingJie.Value.Name}阵法背景" : "未激活阵法背景";
+        return activatedJingJie.HasValue ? $"{activatedJingJie.Value.GetName()}阵法背景" : "未激活阵法背景";
     }
 
     public SpriteEntry GetIconSprite() => _formationGroupEntry.GetIconSprite();

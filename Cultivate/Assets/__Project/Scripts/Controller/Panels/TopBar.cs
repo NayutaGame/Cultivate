@@ -11,12 +11,10 @@ public class TopBar : MonoBehaviour
     public ResourceView Health;
     
     public TMP_Text JingJieText;
-    public PropagatePointer PropagateJingJieText;
-    public RectTransform PropagateJingJieRT;
+    public XView JingJieAnnotationProvider;
 
     public TMP_Text DifficultyText;
-    public PropagatePointer PropagateDifficultyText;
-    public RectTransform PropagateDifficultyRT;
+    public XView DifficultyAnnotationProvider;
 
     public Button MenuButton;
     public PropagatePointerEnter MenuButtonPropagatePointerEnter;
@@ -43,13 +41,16 @@ public class TopBar : MonoBehaviour
         MenuButton.onClick.AddListener(AudioManager.PlayButtonPress);
 
         MenuButtonPropagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        
+        JingJieAnnotationProvider.SetAddress(new("Run.Environment.JingJieDescription"));
+        DifficultyAnnotationProvider.SetAddress(new("Run.Environment.DifficultyDescription"));
     }
 
     private void OnEnable()
     {
-        MingYuan.Configure(1, RunManager.Instance.Environment.GetMingYuan, RunManager.Instance.Environment.GetMingYuan().GetMingYuanPenaltyText);
-        Gold.Configure(1, RunManager.Instance.Environment.GetGold, () => "金钱");
-        Health.Configure(1, RunManager.Instance.Environment.Home.GetHealthBounded, () => "气血上限\n战斗开始的气血");
+        MingYuan.Configure(1, RunManager.Instance.Environment.GetMingYuan, "Run.Environment.MingYuanDescription");
+        Gold.Configure(1, RunManager.Instance.Environment.GetGold, "Run.Environment.GoldDescription");
+        Health.Configure(1, RunManager.Instance.Environment.Home.GetHealthBounded, "Run.Environment.HealthDescription");
         
         RunManager.Instance.Environment.GainMingYuanNeuron.Add(GainMingYuan);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(LoseMingYuan);
@@ -59,14 +60,6 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.LoseHealthNeuron.Add(LoseHealth);
         
         RunManager.Instance.Environment.JingJieChangedNeuron.Add(RefreshJingJieText);
-
-        PropagateJingJieText._onPointerEnter += PointerEnterJingJieText;
-        PropagateJingJieText._onPointerEnter += AudioManager.PlayItemHover;
-        PropagateJingJieText._onPointerExit += PointerExitJingJieText;
-
-        PropagateDifficultyText._onPointerEnter += PointerEnterDifficultyText;
-        PropagateDifficultyText._onPointerEnter += AudioManager.PlayItemHover;
-        PropagateDifficultyText._onPointerExit += PointerExitDifficultyText;
         
         Refresh();
     }
@@ -81,14 +74,6 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.LoseHealthNeuron.Remove(LoseHealth);
         
         RunManager.Instance.Environment.JingJieChangedNeuron.Remove(RefreshJingJieText);
-
-        PropagateJingJieText._onPointerEnter -= PointerEnterJingJieText;
-        PropagateJingJieText._onPointerEnter -= AudioManager.PlayItemHover;
-        PropagateJingJieText._onPointerExit -= PointerExitJingJieText;
-        
-        PropagateDifficultyText._onPointerEnter -= PointerEnterDifficultyText;
-        PropagateDifficultyText._onPointerEnter -= AudioManager.PlayItemHover;
-        PropagateDifficultyText._onPointerExit -= PointerExitDifficultyText;
     }
 
     private void GainMingYuan(int value)
@@ -123,7 +108,7 @@ public class TopBar : MonoBehaviour
 
     private void RefreshJingJieText(JingJieChangedDetails d)
     {
-        JingJieText.text = $"{d.ToJingJie.ToString()}期";
+        JingJieText.text = $"{d.ToJingJie.GetName()}期";
     }
 
     public void Refresh()
@@ -133,35 +118,11 @@ public class TopBar : MonoBehaviour
         Health.Refresh();
         
         DifficultyText.text = $"难度{RunManager.Instance.Environment.GetRunConfig().GetDifficulty()}";
-        JingJieText.text = $"{RunManager.Instance.Environment.JingJie.ToString()}期";
+        JingJieText.text = $"{RunManager.Instance.Environment.JingJie.GetName()}期";
     }
 
     public void OpenMenu()
     {
         AppManager.Instance.Push(AppStateMachine.MENU);
-    }
-    
-    private void PointerEnterJingJieText(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(PropagateJingJieRT, d, RunManager.Instance.Environment.GetJingJieHintText());
-    }
-
-    private void PointerExitJingJieText(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerExit(d);
-    }
-    
-    private void PointerEnterDifficultyText(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerEnter(PropagateDifficultyRT, d, RunManager.Instance.Environment.GetDifficultyHintText());
-    }
-
-    private void PointerExitDifficultyText(PointerEventData d)
-    {
-        if (d.dragging) return;
-        CanvasManager.Instance.TextHint.PointerExit(d);
     }
 }

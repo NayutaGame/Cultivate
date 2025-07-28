@@ -57,7 +57,6 @@ public class AppManager : Singleton<AppManager>, Addressable
 
     [NonSerialized] public FormationInventory FormationInventory;
     [NonSerialized] public SkillInventory SkillInventory;
-    [NonSerialized] public InventoryFromExpandedPack InventoryFromExpandedPack;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -72,7 +71,6 @@ public class AppManager : Singleton<AppManager>, Addressable
         { "Canvas",                     thisObject => CanvasManager.Instance },
         { "FormationInventory",         thisObject => ((AppManager)thisObject).FormationInventory },
         { "SkillInventory",             thisObject => ((AppManager)thisObject).SkillInventory },
-        { "InventoryFromExpandedPack",  thisObject => ((AppManager)thisObject).InventoryFromExpandedPack },
     };
     public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()
@@ -103,30 +101,12 @@ public class AppManager : Singleton<AppManager>, Addressable
         FormationInventory = new();
         Encyclopedia.FormationCategory.Do(e => FormationInventory.Add(e));
 
-        InventoryFromExpandedPack = new();
-
         AppCanvas.gameObject.SetActive(true);
 
         RunManager.gameObject.SetActive(true);
-        StageManager.gameObject.SetActive(true);
-        StageManager.gameObject.SetActive(false);
+        StageManager.CheckAwake();
 
         _appStateMachine = new();
-    }
-
-    public void SetExpandedPack(PackEntry entry)
-    {
-        InventoryFromExpandedPack.Clear();
-        
-        if (entry != null)
-        {
-            entry.Cards.Do(skillEntry =>
-            {
-                InventoryFromExpandedPack.Add(skillEntry);
-            });
-        }
-        
-        CanvasManager.Instance.PackPreview.gameObject.SetActive(true);
     }
 
     private void Start()
