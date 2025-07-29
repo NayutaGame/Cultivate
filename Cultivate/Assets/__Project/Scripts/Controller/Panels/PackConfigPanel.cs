@@ -248,7 +248,7 @@ public class PackConfigPanel : PopupPanel
                 .Do(pack => validPacks.Add(pack));
         }
 
-        // SelectionListView.TraversalActive().Do(Highlight);
+        SelectionListView.TraversalActive().Do(Highlight);
 
         void Highlight(SlotView slotView)
         {
@@ -262,7 +262,7 @@ public class PackConfigPanel : PopupPanel
 
     private void UnhoverConstraint(InteractBehaviour ib, PointerEventData d)
     {
-        // SelectionListView.TraversalActive().Do(Unhighlight);
+        SelectionListView.TraversalActive().Do(Unhighlight);
         
         void Unhighlight(SlotView slotView)
         {

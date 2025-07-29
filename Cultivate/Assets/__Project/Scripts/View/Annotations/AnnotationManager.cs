@@ -156,11 +156,74 @@ public class AnnotationManager : XView, Addressable
     {
         AnnotationDetails d = _annotationStack.GetLast();
         SlotView slotView = Annotations.LastView();
+        AnnotationView annotationView = slotView.GetContentView().GetComponent<AnnotationView>();
 
-        Vector3 displacement = slotView.GetContentView().GetComponent<AnnotationView>().GetCriticalDisplacement(d.AnnotationAlignmentDetails);
+        Vector3 displacement = annotationView.GetCriticalDisplacement(d.AnnotationAlignmentDetails);
         
-        slotView.GetRect().position = d.AnnotationAlignmentDetails.GetCenterPosition() - displacement;
+        Vector3 targetPosition = d.AnnotationAlignmentDetails.GetCenterPosition() - displacement;
+        targetPosition = ClampToScreenBounds(slotView.GetContentView().GetRect(), targetPosition);
+        
+        slotView.GetRect().position = targetPosition;
         slotView.GetAnimator().SetState(SlotView.IDLE);
+
+        annotationView.DidAlign();
+    }
+
+    private Vector3 ClampToScreenBounds(RectTransform rectTransform, Vector3 targetPosition)
+    {
+        Vector2 targetPosition_UI = CanvasManager.Instance.World2UI(targetPosition);
+        Vector2 screenSize_UI = new Vector2(Screen.width, Screen.height);
+        
+        // 获取RectTransform在屏幕上的实际边界
+        Vector3[] corners = new Vector3[4];
+        rectTransform.GetWorldCorners(corners);
+        
+        // 计算从当前位置到目标位置的偏移量
+        Vector3 currentPosition = rectTransform.position;
+        Vector3 offset = targetPosition - currentPosition;
+        
+        // 将世界坐标的四个角转换为屏幕坐标，并应用偏移量
+        Vector2[] screenCorners = new Vector2[4];
+        for (int i = 0; i < 4; i++)
+        {
+            // 应用偏移量到corner位置
+            Vector3 adjustedCorner = corners[i] + offset;
+            screenCorners[i] = CanvasManager.Instance.World2UI(adjustedCorner);
+        }
+        
+        // 计算annotation在屏幕上的边界
+        float minX = Mathf.Min(screenCorners[0].x, screenCorners[2].x);
+        float maxX = Mathf.Max(screenCorners[0].x, screenCorners[2].x);
+        float minY = Mathf.Min(screenCorners[0].y, screenCorners[2].y);
+        float maxY = Mathf.Max(screenCorners[0].y, screenCorners[2].y);
+        
+        float annotationWidth = maxX - minX;
+        float annotationHeight = maxY - minY;
+        
+        // 计算调整后的目标位置
+        Vector2 adjustedPosition_UI = targetPosition_UI;
+        
+        // 调整X坐标
+        if (minX < 0)
+        {
+            adjustedPosition_UI.x = targetPosition_UI.x - minX;
+        }
+        else if (maxX > screenSize_UI.x)
+        {
+            adjustedPosition_UI.x = targetPosition_UI.x - (maxX - screenSize_UI.x);
+        }
+        
+        // 调整Y坐标
+        if (minY < 0)
+        {
+            adjustedPosition_UI.y = targetPosition_UI.y - minY;
+        }
+        else if (maxY > screenSize_UI.y)
+        {
+            adjustedPosition_UI.y = targetPosition_UI.y - (maxY - screenSize_UI.y);
+        }
+        
+        return CanvasManager.Instance.UI2World(adjustedPosition_UI);
     }
 
     private void RegisterCoverForSecondLast()

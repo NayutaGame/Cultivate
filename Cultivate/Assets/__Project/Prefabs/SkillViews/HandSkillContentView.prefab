@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 2267699051545838468}
   - component: {fileID: 2769774251780608165}
   m_Layer: 0
-  m_Name: HoverEffect
+  m_Name: SelectEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 7027078287198048479}
   - component: {fileID: 136875070582309607}
   m_Layer: 5
-  m_Name: Effect
+  m_Name: HighlightEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc98be7f0e763a4a8988fe689210a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionImage: {fileID: 136875070582309607}
+  SelectionImage: {fileID: 2769774251780608165}
 --- !u!1 &7615751828447367193
 GameObject:
   m_ObjectHideFlags: 0

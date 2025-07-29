@@ -11,7 +11,7 @@ public class AchievementAnnotationView : AnnotationView
     
     public override Vector3 GetCriticalDisplacement(AnnotationAlignmentDetails d)
     {
-        if (d is RectTransformAnnotationAlignmentDetails)
+        if (d is ImageAnnotationAlignmentDetails)
         {
             return UnlockIcon.GetRect().position - GetRect().position;
         }

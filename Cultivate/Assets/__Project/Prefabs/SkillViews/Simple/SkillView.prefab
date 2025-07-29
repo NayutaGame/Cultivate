@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3242759664628852623}
   - component: {fileID: 5576562334568838583}
   m_Layer: 5
-  m_Name: Effect
+  m_Name: HighlightEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 6052229348415993044}
   - component: {fileID: 7707239796582524917}
   m_Layer: 0
-  m_Name: HoverEffect
+  m_Name: SelectEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,11 +1,11 @@
 
 using UnityEngine;
 
-public class RectTransformAnnotationAlignmentDetails : AnnotationAlignmentDetails
+public class ImageAnnotationAlignmentDetails : AnnotationAlignmentDetails
 {
     public RectTransform RectTransform;
 
-    public RectTransformAnnotationAlignmentDetails(RectTransform rectTransform)
+    public ImageAnnotationAlignmentDetails(RectTransform rectTransform)
     {
         RectTransform = rectTransform;
     }

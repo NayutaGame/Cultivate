@@ -41,7 +41,7 @@ public class SkillAnnotationView : AnnotationView
 
         SetJingJieButtons(skill);
         SkillView.Refresh();
-        Tags.Refresh();
+        Tags.Sync();
 
         // SetTrivia(skill.GetTrivia());
     }
@@ -66,5 +66,11 @@ public class SkillAnnotationView : AnnotationView
 
         if (hasTrivia)
             TriviaText.text = trivia;
+    }
+
+    public override void DidAlign()
+    {
+        base.DidAlign();
+        Tags.RefreshPivots();
     }
 }

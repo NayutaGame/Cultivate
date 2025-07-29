@@ -10,7 +10,7 @@ public class JingJieAnnotationView : AnnotationView
     
     public override Vector3 GetCriticalDisplacement(AnnotationAlignmentDetails d)
     {
-        if (d is RectTransformAnnotationAlignmentDetails)
+        if (d is ImageAnnotationAlignmentDetails)
         {
             return JingJieView.GetRect().position - GetRect().position;
         }

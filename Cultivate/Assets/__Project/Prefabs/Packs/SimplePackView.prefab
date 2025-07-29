@@ -889,6 +889,7 @@ GameObject:
   - component: {fileID: 7379725429805364584}
   - component: {fileID: 8899591379461037545}
   - component: {fileID: 7022722011180276520}
+  - component: {fileID: 3108221687941454985}
   m_Layer: 5
   m_Name: SimplePackView
   m_TagString: Untagged
@@ -953,9 +954,21 @@ MonoBehaviour:
   _ib: {fileID: 0}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: 
   AnnotationViewType: 8
   UseRectAlignment: 1
+--- !u!114 &3108221687941454985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7379725429805364585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad34762e5e9af345b72489ba531dd24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectImage: {fileID: 7541515999028941073}
 --- !u!1 &7462785318709384297
 GameObject:
   m_ObjectHideFlags: 0

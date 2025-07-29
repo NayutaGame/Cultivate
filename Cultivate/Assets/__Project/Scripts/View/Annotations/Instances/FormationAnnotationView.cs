@@ -15,7 +15,7 @@ public class FormationAnnotationView : AnnotationView
     
     public override Vector3 GetCriticalDisplacement(AnnotationAlignmentDetails d)
     {
-        if (d is RectTransformAnnotationAlignmentDetails)
+        if (d is ImageAnnotationAlignmentDetails)
         {
             return FormationIconView.GetRect().position - GetRect().position;
         }

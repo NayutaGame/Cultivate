@@ -147,7 +147,7 @@ public class DeckPanel : Panel
         
         void HighlightSkill(SlotView view)
         {
-            ISkill runSkill = view.Get<ISkill>();
+            RunSkill runSkill = view.Get<RunSkill>();
             if (runSkill == null || !pred(runSkill))
                 return;
             view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
@@ -169,7 +169,7 @@ public class DeckPanel : Panel
         
         void UnhighlightSkill(SlotView view)
         {
-            ISkill runSkill = view.Get<ISkill>();
+            RunSkill runSkill = view.Get<RunSkill>();
             if (runSkill == null)
                 return;
             view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);

@@ -37,7 +37,7 @@ public class AnnotationBehaviour : XBehaviour
     public void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
     {
         AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
-            ? new RectTransformAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
+            ? new ImageAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
             : new MouseAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()).rect);
         
         AnnotationDetails annotationDetails = new AnnotationDetails(

@@ -10,7 +10,7 @@ public class CharacterAnnotationView : AnnotationView
     
     public override Vector3 GetCriticalDisplacement(AnnotationAlignmentDetails d)
     {
-        if (d is RectTransformAnnotationAlignmentDetails)
+        if (d is ImageAnnotationAlignmentDetails)
         {
             return CharacterIconView.GetRect().position - GetRect().position;
         }
