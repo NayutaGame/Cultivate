@@ -141,7 +141,7 @@ public class DeckPanel : Panel
 
     private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
     {
-        Predicate<ISkill> pred = ib.Get<RunFormation>().GetContributorPred();
+        Predicate<RunSkill> pred = ib.Get<RunFormation>().GetContributorPred();
         PlayerEntity.FieldView.TraversalActive().Do(HighlightSlot);
         HandView.TraversalActive().Do(HighlightSkill);
         

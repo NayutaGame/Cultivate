@@ -42,7 +42,7 @@ public class AchievementBrowserPanel : Panel
 
     public void ResetAchievement()
     {
-        AppManager.Instance.ProfileManager.GetCurrProfile().ResetAchievementProfiles();
+        AppManager.Instance.ProfileManager.GetCurrProfile().ResetAchievements();
     }
     private void OnEnable()
     {

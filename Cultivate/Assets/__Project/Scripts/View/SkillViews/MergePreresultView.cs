@@ -156,9 +156,12 @@ public class MergePreresultView : XView
         if (_mergeTarget.ResultEntry == null)
         {
             CostText.text = "";
+            CostIcon.gameObject.SetActive(false);
             return;
         }
 
+        CostIcon.gameObject.SetActive(true);
+        
         JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry.LowestJingJie;
         CostDescription costDescription = _mergeTarget.ResultEntry.GetLiteralCostDescription(jingJie);
         switch (costDescription.Type)

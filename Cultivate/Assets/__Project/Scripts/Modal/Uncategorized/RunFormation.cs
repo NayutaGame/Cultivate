@@ -66,7 +66,7 @@ public class RunFormation : IEmphasizable, AnnotatableFormation
 
     public JingJie? GetActivatedJingJie() => IsActivated() ? _formationEntry.GetActivatedJingJie() : null;
     
-    public Predicate<ISkill> GetContributorPred() => _formationGroupEntry.GetContributorPred();
+    public Predicate<RunSkill> GetContributorPred() => _formationGroupEntry.GetContributorPred();
     
     #region AnnotatableFormation
 

@@ -367,7 +367,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void RecordNewlyUnlockedAchievement(AchievementEntry achievementEntry)
     {
         _newlyUnlockedAchievements.Add(achievementEntry);
-        AppManager.Instance.ProfileManager.SaveProcedureForAchievements(achievementEntry);
+        AppManager.Instance.ProfileManager.GetCurrProfile().UnlockAchievement(achievementEntry);
     }
 
     public IEnumerable<AchievementProfile> TraversalNewlyUnlockedAchievements()
@@ -411,7 +411,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SendEvent(RunClosureDict.START_RUN, d);
         StartRunNeuron.Invoke();
         
-        AppManager.Instance.ProfileManager.SaveProcedure(this);
+        AppManager.Instance.ProfileManager.GetCurrProfile().WriteEnvironment(this);
     }
 
     public void ContinueRunProcedure(ContinueRunDetails d)
@@ -1068,7 +1068,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                     return;
                 }
                 
-                AppManager.Instance.ProfileManager.SaveProcedure(this);
+                AppManager.Instance.ProfileManager.GetCurrProfile().WriteEnvironment(this);
                 
                 panel = Map.CreatePanelFromCurrRoom();
                 

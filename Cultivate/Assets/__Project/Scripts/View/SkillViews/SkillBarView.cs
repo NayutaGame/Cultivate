@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[SelectionBase]
 public class SkillBarView : XView
 {
     [SerializeField] private Image BackgroundImage;
@@ -14,7 +13,7 @@ public class SkillBarView : XView
     {
         base.Refresh();
 
-        ISkill skill = Get<ISkill>();
+        RunSkill skill = Get<RunSkill>();
         BackgroundImage.color = CanvasManager.Instance.JingJieColors[skill.GetJingJie()];
         WuXingImage.color = CanvasManager.Instance.GetWuXingColor(skill.GetWuXing());
         NameText.text = skill.GetName();

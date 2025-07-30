@@ -14,7 +14,7 @@ public class FormationGroupEntry : Entry, Addressable
     private int _order;
     public int Order => _order;
 
-    private Predicate<ISkill> _contributorPred;
+    private Predicate<RunSkill> _contributorPred;
 
     private string _progressDescription;
 
@@ -40,7 +40,13 @@ public class FormationGroupEntry : Entry, Addressable
         { "Marks",                      thisObject => ((FormationGroupEntry)thisObject)._markListModel },
     };
     public object Get(string s) => Accessor[s](this);
-    public FormationGroupEntry(string id, int order, Predicate<ISkill> contributorPred, string progressDescription, Func<RunEntity, RunFormationDetails, int> progressEvaluator, FormationEntry[] formationEntries = null) : base(id)
+    public FormationGroupEntry(
+        string id,
+        int order,
+        Predicate<RunSkill> contributorPred,
+        string progressDescription,
+        Func<RunEntity, RunFormationDetails, int> progressEvaluator,
+        FormationEntry[] formationEntries = null) : base(id)
     {
         _order = order;
         _contributorPred = contributorPred;
@@ -82,7 +88,7 @@ public class FormationGroupEntry : Entry, Addressable
         => _subFormationEntries.First(e => e.GetRequirement() <= progress);
 
     public JingJie? GetActivatedJingJie() => null;
-    public Predicate<ISkill> GetContributorPred() => _contributorPred;
+    public Predicate<RunSkill> GetContributorPred() => _contributorPred;
     
     #region IFormationModel
 

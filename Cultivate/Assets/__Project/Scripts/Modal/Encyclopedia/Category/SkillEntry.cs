@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
-public class SkillEntry : Entry, ISkill, AnnotatableSkill
+public class SkillEntry : Entry, AnnotatableSkill
 {
     private string _name;
     
@@ -124,9 +124,6 @@ public class SkillEntry : Entry, ISkill, AnnotatableSkill
     
     public static SkillEntry FromNameOrId(string nameOrId)
         => Encyclopedia.SkillCategory.FirstObj(e => e._name == nameOrId) ?? Encyclopedia.SkillCategory[nameOrId] ?? Encyclopedia.SkillCategory.DefaultEntry();
-
-    public int GetCurrCounter() => 0;
-    public int GetMaxCounter() => 0;
 
     public void CreateSprite()
     {

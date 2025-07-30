@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageNote : ISkill, AnnotatableSkill
+public class StageNote : AnnotatableSkill
 {
     public int EntityIndex;
     public int TemporalIndex;

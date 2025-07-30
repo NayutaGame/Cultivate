@@ -68,57 +68,6 @@ public class ConsoleEditorWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
     }
 
-    private void DrawSlotToggles()
-    {
-        EditorGUILayout.LabelField("槽位解锁状态", EditorStyles.boldLabel);
-        
-        EditorGUILayout.BeginHorizontal();
-        for (int i = 0; i < 7; i++)
-        {
-            bool isUnlocked = _currentProfile.SlotIsUnlocked(_selectedCharacter, i);
-            bool newValue = EditorGUILayout.Toggle($"槽位{i}", isUnlocked);
-            
-            if (newValue != isUnlocked)
-            {
-                _currentProfile.SetSlotUnlockedQuietly(_selectedCharacter, i, newValue);
-                
-                if (AppManager.Instance.ConfigManager != null)
-                    AppManager.Instance.ConfigManager.Notify();
-            }
-        }
-        EditorGUILayout.EndHorizontal();
-    }
-
-    private void DrawPackToggles()
-    {
-        EditorGUILayout.LabelField("卡包解锁状态", EditorStyles.boldLabel);
-        
-        var packs = Encyclopedia.PackCategory.ToList();
-        int columns = 4; // 每行显示的数量
-        
-        for (int i = 0; i < packs.Count; i += columns)
-        {
-            EditorGUILayout.BeginHorizontal();
-            
-            for (int j = 0; j < columns && i + j < packs.Count; j++)
-            {
-                var pack = packs[i + j];
-                bool isUnlocked = _currentProfile.PackIsUnlocked(pack);
-                bool newValue = EditorGUILayout.Toggle(pack.Name, isUnlocked);
-                
-                if (newValue != isUnlocked)
-                {
-                    _currentProfile.SetPackUnlockedQuietly(pack, newValue);
-                    
-                    if (AppManager.Instance.ConfigManager != null)
-                        AppManager.Instance.ConfigManager.Notify();
-                }
-            }
-            
-            EditorGUILayout.EndHorizontal();
-        }
-    }
-
     private SkillDistributionKey? _selectedKey = null;  // 当前选中的分组
 
     private class FilterTab
@@ -274,17 +223,6 @@ public class ConsoleEditorWindow : EditorWindow
     
     private void DrawUnlockContentTab()
     {
-        // 原有的角色/槽位/卡包解锁UI
-        DrawCharacterDropdown();
-        EditorGUILayout.Space(10);
-        
-        if (_selectedCharacter != null)
-        {
-            DrawSlotToggles();
-            EditorGUILayout.Space(10);
-        }
-        
-        DrawPackToggles();
     }
     
     private void DrawAchievementsTab()

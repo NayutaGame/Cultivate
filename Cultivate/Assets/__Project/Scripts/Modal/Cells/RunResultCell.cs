@@ -58,7 +58,7 @@ public class RunResultCell : Cell
     {
         base.DefaultEnter(cell);
 
-        AppManager.Instance.ProfileManager.WriteRunResultToCurrent(RunManager.Instance.Environment, _result, _experienceGain);
+        AppManager.Instance.ProfileManager.GetCurrProfile().WriteRunResult(RunManager.Instance.Environment, _result, _experienceGain);
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)

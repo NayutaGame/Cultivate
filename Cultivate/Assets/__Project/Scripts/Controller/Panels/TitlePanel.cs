@@ -196,7 +196,7 @@ public class TitlePanel : Panel
 
     private void UnlockEverything()
     {
-        AppManager.Instance.ProfileManager.UnlockEverythingProcedure();
+        AppManager.Instance.ProfileManager.GetCurrProfile().UnlockEverything();
         Refresh();
     }
 

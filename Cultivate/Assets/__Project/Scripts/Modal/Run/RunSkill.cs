@@ -5,7 +5,7 @@ using Sirenix.Utilities;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISkill, ISerializationCallbackReceiver, AnnotatableSkill
+public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
 {
     [SerializeField] private SkillEntry _entry;
     [SerializeReference] private SkillSlot _skillSlot;
@@ -77,9 +77,6 @@ public class RunSkill : ISkill, ISerializationCallbackReceiver, AnnotatableSkill
 
         return false;
     }
-
-    public int GetCurrCounter() => 0;
-    public int GetMaxCounter() => 0;
 
     public Sprite GetSprite()
         => _entry.GetSprite();

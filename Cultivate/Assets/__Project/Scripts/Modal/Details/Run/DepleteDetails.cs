@@ -5,7 +5,7 @@ public class DepleteDetails : RunClosureDetails
 {
     public RunEntity Owner;
     public bool PreserveFirstDeplete;
-    public List<ISkill> DepletedSkills;
+    public List<RunSkill> DepletedSkills;
 
     public DepleteDetails(RunEntity owner)
     {

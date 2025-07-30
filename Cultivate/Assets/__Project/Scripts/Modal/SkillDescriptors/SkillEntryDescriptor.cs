@@ -3,7 +3,7 @@ using System;
 using CLLibrary;
 using UnityEngine;
 
-public class SkillEntryDescriptor : ISkill
+public class SkillEntryDescriptor
 {
     private Predicate<SkillEntry> _pred;
     
@@ -108,10 +108,7 @@ public class SkillEntryDescriptor : ISkill
 
 
 
-
-
-    public int GetCurrCounter() => 0;
-    public int GetMaxCounter() => 0;
+    
 
     public Sprite GetSprite()
         => _entry?.GetSprite();

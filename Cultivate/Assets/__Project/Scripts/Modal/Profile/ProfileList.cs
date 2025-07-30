@@ -11,7 +11,7 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
     [SerializeField] private string _version;
 
     [NonSerialized] private int CurrentIndex;
-    public Profile GetCurrent() => Get(CurrentIndex) as Profile;
+    public Profile GetCurrent() => this[CurrentIndex];
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {

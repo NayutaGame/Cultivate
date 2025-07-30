@@ -11,10 +11,7 @@ public class StageSkillView : SlotView
     {
         base.Refresh();
 
-        // if (!gameObject.activeSelf)
-        //     return;
-
-        ISkill skill = Get<ISkill>();
+        StageNote skill = Get<StageNote>();
         SetCounter(skill.GetCurrCounter(), skill.GetMaxCounter());
     }
 

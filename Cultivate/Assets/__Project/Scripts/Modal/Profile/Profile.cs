@@ -26,18 +26,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     // public ResultProfileList ResultProfileList => _resultProfileList;
 
     [SerializeField] private RunEnvironment _runEnvironment;
-    public RunEnvironment RunEnvironment
-    {
-        get => _runEnvironment;
-        set => _runEnvironment = value;
-    }
-
+    
     [NonSerialized] private Dirty<Dictionary<LockIndex, AchievementProfile>> _achievementCache;
-
-    public void WriteRunEnvironment(RunEnvironment env)
-    {
-        _runEnvironment = JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(env));
-    }
 
     public RunEnvironment ReadRunEnvironment()
     {
@@ -68,21 +58,9 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public static Profile Default()
         => new();
 
-    public void UnlockEverything()
-    {
-        _levelProfile.UnlockEverything();
-        _characterProfileList.UnlockEverything();
-        _difficultyProfileList.UnlockEverything();
-        _packProfileList.UnlockEverything();
-        _achievementProfileList.UnlockEverything();
-        _finishedFirstRun = true;
-    }
 
     public bool IsFirstRunFinished()
         => _finishedFirstRun;
-
-    public void SetFirstRunFinished(bool value)
-        => _finishedFirstRun = value;
 
     public bool HasSave()
         => _runEnvironment != null && _runEnvironment.IsLegit;
@@ -90,17 +68,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
     {
         return DifficultyProfileList.GetCurrentHighestUnlockedDifficulty();
-    }
-
-    public void TryUnlockNextDifficulty()
-    {
-        DifficultyEntry curr = GetCurrentHighestUnlockedDifficulty();
-        DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
-
-        if (next == null)
-            return;
-        
-        _difficultyProfileList.UnlockDifficulty(next);
     }
 
     public bool DifficultyIsUnlocked(DifficultyEntry difficultyEntry)
@@ -165,15 +132,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public bool SlotIsUnlocked(CharacterEntry entry, int slotIndex)
         => _characterProfileList.Find(entry).SlotIsUnlocked(slotIndex);
 
-    public void SetCharacterUnlockedQuietly(CharacterEntry entry, bool value)
-        => _characterProfileList.Find(entry).SetUnlockedQuietly(value);
-
-    public void SetPackUnlockedQuietly(PackEntry entry, bool value)
-        => _packProfileList.Find(entry).SetUnlockedQuietly(value);
-
-    public void SetSlotUnlockedQuietly(CharacterEntry entry, int slotIndex, bool value)
-        => _characterProfileList.Find(entry).SetSlotUnlockedQuietly(slotIndex, value);
-
     public AchievementProfile GetAchievementProfileFromLockIndex(LockIndex lockIndex)
         => _achievementCache.Value.TryGetValue(lockIndex, out var profile) ? profile : null;
 
@@ -204,22 +162,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
                 Debug.Log($"新添加的成就: {achievementEntry.GetId()}");
                 _achievementProfileList.Add(new AchievementProfile(achievementEntry));
             }
-        }
-    }
-
-    public void WriteRunResult(RunEnvironment env, RunResult result, int experienceGain)
-    {
-        _levelProfile.GainExperience(experienceGain);
-        
-        if (result.GetOutcome() == RunResult.RunOutcome.Victorious)
-        {
-            DifficultyEntry curr = env.GetRunConfig().DifficultyProfile.GetEntry();
-            DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
-
-            if (next == null)
-                return;
-        
-            _difficultyProfileList.UnlockDifficulty(next);
         }
     }
 
@@ -264,11 +206,100 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public (int, int) GainExperienceDryRun(int experienceGain)
         => _levelProfile.GainExperienceDryRun(experienceGain);
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    public void ResetAchievementProfiles()
+
+    // public void SetCharacterUnlockedQuietly(CharacterEntry entry, bool value)
+    //     => _characterProfileList.Find(entry).SetUnlockedQuietly(value);
+    //
+    // public void SetPackUnlockedQuietly(PackEntry entry, bool value)
+    //     => _packProfileList.Find(entry).SetUnlockedQuietly(value);
+    //
+    // public void SetSlotUnlockedQuietly(CharacterEntry entry, int slotIndex, bool value)
+    //     => _characterProfileList.Find(entry).SetSlotUnlockedQuietly(slotIndex, value);
+
+    public void ResetAchievements()
     {
         _achievementProfileList.Do(achievementProfile =>
             achievementProfile.Reset());
+        
         AppManager.Instance.ProfileManager.SaveProcedure();
+    }
+
+    public void UnlockAchievement(AchievementEntry entry)
+    {
+        var achievementProfile = AchievementProfileList.First(ap => ap.GetEntry().GetId() == entry.GetId());
+        
+        if (achievementProfile == null)
+        {
+            Debug.LogError($"未找到成就: {entry.GetId()}");
+            return;
+        }
+        
+        achievementProfile.SetUnlockedQuietly(true);
+        
+        AppManager.Instance.ProfileManager.SaveProcedure();
+    }
+    
+    public void UnlockEverything()
+    {
+        _levelProfile.UnlockEverything();
+        _characterProfileList.UnlockEverything();
+        _difficultyProfileList.UnlockEverything();
+        _packProfileList.UnlockEverything();
+        _achievementProfileList.UnlockEverything();
+        _finishedFirstRun = true;
+        
+        AppManager.Instance.ProfileManager.SaveProcedure();
+    }
+    
+    public void WriteRunResult(RunEnvironment env, RunResult result, int experienceGain)
+    {
+        _levelProfile.GainExperience(experienceGain);
+        
+        if (result.GetOutcome() == RunResult.RunOutcome.Victorious)
+        {
+            DifficultyEntry curr = env.GetRunConfig().DifficultyProfile.GetEntry();
+            DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
+
+            if (next == null)
+                return;
+        
+            _difficultyProfileList.UnlockDifficulty(next);
+        }
+        
+        _runEnvironment = null;
+        
+        AppManager.Instance.ProfileManager.SaveProcedure();
+    }
+
+    public void WriteEnvironment(RunEnvironment env)
+    {
+        env.WriteTime();
+        _runEnvironment = JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(env));
+        
+        AppManager.Instance.ProfileManager.SaveProcedure();
+    }
+
+    public void SetFirstRunFinished(bool value)
+        => _finishedFirstRun = value;
+
+    public void TryUnlockNextDifficulty()
+    {
+        DifficultyEntry curr = GetCurrentHighestUnlockedDifficulty();
+        DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
+
+        if (next == null)
+            return;
+        
+        _difficultyProfileList.UnlockDifficulty(next);
     }
 }
