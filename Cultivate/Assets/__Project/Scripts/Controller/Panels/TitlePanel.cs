@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 public class TitlePanel : Panel
@@ -81,7 +82,7 @@ public class TitlePanel : Panel
     {
         Profile currProfile = AppManager.Instance.ProfileManager.GetCurrProfile();
         bool firstRun = !currProfile.IsFirstRunFinished();
-        bool hasSave = currProfile.HasSave();
+        bool hasValidSave = currProfile.HasValidSave(); 
 
         if (firstRun)
         {
@@ -89,7 +90,7 @@ public class TitlePanel : Panel
             StartRunButton.gameObject.SetActive(false);
             StartPrologueButton.gameObject.SetActive(true);
         }
-        else if (hasSave)
+        else if (hasValidSave)
         {
             ContinueButton.gameObject.SetActive(true);
             StartRunButton.gameObject.SetActive(true);
@@ -113,6 +114,18 @@ public class TitlePanel : Panel
         UnlockEverythingButton.gameObject.SetActive(!audienceIsPlayer);
     }
 
+    private void TryInformPlayer()
+    {
+        Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        if (!profile.HasCorruptedSave())
+            return;
+        
+        CanvasManager.Instance.ShowDialog(
+            message: "由于游戏更新，导致上次游戏的存档过时。",
+            onConfirm: profile.RepairCorruptedEnvironment
+        );
+    }
+
     private void OnEnable()
     {
         AppManager.Instance.ClearEscStack();
@@ -131,7 +144,10 @@ public class TitlePanel : Panel
 
     private void Continue()
     {
-        AppManager.Instance.Push(AppStateMachine.RUN, AppManager.Instance.ProfileManager.GetCurrProfile().ReadRunEnvironment());
+        Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        RunEnvironment environment = profile.Environment;
+        Assert.IsTrue(environment != null);
+        AppManager.Instance.Push(AppStateMachine.RUN, environment);
     }
 
     private void StartRun()
@@ -205,6 +221,7 @@ public class TitlePanel : Panel
             .AppendCallback(() => gameObject.SetActive(true))
             .AppendCallback(() => TitleModel.SetActive(true))
             .AppendCallback(Refresh)
+            .AppendCallback(TryInformPlayer)
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0));
 
     public override Tween HideTweenWithCurtain()

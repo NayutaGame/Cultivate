@@ -206,7 +206,7 @@ public class AppStateMachine
         
         
         
-        
+        CanvasManager.Instance.RunCanvas.SetPanelToNull();
         CanvasManager.Instance.RunCanvas.GetAnimator().SetState(1);
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(0);
     }

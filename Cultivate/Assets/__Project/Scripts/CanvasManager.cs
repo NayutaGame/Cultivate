@@ -26,6 +26,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("Others")]public Curtain Curtain;
     [TabGroup("Others")]public TMP_FontAsset ArmorFontAsset;
     [TabGroup("Others")]public TMP_FontAsset FragileFontAsset;
+    [TabGroup("Others")]public DialogWindow DialogWindow;
     
     [TabGroup("List")] [ColorPalette("JingJie")] public Color[] JingJieColors;
     [TabGroup("List")] public Sprite[] JingJieSprites;
@@ -82,6 +83,12 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public void CloseAnnotation()
     {
+    }
+
+    public void ShowDialog(string message, Action onConfirm)
+    {
+        DialogWindow.ShowDialog(message, onConfirm);
+        DialogWindow.gameObject.SetActive(true);
     }
 
     private List<RaycastResult> _results;

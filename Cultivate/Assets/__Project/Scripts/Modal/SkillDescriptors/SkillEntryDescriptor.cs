@@ -1,9 +1,10 @@
 
 using System;
+using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
-public class SkillEntryDescriptor
+public class SkillEntryDescriptor : AnnotatableSkill
 {
     private Predicate<SkillEntry> _pred;
     
@@ -13,7 +14,12 @@ public class SkillEntryDescriptor
     private JingJie? _jingJie;
     public JingJie? JingJie => _jingJie;
     private TagComposite _tagComposite;
-
+    
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public SkillEntryDescriptor(
         Predicate<SkillEntry> pred = null,
         SkillEntry entry = null,
@@ -107,8 +113,11 @@ public class SkillEntryDescriptor
     public static implicit operator SkillEntryDescriptor(SkillEntry skillEntry) => FromEntry(skillEntry);
 
 
+    public JingJie GetLowestJingJie()
+        => _entry?.GetLowestJingJie() ?? _jingJie.Value;
 
-    
+    public JingJie GetHighestJingJie()
+        => _entry?.GetHighestJingJie() ?? _jingJie.Value;
 
     public Sprite GetSprite()
         => _entry?.GetSprite();
@@ -118,6 +127,9 @@ public class SkillEntryDescriptor
 
     public string GetName()
         => _entry?.GetName();
+
+    public Description GetDescription(JingJie showingJingJie)
+        => _entry?.GetDescription(showingJingJie) ?? "";
 
     public TagComposite GetTagComposite()
         => _entry?.GetTagComposite();
@@ -136,4 +148,7 @@ public class SkillEntryDescriptor
 
     public JingJie NextJingJie(JingJie showingJingJie)
         => _entry?.NextJingJie(showingJingJie) ?? global::JingJie.LianQi;
+
+    public bool CanShowAnnotation()
+        => _entry != null;
 }

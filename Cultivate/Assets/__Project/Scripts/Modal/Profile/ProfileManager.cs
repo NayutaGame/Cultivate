@@ -42,10 +42,23 @@ public class ProfileManager : Addressable
     {
         FileUtility.WritePersistentFile(_profileList, ProfileList.Filename);
     }
+    
     public void LoadProcedure()
     {
-        _profileList = FileUtility.ReadPersistentFile<ProfileList>(ProfileList.Filename);
-        // case存档损坏
+        try
+        {
+            _profileList = FileUtility.ReadPersistentFile<ProfileList>(ProfileList.Filename);
+        }
+        catch
+        {
+            Debug.Log("检测到存档过时或者损坏，已经创建新存档");
+            _profileList = null;
+        }
+
+        if (_profileList == null || !_profileList.IsCompatible())
+        {
+            NewProfileProcedure();
+        }
     }
 
     public Profile GetCurrProfile()

@@ -93,6 +93,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [NonSerialized] private TimeSpan _runFinishedTime;
     [NonSerialized] private RunReport _runReport;
 
+    [SerializeField] private Version _version;
     [SerializeField] private double _miliseconds;
 
     [SerializeReference] private SerializableDictionary _intMemory;
@@ -106,8 +107,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeField] private RunResult _result;
 
     [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
-
-    [SerializeField] public bool IsLegit = true;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -126,6 +125,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public object Get(string s) => Accessor[s](this);
     private RunEnvironment(RunConfig config)
     {
+        _version = AppManager.Version;
         _startTime = DateTime.Now;
         
         InitNeurons();
@@ -204,6 +204,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public RunReport GetRunReport() => _runReport;
     public BoundedInt GetGold() => _gold;
     public MingYuan GetMingYuan() => _home.GetMingYuan();
+
+    public bool IsCompatible()
+        => AppManager.Version.IsRunCompatible(_version);
 
     public void SetHome(RunEntity home)
     {
@@ -410,8 +413,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         SendEvent(RunClosureDict.START_RUN, d);
         StartRunNeuron.Invoke();
-        
-        AppManager.Instance.ProfileManager.GetCurrProfile().WriteEnvironment(this);
+
+        AppManager.Instance.ProfileManager.GetCurrProfile().Environment = this;
     }
 
     public void ContinueRunProcedure(ContinueRunDetails d)
@@ -1067,8 +1070,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                     CommitRunProcedure(RunResult.RunOutcome.Victorious);
                     return;
                 }
-                
-                AppManager.Instance.ProfileManager.GetCurrProfile().WriteEnvironment(this);
+
+                AppManager.Instance.ProfileManager.GetCurrProfile().Environment = this;
                 
                 panel = Map.CreatePanelFromCurrRoom();
                 
@@ -1155,9 +1158,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void OnAfterDeserialize()
     {
-        if (!IsLegit)
-            return;
-        
         _startTime = DateTime.Now;
         _loadedTime = TimeSpan.FromMilliseconds(_miliseconds);
         

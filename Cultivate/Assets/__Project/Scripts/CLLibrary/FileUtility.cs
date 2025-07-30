@@ -27,19 +27,19 @@ namespace CLLibrary
             return File.Exists(fullFilePath);
         }
 
-        public static T ReadStreamingFile<T>(string filename) where T : new()
+        public static T ReadStreamingFile<T>(string filename)
         {
             string dataPath = Application.streamingAssetsPath;
             return ReadFile<T>(dataPath, filename);
         }
 
-        public static T ReadPersistentFile<T>(string filename) where T : new()
+        public static T ReadPersistentFile<T>(string filename)
         {
             string dataPath = Application.persistentDataPath;
             return ReadFile<T>(dataPath, filename);
         }
         
-        public static T ReadFile<T>(string dataPath, string filename) where T : new()
+        public static T ReadFile<T>(string dataPath, string filename)
         {
             string fullFilePath = dataPath + filename;
 
@@ -50,7 +50,7 @@ namespace CLLibrary
                 if (defaultTxt != null)
                     txt = defaultTxt;
                 else
-                    return new();
+                    return default;
             }
 
             string json = JsonFromTxt(txt);

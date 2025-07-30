@@ -8,31 +8,27 @@ using System.Linq;
 [Serializable]
 public class Profile : Addressable, ISerializationCallbackReceiver
 {
+    private static readonly string RunFilenamePattern = "/Run{0}.json";
+    
+    [SerializeField] private int _index;
     [SerializeField] private bool _finishedFirstRun;
-
     [SerializeField] private LevelProfile _levelProfile;
-    public LevelProfile LevelProfile => _levelProfile;
     [SerializeField] private CharacterProfileList _characterProfileList;
-    public CharacterProfileList CharacterProfileList => _characterProfileList;
     [SerializeField] private DifficultyProfileList _difficultyProfileList;
-    public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
     [SerializeField] private PackProfileList _packProfileList;
-    public PackProfileList PackProfileList => _packProfileList;
     [SerializeField] private AchievementProfileList _achievementProfileList;
+    
+    public LevelProfile LevelProfile => _levelProfile;
+    public CharacterProfileList CharacterProfileList => _characterProfileList;
+    public DifficultyProfileList DifficultyProfileList => _difficultyProfileList;
+    public PackProfileList PackProfileList => _packProfileList;
     public AchievementProfileList AchievementProfileList => _achievementProfileList;
 
     // 战斗记录
     // [SerializeField] private ResultProfileList _resultProfileList;
     // public ResultProfileList ResultProfileList => _resultProfileList;
-
-    [SerializeField] private RunEnvironment _runEnvironment;
     
     [NonSerialized] private Dirty<Dictionary<LockIndex, AchievementProfile>> _achievementCache;
-
-    public RunEnvironment ReadRunEnvironment()
-    {
-        return JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(_runEnvironment));
-    }
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -43,27 +39,133 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         { "AchievementProfileList",     thisObject => ((Profile)thisObject)._achievementProfileList },
     };
     public object Get(string s) => Accessor[s](this);
-    private Profile()
+    public Profile(int index)
     {
+        _index = index;
         _levelProfile = LevelProfile.Default();
         _characterProfileList = CharacterProfileList.Default();
         _difficultyProfileList = DifficultyProfileList.Default();
         _packProfileList = PackProfileList.Default();
         _achievementProfileList = AchievementProfileList.Default();
         _finishedFirstRun = false;
-        
+
+        CommonInit();
+
+        _runSaveState = RunSaveState.None;
+        _environmentCache = null;
+    }
+
+    [NonSerialized] private RunSaveState _runSaveState;
+    [NonSerialized] private RunEnvironment _environmentCache;
+    
+    private void CommonInit()
+    {
         _achievementCache = new Dirty<Dictionary<LockIndex, AchievementProfile>>(BuildAchievementCache);
     }
 
-    public static Profile Default()
-        => new();
+    public RunEnvironment Environment
+    {
+        get => _environmentCache;
+        set
+        {
+            if (value != null)
+            {
+                value.WriteTime();
+                _environmentCache = JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(value));
+                FileUtility.WritePersistentFile(_environmentCache, GetRunFilename());
+            }
+            else
+            {
+                _environmentCache = null;
+                FileUtility.DeletePersistentFile(GetRunFilename());
+            }
+        }
+    }
 
+    public string GetRunFilename()
+        => string.Format(RunFilenamePattern, _index.ToString());
+
+    public enum RunSaveState
+    {
+        None,
+        Valid,
+        Corrupted,
+    }
+
+    public bool HasValidSave()
+        => _runSaveState == RunSaveState.Valid;
+
+    public bool HasCorruptedSave()
+        => _runSaveState == RunSaveState.Corrupted;
+    
+    public void LoadEnvironment(out RunSaveState runSaveState, out RunEnvironment environment)
+    {
+        string fileName = GetRunFilename();
+        
+        if (!FileUtility.IsPersistentFileExists(fileName))
+        {
+            runSaveState = RunSaveState.None;
+            environment = null;
+            return;
+        }
+
+        try
+        {
+            environment = FileUtility.ReadPersistentFile<RunEnvironment>(fileName);
+            
+            if (environment != null && environment.IsCompatible())
+            {
+                runSaveState = RunSaveState.Valid;
+            }
+            else
+            {
+                runSaveState = RunSaveState.Corrupted;
+                environment = null;
+            }
+        }
+        catch
+        {
+            runSaveState = RunSaveState.Corrupted;
+            environment = null;
+        }
+    }
+
+    public void RepairCorruptedEnvironment()
+    {
+        _runSaveState = RunSaveState.None;
+        _environmentCache = null;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     public bool IsFirstRunFinished()
         => _finishedFirstRun;
-
-    public bool HasSave()
-        => _runEnvironment != null && _runEnvironment.IsLegit;
 
     public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
     {
@@ -144,7 +246,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
         // 更新成就列表
         UpdateAchievementProfiles();
         
-        _achievementCache = new Dirty<Dictionary<LockIndex, AchievementProfile>>(BuildAchievementCache);
+        CommonInit();
+        LoadEnvironment(out _runSaveState, out _environmentCache);
     }
 
     private void UpdateAchievementProfiles()
@@ -276,17 +379,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             _difficultyProfileList.UnlockDifficulty(next);
         }
         
-        _runEnvironment = null;
-        
         AppManager.Instance.ProfileManager.SaveProcedure();
-    }
-
-    public void WriteEnvironment(RunEnvironment env)
-    {
-        env.WriteTime();
-        _runEnvironment = JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(env));
-        
-        AppManager.Instance.ProfileManager.SaveProcedure();
+        Environment = null;
     }
 
     public void SetFirstRunFinished(bool value)
