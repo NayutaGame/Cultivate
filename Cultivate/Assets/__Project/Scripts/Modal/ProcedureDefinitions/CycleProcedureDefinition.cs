@@ -81,7 +81,7 @@ public class CycleProcedureDefinition : ProcedureDefinition
         description.Join(pd.PostCondDefinition.Description);
         
         if (pd.Gain != 0)
-            description.Join($"{pd.WuXing._elementaryBuff}+{pd.Gain}");
+            description.Join($"{pd.WuXing.GetElementaryBuff().GetName()}+{pd.Gain}");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)

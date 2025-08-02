@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class TestReport
+public class TestReport : ISerializationCallbackReceiver
 {
     [SerializeReference]
     public DateTime PhysicalTime;
@@ -23,7 +23,7 @@ public class TestReport
     [SerializeReference]
     public RunEntity Home;
 
-    [SerializeReference]
+    [SerializeField]
     public JingJie JingJie;
 
     [SerializeReference]
@@ -76,5 +76,14 @@ public class TestReport
         env.UnequipNeuron.Remove(IncrementCardSwapCount);
         env.MergeNeuron.Remove(IncrementMergeCount);
         TakeSnapshot(env);
+    }
+
+    public void OnBeforeSerialize()
+    {
+    }
+
+    public void OnAfterDeserialize()
+    {
+        JingJie = string.IsNullOrEmpty(JingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(JingJie.GetId());
     }
 }

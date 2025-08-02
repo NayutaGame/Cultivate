@@ -87,6 +87,8 @@ public class Map : Addressable, ISerializationCallbackReceiver
         _stepIndex++;
     }
 
+    public void InsertRoom(string roomName)
+        => InsertRoom(Encyclopedia.RoomCategory.FromName(roomName));
     public void InsertRoom(RoomEntry roomEntry)
     {
         InsertedRoomPool.Populate(roomEntry);
@@ -125,6 +127,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.MapCategory[_entry.GetName()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.MapCategory.FromId(_entry.GetId());
     }
 }

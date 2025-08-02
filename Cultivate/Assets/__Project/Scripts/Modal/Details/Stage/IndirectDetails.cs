@@ -13,7 +13,7 @@ public class IndirectDetails : StageClosureDetails
     }
 
     public StageSkill SrcSkill;
-    public WuXing? WuXing;
+    public WuXing WuXing;
     public bool LifeSteal;
     public bool Recursive;
     public ResultDict CastResult;
@@ -36,7 +36,7 @@ public class IndirectDetails : StageClosureDetails
         StageEntity tgt,
         int value,
         StageSkill srcSkill,
-        WuXing? wuxing,
+        WuXing wuxing,
         bool lifeSteal,
         bool recursive,
         ResultDict castResult,

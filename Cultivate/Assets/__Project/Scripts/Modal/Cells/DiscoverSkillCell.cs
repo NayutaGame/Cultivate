@@ -32,7 +32,7 @@ public class DiscoverSkillCell : Cell
         string titleText = null,
         string descriptionText = null,
         SkillEntryCollectionDescriptor descriptor = null,
-        JingJie? preferredJingJie = null)
+        JingJie preferredJingJie = null)
     {
         _titleText = titleText ?? "灵感";
         _descriptionText = descriptionText ?? "请选择一张卡作为奖励";

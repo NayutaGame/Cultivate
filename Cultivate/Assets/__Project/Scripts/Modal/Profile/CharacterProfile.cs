@@ -39,7 +39,7 @@ public class CharacterProfile : ISerializationCallbackReceiver, AnnotatableChara
     }
 
     public bool IsDemoLocked()
-        => _entry != CharacterEntry.FromName("徐福") && AppManager.Instance.PackageIsDemo();
+        => _entry != Encyclopedia.CharacterCategory.FromName("徐福") && AppManager.Instance.PackageIsDemo();
 
     public bool SlotIsUnlocked(int slotIndex)
     {
@@ -72,7 +72,7 @@ public class CharacterProfile : ISerializationCallbackReceiver, AnnotatableChara
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.CharacterCategory[_entry.GetId()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.CharacterCategory.FromId(_entry.GetId());
     }
 
     public bool CanShowAnnotation()

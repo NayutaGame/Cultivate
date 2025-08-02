@@ -98,8 +98,10 @@ public class BattlePanel : Panel
 
     private void OnEnable()
     {
-        ReactionDict ??= new Dictionary<string, Sprite>()
-            { { RunEntity.NORMAL_KEY, null }, { RunEntity.SMIRK_KEY, Encyclopedia.SpriteCategory["Smirk"].Sprite }, { RunEntity.AFRAID_KEY, Encyclopedia.SpriteCategory["Afraid"].Sprite }, };
+        ReactionDict ??= new Dictionary<string, Sprite>() {
+            { RunEntity.NORMAL_KEY, null },
+            { RunEntity.SMIRK_KEY, Encyclopedia.SpriteCategory.FromName("Smirk").Sprite },
+            { RunEntity.AFRAID_KEY, Encyclopedia.SpriteCategory.FromName("Afraid").Sprite }, };
 
         RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshEnemy);
         RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshOperationPanel);
@@ -162,9 +164,7 @@ public class BattlePanel : Panel
     {
         if (RunManager.Instance == null || RunManager.Instance.Environment == null)
             return;
-        JingJie jingJie = RunManager.Instance.Environment.JingJie;
-        AudioEntry audio = Encyclopedia.AudioFromJingJie(jingJie);
-        AudioManager.Play(audio);
+        AudioManager.Play(RunManager.Instance.Environment.JingJie.GetAudio());
     }
 
     public override Tween EnterIdle()

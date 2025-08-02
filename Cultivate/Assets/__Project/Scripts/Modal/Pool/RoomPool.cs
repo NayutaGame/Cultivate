@@ -16,7 +16,7 @@ public class RoomPool : Pool<RoomEntry>, ISerializationCallbackReceiver
         for (int i = 0; i < tempRoomList.Length; i++)
         {
             TryPopItem(out RoomEntry popped);
-            tempRoomList[i] = string.IsNullOrEmpty(popped.GetName()) ? null : Encyclopedia.RoomCategory[popped.GetName()];
+            tempRoomList[i] = string.IsNullOrEmpty(popped.GetName()) ? null : Encyclopedia.RoomCategory.FromId(popped.GetId());
         }
 
         Populate(tempRoomList);

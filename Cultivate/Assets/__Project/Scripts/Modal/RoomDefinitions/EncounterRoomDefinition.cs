@@ -18,7 +18,7 @@ public class EncounterRoomDefinition : RoomDefinition
         => "相遇房间";
 
     public override SpriteEntry GetSprite()
-        => "EncounterRoomIcon";
+        => Encyclopedia.SpriteCategory.FromName("EncounterRoomIcon");
 
     public override Description GetDescription()
         => new("将会遭遇其他角色");

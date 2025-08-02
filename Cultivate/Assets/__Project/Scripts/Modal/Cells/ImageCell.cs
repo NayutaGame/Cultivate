@@ -16,7 +16,7 @@ public class ImageCell : Cell
     public override object Get(string s) => Accessor[s](this);
     public ImageCell(string spriteName)
     {
-        _spriteEntry = spriteName;
+        _spriteEntry = Encyclopedia.SpriteCategory.FromName(spriteName);
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)

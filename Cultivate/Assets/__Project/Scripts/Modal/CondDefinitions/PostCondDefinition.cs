@@ -38,13 +38,13 @@ public class PostCondDefinition
     public static readonly PostCondDefinition HasOtherAttack = new(async (env, entity, skill, startStage) => !skill.NoOtherAttack, "有其他攻击牌：");
     public static readonly PostCondDefinition HasArmor = new(async (env, entity, skill, startStage) => entity.Armor > 0, "有护甲：");
     public static PostCondDefinition ManaBurst(int value)
-        => new(async (env, entity, skill, startStage) => await entity.TryConsumeProcedure("灵气", value), $"爆能{value}：");
+        => new(async (env, entity, skill, startStage) => await entity.TryConsumeProcedure(Encyclopedia.BuffCategory.FromName("灵气"), value), $"爆能{value}：");
     public static readonly PostCondDefinition IsEnd = new(async (env, entity, skill, startStage) =>
     {
         if (skill.IsEnd)
             return true;
 
-        if (await entity.TryConsumeProcedure("终结"))
+        if (await entity.TryConsumeProcedure(Encyclopedia.BuffCategory.FromName("终结")))
             return true;
 
         return false;

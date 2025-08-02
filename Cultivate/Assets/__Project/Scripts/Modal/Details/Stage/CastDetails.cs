@@ -47,7 +47,7 @@ public class CastDetails : StageClosureDetails
 
     public async UniTask AttackProcedure(int value,
         int times = 1,
-        WuXing? wuXing = null,
+        WuXing wuXing = null,
         bool recursive = true,
         StageClosure[] closures = null,
         bool induced = false)
@@ -56,7 +56,7 @@ public class CastDetails : StageClosureDetails
 
     public async UniTask IndirectProcedure(
         int value,
-        WuXing? wuXing = null,
+        WuXing wuXing = null,
         bool lifeSteal = false,
         bool recursive = true,
         bool induced = false)
@@ -97,15 +97,23 @@ public class CastDetails : StageClosureDetails
     public async UniTask RemoveArmorProcedure(int value, bool induced)
         => await Env.LoseArmorProcedure(new LoseArmorDetails(Env, Caster, Caster.Opponent(), value, Skill, null, CastResult, induced, true));
 
+    public async UniTask GainBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await GainBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.GainBuffProcedure(new GainBuffDetails(Env, Caster, Caster, buffEntry, stack, recursive, Skill, CastResult, null, induced));
 
+    public async UniTask GiveBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await GiveBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
     public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.GainBuffProcedure(new GainBuffDetails(Env, Caster, Caster.Opponent(), buffEntry, stack, recursive, Skill, CastResult, null, induced));
 
+    public async UniTask LoseBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await LoseBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
     public async UniTask LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.LoseBuffProcedure(new LoseBuffDetails(Env, Caster, Caster, buffEntry, stack, recursive, induced));
 
+    public async UniTask RemoveBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await RemoveBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
     public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await Env.LoseBuffProcedure(new LoseBuffDetails(Env, Caster, Caster.Opponent(), buffEntry, stack, recursive, induced));
 
@@ -115,6 +123,8 @@ public class CastDetails : StageClosureDetails
     public async UniTask DispelProcedure(int stack, bool induced = false)
         => await Env.DispelProcedure(new DispelDetails(Env, Caster, stack, Skill, null, CastResult, induced));
 
+    public async UniTask<bool> TryConsumeProcedure(string buffName, int stack = 1, bool recursive = true)
+        => await TryConsumeProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive);
     public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
         if (stack == 0)

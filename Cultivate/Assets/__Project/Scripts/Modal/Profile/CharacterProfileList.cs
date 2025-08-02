@@ -4,7 +4,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationCallbackReceiver
+public class CharacterProfileList : ListModel<CharacterProfile>
 {
     private CharacterProfileList(bool isDeveloper = false)
     {
@@ -27,15 +27,5 @@ public class CharacterProfileList : ListModel<CharacterProfile>, ISerializationC
             characterProfile._level = 10;
             characterProfile._experience = 1000;
         });
-    }
-
-    public void OnBeforeSerialize()
-    {
-    }
-
-    public void OnAfterDeserialize()
-    {
-        // when new entry is added, order will be corrupted
-        // needs to fix order according to encyclopedia before using
     }
 }

@@ -248,7 +248,7 @@ public class MergeRule
             d.MergeTarget = new DrawMergeTarget(
                 mergeType:              "相生五行合成",
                 resultJingJie:          rhs.GetJingJie() + 1,
-                resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()).Value,
+                resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred:                   null);
             d.State = MergeDetails.MergeState.Success;
         });
@@ -273,7 +273,7 @@ public class MergeRule
                 mergeType:              "同境界合成",
                 resultJingJie:          rhs.GetJingJie() + 1,
                 resultWuXing:           null,
-                pred:                   skillEntry => !skillEntry.WuXing.HasValue ||
+                pred:                   skillEntry => !skillEntry.WuXing.IsBasic() ||
                                                       (skillEntry.WuXing != lhs.GetWuXing() &&
                                                        skillEntry.WuXing != rhs.GetWuXing()));
             d.State = MergeDetails.MergeState.Success;
@@ -324,7 +324,7 @@ public class MergeRule
             d.MergeTarget = new DrawMergeTarget(
                 mergeType:              "相生五行化神置换",
                 resultJingJie:          rhs.GetJingJie(),
-                resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()).Value,
+                resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred:                   null);
             d.State = MergeDetails.MergeState.Success;
         });
@@ -349,7 +349,7 @@ public class MergeRule
                 mergeType:              "化神置换",
                 resultJingJie:          rhs.GetJingJie(),
                 resultWuXing:           null,
-                pred:                   skillEntry => !skillEntry.WuXing.HasValue ||
+                pred:                   skillEntry => !skillEntry.WuXing.IsBasic() ||
                                                       (skillEntry.WuXing != lhs.GetWuXing() &&
                                                        skillEntry.WuXing != rhs.GetWuXing()));
             d.State = MergeDetails.MergeState.Success;

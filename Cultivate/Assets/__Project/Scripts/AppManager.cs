@@ -12,7 +12,8 @@ using UnityEngine.Serialization;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {
-    public static Version Version = new(1, 0, 0);
+    [SerializeField] public Version _version = new(1, 0, 0);
+    public static Version Version => Instance._version;
     
     private Thread _mainThread;
     public bool IsMainThread() => _mainThread.Equals(Thread.CurrentThread);

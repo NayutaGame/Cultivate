@@ -99,9 +99,9 @@ public class PuzzleCell : Cell
             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
             {
-                RunSkill.FromEntry("0609"),
-                RunSkill.FromEntry("0609"),
-                RunSkill.FromEntry("0609"),
+                RunSkill.FromEntryId("Skill0609"), // "毒性"
+                RunSkill.FromEntryId("Skill0609"),
+                RunSkill.FromEntryId("Skill0609"),
             }),
             kernel: new StageKernel(async d =>
             {

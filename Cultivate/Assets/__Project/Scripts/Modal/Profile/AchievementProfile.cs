@@ -58,7 +58,7 @@ public class AchievementProfile : ISerializationCallbackReceiver, RunClosureList
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.AchievementCategory[_entry.GetId()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.AchievementCategory.FromId(_entry.GetId());
     }
 
     public override string ToString()

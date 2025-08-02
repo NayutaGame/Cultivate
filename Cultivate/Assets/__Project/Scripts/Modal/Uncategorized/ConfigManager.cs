@@ -29,13 +29,13 @@ public class ConfigManager : Addressable
     private void InitPack()
     {
         _packConstraints = new();
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Jin), "PackConstraints金", 0));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Shui), "PackConstraints水", 1));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Mu), "PackConstraints木", 2));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Huo), "PackConstraints火", 3));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Tu), "PackConstraints土", 4));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), "PackConstraints任意", 5));
-        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), "PackConstraints任意", 6));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Jin), Encyclopedia.SpriteCategory.FromName("PackConstraints金"), 0));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Shui), Encyclopedia.SpriteCategory.FromName("PackConstraints水"), 1));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Mu), Encyclopedia.SpriteCategory.FromName("PackConstraints木"), 2));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Huo), Encyclopedia.SpriteCategory.FromName("PackConstraints火"), 3));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.FromWuXing(WuXing.Tu), Encyclopedia.SpriteCategory.FromName("PackConstraints土"), 4));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), Encyclopedia.SpriteCategory.FromName("PackConstraints任意"), 5));
+        _packConstraints.Add(new PackConstraint(PackDescriptor.AnyPack(), Encyclopedia.SpriteCategory.FromName("PackConstraints任意"), 6));
 
         _packSelections = new();
         Encyclopedia.PackCategory.Do(pack => _packSelections.Add(new ConfigPack(pack)));
@@ -119,7 +119,7 @@ public class ConfigManager : Addressable
         ConfigPack pack = d.Pack;
         if (pack.IsEquipped)
         {
-            Debug.Log($"卡包 {pack.Entry.Name} 已经被装备");
+            Debug.Log($"卡包 {pack.Entry.GetName()} 已经被装备");
             return;
         }
         
@@ -144,7 +144,7 @@ public class ConfigManager : Addressable
         // 检查卡包是否已装备
         if (!pack.IsEquipped)
         {
-            Debug.Log($"卡包 {pack.Entry.Name} 未被装备");
+            Debug.Log($"卡包 {pack.Entry.GetName()} 未被装备");
             return;
         }
 
@@ -152,7 +152,7 @@ public class ConfigManager : Addressable
         bool packIsUnlocked = PackIsGenerallyUnlocked(pack.Entry);
         if (!packIsUnlocked)
         {
-            Debug.Log($"卡包 {pack.Entry.Name} 未解锁");
+            Debug.Log($"卡包 {pack.Entry.GetName()} 未解锁");
             return;
         }
         
@@ -194,7 +194,7 @@ public class ConfigManager : Addressable
         bool packIsUnlocked = PackIsGenerallyUnlocked(constraint.Pack.Entry);
         if (!packIsUnlocked)
         {
-            Debug.Log($"卡包 {constraint.Pack.Entry.Name} 未解锁");
+            Debug.Log($"卡包 {constraint.Pack.Entry.GetName()} 未解锁");
             return;
         }
 

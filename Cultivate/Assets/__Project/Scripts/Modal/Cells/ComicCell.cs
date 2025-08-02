@@ -14,7 +14,7 @@ public class ComicCell : Cell
     public override object Get(string s) => Accessor[s](this);
     public ComicCell(string prefabName)
     {
-        _prefabEntry = prefabName;
+        _prefabEntry = Encyclopedia.PrefabCategory.FromName(prefabName);
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)

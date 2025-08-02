@@ -132,6 +132,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         _intMemory = new();
         _config = config;
+        _jingJie = JingJie.LianQi;
         _map = new(_config.MapEntry);
         _skillPool = new();
         _hand = new();
@@ -491,7 +492,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetHealthProcedure(setHealthDetails);
         
         _home.SetJingJie(d.ToJingJie);
-        AudioManager.Play(Encyclopedia.AudioFromJingJie(d.ToJingJie));
+        AudioManager.Play(d.ToJingJie.GetAudio());
 
         SendEvent(RunClosureDict.DID_JINGJIE_CHANGE, d);
         
@@ -633,6 +634,16 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         d.MergeTarget.Execute(d, Hand);
     }
+
+    // public void TryEquipProcedure(RunSkill skill, SkillSlot slot)
+    // {
+    //     bool handContainsSkill;
+    //     bool homeContainsSlot;
+    //     if (!handContainsSkill || !homeContainsSlot)
+    //         return;
+    //     
+    //     RunManager.Instance.Environment.EquipProcedure(new(skill, slot));
+    // }
 
     public void EquipProcedure(EquipDetails d)
     {
@@ -895,7 +906,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region SkillRelatedProcedures
     
-    public void PickSkillProcedure(SkillEntry skillEntry, JingJie? preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
+    public void PickSkillProcedure(SkillEntry skillEntry, JingJie preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
     {
         GainSkillBuilder b = new();
         b.Pick(skillEntry);
@@ -1160,13 +1171,14 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         _startTime = DateTime.Now;
         _loadedTime = TimeSpan.FromMilliseconds(_miliseconds);
+        _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
         
         InitNeurons();
 
         for (int i = 0; i < _newlyUnlockedAchievements.Count; i++)
         {
             AchievementEntry entry = _newlyUnlockedAchievements[i];
-            entry = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.AchievementCategory[entry.GetId()];
+            entry = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.AchievementCategory.FromId(entry.GetId());
             _newlyUnlockedAchievements[i] = entry;
         }
 

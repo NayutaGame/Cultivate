@@ -20,9 +20,9 @@ public class RunFormationDetails : RunClosureDetails
             SkillEntry entry = slot.PlacedSkill.Entry;
             JingJie jingJie = slot.PlacedSkill.JingJie;
 
-            WuXing? wuXing = entry.WuXing;
-            if (wuXing != null)
-                WuXingCounts[wuXing.Value]++;
+            WuXing wuXing = entry.WuXing;
+            if (wuXing.IsBasic())
+                WuXingCounts[wuXing.GetIndex()]++;
             
             long tagComposite = entry.GetTagComposite().Value;
             for (int i = 0; i < TagCategory.Length; i++)

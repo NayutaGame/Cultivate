@@ -38,6 +38,6 @@ public class PackProfile : ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.PackCategory[_entry.GetId()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.PackCategory.FromId(_entry.GetId());
     }
 }

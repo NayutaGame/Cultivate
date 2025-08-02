@@ -254,7 +254,7 @@ public class ConsolePanel : Panel
     private void Cheat()
     {
         GainSkillBuilder b = new();
-        b.Pick(SkillEntry.FromName("作弊"));
+        b.Pick(Encyclopedia.SkillCategory.FromName("作弊"));
         b.Create();
         b.Add();
         b.Invoke();

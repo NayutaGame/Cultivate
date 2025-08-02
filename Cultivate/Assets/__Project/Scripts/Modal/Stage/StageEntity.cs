@@ -354,8 +354,8 @@ public class StageEntity : Addressable, StageClosureListener
             _skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
         }
 
-        _emptyAction = StageSkill.FromSkillEntry(this, SkillEntry.FromName("发呆"));
-        _manaShortageAction = StageSkill.FromSkillEntry(this, SkillEntry.FromName("灵气匮乏"));
+        _emptyAction = StageSkill.FromSkillEntry(this, Encyclopedia.SkillCategory.FromName("发呆"));
+        _manaShortageAction = StageSkill.FromSkillEntry(this, Encyclopedia.SkillCategory.FromName("灵气匮乏"));
 
         _p = 0;
     }
@@ -534,26 +534,28 @@ public class StageEntity : Addressable, StageClosureListener
         _buffs.Clear();
     }
 
+    public Buff FindBuff(string buffName) => FindBuff(Encyclopedia.BuffCategory.FromName(buffName));
     public Buff FindBuff(BuffEntry buffEntry) => TraversalBuffs().FirstObj(b => b.GetEntry() == buffEntry);
 
+    public int GetStackOfBuff(string buffName) => GetStackOfBuff(Encyclopedia.BuffCategory.FromName(buffName));
     public int GetStackOfBuff(BuffEntry entry) => FindBuff(entry)?.Stack ?? 0;
 
-    public Buff GetHighestWuXingBuff()
-    {
-        Buff highestBuff = WuXing.Traversal
-            .Map(wuXing => FindBuff(wuXing._elementaryBuff))
-            .MinObj(b => -b.Stack);
-
-        return highestBuff;
-    }
-
-    public WuXing? GetHighestWuXing()
-    {
-        WuXing highestWuXing = WuXing.Traversal.MinObj(wuXing => -GetStackOfBuff(wuXing._elementaryBuff));
-        if (GetStackOfBuff(highestWuXing._elementaryBuff) == 0)
-            return null;
-        return highestWuXing;
-    }
+    // public Buff GetHighestWuXingBuff()
+    // {
+    //     Buff highestBuff = LegacyWuXing.Traversal
+    //         .Map(wuXing => FindBuff(wuXing._elementaryBuff))
+    //         .MinObj(b => -b.Stack);
+    //
+    //     return highestBuff;
+    // }
+    //
+    // public LegacyWuXing? GetHighestWuXing()
+    // {
+    //     LegacyWuXing highestWuXing = LegacyWuXing.Traversal.MinObj(wuXing => -GetStackOfBuff(wuXing._elementaryBuff));
+    //     if (GetStackOfBuff(highestWuXing._elementaryBuff) == 0)
+    //         return null;
+    //     return highestWuXing;
+    // }
 
     public async UniTask<bool> IsFocused()
     {
@@ -570,7 +572,7 @@ public class StageEntity : Addressable, StageClosureListener
         int value,
         int times = 1,
         StageClosureListener initiator = null,
-        WuXing? wuXing = null,
+        WuXing wuXing = null,
         bool crit = false,
         bool lifeSteal = false,
         bool penetrate = false,
@@ -585,7 +587,7 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask IndirectProcedure(
         int value,
         StageSkill initiator = null,
-        WuXing? wuXing = null,
+        WuXing wuXing = null,
         bool lifeSteal = false,
         bool recursive = true,
         ResultDict castResult = null,
@@ -619,15 +621,25 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask RemoveArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
         => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, Opponent(), value, null, null, castResult, induced, true));
     
+    public async UniTask GainBuffProcedure(string buffName, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
+        => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, this, Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, null, castResult, null, induced));
     public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
         => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, this, buffEntry, stack, recursive, null, castResult, null, induced));
-    
+
+
+    public async UniTask GiveBuffProcedure(string buffName, int stack = 1, bool recursive = true,
+        ResultDict castResult = null, bool induced = false)
+        => await GiveBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, castResult, induced);
     public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
         => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, Opponent(), buffEntry, stack, recursive, null, castResult, null, induced));
-    
+
+    public async UniTask LoseBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await LoseBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
     public async UniTask LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(_env, this, this, buffEntry, stack, recursive, induced));
-    
+
+    public async UniTask RemoveBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await RemoveBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
     public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
         => await _env.LoseBuffProcedure(new LoseBuffDetails(_env, this, Opponent(), buffEntry, stack, recursive, induced));
     
@@ -640,6 +652,8 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask LoseMaxHealthProcedure(int value, ResultDict castResult = null, bool induced = false)
         => await _env.LoseMaxHealthProcedure(new LoseMaxHealthDetails(_env, this, value, null, castResult, null, induced));
 
+    public async UniTask<bool> TryConsumeProcedure(string buffName, int stack = 1, bool recursive = true)
+        => await TryConsumeProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive);
     public async UniTask<bool> TryConsumeProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true)
     {
         if (stack == 0)
@@ -776,6 +790,6 @@ public class StageEntity : Addressable, StageClosureListener
             if (!d.Rotate) return;
 
             WuXing wuXing = d.WuXing;
-            entity.Memory.PerformOperation<WuXing?>(LastRotatedWuXingKey, null, record => record = wuXing);
+            entity.Memory.PerformOperation<WuXing>(LastRotatedWuXingKey, null, record => record = wuXing);
         });
 }

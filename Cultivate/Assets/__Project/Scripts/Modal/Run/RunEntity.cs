@@ -256,7 +256,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     private RunEntity(
         EntityEntry entry = null,
         MingYuan mingYuan = null,
-        JingJie? jingJie = null,
+        JingJie jingJie = null,
         int? health = null,
         int? slotCount = null,
         SlotListModel slots = null,
@@ -268,7 +268,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     {
         EnvironmentChangedNeuron = new();
         
-        _entry = entry ?? Encyclopedia.EntityCategory.DefaultEntry();
+        _entry = entry ?? Encyclopedia.EntityCategory.Default();
         _mingYuan = mingYuan ?? MingYuan.Default;
         _jingJie = jingJie ?? JingJie.LianQi;
         _health = health ?? HealthFromJingJie[_jingJie];
@@ -307,7 +307,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
             health: template._health, slotCount: template._slotCount, slots: template._slots,
             smirkAgainstSlots: template._smirkAgainstSlots, afraidAgainstSlots: template._afraidAgainstSlots,
             ladder: template._ladder, allowedDifficulty: template._allowedDifficulty, inPool: template._inPool);
-    public static RunEntity FromHardCoded(JingJie? jingJie = null,
+    public static RunEntity FromHardCoded(JingJie jingJie = null,
         int? baseHealth = null, int? slotCount = null, RunSkill[] skills = null)
         => new(jingJie: jingJie, health: baseHealth, slotCount: slotCount, slots: skills != null ? SlotListModel.FromSkills(skills) : null);
 
@@ -320,7 +320,8 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     {
         EnvironmentChangedNeuron = new();
         
-        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.EntityCategory[_entry.GetName()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.EntityCategory.FromId(_entry.GetId());
+        _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
         
         SetSlotCount(_slotCount);
         

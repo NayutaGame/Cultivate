@@ -19,11 +19,11 @@ public class SoundBehaviour : XBehaviour
         base.AwakeFunction();
 
         if (!string.IsNullOrEmpty(HoverAudioId))
-            _hoverAudioEntry = HoverAudioId;
+            _hoverAudioEntry = Encyclopedia.AudioCategory.FromName(HoverAudioId);
         if (!string.IsNullOrEmpty(LeftClickAudioId))
-            _leftClickAudioEntry = LeftClickAudioId;
+            _leftClickAudioEntry = Encyclopedia.AudioCategory.FromName(LeftClickAudioId);
         if (!string.IsNullOrEmpty(RightClickAudioId))
-            _rightClickAudioEntry = RightClickAudioId;
+            _rightClickAudioEntry = Encyclopedia.AudioCategory.FromName(RightClickAudioId);
         
         SetInteractBehaviour(_ib);
     }

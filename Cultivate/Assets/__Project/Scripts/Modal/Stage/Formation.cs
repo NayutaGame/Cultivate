@@ -52,7 +52,7 @@ public class Formation : StageClosureListener, IEmphasizable, AnnotatableFormati
     public bool IsActivated()
         => _runFormation.IsActivated();
     
-    public JingJie? GetActivatedJingJie()
+    public JingJie GetActivatedJingJie()
         => _runFormation.GetActivatedJingJie();
 
     #region AnnotatableFormation

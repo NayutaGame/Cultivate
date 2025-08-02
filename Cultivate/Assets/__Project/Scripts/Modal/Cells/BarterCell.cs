@@ -50,10 +50,10 @@ public class BarterCell : Cell
                             return false;
                     return true;
                 }, fromSkills[i].JingJie);
-            Assert.IsTrue(fromSkills[i].JingJie.HasValue);
+            Assert.IsTrue(fromSkills[i].JingJie != null);
             GainSkillBuilder b = new();
             b.Draw(descriptor);
-            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(b.DrawnSkillEntries[0], fromSkills[i].JingJie.Value); // distinct, non consume
+            toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(b.DrawnSkillEntries[0], fromSkills[i].JingJie); // distinct, non consume
         }
         
         _inventory = new();

@@ -6,6 +6,9 @@ using UnityEngine;
 public class DirectRoomDefinition : RoomDefinition, ISerializationCallbackReceiver
 {
     [SerializeField] private RoomEntry _roomEntry;
+    
+    public DirectRoomDefinition(int ladder, string roomName, Func<Profile, RunEnvironment, bool> pred = null) :
+        this(ladder, Encyclopedia.RoomCategory.FromName(roomName), pred) { }
 
     public DirectRoomDefinition(int ladder, RoomEntry roomEntry, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)
     {
@@ -21,7 +24,7 @@ public class DirectRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
         => _roomEntry.GetName();
 
     public override SpriteEntry GetSprite()
-        => "AdventureRoomIcon";
+        => Encyclopedia.SpriteCategory.FromName("AdventureRoomIcon");
 
     public override Description GetDescription()
         => new("将会遭遇事件");
@@ -30,6 +33,6 @@ public class DirectRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
 
     public void OnAfterDeserialize()
     {
-        _roomEntry = string.IsNullOrEmpty(_roomEntry.GetName()) ? null : Encyclopedia.RoomCategory[_roomEntry.GetName()];
+        _roomEntry = string.IsNullOrEmpty(_roomEntry.GetId()) ? null : Encyclopedia.RoomCategory.FromId(_roomEntry.GetId());
     }
 }

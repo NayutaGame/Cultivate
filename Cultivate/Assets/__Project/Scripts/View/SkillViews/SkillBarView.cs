@@ -15,7 +15,7 @@ public class SkillBarView : XView
 
         RunSkill skill = Get<RunSkill>();
         BackgroundImage.color = CanvasManager.Instance.JingJieColors[skill.GetJingJie()];
-        WuXingImage.color = CanvasManager.Instance.GetWuXingColor(skill.GetWuXing());
+        WuXingImage.color = skill.GetWuXing().GetColor();
         NameText.text = skill.GetName();
     }
 }

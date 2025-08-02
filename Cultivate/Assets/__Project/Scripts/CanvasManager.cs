@@ -34,14 +34,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("List")] public Color[] CostColors;
     [TabGroup("List")] public Sprite[] CostIconSprites;
 
-    public Color GetWuXingColor(WuXing? wuXing)
-    {
-        if (wuXing == null)
-            return WuXingColors[^1];
-
-        return WuXingColors[wuXing.Value._index];
-    }
-
     public Camera GetCamera()
         => Camera;
 

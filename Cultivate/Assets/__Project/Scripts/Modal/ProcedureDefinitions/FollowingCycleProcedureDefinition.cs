@@ -62,10 +62,10 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
 
     public override async UniTask Cast(CastDetails castDetails)
     {
-        WuXing? wuXing = castDetails.Caster.Memory.TryGetVariable<WuXing?>(StageEntity.LastRotatedWuXingKey, null);
-        if (!wuXing.HasValue)
+        WuXing wuXing = castDetails.Caster.Memory.TryGetVariable<WuXing>(StageEntity.LastRotatedWuXingKey, null);
+        if (!wuXing.IsBasic())
             return;
-        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, wuXing.Value.Next));
+        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, wuXing.Next));
     }
 
     public override void DefaultGetDescription(

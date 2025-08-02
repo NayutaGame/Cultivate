@@ -35,7 +35,7 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
         _slotCountAfter = slotCountAfter;
         
         _isBoss = IsBossTable[ladder];
-        _spriteEntry = SpriteTable[ladder];
+        _spriteEntry = Encyclopedia.SpriteCategory.FromName(SpriteTable[ladder]);
     }
     
     public bool ShouldUpdateSlotCount => _slotCountBefore != _slotCountAfter;
@@ -45,7 +45,7 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
         EntityDescriptor d = new EntityDescriptor(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, d);
         room.SetPredrewRunEntity(entity);
-        return "战斗";
+        return Encyclopedia.RoomCategory.FromName("战斗");
     }
 
     public override string GetTitle()
@@ -62,6 +62,6 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
     public void OnAfterDeserialize()
     {
         _isBoss = IsBossTable[Ladder];
-        _spriteEntry = SpriteTable[Ladder];
+        _spriteEntry = Encyclopedia.SpriteCategory.FromName(SpriteTable[Ladder]);
     }
 }

@@ -25,12 +25,14 @@ public class ShopCell : Cell
         { "Commodities",                thisObject => ((ShopCell)thisObject).GetCommodities() },
     };
     public override object Get(string s) => Accessor[s](this);
+    private ShopCell(int ladder, float priceMultiplier = 1, string title = null, string spriteName = null)
+        : this(ladder, priceMultiplier, title, Encyclopedia.SpriteCategory.FromName(spriteName ?? "收藏家")) { }
     private ShopCell(int ladder, float priceMultiplier = 1, string title = null, SpriteEntry spriteEntry = null)
     {
         _ladder = ladder;
         _priceMultiplier = priceMultiplier;
         _title = title ?? "商店";
-        _spriteEntry = spriteEntry ?? "收藏家";
+        _spriteEntry = spriteEntry ?? Encyclopedia.SpriteCategory.FromName("收藏家");
     }
 
     public override void DefaultEnter(Cell cell)

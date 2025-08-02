@@ -422,7 +422,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     }
 
     public async UniTask IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
-        ResultDict castResult, WuXing? wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
+        ResultDict castResult, WuXing wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
         => await IndirectProcedure(new IndirectDetails(this, src, tgt, value, srcSkill, wuXing, lifesteal, recursive, castResult, induced));
 
     public async UniTask IndirectProcedure(IndirectDetails indirectDetails)
@@ -720,18 +720,18 @@ public class StageEnvironment : Addressable, StageClosureListener
             for (int i = 0; i < d.Step; i++)
                 fromWuXing = fromWuXing.Prev;
 
-            int flow = d.Owner.GetStackOfBuff(fromWuXing._elementaryBuff);
+            int flow = d.Owner.GetStackOfBuff(fromWuXing.GetElementaryBuff());
             d.Flow = flow;
 
             int consume = flow - Mathf.Min(flow, d.Recover);
-            await d.Owner.TryConsumeProcedure(fromWuXing._elementaryBuff, consume);
+            await d.Owner.TryConsumeProcedure(fromWuXing.GetElementaryBuff(), consume);
 
             int gain = flow + d.Gain;
-            await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, gain, induced: d.Induced);
+            await d.Owner.GainBuffProcedure(d.WuXing.GetElementaryBuff(), gain, induced: d.Induced);
         }
         else
         {
-            await d.Owner.GainBuffProcedure(d.WuXing._elementaryBuff, d.Gain, induced: d.Induced);
+            await d.Owner.GainBuffProcedure(d.WuXing.GetElementaryBuff(), d.Gain, induced: d.Induced);
         }
 
         await _closureDict.SendEvent(StageClosureDict.DID_CYCLE, d);

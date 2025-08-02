@@ -59,13 +59,8 @@ public class PackAnnotationView : AnnotationView
         PackView.Refresh();
     }
 
-    private void SetWuXing(WuXing? wuXing)
+    private void SetWuXing(WuXing wuXing)
     {
-        bool hasWuXing = wuXing == null;
-        WuXingIcon.gameObject.SetActive(hasWuXing);
-        if (!hasWuXing)
-            return;
-
-        WuXingIcon.sprite = wuXing.Value.GetIconSprite().Sprite;
+        WuXingIcon.sprite = wuXing.GetIconSprite();
     }
 }

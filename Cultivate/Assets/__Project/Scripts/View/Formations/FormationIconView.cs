@@ -26,7 +26,7 @@ public class FormationIconView : XView
         }
 
         Background.sprite = formation.GetBackgroundSprite().Sprite;
-        Glow.sprite = Encyclopedia.SpriteCategory["普通阵法发光"].Sprite;
+        Glow.sprite = Encyclopedia.SpriteCategory.FromName("普通阵法发光").Sprite;
         Icon.sprite = formation.GetIconSprite().Sprite;
     }
 }

@@ -131,7 +131,7 @@ public class MergePreresultView : XView
     {
         if (!_mergeTarget.Valid)
         {
-            CardImage.sprite = Encyclopedia.SpriteCategory["无法合成"].Sprite;
+            CardImage.sprite = Encyclopedia.SpriteCategory.FromName("无法合成").Sprite;
             return;
         }
         
@@ -141,14 +141,7 @@ public class MergePreresultView : XView
             return;
         }
 
-        if (_mergeTarget.ResultWuXing != null)
-        {
-            WuXing wuXing = _mergeTarget.ResultWuXing.Value;
-            CardImage.sprite = Encyclopedia.SpriteCategory[$"{wuXing._name}合成"].Sprite;
-            return;
-        }
-
-        CardImage.sprite = Encyclopedia.SpriteCategory["可以合成"].Sprite;
+        CardImage.sprite = _mergeTarget.ResultWuXing.GetMergeSprite();
     }
     
     protected virtual void SetCostDescriptionFromMergePreresult()

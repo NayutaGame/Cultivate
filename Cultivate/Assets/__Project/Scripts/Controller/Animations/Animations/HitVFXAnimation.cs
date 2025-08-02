@@ -28,7 +28,7 @@ public class HitVFXAnimation : Animation
         int value = _attackDetails.Value;
 
         int orient = -(src.Index * 2 - 1);
-        GameObject gao = GameObject.Instantiate(GetPrefab(wuXing), _model.VFXTransform.position + -0.5f * orient * Vector3.right,
+        GameObject gao = GameObject.Instantiate(wuXing.GetHitVFXPrefab(), _model.VFXTransform.position + -0.5f * orient * Vector3.right,
             Quaternion.identity, StageManager.Instance.VFXPool);
         VFX vfx = gao.GetComponent<VFX>();
         vfx.SetIntensity(IntensityFromValue(value));
@@ -38,10 +38,5 @@ public class HitVFXAnimation : Animation
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);
-    }
-
-    private GameObject GetPrefab(WuXing wuXing)
-    {
-        return StageManager.Instance.HitVFXFromWuXing[wuXing];
     }
 }

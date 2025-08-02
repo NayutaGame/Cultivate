@@ -25,6 +25,6 @@ public class DifficultyProfile : ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.DifficultyCategory[_entry.GetId()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.DifficultyCategory.FromId(_entry.GetId());
     }
 }

@@ -59,7 +59,7 @@ public class GachaCell : Cell
         _price = 0;
 
         foreach (var item in _items)
-            _price += (1 << item.JingJie.Value);
+            _price += (1 << item.JingJie);
 
         _price = (int) (_price * _priceMultiplier / _items.Count());
     }

@@ -42,7 +42,7 @@ public class StageNote : AnnotatableSkill
     public Sprite GetSprite()
         => Skill.Entry.GetSprite();
 
-    public WuXing? GetWuXing()
+    public WuXing GetWuXing()
         => Skill.Entry.GetWuXing();
 
     public string GetName()

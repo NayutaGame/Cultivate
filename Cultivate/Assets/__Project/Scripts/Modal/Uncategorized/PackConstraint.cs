@@ -40,7 +40,7 @@ public class PackConstraint : AnnotatablePack
     public string GetName()
         => Pack.GetName();
 
-    public WuXing? GetWuXing()
+    public WuXing GetWuXing()
         => Pack.GetWuXing();
 
     public Description GetDescription()

@@ -10,7 +10,7 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
     {
         Encyclopedia.DifficultyCategory.Do(entry => Add(new DifficultyProfile(entry)));
 
-        Find("0").SetUnlocked(true);
+        Find(Encyclopedia.DifficultyCategory.FromName("0")).SetUnlocked(true);
     }
 
     public DifficultyProfile Find(DifficultyEntry entry)

@@ -226,8 +226,6 @@ public class EntityEditorEntityView : XView
     public Neuron<InteractBehaviour, PointerEventData> BeginDragSlotNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> RightClickSlotNeuron = new();
     public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropSlotNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropSmirkAgainstSlotNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropAfraidAgainstSlotNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerEnterFormationNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerExitFormationNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> PointerMoveFormationNeuron = new();

@@ -50,7 +50,7 @@ public class Room : ISerializationCallbackReceiver, AnnotatableRoom
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetName()) ? null : Encyclopedia.RoomCategory[_entry.GetName()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.RoomCategory.FromId(_entry.GetId());
     }
 
     public bool CanShowAnnotation()

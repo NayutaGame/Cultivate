@@ -89,7 +89,7 @@ public class StageEntityView : XView
             ArmorIcon.gameObject.SetActive(true);
             ArmorText.font = CanvasManager.Instance.ArmorFontAsset;
             ArmorText.text = $"{armor}";
-            ArmorIcon.sprite = Encyclopedia.SpriteCategory["ArmorIcon"].Sprite;
+            ArmorIcon.sprite = Encyclopedia.SpriteCategory.FromName("ArmorIcon").Sprite;
         }
         else if (armor == 0)
         {
@@ -100,7 +100,7 @@ public class StageEntityView : XView
             ArmorIcon.gameObject.SetActive(true);
             ArmorText.font = CanvasManager.Instance.FragileFontAsset;
             ArmorText.text = $"{-armor}";
-            ArmorIcon.sprite = Encyclopedia.SpriteCategory["FragileIcon"].Sprite;
+            ArmorIcon.sprite = Encyclopedia.SpriteCategory.FromName("FragileIcon").Sprite;
         }
     }
 }

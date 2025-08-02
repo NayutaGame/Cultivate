@@ -2,7 +2,7 @@
 public interface AnnotatablePack : Annotatable
 {
     string GetName();
-    WuXing? GetWuXing();
+    WuXing GetWuXing();
     Description GetDescription();
     string GetTrivia();
 }

@@ -9,11 +9,11 @@ public class ShopRoomDefinition : RoomDefinition
     {
         Pool<RoomEntry> shopPool = new();
         
-        shopPool.Populate("黑市");
-        shopPool.Populate("收藏家");
-        shopPool.Populate("以物易物");
-        shopPool.Populate("毕业季");
-        shopPool.Populate("盲盒");
+        shopPool.Populate(Encyclopedia.RoomCategory.FromName("黑市"));
+        shopPool.Populate(Encyclopedia.RoomCategory.FromName("收藏家"));
+        shopPool.Populate(Encyclopedia.RoomCategory.FromName("以物易物"));
+        shopPool.Populate(Encyclopedia.RoomCategory.FromName("毕业季"));
+        shopPool.Populate(Encyclopedia.RoomCategory.FromName("盲盒"));
         
         shopPool.Depopulate(pred: e => !e.LadderBound.Contains(Ladder));
         
@@ -27,7 +27,7 @@ public class ShopRoomDefinition : RoomDefinition
         => "商店房间";
 
     public override SpriteEntry GetSprite()
-        => "ShopRoomIcon";
+        => Encyclopedia.SpriteCategory.FromName("ShopRoomIcon");
 
     public override Description GetDescription()
         => new("可以购买东西");

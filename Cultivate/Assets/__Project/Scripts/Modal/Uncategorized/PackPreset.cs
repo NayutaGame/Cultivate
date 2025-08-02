@@ -11,12 +11,12 @@ public class PackPreset
     }
 
     public static PackPreset Default => new(new List<PackEntry> {
-        Encyclopedia.PackCategory["0001"],
-        Encyclopedia.PackCategory["0003"],
-        Encyclopedia.PackCategory["0005"],
-        Encyclopedia.PackCategory["0007"],
-        Encyclopedia.PackCategory["0009"],
-        Encyclopedia.PackCategory["0011"],
-        Encyclopedia.PackCategory["0012"],
+        Encyclopedia.PackCategory.FromId("0001"),
+        Encyclopedia.PackCategory.FromId("0003"),
+        Encyclopedia.PackCategory.FromId("0005"),
+        Encyclopedia.PackCategory.FromId("0007"),
+        Encyclopedia.PackCategory.FromId("0009"),
+        Encyclopedia.PackCategory.FromId("0011"),
+        Encyclopedia.PackCategory.FromId("0012"),
     });
 }

@@ -8,13 +8,13 @@ public class AttackProcedureDefinition : ProcedureDefinition
 {
     public int Value;
     public int Times;
-    public WuXing? WuXing;
+    public WuXing WuXing;
     public bool Recursive;
     public bool Induced;
 
     public AttackProcedureDefinition(int value,
         int times = 1,
-        WuXing? wuXing = null,
+        WuXing wuXing = null,
         bool recursive = true,
         bool induced = false)
     {
@@ -32,7 +32,7 @@ public class AttackProcedureDefinition : ProcedureDefinition
         List<StageClosure> closures,
         int value,
         int times,
-        WuXing? wuXing,
+        WuXing wuXing,
         bool recursive,
         bool induced) :
         base(preCondDefinition, postCondDefinition, getDescription, closures)

@@ -10,9 +10,9 @@ public class SkillEntryDescriptor : AnnotatableSkill
     
     private SkillEntry _entry;
     public SkillEntry Entry => _entry;
-    private WuXing? _wuXing;
-    private JingJie? _jingJie;
-    public JingJie? JingJie => _jingJie;
+    private WuXing _wuXing;
+    private JingJie _jingJie;
+    public JingJie JingJie => _jingJie;
     private TagComposite _tagComposite;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
@@ -23,8 +23,8 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public SkillEntryDescriptor(
         Predicate<SkillEntry> pred = null,
         SkillEntry entry = null,
-        WuXing? wuXing = null,
-        JingJie? jingJie = null,
+        WuXing wuXing = null,
+        JingJie jingJie = null,
         TagComposite tagComposite = null)
     {
         _pred = pred;
@@ -40,13 +40,16 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public static SkillEntryDescriptor FromEntry(SkillEntry entry)
         => new(entry: entry);
 
+    public static SkillEntryDescriptor FromId(string id)
+        => new(entry: Encyclopedia.SkillCategory.FromId(id));
+
     public static SkillEntryDescriptor FromName(string name)
-        => new(entry: SkillEntry.FromName(name));
+        => new(entry: Encyclopedia.SkillCategory.FromName(name));
 
     public static SkillEntryDescriptor FromNameJingJie(string name, JingJie jingJie)
-        => new(entry: SkillEntry.FromName(name), jingJie: jingJie);
+        => new(entry: Encyclopedia.SkillCategory.FromName(name), jingJie: jingJie);
 
-    public static SkillEntryDescriptor FromPredJingJie(Predicate<SkillEntry> pred, JingJie? jingJie)
+    public static SkillEntryDescriptor FromPredJingJie(Predicate<SkillEntry> pred, JingJie jingJie)
         => new(pred: pred, jingJie: jingJie);
     
     public static SkillEntryDescriptor FromJingJie(JingJie jingJie)
@@ -72,7 +75,7 @@ public class SkillEntryDescriptor : AnnotatableSkill
         if (_wuXing != null && skillEntry.WuXing != _wuXing)
             return false;
 
-        if (_jingJie != null && !skillEntry.JingJieContains(_jingJie.Value))
+        if (_jingJie != null && !skillEntry.JingJieContains(_jingJie))
             return false;
 
         if (_tagComposite != null && !skillEntry.GetTagComposite().Contains(_tagComposite))
@@ -109,20 +112,19 @@ public class SkillEntryDescriptor : AnnotatableSkill
         return descriptor.Contains(_entry);
     }
     
-    public static implicit operator SkillEntryDescriptor(string id) => FromEntry(id);
     public static implicit operator SkillEntryDescriptor(SkillEntry skillEntry) => FromEntry(skillEntry);
 
 
     public JingJie GetLowestJingJie()
-        => _entry?.GetLowestJingJie() ?? _jingJie.Value;
+        => _entry?.GetLowestJingJie() ?? _jingJie;
 
     public JingJie GetHighestJingJie()
-        => _entry?.GetHighestJingJie() ?? _jingJie.Value;
+        => _entry?.GetHighestJingJie() ?? _jingJie;
 
     public Sprite GetSprite()
         => _entry?.GetSprite();
 
-    public WuXing? GetWuXing()
+    public WuXing GetWuXing()
         => _entry?.WuXing;
 
     public string GetName()
@@ -138,7 +140,7 @@ public class SkillEntryDescriptor : AnnotatableSkill
         => _entry?.GetTrivia();
 
     public JingJie GetJingJie()
-        => _jingJie ?? global::JingJie.LianQi;
+        => _jingJie ?? JingJie.LianQi;
 
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
         => _entry?.GetLiteralCostDescription(showingJingJie) ?? CostDescription.Empty;
@@ -147,7 +149,7 @@ public class SkillEntryDescriptor : AnnotatableSkill
         => _entry?.GetJingJieSprite(showingJingJie);
 
     public JingJie NextJingJie(JingJie showingJingJie)
-        => _entry?.NextJingJie(showingJingJie) ?? global::JingJie.LianQi;
+        => _entry?.NextJingJie(showingJingJie) ?? JingJie.LianQi;
 
     public bool CanShowAnnotation()
         => _entry != null;

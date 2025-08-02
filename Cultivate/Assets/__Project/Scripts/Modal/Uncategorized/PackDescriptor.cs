@@ -5,12 +5,12 @@ public class PackDescriptor
 {
     private Predicate<PackEntry> _pred;
     private PackEntry _entry;
-    private WuXing? _wuXing;
+    private WuXing _wuXing;
 
     public PackDescriptor(
         Predicate<PackEntry> pred = null,
         PackEntry entry = null,
-        WuXing? wuXing = null)
+        WuXing wuXing = null)
     {
         _pred = pred;
         _entry = entry;

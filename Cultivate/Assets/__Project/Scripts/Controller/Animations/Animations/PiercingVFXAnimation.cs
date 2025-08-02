@@ -47,12 +47,12 @@ public class PiercingVFXAnimation : Animation
                 randomOffset = UnityEngine.Random.insideUnitCircle * 0.5f;
             }
             
-            vfxGameObject = GameObject.Instantiate(GetPrefab(wuXing), _model.transform.position + pos + (Vector3)randomOffset,
+            vfxGameObject = GameObject.Instantiate(wuXing.GetPiercingVFXPrefab(), _model.transform.position + pos + (Vector3)randomOffset,
                 Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
         }
         else
         {
-            vfxGameObject = GameObject.Instantiate(GetPrefab(wuXing), _model.VFXTransform.position + 2 * orient * Vector3.right,
+            vfxGameObject = GameObject.Instantiate(wuXing.GetPiercingVFXPrefab(), _model.VFXTransform.position + 2 * orient * Vector3.right,
                 Quaternion.Euler(0, src.Index * 180, 0), StageManager.Instance.VFXPool);
         }
         
@@ -64,10 +64,5 @@ public class PiercingVFXAnimation : Animation
     private float IntensityFromValue(int value)
     {
         return Mathf.InverseLerp(0, 100, value);
-    }
-
-    private GameObject GetPrefab(WuXing wuXing)
-    {
-        return StageManager.Instance.PiercingVFXFromWuXing[wuXing];
     }
 }

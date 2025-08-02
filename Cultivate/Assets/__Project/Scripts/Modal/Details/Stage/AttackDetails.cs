@@ -21,7 +21,7 @@ public class AttackDetails : NestedStageClosureDetails
         set => _times = Mathf.Max(1, value);
     }
 
-    public WuXing? WuXing;
+    public WuXing WuXing;
     public bool Crit;
     public bool LifeSteal;
     public bool Penetrate;
@@ -56,7 +56,7 @@ public class AttackDetails : NestedStageClosureDetails
         int value,
         int times,
         StageClosureListener listener,
-        WuXing? wuxing,
+        WuXing wuxing,
         bool crit,
         bool lifeSteal,
         bool penetrate,

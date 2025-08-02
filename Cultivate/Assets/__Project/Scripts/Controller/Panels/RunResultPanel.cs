@@ -56,13 +56,13 @@ public class RunResultPanel : Panel
         if (cell.GetRunOutcome() == RunResult.RunOutcome.Victorious)
         {
             OutcomeText.text = "胜利";
-            SpriteEntry winIllustration = "RunResultIllustrationWin";
+            SpriteEntry winIllustration = Encyclopedia.SpriteCategory.FromName("RunResultIllustrationWin");
             ResultIllustration.sprite = winIllustration.Sprite;
         }
         else
         {
             OutcomeText.text = "失败";
-            SpriteEntry loseIllustration = "RunResultIllustrationLose";
+            SpriteEntry loseIllustration = Encyclopedia.SpriteCategory.FromName("RunResultIllustrationLose");
             ResultIllustration.sprite = loseIllustration.Sprite;
         }
         

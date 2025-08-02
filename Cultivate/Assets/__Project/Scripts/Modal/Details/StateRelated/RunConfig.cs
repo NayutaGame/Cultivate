@@ -27,25 +27,23 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
 
         if (!AppManager.Instance.AudienceIsDeveloper())
         {
-            MapEntry = mapEntry ?? "标准";
+            MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准");
         }
         else
         {
-            MapEntry = mapEntry ?? "标准";
-            // MapEntry = mapEntry ?? "测试";
-            
-            // MapEntry = mapEntry ?? "标准无教程";
-            // MapEntry = mapEntry ?? "发现";
-        
-            // MapEntry = mapEntry ?? "墨染测试";
-            // MapEntry = mapEntry ?? "动画测试";
-            // MapEntry = mapEntry ?? "境界测试";
-            // MapEntry = mapEntry ?? "多段测试";
-            // MapEntry = mapEntry ?? "拖拽测试";
-            // MapEntry = mapEntry ?? "结算测试";
-            // MapEntry = mapEntry ?? "排局3";
-            // MapEntry = mapEntry ?? "商店测试";
-            // MapEntry = mapEntry ?? "教学10";
+            MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准无教程");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("发现");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("墨染测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("动画测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("境界测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("多段测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("拖拽测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("结算测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("排局3");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("商店测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("教学10");
         }
     }
 
@@ -53,25 +51,25 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        MapEntry = string.IsNullOrEmpty(MapEntry.GetId()) ? null : Encyclopedia.MapCategory[MapEntry.GetId()];
+        MapEntry = string.IsNullOrEmpty(MapEntry.GetId()) ? null : Encyclopedia.MapCategory.FromId(MapEntry.GetId());
 
         for (int i = 0; i < PacksToStartWith.Count; i++)
         {
             PackEntry entry = PacksToStartWith[i];
-            PacksToStartWith[i] = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.PackCategory[entry.GetId()];
+            PacksToStartWith[i] = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.PackCategory.FromId(entry.GetId());
         }
     }
 
     public static RunConfig FirstRun()
     {
         Profile profile = AppManager.Instance.ProfileManager.ProfileList[0];
-        return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[0], null, "序章");
+        return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[0], null, Encyclopedia.MapCategory.FromName("序章"));
     }
 
     public static RunConfig LastDifficulty()
     {
         Profile profile = AppManager.Instance.ProfileManager.ProfileList[0];
-        return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[10], null, "标准");
+        return new(profile.CharacterProfileList[0], profile.DifficultyProfileList[10], null, Encyclopedia.MapCategory.FromName("标准"));
     }
 
     public CharacterEntry GetCharacter()

@@ -19,7 +19,7 @@ public class AdventureRoomDefinition : RoomDefinition
         }
         else
         {
-            entry = "不存在的事件";
+            entry = Encyclopedia.RoomCategory.FromName("不存在的事件");
         }
 
         return entry;
@@ -29,7 +29,7 @@ public class AdventureRoomDefinition : RoomDefinition
         => "奇遇房间";
 
     public override SpriteEntry GetSprite()
-        => "AdventureRoomIcon";
+        => Encyclopedia.SpriteCategory.FromName("AdventureRoomIcon");
 
     public override Description GetDescription()
         => new("将会遭遇事件");

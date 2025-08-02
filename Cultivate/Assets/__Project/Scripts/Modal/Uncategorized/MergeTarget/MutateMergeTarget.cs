@@ -6,8 +6,8 @@ public class MutateMergeTarget : MergeTarget
     public MutateMergeTarget(
         string mergeType,
         SkillEntry resultEntry,
-        JingJie? resultJingJie,
-        WuXing? resultWuXing,
+        JingJie resultJingJie,
+        WuXing resultWuXing,
         bool rhsIsMutator
         ) : base(mergeType, true, null, resultEntry, resultJingJie, resultWuXing, null)
     {

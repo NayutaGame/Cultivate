@@ -129,12 +129,6 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             environment = null;
         }
     }
-
-    public void RepairCorruptedEnvironment()
-    {
-        _runSaveState = RunSaveState.None;
-        _environmentCache = null;
-    }
     
     
     
@@ -171,6 +165,9 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     {
         return DifficultyProfileList.GetCurrentHighestUnlockedDifficulty();
     }
+
+    public bool DifficultyIsUnlocked(string difficultyName)
+        => DifficultyIsUnlocked(Encyclopedia.DifficultyCategory.FromName(difficultyName));
 
     public bool DifficultyIsUnlocked(DifficultyEntry difficultyEntry)
     {
@@ -395,5 +392,11 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             return;
         
         _difficultyProfileList.UnlockDifficulty(next);
+    }
+
+    public void RepairCorruptedEnvironment()
+    {
+        _runSaveState = RunSaveState.None;
+        Environment = null;
     }
 }

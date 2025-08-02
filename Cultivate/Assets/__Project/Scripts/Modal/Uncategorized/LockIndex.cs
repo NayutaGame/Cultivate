@@ -28,14 +28,20 @@ public readonly struct LockIndex : IEquatable<LockIndex>
     }
 
     // 工厂方法
+    public static LockIndex FromCharacter(string characterName)
+        => new(LockType.Character, characterName);
     public static LockIndex FromCharacter(CharacterEntry character)
-        => new(LockType.Character, character.GetId());
+        => new(LockType.Character, character.GetName());
 
+    public static LockIndex FromSlot(string characterName, int slotIndex)
+        => new(LockType.Slot, characterName, slotIndex);
     public static LockIndex FromSlot(CharacterEntry character, int slotIndex)
-        => new(LockType.Slot, character.GetId(), slotIndex);
+        => new(LockType.Slot, character.GetName(), slotIndex);
 
+    public static LockIndex FromPack(string packName)
+        => new(LockType.Pack, packName);
     public static LockIndex FromPack(PackEntry pack)
-        => new(LockType.Pack, pack.GetId());
+        => new(LockType.Pack, pack.GetName());
 
     // 相等性比较
     public bool Equals(LockIndex other)

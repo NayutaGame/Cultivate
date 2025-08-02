@@ -7,8 +7,8 @@ public abstract class MergeTarget
     public readonly bool Valid;
     public readonly string ErrorMessage;
     public readonly SkillEntry ResultEntry;
-    public readonly JingJie? ResultJingJie;
-    public readonly WuXing? ResultWuXing;
+    public readonly JingJie ResultJingJie;
+    public readonly WuXing ResultWuXing;
     public readonly Predicate<SkillEntry> Pred;
 
     public MergeTarget(
@@ -16,8 +16,8 @@ public abstract class MergeTarget
         bool valid,
         string errorMessage,
         SkillEntry resultEntry,
-        JingJie? resultJingJie,
-        WuXing? resultWuXing,
+        JingJie resultJingJie,
+        WuXing resultWuXing,
         Predicate<SkillEntry> pred)
     {
         MergeType = mergeType;

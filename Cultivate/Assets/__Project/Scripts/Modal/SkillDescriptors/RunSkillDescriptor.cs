@@ -6,13 +6,13 @@ public class RunSkillDescriptor
 {
     private Predicate<RunSkill> _pred;
     
-    private WuXing? _wuXing;
+    private WuXing _wuXing;
     private Bound? _jingJieBound;
     private TagComposite _tagComposite;
 
     public RunSkillDescriptor(
         Predicate<RunSkill> pred = null,
-        WuXing? wuXing = null,
+        WuXing wuXing = null,
         Bound? jingJieBound = null,
         TagComposite tagComposite = null)
     {

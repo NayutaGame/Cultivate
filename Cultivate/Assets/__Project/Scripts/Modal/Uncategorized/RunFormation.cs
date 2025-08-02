@@ -64,7 +64,7 @@ public class RunFormation : IEmphasizable, AnnotatableFormation
         return new(entry, progress, true, firstActivated);
     }
 
-    public JingJie? GetActivatedJingJie() => IsActivated() ? _formationEntry.GetActivatedJingJie() : null;
+    public JingJie GetActivatedJingJie() => IsActivated() ? _formationEntry.GetActivatedJingJie() : null;
     
     public Predicate<RunSkill> GetContributorPred() => _formationGroupEntry.GetContributorPred();
     
@@ -80,8 +80,9 @@ public class RunFormation : IEmphasizable, AnnotatableFormation
     
     public SpriteEntry GetBackgroundSprite()
     {
-        JingJie? activatedJingJie = GetActivatedJingJie();
-        return activatedJingJie.HasValue ? $"{activatedJingJie.Value.GetName()}阵法背景" : "未激活阵法背景";
+        JingJie activatedJingJie = GetActivatedJingJie();
+        string spriteName = activatedJingJie != null ? $"{activatedJingJie.GetName()}阵法背景" : "未激活阵法背景";
+        return Encyclopedia.SpriteCategory.FromName(spriteName);
     }
 
     public SpriteEntry GetIconSprite() => _formationGroupEntry.GetIconSprite();

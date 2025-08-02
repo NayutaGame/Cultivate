@@ -13,6 +13,7 @@ public class DialogWindow : MonoBehaviour
 
     private void Awake()
     {
+        Confirm.CheckAwake();
         Confirm.LeftClickNeuron.Join(CloseDialog);
     }
 

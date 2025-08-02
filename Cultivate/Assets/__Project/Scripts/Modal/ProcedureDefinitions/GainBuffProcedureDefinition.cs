@@ -11,6 +11,11 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
     public bool Induced;
 
     public GainBuffProcedureDefinition(
+        string buffName,
+        int stack = 1,
+        bool recursive = true,
+        bool induced = false) : this(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced) { }
+    public GainBuffProcedureDefinition(
         BuffEntry buffEntry,
         int stack = 1,
         bool recursive = true,

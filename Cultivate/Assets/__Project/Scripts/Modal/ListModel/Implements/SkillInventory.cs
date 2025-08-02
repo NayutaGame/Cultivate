@@ -14,8 +14,8 @@ public class SkillInventory : ListModel<RunSkill>
         (lhs, rhs) => lhs.JingJie - rhs.JingJie;
 
     private static Comparison<RunSkill> WuXingComparison =
-        (lhs, rhs) => (lhs.GetEntry().WuXing.HasValue ? lhs.GetEntry().WuXing.Value._index : -1) -
-                      (rhs.GetEntry().WuXing.HasValue ? rhs.GetEntry().WuXing.Value._index : -1);
+        (lhs, rhs) => (lhs.GetEntry().WuXing.IsBasic() ? lhs.GetEntry().WuXing.GetIndex() : -1) -
+                      (rhs.GetEntry().WuXing.IsBasic() ? rhs.GetEntry().WuXing.GetIndex() : -1);
 
     private static Comparison<RunSkill> IndexComparison =
         (lhs, rhs) => Encyclopedia.SkillCategory.IndexOf(lhs.GetEntry()) - Encyclopedia.SkillCategory.IndexOf(rhs.GetEntry());

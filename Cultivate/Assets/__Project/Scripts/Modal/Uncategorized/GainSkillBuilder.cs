@@ -23,6 +23,8 @@ public class GainSkillBuilder
         _preferredDeckIndices = new();
     }
 
+    public void Pick(string skillName)
+        => Pick(Encyclopedia.SkillCategory.FromName(skillName));
     public void Pick(SkillEntry skillEntry)
     {
         _drawnSkillEntries.Add(skillEntry);
@@ -32,7 +34,7 @@ public class GainSkillBuilder
     {
         _skillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
         _skillPool.Shuffle();
-        skillEntry ??= Encyclopedia.SkillCategory.DefaultEntry();
+        skillEntry ??= Encyclopedia.SkillCategory.Default();
         _drawnSkillEntries.Add(skillEntry);
     }
 
@@ -53,19 +55,19 @@ public class GainSkillBuilder
                 return true;
             });
 
-            item ??= Encyclopedia.SkillCategory.DefaultEntry();
+            item ??= Encyclopedia.SkillCategory.Default();
             toRet.Add(item);
         }
 
         if (!d.Consume)
-            _skillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.DefaultEntry()));
+            _skillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.Default()));
 
         _skillPool.Shuffle();
         
         _drawnSkillEntries.AddRange(toRet);
     }
     
-    public void Create(JingJie? preferredJingJie = null)
+    public void Create(JingJie preferredJingJie = null)
     {
         int start = _createdSkills.Count;
         int count = _drawnSkillEntries.Count - _createdSkills.Count;
@@ -75,7 +77,7 @@ public class GainSkillBuilder
         }
     }
 
-    public void SingleCreate(JingJie? preferredJingJie = null)
+    public void SingleCreate(JingJie preferredJingJie = null)
     {
         int start = _createdSkills.Count;
         _createdSkills.Add(RunSkill.FromEntryJingJie(_drawnSkillEntries[start], preferredJingJie ?? JingJie.LianQi));

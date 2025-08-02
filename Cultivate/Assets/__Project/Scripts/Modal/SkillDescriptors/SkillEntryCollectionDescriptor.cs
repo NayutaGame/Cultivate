@@ -5,9 +5,9 @@ public class SkillEntryCollectionDescriptor
 {
     private Predicate<SkillEntry> _pred;
     
-    private WuXing? _wuXing;
-    private JingJie? _jingJie;
-    public JingJie? JingJie => _jingJie;
+    private WuXing _wuXing;
+    private JingJie _jingJie;
+    public JingJie JingJie => _jingJie;
     private TagComposite _tagComposite;
     private int _count;
     public int Count => _count;
@@ -18,8 +18,8 @@ public class SkillEntryCollectionDescriptor
 
     public SkillEntryCollectionDescriptor(
         Predicate<SkillEntry> pred = null,
-        WuXing? wuXing = null,
-        JingJie? jingJie = null,
+        WuXing wuXing = null,
+        JingJie jingJie = null,
         TagComposite tagComposite = null,
         int count = 1,
         bool distinct = true,
@@ -42,7 +42,7 @@ public class SkillEntryCollectionDescriptor
         if (_wuXing != null && skillEntry.WuXing != _wuXing)
             return false;
 
-        if (_jingJie != null && !skillEntry.JingJieContains(_jingJie.Value))
+        if (_jingJie != null && !skillEntry.JingJieContains(_jingJie))
             return false;
 
         if (_tagComposite != null && !skillEntry.GetTagComposite().Contains(_tagComposite))

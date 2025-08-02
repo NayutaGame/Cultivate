@@ -20,9 +20,9 @@ public class ConfigPack : AnnotatablePack
     }
 
     public string GetName()
-        => Entry.Name;
+        => Entry.GetName();
 
-    public WuXing? GetWuXing()
+    public WuXing GetWuXing()
         => Entry.WuXing;
 
     public Description GetDescription()

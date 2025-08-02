@@ -54,6 +54,10 @@ public class SetHealthDetails : RunClosureDetails
 
     private static int GetHealthDiffFromJingJieChange(JingJie fromJingJie, JingJie toJingJie)
     {
+        if (fromJingJie == null || toJingJie == null)
+        {
+            ;
+        }
         int diff = RunEntity.HealthFromJingJie[toJingJie] - RunEntity.HealthFromJingJie[fromJingJie];
         return diff;
     }

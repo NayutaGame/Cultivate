@@ -7,8 +7,8 @@ using UnityEngine;
 [Serializable]
 public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
 {
-    [SerializeField] private SkillEntry _entry;
     [SerializeReference] private SkillSlot _skillSlot;
+    [SerializeField] private SkillEntry _entry;
     [SerializeField] private JingJie _jingJie;
     [SerializeField] protected int _runUsedTimes;
     [SerializeField] protected int _runEquippedTimes;
@@ -55,6 +55,9 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
         => new(entry, Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie), 0, 0, null);
 
+    public static RunSkill FromEntryId(string id)
+        => FromEntry(Encyclopedia.SkillCategory.FromId(id));
+
     public static RunSkill FromEntry(SkillEntry entry)
         => FromEntryJingJie(entry, entry.LowestJingJie);
 
@@ -81,7 +84,7 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
     public Sprite GetSprite()
         => _entry.GetSprite();
 
-    public WuXing? GetWuXing()
+    public WuXing GetWuXing()
         => _entry.WuXing;
 
     public string GetName()
@@ -185,13 +188,14 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.SkillCategory[_entry.GetId()];
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.SkillCategory.FromId(_entry.GetId());
+        _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
 
         if (_appliedMutators != null)
         {
             for (int i = 0; i < _appliedMutators.Count; i++)
             {
-                _appliedMutators[i] = string.IsNullOrEmpty(_appliedMutators[i].GetId()) ? null : Encyclopedia.SkillCategory[_appliedMutators[i].GetId()];
+                _appliedMutators[i] = string.IsNullOrEmpty(_appliedMutators[i].GetId()) ? null : Encyclopedia.SkillCategory.FromId(_appliedMutators[i].GetId());
             }
         }
     }

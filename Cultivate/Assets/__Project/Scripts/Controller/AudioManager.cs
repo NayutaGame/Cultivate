@@ -35,6 +35,11 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
+    public static void Play(string audioName)
+    {
+        Play(Encyclopedia.AudioCategory.FromName(audioName));
+    }
+
     public void Stop()
     {
         BGMEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

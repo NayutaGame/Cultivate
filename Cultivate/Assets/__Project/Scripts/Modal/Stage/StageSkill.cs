@@ -75,7 +75,7 @@ public class StageSkill : StageClosureListener
     public static StageSkill FromPlacedSkill(StageEntity owner, int slotIndex, PlacedSkill placedSkill)
         => new(owner, slotIndex, slotIndex, placedSkill.Entry, placedSkill.JingJie);
 
-    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie? jingJie = null, int slotIndex = 0)
+    public static StageSkill FromSkillEntry(StageEntity owner, SkillEntry skillEntry, JingJie jingJie = null, int slotIndex = 0)
         => new(owner, slotIndex, null, skillEntry, jingJie ?? skillEntry.LowestJingJie);
 
     public StageSkill Clone()
