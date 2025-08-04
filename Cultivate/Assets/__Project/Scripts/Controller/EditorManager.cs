@@ -62,6 +62,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     [NonSerialized] public FilteredListModel<RunSkill> FilteredSkillInventory;
 
     [NonSerialized] private Dirty<StageResult> _simulateResult;
+    public void GuaranteeSimulateResult() => _simulateResult.Guarantee();
     public StageResult GetSimulateResult() => _simulateResult.Value;
 
     [NonSerialized] private RunConfig _config;
@@ -190,7 +191,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
             EntityEditableList = null;
         }
 
-        if (EntityEditableList == null) ;
+        if (EntityEditableList == null)
         {
             NewProfile();
         }

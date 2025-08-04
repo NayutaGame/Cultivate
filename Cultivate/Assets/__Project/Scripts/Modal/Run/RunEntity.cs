@@ -107,6 +107,11 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         return true;
     }
 
+    public void ClearSlotResults()
+    {
+        TraversalCurrentSlots().Do(s => s.ClearResults());
+    }
+
     #endregion
 
     #region Procedures

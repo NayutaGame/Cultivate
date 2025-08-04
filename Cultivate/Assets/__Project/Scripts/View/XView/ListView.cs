@@ -69,6 +69,11 @@ public class ListView : XView
         return _activePool.FirstIdx(v => v == view);
     }
 
+    public int? IndexFromView(Predicate<SlotView> pred)
+    {
+        return _activePool.FirstIdx(pred);
+    }
+
     public SlotView ViewFromIndex(int i)
         => _activePool[i];
 

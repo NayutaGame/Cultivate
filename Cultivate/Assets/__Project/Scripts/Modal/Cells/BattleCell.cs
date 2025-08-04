@@ -37,7 +37,8 @@ public class BattleCell : Cell
     {
         base.DefaultExit(cell);
         SetEnemy(null);
-        RunManager.Instance.Environment.ClearSlotResults();
+        
+        // RunManager.Instance.Environment.ClearSlotResults();
     }
 
     private Func<Cell> _winOperation;

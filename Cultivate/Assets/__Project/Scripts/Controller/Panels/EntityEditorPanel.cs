@@ -80,6 +80,7 @@ public class EntityEditorPanel : Panel
 
     public override void Refresh()
     {
+        EditorManager.Instance.GuaranteeSimulateResult();
         AwayEntityView.Refresh();
         RefreshOperationBoard();
         HomeEntityView.Refresh();
@@ -88,21 +89,18 @@ public class EntityEditorPanel : Panel
     private void CopyToTop()
     {
         AppManager.Instance.EditorManager.CopyToTop();
-        CheckAwake();
         Refresh();
     }
 
     private void SwapTopAndBottom()
     {
         AppManager.Instance.EditorManager.SwapTopAndBottom();
-        CheckAwake();
         Refresh();
     }
 
     private void CopyToBottom()
     {
         AppManager.Instance.EditorManager.CopyToBottom();
-        HomeEntityView.SetAddress(new Address("Editor.Home"));
         Refresh();
     }
 
@@ -149,33 +147,54 @@ public class EntityEditorPanel : Panel
     }
 
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
-        => SelectEntity((ib.GetView() as SlotView).GetContentView().GetBehaviour<SelectBehaviour>());
+        => SelectEntityBySelectBehaviour((ib.GetView() as SlotView).GetContentView().GetBehaviour<SelectBehaviour>());
 
     private void DeselectEntity(InteractBehaviour ib, PointerEventData eventData)
-        => SelectEntity(null);
+        => DeselectEntity();
 
-    private void SelectEntityByIndex(int? selectionIndex)
-        => SelectEntity(selectionIndex == null ? null : EntityBrowser.ViewFromIndex(selectionIndex.Value).GetBehaviour<SelectBehaviour>());
+    private int? SelectionIndexFromSelectBehaviour(SelectBehaviour selectBehaviour)
+    {
+        XView contentView = selectBehaviour.GetView();
+        return EntityBrowser.IndexFromView(slotView => slotView.GetContentView() == contentView);
+    }
 
-    private void SelectEntity(SelectBehaviour selectBehaviour)
+    private SelectBehaviour SelectBehaviourFromSelectionIndex(int? selectionIndex)
+    {
+        if (!selectionIndex.HasValue)
+            return null;
+        return EntityBrowser.ViewFromIndex(selectionIndex.Value).GetContentView().GetComponent<SelectBehaviour>();
+    }
+
+    private void DeselectEntity()
+        => InnerSelectEntity(null, null);
+
+    private void SelectEntityBySelectionIndex(int? selectionIndex)
+        => InnerSelectEntity(selectionIndex, SelectBehaviourFromSelectionIndex(selectionIndex));
+
+    private void SelectEntityBySelectBehaviour(SelectBehaviour selectBehaviour)
+        => InnerSelectEntity(SelectionIndexFromSelectBehaviour(selectBehaviour), selectBehaviour);
+
+    private void InnerSelectEntity(int? selectionIndex, SelectBehaviour selectBehaviour)
     {
         if (_selection != null)
             _selection.SetSelectAsync(false);
 
         _selection = selectBehaviour;
-        _selectionIndex = EntityBrowser.IndexFromView(_selection == null ? null : _selection.GetView() as SlotView);
+        _selectionIndex = selectionIndex;
 
-        // TODO: submit form
         EditorManager.Instance.SetSelectionIndex(_selectionIndex);
 
         if (_selection != null)
         {
             AwayEntityView.SetAddress(_selection.GetAddress());
-            AwayEntityView.Refresh();
             _selection.SetSelectAsync(true);
         }
+        else
+        {
+            AwayEntityView.SetAddress(null);
+        }
         
-        RefreshOperationBoard();
+        Refresh();
     }
 
     private void RefreshOperationBoard()
@@ -244,7 +263,7 @@ public class EntityEditorPanel : Panel
         model.Swap(_selectionIndex.Value - 1, _selectionIndex.Value);
         Refresh();
         EntityBrowser.Modified(_selectionIndex.Value);
-        SelectEntityByIndex(_selectionIndex.Value - 1);
+        SelectEntityBySelectionIndex(_selectionIndex.Value - 1);
         EntityBrowser.Modified(_selectionIndex.Value);
     }
 
@@ -261,7 +280,7 @@ public class EntityEditorPanel : Panel
         model.Swap(_selectionIndex.Value, _selectionIndex.Value + 1);
         Refresh();
         EntityBrowser.Modified(_selectionIndex.Value);
-        SelectEntityByIndex(_selectionIndex.Value + 1);
+        SelectEntityBySelectionIndex(_selectionIndex.Value + 1);
         EntityBrowser.Modified(_selectionIndex.Value);
     }
 

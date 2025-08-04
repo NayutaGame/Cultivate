@@ -35,5 +35,12 @@ namespace CLLibrary
         {
             _dirty = true;
         }
+
+        public void Guarantee()
+        {
+            if (!_dirty) return;
+            _value = _generator();
+            _dirty = false;
+        }
     }
 }

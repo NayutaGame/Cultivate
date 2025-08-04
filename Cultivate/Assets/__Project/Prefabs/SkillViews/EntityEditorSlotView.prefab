@@ -52,13 +52,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7de7a48b043363843ae08717a04584cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactBehaviour: {fileID: 0}
+  _interactBehaviour: {fileID: 1541276016600836446}
+  _contentView: {fileID: 0}
+  _useGrabber: 1
   IdleConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
     LocalScale: {x: 1, y: 1, z: 1}
   HoverConfiguration:
     LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+    LocalScale: {x: 0.8, y: 0.8, z: 0.8}
 --- !u!222 &6359906681201007942
 CanvasRenderer:
   m_ObjectHideFlags: 0

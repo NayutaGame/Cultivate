@@ -1075,7 +1075,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     
     private void ClearResults()
     {
-        RunManager.Instance.Environment.ClearSlotResults();
-        // _entities.Do(stageEntity => stageEntity.RunEntity.TraversalCurrentSlots().Do(s => s.ClearResults()));
+        _entities[0].RunEntity.ClearSlotResults();
+        _entities[1].RunEntity.ClearSlotResults();
     }
 }

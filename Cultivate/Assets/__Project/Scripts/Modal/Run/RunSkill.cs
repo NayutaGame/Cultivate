@@ -102,6 +102,9 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
 
     public Description GetDescription(JingJie showingJingJie)
     {
+        if (GetEntry().GetName() == "金刃")
+            ;
+        
         if (_jingJie != showingJingJie)
             return GetEntry().GetDescription(showingJingJie);
         
