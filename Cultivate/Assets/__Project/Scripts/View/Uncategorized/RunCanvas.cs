@@ -13,7 +13,6 @@ public class RunCanvas : Panel
     public MapPanel MapPanel;
     public Button MapButton;
     public TopBar TopBar;
-    public ConsolePanel ConsolePanel;
 
     private PanelSM PanelSM;
 
@@ -63,9 +62,6 @@ public class RunCanvas : Panel
         DeckPanel.CheckAwake();
         MapPanel.CheckAwake();
         TopBar.CheckAwake();
-        ConsolePanel.CheckAwake();
-        
-        ConsolePanel.gameObject.SetActive(!AppManager.Instance.AudienceIsPlayer());
     }
 
     private void RefreshPanel()

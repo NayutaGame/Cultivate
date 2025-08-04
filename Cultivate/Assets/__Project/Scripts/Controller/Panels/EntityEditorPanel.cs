@@ -44,10 +44,12 @@ public class EntityEditorPanel : Panel
         SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.CloseAnnotation);
         SkillBrowser.DropNeuron.Join(Clear);
 
+        AwayEntityView.CheckAwake();
         AwayEntityView.SetAddress(null);
         AwayEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
         AwayEntityView.DropSlotNeuron.Join(Write, Swap);
 
+        HomeEntityView.CheckAwake();
         HomeEntityView.SetAddress(new Address("Editor.Home"));
         HomeEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
         HomeEntityView.DropSlotNeuron.Join(Write, Swap);

@@ -31,6 +31,19 @@ public class EntityEditorEntityView : XView
 
     public GameObject Blank;
 
+    protected override void AwakeFunction()
+    {
+        base.AwakeFunction();
+        
+        if (FieldView != null)
+        {
+            FieldView.CheckAwake();
+        }
+
+        if (FormationListView != null)
+            FormationListView.CheckAwake();
+    }
+
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
@@ -90,10 +103,6 @@ public class EntityEditorEntityView : XView
         if (FieldView != null)
         {
             FieldView.SetAddress(GetAddress().Append(".Slots"));
-            // FieldView.PointerExitNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit);
-            // FieldView.PointerMoveNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerMove);
-            // FieldView.BeginDragNeuron.Join(CanvasManager.Instance.SkillAnnotation.PointerExit,
-            //     CanvasManager.Instance.FormationAnnotation.PointerExit);
             FieldView.RightClickNeuron.Join(RightClickSlotNeuron);
             FieldView.DropNeuron.Join(DropSlotNeuron);
         }
@@ -168,7 +177,7 @@ public class EntityEditorEntityView : XView
         SetLadder(entity.GetLadder());
         SetInPool(entity.IsInPool());
         FieldView.Sync();
-        FormationListView.Refresh();
+        FormationListView.Sync();
     }
 
     private void EntryChanged(int entityEntryIndex)

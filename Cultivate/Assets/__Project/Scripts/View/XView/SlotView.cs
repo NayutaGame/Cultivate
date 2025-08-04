@@ -100,35 +100,35 @@ public class SlotView : XView
     {
         if (_interactBehaviour != null)
         {
-            ib.PointerEnterNeuron.Remove(PointerEnter);
-            ib.PointerExitNeuron.Remove(PointerExit);
-            ib.BeginDragNeuron.Remove(BeginDrag);
-            ib.EndDragNeuron.Remove(EndDrag);
-            ib.DragNeuron.Remove(Drag);
-            ib.DragNeuron.Remove(DragUseGrabber);
-            ib.DraggingExitNeuron.Remove(DraggingExit);
+            _interactBehaviour.PointerEnterNeuron.Remove(PointerEnter);
+            _interactBehaviour.PointerExitNeuron.Remove(PointerExit);
+            _interactBehaviour.BeginDragNeuron.Remove(BeginDrag);
+            _interactBehaviour.EndDragNeuron.Remove(EndDrag);
+            _interactBehaviour.DragNeuron.Remove(Drag);
+            _interactBehaviour.DragNeuron.Remove(DragUseGrabber);
+            _interactBehaviour.DraggingExitNeuron.Remove(DraggingExit);
         }
         base.SetInteractBehaviour(ib);
         if (_interactBehaviour != null)
         {
             if (_allowHover)
             {
-                ib.PointerEnterNeuron.Join(PointerEnter);
-                ib.PointerExitNeuron.Join(PointerExit);
+                _interactBehaviour.PointerEnterNeuron.Join(PointerEnter);
+                _interactBehaviour.PointerExitNeuron.Join(PointerExit);
             }
             
             if (_allowDrag)
             {
-                ib.BeginDragNeuron.Join(BeginDrag);
-                ib.EndDragNeuron.Join(EndDrag);
+                _interactBehaviour.BeginDragNeuron.Join(BeginDrag);
+                _interactBehaviour.EndDragNeuron.Join(EndDrag);
                 if (_useGrabber)
-                    ib.DragNeuron.Join(DragUseGrabber);
+                    _interactBehaviour.DragNeuron.Join(DragUseGrabber);
                 else
-                    ib.DragNeuron.Join(Drag);
+                    _interactBehaviour.DragNeuron.Join(Drag);
             }
             else
             {
-                ib.DraggingExitNeuron.Join(DraggingExit);
+                _interactBehaviour.DraggingExitNeuron.Join(DraggingExit);
             }
         }
     }

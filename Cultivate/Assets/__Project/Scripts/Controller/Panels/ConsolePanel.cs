@@ -4,6 +4,7 @@ using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Tween = DG.Tweening.Tween;
 
@@ -36,7 +37,7 @@ public class ConsolePanel : Panel
     public Button ButtonDoNotShow;
 
     public Button PrintJsonButton;
-    public Button WriteIntoEditable;
+    [FormerlySerializedAs("WriteIntoEditable")] public Button WriteIntoEditableButton;
 
     public TMP_Text GRResultText;
 
@@ -60,21 +61,6 @@ public class ConsolePanel : Panel
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-
-        AddMingYuanButton.onClick.RemoveAllListeners();
-        AddMingYuanButton.onClick.AddListener(AddMingYuan);
-        ReduceMingYuanButton.onClick.RemoveAllListeners();
-        ReduceMingYuanButton.onClick.AddListener(ReduceMingYuan);
-        
-        AddGoldButton.onClick.RemoveAllListeners();
-        AddGoldButton.onClick.AddListener(AddGold);
-        ReduceGoldButton.onClick.RemoveAllListeners();
-        ReduceGoldButton.onClick.AddListener(ReduceGold);
-        
-        AddHealthButton.onClick.RemoveAllListeners();
-        AddHealthButton.onClick.AddListener(AddHealth);
-        ReduceHealthButton.onClick.RemoveAllListeners();
-        ReduceHealthButton.onClick.AddListener(ReduceHealth);
 
         JingJieDropdown.options = new();
         JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.GetName())));
@@ -117,10 +103,10 @@ public class ConsolePanel : Panel
         ButtonDoNotShow.onClick.AddListener(TurnOffShow);
         
         PrintJsonButton.onClick.RemoveAllListeners();
-        PrintJsonButton.onClick.AddListener(RunManager.Instance.Environment.PrintJson);
+        PrintJsonButton.onClick.AddListener(PrintJson);
         
-        WriteIntoEditable.onClick.RemoveAllListeners();
-        WriteIntoEditable.onClick.AddListener(RunManager.Instance.Environment.WriteIntoEditable);
+        WriteIntoEditableButton.onClick.RemoveAllListeners();
+        WriteIntoEditableButton.onClick.AddListener(WriteIntoEditable);
         
         TesterNoteInputField.onEndEdit.RemoveAllListeners();
         TesterNoteInputField.onEndEdit.AddListener(OnTesterNoteInputFieldEndEdit);
@@ -133,9 +119,22 @@ public class ConsolePanel : Panel
         
         CopyReportButton.onClick.RemoveAllListeners();
         CopyReportButton.onClick.AddListener(CopyReport);
+        
+        RunManager.Instance.RegisteredRunEnvironmentNeuron.Join(RegisteredRunEnvironment);
+        RunManager.Instance.UnregisteredRunEnvironmentNeuron.Join(UnregisteredRunEnvironment);
     }
 
     private Action _update;
+
+    private void PrintJson()
+    {
+        RunManager.Instance.Environment.PrintJson();
+    }
+
+    private void WriteIntoEditable()
+    {
+        RunManager.Instance.Environment.WriteIntoEditable();
+    }
 
     private void TurnOnShowGRResult()
     {
@@ -157,32 +156,63 @@ public class ConsolePanel : Panel
     private void RefreshInfo()
     {
         RunEnvironment env = RunManager.Instance.Environment;
-        MingYuanText.text = env.GetMingYuan().ToString();
-        GoldText.text = env.GetGold().Curr.ToString();
-        HealthText.text = env.Home.GetHealth().ToString();
+        if (env != null)
+        {
+            MingYuanText.text = env.GetMingYuan().ToString();
+            GoldText.text = env.GetGold().Curr.ToString();
+            HealthText.text = env.Home.GetHealth().ToString();
+        }
+        else
+        {
+            MingYuanText.text = "环境未就绪";
+            GoldText.text = "环境未就绪";
+            HealthText.text = "环境未就绪";
+        }
+    }
+
+    private void RegisteredRunEnvironment(RunEnvironment env)
+    {
+        env.GainMingYuanNeuron.Add(RefreshMingYuan);
+        env.LoseMingYuanNeuron.Add(RefreshMingYuan);
+        env.GainGoldNeuron.Add(RefreshGold);
+        env.LoseGoldNeuron.Add(RefreshGold);
+        env.GainHealthNeuron.Add(RefreshDHealth);
+        env.LoseHealthNeuron.Add(RefreshDHealth);
+        env.AppendReportNeuron.Add(OnAppendReport);
+        
+        AddMingYuanButton.onClick.AddListener(AddMingYuan);
+        ReduceMingYuanButton.onClick.AddListener(ReduceMingYuan);
+        AddGoldButton.onClick.AddListener(AddGold);
+        ReduceGoldButton.onClick.AddListener(ReduceGold);
+        AddHealthButton.onClick.AddListener(AddHealth);
+        ReduceHealthButton.onClick.AddListener(ReduceHealth);
+    }
+
+    private void UnregisteredRunEnvironment(RunEnvironment env)
+    {
+        env.GainMingYuanNeuron.Remove(RefreshMingYuan);
+        env.LoseMingYuanNeuron.Remove(RefreshMingYuan);
+        env.GainGoldNeuron.Remove(RefreshGold);
+        env.LoseGoldNeuron.Remove(RefreshGold);
+        env.GainHealthNeuron.Remove(RefreshDHealth);
+        env.LoseHealthNeuron.Remove(RefreshDHealth);
+        env.AppendReportNeuron.Remove(OnAppendReport);
+        
+        AddMingYuanButton.onClick.RemoveAllListeners();
+        ReduceMingYuanButton.onClick.RemoveAllListeners();
+        AddGoldButton.onClick.RemoveAllListeners();
+        ReduceGoldButton.onClick.RemoveAllListeners();
+        AddHealthButton.onClick.RemoveAllListeners();
+        ReduceHealthButton.onClick.RemoveAllListeners();
     }
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.GainMingYuanNeuron.Add(RefreshMingYuan);
-        RunManager.Instance.Environment.LoseMingYuanNeuron.Add(RefreshMingYuan);
-        RunManager.Instance.Environment.GainGoldNeuron.Add(RefreshGold);
-        RunManager.Instance.Environment.LoseGoldNeuron.Add(RefreshGold);
-        RunManager.Instance.Environment.GainHealthNeuron.Add(RefreshDHealth);
-        RunManager.Instance.Environment.LoseHealthNeuron.Add(RefreshDHealth);
-        RunManager.Instance.Environment.AppendReportNeuron.Add(OnAppendReport);
         RefreshInfo();
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.GainMingYuanNeuron.Remove(RefreshMingYuan);
-        RunManager.Instance.Environment.LoseMingYuanNeuron.Remove(RefreshMingYuan);
-        RunManager.Instance.Environment.GainGoldNeuron.Remove(RefreshGold);
-        RunManager.Instance.Environment.LoseGoldNeuron.Remove(RefreshGold);
-        RunManager.Instance.Environment.GainHealthNeuron.Remove(RefreshDHealth);
-        RunManager.Instance.Environment.LoseHealthNeuron.Remove(RefreshDHealth);
-        RunManager.Instance.Environment.AppendReportNeuron.Remove(OnAppendReport);
     }
 
     private void RefreshMingYuan(int value)

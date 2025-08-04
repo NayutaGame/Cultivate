@@ -19,6 +19,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("General")] public AnnotationManager AnnotationManager;
     [TabGroup("General")] [SerializeField] private Camera Camera;
     [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
+    [TabGroup("General")] [SerializeField] private ConsolePanel ConsolePanel;
     
     [TabGroup("Others")]public Grabber Grabber;
     [TabGroup("Others")]public MergePreresultView MergePreresultView;
@@ -55,6 +56,8 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
         MergePreresultView.CheckAwake();
         AnnotationManager.CheckAwake();
+        ConsolePanel.CheckAwake();
+        ConsolePanel.gameObject.SetActive(!AppManager.Instance.AudienceIsPlayer());
         
         GuideView.SetAddress(new Address("Run.Environment.ActivePanel.Guide"));
         
@@ -126,7 +129,24 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
         Raycaster.Raycast(d, _results);
         if (_results.Count == 0)
             return "no result";
-        return _results[0].gameObject.name;
+        return GetFullPath(_results[0].gameObject);
+    }
+
+    private string GetFullPath(GameObject gao)
+    {
+        if (gao == null)
+            return "null";
+            
+        string path = gao.name;
+        Transform parent = gao.transform.parent;
+        
+        while (parent != null)
+        {
+            path = parent.name + "/" + path;
+            parent = parent.parent;
+        }
+        
+        return path;
     }
 
     [TabGroup("Effect")] [SerializeField] private Volume _volume;

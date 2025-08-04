@@ -7,29 +7,11 @@ using UnityEngine;
 public class XView : MonoBehaviour
 {
     private RectTransform _rect;
-    public RectTransform GetRect() => _rect;
-
     [SerializeField] protected InteractBehaviour _interactBehaviour;
-    public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
-    
     private List<XBehaviour> _behaviours;
-    public List<XBehaviour> GetBehaviours() => _behaviours;
-    public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
-
-    public void JoinBehaviour(XBehaviour behaviour)
-    {
-        if (_behaviours.Contains(behaviour))
-            return;
-        
-        _behaviours.Add(behaviour);
-        behaviour.SetView(this);
-        behaviour.CheckAwake();
-    }
-    
     private bool _hasAwoken;
     private Animator _animator;
-    public Animator GetAnimator() => _animator;
-    public void SetAnimator(Animator animator) => _animator = animator;
+    private Address _address;
 
     public virtual void Awake()
     {
@@ -64,19 +46,34 @@ public class XView : MonoBehaviour
             SetInteractBehaviour(_interactBehaviour);
         }
     }
-
-    protected virtual Animator InitAnimator()
-    {
-        return null;
-    }
-
+    
+    public RectTransform GetRect() => _rect;
+    public InteractBehaviour GetInteractBehaviour() => _interactBehaviour;
     public virtual void SetInteractBehaviour(InteractBehaviour ib)
     {
         _interactBehaviour = ib;
         _behaviours.Do(b => b.SetInteractBehaviour(ib));
     }
+    
+    public List<XBehaviour> GetBehaviours() => _behaviours;
+    public T GetBehaviour<T>() where T : XBehaviour => _behaviours.FirstObj(b => b is T) as T;
+    public void JoinBehaviour(XBehaviour behaviour)
+    {
+        if (_behaviours.Contains(behaviour))
+            return;
+        
+        _behaviours.Add(behaviour);
+        behaviour.SetView(this);
+        behaviour.CheckAwake();
+    }
+    
+    protected virtual Animator InitAnimator()
+    {
+        return null;
+    }
+    public Animator GetAnimator() => _animator;
+    public void SetAnimator(Animator animator) => _animator = animator;
 
-    private Address _address;
     public virtual Address GetAddress() => _address;
     public virtual T Get<T>() where T : class => _address?.Get<T>();
     public virtual void SetAddress(Address address)
