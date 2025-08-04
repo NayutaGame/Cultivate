@@ -1,5 +1,6 @@
 
 using System;
+using Spine.Unity.Examples;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,15 +42,15 @@ public class EntityEditorPanel : Panel
 
         SkillBrowser.SetAddress(new Address("Editor.FilteredSkillInventory"));
         SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.CloseAnnotation);
-        SkillBrowser.DropNeuron.Join(Unequip);
+        SkillBrowser.DropNeuron.Join(Clear);
 
         AwayEntityView.SetAddress(null);
         AwayEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
-        AwayEntityView.DropSlotNeuron.Join(Equip, Swap);
+        AwayEntityView.DropSlotNeuron.Join(Write, Swap);
 
         HomeEntityView.SetAddress(new Address("Editor.Home"));
         HomeEntityView.RightClickSlotNeuron.Join(IncreaseJingJie);
-        HomeEntityView.DropSlotNeuron.Join(Equip, Swap);
+        HomeEntityView.DropSlotNeuron.Join(Write, Swap);
         
         CopyToTopButton.onClick.RemoveAllListeners();
         CopyToTopButton.onClick.AddListener(CopyToTop);
@@ -103,51 +104,46 @@ public class EntityEditorPanel : Panel
         Refresh();
     }
 
-    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    private void Write(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
-        if (!(from is EntityEditorSkillBarInteractBehaviour))
-            return;
-
-        // SkillBarView -> EntityEditorSlotView
         RunSkill skill = from.Get<RunSkill>();
         SkillSlot slot = to.Get<SkillSlot>();
-
-        slot.Skill = skill;
-        Refresh();
-    }
-
-    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
-    {
-        if (!(from is EntityEditorSlotInteractBehaviour))
+        if (skill == null || slot == null)
             return;
-
-        // EntityEditorSlotView -> SkillBarView
-        SkillSlot slot = from.Get<SkillSlot>();
-
-        slot.Skill = null;
+        
+        EditorManager.Instance.TryWrite(skill, slot);
         Refresh();
     }
 
     private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
     {
-        if (!(from is EntityEditorSlotInteractBehaviour))
-            return;
-
-        // EntityEditorSlotView -> EntityEditorSlotView
         SkillSlot fromSlot = from.Get<SkillSlot>();
         SkillSlot toSlot = to.Get<SkillSlot>();
+        if (fromSlot == null || toSlot == null)
+            return;
 
-        (fromSlot.Skill, toSlot.Skill) = (toSlot.Skill, fromSlot.Skill);
+        EditorManager.Instance.TrySwap(fromSlot, toSlot);
+        Refresh();
+    }
+
+    private void Clear(InteractBehaviour from, InteractBehaviour to, PointerEventData eventData)
+    {
+        SkillSlot slot = from.Get<SkillSlot>();
+        if (slot == null)
+            return;
+        
+        EditorManager.Instance.TryClear(slot);
         Refresh();
     }
 
     private void IncreaseJingJie(InteractBehaviour ib, PointerEventData eventData)
     {
         SkillSlot slot = ib.Get<SkillSlot>();
-        slot.TryIncreaseJingJie();
-        ib.GetView().Refresh();
-        RefreshOperationBoard();
-        // CanvasManager.Instance.SkillAnnotation.Refresh();
+        if (slot == null)
+            return;
+        
+        EditorManager.Instance.TryIncreaseJingJie(slot);
+        Refresh();
     }
 
     private void SelectEntity(InteractBehaviour ib, PointerEventData eventData)
@@ -182,7 +178,7 @@ public class EntityEditorPanel : Panel
 
     private void RefreshOperationBoard()
     {
-        if (EditorManager.Instance.SimulateResult is { } result)
+        if (EditorManager.Instance.GetSimulateResult() is { } result)
         {
             Result.text =
                 $@"

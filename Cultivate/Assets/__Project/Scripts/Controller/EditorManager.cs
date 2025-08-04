@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
@@ -16,9 +17,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         get => _home;
         set
         {
-            _home?.EnvironmentChangedNeuron.Remove(EnvironmentChangedNeuron);
+            _home?.ChangedNeuron.Remove(EnvironmentChangedNeuron);
             _home = value;
-            _home?.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron);
+            _home?.ChangedNeuron.Add(EnvironmentChangedNeuron);
         }
     }
 
@@ -28,9 +29,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         get => _away;
         set
         {
-            _away?.EnvironmentChangedNeuron.Remove(EnvironmentChangedNeuron);
+            _away?.ChangedNeuron.Remove(EnvironmentChangedNeuron);
             _away = value;
-            _away?.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron);
+            _away?.ChangedNeuron.Add(EnvironmentChangedNeuron);
         }
     }
     
@@ -60,7 +61,8 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     [NonSerialized] public FilteredListModel<RunSkill> FilteredSkillInventory;
 
-    [NonSerialized] public StageResult SimulateResult;
+    [NonSerialized] private Dirty<StageResult> _simulateResult;
+    public StageResult GetSimulateResult() => _simulateResult.Value;
 
     [NonSerialized] private RunConfig _config;
 
@@ -81,7 +83,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         
         Home = RunEntity.Default();
         Away = RunEntity.Trainer();
-        EnvironmentChangedNeuron.Add(SimulateProcedure);
+        
+        _simulateResult = new(Simulate);
+        EnvironmentChangedNeuron.Add(_simulateResult.SetDirty);
 
         FilteredSkillInventory = new(AppManager.Instance.SkillInventory, s => s.GetEntry().MatchSearchText(GetSkillSearchText()));
         SetSkillSearchText("");
@@ -92,7 +96,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForEditor(Home, Away, _config));
     }
 
-    private void SimulateProcedure()
+    private StageResult Simulate()
     {
         if (RunManager.Instance.Environment == null)
         {
@@ -104,7 +108,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         FormationProcedure();
         SecondPlacementProcedure();
         
-        SimulateResult = StageResult.FromConfig(StageConfig.ForSimulate(Home, Away, _config));
+        return StageResult.FromConfig(StageConfig.ForSimulate(Home, Away, _config));
     }
 
     private void PlacementProcedure()
@@ -130,6 +134,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         if (_selectionIndex == null)
             return;
         EntityEditableList.Replace(EntityEditableList[_selectionIndex.Value], RunEntity.FromTemplate(Home));
+        EnvironmentChangedNeuron.Invoke();
     }
 
     public void SwapTopAndBottom()
@@ -139,6 +144,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         RunEntity temp = Home;
         Home = EntityEditableList[_selectionIndex.Value];
         EntityEditableList.Replace(EntityEditableList[_selectionIndex.Value], temp);
+        EnvironmentChangedNeuron.Invoke();
     }
 
     public void CopyToBottom()
@@ -146,6 +152,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         if (_selectionIndex == null)
             return;
         Home = RunEntity.FromTemplate(EntityEditableList[_selectionIndex.Value]);
+        EnvironmentChangedNeuron.Invoke();
     }
 
     public void Save()
@@ -153,51 +160,102 @@ public class EditorManager : Singleton<EditorManager>, Addressable
         FileUtility.WriteStreamingFile(EntityEditableList, EntityEditableList.Filename);
     }
 
+    private void LoadOrDefault()
+    {
+        if (!FileUtility.IsPersistentFileExists(ProfileList.Filename))
+        {
+            NewProfile();
+        }
+        else
+        {
+            Load();
+        }
+    }
+
+    public void NewProfile()
+    {
+        EntityEditableList = new EntityEditableList();
+        Save();
+    }
+
     public void Load()
     {
-        EntityEditableList = FileUtility.ReadStreamingFile<EntityEditableList>(EntityEditableList.Filename);
+        try
+        {
+            EntityEditableList = FileUtility.ReadStreamingFile<EntityEditableList>(EntityEditableList.Filename);
+        }
+        catch
+        {
+            Debug.Log("检测到存档过时或者损坏，已经创建新存档");
+            EntityEditableList = null;
+        }
+
+        if (EntityEditableList == null) ;
+        {
+            NewProfile();
+        }
     }
 
     public static RunEntity FindEntity(string name)
         => Instance.EntityEditableList.FirstObj(e => e.GetEntry().GetName() == name);
 
-    // public bool TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
-    // {
-    //     EmulatedSkill temp = fromSlot.Skill;
-    //     fromSlot.Skill = toSlot.Skill;
-    //     toSlot.Skill = temp;
-    //     return true;
-    // }
-    //
-    // public bool TryWrite(RunSkill fromSkill, SkillSlot toSlot)
-    // {
-    //     toSlot.Skill = fromSkill;
-    //     return true;
-    // }
-    //
-    // public bool TryWrite(SkillSlot fromSlot, SkillSlot toSlot)
-    // {
-    //     toSlot.Skill = fromSlot.Skill;
-    //     return true;
-    // }
-    //
-    // public bool TryIncreaseJingJie(RunSkill skill)
-    // {
-    //     bool success = skill.TryIncreaseJingJie();
-    //     if (!success)
-    //         return false;
-    //     EnvironmentChanged();
-    //     return false;
-    // }
-    //
-    // public bool TryIncreaseJingJie(SkillSlot slot)
-    // {
-    //     bool success = slot.TryIncreaseJingJie();
-    //     if (!success)
-    //         return false;
-    //     EnvironmentChanged();
-    //     return false;
-    // }
+    public void TryWrite(RunSkill skill, SkillSlot slot)
+    {
+        bool skillInventoryContainsSkill = FilteredSkillInventory.Contains(skill);
+        bool homeOrAwayContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot) || 
+                                      Away.TraversalCurrentSlots().Any(s => s == slot);
+        if (!skillInventoryContainsSkill || !homeOrAwayContainsSlot)
+            return;
+
+        slot.Skill = skill;
+        EnvironmentChangedNeuron.Invoke();
+    }
+
+    public void TrySwap(SkillSlot fromSlot, SkillSlot toSlot)
+    {
+        bool homeOrAwayContainsFrom = Home.TraversalCurrentSlots().Any(s => s == fromSlot) || 
+                                      Away.TraversalCurrentSlots().Any(s => s == fromSlot);
+        bool homeOrAwayContainsTo = Home.TraversalCurrentSlots().Any(s => s == toSlot) || 
+                                    Away.TraversalCurrentSlots().Any(s => s == toSlot);
+        bool fromEqualsTo = fromSlot == toSlot;
+        bool fromHasSkill = fromSlot.Skill != null;
+        if (!homeOrAwayContainsFrom || !homeOrAwayContainsTo || fromEqualsTo || !fromHasSkill)
+            return;
+        
+        RunSkill temp = fromSlot.Skill;
+        fromSlot.Skill = toSlot.Skill;
+        toSlot.Skill = temp;
+        EnvironmentChangedNeuron.Invoke();
+    }
+
+    public void TryClear(SkillSlot slot)
+    {
+        bool homeOrAwayContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot) || 
+                                      Away.TraversalCurrentSlots().Any(s => s == slot);
+        bool slotHasSkill = slot.Skill != null;
+        if (!homeOrAwayContainsSlot || !slotHasSkill)
+            return;
+        
+        slot.Skill = null;
+        EnvironmentChangedNeuron.Invoke();
+    }
+
+    public void TryIncreaseJingJie(SkillSlot slot)
+    {
+        bool homeOrAwayContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot) || 
+                                      Away.TraversalCurrentSlots().Any(s => s == slot);
+        bool slotHasSkill = slot.Skill != null;
+        if (!homeOrAwayContainsSlot || !slotHasSkill)
+            return;
+
+        SkillEntry skillEntry = slot.Skill.GetEntry();
+        JingJie currJingJie = slot.Skill.JingJie;
+        JingJie nextJingJie = skillEntry.JingJieContains(currJingJie + 1)
+            ? currJingJie + 1
+            : skillEntry.GetLowestJingJie();
+        slot.Skill.JingJie = nextJingJie;
+        EnvironmentChangedNeuron.Invoke();
+    }
 
     public void InsertAt(int index, RunEntity template = null)
     {

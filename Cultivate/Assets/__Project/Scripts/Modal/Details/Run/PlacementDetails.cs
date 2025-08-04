@@ -8,7 +8,7 @@ public class PlacementDetails : RunClosureDetails
     public PlacementDetails(RunEntity owner)
     {
         Owner = owner;
-        OverridingSkillEntry = Encyclopedia.SkillCategory.FromId("Skill0001");
+        OverridingSkillEntry = Encyclopedia.SkillCategory.FromName("聚气术");
         OverridingJingJie = JingJie.LianQi;
     }
 }

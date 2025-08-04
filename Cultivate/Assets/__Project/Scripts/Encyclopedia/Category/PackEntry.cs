@@ -28,10 +28,28 @@ public class PackEntry : Entry
         WuXing = wuXing;
         _rawDescription = rawDescription ?? "没有描述";
         Trivia = trivia ?? "没有趣闻";
-        Cards = cardNames?.Map(skillName => Encyclopedia.SkillCategory.FromName(skillName)).ToArray() ?? Array.Empty<SkillEntry>();
-        StartCards = startCardNames?.Map(skillName => Encyclopedia.SkillCategory.FromName(skillName)).ToArray() ?? Array.Empty<SkillEntry>();
+        Cards = ConvertToSkillEntryList(cardNames);
+        StartCards = ConvertToSkillEntryList(startCardNames);
         
         _spriteEntry = Encyclopedia.SpriteCategory.FromName($"Pack{GetName()}");
+    }
+
+    private static SkillEntry[] ConvertToSkillEntryList(string[] skillNames)
+    {
+        if (skillNames == null)
+            return Array.Empty<SkillEntry>();
+        
+        return skillNames.Map(skillName =>
+        {
+            SkillEntry skillEntry = Encyclopedia.SkillCategory.FromName(skillName);
+            if (skillEntry == null)
+            {
+                Debug.Log($"没有找到{skillName}，换成了默认卡牌");
+                return Encyclopedia.SkillCategory.Default();
+            }
+
+            return skillEntry;
+        }).ToArray();
     }
     
     public override void Init()

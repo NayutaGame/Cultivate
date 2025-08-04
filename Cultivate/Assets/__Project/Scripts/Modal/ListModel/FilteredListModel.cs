@@ -16,6 +16,9 @@ public class FilteredListModel<T> : IListModel
     public object Get(int index)
         => _filteredList[index];
 
+    public bool Contains(T item)
+        => _filteredList.Contains(item);
+
     private ListModel<T> _list;
     private Predicate<T> _filter;
 

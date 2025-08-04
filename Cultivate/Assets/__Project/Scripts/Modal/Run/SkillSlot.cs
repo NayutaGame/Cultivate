@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
 {
-    [NonSerialized] public Neuron EnvironmentChangedNeuron = new();
+    [NonSerialized] public Neuron ChangedNeuron = new();
     [NonSerialized] public PlacedSkill PlacedSkill;
 
     [NonSerialized] public CostDescription ActualCostDescription;
@@ -47,25 +47,12 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
             _skill?.SetSkillSlot(null);
             _skill = value?.Clone();
             _skill?.SetSkillSlot(this);
-            EnvironmentChangedNeuron.Invoke();
+            ChangedNeuron.Invoke();
         }
     }
     
     public bool IsOccupied()
         => !_hidden && _skill != null;
-
-    public bool TryIncreaseJingJie(bool loop = true)
-    {
-        if (_skill == null)
-            return false;
-
-        bool success = _skill.TryIncreaseJingJie(loop);
-        if (!success)
-            return false;
-
-        EnvironmentChangedNeuron.Invoke();
-        return true;
-    }
 
     public void ClearResults()
     {
@@ -77,7 +64,7 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
 
     public void OnAfterDeserialize()
     {
-        EnvironmentChangedNeuron = new();
+        ChangedNeuron = new();
     }
     
     public DeckIndex ToDeckIndex()

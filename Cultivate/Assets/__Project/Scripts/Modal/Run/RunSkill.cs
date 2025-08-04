@@ -64,23 +64,6 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
     public RunSkill Clone()
         => new(_entry, _jingJie, _runUsedTimes, _runEquippedTimes, _appliedMutators);
 
-    public bool TryIncreaseJingJie(bool loop = true)
-    {
-        if (GetEntry().JingJieContains(JingJie + 1))
-        {
-            JingJie += 1;
-            return true;
-        }
-        
-        if (loop)
-        {
-            JingJie = GetEntry().LowestJingJie;
-            return true;
-        }
-
-        return false;
-    }
-
     public Sprite GetSprite()
         => _entry.GetSprite();
 

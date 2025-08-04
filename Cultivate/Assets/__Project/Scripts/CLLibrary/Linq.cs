@@ -111,6 +111,8 @@ namespace CLLibrary
 
         public static IEnumerable<T> FilterObj<T>(this IEnumerable<T> enumerable, Predicate<T> pred)
         {
+            if (enumerable == null)
+                ;
             foreach (T obj in enumerable)
             {
                 if (pred(obj))

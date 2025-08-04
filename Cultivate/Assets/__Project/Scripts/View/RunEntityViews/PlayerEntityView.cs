@@ -53,24 +53,22 @@ public class PlayerEntityView : XView
 
     private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        if (!(from is HandSkillInteractBehaviour))
+        RunSkill skill = from.Get<RunSkill>();
+        SkillSlot slot = to.Get<SkillSlot>();
+        if (skill == null || slot == null)
             return;
-
-        EquipDetails equipDetails = new(from.Get<RunSkill>(), to.Get<SkillSlot>());
-        RunManager.Instance.Environment.EquipProcedure(equipDetails);
+        
+        RunManager.Instance.Environment.TryEquipProcedure(skill, slot);
     }
 
     private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        if (!(from is FieldSlotInteractBehaviour))
+        SkillSlot fromSlot = from.Get<SkillSlot>();
+        SkillSlot toSlot = to.Get<SkillSlot>();
+        if (fromSlot == null || toSlot == null)
             return;
-
-        SkillSlot fromSkillSlot = from.Get<SkillSlot>();
-        if (fromSkillSlot.Skill == null)
-            return;
-
-        SwapDetails swapDetails = new(fromSkillSlot, to.Get<SkillSlot>());
-        RunManager.Instance.Environment.SwapProcedure(swapDetails);
+        
+        RunManager.Instance.Environment.TrySwapProcedure(fromSlot, toSlot);
     }
 
     #endregion

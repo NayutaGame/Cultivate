@@ -40,9 +40,9 @@ public class Puzzle
         _condition = condition;
         
         _home = home;
-        _home.EnvironmentChangedNeuron.Add(ChangedNeuron);
+        _home.ChangedNeuron.Add(ChangedNeuron);
         _away = away;
-        _away.EnvironmentChangedNeuron.Add(ChangedNeuron);
+        _away.ChangedNeuron.Add(ChangedNeuron);
         
         _kernel = kernel;
         
@@ -54,7 +54,7 @@ public class Puzzle
     
     ~Puzzle()
     {
-        _home.EnvironmentChangedNeuron.Remove(ChangedNeuron);
-        _away.EnvironmentChangedNeuron.Remove(ChangedNeuron);
+        _home.ChangedNeuron.Remove(ChangedNeuron);
+        _away.ChangedNeuron.Remove(ChangedNeuron);
     }
 }

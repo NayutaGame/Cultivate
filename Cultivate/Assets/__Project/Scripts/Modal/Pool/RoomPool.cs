@@ -6,7 +6,9 @@ using UnityEngine;
 [Serializable]
 public class RoomPool : Pool<RoomEntry>, ISerializationCallbackReceiver
 {
-    public void OnBeforeSerialize() { }
+    public void OnBeforeSerialize()
+    {
+    }
 
     public void OnAfterDeserialize()
     {
@@ -16,7 +18,7 @@ public class RoomPool : Pool<RoomEntry>, ISerializationCallbackReceiver
         for (int i = 0; i < tempRoomList.Length; i++)
         {
             TryPopItem(out RoomEntry popped);
-            tempRoomList[i] = string.IsNullOrEmpty(popped.GetName()) ? null : Encyclopedia.RoomCategory.FromId(popped.GetId());
+            tempRoomList[i] = string.IsNullOrEmpty(popped.GetId()) ? null : Encyclopedia.RoomCategory.FromId(popped.GetId());
         }
 
         Populate(tempRoomList);

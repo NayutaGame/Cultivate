@@ -211,9 +211,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void SetHome(RunEntity home)
     {
-        _home?.EnvironmentChangedNeuron.Remove(FieldChangedNeuron);
+        _home?.ChangedNeuron.Remove(FieldChangedNeuron);
         _home = home;
-        _home?.EnvironmentChangedNeuron.Add(FieldChangedNeuron);
+        _home?.ChangedNeuron.Add(FieldChangedNeuron);
     }
 
     public void SetAway(RunEntity away)
@@ -221,9 +221,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _awayIsDummy = away == null;
         away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
         
-        _away?.EnvironmentChangedNeuron.Remove(FieldChangedNeuron);
+        _away?.ChangedNeuron.Remove(FieldChangedNeuron);
         _away = away;
-        _away?.EnvironmentChangedNeuron.Add(FieldChangedNeuron);
+        _away?.ChangedNeuron.Add(FieldChangedNeuron);
 
         EngageEnemyDetails d = new(_awayIsDummy, _away);
         EngageEnemyNeuron.Invoke(d);
@@ -545,6 +545,17 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         return d.MergeTarget;
     }
 
+    public void TryMergeProcedure(RunSkill fromSkill, RunSkill toSkill)
+    {
+        bool handContainsFrom = Hand.Contains(fromSkill);
+        bool handContainsTo = Hand.Contains(toSkill);
+        bool fromEqualsTo = fromSkill == toSkill;
+        if (!handContainsFrom || !handContainsTo || fromEqualsTo)
+            return;
+        
+        MergeProcedure(new(fromSkill, toSkill));
+    }
+
     public void MergeProcedure(MergeDetails d)
     {
         d.PlayerJingJie = _home.GetJingJie();
@@ -635,15 +646,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         d.MergeTarget.Execute(d, Hand);
     }
 
-    // public void TryEquipProcedure(RunSkill skill, SkillSlot slot)
-    // {
-    //     bool handContainsSkill;
-    //     bool homeContainsSlot;
-    //     if (!handContainsSkill || !homeContainsSlot)
-    //         return;
-    //     
-    //     RunManager.Instance.Environment.EquipProcedure(new(skill, slot));
-    // }
+    public void TryEquipProcedure(RunSkill skill, SkillSlot slot)
+    {
+        bool handContainsSkill = Hand.Contains(skill);
+        bool homeContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot);
+        if (!handContainsSkill || !homeContainsSlot)
+            return;
+        
+        EquipProcedure(new(skill, slot));
+    }
 
     public void EquipProcedure(EquipDetails d)
     {
@@ -668,6 +679,18 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         FieldChangedNeuron.Invoke();
     }
 
+    public void TrySwapProcedure(SkillSlot fromSlot, SkillSlot toSlot)
+    {
+        bool homeContainsFrom = Home.TraversalCurrentSlots().Any(s => s == fromSlot);
+        bool homeContainsTo = Home.TraversalCurrentSlots().Any(s => s == toSlot);
+        bool fromEqualsTo = fromSlot == toSlot;
+        bool fromHasSkill = fromSlot.Skill != null;
+        if (!homeContainsFrom || !homeContainsTo || fromEqualsTo || !fromHasSkill)
+            return;
+        
+        SwapProcedure(new(fromSlot, toSlot));
+    }
+    
     public void SwapProcedure(SwapDetails d)
     {
         d.IsReplace = d.ToSlot.Skill != null;
@@ -680,6 +703,16 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         FieldChangedNeuron.Invoke();
     }
 
+    public void TryUnequipProcedure(SkillSlot slot)
+    {
+        bool homeContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot);
+        bool slotHasSkill = slot.Skill != null;
+        if (!homeContainsSlot || !slotHasSkill)
+            return;
+        
+        UnequipProcedure(UnequipDetails.FromSlot(slot));
+    }
+    
     public void UnequipProcedure(UnequipDetails d)
     {
         RunSkill toUnequip = d.SkillSlot.Skill;

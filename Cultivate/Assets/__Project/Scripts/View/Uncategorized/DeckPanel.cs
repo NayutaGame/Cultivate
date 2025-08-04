@@ -194,24 +194,21 @@ public class DeckPanel : Panel
 
     private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        if (!(from is FieldSlotInteractBehaviour))
+        SkillSlot slot = from.Get<SkillSlot>();
+        if (slot == null)
             return;
-
-        SkillSlot skillSlot = from.Get<SkillSlot>();
-        if (skillSlot.Skill == null)
-            return;
-
-        UnequipDetails unequipDetails = UnequipDetails.FromSlot(skillSlot);
-        RunManager.Instance.Environment.UnequipProcedure(unequipDetails);
+        
+        RunManager.Instance.Environment.TryUnequipProcedure(slot);
     }
 
     private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        if (!(from is HandSkillInteractBehaviour))
+        RunSkill fromSkill = from.Get<RunSkill>();
+        RunSkill toSkill = to.Get<RunSkill>();
+        if (fromSkill == null || toSkill == null)
             return;
-
-        MergeDetails mergeDetails = new(from.Get<RunSkill>(), to.Get<RunSkill>());
-        RunManager.Instance.Environment.MergeProcedure(mergeDetails);
+        
+        RunManager.Instance.Environment.TryMergeProcedure(fromSkill, toSkill);
     }
 
     #endregion

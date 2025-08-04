@@ -67,7 +67,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 rawDescription:      "集攻防于一体的剑舞。每一式都蕴含多重变化，可攻可守，令敌人难以应对。",
                 trivia:              "剑法灵感来自归鸿展翅，十二式浑然一体，如同天成。",
-                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "晚霞", "长明", "登宝塔", "一舞惊鸿" },
+                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "晚霞", "常夏", "登宝塔", "一舞惊鸿" },
                 startCardNames:      new string[] { "云袖", "正念", "战意" }
                 ),
             
@@ -76,7 +76,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 rawDescription:      "以燃烧气血为代价，爆发出惊人的威力。使用者与敌人同归于尽的觉悟越强，威力越大。",
                 trivia:              "此功原是佛门明王法，后流落江湖，习者多有走火入魔之危。",
-                cardNames:           new string[] { "一力降十会", "轰天", "拂晓", "明镜", "浴火", "藏锋", "红莲", "观众生", "常夏" },
+                cardNames:           new string[] { "一力降十会", "轰天", "拂晓", "明镜", "浴火", "藏锋", "红莲", "观众生", "炎爆" },
                 startCardNames:      new string[] { "轰天", "一力降十会", "拂晓" }
                 ),
             
@@ -85,7 +85,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Tu,
                 rawDescription:      "以厚重的护体真气抵御伤害。越是危险的处境，防御越是坚不可摧。",
                 trivia:              "须弥山不动，此功亦如是。传说创功之人曾以此功硬接天雷而不伤。",
-                cardNames:           new string[] { "寸劲", "滑步", "守势", "澄心", "八极拳", "龟息", "震脚", "崩山掌", "须弥结界" },
+                cardNames:           new string[] { "寸劲", "滑步", "守势", "澄心", "泰山落", "龟息", "震脚", "崩山掌", "须弥结界" },
                 startCardNames:      new string[] { "寸劲", "滑步", "守势" }
                 ),
             

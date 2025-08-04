@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class JingJie : Entry, IComparable<JingJie>
 {
     [NonSerialized] private int _index;
@@ -13,6 +14,7 @@ public class JingJie : Entry, IComparable<JingJie>
     [NonSerialized] private SpriteEntry _sprite;
     [NonSerialized] private string _audioName;
     [NonSerialized] private AudioEntry _audio;
+    [NonSerialized] private SpriteEntry _backgroundSprite;
     
     public JingJie(string id, string name, int index, string colorName, string audioName, string rawDescription) : base(id, name)
     {
@@ -27,6 +29,7 @@ public class JingJie : Entry, IComparable<JingJie>
         _sprite = Encyclopedia.SpriteCategory.FromName($"JingJie{GetName()}");
         _description = new(_rawDescription);
         _audio = Encyclopedia.AudioCategory.FromName(_audioName);
+        _backgroundSprite = Encyclopedia.SpriteCategory.FromName($"{GetName()}背景");
     }
     
     public int GetIndex() => _index;
@@ -34,6 +37,7 @@ public class JingJie : Entry, IComparable<JingJie>
     public Description GetDescription() => _description;
     public Sprite GetSprite() => _sprite.Sprite;
     public AudioEntry GetAudio() => _audio;
+    public Sprite GetBackgroundSprite() => _backgroundSprite.Sprite;
     
     // IComparable<JingJie> 实现
     public int CompareTo(JingJie other)

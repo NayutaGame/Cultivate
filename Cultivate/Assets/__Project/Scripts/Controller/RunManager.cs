@@ -45,11 +45,11 @@ public class RunManager : Singleton<RunManager>, Addressable
 
     public void SetBackgroundFromJingJie(JingJie j)
     {
-        SetBackground(Encyclopedia.SpriteCategory.FromName($"{j.GetName()}背景"));
+        SetBackground(j.GetBackgroundSprite());
     }
     
-    private void SetBackground(SpriteEntry background)
+    private void SetBackground(Sprite backgroundSprite)
     {
-        BackgroundRenderer.sprite = background.Sprite;
+        BackgroundRenderer.sprite = backgroundSprite;
     }
 }

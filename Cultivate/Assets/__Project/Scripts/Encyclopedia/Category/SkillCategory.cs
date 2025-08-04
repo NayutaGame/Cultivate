@@ -831,19 +831,6 @@ public class SkillCategory : Category<SkillEntry>
     {
         AddRange(new List<SkillEntry>()
         {
-            // "SkillXX_YYY"
-            // XX代表分类
-            // 00: 特殊卡牌
-            // 01: 金
-            // 02: 水
-            // 03: 木
-            // 04: 火
-            // 05: 土
-            // 06: 来自无色卡包
-            // 07: 墨染
-            // 08: 事件
-            // 09: 教程专用
-            
             #region 01金
 
             new(id:                         "Skill01_001",
@@ -3381,7 +3368,7 @@ public class SkillCategory : Category<SkillEntry>
 
             // 6 12 26 52 102
             new(id:                         "Skill1208",
-                name:                       "须臾",
+                name:                       "逝者如斯",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 descriptionGenerator:       (j, dj, costResult, castResult) =>

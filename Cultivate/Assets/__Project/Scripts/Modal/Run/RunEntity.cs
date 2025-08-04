@@ -16,7 +16,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     public static readonly string SMIRK_KEY = "Smirk";
     public static readonly string AFRAID_KEY = "Afraid";
     
-    [NonSerialized] public Neuron EnvironmentChangedNeuron;
+    [NonSerialized] public Neuron ChangedNeuron;
     [NonSerialized] private FilteredListModel<SkillSlot> _filteredSlots;
     
     [SerializeField] private EntityEntry _entry;
@@ -55,7 +55,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
         _filteredSlots?.Refresh();
         
-        EnvironmentChangedNeuron.Invoke();
+        ChangedNeuron.Invoke();
     }
     
     public void SetSlotCountFromJingJie(JingJie jingJie)
@@ -266,7 +266,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
         Bound? allowedDifficulty = null,
         bool? inPool = null)
     {
-        EnvironmentChangedNeuron = new();
+        ChangedNeuron = new();
         
         _entry = entry ?? Encyclopedia.EntityCategory.Default();
         _mingYuan = mingYuan ?? MingYuan.Default;
@@ -318,7 +318,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
     public void OnAfterDeserialize()
     {
-        EnvironmentChangedNeuron = new();
+        ChangedNeuron = new();
         
         _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.EntityCategory.FromId(_entry.GetId());
         _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
@@ -341,7 +341,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
         _showingFormations = new(_formations, f => _allowFormation);
         _activeFormations = new(_formations, f => f.IsActivated());
-        _slots.Do(slot => slot.EnvironmentChangedNeuron.Add(EnvironmentChangedNeuron));
+        _slots.Do(slot => slot.ChangedNeuron.Add(ChangedNeuron));
     }
 
     #endregion
