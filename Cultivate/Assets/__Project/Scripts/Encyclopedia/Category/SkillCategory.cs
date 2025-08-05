@@ -343,8 +343,6 @@ public class SkillCategory : Category<SkillEntry>
                                                         if (crit) await d.Src.GainBuffProcedure("暴击", induced: true);
                                                         if (lifeSteal) await d.Src.GainBuffProcedure("吸血", induced: true);
                                                         if (penetrate) await d.Src.GainBuffProcedure("穿透", induced: true);
-
-                                                        Debug.Log("here");
                                                         
                                                         d.CastResult["XieYiCrit"] = crit ? "暴击" : "暴击".ApplyInactive();
                                                         d.CastResult["XieYiLifeSteal"] = lifeSteal ? "吸血" : "吸血".ApplyInactive();
