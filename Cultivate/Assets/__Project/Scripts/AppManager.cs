@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {
-    [SerializeField] public Version _version = new(1, 0, 0);
+    [SerializeField] public Version _version;
     public static Version Version => Instance._version;
     
     private Thread _mainThread;

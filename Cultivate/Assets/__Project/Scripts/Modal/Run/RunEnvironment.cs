@@ -207,7 +207,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public MingYuan GetMingYuan() => _home.GetMingYuan();
 
     public bool IsCompatible()
-        => AppManager.Version.IsRunCompatible(_version);
+        => Version.IsRunCompatible(_version);
 
     public void SetHome(RunEntity home)
     {

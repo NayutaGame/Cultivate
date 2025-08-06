@@ -15,16 +15,15 @@ public struct Version
         Patch = patch;
     }
 
-    public bool IsProfileCompatible(Version other)
+    public static bool IsProfileCompatible(Version v)
     {
-        return Major == other.Major && Minor >= other.Minor;
+        return AppManager.Instance._version.Major == v.Major;
     }
     
-    public bool IsRunCompatible(Version other)
+    public static bool IsRunCompatible(Version v)
     {
-        return Major == other.Major &&
-               Minor == other.Minor &&
-               Patch >= other.Patch;
+        return AppManager.Instance._version.Major == v.Major &&
+               AppManager.Instance._version.Minor == v.Minor;
     }
     
     public override string ToString()

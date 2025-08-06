@@ -17,33 +17,26 @@ public class ProfileManager : Addressable
     public object Get(string s) => Accessor[s](this);
     public ProfileManager()
     {
-        LoadOrDefault();
+        ValidateProfileList();
     }
 
-    private void LoadOrDefault()
+    private void ValidateProfileList()
     {
-        if (!FileUtility.IsPersistentFileExists(ProfileList.Filename))
-        {
-            NewProfileProcedure();
-        }
-        else
-        {
+        bool profileExists = FileUtility.IsPersistentFileExists(ProfileList.Filename);
+        if (profileExists)
             LoadProcedure();
+        
+        bool profileIsValid = _profileList != null && _profileList.IsCompatible();
+        if (profileIsValid)
+        {
+            _profileList.Migrate();
+            return;
         }
+
+        CreateNewProfile();
     }
 
-    public void NewProfileProcedure()
-    {
-        _profileList = ProfileList.Default();
-        SaveProcedure();
-    }
-
-    public void SaveProcedure()
-    {
-        FileUtility.WritePersistentFile(_profileList, ProfileList.Filename);
-    }
-    
-    public void LoadProcedure()
+    private void LoadProcedure()
     {
         try
         {
@@ -51,14 +44,25 @@ public class ProfileManager : Addressable
         }
         catch
         {
-            Debug.Log("检测到存档过时或者损坏，已经创建新存档");
             _profileList = null;
         }
+    }
 
-        if (_profileList == null || !_profileList.IsCompatible())
-        {
-            NewProfileProcedure();
-        }
+    public void SaveProcedure()
+    {
+        FileUtility.WritePersistentFile(_profileList, ProfileList.Filename);
+    }
+
+    private void CreateNewProfile()
+    {
+        _profileList = ProfileList.Default();
+        GetCurrProfile().Environment = null;
+        SaveProcedure();
+    }
+
+    public void DeleteProfile()
+    {
+        CreateNewProfile();
     }
 
     public Profile GetCurrProfile()

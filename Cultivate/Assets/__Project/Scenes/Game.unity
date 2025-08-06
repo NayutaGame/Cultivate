@@ -951,8 +951,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _version:
-    Major: 0
-    Minor: 1
+    Major: 1
+    Minor: 0
     Patch: 0
   _targetAudience: 0
   _targetPackage: 0

@@ -19,13 +19,16 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
     public object Get(string s) => Accessor[s](this);
     public ProfileList()
     {
-        _version = AppManager.Version;
         _currentIndex = 0;
         Add(new Profile(0));
     }
 
     public static ProfileList Default()
-        => new();
+    {
+        ProfileList profileList = new ProfileList();
+        profileList._version = AppManager.Version;
+        return profileList;
+    }
 
     public void OnBeforeSerialize() { }
 
@@ -35,5 +38,10 @@ public class ProfileList : ListModel<Profile>, Addressable, ISerializationCallba
     }
 
     public bool IsCompatible()
-        => AppManager.Version.IsProfileCompatible(_version);
+        => Version.IsProfileCompatible(_version);
+
+    public void Migrate()
+    {
+        _version = AppManager.Version;
+    }
 }

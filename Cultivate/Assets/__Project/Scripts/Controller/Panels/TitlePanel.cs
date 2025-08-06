@@ -206,7 +206,7 @@ public class TitlePanel : Panel
 
     private void DeleteProfile()
     {
-        AppManager.Instance.ProfileManager.NewProfileProcedure();
+        AppManager.Instance.ProfileManager.DeleteProfile();
         Refresh();
     }
 
