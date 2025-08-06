@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class JingJie : Entry, IComparable<JingJie>
+public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
 {
     [NonSerialized] private int _index;
     [NonSerialized] private string _colorName;
@@ -16,6 +16,11 @@ public class JingJie : Entry, IComparable<JingJie>
     [NonSerialized] private AudioEntry _audio;
     [NonSerialized] private SpriteEntry _backgroundSprite;
     
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public JingJie(string id, string name, int index, string colorName, string audioName, string rawDescription) : base(id, name)
     {
         _index = index;
@@ -38,6 +43,8 @@ public class JingJie : Entry, IComparable<JingJie>
     public Sprite GetSprite() => _sprite.Sprite;
     public AudioEntry GetAudio() => _audio;
     public Sprite GetBackgroundSprite() => _backgroundSprite.Sprite;
+    public bool CanShowAnnotation() => true;
+    public JingJie GetJingJie() => this;
     
     // IComparable<JingJie> 实现
     public int CompareTo(JingJie other)

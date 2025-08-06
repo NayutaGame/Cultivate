@@ -1,11 +1,12 @@
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class PackEntry : Entry
+public class PackEntry : Entry, AnnotatablePack
 {
     [NonSerialized] public WuXing WuXing;
     [NonSerialized] public string _rawDescription;
@@ -15,6 +16,11 @@ public class PackEntry : Entry
     [NonSerialized] public SkillEntry[] StartCards;
     [NonSerialized] private SpriteEntry _spriteEntry;
     
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+    };
+    public object Get(string s) => Accessor[s](this);
     public PackEntry(
         string id,
         string name,
@@ -63,4 +69,6 @@ public class PackEntry : Entry
     public bool Equipped() => false;
     public bool IsUnlocked() => false;
     public string GetUnlockCondition() => null;
+    
+    public bool CanShowAnnotation() => true;
 }

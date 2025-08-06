@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
-  Icon: {fileID: 0}
+  Icon: {fileID: 7763549354374677681}
 --- !u!114 &4611206364240681070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,7 +68,6 @@ MonoBehaviour:
   _ib: {fileID: 0}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: 
   AnnotationViewType: 11
   UseRectAlignment: 1
 --- !u!1 &8548998410125420179

@@ -1856,7 +1856,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff99_008",
                 name:                       "一心",
-                rawDescription:             "下一次吟唱免费",
+                rawDescription:             "下一次吟唱无需消耗",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,

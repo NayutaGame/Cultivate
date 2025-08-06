@@ -22,6 +22,7 @@ public class Description
     {
         HandleDetailsArray = new Tuple<ICategory<Entry>, string>[]
         {
+            new(Encyclopedia.PackCategory, "pack"),
             new(Encyclopedia.TagCategory, "tag"),
             new(Encyclopedia.KeywordCategory, "buff"),
             new(Encyclopedia.BuffCategory, "keyword"),

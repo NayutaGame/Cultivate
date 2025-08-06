@@ -37,7 +37,7 @@ public class BattleEntityView : XView
         if (entity == null)
             return;
 
-        NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
+        NameText.text = $"{entity.GetEntry().GetName()}";
         
         SetModel(entity.GetEntry().GetRunModelPrefabEntry());
 

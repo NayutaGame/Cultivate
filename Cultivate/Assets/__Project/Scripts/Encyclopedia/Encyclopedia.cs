@@ -34,6 +34,8 @@ public class Encyclopedia : Addressable
         { "SkillCategory",              thisObject => SkillCategory },
         { "FormationCategory",          thisObject => FormationCategory },
         { "CharacterCategory",          thisObject => CharacterCategory },
+        { "JingJieCategory",            thisObject => JingJieCategory },
+        { "PackCategory",               thisObject => PackCategory },
     };
     public object Get(string s) => Accessor[s](this);
     public Encyclopedia()

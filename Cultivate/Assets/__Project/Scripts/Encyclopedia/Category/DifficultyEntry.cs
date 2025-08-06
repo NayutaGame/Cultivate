@@ -57,11 +57,11 @@ public class DifficultyEntry : Entry
 
         StringBuilder sb = new();
 
-        sb.Append($"难度{GetId()}\n\n");
-        sb.Append($"{GetId()}. {Description}\n");
+        sb.Append($"难度{GetName()}\n\n");
+        sb.Append($"{GetName()}. {Description}\n");
         for (int i = 0; i < InheritedDifficulties.Length; i++)
         {
-            sb.Append($"{InheritedDifficulties[i].GetId()}. {InheritedDifficulties[i].Description}\n");
+            sb.Append($"{InheritedDifficulties[i].GetName()}. {InheritedDifficulties[i].Description}\n");
         }
         
         InheritedDescription = sb.ToString();

@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using CLLibrary;
 
 public class PackCategory : Category<PackEntry>
 {

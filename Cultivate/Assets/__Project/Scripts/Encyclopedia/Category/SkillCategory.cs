@@ -2650,7 +2650,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("一心", stack: 1 + dj)
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"下{1 + dj}次吟唱免费")),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"下{1 + dj}次吟唱无需消耗")),
                 }),
 
             new(id:                         "Skill08_009",
