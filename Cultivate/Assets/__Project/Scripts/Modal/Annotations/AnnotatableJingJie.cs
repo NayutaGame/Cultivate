@@ -1,5 +1,9 @@
 
+using UnityEngine;
+
 public interface AnnotatableJingJie : Annotatable
 {
-    JingJie GetJingJie();
+    string GetName();
+    Description GetDescription();
+    Sprite GetIconSprite();
 }

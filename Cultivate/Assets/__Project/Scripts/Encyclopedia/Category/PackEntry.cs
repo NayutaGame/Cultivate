@@ -19,6 +19,7 @@ public class PackEntry : Entry, AnnotatablePack
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "Skills",                     thisObject => ((AnnotatablePack)thisObject).GetSkills() },
     };
     public object Get(string s) => Accessor[s](this);
     public PackEntry(
@@ -47,7 +48,7 @@ public class PackEntry : Entry, AnnotatablePack
         
         return skillNames.Map(skillName =>
         {
-            SkillEntry skillEntry = Encyclopedia.SkillCategory.FromName(skillName);
+            SkillEntry skillEntry = Encyclopedia.SkillCategory.FromName(skillName) ?? Encyclopedia.SkillCategory.FromId(skillName);
             if (skillEntry == null)
             {
                 Debug.Log($"没有找到{skillName}，换成了默认卡牌");
@@ -59,16 +60,20 @@ public class PackEntry : Entry, AnnotatablePack
     }
     
     public override void Init()
-        => _description = new Description(_rawDescription);
-    
+    {
+        _description = new Description(_rawDescription);
+        
+        foreach (SkillEntry skillEntry in Cards)
+            skillEntry.SetPackEntry(this);
+    }
+
     public WuXing GetWuXing() => WuXing;
     public Description GetDescription() => _description;
     public string GetTrivia() => Trivia;
     
     public Sprite GetSprite() => _spriteEntry?.Sprite;
-    public bool Equipped() => false;
-    public bool IsUnlocked() => false;
     public string GetUnlockCondition() => null;
+    public SkillEntry[] GetSkills() => Cards;
     
     public bool CanShowAnnotation() => true;
 }

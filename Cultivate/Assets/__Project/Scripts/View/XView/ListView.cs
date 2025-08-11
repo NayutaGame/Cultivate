@@ -440,16 +440,6 @@ public class ListView : XView
     #region Model Delegates
 
     private IListModel _model;
-    
-    protected IListModel Model
-    {
-        get => _model;
-        set
-        {
-            _model = value;
-            CheckNeurons();
-        }
-    }
 
     private void CheckNeurons()
     {

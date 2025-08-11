@@ -10,12 +10,12 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0001", "缺失卡面插画", "Images/MissingSprite"),
             
             // JingJie Icons
-            new("Sprite0002", "JingJie练气", "Images/JingJieIcons/练气"),
-            new("Sprite0003", "JingJie筑基", "Images/JingJieIcons/筑基"),
-            new("Sprite0004", "JingJie金丹", "Images/JingJieIcons/金丹"),
-            new("Sprite0005", "JingJie元婴", "Images/JingJieIcons/元婴"),
-            new("Sprite0006", "JingJie化神", "Images/JingJieIcons/化神"),
-            new("Sprite0007", "JingJie返虚", "Images/JingJieIcons/返虚"),
+            new("Sprite0002", "JingJie练气", "Images/JingJieIcons/LianQi"),
+            new("Sprite0003", "JingJie筑基", "Images/JingJieIcons/ZhuJi"),
+            new("Sprite0004", "JingJie金丹", "Images/JingJieIcons/JinDan"),
+            new("Sprite0005", "JingJie元婴", "Images/JingJieIcons/YuanYing"),
+            new("Sprite0006", "JingJie化神", "Images/JingJieIcons/HuaShen"),
+            new("Sprite0007", "JingJie返虚", "Images/JingJieIcons/FanXu"),
             
             // BuffIcons
             new("Sprite0008", "Buff不存在", "Images/BuffIcons/不存在"),
@@ -115,15 +115,28 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0142", "燃命阵", "Images/Formation/Icons/燃命阵"),
             
             // TagIcons
-            new("Sprite0143", "Tag金", "Images/TagIcons/金"),
-            new("Sprite0144", "Tag水", "Images/TagIcons/水"),
-            new("Sprite0145", "Tag木", "Images/TagIcons/木"),
-            new("Sprite0146", "Tag火", "Images/TagIcons/火"),
-            new("Sprite0147", "Tag土", "Images/TagIcons/土"),
-            new("Sprite0148", "Tag攻击", "Images/TagIcons/攻击"),
-            new("Sprite0149", "Tag防御", "Images/TagIcons/防御"),
-            new("Sprite0150", "Tag灵气", "Images/TagIcons/灵气"),
-            new("Sprite0151", "Tag气血", "Images/TagIcons/气血"),
+            new("Sprite14_001", "Tag金", "Images/TagIcons/金"),
+            new("Sprite14_002", "Tag水", "Images/TagIcons/水"),
+            new("Sprite14_003", "Tag木", "Images/TagIcons/木"),
+            new("Sprite14_004", "Tag火", "Images/TagIcons/火"),
+            new("Sprite14_005", "Tag土", "Images/TagIcons/土"),
+            new("Sprite14_006", "Tag无色", "Images/TagIcons/无色"),
+            new("Sprite14_007", "Tag攻击", "Images/TagIcons/攻击"),
+            new("Sprite14_008", "Tag防御", "Images/TagIcons/防御"),
+            new("Sprite14_009", "Tag灵气", "Images/TagIcons/灵气"),
+            new("Sprite14_010", "Tag气血", "Images/TagIcons/气血"),
+            new("Sprite14_011", "Tag二动", "Images/TagIcons/二动"),
+            new("Sprite14_012", "Tag自指", "Images/TagIcons/自指"),
+            new("Sprite14_013", "Tag升华", "Images/TagIcons/升华"),
+            new("Sprite14_014", "Tag一次性", "Images/TagIcons/一次性"),
+            
+            // WuXingDeco
+            new("Sprite15_001", "WuXingDeco金", "Images/WuXingDecoIcons/WuXingDeco金"),
+            new("Sprite15_002", "WuXingDeco水", "Images/WuXingDecoIcons/WuXingDeco水"),
+            new("Sprite15_003", "WuXingDeco木", "Images/WuXingDecoIcons/WuXingDeco木"),
+            new("Sprite15_004", "WuXingDeco火", "Images/WuXingDecoIcons/WuXingDeco火"),
+            new("Sprite15_005", "WuXingDeco土", "Images/WuXingDecoIcons/WuXingDeco土"),
+            new("Sprite15_006", "WuXingDeco无色", "Images/WuXingDecoIcons/WuXingDeco无色"),
             
             // RoomIcons
             new("Sprite0152", "AdventureRoomIcon", "Images/RoomIcons/AdventureRoomIcon"),

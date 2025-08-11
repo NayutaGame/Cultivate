@@ -2712,7 +2712,7 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ManaCostDefinition.FromValue(2),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new AttackProcedureDefinition(8 + dj),
+                    new AttackProcedureDefinition(8 + dj, wuXing: WuXing.Shui),
                 }),
             
             new(id:                         "Skill09_004",

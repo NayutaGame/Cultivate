@@ -1,7 +1,6 @@
 
 using System;
 using System.Collections.Generic;
-using CLLibrary;
 using UnityEngine;
 
 public class SkillEntryDescriptor : AnnotatableSkill
@@ -17,7 +16,8 @@ public class SkillEntryDescriptor : AnnotatableSkill
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
     public SkillEntryDescriptor(
@@ -135,6 +135,9 @@ public class SkillEntryDescriptor : AnnotatableSkill
 
     public TagComposite GetTagComposite()
         => _entry?.GetTagComposite();
+
+    public PackEntry GetPackEntry()
+        => _entry?.GetPackEntry();
 
     public string GetTrivia()
         => _entry?.GetTrivia();

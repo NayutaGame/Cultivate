@@ -13,7 +13,6 @@ public enum AnnotationViewType
     AchievementAnnotation,
     CostAnnotation,
     JingJieAnnotation,
-    TagAnnotation, /* WuXingAnnotation, */
-    
+    TagAnnotation,
     CycleAnnotation,
 }

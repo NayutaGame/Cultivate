@@ -102,7 +102,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Wu,
                 rawDescription:      "以丹药之力增强战力。药效来得快，去得也快，使用时需要权衡时机。",
                 trivia:              "丹兵之道，讲究以丹养气，以气养兵。丹药之效，全在一瞬。",
-                cardNames:           new string[] { "硬化蛊", "雷火弹", "养气丹", "天雷丸", "同心蛊", "七彩蛊", "破境丹", "小雷劫", "补天丹" }
+                cardNames:           new string[] { "硬化蛊", "雷火弹", "Skill06_003", "天雷丸", "同心蛊", "七彩蛊", "破境丹", "小雷劫", "补天丹" }
+                // cardNames:           new string[] { "硬化蛊", "雷火弹", "养气丹", "天雷丸", "同心蛊", "七彩蛊", "破境丹", "小雷劫", "补天丹" }
                 ),
             
             new(id:                  "Pack0012",
@@ -110,7 +111,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Wu,
                 rawDescription:      "善于利用五行相生相克之理。随着战斗推进，威力会越来越强。",
                 trivia:              "化哉者，化天地之造化。此功讲究顺应五行，借天地之力。",
-                cardNames:           new string[] { "缭乱", "流霰", "蜕变", "燎原", "百草集", "停云", "常仪", "凝水", "羲和" }
+                cardNames:           new string[] { "缭乱", "Skill06_012", "Skill06_011", "Skill06_013", "百草集", "停云", "常仪", "Skill06_017", "羲和" }
+                // cardNames:           new string[] { "缭乱", "流霰", "蜕变", "燎原", "百草集", "停云", "常仪", "凝水", "羲和" }
                 ),
         });
     }

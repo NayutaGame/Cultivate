@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [Serializable]
@@ -14,6 +15,7 @@ public class WuXing : Entry
     [NonSerialized] private WuXing _nextWuXing;
     [NonSerialized] private SpriteEntry _mergeSprite;
     [NonSerialized] private SpriteEntry _icon;
+    [NonSerialized] private SpriteEntry _deco;
     
     public WuXing(string id, string name, int index, bool isBasic, string elementaryBuffName) : base(id, name)
     {
@@ -34,11 +36,13 @@ public class WuXing : Entry
 
             _mergeSprite = Encyclopedia.SpriteCategory.FromName($"{GetName()}合成");
             _icon = Encyclopedia.SpriteCategory.FromName($"Tag{GetName()}");
+            _deco = Encyclopedia.SpriteCategory.FromName($"WuXingDeco{GetName()}");
         }
         else
         {
             _mergeSprite = Encyclopedia.SpriteCategory.FromName("可以合成");
             _icon = Encyclopedia.SpriteCategory.FromName($"Tag{GetName()}");
+            _deco = Encyclopedia.SpriteCategory.FromName($"WuXingDeco{GetName()}");
         }
     }
 
@@ -50,6 +54,7 @@ public class WuXing : Entry
     public WuXing Prev => _prevWuXing;
     public Sprite GetMergeSprite() => _mergeSprite.Sprite;
     public Sprite GetIconSprite() => _icon.Sprite;
+    public Sprite GetDecoSprite() => _deco.Sprite;
     
     public TagEntry GetTag()
         => TagEntry.FromIndex(_index);

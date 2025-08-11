@@ -21,6 +21,7 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     {
         { "Skill",                      thisObject => ((SkillSlot)thisObject)._skill },
         { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
     public SkillSlot(int index)
@@ -80,6 +81,8 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie) => _skill.GetLiteralCostDescription(showingJingJie);
     public string GetName() => _skill.GetName();
     public Description GetDescription(JingJie showingJingJie) => _skill.GetDescription(showingJingJie);
-    public TagComposite GetTagComposite() => _skill.GetTagComposite();
+    public TagComposite GetTagComposite() => _skill?.GetTagComposite();
+    public PackEntry GetPackEntry() => _skill?.GetPackEntry();
+
     public Sprite GetJingJieSprite(JingJie showingJingJie) => _skill.GetJingJieSprite(showingJingJie);
 }

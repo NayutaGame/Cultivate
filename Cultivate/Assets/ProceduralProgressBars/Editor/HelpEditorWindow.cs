@@ -114,7 +114,7 @@ namespace Renge.PPB {
                     EditorGUILayout.HelpBox("You can reopen this window any time in 'Window > Procedural Progress Bars > Help'", MessageType.Info);
                     GUILayout.Space(10);
                     using (new GUILayout.HorizontalScope()) {
-                        EditorGUILayout.LabelField("PPB 1.1.11", EditorStyles.boldLabel);
+                        EditorGUILayout.LabelField("PPB 1.1.12", EditorStyles.boldLabel);
 
                         m_ShowHelpOnStartup = ProjectPrefs.GetInt("rg-showHelpOnStartup", 1) > 0;
                         m_ShowHelpOnStartup = EditorGUILayout.ToggleLeft("Show this window at startup", m_ShowHelpOnStartup);

@@ -58,7 +58,8 @@ public class CardPickerPanel : Panel
     
     private void ToggleSelection(InteractBehaviour ib, PointerEventData eventData)
     {
-        SelectBehaviour selectBehaviour = ib.GetView().GetBehaviour<SelectBehaviour>();
+        SlotView slotView = ib.GetView() as SlotView;
+        SelectBehaviour selectBehaviour = slotView.GetContentView().GetBehaviour<SelectBehaviour>();
         bool isSelected = _selections.Contains(selectBehaviour);
     
         if (isSelected)

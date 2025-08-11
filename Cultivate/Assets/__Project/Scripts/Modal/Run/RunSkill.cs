@@ -37,10 +37,11 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
         get => _borrowed;
         set => _borrowed = value;
     }
-
+    
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
     private RunSkill(SkillEntry entry, JingJie jingJie, int runUsedTimes, int runEquippedTimes, List<SkillEntry> appliedMutators)
@@ -75,6 +76,9 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
 
     public TagComposite GetTagComposite()
         => _entry.GetTagComposite();
+
+    public PackEntry GetPackEntry()
+        => _entry.GetPackEntry();
 
     public string GetTrivia()
         => _entry.GetTrivia();

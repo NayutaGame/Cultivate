@@ -5,17 +5,16 @@ using UnityEngine.UI;
 
 public class SkillBarView : XView
 {
-    [SerializeField] private Image BackgroundImage;
-    [SerializeField] private Image WuXingImage;
-    [SerializeField] private TMP_Text NameText;
+    [SerializeField] private Image BarIllustration;
+    [SerializeField] private TMP_Text Name;
 
     public override void Refresh()
     {
         base.Refresh();
 
-        RunSkill skill = Get<RunSkill>();
-        BackgroundImage.color = CanvasManager.Instance.JingJieColors[skill.GetJingJie()];
-        WuXingImage.color = skill.GetWuXing().GetColor();
-        NameText.text = skill.GetName();
+        AnnotatableSkill skill = Get<AnnotatableSkill>();
+        Name.text = skill.GetName();
+        // BackgroundImage.color = CanvasManager.Instance.JingJieColors[skill.GetJingJie()];
+        // BarIllustration.sprite = ;
     }
 }

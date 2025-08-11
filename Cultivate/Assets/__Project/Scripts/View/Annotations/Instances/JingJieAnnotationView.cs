@@ -48,9 +48,8 @@ public class JingJieAnnotationView : AnnotationView
         
         AnnotationDetails d = Get<AnnotationDetails>();
         AnnotatableJingJie annotatableJingJie = d.Address.Get<AnnotatableJingJie>();
-        JingJie jingJie = annotatableJingJie.GetJingJie();
-        Title.text = jingJie.GetName();
-        Description.text = jingJie.GetDescription().GetHighlightedString();
+        Title.text = annotatableJingJie.GetName();
+        Description.text = annotatableJingJie.GetDescription().GetHighlightedString();
 
         JingJieView.Refresh();
     }

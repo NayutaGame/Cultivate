@@ -24,7 +24,11 @@ public class HitVFXAnimation : Animation
     private void SpawnVFX()
     {
         StageEntity src = _attackDetails.Src;
-        WuXing wuXing = _attackDetails.WuXing ?? WuXing.Jin;
+        
+        WuXing wuXing = _attackDetails.WuXing;
+        if (wuXing == WuXing.Wu)
+            wuXing = WuXing.Jin;
+        
         int value = _attackDetails.Value;
 
         int orient = -(src.Index * 2 - 1);

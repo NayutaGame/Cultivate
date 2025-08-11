@@ -20,6 +20,7 @@ public class PackView : XView
         object obj = Get<object>();
         if (InterpretAsConfigPack(obj)) return;
         if (InterpretAsPackConstraint(obj)) return;
+        if (InterpretAsPackEntry(obj)) return;
     }
 
     public void RefreshFromParentedConstraint(PackConstraint constraint)
@@ -69,6 +70,21 @@ public class PackView : XView
             if (locked)
                 UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
         }
+
+        return true;
+    }
+
+    private bool InterpretAsPackEntry(object obj)
+    {
+        PackEntry pack = obj as PackEntry;
+        if (pack == null)
+            return false;
+
+        NameText.text = pack.GetName();
+        Image.sprite = pack.GetSprite();
+        
+        EquippedGameObject.SetActive(false);
+        LockGameObject.SetActive(false);
 
         return true;
     }

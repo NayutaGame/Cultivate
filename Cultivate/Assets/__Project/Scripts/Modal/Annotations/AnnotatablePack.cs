@@ -5,4 +5,5 @@ public interface AnnotatablePack : Annotatable
     WuXing GetWuXing();
     Description GetDescription();
     string GetTrivia();
+    SkillEntry[] GetSkills();
 }

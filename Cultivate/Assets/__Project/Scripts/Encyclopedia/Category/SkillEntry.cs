@@ -19,10 +19,12 @@ public class SkillEntry : Entry, AnnotatableSkill
     [NonSerialized] private MutateDefinition[] _mutate;
     [NonSerialized] private SpriteEntry _spriteEntry;
     [NonSerialized] private SkillDefinition[] _skillDefinitions;
+    [NonSerialized] private PackEntry _packEntry;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
     public SkillEntry(string id,
@@ -82,6 +84,9 @@ public class SkillEntry : Entry, AnnotatableSkill
             Encyclopedia.SpriteCategory.Add(_spriteEntry);
         }
     }
+
+    public PackEntry GetPackEntry() => _packEntry;
+    public void SetPackEntry(PackEntry value) => _packEntry = value;
     
     public WuXing WuXing => _wuXing;
     public bool JingJieContains(JingJie jingJie) => _jingJieBound.Contains(jingJie);

@@ -8,7 +8,7 @@ public class AddSkillReward : Reward
 
     public AddSkillReward(SkillEntry entry, JingJie jingJie)
     {
-        _entry = entry;
+        _entry = entry ?? Encyclopedia.SkillCategory.Default();
         _jingJie = jingJie;
 
         _description = $"获得《{_entry.GetName()} @ {_jingJie}》";

@@ -78,6 +78,7 @@ public class GuideView : MonoBehaviour
             
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
+            
             GuideAnimation anim = new GuideAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[0])?.GetContentView().GetRect(),
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[1])?.GetContentView().GetRect());

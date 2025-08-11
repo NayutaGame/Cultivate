@@ -13,7 +13,7 @@ public class WuXingCategory : Category<WuXing>
             new("WuXing0003", "木", 2, true, "力量"),
             new("WuXing0004", "火", 3, true, "灼烧"),
             new("WuXing0005", "土", 4, true, "坚毅"),
-            new("WuXing0006", "无五行", 5, false, null),
+            new("WuXing0006", "无色", 5, false, null),
         });
     }
 }

@@ -44,8 +44,8 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
     public AudioEntry GetAudio() => _audio;
     public Sprite GetBackgroundSprite() => _backgroundSprite.Sprite;
     public bool CanShowAnnotation() => true;
-    public JingJie GetJingJie() => this;
-    
+    public Sprite GetIconSprite() => _sprite.Sprite;
+
     // IComparable<JingJie> 实现
     public int CompareTo(JingJie other)
     {

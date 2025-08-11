@@ -17,12 +17,12 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
         RegisterCallback(LinkCallback);
         HandleDetailsArray = new HandleDetails[]
         {
-            new(Encyclopedia.JingJieCategory, AnnotationViewType.JingJieAnnotation, "JingJieCategory"),
-            new(Encyclopedia.CharacterCategory, AnnotationViewType.CharacterAnnotation, "CharacterCategory"),
-            new(Encyclopedia.SkillCategory, AnnotationViewType.SkillAnnotation, "SkillCategory"),
-            new(Encyclopedia.BuffCategory, AnnotationViewType.BuffAnnotation, "BuffCategory"),
-            new(Encyclopedia.KeywordCategory, AnnotationViewType.TextAnnotation, "KeywordCategory"),
             new(Encyclopedia.TagCategory, AnnotationViewType.TagAnnotation, "TagCategory"),
+            new(Encyclopedia.JingJieCategory, AnnotationViewType.JingJieAnnotation, "JingJieCategory"),
+            new(Encyclopedia.KeywordCategory, AnnotationViewType.TextAnnotation, "KeywordCategory"),
+            new(Encyclopedia.CharacterCategory, AnnotationViewType.CharacterAnnotation, "CharacterCategory"),
+            new(Encyclopedia.BuffCategory, AnnotationViewType.BuffAnnotation, "BuffCategory"),
+            new(Encyclopedia.SkillCategory, AnnotationViewType.SkillAnnotation, "SkillCategory"),
             new(Encyclopedia.PackCategory, AnnotationViewType.PackAnnotation, "PackCategory"),
         };
     }

@@ -15,6 +15,7 @@ public class StageNote : AnnotatableSkill
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
+        { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
     public StageNote(int entityIndex, int temporalIndex, StageSkill skill, int currCounter = 0, int maxCounter = 0)
@@ -50,6 +51,9 @@ public class StageNote : AnnotatableSkill
 
     public TagComposite GetTagComposite()
         => Skill.Entry.GetTagComposite();
+
+    public PackEntry GetPackEntry()
+        => Skill.Entry.GetPackEntry();
 
     public string GetTrivia()
         => Skill.Entry.GetTrivia();

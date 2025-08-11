@@ -42,8 +42,8 @@ public class TagComposite : Addressable
 
     public bool Contains(TagEntry other)
     {
-        return ((this & other.Value) == other.Value) &&
-               (this | other.Value) == this;
+        return ((_value & other.Value) == other.Value) &&
+               (this | other.Value)._value == _value;
     }
 
     public static implicit operator long(TagComposite tagComposite) => tagComposite._value;

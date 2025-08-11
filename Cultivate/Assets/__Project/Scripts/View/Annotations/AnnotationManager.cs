@@ -43,10 +43,7 @@ public class AnnotationManager : XView, Addressable
 
     public void TryShowAnnotation(AnnotationDetails d)
     {
-        if (!CanShow(d))
-            return;
-
-        if (!IsOrderValid(d))
+        if (!AnnotationDetailsIsValid(d))
             return;
 
         if (d.FirstCounter == 0 && d.SecondCounter == 0)
@@ -67,6 +64,24 @@ public class AnnotationManager : XView, Addressable
         }
     }
 
+    private bool AnnotationDetailsIsValid(AnnotationDetails d)
+    {
+        bool isCycleAnnotation = d.AnnotationViewType == AnnotationViewType.CycleAnnotation;
+        
+        Annotatable annotatable = d.Address?.Get<Annotatable>();
+        if (annotatable == null && !isCycleAnnotation)
+            return false;
+
+        bool canShow = annotatable?.CanShowAnnotation() ?? false;
+        if (!canShow && !isCycleAnnotation)
+            return false;
+        
+        if (!IsOrderValid(d))
+            return false;
+
+        return true;
+    }
+
     private bool IsOrderValid(AnnotationDetails d)
     {
         bool noAnnotationOpened = Annotations.GetCount() == 0;
@@ -80,13 +95,6 @@ public class AnnotationManager : XView, Addressable
             return true;
 
         return false;
-    }
-
-    private bool CanShow(AnnotationDetails d)
-    {
-        if (d.AnnotationViewType == AnnotationViewType.CycleAnnotation)
-            return true;
-        return d.Address.Get<Annotatable>().CanShowAnnotation();
     }
 
     public void StopShowAnnotation(InteractBehaviour ib, PointerEventData d)
@@ -118,6 +126,10 @@ public class AnnotationManager : XView, Addressable
     private void FinishCounter(AnnotationDetails d)
     {
         ProgressCircle.gameObject.SetActive(false);
+
+        if (!AnnotationDetailsIsValid(d))
+            return;
+
         EnqueueAnnotation(d);
     }
 

@@ -525,18 +525,18 @@ public class RoomCategory : Category<RoomEntry>
                     
                     string[] descriptions = new string[12]
                     {
-                        $"凌云峰，选择1张{nextJingJie}金牌",
-                        $"逍遥海，选择1张{nextJingJie}水牌",
-                        $"桃花宫，选择1张{nextJingJie}木牌",
-                        $"长明殿，选择1张{nextJingJie}火牌",
-                        $"环岳岭，选择1张{nextJingJie}土牌",
+                        $"凌云峰，选择1张{nextJingJie.GetName()}金牌",
+                        $"逍遥海，选择1张{nextJingJie.GetName()}水牌",
+                        $"桃花宫，选择1张{nextJingJie.GetName()}木牌",
+                        $"长明殿，选择1张{nextJingJie.GetName()}火牌",
+                        $"环岳岭，选择1张{nextJingJie.GetName()}土牌",
                         $"易宝斋，得到{2 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}金钱，访问一次商店",
-                        $"剑池，获得2张{currJingJie}攻击牌",
-                        $"风雨楼，获得2张{currJingJie}防御牌",
+                        $"剑池，获得2张{currJingJie.GetName()}攻击牌",
+                        $"风雨楼，获得2张{currJingJie.GetName()}防御牌",
                         $"百草堂，得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限",
-                        $"星宫，获得2张{currJingJie}灵气牌",
-                        $"天机阁，从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌",
-                        $"散修，选择1基础境界是{nextJingJie}期的牌",
+                        $"星宫，获得2张{currJingJie.GetName()}灵气牌",
+                        $"天机阁，从卡池中，移除一半不高于{currJingJie.GetName()}的牌，之后更加可能抽到高境界的牌",
+                        $"散修，选择1基础境界是{nextJingJie.GetName()}期的牌",
                     };
 
                     Bound jingJieBound = new(JingJie.LianQi, nextJingJie + 1);
@@ -550,15 +550,15 @@ public class RoomCategory : Category<RoomEntry>
                         DiscoverSkillCell.FromHuanYueLing(room.Ladder + 3),
                         // 易宝斋，得到2/4/8/16金钱，访问一次商店
                         ShopCell.FromYiBaoZhai(room.Ladder + 3),
-                        new DialogCell("剑池", $"获得2张{currJingJie}攻击牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie}攻击牌", new(jingJie: currJingJie, tagComposite: TagCategory.Attack, count: 2))),
-                        new DialogCell("风雨楼", $"获得2张{currJingJie}防御牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie}防御牌", new(jingJie: currJingJie, tagComposite: TagCategory.Defend, count: 2))),
+                        new DialogCell("剑池", $"获得2张{currJingJie.GetName()}攻击牌")
+                            .SetReward(new DrawSkillReward($"2张{currJingJie.GetName()}攻击牌", new(jingJie: currJingJie, tagComposite: TagCategory.Attack, count: 2))),
+                        new DialogCell("风雨楼", $"获得2张{currJingJie.GetName()}防御牌")
+                            .SetReward(new DrawSkillReward($"2张{currJingJie.GetName()}防御牌", new(jingJie: currJingJie, tagComposite: TagCategory.Defend, count: 2))),
                         new DialogCell($"百草堂", $"得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限")
                             .SetReward(new ResourceReward(health: 4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder))),
-                        new DialogCell("星宫", $"获得2张{currJingJie}灵气牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie}灵气牌", new(jingJie: currJingJie, tagComposite: TagCategory.Mana, count: 2))),
-                        new DialogCell("天机阁", $"从卡池中，移除一半不高于{currJingJie}的牌，之后更加可能抽到高境界的牌")
+                        new DialogCell("星宫", $"获得2张{currJingJie.GetName()}灵气牌")
+                            .SetReward(new DrawSkillReward($"2张{currJingJie.GetName()}灵气牌", new(jingJie: currJingJie, tagComposite: TagCategory.Mana, count: 2))),
+                        new DialogCell("天机阁", $"从卡池中，移除一半不高于{currJingJie.GetName()}的牌，之后更加可能抽到高境界的牌")
                             .SetEnter(panelDescriptor =>
                             {
                                 panelDescriptor.DefaultEnter(panelDescriptor);
@@ -909,7 +909,7 @@ public class RoomCategory : Category<RoomEntry>
                         new MergeGuide("现在应该没问题了",
                             descriptor, descriptor),
                         new ConfirmGuide("合成后的牌卡框边缘从灰色变成了蓝色，代表境界更高了"),
-                        new ConfirmGuide("卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄，如果合成之前想查看卡牌不同境界的效果，可以右键卡牌浏览"),
+                        new ConfirmGuide("卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄，如果合成之前想查看卡牌不同境界的效果，可以悬停卡牌浏览"),
                         new EquipGuide("将合成后的牌置入战斗区",
                             SkillEntryDescriptor.FromEntryJingJie(descriptor.Entry, JingJie.JinDan), firstDeckIndex),
                         new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
@@ -1373,7 +1373,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell B1 = new DialogCell(
                             titleText: "缘分",
                             detailedText: "你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0603"), RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("遗憾"), RunManager.Instance.Environment.JingJie));
 
                     DialogCell C = new(
                         titleText: "缘分",
@@ -1382,7 +1382,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell C1 = new DialogCell(
                             titleText: "缘分",
                             detailedText: "你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0604"), RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("爱恋"), RunManager.Instance.Environment.JingJie));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -1408,11 +1408,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell B = new DialogCell(
                             titleText: "琴仙",
                             detailedText: "那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0606"), RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("春雨"), RunManager.Instance.Environment.JingJie));
                     DialogCell C = new DialogCell(
                             titleText: "琴仙",
                             detailedText: "那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0607"), RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("枯木"), RunManager.Instance.Environment.JingJie));
                     DialogCell D = new DialogCell(
                             titleText: "琴仙",
                             detailedText: "之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
@@ -1442,12 +1442,12 @@ public class RoomCategory : Category<RoomEntry>
                             titleText: "辩论",
                             detailedText: "你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
                                           "\n\n得到《须臾》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0600"), jingJie: RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("须臾"), jingJie: RunManager.Instance.Environment.JingJie));
                     DialogCell C = new DialogCell(
                             titleText: "辩论",
                             detailedText: "你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
                                           "\n\n得到《永远》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0601"), jingJie: RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("永远"), jingJie: RunManager.Instance.Environment.JingJie));
                     DialogCell D = new DialogCell(
                         titleText: "辩论",
                         detailedText: "你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
@@ -1480,13 +1480,13 @@ public class RoomCategory : Category<RoomEntry>
                                           "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
                                           "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。" +
                                           "\n\n得到《一心》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0611"), jingJie: RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("一心"), jingJie: RunManager.Instance.Environment.JingJie));
                     DialogCell C = new DialogCell(
                             titleText: "学棋",
                             detailedText: "你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
                                           "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。" +
                                           "\n\n得到《童趣》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0610"), jingJie: RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("童趣"), jingJie: RunManager.Instance.Environment.JingJie));
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -2585,9 +2585,9 @@ public class RoomCategory : Category<RoomEntry>
                         home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")), // 毒性
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
                         }),
                         kernel: new StageKernel(async d =>
                         {
@@ -2630,9 +2630,9 @@ public class RoomCategory : Category<RoomEntry>
                         home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")), // 毒性
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
                         }),
                         kernel: new StageKernel(async d =>
                         {
@@ -2947,9 +2947,9 @@ public class RoomCategory : Category<RoomEntry>
                         home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")), // 毒性
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
                         }),
                         kernel: new StageKernel(async d =>
                         {
@@ -3051,9 +3051,9 @@ public class RoomCategory : Category<RoomEntry>
                         home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")), // 毒性
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
                         }),
                         kernel: new StageKernel(async d =>
                         {
@@ -3140,7 +3140,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell A = new DialogCell(
                             titleText: "后羿",
                             detailedText: "你来到了很久之前来过的竹林，当时的练箭少年已经不在，你发现了他留给你的一本秘籍。\n\n得到《射落金乌》。")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("0605"), JingJie.YuanYing)); // 射落金乌
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("射落金乌"), JingJie.YuanYing)); // 射落金乌
             
                     return A;
                 }),
@@ -3165,9 +3165,9 @@ public class RoomCategory : Category<RoomEntry>
                         home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")), // 毒性
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
                         }),
                         kernel: new StageKernel(async d =>
                         {
@@ -3252,9 +3252,9 @@ public class RoomCategory : Category<RoomEntry>
                         home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
                         away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
                         {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")), // 毒性
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromId("0609")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
                         }),
                         kernel: new StageKernel(async d =>
                         {

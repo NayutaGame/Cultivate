@@ -144,6 +144,7 @@ public class BattlePanel : Panel
     private static void CombatOnlyResult()
     {
         RunManager.Instance.Environment.CombatOnlyResult();
+        CanvasManager.Instance.RefreshGuide();
     }
 
     private void SetVictory(bool victory)

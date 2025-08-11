@@ -141,6 +141,12 @@ public class MergePreresultView : XView
             return;
         }
 
+        if (_mergeTarget.ResultWuXing == null || _mergeTarget.ResultWuXing == WuXing.Wu)
+        {
+            CardImage.sprite = Encyclopedia.SpriteCategory.FromName("可以合成").Sprite;
+            return;
+        }
+
         CardImage.sprite = _mergeTarget.ResultWuXing.GetMergeSprite();
     }
     

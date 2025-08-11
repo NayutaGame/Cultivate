@@ -9,7 +9,7 @@ public class FormationAnnotationView : AnnotationView
     [SerializeField] private TMP_Text ConditionDescriptionText;
     [SerializeField] private RatingBarView RatingBarView;
     [SerializeField] private TMP_Text RewardDescriptionText;
-    [SerializeField] private TMP_Text Trivia;
+    // [SerializeField] private TMP_Text Trivia;
 
     private int _showingScore;
     
@@ -76,6 +76,6 @@ public class FormationAnnotationView : AnnotationView
         AnnotatableFormation formation = d.Address.Get<AnnotatableFormation>();
         
         RewardDescriptionText.text = formation.GetRewardDescription(progress).GetHighlightedString();
-        Trivia.text = formation.GetTrivia(progress);
+        // Trivia.text = formation.GetTrivia(progress);
     }
 }

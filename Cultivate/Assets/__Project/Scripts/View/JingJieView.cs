@@ -11,7 +11,6 @@ public class JingJieView : XView
         base.Refresh();
         
         AnnotatableJingJie annotatableJingJie = Get<AnnotatableJingJie>();
-        JingJie jingJie = annotatableJingJie.GetJingJie();
-        Icon.sprite = jingJie.GetSprite();
+        Icon.sprite = annotatableJingJie.GetIconSprite();
     }
 }

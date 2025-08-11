@@ -7,12 +7,19 @@ using UnityEditorInternal;
 using UnityEditor;
 #endif
 
+#if LETAI_TRUESHADOW
+using LeTai.TrueShadow.PluginInterfaces;
+#endif
 
 namespace Renge.PPB {
     [RequireComponent(typeof(CanvasRenderer))]
     [DisallowMultipleComponent]
     [AddComponentMenu("Progress Bars/Procedural Progress Bar UI")]
-    public class ProceduralProgressBarUI : Graphic {
+    public class ProceduralProgressBarUI : Graphic
+#if LETAI_TRUESHADOW
+        , ITrueShadowCustomHashProvider
+#endif
+        {
         [SerializeField] public ProceduralProgressBar progressBar;
 
         protected override void Start() {

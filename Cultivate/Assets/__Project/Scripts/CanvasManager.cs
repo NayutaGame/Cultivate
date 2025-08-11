@@ -31,9 +31,12 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     
     [TabGroup("List")] [ColorPalette("JingJie")] public Color[] JingJieColors;
     [TabGroup("List")] public Sprite[] JingJieSprites;
+    [TabGroup("List")] public Sprite[] JingJieSliderSprites;
     [TabGroup("List")] [ColorPalette("WuXing")] public Color[] WuXingColors;
     [TabGroup("List")] public Color[] CostColors;
     [TabGroup("List")] public Sprite[] CostIconSprites;
+    [TabGroup("List")] public Sprite[] RatingBarSegmentSprites;
+    
 
     public Camera GetCamera()
         => Camera;

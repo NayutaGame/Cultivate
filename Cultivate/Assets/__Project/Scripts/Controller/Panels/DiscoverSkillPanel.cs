@@ -56,6 +56,7 @@ public class DiscoverSkillPanel : Panel
         int pickedIndex = ListView.IndexFromView(ib.GetView() as SlotView).Value;
         PickDiscoveredSkillDetails details = new(skill, pickedIndex);
         PickDiscoveredSkillEvent.Invoke(details);
+        CanvasManager.Instance.AnnotationManager.StopShowAnnotation();
     }
     
     public void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
@@ -65,7 +66,7 @@ public class DiscoverSkillPanel : Panel
         CanvasManager.Instance.CloseAnnotation();
         
         int pickedIndex = d.PickedIndex;
-        SlotView slotView = ListView.ViewFromIndex(pickedIndex) as SlotView;
+        SlotView slotView = ListView.ViewFromIndex(pickedIndex);
         RectTransform rect = slotView.GetContentView().GetRect();
 
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();

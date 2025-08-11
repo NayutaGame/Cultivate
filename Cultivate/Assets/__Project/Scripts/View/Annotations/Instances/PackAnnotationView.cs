@@ -1,15 +1,17 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PackAnnotationView : AnnotationView
 {
     [SerializeField] private PackView PackView;
     [SerializeField] private TMP_Text Title;
-    [SerializeField] private Image WuXingIcon;
+    [SerializeField] private Image WuXingDeco;
     [SerializeField] private TMP_Text Description;
     [SerializeField] private TMP_Text Trivia;
+    [SerializeField] private ListView Skills;
     
     public override Vector3 GetCriticalDisplacement(AnnotationAlignmentDetails d)
     {
@@ -43,6 +45,7 @@ public class PackAnnotationView : AnnotationView
 
         AnnotationDetails d = Get<AnnotationDetails>();
         PackView.SetAddress(d.Address);
+        Skills.SetAddress(d.Address.Append(".Skills"));
     }
 
     public override void Refresh()
@@ -57,10 +60,11 @@ public class PackAnnotationView : AnnotationView
         Trivia.text = pack.GetTrivia();
 
         PackView.Refresh();
+        Skills.Sync();
     }
 
     private void SetWuXing(WuXing wuXing)
     {
-        WuXingIcon.sprite = wuXing.GetIconSprite();
+        WuXingDeco.sprite = wuXing.GetDecoSprite();
     }
 }

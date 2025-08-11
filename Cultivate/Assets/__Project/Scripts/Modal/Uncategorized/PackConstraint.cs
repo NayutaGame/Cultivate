@@ -15,6 +15,7 @@ public class PackConstraint : AnnotatablePack
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Pack",                       thisObject => ((PackConstraint)thisObject).Pack },
+        { "Skills",                     thisObject => ((AnnotatablePack)thisObject).GetSkills() },
     };
     public object Get(string s) => Accessor[s](this);
     public PackConstraint(PackDescriptor descriptor, SpriteEntry spriteEntry, int slotIndex)
@@ -48,6 +49,9 @@ public class PackConstraint : AnnotatablePack
 
     public string GetTrivia()
         => Pack.GetTrivia();
+
+    public SkillEntry[] GetSkills()
+        => Pack.GetSkills();
 
     public Sprite GetSprite()
         => Pack.GetSprite();
