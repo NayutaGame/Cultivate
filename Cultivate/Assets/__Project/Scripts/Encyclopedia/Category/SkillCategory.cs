@@ -2510,6 +2510,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "卡池已空",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQiOnly,
+                overridingMergeRule:        NoMerge,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"卡池已空")),

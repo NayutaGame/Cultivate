@@ -50,7 +50,7 @@ public class PackConstraint : AnnotatablePack
     public string GetTrivia()
         => Pack.GetTrivia();
 
-    public SkillEntry[] GetSkills()
+    public ListModel<SkillEntry> GetSkills()
         => Pack.GetSkills();
 
     public Sprite GetSprite()

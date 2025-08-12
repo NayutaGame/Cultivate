@@ -32,7 +32,7 @@ public class ConfigPack : AnnotatablePack
     public string GetTrivia()
         => Entry.Trivia;
 
-    public SkillEntry[] GetSkills()
+    public ListModel<SkillEntry> GetSkills()
         => Entry.GetSkills();
 
     public Sprite GetSprite()

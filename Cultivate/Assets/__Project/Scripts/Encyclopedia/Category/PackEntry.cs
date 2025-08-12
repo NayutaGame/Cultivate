@@ -12,8 +12,8 @@ public class PackEntry : Entry, AnnotatablePack
     [NonSerialized] public string _rawDescription;
     [NonSerialized] public Description _description;
     [NonSerialized] public string Trivia;
-    [NonSerialized] public SkillEntry[] Cards;
-    [NonSerialized] public SkillEntry[] StartCards;
+    [NonSerialized] public ListModel<SkillEntry> Cards;
+    [NonSerialized] public ListModel<SkillEntry> StartCards;
     [NonSerialized] private SpriteEntry _spriteEntry;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
@@ -41,22 +41,26 @@ public class PackEntry : Entry, AnnotatablePack
         _spriteEntry = Encyclopedia.SpriteCategory.FromName($"Pack{GetName()}");
     }
 
-    private static SkillEntry[] ConvertToSkillEntryList(string[] skillNames)
+    private static ListModel<SkillEntry> ConvertToSkillEntryList(string[] skillNames)
     {
-        if (skillNames == null)
-            return Array.Empty<SkillEntry>();
+        ListModel<SkillEntry> list = new ListModel<SkillEntry>();
         
-        return skillNames.Map(skillName =>
+        if (skillNames == null)
+            return list;
+        
+        skillNames.Do(skillName =>
         {
             SkillEntry skillEntry = Encyclopedia.SkillCategory.FromName(skillName) ?? Encyclopedia.SkillCategory.FromId(skillName);
             if (skillEntry == null)
             {
                 Debug.Log($"没有找到{skillName}，换成了默认卡牌");
-                return Encyclopedia.SkillCategory.Default();
+                skillEntry = Encyclopedia.SkillCategory.Default();
             }
+            
+            list.Add(skillEntry);
+        });
 
-            return skillEntry;
-        }).ToArray();
+        return list;
     }
     
     public override void Init()
@@ -73,7 +77,7 @@ public class PackEntry : Entry, AnnotatablePack
     
     public Sprite GetSprite() => _spriteEntry?.Sprite;
     public string GetUnlockCondition() => null;
-    public SkillEntry[] GetSkills() => Cards;
+    public ListModel<SkillEntry> GetSkills() => Cards;
     
     public bool CanShowAnnotation() => true;
 }

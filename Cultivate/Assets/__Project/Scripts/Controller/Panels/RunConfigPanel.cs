@@ -4,9 +4,11 @@ using CLLibrary;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class RunConfigPanel : Panel
 {
+    [SerializeField] private GameObject DemoLockedSign;
     [SerializeField] private ListView CharacterListView;
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
     
@@ -50,10 +52,11 @@ public class RunConfigPanel : Panel
 
     public override void Refresh()
     {
-        DifficultyPickerView.Refresh();
+        DemoLockedSign.SetActive(AppManager.Instance.PackageIsDemo());
         CharacterListView.Refresh();
         AppManager.Instance.ConfigManager.SelectFirstCharacter();
         RefreshAllSelection();
+        DifficultyPickerView.Refresh();
         DetailedCharacterProfileView.Refresh();
     }
 

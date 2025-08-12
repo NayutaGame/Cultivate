@@ -130,6 +130,7 @@ public class TitlePanel : Panel
     {
         AppManager.Instance.ClearEscStack();
         AppManager.Instance.PushEscFunc(ExitGame);
+        Refresh();
     }
 
     private void OnDisable()
