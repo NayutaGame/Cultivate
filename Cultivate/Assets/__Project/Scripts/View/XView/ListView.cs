@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CLLibrary;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ListView : XView
@@ -299,8 +297,6 @@ public class ListView : XView
 
         contentRect.anchorMin = new Vector2(0.5f, 0.5f);
         contentRect.anchorMax = new Vector2(0.5f, 0.5f);
-
-        
 
         int prefabIndex = slotView.GetBehaviour<ItemBehaviour>().PrefabIndex;
         _inactivePools[prefabIndex].Add(slotView);

@@ -14,8 +14,6 @@ public class ArbitraryCardPickerCell : Cell
     private ListModel<SkillEntryDescriptor> _inventory;
     public ListModel<SkillEntryDescriptor> GetInventory() => _inventory;
 
-    private SkillEntryDescriptor _descriptor;
-
     private Bound _bound;
     public Bound Bound => _bound;
     public bool HasSpace(int occupied)
@@ -38,20 +36,15 @@ public class ArbitraryCardPickerCell : Cell
         string titleText = null,
         string detailedText = null,
         Bound? bound = null,
-        SkillEntryDescriptor descriptor = null,
         Func<List<SkillEntryDescriptor>, Cell> confirmOperation = null)
     {
         _titleText = titleText ?? "选牌";
         _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
-        _descriptor = descriptor;
         
         _inventory = new ListModel<SkillEntryDescriptor>();
     }
-
-    public bool CanSelect(SkillEntryDescriptor skill)
-        => _descriptor?.Contains(skill) ?? true;
 
     public void PopulateInventory(List<SkillEntryDescriptor> skills)
     {

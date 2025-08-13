@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class GachaCell : Cell
 {
-    private SkillEntryDescriptorListModel _items;
-    public SkillEntryDescriptorListModel GetItems() => _items;
-    public void SetItems(SkillEntryDescriptorListModel items) => _items = items;
+    private ListModel<SkillEntryDescriptor> _items;
+    public ListModel<SkillEntryDescriptor> GetItems() => _items;
+    public void SetItems(ListModel<SkillEntryDescriptor> items) => _items = items;
 
     private int _price;
     public int GetPrice() => _price;

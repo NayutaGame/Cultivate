@@ -624,8 +624,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText:          "感悟",
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
-                        bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie));
+                        descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie), 1));
                     B.SetConfirmOperation(indices =>
                     {
                         foreach (var deckIndex in indices)
@@ -1509,14 +1508,12 @@ public class RoomCategory : Category<RoomEntry>
 
                     CardPickerCell B = new CardPickerCell(
                         titleText:          "提交",
-                        detailedText:        "请提交一张二动牌",
-                        bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromTagComposite(TagCategory.Swift));
+                        detailedText:       "请提交一张二动牌",
+                        descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
                     CardPickerCell C = new CardPickerCell(
                         titleText:          "提交",
-                        detailedText:        "请提交一张治疗牌",
-                        bound:              new Bound(0, 2),
-                        descriptor:         RunSkillDescriptor.FromTagComposite(TagCategory.Health));
+                        detailedText:       "请提交一张治疗牌",
+                        descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Health), 1));
 
                     DialogCell BWin = new(
                         titleText: "迷路",
@@ -1832,7 +1829,7 @@ public class RoomCategory : Category<RoomEntry>
                     CardPickerCell B = new(
                         titleText: "选择",
                         detailedText: "请选择2张牌，随机将其中一张变成另一张",
-                        bound: new Bound(0, 3));
+                        descriptor: RunSkillDescriptorListModel.FromCount(2));
                     DialogCell C = new(
                         titleText: "分子打印机",
                         detailedText: "来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
@@ -2435,7 +2432,7 @@ public class RoomCategory : Category<RoomEntry>
                     CardPickerCell B = new(
                         titleText: "割舍",
                         detailedText: "请选择0到5张牌送出",
-                        bound: new Bound(0, 6));
+                        descriptor: RunSkillDescriptorListModel.FromCount(5));
                     DialogCell C = new(
                         titleText: "割舍",
                         detailedText: "果然还是难以割舍心爱的卡牌。");
@@ -2737,7 +2734,8 @@ public class RoomCategory : Category<RoomEntry>
 
                     CardPickerCell BPick = new CardPickerCell(
                         titleText: "仪式感",
-                        detailedText: "炼丹需要消耗一张牌", 1);
+                        detailedText: "炼丹需要消耗一张牌",
+                        descriptor: RunSkillDescriptorListModel.FromCount(1));
                     DialogCell B = new(
                         titleText: "仪式感",
                         detailedText: "你取出了一张卡牌作为原料，炼出了一枚丹药，给那人吃了。" +
@@ -2990,7 +2988,7 @@ public class RoomCategory : Category<RoomEntry>
                     CardPickerCell C = new CardPickerCell(
                         titleText:          "后羿",
                         detailedText:       "请提交一张牌",
-                        bound:              new Bound(0, 2));
+                        descriptor:         RunSkillDescriptorListModel.FromCount(1));
         
                     DialogCell CWin = new(
                         titleText: "后羿",

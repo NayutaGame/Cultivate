@@ -6,12 +6,9 @@ using UnityEngine;
 public class SkillEntryDescriptor : AnnotatableSkill
 {
     private Predicate<SkillEntry> _pred;
-    
     private SkillEntry _entry;
-    public SkillEntry Entry => _entry;
     private WuXing _wuXing;
     private JingJie _jingJie;
-    public JingJie JingJie => _jingJie;
     private TagComposite _tagComposite;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
@@ -64,6 +61,42 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public static SkillEntryDescriptor AnySkill()
         => new();
     
+    public SkillEntry Entry => _entry;
+    public JingJie JingJie => _jingJie;
+
+    public JingJie GetLowestJingJie()
+        => _entry?.GetLowestJingJie() ?? _jingJie;
+
+    public JingJie GetHighestJingJie()
+        => _entry?.GetHighestJingJie() ?? _jingJie;
+
+    public Sprite GetSprite()
+        => _entry?.GetSprite();
+
+    public string GetName()
+        => _entry?.GetName();
+
+    public Description GetDescription(JingJie showingJingJie)
+        => _entry?.GetDescription(showingJingJie) ?? "";
+
+    public TagComposite GetTagComposite()
+        => _entry?.GetTagComposite();
+
+    public PackEntry GetPackEntry()
+        => _entry?.GetPackEntry();
+
+    public JingJie GetJingJie()
+        => _jingJie ?? JingJie.LianQi;
+
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+        => _entry?.GetLiteralCostDescription(showingJingJie) ?? CostDescription.Empty;
+
+    public Sprite GetJingJieSprite(JingJie showingJingJie)
+        => _entry?.GetJingJieSprite(showingJingJie);
+
+    public bool CanShowAnnotation()
+        => _entry != null;
+    
     public bool Contains(SkillEntry skillEntry)
     {
         if (_entry != null && skillEntry != _entry)
@@ -113,47 +146,4 @@ public class SkillEntryDescriptor : AnnotatableSkill
     }
     
     public static implicit operator SkillEntryDescriptor(SkillEntry skillEntry) => FromEntry(skillEntry);
-
-
-    public JingJie GetLowestJingJie()
-        => _entry?.GetLowestJingJie() ?? _jingJie;
-
-    public JingJie GetHighestJingJie()
-        => _entry?.GetHighestJingJie() ?? _jingJie;
-
-    public Sprite GetSprite()
-        => _entry?.GetSprite();
-
-    public WuXing GetWuXing()
-        => _entry?.WuXing;
-
-    public string GetName()
-        => _entry?.GetName();
-
-    public Description GetDescription(JingJie showingJingJie)
-        => _entry?.GetDescription(showingJingJie) ?? "";
-
-    public TagComposite GetTagComposite()
-        => _entry?.GetTagComposite();
-
-    public PackEntry GetPackEntry()
-        => _entry?.GetPackEntry();
-
-    public string GetTrivia()
-        => _entry?.GetTrivia();
-
-    public JingJie GetJingJie()
-        => _jingJie ?? JingJie.LianQi;
-
-    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
-        => _entry?.GetLiteralCostDescription(showingJingJie) ?? CostDescription.Empty;
-
-    public Sprite GetJingJieSprite(JingJie showingJingJie)
-        => _entry?.GetJingJieSprite(showingJingJie);
-
-    public JingJie NextJingJie(JingJie showingJingJie)
-        => _entry?.NextJingJie(showingJingJie) ?? JingJie.LianQi;
-
-    public bool CanShowAnnotation()
-        => _entry != null;
 }

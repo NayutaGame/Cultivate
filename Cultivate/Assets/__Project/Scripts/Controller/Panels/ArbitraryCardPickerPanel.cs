@@ -66,10 +66,7 @@ public class ArbitraryCardPickerPanel : Panel
         else
         {
             ArbitraryCardPickerCell d = _address.Get<ArbitraryCardPickerCell>();
-            SkillEntryDescriptor skill = selectBehaviour.Get<SkillEntryDescriptor>();
-            
-            if (!d.CanSelect(skill))
-                return;
+            // SkillEntryDescriptor skill = selectBehaviour.Get<SkillEntryDescriptor>();
             
             if (!d.HasSpace(_selections.Count))
             {

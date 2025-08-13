@@ -53,11 +53,11 @@ public class InteractBehaviour : MonoBehaviour
         PointerDownNeuron.Active = value;
         PointerUpNeuron.Active = value;
         
-        if (Image != null)
-            Image.raycastTarget = value;
-
-        if (CanvasGroup != null)
-            CanvasGroup.interactable = value;
+        // if (Image != null)
+        //     Image.raycastTarget = value;
+        //
+        // if (CanvasGroup != null)
+        //     CanvasGroup.interactable = value;
     }
 
     private void AppendDebugLog()

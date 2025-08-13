@@ -228,8 +228,6 @@ public class DeckPanel : Panel
 
     private void Sort()
     {
-        CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearSelections();
-        
         _animationHandle?.Kill();
         
         _animationHandle = DOTween.Sequence()

@@ -18,14 +18,11 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
-                        new DirectRoomDefinition(0, "发现一张牌"),
+                        new DirectRoomDefinition(0, "分子打印机"),
+                        new DirectRoomDefinition(0, "分子打印机"),
+                        new DirectRoomDefinition(0, "分子打印机"),
+                        new DirectRoomDefinition(0, "分子打印机"),
+                        new DirectRoomDefinition(0, "分子打印机"),
                     },
                 }),
             

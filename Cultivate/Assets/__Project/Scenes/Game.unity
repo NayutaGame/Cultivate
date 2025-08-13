@@ -955,7 +955,7 @@ MonoBehaviour:
     Minor: 0
     Patch: 0
   _targetAudience: 0
-  _targetPackage: 1
+  _targetPackage: 0
   AppCanvas: {fileID: 1627659553}
   RandomManager: {fileID: 1379607458}
   AudioManager: {fileID: 2059320725}

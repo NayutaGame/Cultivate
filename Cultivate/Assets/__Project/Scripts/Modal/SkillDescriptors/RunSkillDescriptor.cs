@@ -5,7 +5,6 @@ using CLLibrary;
 public class RunSkillDescriptor
 {
     private Predicate<RunSkill> _pred;
-    
     private WuXing _wuXing;
     private Bound? _jingJieBound;
     private TagComposite _tagComposite;
@@ -21,6 +20,9 @@ public class RunSkillDescriptor
         _jingJieBound = jingJieBound;
         _tagComposite = tagComposite;
     }
+
+    public static RunSkillDescriptor AnySkill()
+        => new();
     
     public bool Contains(RunSkill runSkill)
     {
@@ -44,4 +46,7 @@ public class RunSkillDescriptor
 
     public static RunSkillDescriptor FromTagComposite(TagComposite tagComposite)
         => new(tagComposite: tagComposite);
+
+    public RunSkillDescriptor Clone()
+        => new(_pred, _wuXing, _jingJieBound, _tagComposite);
 }
