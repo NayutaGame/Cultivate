@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using CLLibrary;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CardPickerPanel : Panel
 {
-    public TMP_Text TitleText;
-    public TMP_Text ContentText;
-    public Button ConfirmButton;
+    [SerializeField] private ListView Requirements;
+    [SerializeField] private TMP_Text TitleText;
+    [SerializeField] private TMP_Text ContentText;
+    [SerializeField] private Button ConfirmButton;
     
     private Address _address;
+    
     private List<SelectBehaviour> _selections;
 
     public override void AwakeFunction()
