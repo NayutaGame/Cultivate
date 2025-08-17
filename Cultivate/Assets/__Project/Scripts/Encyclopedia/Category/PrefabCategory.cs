@@ -8,11 +8,12 @@ public class PrefabCategory : Category<PrefabEntry>
         AddRange(new List<PrefabEntry>()
         {
             // Config Models
-            new("Prefab0001", "ConfigModel缺失模型", "Prefabs/ConfigModels/缺失模型"),
-            new("Prefab0002", "ConfigModel徐福", "Prefabs/ConfigModels/徐福"),
-            new("Prefab0003", "ConfigModel子非鱼", "Prefabs/ConfigModels/子非鱼"),
-            new("Prefab0004", "ConfigModel子非燕", "Prefabs/ConfigModels/子非燕"),
-            new("Prefab0005", "ConfigModel彼此卿", "Prefabs/ConfigModels/彼此卿"),
+            new("Prefab01_001", "ConfigModel缺失模型", "Prefabs/ConfigModels/缺失模型"),
+            new("Prefab01_002", "ConfigModel徐福", "Prefabs/ConfigModels/徐福"),
+            new("Prefab01_003", "ConfigModel子非鱼", "Prefabs/ConfigModels/子非鱼"),
+            new("Prefab01_004", "ConfigModel子非燕", "Prefabs/ConfigModels/子非燕"),
+            new("Prefab01_005", "ConfigModel彼此卿", "Prefabs/ConfigModels/彼此卿"),
+            new("Prefab01_006", "ConfigModel风雨晴", "Prefabs/ConfigModels/风雨晴"),
             
             // Run Models
             new("Prefab0006", "RunModel缺失模型", "Prefabs/RunModels/缺失模型"),

@@ -50,11 +50,11 @@ public class DeckPanel : Panel
         CharacterIconView.SetAddress("Run.Environment.Config.CharacterProfile");
         
         PlayerEntity.SetAddress("Run.Environment.Home");
-        PlayerEntity.FormationList.PointerEnterNeuron.Join(HighlightContributors);
-        PlayerEntity.FormationList.PointerExitNeuron.Join(UnhighlightContributors);
+        PlayerEntity.FormationList.PointerEnterNeuron.Join(InvokeHighlightQualifiers);
+        PlayerEntity.FormationList.PointerExitNeuron.Join(InvokeUnhighlightQualifiers);
 
         HandView.SetAddress("Run.Environment.Hand");
-        HandView.DropNeuron.Join(Merge, Unequip);
+        HandView.DropNeuron.Join(MoveSkill);
         
         HandView.DroppingNeuron.Join(RemoveMergePreresult);
         HandView.EndDragNeuron.Join(RemoveMergePreresult);
@@ -115,13 +115,20 @@ public class DeckPanel : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(PlayerEntity.OnFieldChange);
+        RunManager.Instance.Environment.ResimulateNeuron.Add(PlayerEntity.OnFieldChange);
+        
+        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Add(HighlightQualifiers);
+        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Add(UnhighlightQualifiers);
+        
         CharacterIconView.Refresh();
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(PlayerEntity.OnFieldChange);
+        RunManager.Instance.Environment.ResimulateNeuron.Remove(PlayerEntity.OnFieldChange);
+        
+        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Remove(HighlightQualifiers);
+        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Remove(UnhighlightQualifiers);
     }
 
     // extra views
@@ -139,9 +146,19 @@ public class DeckPanel : Panel
 
     #region IInteractable
 
-    private void HighlightContributors(InteractBehaviour ib, PointerEventData d)
+    private void InvokeHighlightQualifiers(InteractBehaviour ib, PointerEventData d)
     {
         Predicate<RunSkill> pred = ib.Get<RunFormation>().GetContributorPred();
+        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Invoke(pred);
+    }
+
+    private void InvokeUnhighlightQualifiers(InteractBehaviour ib, PointerEventData d)
+    {
+        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Invoke();
+    }
+
+    private void HighlightQualifiers(Predicate<RunSkill> pred)
+    {
         PlayerEntity.FieldView.TraversalActive().Do(HighlightSlot);
         HandView.TraversalActive().Do(HighlightSkill);
         
@@ -162,7 +179,7 @@ public class DeckPanel : Panel
         }
     }
 
-    private void UnhighlightContributors(InteractBehaviour ib, PointerEventData d)
+    private void UnhighlightQualifiers()
     {
         PlayerEntity.FieldView.TraversalActive().Do(UnhighlightSlot);
         HandView.TraversalActive().Do(UnhighlightSkill);
@@ -190,35 +207,49 @@ public class DeckPanel : Panel
     }
 
     private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)
-        => Unequip(from, null, d);
-
-    private void Unequip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        SkillSlot slot = from.Get<SkillSlot>();
-        if (slot == null)
+        IDeckIndex fromIndex = GetDeckIndex(from);
+        if (fromIndex == null)
             return;
         
-        RunManager.Instance.Environment.TryUnequipProcedure(slot);
+        RunManager.Instance.Environment.MoveSkillProcedure(fromIndex, new NextHandDeckIndexDefinition());
     }
 
-    private void Merge(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MoveSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        RunSkill fromSkill = from.Get<RunSkill>();
-        RunSkill toSkill = to.Get<RunSkill>();
-        if (fromSkill == null || toSkill == null)
+        IDeckIndex fromIndex = GetDeckIndex(from);
+        IDeckIndex toIndex = GetDeckIndex(to);
+        if (fromIndex == null || toIndex == null)
             return;
+
+        RunManager.Instance.Environment.MoveSkillProcedure(fromIndex, toIndex);
+    }
+
+    private IDeckIndex GetDeckIndex(InteractBehaviour ib)
+    {
+        object obj = ib.Get<object>();
+        if (obj is RunSkill runSkill)
+            return runSkill.ToDeckIndex();
         
-        RunManager.Instance.Environment.TryMergeProcedure(fromSkill, toSkill);
+        if (obj is SkillSlot skillSlot)
+            return skillSlot.ToDeckIndex();
+        
+        if (obj is RequirementSlot requirementSlot)
+            return requirementSlot.ToDeckIndex();
+
+        return null;
     }
 
     #endregion
 
     public SlotView SkillItemFromDeckIndex(DeckIndex deckIndex)
     {
-        if (deckIndex.InField)
+        if (deckIndex.Region == SkillRegion.Field)
             return PlayerEntity.FieldView.ViewFromIndex(deckIndex.Index);
+        else if (deckIndex.Region == SkillRegion.Hand)
+            return HandView.ViewFromIndex(deckIndex.Index);
 
-        return HandView.ViewFromIndex(deckIndex.Index);
+        throw new NotImplementedException();
     }
 
     public SlotView LatestSkillItem()

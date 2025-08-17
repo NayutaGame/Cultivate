@@ -754,77 +754,6 @@ public class SkillCategory : Category<SkillEntry>
 
     #endregion
 
-    #region MergeRules
-    
-    private static readonly MergeRule NoMerge = new(
-        name: "无法合成",
-        errorMessage: "特殊卡牌不可参与合成",
-        order: -1,
-        processMerge: d =>
-        {
-            d.MergeTarget = new InvalidMergeTarget(
-                mergeType: "无法合成",
-                errorMessage: "特殊卡牌不可参与合成");
-            d.State = MergeDetails.MergeState.Cancel;
-        });
-
-    private static readonly MergeRule DreamCard = new(
-        name: "梦中卡牌",
-        errorMessage: "梦中卡牌不可参与合成",
-        order: -1,
-        processMerge: d =>
-        {
-            d.MergeTarget = new InvalidMergeTarget(
-                mergeType: "梦中卡牌",
-                errorMessage: "梦中卡牌不可参与合成");
-            d.State = MergeDetails.MergeState.Cancel;
-        });
-
-    private static readonly MergeRule GuYuanMergeRule = new(
-        name: "固元",
-        errorMessage: null,
-        order: -101,
-        processMerge: d =>
-        {
-            int value = Fib.ToValue(4 + d.Src.Dj);
-            d.AddSideEffect(() =>
-            {
-                RunManager.Instance.Environment.GainHealthProcedure(value);
-            });
-            d.State = MergeDetails.MergeState.Continue;
-        });
-
-    private static readonly MergeRule BuTianDanMergeRule = new(
-        name:                       "补天丹",
-        errorMessage:               "补天丹不可作用于已经处于最高境界的卡牌",
-        order:                      -1,
-        processMerge:               d =>
-        {
-            RunSkill lhs = d.Lhs;
-            RunSkill rhs = d.Rhs;
-            RunSkill src = d.Src;
-            RunSkill tgt = d.Tgt;
-
-            bool cond = tgt.GetJingJie() != tgt.GetEntry().HighestJingJie;
-            if (!cond)
-            {
-                d.MergeTarget = new InvalidMergeTarget(
-                    mergeType:              "补天丹",
-                    errorMessage:           "补天丹不可作用于已经处于最高境界的卡牌");
-                d.State = MergeDetails.MergeState.Cancel;
-                return;
-            }
-
-            d.MergeTarget = new AssignMergeTarget(
-                mergeType:              "补天丹",
-                resultEntry:            tgt.GetEntry(),
-                resultJingJie:          tgt.GetEntry().HighestJingJie,
-                resultWuXing:           tgt.GetWuXing());
-            d.State = MergeDetails.MergeState.Success;
-        });
-
-    #endregion
-
     public SkillCategory()
     {
         AddRange(new List<SkillEntry>()
@@ -2052,7 +1981,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 tagComposite:               TagCategory.Health,
-                overridingMergeRule:        GuYuanMergeRule,
+                overridingMergeRule:        MergeRule.GuYuanMergeRule,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：气血上限增加{Fib.ToValue(4 + dj)}")),
@@ -2273,7 +2202,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.HuaShenOnly,
                 descriptionGenerator:       (j, dj, costResult, castResult) =>
                     $"合成：另外一张牌变成化神",
-                overridingMergeRule:        BuTianDanMergeRule,
+                overridingMergeRule:        MergeRule.BuTianDanMergeRule,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：另外一张牌变成化神")),
@@ -2510,7 +2439,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "卡池已空",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQiOnly,
-                overridingMergeRule:        NoMerge,
+                overridingMergeRule:        MergeRule.NoMerge,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"卡池已空")),
@@ -2538,7 +2467,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "幻化",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.HuaShenOnly,
-                overridingMergeRule:        NoMerge,
+                overridingMergeRule:        MergeRule.NoMerge,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"模仿对手对位的牌")),
@@ -2731,7 +2660,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Tu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 tagComposite:               TagCategory.Defend,
-                overridingMergeRule:        DreamCard,
+                overridingMergeRule:        MergeRule.DreamCard,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new CycleProcedureDefinition(WuXing.Tu, gain: 1 + dj),
@@ -2744,7 +2673,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.YuanYing2HuaShen,
                 tagComposite:               TagCategory.Mana,
-                overridingMergeRule:        DreamCard,
+                overridingMergeRule:        MergeRule.DreamCard,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new CycleProcedureDefinition(WuXing.Jin, gain: 1 + dj),
@@ -2757,7 +2686,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
                 tagComposite:               TagCategory.Attack | TagCategory.Defend,
-                overridingMergeRule:        DreamCard,
+                overridingMergeRule:        MergeRule.DreamCard,
                 cost:                       ManaCostDefinition.FromValue(2),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
@@ -2771,7 +2700,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 tagComposite:               TagCategory.Deplete,
-                overridingMergeRule:        DreamCard,
+                overridingMergeRule:        MergeRule.DreamCard,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new CycleProcedureDefinition(WuXing.Mu, gain: Fib.ToValue(2 + dj)),
@@ -2783,7 +2712,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Huo,
                 tagComposite:               TagCategory.ZiZhi,
                 jingJieBound:               JingJie.ZhuJi2HuaShen,
-                overridingMergeRule:        DreamCard,
+                overridingMergeRule:        MergeRule.DreamCard,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new TrySetValueProcedureDefinition("LiaoYuanGrow", 1.ToString())

@@ -39,7 +39,7 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
     public int GetHealth() => _health;
     public void SetHealth(int value) => _health = value;
     public BoundedInt GetHealthBounded() => new(GetHealth());
-    public AnnotatableLine GetHealthDescription()
+    public Hint GetHealthDescription()
         => new($"开始战斗时气血上限为{GetHealth()}");
     public JingJie GetJingJie() => _jingJie;
     public void SetJingJie(JingJie jingJie) => _jingJie = jingJie;

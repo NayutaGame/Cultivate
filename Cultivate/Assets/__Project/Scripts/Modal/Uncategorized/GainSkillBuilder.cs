@@ -104,7 +104,7 @@ public class GainSkillBuilder
                 _preferredDeckIndices.Add(deckIndex);
             }
 
-            if (deckIndex.InField)
+            if (deckIndex.Region == SkillRegion.Field)
             {
                 _env.Home.GetSlot(deckIndex.Index).Skill = _createdSkills[i];
                 continue;

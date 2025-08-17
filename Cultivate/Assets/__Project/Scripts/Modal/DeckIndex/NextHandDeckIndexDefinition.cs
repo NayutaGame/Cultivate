@@ -1,7 +1,7 @@
 
 public struct NextHandDeckIndexDefinition : IDeckIndex
 {
-    public bool InField => false;
+    public SkillRegion Region => SkillRegion.Hand;
     public int Index => RunManager.Instance.Environment.Hand.Count();
 
     public override string ToString()
@@ -10,5 +10,5 @@ public struct NextHandDeckIndexDefinition : IDeckIndex
     }
 
     public DeckIndex Reify()
-        => new(InField, Index);
+        => new(Region, Index);
 }

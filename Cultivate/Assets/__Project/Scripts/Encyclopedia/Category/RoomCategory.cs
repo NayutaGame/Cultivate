@@ -713,7 +713,7 @@ public class RoomCategory : Category<RoomEntry>
                                          "\n右边的10是对手最终血量" +
                                          "\n现在对手会以10血打败徐福"),
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("劈砍"), new DeckIndex(true, 0)),
+                            SkillEntryDescriptor.FromName("劈砍"), new DeckIndex(SkillRegion.Field, 0)),
                         new ConfirmGuide("将劈砍置入后，左边血量大于右边。" +
                                          "\n表示战斗的最终结果是徐福以4血战胜对手"),
                         new ClickBattleGuide("徐福胜利后，便可以点击对决按钮，进入战斗界面" +
@@ -3583,6 +3583,57 @@ public class RoomCategory : Category<RoomEntry>
                     BattleCell A = new(template);
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);
+
+                    return A;
+                }),
+
+            new(id:                                 "Room0067",
+                name:                               "提交测试",
+                description:                        "提交测试",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new(
+                        titleText: "提交测试",
+                        detailedText: "请提交每种五行的牌各一张",
+                        "试试", "离开");
+
+                    RunSkillDescriptorListModel list = new RunSkillDescriptorListModel();
+                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Jin));
+                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Shui));
+                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Mu));
+                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Huo));
+                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Tu));
+
+                    CardPickerCell B = new(
+                        titleText: "选择",
+                        detailedText: "请提交每种五行的牌各一张",
+                        descriptor: list);
+                    
+                    DialogCell C = new(
+                        titleText: "提交测试",
+                        detailedText: "提交失败");
+                    
+                    DialogCell D = new(
+                        titleText: "提交测试",
+                        detailedText: "提交成功");
+
+                    B.SetConfirmOperation(indices =>
+                    {
+                        int count = indices.Count;
+                        if (count == 0 || count == 1)
+                            return C;
+
+                        DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
+                        RunSkill copyingSkill = RunManager.Instance.Environment.SkillFromDeckIndex(copyingDeckIndex);
+                        indices.Do(index => RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, index));
+                        return D;
+                    });
+
+                    A[0].SetSelect(option => B);
+                    A[1].SetSelect(option => C);
 
                     return A;
                 }),

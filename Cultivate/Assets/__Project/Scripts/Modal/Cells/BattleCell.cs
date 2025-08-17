@@ -13,7 +13,7 @@ public class BattleCell : Cell
     {
         _enemy = enemy;
         RunManager.Instance.Environment.SetAway(_enemy);
-        RunManager.Instance.Environment.FieldChangedNeuron.Invoke();
+        RunManager.Instance.Environment.ResimulateNeuron.Invoke();
     }
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()

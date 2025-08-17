@@ -23,51 +23,51 @@ public class PuzzleCell : Cell
 
         foreach (SkillSlot slot in _puzzle.Home.TraversalCurrentSlots())
         {
-            if (slot.Skill != null)
-                slot.Skill.Borrowed = true;
+            // if (slot.Skill != null)
+            //     slot.Skill.Borrowed = true;
         }
     }
 
     private void RemoveAllBorrowed()
     {
-        RunEnvironment env = RunManager.Instance.Environment;
-
-        RunEntity puzzleHome = _puzzle.Home;
-        foreach (SkillSlot skillSlot in puzzleHome.TraversalCurrentSlots())
-        {
-            if (skillSlot.Skill is { Borrowed: true })
-                skillSlot.Skill = null;
-        }
-
-        foreach (SkillSlot skillSlot in env.Home.TraversalCurrentSlots())
-        {
-            if (skillSlot.Skill is { Borrowed: true })
-                skillSlot.Skill = null;
-        }
-
-        List<RunSkill> toRemove = new();
-        foreach (RunSkill skill in env.Hand)
-        {
-            if (skill is { Borrowed: true })
-                toRemove.Add(skill);
-        }
-
-        foreach (RunSkill skill in toRemove)
-        {
-            env.Hand.Remove(skill);
-        }
+        // RunEnvironment env = RunManager.Instance.Environment;
+        //
+        // RunEntity puzzleHome = _puzzle.Home;
+        // foreach (SkillSlot skillSlot in puzzleHome.TraversalCurrentSlots())
+        // {
+        //     if (skillSlot.Skill is { Borrowed: true })
+        //         skillSlot.Skill = null;
+        // }
+        //
+        // foreach (SkillSlot skillSlot in env.Home.TraversalCurrentSlots())
+        // {
+        //     if (skillSlot.Skill is { Borrowed: true })
+        //         skillSlot.Skill = null;
+        // }
+        //
+        // List<RunSkill> toRemove = new();
+        // foreach (RunSkill skill in env.Hand)
+        // {
+        //     if (skill is { Borrowed: true })
+        //         toRemove.Add(skill);
+        // }
+        //
+        // foreach (RunSkill skill in toRemove)
+        // {
+        //     env.Hand.Remove(skill);
+        // }
     }
 
     private void UnequipAll()
     {
-        RunEnvironment env = RunManager.Instance.Environment;
-
-        RunEntity puzzleHome = _puzzle.Home;
-        foreach (SkillSlot skillSlot in puzzleHome.TraversalCurrentSlots())
-        {
-            if (skillSlot.Skill != null)
-                env.LegacyUnequipProcedure(skillSlot, null);
-        }
+        // RunEnvironment env = RunManager.Instance.Environment;
+        //
+        // RunEntity puzzleHome = _puzzle.Home;
+        // foreach (SkillSlot skillSlot in puzzleHome.TraversalCurrentSlots())
+        // {
+        //     if (skillSlot.Skill != null)
+        //         env.LegacyUnequipProcedure(skillSlot, null);
+        // }
     }
     
     private Func<PuzzleResultSignal, Cell> _operation;

@@ -1,7 +1,7 @@
 
 public interface IDeckIndex
 {
-    bool InField { get; }
+    SkillRegion Region { get; }
     int Index { get; }
     string ToString();
     DeckIndex Reify();

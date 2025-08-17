@@ -14,5 +14,5 @@ public class UnequipDetails : RunClosureDetails
         => new(slot, slot.ToDeckIndex());
 
     public static UnequipDetails FromDeckIndex(DeckIndex deckIndex)
-        => new(RunManager.Instance.Environment.SlotFromDeckIndex(deckIndex), deckIndex);
+        => new(RunManager.Instance.Environment.SkillSlotFromDeckIndex(deckIndex), deckIndex);
 }

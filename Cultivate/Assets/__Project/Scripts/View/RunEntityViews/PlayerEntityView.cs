@@ -11,7 +11,7 @@ public class PlayerEntityView : XView
         base.SetAddress(address);
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.DropNeuron.Join(Equip, Swap);
+        FieldView.DropNeuron.Join(MoveSkill);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
     }
@@ -51,24 +51,29 @@ public class PlayerEntityView : XView
             AudioManager.Play("CardHover");
     }
 
-    private void Equip(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private void MoveSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        RunSkill skill = from.Get<RunSkill>();
-        SkillSlot slot = to.Get<SkillSlot>();
-        if (skill == null || slot == null)
+        IDeckIndex fromIndex = GetDeckIndex(from);
+        IDeckIndex toIndex = GetDeckIndex(to);
+        if (fromIndex == null || toIndex == null)
             return;
-        
-        RunManager.Instance.Environment.TryEquipProcedure(skill, slot);
+
+        RunManager.Instance.Environment.MoveSkillProcedure(fromIndex, toIndex);
     }
 
-    private void Swap(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    private IDeckIndex GetDeckIndex(InteractBehaviour ib)
     {
-        SkillSlot fromSlot = from.Get<SkillSlot>();
-        SkillSlot toSlot = to.Get<SkillSlot>();
-        if (fromSlot == null || toSlot == null)
-            return;
+        object obj = ib.Get<object>();
+        if (obj is RunSkill runSkill)
+            return runSkill.ToDeckIndex();
         
-        RunManager.Instance.Environment.TrySwapProcedure(fromSlot, toSlot);
+        if (obj is SkillSlot skillSlot)
+            return skillSlot.ToDeckIndex();
+        
+        if (obj is RequirementSlot requirementSlot)
+            return requirementSlot.ToDeckIndex();
+
+        return null;
     }
 
     #endregion

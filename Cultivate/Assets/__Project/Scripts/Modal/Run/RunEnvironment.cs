@@ -15,10 +15,17 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private void InitNeurons()
     {
         StartRunNeuron = new();
+        
         EquipNeuron = new();
         SwapNeuron = new();
         UnequipNeuron = new();
         MergeNeuron = new();
+        SubmitFromHandNeuron = new();
+        SubmitFromFieldNeuron = new();
+        WithdrawToHandNeuron = new();
+        WithdrawToFieldNeuron = new();
+        RequirementSwapNeuron = new();
+        
         GainSkillNeuron = new();
         PickDiscoveredSkillNeuron = new();
         RemoveSkillNeuron = new();
@@ -32,8 +39,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         LevelChangedNeuron = new();
         RoomChangedNeuron = new();
         PanelChangedNeuron = new();
-        DeckChangedNeuron = new();
-        FieldChangedNeuron = new();
+        SkillMovedNeuron = new();
+        ResimulateNeuron = new();
         GainMingYuanNeuron = new();
         LoseMingYuanNeuron = new();
         GainGoldNeuron = new();
@@ -44,13 +51,22 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         AppendReportNeuron = new();
         CommitBattleNeuron = new();
         GuideFinishNeuron = new();
+        
+        SkillMovedNeuron.Join(SkillMovedInvokeResimulate);
     }
 
     public Neuron StartRunNeuron;
+    
     public Neuron<EquipDetails> EquipNeuron;
     public Neuron<SwapDetails> SwapNeuron;
     public Neuron<UnequipDetails> UnequipNeuron;
     public Neuron<MergeDetails> MergeNeuron;
+    public Neuron<SubmitFromHandDetails> SubmitFromHandNeuron;
+    public Neuron<SubmitFromFieldDetails> SubmitFromFieldNeuron;
+    public Neuron<WithdrawToHandDetails> WithdrawToHandNeuron;
+    public Neuron<WithdrawToFieldDetails> WithdrawToFieldNeuron;
+    public Neuron<RequirementSwapDetails> RequirementSwapNeuron;
+    
     public Neuron<GainSkillBuilder> GainSkillNeuron;
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
     public Neuron<RemoveSkillDetails> RemoveSkillNeuron;
@@ -64,8 +80,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron LevelChangedNeuron;
     public Neuron<RoomChangedDetails> RoomChangedNeuron;
     public Neuron<PanelChangedDetails> PanelChangedNeuron;
-    public Neuron<DeckChangedDetails> DeckChangedNeuron;
-    public Neuron FieldChangedNeuron;
+    public Neuron<SkillMovedDetails> SkillMovedNeuron;
+    public Neuron ResimulateNeuron;
     public Neuron<int> GainMingYuanNeuron;
     public Neuron<int> LoseMingYuanNeuron;
     public Neuron<int> GainGoldNeuron;
@@ -76,6 +92,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron AppendReportNeuron;
     public Neuron<bool> CommitBattleNeuron;
     public Neuron<Guide> GuideFinishNeuron;
+    
+    public void SkillMovedInvokeResimulate(SkillMovedDetails d)
+    {
+        if (d.FromIndex.Region == SkillRegion.Field || d.ToIndex.Region == SkillRegion.Field)
+            ResimulateNeuron.Invoke();
+    }
     
     #endregion
 
@@ -152,8 +174,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetHome(_home ?? RunEntity.Default());
         SetAway(null);
         
-        FieldChangedNeuron.Add(_simulateResult.SetDirty);
-        DeckChangedNeuron.Add(GuideProcedure);
+        ResimulateNeuron.Add(_simulateResult.SetDirty);
+        SkillMovedNeuron.Add(GuideProcedure);
 
         if (AppManager.Instance.AudienceIsTester())
         {
@@ -211,9 +233,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void SetHome(RunEntity home)
     {
-        _home?.ChangedNeuron.Remove(FieldChangedNeuron);
+        _home?.ChangedNeuron.Remove(ResimulateNeuron);
         _home = home;
-        _home?.ChangedNeuron.Add(FieldChangedNeuron);
+        _home?.ChangedNeuron.Add(ResimulateNeuron);
     }
 
     public void SetAway(RunEntity away)
@@ -221,9 +243,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _awayIsDummy = away == null;
         away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
         
-        _away?.ChangedNeuron.Remove(FieldChangedNeuron);
+        _away?.ChangedNeuron.Remove(ResimulateNeuron);
         _away = away;
-        _away?.ChangedNeuron.Add(FieldChangedNeuron);
+        _away?.ChangedNeuron.Add(ResimulateNeuron);
 
         EngageEnemyDetails d = new(_awayIsDummy, _away);
         EngageEnemyNeuron.Invoke(d);
@@ -277,18 +299,61 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public RunSkill SkillFromDeckIndex(DeckIndex deckIndex)
     {
-        if (deckIndex.InField)
-            return Home.GetSlot(deckIndex.Index).Skill;
-        else
-            return Hand[deckIndex.Index];
+        switch (deckIndex.Region)
+        {
+            case SkillRegion.Hand:
+                return Hand[deckIndex.Index];
+            case SkillRegion.Field:
+                return Home.GetSlot(deckIndex.Index).Skill;
+            case SkillRegion.Requirement:
+                if (_panel is CardPickerCell cardPickerCell)
+                {
+                    return cardPickerCell.RequirementSlotList[deckIndex.Index].Skill;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+        }
+
+        return null;
     }
 
-    public SkillSlot SlotFromDeckIndex(DeckIndex deckIndex)
+    public SkillSlot SkillSlotFromDeckIndex(DeckIndex deckIndex)
     {
-        if (deckIndex.InField)
-            return Home.GetSlot(deckIndex.Index);
-        else
-            return null;
+        switch (deckIndex.Region)
+        {
+            case SkillRegion.Hand:
+                return null;
+            case SkillRegion.Field:
+                return Home.GetSlot(deckIndex.Index);
+            case SkillRegion.Requirement:
+                return null;
+        }
+
+        return null;
+    }
+
+    public RequirementSlot RequirementSlotFromDeckIndex(DeckIndex deckIndex)
+    {
+        switch (deckIndex.Region)
+        {
+            case SkillRegion.Hand:
+                return null;
+            case SkillRegion.Field:
+                return null;
+            case SkillRegion.Requirement:
+                if (_panel is CardPickerCell cardPickerCell)
+                {
+                    return cardPickerCell.RequirementSlotList[deckIndex.Index];
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+        }
+
+        return null;
     }
 
     public DeckIndex? DeckIndexFromSkill(RunSkill runSkill)
@@ -328,10 +393,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         if (!excludingField)
             foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
-                yield return new DeckIndex(true, slot.GetIndex());
+                yield return new DeckIndex(SkillRegion.Field, slot.GetIndex());
         if (!excludingHand)
             for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
-                yield return new DeckIndex(false, i);
+                yield return new DeckIndex(SkillRegion.Hand, i);
     }
 
     public IEnumerable<RunSkill> TraversalSkills(bool excludingField = false, bool excludingHand = false)
@@ -350,19 +415,19 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GetPanel().SetGuideToFinish();
     }
 
-    private AnnotatableLine GetMingYuanDescription()
+    private Hint GetMingYuanDescription()
         => new(GetMingYuan().GetMingYuanPenaltyText());
 
-    private AnnotatableLine GetGoldDescription()
+    private Hint GetGoldDescription()
         => new("金钱");
 
-    private AnnotatableLine GetHealthDescription()
+    private Hint GetHealthDescription()
         => new("气血上限\n战斗开始的气血");
 
-    private AnnotatableLine GetJingJieDescription()
+    private Hint GetJingJieDescription()
         => new("有五个境界：练气，筑基，金丹，元婴，化神");
 
-    private AnnotatableLine GetDifficultyDescription()
+    private Hint GetDifficultyDescription()
         => new(_config.DifficultyProfile.GetEntry().InheritedDescription);
 
     public bool IsFinalJingJie()
@@ -531,209 +596,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public MergeTarget GetMergePreresult(RunSkill lhs, RunSkill rhs)
     {
-        MergeDetails d = new(lhs, rhs);
-        d.PlayerJingJie = _home.GetJingJie();
-        d.IsDryRun = true;
-        InnerMerge(d);
-
+        MergeDetails d = MergeDetails.ForDryRun(lhs, rhs, _home.GetJingJie());
+        d.CalcMergeTarget();
         return d.MergeTarget;
     }
-
-    public void TryMergeProcedure(RunSkill fromSkill, RunSkill toSkill)
-    {
-        bool handContainsFrom = Hand.Contains(fromSkill);
-        bool handContainsTo = Hand.Contains(toSkill);
-        bool fromEqualsTo = fromSkill == toSkill;
-        if (!handContainsFrom || !handContainsTo || fromEqualsTo)
-            return;
-        
-        MergeProcedure(new(fromSkill, toSkill));
-    }
-
-    public void MergeProcedure(MergeDetails d)
-    {
-        d.PlayerJingJie = _home.GetJingJie();
-        d.IsDryRun = false;
-        
-        // buggy behaviour, event is stateful
-        SendEvent(RunClosureDict.WIL_MERGE, d);
-
-        if (d.Cancel)
-            return;
-
-        if (d.Lhs.Borrowed || d.Rhs.Borrowed)
-            return;
-        
-        InnerMerge(d);
-        Assert.IsTrue(d.State != MergeDetails.MergeState.Continue);
-
-        if (d.State == MergeDetails.MergeState.Cancel)
-            return;
-
-        if (d.IsDryRun)
-            return;
-
-        ExecuteMergeTarget(d);
-        
-        SendEvent(RunClosureDict.DID_MERGE, d);
-        
-        MergeNeuron.Invoke(d);
-        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
-    }
-
-    private void InnerMerge(MergeDetails d)
-    {
-        ProcessOverridingRules(d);
-        if (d.State != MergeDetails.MergeState.Continue)
-            return;
-
-        ProcessDefaultRules(d);
-    }
-
-    private void ProcessOverridingRules(MergeDetails d)
-    {
-        MergeRule lhsRule = d.Lhs.GetEntry().OverridingMergeRule;
-        MergeRule rhsRule = d.Rhs.GetEntry().OverridingMergeRule;
-
-        if (lhsRule.Order <= rhsRule.Order)
-        {
-            d.Src = d.Lhs;
-            d.Tgt = d.Rhs;
-            lhsRule.ProcessMerge(d);
-            if (d.State != MergeDetails.MergeState.Continue)
-                return;
-                
-            d.Src = d.Rhs;
-            d.Tgt = d.Lhs;
-            rhsRule.ProcessMerge(d);
-        }
-        else
-        {
-            d.Src = d.Rhs;
-            d.Tgt = d.Lhs;
-            rhsRule.ProcessMerge(d);
-            if (d.State != MergeDetails.MergeState.Continue)
-                return;
-                
-            d.Src = d.Lhs;
-            d.Tgt = d.Rhs;
-            lhsRule.ProcessMerge(d);
-        }
-    }
-
-    private void ProcessDefaultRules(MergeDetails d)
-    {
-        foreach (MergeRule mergeRule in MergeRule.DefaultMergeRules)
-        {
-            if (d.State != MergeDetails.MergeState.Continue)
-                break;
-            mergeRule.ProcessMerge(d);
-        }
-    }
-
-    private void ExecuteMergeTarget(MergeDetails d)
-    {
-        d.ExecuteSideEffects();
-        
-        Assert.IsFalse(d.MergeTarget is InvalidMergeTarget);
-        
-        d.MergeTarget.Execute(d, Hand);
-    }
-
-    public void TryEquipProcedure(RunSkill skill, SkillSlot slot)
-    {
-        bool handContainsSkill = Hand.Contains(skill);
-        bool homeContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot);
-        if (!handContainsSkill || !homeContainsSlot)
-            return;
-        
-        EquipProcedure(new(skill, slot));
-    }
-
-    public void EquipProcedure(EquipDetails d)
-    {
-        RunSkill toUnequip = d.SkillSlot.Skill;
-        RunSkill toEquip = d.Skill;
-
-        if (toUnequip == null)
-        {
-            d.IsReplace = false;
-            Hand.Remove(toEquip);
-        }
-        else
-        {
-            d.IsReplace = true;
-            Hand.Replace(toEquip, toUnequip);
-        }
-        
-        d.SkillSlot.Skill = toEquip;
-
-        EquipNeuron.Invoke(d);
-        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
-        FieldChangedNeuron.Invoke();
-    }
-
-    public void TrySwapProcedure(SkillSlot fromSlot, SkillSlot toSlot)
-    {
-        bool homeContainsFrom = Home.TraversalCurrentSlots().Any(s => s == fromSlot);
-        bool homeContainsTo = Home.TraversalCurrentSlots().Any(s => s == toSlot);
-        bool fromEqualsTo = fromSlot == toSlot;
-        bool fromHasSkill = fromSlot.Skill != null;
-        if (!homeContainsFrom || !homeContainsTo || fromEqualsTo || !fromHasSkill)
-            return;
-        
-        SwapProcedure(new(fromSlot, toSlot));
-    }
     
-    public void SwapProcedure(SwapDetails d)
-    {
-        d.IsReplace = d.ToSlot.Skill != null;
-        RunSkill temp = d.FromSlot.Skill;
-        d.FromSlot.Skill = d.ToSlot.Skill;
-        d.ToSlot.Skill = temp;
-
-        SwapNeuron.Invoke(d);
-        DeckChangedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
-        FieldChangedNeuron.Invoke();
-    }
-
-    public void TryUnequipProcedure(SkillSlot slot)
-    {
-        bool homeContainsSlot = Home.TraversalCurrentSlots().Any(s => s == slot);
-        bool slotHasSkill = slot.Skill != null;
-        if (!homeContainsSlot || !slotHasSkill)
-            return;
-        
-        UnequipProcedure(UnequipDetails.FromSlot(slot));
-    }
-    
-    public void UnequipProcedure(UnequipDetails d)
-    {
-        RunSkill toUnequip = d.SkillSlot.Skill;
-        if (toUnequip == null)
-            return;
-        Hand.Add(toUnequip);
-        d.SkillSlot.Skill = null;
-        
-        UnequipNeuron.Invoke(d);
-        DeckChangedNeuron.Invoke(new(d.DeckIndex, DeckIndex.FromHand(Hand.Count() - 1)));
-        FieldChangedNeuron.Invoke();
-    }
-
-    public void LegacyUnequipProcedure(SkillSlot slot, object _)
-    {
-        RunSkill toUnequip = slot.Skill;
-        if (toUnequip == null)
-            return;
-
-        if (toUnequip is RunSkill runSkill)
-        {
-            Hand.Add(runSkill);
-
-            slot.Skill = null;
-        }
-    }
-
     public void SetPlayerEqualPreset(RunEntity template, bool toField, bool overwrite)
     {
         if (overwrite)
@@ -931,7 +798,264 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     
     #endregion
 
-    #region SkillRelatedProcedures
+    #region MoveSkillRelated
+
+    public void MoveSkillProcedure(IDeckIndex fromIndex, IDeckIndex toIndex)
+    {
+        SkillMovedDetails d = new SkillMovedDetails(fromIndex.Reify(), toIndex.Reify());
+        if (d.FromIndex == d.ToIndex)
+            return;
+
+        int branch = ((int)d.FromIndex.Region * 3) + (int)d.ToIndex.Region;
+        Action<SkillMovedDetails>[] branches = {
+            FromHandToHand,
+            FromHandToField,
+            FromHandToRequirement,
+            FromFieldToHand,
+            FromFieldToField,
+            FromFieldToRequirement,
+            FromRequirementToHand,
+            FromRequirementToField,
+            FromRequirementToRequirement,
+        };
+
+        branches[branch](d);
+    }
+
+    private void FromHandToHand(SkillMovedDetails d)
+    {
+        RunSkill fromSkill = SkillFromDeckIndex(d.FromIndex);
+        RunSkill toSkill = SkillFromDeckIndex(d.ToIndex);
+        MergeProcedure(MergeDetails.ForActualRun(fromSkill, toSkill, _home.GetJingJie()));
+    }
+
+    public void MergeProcedure(MergeDetails d)
+    {
+        // buggy behaviour, event is stateful
+        SendEvent(RunClosureDict.WIL_MERGE, d);
+
+        if (d.Cancel)
+            return;
+        
+        d.CalcMergeTarget();
+        Assert.IsTrue(d.State != MergeDetails.MergeState.Continue);
+
+        if (d.State == MergeDetails.MergeState.Cancel)
+            return;
+
+        d.Cancel |= d.IsDryRun;
+        if (d.Cancel)
+            return;
+        
+        Assert.IsFalse(d.MergeTarget is InvalidMergeTarget);
+        
+        d.ExecuteSideEffects();
+        d.MergeTarget.Execute(d, Hand);
+        
+        SendEvent(RunClosureDict.DID_MERGE, d);
+        
+        MergeNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromHandToField(SkillMovedDetails d)
+    {
+        RunSkill skill = SkillFromDeckIndex(d.FromIndex);
+        SkillSlot slot = SkillSlotFromDeckIndex(d.ToIndex);
+        EquipProcedure(new(skill, slot));
+    }
+
+    public void EquipProcedure(EquipDetails d)
+    {
+        RunSkill fromSkill = d.Skill;
+        RunSkill toSkill = d.SkillSlot.Skill;
+
+        if (toSkill == null)
+        {
+            Hand.Remove(fromSkill);
+            d.SkillSlot.Skill = fromSkill;
+        }
+        else
+        {
+            Hand.Replace(fromSkill, toSkill);
+            d.SkillSlot.Skill = fromSkill;
+        }
+
+        EquipNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromHandToRequirement(SkillMovedDetails d)
+    {
+        RunSkill skill = SkillFromDeckIndex(d.FromIndex);
+        RequirementSlot slot = RequirementSlotFromDeckIndex(d.ToIndex);
+        if (!slot.Descriptor().Contains(skill))
+            return;
+        
+        // if slot is occupied, withdrawToHand first
+        
+        SubmitFromHandProcedure(new(skill, slot));
+    }
+
+    public void SubmitFromHandProcedure(SubmitFromHandDetails d)
+    {
+        RunSkill fromSkill = d.Skill;
+        RunSkill toSkill = d.RequirementSlot.Skill;
+
+        if (toSkill == null)
+        {
+            Hand.Remove(fromSkill);
+            d.RequirementSlot.Skill = fromSkill;
+        }
+        else
+        {
+            Hand.Replace(fromSkill, toSkill);
+            d.RequirementSlot.Skill = fromSkill;
+        }
+
+        SubmitFromHandNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromFieldToHand(SkillMovedDetails d)
+    {
+        SkillSlot slot = SkillSlotFromDeckIndex(d.FromIndex);
+        if (slot.Skill == null)
+            return;
+        
+        UnequipProcedure(UnequipDetails.FromSlot(slot));
+    }
+
+    public void UnequipProcedure(UnequipDetails d)
+    {
+        RunSkill toUnequip = d.SkillSlot.Skill;
+        if (toUnequip == null)
+            return;
+
+        DeckIndex toDeckIndex = new NextHandDeckIndexDefinition().Reify();
+        
+        Hand.Add(toUnequip);
+        d.SkillSlot.Skill = null;
+        
+        UnequipNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.DeckIndex, toDeckIndex));
+    }
+
+    private void FromFieldToField(SkillMovedDetails d)
+    {
+        SkillSlot fromSlot = SkillSlotFromDeckIndex(d.FromIndex);
+        SkillSlot toSlot = SkillSlotFromDeckIndex(d.ToIndex);
+        if (fromSlot.Skill == null)
+            return;
+        
+        SwapProcedure(new(fromSlot, toSlot));
+    }
+
+    public void SwapProcedure(SwapDetails d)
+    {
+        RunSkill temp = d.FromSlot.Skill;
+        d.FromSlot.Skill = d.ToSlot.Skill;
+        d.ToSlot.Skill = temp;
+
+        SwapNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromFieldToRequirement(SkillMovedDetails d)
+    {
+        SkillSlot skillSlot = SkillSlotFromDeckIndex(d.FromIndex);
+        RequirementSlot requirementSlot = RequirementSlotFromDeckIndex(d.ToIndex);
+        if (skillSlot.Skill == null)
+            return;
+        if (!requirementSlot.Descriptor().Contains(skillSlot.Skill))
+            return;
+        
+        // is requirementSlot is occupied, withdrawtohand first
+        
+        SubmitFromFieldProcedure(new(skillSlot, requirementSlot));
+    }
+
+    public void SubmitFromFieldProcedure(SubmitFromFieldDetails d)
+    {
+        RunSkill temp = d.FromSlot.Skill;
+        d.FromSlot.Skill = d.ToSlot.Skill;
+        d.ToSlot.Skill = temp;
+        
+        SubmitFromFieldNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromRequirementToHand(SkillMovedDetails d)
+    {
+        RequirementSlot slot = RequirementSlotFromDeckIndex(d.FromIndex);
+        if (slot.Skill == null)
+            return;
+        
+        WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(slot));
+    }
+
+    public void WithdrawToHandProcedure(WithdrawToHandDetails d)
+    {
+        RunSkill toUnequip = d.RequirementSlot.Skill;
+        if (toUnequip == null)
+            return;
+
+        DeckIndex toDeckIndex = new NextHandDeckIndexDefinition().Reify();
+        
+        Hand.Add(toUnequip);
+        d.RequirementSlot.Skill = null;
+        
+        WithdrawToHandNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.DeckIndex, toDeckIndex));
+    }
+
+    private void FromRequirementToField(SkillMovedDetails d)
+    {
+        RequirementSlot requirementSlot = RequirementSlotFromDeckIndex(d.FromIndex);
+        SkillSlot skillSlot = SkillSlotFromDeckIndex(d.ToIndex);
+        if (requirementSlot.Skill == null)
+            return;
+        
+        // is skillSlot is occupied, unequip first
+        
+        WithdrawToFieldProcedure(new(requirementSlot, skillSlot));
+    }
+
+    public void WithdrawToFieldProcedure(WithdrawToFieldDetails d)
+    {
+        RunSkill temp = d.FromSlot.Skill;
+        d.FromSlot.Skill = d.ToSlot.Skill;
+        d.ToSlot.Skill = temp;
+        
+        WithdrawToFieldNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromRequirementToRequirement(SkillMovedDetails d)
+    {
+        RequirementSlot fromSlot = RequirementSlotFromDeckIndex(d.FromIndex);
+        RequirementSlot toSlot = RequirementSlotFromDeckIndex(d.ToIndex);
+        if (fromSlot.Skill == null)
+            return;
+        
+        // is requirementSlot is occupied, withdrawtohand first
+        
+        RequirementSwapProcedure(new(fromSlot, toSlot));
+    }
+
+    public void RequirementSwapProcedure(RequirementSwapDetails d)
+    {
+        RunSkill temp = d.FromSlot.Skill;
+        d.FromSlot.Skill = d.ToSlot.Skill;
+        d.ToSlot.Skill = temp;
+        
+        RequirementSwapNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    #endregion
+    
+    #region GainSkillRelated
     
     public void PickSkillProcedure(SkillEntry skillEntry, JingJie preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
     {
@@ -1025,9 +1149,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         RemoveSkillDetails d = new(deckIndex);
         
-        if (deckIndex.InField)
+        if (deckIndex.Region == SkillRegion.Field)
             Home.GetSlot(deckIndex.Index).Skill = null;
-        else
+        else if (deckIndex.Region == SkillRegion.Hand)
             Hand.RemoveAt(deckIndex.Index);
 
         RemoveSkillNeuron.Invoke(d);
@@ -1037,9 +1161,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         SkillSetJingJieDetails d = new(jingJie, deckIndex);
         
-        if (deckIndex.InField)
+        if (deckIndex.Region == SkillRegion.Field)
             _home.GetSlot(deckIndex.Index).Skill.JingJie = jingJie;
-        else
+        else if (deckIndex.Region == SkillRegion.Hand)
             Hand[deckIndex.Index].JingJie = jingJie;
 
         SkillSetJingJieNeuron.Invoke(d);
@@ -1049,9 +1173,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         ReplaceSkillDetails d = new(template, deckIndex);
         
-        if (deckIndex.InField)
+        if (deckIndex.Region == SkillRegion.Field)
             Home.GetSlot(deckIndex.Index).Skill = template.Clone();
-        else
+        else if (deckIndex.Region == SkillRegion.Hand)
             Hand.Replace(deckIndex.Index, template.Clone());
 
         ReplaceSkillNeuron.Invoke(d);
@@ -1124,8 +1248,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetPanel(panel);
     }
 
-    public void GuideProcedure(DeckChangedDetails d)
-        => GuideProcedure(new DeckChangedSignal(d.FromIndex, d.ToIndex));
+    public void GuideProcedure(SkillMovedDetails d)
+        => GuideProcedure(new DeckChangedSignal(d.FromIndex.Reify(), d.ToIndex.Reify()));
 
     public void GuideProcedure(Signal signal)
     {

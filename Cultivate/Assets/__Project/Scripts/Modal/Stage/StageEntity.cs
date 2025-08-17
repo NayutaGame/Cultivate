@@ -239,7 +239,7 @@ public class StageEntity : Addressable, StageClosureListener
     public int GetLowHealthThreshold()
         => Mathf.RoundToInt((25 + GetStackOfBuff("锻体")) * 0.01f * MaxHp).Clamp(0, MaxHp);
 
-    private AnnotatableLine GetArmorDescription()
+    private Hint GetArmorDescription()
     {
         if (Armor > 0)
         {

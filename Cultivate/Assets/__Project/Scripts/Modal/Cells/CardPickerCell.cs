@@ -1,13 +1,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 
 public class CardPickerCell : Cell
 {
     private string _titleText;
     private string _detailedText;
-    private ListModel<RequirementSlot> RequirementSlotList;
+    private ListModel<RequirementSlot> _requirementSlotList;
     
     private Func<List<DeckIndex>, Cell> _confirmOperation;
     public CardPickerCell SetConfirmOperation(Func<List<DeckIndex>, Cell> select)
@@ -19,7 +20,7 @@ public class CardPickerCell : Cell
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Guide",                      thisObject => ((CardPickerCell)thisObject).GetGuideDescriptor() },
-        { "Requirements",               thisObject => ((CardPickerCell)thisObject).RequirementSlotList },
+        { "Requirements",               thisObject => ((CardPickerCell)thisObject)._requirementSlotList },
     };
     public override object Get(string s) => Accessor[s](this);
     public CardPickerCell(
@@ -31,10 +32,11 @@ public class CardPickerCell : Cell
         _titleText = titleText ?? "选择";
         _detailedText = detailedText ?? "请选择卡";
         _confirmOperation = confirmOperation;
-        RequirementSlotList = RequirementSlotListFromRunSkillDescriptorListModel(descriptor ?? RunSkillDescriptorListModel.Default());
+        _requirementSlotList = RequirementSlotListFromRunSkillDescriptorListModel(descriptor ?? RunSkillDescriptorListModel.Default());
     }
     
     public string GetTitleText() => _titleText;
+    public ListModel<RequirementSlot> RequirementSlotList => _requirementSlotList;
 
     // public bool CanSelect(RunSkill skill)
     //     => _descriptor?.Contains(skill) ?? skill != null;
@@ -57,7 +59,7 @@ public class CardPickerCell : Cell
         CardPickerCell template = new CardPickerCell(
             titleText:          "选择",
             detailedText:       "请选择一张牌",
-            descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(new RunSkillDescriptor(tagComposite: TagCategory.Swift), 1));
+            descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
         
         DialogCell win = new(
             titleText: "成功",
@@ -81,10 +83,10 @@ public class CardPickerCell : Cell
     private static ListModel<RequirementSlot> RequirementSlotListFromRunSkillDescriptorListModel(RunSkillDescriptorListModel descriptors)
     {
         ListModel<RequirementSlot> requirementSlotList = new();
-        descriptors.Do(runSkillDescriptor =>
+        for (int i = 0; i < descriptors.Count(); i++)
         {
-            requirementSlotList.Add(new(runSkillDescriptor));
-        });
+            requirementSlotList.Add(new(i, descriptors[i]));
+        }
         return requirementSlotList;
     }
 }

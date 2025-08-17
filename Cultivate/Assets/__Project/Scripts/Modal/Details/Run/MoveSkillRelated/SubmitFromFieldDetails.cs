@@ -1,13 +1,13 @@
 
-public class SwapDetails
+public class SubmitFromFieldDetails : RunClosureDetails
 {
     public DeckIndex FromDeckIndex;
     public DeckIndex ToDeckIndex;
     public SkillSlot FromSlot;
-    public SkillSlot ToSlot;
+    public RequirementSlot ToSlot;
     public bool IsReplace;
     
-    public SwapDetails(SkillSlot fromSlot, SkillSlot toSlot)
+    public SubmitFromFieldDetails(SkillSlot fromSlot, RequirementSlot toSlot)
     {
         FromSlot = fromSlot;
         ToSlot = toSlot;
@@ -15,6 +15,6 @@ public class SwapDetails
         FromDeckIndex = FromSlot.ToDeckIndex();
         ToDeckIndex = ToSlot.ToDeckIndex();
         
-        IsReplace = false;
+        IsReplace = ToSlot.Skill != null;
     }
 }

@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class RunCanvas : Panel
 {
@@ -198,6 +199,9 @@ public class RunCanvas : Panel
         GetAnimator().SetState(0);
     }
 
+    public Neuron<Predicate<RunSkill>> HighlightQualifiersNeuron = new();
+    public Neuron UnhighlightQualifiersNeuron = new();
+
     #region Staging
 
     public override Tween EnterIdle()
@@ -227,11 +231,11 @@ public class RunCanvas : Panel
 
         b.PreferredDeckIndices.Do(deckIndex =>
         {
-            if (deckIndex.InField)
+            if (deckIndex.Region == SkillRegion.Field)
             {
                 DeckPanel.PlayerEntity.FieldView.Modified(deckIndex.Index);
             }
-            else
+            else if (deckIndex.Region == SkillRegion.Hand)
             {
                 DeckPanel.HandView.InsertItem(deckIndex.Index);
             }
@@ -242,7 +246,7 @@ public class RunCanvas : Panel
         
         for (int i = 0; i < b.PreferredDeckIndices.Count; i++)
         {
-            SlotView view = DeckPanel.SkillItemFromDeckIndex(b.PreferredDeckIndices[i].Reify()) as SlotView;
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(b.PreferredDeckIndices[i].Reify());
             Vector3 showPosition = position + i * offset * Vector3.left;
             SetPosition(view, showPosition);
         }
@@ -252,7 +256,7 @@ public class RunCanvas : Panel
         
         foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
         {
-            SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as SlotView;
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex);
             seq.AppendCallback(() => SetShow(view))
                 .AppendInterval(0.15f);
         }
@@ -271,11 +275,11 @@ public class RunCanvas : Panel
 
     private void RemoveSkillStaging(RemoveSkillDetails d)
     {
-        if (d.DeckIndex.InField)
+        if (d.DeckIndex.Region == SkillRegion.Field)
         {
             DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         }
-        else
+        else if (d.DeckIndex.Region == SkillRegion.Hand)
         {
             DeckPanel.HandView.RemoveItemAt(d.DeckIndex.Index);
         }
@@ -283,11 +287,11 @@ public class RunCanvas : Panel
 
     private void SkillSetJingJieStaging(SkillSetJingJieDetails d)
     {
-        if (d.DeckIndex.InField)
+        if (d.DeckIndex.Region == SkillRegion.Field)
         {
             DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         }
-        else
+        else if (d.DeckIndex.Region == SkillRegion.Hand)
         {
             DeckPanel.HandView.Modified(d.DeckIndex.Index);
         }
@@ -295,100 +299,22 @@ public class RunCanvas : Panel
 
     private void ReplaceSkillStaging(ReplaceSkillDetails d)
     {
-        if (d.DeckIndex.InField)
+        if (d.DeckIndex.Region == SkillRegion.Field)
         {
             DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         }
-        else
+        else if (d.DeckIndex.Region == SkillRegion.Hand)
         {
             DeckPanel.HandView.Modified(d.DeckIndex.Index);
         }
-    }
-
-    private void EquipStaging(EquipDetails d)
-    {
-        if (d.IsReplace)
-        {
-            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
-            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
-            
-            from.SetMoveFromRectToIdle(to.GetRect());
-            
-            DeckPanel.HandView.Modified(d.FromDeckIndex.Index);
-        }
-        else
-        {
-            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
-            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
-            
-            from.GetAnimator().SetStateAsync(1);
-            
-            DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
-        }
-        
-        AudioManager.Play("CardPlacement");
-        
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-    }
-
-    private void SwapStaging(SwapDetails d)
-    {
-        if (d.IsReplace)
-        {
-            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
-            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
-            
-            from.SetMoveFromRectToIdle(to.GetRect());
-            
-            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
-            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
-        }
-        else
-        {
-            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
-            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
-            to.Refresh();
-            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
-            
-            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
-            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
-        }
-        
-        AudioManager.Play("CardPlacement");
-        
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
-    }
-
-    private void UnequipStaging(UnequipDetails d)
-    {
-        DeckPanel.HandView.AddItem();
-        
-        SlotView from = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
-        SlotView to = DeckPanel.LatestSkillItem();
-        
-        DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
-        
-        to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
-        
-        from.GetAnimator().SetStateAsync(1);
-        
-        AudioManager.Play("CardPlacement");
-
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
     }
 
     private void MergeStaging(MergeDetails d)
     {
         CanvasManager.Instance.MergePreresultView.SetMergeTargetAsync(2, null);
         
-        SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex) as SlotView;
-        SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex) as SlotView;
+        SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex);
+        SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex);
         
         to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
         from.GetAnimator().SetStateAsync(1);
@@ -400,8 +326,76 @@ public class RunCanvas : Panel
             DeckPanel.HandView.Modified(d.ToDeckIndex.Index - 1);
         
         AudioManager.Play("CardUpgrade");
-    
-        // CanvasManager.Instance.RunCanvas.CardPickerPanel.ClearAllSelections();
+    }
+
+    private void EquipStaging(EquipDetails d)
+    {
+        if (d.IsReplace)
+        {
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex);
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex);
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+            
+            from.SetMoveFromRectToIdle(to.GetRect());
+            
+            DeckPanel.HandView.Modified(d.FromDeckIndex.Index);
+        }
+        else
+        {
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex);
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex);
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+            
+            from.GetAnimator().SetStateAsync(1);
+            
+            DeckPanel.HandView.RemoveItemAt(d.FromDeckIndex.Index);
+        }
+    }
+
+    private void SwapStaging(SwapDetails d)
+    {
+        if (d.IsReplace)
+        {
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex);
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex);
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+            
+            from.SetMoveFromRectToIdle(to.GetRect());
+            
+            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
+            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
+        }
+        else
+        {
+            SlotView from = DeckPanel.SkillItemFromDeckIndex(d.FromDeckIndex);
+            SlotView to = DeckPanel.SkillItemFromDeckIndex(d.ToDeckIndex);
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+            
+            DeckPanel.PlayerEntity.FieldView.Modified(d.FromDeckIndex.Index);
+            DeckPanel.PlayerEntity.FieldView.Modified(d.ToDeckIndex.Index);
+        }
+        
+        AudioManager.Play("CardPlacement");
+    }
+
+    private void UnequipStaging(UnequipDetails d)
+    {
+        DeckPanel.HandView.AddItem();
+        
+        SlotView from = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
+        SlotView to = DeckPanel.LatestSkillItem();
+        
+        DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+        
+        to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+        
+        from.GetAnimator().SetStateAsync(1);
+        
+        AudioManager.Play("CardPlacement");
     }
 
     public void BuySkillStaging(BuySkillDetails d)
@@ -423,7 +417,7 @@ public class RunCanvas : Panel
         
         DeckPanel.HandView.AddItem();
         
-        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
         SlotView commodityView = ShopPanel.CommodityItemFromIndex(d.CommodityIndex) as SlotView;
         
         ShopPanel.ListView.RemoveItemAt(d.CommodityIndex);
@@ -449,7 +443,7 @@ public class RunCanvas : Panel
         // AudioManager.Play("CardPlacement");
         // AudioManager.Instance.Play("钱币");
         
-        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
         SlotView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as SlotView;
         
         DeckPanel.HandView.Modified(d.DeckIndex.Index);
@@ -478,7 +472,7 @@ public class RunCanvas : Panel
         
         DeckPanel.HandView.AddItem();
         
-        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex) as SlotView;
+        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
         SlotView gachaItemView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as SlotView;
         
         GachaPanel.ListView.RemoveItemAt(d.GachaIndex);

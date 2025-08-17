@@ -9,21 +9,19 @@ public class MergeRule
     private string _errorMessage;
     private Action<MergeDetails> _processMerge;
     private int _order;
-    public int Order
-        => _order;
 
-    public MergeRule(string name, string errorMessage, Action<MergeDetails> processMerge, int order = 0)
+    private MergeRule(string name, string errorMessage, Action<MergeDetails> processMerge, int order = 0)
     {
         _name = name;
         _errorMessage = errorMessage;
         _processMerge = processMerge;
         _order = order;
     }
+    
+    public int Order => _order;
+    public void ProcessMerge(MergeDetails d) => _processMerge(d);
 
-    public void ProcessMerge(MergeDetails d)
-        => _processMerge(d);
-
-    public static MergeRule BothMutator = new(
+    public static readonly MergeRule BothMutator = new(
         name: "两张墨染",
         errorMessage: "墨染牌之间无法合成",
         processMerge: d =>
@@ -44,7 +42,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Continue;
         });
 
-    public static MergeRule Mutate = new(
+    public static readonly MergeRule Mutate = new(
         name: "墨染",
         errorMessage: null,
         processMerge: d =>
@@ -85,7 +83,7 @@ public class MergeRule
             }
         });
 
-    public static MergeRule Congruent = new(
+    public static readonly MergeRule Congruent = new(
         name: "全等合成",
         errorMessage: null,
         processMerge: d =>
@@ -110,7 +108,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule SameName = new(
+    public static readonly MergeRule SameName = new(
         name: "同名合成",
         errorMessage: null,
         processMerge: d =>
@@ -134,7 +132,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule JingJieLimit1 = new(
+    public static readonly MergeRule JingJieLimit1 = new(
         name: "境界限制",
         errorMessage: "无法合成原因\n玩家境界需要至少不低于两张卡牌中的一张的境界",
         processMerge: d =>
@@ -155,7 +153,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Continue;
         });
 
-    public static MergeRule JingJieReplace = new(
+    public static readonly MergeRule JingJieReplace = new(
         name: "境界置换",
         errorMessage: null,
         processMerge: d =>
@@ -182,7 +180,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule JingJieLimit2 = new(
+    public static readonly MergeRule JingJieLimit2 = new(
         name: "境界限制",
         errorMessage: "无法合成原因\n玩家境界需要不低于两张卡牌的境界",
         processMerge: d =>
@@ -203,7 +201,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Continue;
         });
 
-    public static MergeRule SameWuXing = new(
+    public static readonly MergeRule SameWuXing = new(
         name: "同五行合成",
         errorMessage: null,
         processMerge: d =>
@@ -228,7 +226,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule XiangShengWuXing = new(
+    public static readonly MergeRule XiangShengWuXing = new(
         name: "相生五行合成",
         errorMessage: null,
         processMerge: d =>
@@ -253,7 +251,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule SameJingJie = new(
+    public static readonly MergeRule SameJingJie = new(
         name: "同境界合成",
         errorMessage: null,
         processMerge: d =>
@@ -279,7 +277,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule SameWuXingHuaShenReroll = new(
+    public static readonly MergeRule SameWuXingHuaShenReroll = new(
         name: "同五行化神置换",
         errorMessage: null,
         processMerge: d =>
@@ -304,7 +302,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule XiangShengWuXingHuaShenReroll = new(
+    public static readonly MergeRule XiangShengWuXingHuaShenReroll = new(
         name: "相生五行化神置换",
         errorMessage: null,
         processMerge: d =>
@@ -329,7 +327,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule HuaShenReroll = new(
+    public static readonly MergeRule HuaShenReroll = new(
         name: "化神置换",
         errorMessage: null,
         processMerge: d =>
@@ -355,7 +353,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Success;
         });
 
-    public static MergeRule Fallback = new(
+    public static readonly MergeRule Fallback = new(
         name: "无法合成",
         errorMessage: null,
         processMerge: d =>
@@ -366,7 +364,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Cancel;
         });
 
-    public static MergeRule Trivial = new(
+    public static readonly MergeRule Trivial = new(
         name: "过渡",
         errorMessage: null,
         processMerge: d =>
@@ -374,7 +372,7 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Continue;
         });
     
-    public static MergeRule[] DefaultMergeRules = new[] {
+    public static readonly MergeRule[] DefaultMergeRules = new[] {
         BothMutator,
         Mutate,
         Congruent,
@@ -390,4 +388,71 @@ public class MergeRule
         HuaShenReroll,
         Fallback,
     };
+    
+    public static readonly MergeRule NoMerge = new(
+        name: "无法合成",
+        errorMessage: "特殊卡牌不可参与合成",
+        order: -1,
+        processMerge: d =>
+        {
+            d.MergeTarget = new InvalidMergeTarget(
+                mergeType: "无法合成",
+                errorMessage: "特殊卡牌不可参与合成");
+            d.State = MergeDetails.MergeState.Cancel;
+        });
+
+    public static readonly MergeRule DreamCard = new(
+        name: "梦中卡牌",
+        errorMessage: "梦中卡牌不可参与合成",
+        order: -1,
+        processMerge: d =>
+        {
+            d.MergeTarget = new InvalidMergeTarget(
+                mergeType: "梦中卡牌",
+                errorMessage: "梦中卡牌不可参与合成");
+            d.State = MergeDetails.MergeState.Cancel;
+        });
+
+    public static readonly MergeRule GuYuanMergeRule = new(
+        name: "固元",
+        errorMessage: null,
+        order: -101,
+        processMerge: d =>
+        {
+            int value = Fib.ToValue(4 + d.Src.Dj);
+            d.AddSideEffect(() =>
+            {
+                RunManager.Instance.Environment.GainHealthProcedure(value);
+            });
+            d.State = MergeDetails.MergeState.Continue;
+        });
+
+    public static readonly MergeRule BuTianDanMergeRule = new(
+        name:                       "补天丹",
+        errorMessage:               "补天丹不可作用于已经处于最高境界的卡牌",
+        order:                      -1,
+        processMerge:               d =>
+        {
+            RunSkill lhs = d.Lhs;
+            RunSkill rhs = d.Rhs;
+            RunSkill src = d.Src;
+            RunSkill tgt = d.Tgt;
+
+            bool cond = tgt.GetJingJie() != tgt.GetEntry().HighestJingJie;
+            if (!cond)
+            {
+                d.MergeTarget = new InvalidMergeTarget(
+                    mergeType:              "补天丹",
+                    errorMessage:           "补天丹不可作用于已经处于最高境界的卡牌");
+                d.State = MergeDetails.MergeState.Cancel;
+                return;
+            }
+
+            d.MergeTarget = new AssignMergeTarget(
+                mergeType:              "补天丹",
+                resultEntry:            tgt.GetEntry(),
+                resultJingJie:          tgt.GetEntry().HighestJingJie,
+                resultWuXing:           tgt.GetWuXing());
+            d.State = MergeDetails.MergeState.Success;
+        });
 }

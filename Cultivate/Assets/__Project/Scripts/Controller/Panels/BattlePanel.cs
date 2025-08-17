@@ -103,14 +103,14 @@ public class BattlePanel : Panel
             { RunEntity.SMIRK_KEY, Encyclopedia.SpriteCategory.FromName("Smirk").Sprite },
             { RunEntity.AFRAID_KEY, Encyclopedia.SpriteCategory.FromName("Afraid").Sprite }, };
 
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshEnemy);
-        RunManager.Instance.Environment.FieldChangedNeuron.Add(RefreshOperationPanel);
+        RunManager.Instance.Environment.ResimulateNeuron.Add(RefreshEnemy);
+        RunManager.Instance.Environment.ResimulateNeuron.Add(RefreshOperationPanel);
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshEnemy);
-        RunManager.Instance.Environment.FieldChangedNeuron.Remove(RefreshOperationPanel);
+        RunManager.Instance.Environment.ResimulateNeuron.Remove(RefreshEnemy);
+        RunManager.Instance.Environment.ResimulateNeuron.Remove(RefreshOperationPanel);
     }
 
     private Action[] CombatActions = new Action[] { CombatNormal, CombatOnlyAnimation, CombatOnlyResult, };

@@ -3,20 +3,30 @@ using System;
 
 public struct DeckIndex : IDeckIndex, IEquatable<DeckIndex>
 {
-    private bool _inField;
-    public bool InField => _inField;
+    private SkillRegion _region;
+    public SkillRegion Region => _region;
     private int _index;
     public int Index => _index;
 
-    public DeckIndex(bool inField, int index)
+    public DeckIndex(SkillRegion region, int index)
     {
-        _inField = inField;
+        _region = region;
         _index = index;
+    }
+
+    public static bool operator ==(DeckIndex left, DeckIndex right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(DeckIndex left, DeckIndex right)
+    {
+        return !(left == right);
     }
 
     public bool Equals(DeckIndex other)
     {
-        return _inField == other._inField && _index == other._index;
+        return _region == other._region && _index == other._index;
     }
 
     public override bool Equals(object obj)
@@ -26,19 +36,16 @@ public struct DeckIndex : IDeckIndex, IEquatable<DeckIndex>
         return Equals((DeckIndex)obj);
     }
 
-    public override int GetHashCode() => _inField.GetHashCode() + _index.GetHashCode();
-
-    public override string ToString()
-    {
-        string r = _inField ? "战斗区" : "手牌区";
-        return $"{r}#{_index}";
-    }
+    public override int GetHashCode() => _region.GetHashCode() + _index.GetHashCode();
 
     public static DeckIndex FromField(int index)
-        => new(true, index);
+        => new(SkillRegion.Field, index);
     
     public static DeckIndex FromHand(int index = 0)
-        => new(false, index);
+        => new(SkillRegion.Hand, index);
+
+    public static DeckIndex FromRequirement(int index)
+        => new(SkillRegion.Requirement, index);
 
     public DeckIndex Reify()
         => this;

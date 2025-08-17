@@ -15,6 +15,6 @@ public class EquipDetails : RunClosureDetails
         FromDeckIndex = Skill.ToDeckIndex();
         ToDeckIndex = SkillSlot.ToDeckIndex();
         
-        IsReplace = false;
+        IsReplace = SkillSlot.Skill != null;
     }
 }

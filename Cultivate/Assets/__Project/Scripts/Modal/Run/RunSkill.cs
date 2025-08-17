@@ -12,7 +12,7 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
     [SerializeField] private JingJie _jingJie;
     [SerializeField] protected int _runUsedTimes;
     [SerializeField] protected int _runEquippedTimes;
-    [SerializeField] private bool _borrowed;
+    [Obsolete] [SerializeField] private bool _borrowed;
 
     [SerializeField] private List<SkillEntry> _appliedMutators;
     [NonSerialized] private SkillDefinition _skillDefinition;
@@ -32,11 +32,6 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
     public void SetRunUsedTimes(int value) => _runEquippedTimes = value;
     public int GetRunEquippedTimes() => _runEquippedTimes;
     public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
-    public bool Borrowed
-    {
-        get => _borrowed;
-        set => _borrowed = value;
-    }
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {

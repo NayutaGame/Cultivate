@@ -1,6 +1,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 public class TagComposite : Addressable
 {
@@ -32,6 +34,20 @@ public class TagComposite : Addressable
         }
         
         return _tagList;
+    }
+
+    public string GetTagListString()
+    {
+        ListModel<TagEntry> tagList = GetTagList();
+        StringBuilder sb = new();
+        for (int i = 0; i < tagList.Count(); i++)
+        {
+            sb.Append(tagList[i].GetName());
+            if (i != tagList.Count() - 1)
+                sb.Append("&");
+        }
+
+        return sb.ToString();
     }
 
     public bool Contains(TagComposite other)

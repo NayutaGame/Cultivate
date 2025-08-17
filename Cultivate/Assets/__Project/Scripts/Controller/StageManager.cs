@@ -38,8 +38,8 @@ public class StageManager : Singleton<StageManager>, Addressable
     public StageTimeline Timeline;
     private UniTask _task;
 
-    private AnnotatableLine GetSkipButtonInactiveHint()
-        => new ("通关一次后解锁");
+    private Hint GetSkipButtonInactiveHint()
+        => new("通关一次后解锁");
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
