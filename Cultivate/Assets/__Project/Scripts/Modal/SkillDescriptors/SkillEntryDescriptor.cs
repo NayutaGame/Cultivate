@@ -79,6 +79,9 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public Description GetDescription(JingJie showingJingJie)
         => _entry?.GetDescription(showingJingJie) ?? "";
 
+    public string GetTrivia()
+        => _entry.GetTrivia();
+
     public TagComposite GetTagComposite()
         => _entry?.GetTagComposite();
 

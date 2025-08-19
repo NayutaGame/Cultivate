@@ -143,6 +143,8 @@ public class AnnotationManager : XView, Addressable
         Canvas.ForceUpdateCanvases();
         Align();
         RegisterCoverForSecondLast();
+        
+        d.AnnotationBehaviour?.InvokeShowAnnotation.Invoke();
 
         if (Annotations.GetCount() > 0)
             AnnotationOpened.Invoke();
@@ -150,9 +152,13 @@ public class AnnotationManager : XView, Addressable
 
     public void DequeueAnnotation()
     {
+        AnnotationDetails d = _annotationStack.GetLast();
+        
         UnregisterCoverForSecondLast();
         _annotationStack.RemoveLast();
         Annotations.RemoveLast();
+        
+        d.AnnotationBehaviour?.InvokeHideAnnotation.Invoke();
 
         if (Annotations.GetCount() == 0)
             AnnotationClosed.Invoke();

@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,9 @@ public class AnnotationBehaviour : XBehaviour
     [SerializeField] private float SecondCounter = 0f;
     [SerializeField] private AnnotationViewType AnnotationViewType;
     [SerializeField] private bool UseRectAlignment = true;
+
+    public Neuron InvokeShowAnnotation = new();
+    public Neuron InvokeHideAnnotation = new();
 
     public override void AwakeFunction()
     {
@@ -44,6 +48,7 @@ public class AnnotationBehaviour : XBehaviour
             AnnotationViewType,
             GetView().GetRect(),
             ib.GetAddress(),
+            this,
             FirstCounter,
             SecondCounter,
             alignmentDetails);

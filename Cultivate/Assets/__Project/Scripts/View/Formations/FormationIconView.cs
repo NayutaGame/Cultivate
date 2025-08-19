@@ -18,11 +18,16 @@ public class FormationIconView : XView
         
         if (formation is RunFormation rf)
         {
+            ProgressText.gameObject.SetActive(true);
             if (ProgressText != null)
             {
                 int progress = rf.GetProgress();
                 ProgressText.text = $"{progress}";
             }
+        }
+        else
+        {
+            ProgressText.gameObject.SetActive(false);
         }
 
         Background.sprite = formation.GetBackgroundSprite().Sprite;

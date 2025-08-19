@@ -134,6 +134,7 @@ public readonly struct HandleDetails
             AnnotationViewType,
             null,
             new Address($"Encyclopedia.{CategoryName}.Dict.{entry.GetId()}"),
+            null,
             0,
             0,
             new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));

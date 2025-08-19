@@ -93,28 +93,6 @@ ScriptedImporter:
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: NameRef
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 288
-      y: 4
-      width: 127
-      height: 22
-    spriteID: e24000d814866d347a95a25d0f7288c7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 288, y: 4}
-    spritePosition: {x: 126, y: 38}
   - name: Selection
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -123,142 +101,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 103
-      width: 273
-      height: 91
-    spriteID: 01b9c68f30618084ca1888875030e4b8
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 4, y: 103}
-    spritePosition: {x: 0, y: 0}
-  - name: GlowSnapshot
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 250
-      y: 202
-      width: 237
-      height: 45
-    spriteID: c47a7563fffb5d24d9a6d84a140b2bcd
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 250, y: 202}
-    spritePosition: {x: 20, y: 23}
-  - name: ShadowSnapshot
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 307
-      width: 237
-      height: 10
-    spriteID: 2683b281dce1a294b9134693ca6492e4
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 4, y: 307}
-    spritePosition: {x: 18, y: 26}
-  - name: ImageRef
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 202
-      width: 238
-      height: 46
-    spriteID: ae22551981277094fb62ad2754a642a4
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 4, y: 202}
-    spritePosition: {x: 17, y: 22}
-  - name: Mask
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 249
-      y: 256
-      width: 237
-      height: 42
-    spriteID: c81d72bc1a0980943ac3a4c07e009d52
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 249, y: 256}
-    spritePosition: {x: 18, y: 26}
-  - name: Shadow
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 256
-      width: 237
-      height: 43
-    spriteID: 0f0daa099061d184b9ee8726da40e3b2
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 4, y: 256}
-    spritePosition: {x: 21, y: 22}
-  - name: Background
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
       y: 4
-      width: 276
-      height: 91
-    spriteID: 70e8baaf8a66342458e912adf3ed207b
+      width: 270
+      height: 79
+    spriteID: 47c42288147c99c4a8b40bc2ba714ed0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -269,6 +115,94 @@ ScriptedImporter:
     parentGroupIndex: -1
     uvTransform: {x: 4, y: 4}
     spritePosition: {x: 0, y: 0}
+  - name: Pinlight
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 244
+      y: 125
+      width: 232
+      height: 3
+    spriteID: 9dbf63e2e802bfe4e9d8735aea4a33ff
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 244, y: 125}
+    spritePosition: {x: 21, y: 56}
+  - name: Multiply
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 138
+      width: 232
+      height: 6
+    spriteID: 7e0610daa53a75940a3290e6a7404424
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 138}
+    spritePosition: {x: 21, y: 20}
+  - name: Placeholder
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 91
+      width: 232
+      height: 39
+    spriteID: 6506276378cdaa144ad2bb5096ae872b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 91}
+    spritePosition: {x: 21, y: 20}
+  - name: Shadow
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 244
+      y: 91
+      width: 223
+      height: 26
+    spriteID: 7ded0e99d8e000944900af99af9f2a72
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 244, y: 91}
+    spritePosition: {x: 21, y: 15}
   characterData:
     bones: []
     parts: []
@@ -332,83 +266,43 @@ ScriptedImporter:
   resliceFromLayer: 0
   mosaicPSDLayers: []
   rigPSDLayers:
-  - name: NameRef
-    spriteName: NameRef
-    isGroup: 0
-    parentIndex: -1
-    spriteID: e24000d814866d347a95a25d0f7288c7
-    layerID: 16
-    mosaicPosition: {x: 288, y: 4}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
   - name: Selection
     spriteName: Selection
     isGroup: 0
     parentIndex: -1
-    spriteID: 01b9c68f30618084ca1888875030e4b8
-    layerID: 8
-    mosaicPosition: {x: 4, y: 103}
+    spriteID: 47c42288147c99c4a8b40bc2ba714ed0
+    layerID: 248
+    mosaicPosition: {x: 4, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: GlowSnapshot
-    spriteName: GlowSnapshot
+  - name: Pinlight
+    spriteName: Pinlight
     isGroup: 0
     parentIndex: -1
-    spriteID: c47a7563fffb5d24d9a6d84a140b2bcd
-    layerID: 50
-    mosaicPosition: {x: 250, y: 202}
+    spriteID: 9dbf63e2e802bfe4e9d8735aea4a33ff
+    layerID: 363
+    mosaicPosition: {x: 244, y: 125}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Glow
-    spriteName: 
+  - name: Multiply
+    spriteName: Multiply
     isGroup: 0
     parentIndex: -1
-    spriteID: 06c1a3ceb3c021c4aa1af279957f4dc3
-    layerID: 52
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 0
-  - name: ShadowSnapshot
-    spriteName: ShadowSnapshot
-    isGroup: 0
-    parentIndex: -1
-    spriteID: 2683b281dce1a294b9134693ca6492e4
-    layerID: 56
-    mosaicPosition: {x: 4, y: 307}
+    spriteID: 7e0610daa53a75940a3290e6a7404424
+    layerID: 246
+    mosaicPosition: {x: 4, y: 138}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Shadow
-    spriteName: 
+  - name: Placeholder
+    spriteName: Placeholder
     isGroup: 0
     parentIndex: -1
-    spriteID: 4b920f6fcf536f6408e2fc2a67f2d5f2
-    layerID: 43
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 0
-  - name: ImageRef
-    spriteName: ImageRef
-    isGroup: 0
-    parentIndex: -1
-    spriteID: ae22551981277094fb62ad2754a642a4
-    layerID: 42
-    mosaicPosition: {x: 4, y: 202}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: Mask
-    spriteName: Mask
-    isGroup: 0
-    parentIndex: -1
-    spriteID: c81d72bc1a0980943ac3a4c07e009d52
-    layerID: 41
-    mosaicPosition: {x: 249, y: 256}
+    spriteID: 6506276378cdaa144ad2bb5096ae872b
+    layerID: 245
+    mosaicPosition: {x: 4, y: 91}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -416,19 +310,9 @@ ScriptedImporter:
     spriteName: Shadow
     isGroup: 0
     parentIndex: -1
-    spriteID: 0f0daa099061d184b9ee8726da40e3b2
-    layerID: 18
-    mosaicPosition: {x: 4, y: 256}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: Background
-    spriteName: Background
-    isGroup: 0
-    parentIndex: -1
-    spriteID: 70e8baaf8a66342458e912adf3ed207b
-    layerID: 14
-    mosaicPosition: {x: 4, y: 4}
+    spriteID: 7ded0e99d8e000944900af99af9f2a72
+    layerID: 244
+    mosaicPosition: {x: 244, y: 91}
     flatten: 0
     isImported: 1
     isVisible: 1

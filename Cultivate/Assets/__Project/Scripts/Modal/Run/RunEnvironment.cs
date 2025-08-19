@@ -25,6 +25,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         WithdrawToHandNeuron = new();
         WithdrawToFieldNeuron = new();
         RequirementSwapNeuron = new();
+
+        DragBeginRunSkill = new();
+        DragEndRunSkill = new();
         
         GainSkillNeuron = new();
         PickDiscoveredSkillNeuron = new();
@@ -66,6 +69,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<WithdrawToHandDetails> WithdrawToHandNeuron;
     public Neuron<WithdrawToFieldDetails> WithdrawToFieldNeuron;
     public Neuron<RequirementSwapDetails> RequirementSwapNeuron;
+
+    public Neuron<RunSkill> DragBeginRunSkill;
+    public Neuron DragEndRunSkill;
     
     public Neuron<GainSkillBuilder> GainSkillNeuron;
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
@@ -892,8 +898,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (!slot.Descriptor().Contains(skill))
             return;
         
-        // if slot is occupied, withdrawToHand first
-        
         SubmitFromHandProcedure(new(skill, slot));
     }
 
@@ -967,10 +971,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         RequirementSlot requirementSlot = RequirementSlotFromDeckIndex(d.ToIndex);
         if (skillSlot.Skill == null)
             return;
+        
         if (!requirementSlot.Descriptor().Contains(skillSlot.Skill))
             return;
-        
-        // is requirementSlot is occupied, withdrawtohand first
         
         SubmitFromFieldProcedure(new(skillSlot, requirementSlot));
     }
@@ -1015,8 +1018,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SkillSlot skillSlot = SkillSlotFromDeckIndex(d.ToIndex);
         if (requirementSlot.Skill == null)
             return;
-        
-        // is skillSlot is occupied, unequip first
+
+        if (skillSlot.IsOccupied())
+        {
+            bool backwardQualified = requirementSlot.Descriptor().Contains(skillSlot.Skill);
+            if (!backwardQualified)
+            {
+                UnequipProcedure(UnequipDetails.FromSlot(skillSlot));
+            }
+        }
         
         WithdrawToFieldProcedure(new(requirementSlot, skillSlot));
     }
@@ -1037,8 +1047,19 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         RequirementSlot toSlot = RequirementSlotFromDeckIndex(d.ToIndex);
         if (fromSlot.Skill == null)
             return;
-        
-        // is requirementSlot is occupied, withdrawtohand first
+
+        bool forwardQualified = toSlot.Descriptor().Contains(fromSlot.Skill);
+        if (!forwardQualified)
+            return;
+
+        if (toSlot.Skill != null)
+        {
+            bool backwardQualified = fromSlot.Descriptor().Contains(toSlot.Skill);
+            if (!backwardQualified)
+            {
+                WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(toSlot));
+            }
+        }
         
         RequirementSwapProcedure(new(fromSlot, toSlot));
     }
@@ -1133,9 +1154,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         ReceiveSignalProcedure(new ConfirmSkillsSignal(descriptors));
     }
 
-    public void ConfirmDeckSelectionsProcedure(List<DeckIndex> indices)
+    public void ConfirmDeckSelectionsProcedure()
     {
-        ReceiveSignalProcedure(new ConfirmDeckSignal(indices));
+        ReceiveSignalProcedure(new ConfirmDeckSignal());
     }
 
     public void RemoveSkillProcedure(SkillEntryDescriptor descriptor)
@@ -1165,6 +1186,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             _home.GetSlot(deckIndex.Index).Skill.JingJie = jingJie;
         else if (deckIndex.Region == SkillRegion.Hand)
             Hand[deckIndex.Index].JingJie = jingJie;
+        else if (deckIndex.Region == SkillRegion.Requirement)
+        {
+            CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
+            Assert.IsTrue(cardPickerCell != null);
+            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill.JingJie = jingJie;
+        }
 
         SkillSetJingJieNeuron.Invoke(d);
     }
@@ -1177,6 +1204,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Home.GetSlot(deckIndex.Index).Skill = template.Clone();
         else if (deckIndex.Region == SkillRegion.Hand)
             Hand.Replace(deckIndex.Index, template.Clone());
+        else if (deckIndex.Region == SkillRegion.Requirement)
+        {
+            CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
+            Assert.IsTrue(cardPickerCell != null);
+            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
+        }
 
         ReplaceSkillNeuron.Invoke(d);
     }

@@ -60,6 +60,9 @@ public class DeckPanel : Panel
         HandView.EndDragNeuron.Join(RemoveMergePreresult);
         HandView.DraggingEnterNeuron.Join(DraggingEnter);
         HandView.DraggingExitNeuron.Join(DraggingExit);
+        HandView.BeginDragNeuron.Join(DragBeginRunSkill);
+        HandView.EndDragNeuron.Join(DragEndRunSkill);
+        HandView.DroppingNeuron.Join(DragEndRunSkill);
         
         HandView.ItemCountChanged.Join(RefreshLayoutSpacing);
         
@@ -71,6 +74,17 @@ public class DeckPanel : Panel
         SortButton._button.onClick.AddListener(AudioManager.PlaySort);
 
         SortButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+    }
+
+    private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
+    {
+        RunSkill skill = ib.Get<RunSkill>();
+        RunManager.Instance.Environment.DragBeginRunSkill.Invoke(skill);
+    }
+
+    private void DragEndRunSkill(InteractBehaviour ib, PointerEventData d)
+    {
+        RunManager.Instance.Environment.DragEndRunSkill.Invoke();
     }
 
     private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)

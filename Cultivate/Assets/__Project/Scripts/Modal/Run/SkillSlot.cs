@@ -81,6 +81,8 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie) => _skill.GetLiteralCostDescription(showingJingJie);
     public string GetName() => _skill.GetName();
     public Description GetDescription(JingJie showingJingJie) => _skill.GetDescription(showingJingJie);
+    public string GetTrivia() => _skill.GetTrivia();
+
     public TagComposite GetTagComposite() => _skill?.GetTagComposite();
     public PackEntry GetPackEntry() => _skill?.GetPackEntry();
 

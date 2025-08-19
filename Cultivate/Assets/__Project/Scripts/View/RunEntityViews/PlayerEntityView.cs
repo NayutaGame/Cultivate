@@ -12,14 +12,11 @@ public class PlayerEntityView : XView
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
         FieldView.DropNeuron.Join(MoveSkill);
+        FieldView.BeginDragNeuron.Join(DragBeginRunSkill);
+        FieldView.EndDragNeuron.Join(DragEndRunSkill);
+        FieldView.DroppingNeuron.Join(DragEndRunSkill);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
-    }
-
-    private void OnEnable()
-    {
-        FieldView.Sync();
-        FormationList.Sync();
     }
 
     public override void Refresh()
@@ -31,6 +28,23 @@ public class PlayerEntityView : XView
     }
 
     public void Sync()
+    {
+        FieldView.Sync();
+        FormationList.Sync();
+    }
+
+    private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
+    {
+        SkillSlot slot = ib.Get<SkillSlot>();
+        RunManager.Instance.Environment.DragBeginRunSkill.Invoke(slot.Skill);
+    }
+
+    private void DragEndRunSkill(InteractBehaviour ib, PointerEventData d)
+    {
+        RunManager.Instance.Environment.DragEndRunSkill.Invoke();
+    }
+
+    private void OnEnable()
     {
         FieldView.Sync();
         FormationList.Sync();

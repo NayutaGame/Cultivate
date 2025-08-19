@@ -295,6 +295,10 @@ public class RunCanvas : Panel
         {
             DeckPanel.HandView.Modified(d.DeckIndex.Index);
         }
+        else if (d.DeckIndex.Region == SkillRegion.Requirement)
+        {
+            CardPickerPanel.Requirements.Modified(d.DeckIndex.Index);
+        }
     }
 
     private void ReplaceSkillStaging(ReplaceSkillDetails d)
@@ -306,6 +310,10 @@ public class RunCanvas : Panel
         else if (d.DeckIndex.Region == SkillRegion.Hand)
         {
             DeckPanel.HandView.Modified(d.DeckIndex.Index);
+        }
+        else if (d.DeckIndex.Region == SkillRegion.Requirement)
+        {
+            CardPickerPanel.Requirements.Modified(d.DeckIndex.Index);
         }
     }
 

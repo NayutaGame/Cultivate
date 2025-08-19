@@ -50,8 +50,7 @@ public class SkillAnnotationView : AnnotationView
         SkillView.Refresh();
         UpdateJingJieSlider();
         Tags.Sync();
-
-        // SetTrivia(skill.GetTrivia());
+        UpdateTrivia();
     }
 
     private void UpdateJingJieSlider()
@@ -99,14 +98,12 @@ public class SkillAnnotationView : AnnotationView
         UpdateJingJieSlider();
     }
 
-    private void SetTrivia(string trivia)
+    private void UpdateTrivia()
     {
-        bool hasTrivia = trivia != null;
-
-        TriviaText.gameObject.SetActive(hasTrivia);
-
-        if (hasTrivia)
-            TriviaText.text = trivia;
+        AnnotationDetails d = Get<AnnotationDetails>();
+        AnnotatableSkill skill = d.Address.Get<AnnotatableSkill>();
+        
+        TriviaText.text = skill.GetTrivia();
     }
 
     public override void DidAlign()

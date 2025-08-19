@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class CardPickerPanel : Panel
 {
-    [SerializeField] private ListView Requirements;
+    [SerializeField] public ListView Requirements;
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text ContentText;
     [SerializeField] private Button ConfirmButton;
@@ -23,6 +23,9 @@ public class CardPickerPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         Requirements.SetAddress(_address.Append(".Requirements"));
         Requirements.DropNeuron.Join(MoveSkill);
+        Requirements.BeginDragNeuron.Join(DragBeginRunSkill);
+        Requirements.EndDragNeuron.Join(DragEndRunSkill);
+        Requirements.DroppingNeuron.Join(DragEndRunSkill);
         ConfirmButton.onClick.RemoveAllListeners();
         ConfirmButton.onClick.AddListener(ConfirmSelections);
     }
@@ -32,8 +35,7 @@ public class CardPickerPanel : Panel
         CardPickerCell d = _address.Get<CardPickerCell>();
         Requirements.Sync();
         TitleText.text = d.GetTitleText();
-        // ContentText.text = d.GetDetailedText(_selections.Count);
-        // ConfirmButton.interactable = d.Bound.Contains(_selections.Count);
+        ContentText.text = d.GetDetailedText();
     }
 
     private void OnEnable()
@@ -59,21 +61,21 @@ public class CardPickerPanel : Panel
         CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Remove(HighlightQualifiers);
         CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Remove(UnhighlightQualifiers);
     }
+
+    private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
+    {
+        RequirementSlot slot = ib.Get<RequirementSlot>();
+        RunManager.Instance.Environment.DragBeginRunSkill.Invoke(slot.Skill);
+    }
+
+    private void DragEndRunSkill(InteractBehaviour ib, PointerEventData d)
+    {
+        RunManager.Instance.Environment.DragEndRunSkill.Invoke();
+    }
     
     private void ConfirmSelections()
     {
-        CardPickerCell d = _address.Get<CardPickerCell>();
-        List<DeckIndex> indices = new List<DeckIndex>();
-        // _selections.Do(selectBehaviour =>
-        // {
-        //     object obj = selectBehaviour.Get<object>();
-        //     if (obj is RunSkill skill)
-        //         indices.Add(skill.ToDeckIndex());
-        //     else if (obj is SkillSlot slot)
-        //         indices.Add(slot.ToDeckIndex());
-        // });
-        
-        RunManager.Instance.Environment.ConfirmDeckSelectionsProcedure(indices);
+        RunManager.Instance.Environment.ConfirmDeckSelectionsProcedure();
     }
     
     private void HighlightQualifiers(Predicate<RunSkill> pred)

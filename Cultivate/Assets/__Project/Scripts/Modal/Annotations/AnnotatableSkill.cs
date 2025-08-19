@@ -8,6 +8,7 @@ public interface AnnotatableSkill : AnnotatableCost
     Sprite GetSprite();
     string GetName();
     Description GetDescription(JingJie showingJingJie);
+    string GetTrivia();
     Sprite GetJingJieSprite(JingJie showingJingJie);
     TagComposite GetTagComposite();
     PackEntry GetPackEntry();

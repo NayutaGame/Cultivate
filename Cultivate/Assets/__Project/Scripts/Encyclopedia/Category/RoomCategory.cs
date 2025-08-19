@@ -625,10 +625,17 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
                         descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie), 1));
-                    B.SetConfirmOperation(indices =>
+                    
+                    B.SetSubmitOperation(cardPickerCell =>
                     {
-                        foreach (var deckIndex in indices)
+                        cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+                        {
+                            if (requirementSlot.Skill == null)
+                                return;
+                            DeckIndex deckIndex = requirementSlot.ToDeckIndex();
                             RunManager.Instance.Environment.SkillSetJingJieProcedure(nextJingJie, deckIndex);
+                            RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
+                        });
                         return null;
                     });
 
@@ -1554,21 +1561,39 @@ public class RoomCategory : Category<RoomEntry>
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
 
-                    B.SetConfirmOperation(indices =>
+                    B.SetSubmitOperation(cardPickerCell =>
                     {
-                        if (indices.Count == 0)
+                        bool fulfilled = cardPickerCell.AllFulfilled();
+                        if (!fulfilled)
+                        {
+                            cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+                            {
+                                if (requirementSlot.Skill != null)
+                                {
+                                    RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
+                                }
+                            });
                             return BLose;
+                        }
 
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
                         return BWin;
                     });
 
-                    C.SetConfirmOperation(indices =>
+                    C.SetSubmitOperation(cardPickerCell =>
                     {
-                        if (indices.Count == 0)
+                        bool fulfilled = cardPickerCell.AllFulfilled();
+                        if (!fulfilled)
+                        {
+                            cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+                            {
+                                if (requirementSlot.Skill != null)
+                                {
+                                    RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
+                                }
+                            });
                             return CLose;
+                        }
 
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
                         return CWin;
                     });
 
@@ -1837,15 +1862,25 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "分子打印机",
                         detailedText: "劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
 
-                    B.SetConfirmOperation(indices =>
+                    B.SetSubmitOperation(cardPickerCell =>
                     {
-                        int count = indices.Count;
-                        if (count == 0 || count == 1)
+                        bool fulfilled = cardPickerCell.AllFulfilled();
+                        if (!fulfilled)
+                        {
+                            cardPickerCell.WithdrawAll();
                             return C;
+                        }
 
-                        DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
-                        RunSkill copyingSkill = RunManager.Instance.Environment.SkillFromDeckIndex(copyingDeckIndex);
-                        indices.Do(index => RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, index));
+                        int count = cardPickerCell.RequirementSlotList.Count();
+                        RequirementSlot copyingSlot = cardPickerCell.RequirementSlotList[RandomManager.Range(0, count)];
+                        RunSkill copyingSkill = copyingSlot.Skill;
+
+                        cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+                        {
+                            RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, requirementSlot.ToDeckIndex());
+                        });
+                        
+                        cardPickerCell.WithdrawAll();
                         return D;
                     });
 
@@ -2440,17 +2475,20 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "割舍",
                         detailedText: "你感到身上轻了一些。");
 
-                    B.SetConfirmOperation(indices =>
+                    B.SetSubmitOperation(cardPickerCell =>
                     {
-                        int count = indices.Count;
-                        if (count == 0)
-                            return C;
-
-                        indices.Do(index =>
+                        if (!cardPickerCell.AnyFulfilled())
                         {
-                            RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(index);
-                            RunManager.Instance.Environment.RemoveSkillProcedure(index);
-                            RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skill.GetEntry());
+                            return C;
+                        }
+                        
+                        cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+                        {
+                            RunSkill skillToRemove = requirementSlot.Skill;
+                            if (skillToRemove == null)
+                                return;
+
+                            RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skillToRemove.GetEntry());
                         });
                         
                         return D;
@@ -2754,13 +2792,11 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "那人已经离开。留下了这个机关在这里，你非常好奇，想必是哪位墨苑大家留下来的手笔。留在这里也是可惜，你取出了其中有用的机关带走了。\n\n得到两个机关");
 
                     A[0].SetSelect(option => BPick);
-                    BPick.SetConfirmOperation(indices =>
+                    BPick.SetSubmitOperation(cardPickerCell =>
                     {
-                        if (indices.Count == 0)
+                        if (!cardPickerCell.AnyFulfilled())
                             return A;
-
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
-
+                        
                         return B;
                     });
 
@@ -3017,12 +3053,10 @@ public class RoomCategory : Category<RoomEntry>
 
                         return A;
                     });
-                    C.SetConfirmOperation(indices =>
+                    C.SetSubmitOperation(cardPickerCell =>
                     {
-                        if (indices.Count == 0)
+                        if (!cardPickerCell.AllFulfilled())
                             return A;
-
-                        indices.Do(RunManager.Instance.Environment.RemoveSkillProcedure);
 
                         RunManager.Instance.Environment.Map.InsertRoom("后羿2");
                         return CWin;
@@ -3620,15 +3654,14 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "提交测试",
                         detailedText: "提交成功");
 
-                    B.SetConfirmOperation(indices =>
+                    B.SetSubmitOperation(cardPickerCell =>
                     {
-                        int count = indices.Count;
-                        if (count == 0 || count == 1)
+                        if (!cardPickerCell.AllFulfilled())
+                        {
+                            cardPickerCell.WithdrawAll();
                             return C;
-
-                        DeckIndex copyingDeckIndex = indices[RandomManager.Range(0, count)];
-                        RunSkill copyingSkill = RunManager.Instance.Environment.SkillFromDeckIndex(copyingDeckIndex);
-                        indices.Do(index => RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, index));
+                        }
+                        
                         return D;
                     });
 

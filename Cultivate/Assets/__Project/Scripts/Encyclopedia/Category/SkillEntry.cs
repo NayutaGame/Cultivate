@@ -53,7 +53,7 @@ public class SkillEntry : Entry, AnnotatableSkill
 
         _closures = closures ?? Array.Empty<StageClosure>();
         
-        _trivia = trivia;
+        _trivia = trivia ?? "或许有人对此牌有着某些简介\n--无名";
 
         _overridingMergeRule = overridingMergeRule ?? MergeRule.Trivial;
 

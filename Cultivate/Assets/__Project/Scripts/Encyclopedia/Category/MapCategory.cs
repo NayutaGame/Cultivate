@@ -18,8 +18,7 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
-                        new BattleRoomDefinition(0, 3, 3),
-                        new DirectRoomDefinition(0, "提交测试"),
+                        new DirectRoomDefinition(0, "分子打印机"),
                         new DirectRoomDefinition(0, "提交测试"),
                         new DirectRoomDefinition(0, "提交测试"),
                         new DirectRoomDefinition(0, "提交测试"),
