@@ -81,6 +81,12 @@ namespace CLLibrary
             return outObj;
         }
 
+        public static bool AnyMatch<T>(this IEnumerable<T> enumerable, Predicate<T> pred)
+            => null != enumerable.FirstObj(pred);
+
+        public static bool AllMatch<T>(this IEnumerable<T> enumerable, Predicate<T> pred)
+            => null == enumerable.FirstObj(item => !pred(item));
+
         public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int n)
         {
             int i = 0;

@@ -23,6 +23,4 @@ public interface IEntity
 
     bool IsInPool();
     void SetInPool(bool inPool);
-
-    string GetReactionKeyFromSkill(RunSkill skill);
 }

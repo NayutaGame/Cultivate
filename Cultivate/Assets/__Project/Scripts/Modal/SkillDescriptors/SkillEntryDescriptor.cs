@@ -32,7 +32,7 @@ public class SkillEntryDescriptor : AnnotatableSkill
     }
 
     public static SkillEntryDescriptor FromRunSkill(RunSkill runSkill)
-        => new(entry: runSkill.GetEntry(), jingJie: runSkill.JingJie);
+        => new(entry: runSkill.GetEntry(), jingJie: runSkill.GetJingJie());
 
     public static SkillEntryDescriptor FromEntry(SkillEntry entry)
         => new(entry: entry);
@@ -53,7 +53,7 @@ public class SkillEntryDescriptor : AnnotatableSkill
         => new(jingJie: jingJie);
 
     public static SkillEntryDescriptor FromEntryJingJie(SkillEntry entry, JingJie jingJie)
-        => new(entry: entry, jingJie: jingJie);
+        => new(entry: entry, jingJie: Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie));
 
     public static SkillEntryDescriptor FromWuXingJingJie(WuXing wuXing, JingJie jingJie)
         => new(wuXing: wuXing, jingJie: jingJie);
@@ -131,7 +131,7 @@ public class SkillEntryDescriptor : AnnotatableSkill
         if (_wuXing != null && skill.GetEntry().WuXing != _wuXing)
             return false;
 
-        if (_jingJie != null && skill.JingJie != _jingJie)
+        if (_jingJie != null && skill.GetJingJie() != _jingJie)
             return false;
 
         if (_tagComposite != null && !skill.GetEntry().GetTagComposite().Contains(_tagComposite))

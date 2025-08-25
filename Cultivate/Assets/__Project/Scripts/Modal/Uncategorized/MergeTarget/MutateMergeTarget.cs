@@ -1,27 +1,23 @@
 
+using System.Collections.Generic;
+
 public class MutateMergeTarget : MergeTarget
 {
-    private bool _rhsIsMutator;
-    
     public MutateMergeTarget(
         string mergeType,
         SkillEntry resultEntry,
         JingJie resultJingJie,
         WuXing resultWuXing,
-        bool rhsIsMutator
-        ) : base(mergeType, true, null, resultEntry, resultJingJie, resultWuXing, null)
+        List<SkillEntry> oldMutators,
+        SkillEntry newMutator
+        ) : base(mergeType, true, null, resultEntry, resultJingJie, resultWuXing, oldMutators, new List<SkillEntry>{ newMutator }, null)
     {
-        _rhsIsMutator = rhsIsMutator;
     }
 
     public override void Execute(MergeDetails d, SkillInventory hand)
     {
-        RunSkill skill = _rhsIsMutator ? d.Lhs : d.Rhs;
-        RunSkill mutator = _rhsIsMutator ? d.Rhs : d.Lhs;
-        
-        skill.Mutate(mutator);
-        
-        hand.Replace(d.Rhs.ToDeckIndex().Index, skill);
+        RunSkill result = RunSkill.FromMutation(d.MergeTarget.ResultEntry, d.MergeTarget.ResultJingJie, d.MergeTarget.ResultMutators);
+        hand.Replace(d.Rhs.ToDeckIndex().Index, result);
         hand.Remove(d.Lhs);
     }
 }

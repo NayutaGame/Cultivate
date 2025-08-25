@@ -4,7 +4,7 @@ using CLLibrary;
 using UnityEngine;
 
 [Serializable]
-public class RoomPool : Pool<RoomEntry>, ISerializationCallbackReceiver
+public class RoomPool : FinitePool<RoomEntry>, ISerializationCallbackReceiver
 {
     public void OnBeforeSerialize()
     {
@@ -12,7 +12,7 @@ public class RoomPool : Pool<RoomEntry>, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        int count = List.Count;
+        int count = Count();
         RoomEntry[] tempRoomList = new RoomEntry[count];
 
         for (int i = 0; i < tempRoomList.Length; i++)

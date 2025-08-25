@@ -1,11 +1,12 @@
 
-using CLLibrary;
+using System;
+using UnityEngine.EventSystems;
 
 public class BarterItemView : XView
 {
     public SkillView LeftSkillView;
     public SkillView RightSkillView;
-    public GlowingButton ExchangeButton;
+    public ExchangeButton ExchangeButton;
 
     protected override void AwakeFunction()
     {
@@ -35,10 +36,13 @@ public class BarterItemView : XView
 
         LeftSkillView.Refresh();
         RightSkillView.Refresh();
-        ExchangeButton.SetInteractable(barterItem.Affordable());
+
+        bool interactable = barterItem.Affordable();
+        ExchangeButton.ButtonState state = ExchangeButton.GetState();
+        ExchangeButton.SetState(interactable ? state : ExchangeButton.ButtonState.Inactive);
     }
 
-    private void Exchange()
+    private void Exchange(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.CloseAnnotation();
         Get<BarterItem>().Exchange();

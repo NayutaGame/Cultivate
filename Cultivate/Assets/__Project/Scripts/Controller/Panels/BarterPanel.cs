@@ -23,12 +23,17 @@ public class BarterPanel : Panel
     private void OnEnable()
     {
         RunManager.Instance.Environment.ExchangeSkillNeuron.Add(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
+        RunManager.Instance.Environment.MergeNeuron.Add(Refresh);
     }
 
     private void OnDisable()
     {
         RunManager.Instance.Environment.ExchangeSkillNeuron.Remove(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
+        RunManager.Instance.Environment.MergeNeuron.Remove(Refresh);
     }
+
+    private void Refresh(MergeDetails d)
+        => Refresh();
 
     public override void Refresh()
     {

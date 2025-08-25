@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RequirementSlot : Addressable, AnnotatableSkill
+public class RequirementSlot : AnnotatableSkill
 {
     private int _index;
     private RunSkillDescriptor _descriptor;

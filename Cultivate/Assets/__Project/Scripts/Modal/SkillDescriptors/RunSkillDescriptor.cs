@@ -54,7 +54,7 @@ public class RunSkillDescriptor : AnnotatableLine
         if (_wuXing != null && runSkill.GetWuXing() != _wuXing)
             return false;
 
-        if (_jingJieBound != null && !_jingJieBound.Value.Contains(runSkill.JingJie))
+        if (_jingJieBound != null && !_jingJieBound.Value.Contains(runSkill.GetJingJie()))
             return false;
 
         if (_tagComposite != null && !runSkill.GetTagComposite().Contains(_tagComposite))

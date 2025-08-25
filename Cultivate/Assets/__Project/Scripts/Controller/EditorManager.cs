@@ -250,11 +250,11 @@ public class EditorManager : Singleton<EditorManager>, Addressable
             return;
 
         SkillEntry skillEntry = slot.Skill.GetEntry();
-        JingJie currJingJie = slot.Skill.JingJie;
+        JingJie currJingJie = slot.Skill.GetJingJie();
         JingJie nextJingJie = skillEntry.JingJieContains(currJingJie + 1)
             ? currJingJie + 1
             : skillEntry.GetLowestJingJie();
-        slot.Skill.JingJie = nextJingJie;
+        slot.Skill = RunSkill.FromChangeJingJie(slot.Skill, nextJingJie);
         EnvironmentChangedNeuron.Invoke();
     }
 

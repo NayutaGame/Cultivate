@@ -7,7 +7,7 @@ public class ShopRoomDefinition : RoomDefinition
 {
     public override RoomEntry Draw(Map map, Room room)
     {
-        Pool<RoomEntry> shopPool = new();
+        FinitePool<RoomEntry> shopPool = new();
         
         shopPool.Populate(Encyclopedia.RoomCategory.FromName("黑市"));
         shopPool.Populate(Encyclopedia.RoomCategory.FromName("收藏家"));

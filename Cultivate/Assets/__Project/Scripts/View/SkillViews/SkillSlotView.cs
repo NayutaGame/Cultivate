@@ -13,7 +13,7 @@ public class SkillSlotView : XView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        SkillView.SetAddress(GetAddress().Append(".Skill"));
+        SkillView.SetAddress(GetAddress());
     }
 
     public override void Refresh()

@@ -94,15 +94,8 @@ public class BattlePanel : Panel
         }
     }
 
-    private Dictionary<string, Sprite> ReactionDict;
-
     private void OnEnable()
     {
-        ReactionDict ??= new Dictionary<string, Sprite>() {
-            { RunEntity.NORMAL_KEY, null },
-            { RunEntity.SMIRK_KEY, Encyclopedia.SpriteCategory.FromName("Smirk").Sprite },
-            { RunEntity.AFRAID_KEY, Encyclopedia.SpriteCategory.FromName("Afraid").Sprite }, };
-
         RunManager.Instance.Environment.ResimulateNeuron.Add(RefreshEnemy);
         RunManager.Instance.Environment.ResimulateNeuron.Add(RefreshOperationPanel);
     }

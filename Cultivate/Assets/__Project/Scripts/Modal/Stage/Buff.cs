@@ -44,16 +44,10 @@ public class Buff : StageClosureListener, IEmphasizable, AnnotatableBuff
         => _emphasisNeuron.Invoke();
 
     public void Register()
-    {
-        foreach (StageClosure closure in _entry.Closures)
-            _owner.Env.ClosureDict.Register(this, closure);
-    }
+        => _owner.Env.ClosureDict.Register(this, _entry.Closures);
 
     public void Unregister()
-    {
-        foreach (StageClosure closure in _entry.Closures)
-            _owner.Env.ClosureDict.Unregister(this, closure);
-    }
+        => _owner.Env.ClosureDict.Unregister(this, _entry.Closures);
 
     public async UniTask GainStackProcedure(int stack)
         => await _owner.Env.GainBuffProcedure(new(_owner.Env, _owner, _owner, GetEntry(), stack, true, null, null, null, true));

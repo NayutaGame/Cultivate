@@ -26,7 +26,7 @@ public class BarterCell : Cell
 
         RunEnvironment env = RunManager.Instance.Environment;
 
-        Pool<SkillEntryDescriptor> pool = new Pool<SkillEntryDescriptor>();
+        FinitePool<SkillEntryDescriptor> pool = new FinitePool<SkillEntryDescriptor>();
         pool.Populate(env.TraversalDeckIndices()
             .Map(env.SkillFromDeckIndex)
             .FilterObj(skill => skill != null)

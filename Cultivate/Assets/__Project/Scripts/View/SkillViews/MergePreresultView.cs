@@ -161,8 +161,7 @@ public class MergePreresultView : XView
 
         CostIcon.gameObject.SetActive(true);
         
-        JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry.LowestJingJie;
-        CostDescription costDescription = _mergeTarget.ResultEntry.GetLiteralCostDescription(jingJie);
+        CostDescription costDescription = _mergeTarget.CostDescription;
         switch (costDescription.Type)
         {
             case CostType.Empty:
@@ -229,31 +228,7 @@ public class MergePreresultView : XView
             return;
         }
         
-        JingJie jingJie = _mergeTarget.ResultJingJie ?? _mergeTarget.ResultEntry.LowestJingJie;
-        DescriptionText.text = _mergeTarget.ResultEntry.GetDescription(jingJie).GetHighlightedString();
-    }
-    
-    protected virtual void SetSkillTypeCompositeFromMergePreresult()
-    {
-        if (_mergeTarget.ResultEntry == null)
-        {
-            return;
-        }
-
-        var tagComposite = _mergeTarget.ResultEntry.GetTagComposite();
-        
-        // List<SkillType> skillTypes = skillTypeComposite.ContainedSkillTypes.FirstN(TypeViews.Length).ToList();
-        //
-        // for (int i = 0; i < skillTypes.Count; i++)
-        // {
-        //     TypeViews[i].SetActive(true);
-        //     TypeTexts[i].text = skillTypes[i].ToString();
-        // }
-        //
-        // for (int i = skillTypes.Count; i < TypeViews.Length; i++)
-        // {
-        //     TypeViews[i].SetActive(false);
-        // }
+        DescriptionText.text = _mergeTarget.Description.GetHighlightedString();
     }
     
     protected virtual void SetJingJieSpriteFromMergePreresult()

@@ -3,7 +3,8 @@ using System;
 
 public class DrawMergeTarget : MergeTarget
 {
-    public DrawMergeTarget(string mergeType, JingJie resultJingJie, WuXing resultWuXing, Predicate<SkillEntry> pred) : base(mergeType, true, null, null, resultJingJie, resultWuXing, pred)
+    public DrawMergeTarget(string mergeType, JingJie resultJingJie, WuXing resultWuXing, Predicate<SkillEntry> pred)
+        : base(mergeType, true, null, null, resultJingJie, resultWuXing, null, null, pred)
     {
     }
 

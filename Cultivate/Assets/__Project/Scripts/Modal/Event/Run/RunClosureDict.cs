@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 
 public class RunClosureDict : Dictionary<int, RunClosureRow>
 {
@@ -31,6 +32,10 @@ public class RunClosureDict : Dictionary<int, RunClosureRow>
     public static readonly int DID_COMMIT_RUN        = 124;
     public static readonly int WIL_CHANGE_PANEL      = 125;
     
+    public void Register(RunClosureListener listener, RunClosure[] closures)
+    {
+        closures.Do(e => Register(listener, e));
+    }
 
     public void Register(RunClosureListener listener, RunClosure closure)
     {
@@ -39,6 +44,11 @@ public class RunClosureDict : Dictionary<int, RunClosureRow>
             this[eventId] = new();
 
         this[eventId].Add(listener, closure);
+    }
+
+    public void Unregister(RunClosureListener listener, RunClosure[] closures)
+    {
+        closures.Do(e => Unregister(listener, e));
     }
 
     public void Unregister(RunClosureListener listener, RunClosure closure)

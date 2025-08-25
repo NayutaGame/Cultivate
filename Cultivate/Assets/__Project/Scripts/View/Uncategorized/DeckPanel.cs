@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -223,7 +224,7 @@ public class DeckPanel : Panel
     private void Unequip(InteractBehaviour from, MonoBehaviour to, PointerEventData d)
     {
         IDeckIndex fromIndex = GetDeckIndex(from);
-        if (fromIndex == null)
+        if (fromIndex == null || fromIndex.Region == SkillRegion.Hand)
             return;
         
         RunManager.Instance.Environment.MoveSkillProcedure(fromIndex, new NextHandDeckIndexDefinition());

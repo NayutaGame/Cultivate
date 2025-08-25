@@ -7,6 +7,7 @@ public class GainSkillBuilder
 {
     private RunEnvironment _env;
     private SkillPool _skillPool;
+    private MutatorPool _mutatorPool;
     private List<SkillEntry> _drawnSkillEntries;
     public List<SkillEntry> DrawnSkillEntries => _drawnSkillEntries;
     private List<RunSkill> _createdSkills;
@@ -18,6 +19,7 @@ public class GainSkillBuilder
     {
         _env = RunManager.Instance.Environment;
         _skillPool = _env.SkillPool;
+        _mutatorPool = _env.MutatorPool;
         _drawnSkillEntries = new();
         _createdSkills = new();
         _preferredDeckIndices = new();
@@ -65,6 +67,13 @@ public class GainSkillBuilder
         _skillPool.Shuffle();
         
         _drawnSkillEntries.AddRange(toRet);
+    }
+
+    public void DrawMutator(JingJie jingJie)
+    {
+        bool success = _mutatorPool.Draw(out SkillEntry skillEntry, jingJie);
+        if (success)
+            _drawnSkillEntries.Add(skillEntry);
     }
     
     public void Create(JingJie preferredJingJie = null)

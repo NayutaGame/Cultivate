@@ -11,7 +11,7 @@ public class SkillInventory : ListModel<RunSkill>
     }
 
     private static Comparison<RunSkill> JingJieComparison =
-        (lhs, rhs) => lhs.JingJie - rhs.JingJie;
+        (lhs, rhs) => lhs.GetJingJie() - rhs.GetJingJie();
 
     private static Comparison<RunSkill> WuXingComparison =
         (lhs, rhs) => (lhs.GetEntry().WuXing.IsBasic() ? lhs.GetEntry().WuXing.GetIndex() : -1) -

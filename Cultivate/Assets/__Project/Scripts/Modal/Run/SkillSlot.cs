@@ -40,14 +40,13 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
             if (_hidden) Skill = null;
         }
     }
+    
     public RunSkill Skill
     {
         get => _skill;
         set
         {
-            _skill?.SetSkillSlot(null);
             _skill = value?.Clone();
-            _skill?.SetSkillSlot(this);
             ChangedNeuron.Invoke();
         }
     }
@@ -78,9 +77,30 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     public JingJie GetLowestJingJie() => _skill.GetLowestJingJie();
     public JingJie GetHighestJingJie() => _skill.GetHighestJingJie();
     public Sprite GetSprite() => _skill.GetSprite();
-    public CostDescription GetLiteralCostDescription(JingJie showingJingJie) => _skill.GetLiteralCostDescription(showingJingJie);
+    
+    public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
+    {
+        if (_skill.GetJingJie() != showingJingJie)
+            return _skill.GetEntry().GetLiteralCostDescription(showingJingJie);
+
+        if (ActualCostDescription != null)
+            return ActualCostDescription;
+
+        return _skill.SkillDefinition.GetLiteralCostDescription();
+    }
+    
+    public Description GetDescription(JingJie showingJingJie)
+    {
+        if (_skill.GetJingJie() != showingJingJie)
+            return _skill.GetEntry().GetDescription(showingJingJie);
+
+        if (ActualDescription != null)
+            return ActualDescription;
+
+        return _skill.SkillDefinition.GetLiteralDescription();
+    }
+
     public string GetName() => _skill.GetName();
-    public Description GetDescription(JingJie showingJingJie) => _skill.GetDescription(showingJingJie);
     public string GetTrivia() => _skill.GetTrivia();
 
     public TagComposite GetTagComposite() => _skill?.GetTagComposite();

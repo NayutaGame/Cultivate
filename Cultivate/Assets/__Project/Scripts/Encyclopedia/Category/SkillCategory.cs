@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 public class SkillCategory : Category<SkillEntry>
 {
     #region Closures
-    
+
     public static async UniTask<bool> CheckIsEnd(StageEntity entity, StageSkill skill)
     {
         if (skill.IsEnd)
@@ -2328,9 +2328,100 @@ public class SkillCategory : Category<SkillEntry>
             #region 07墨染
             
             new(id:                         "Skill07_001",
+                name:                       "守护墨染",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.LianQiOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.ProtectMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标护甲/气血基础数值+8")),
+                }),
+            
+            new(id:                         "Skill07_002",
+                name:                       "破坏墨染",
+                wuXing:                     WuXing.Jin,
+                jingJieBound:               JingJie.LianQiOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.DestroyMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标攻击/破甲基础数值+5")),
+                }),
+            
+            new(id:                         "Skill07_003",
+                name:                       "净化墨染",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.LianQiOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.RemoveDebuffMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：移除目标负面效果")),
+                }),
+            
+            new(id:                         "Skill07_004",
+                name:                       "燃命墨染",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.LianQiOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.CostHealthMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：气血消耗减半")),
+                }),
+            
+            new(id:                         "Skill07_005",
+                name:                       "流转墨染",
+                wuXing:                     WuXing.Wu,
+                jingJieBound:               JingJie.ZhuJiOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.CycleMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：流转行为基础数值+1")),
+                }),
+            
+            // new(id:                         "Skill07_006",
+            //     name:                       "复用墨染",
+            //     wuXing:                     WuXing.Wu,
+            //     jingJieBound:               JingJie.ZhuJiOnly,
+            //     mutate:                     (j, dj) => new MutateDefinition[]
+            //     {
+            //         MutateDefinition.RecycleMutate,
+            //     },
+            //     cast:                       (j, dj) => new ProcedureDefinition[]
+            //     {
+            //         new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标移除一次性(未实现)")),
+            //     }),
+            
+            new(id:                         "Skill07_007",
+                name:                       "灵气墨染",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.ZhuJiOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.CostManaMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：灵气消耗-2")),
+                }),
+            
+            new(id:                         "Skill07_008",
                 name:                       "暴击墨染",
                 wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.JinDanOnly,
+                jingJieBound:               JingJie.ZhuJiOnly,
                 mutate:                     (j, dj) => new MutateDefinition[]
                 {
                     MutateDefinition.CritMutate,
@@ -2340,22 +2431,22 @@ public class SkillCategory : Category<SkillEntry>
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以暴击")),
                 }),
             
-            new(id:                         "Skill07_002",
-                name:                       "吸血墨染",
+            new(id:                         "Skill07_009",
+                name:                       "开局墨染",
                 wuXing:                     WuXing.Jin,
                 jingJieBound:               JingJie.JinDanOnly,
                 mutate:                     (j, dj) => new MutateDefinition[]
                 {
-                    MutateDefinition.LifeStealMutate,
+                    MutateDefinition.StartStageMutate,
                 },
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以吸血")),
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：开局使用一次")),
                 }),
             
-            new(id:                         "Skill07_003",
+            new(id:                         "Skill07_010",
                 name:                       "穿透墨染",
-                wuXing:                     WuXing.Jin,
+                wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.JinDanOnly,
                 mutate:                     (j, dj) => new MutateDefinition[]
                 {
@@ -2366,48 +2457,9 @@ public class SkillCategory : Category<SkillEntry>
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以穿透")),
                 }),
             
-            new(id:                         "Skill07_004",
-                name:                       "二动墨染",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.JinDanOnly,
-                mutate:                     (j, dj) => new MutateDefinition[]
-                {
-                    MutateDefinition.SwiftMutate,
-                },
-                cast:                       (j, dj) => new ProcedureDefinition[]
-                {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以二动")),
-                }),
-            
-            new(id:                         "Skill07_005",
-                name:                       "移除条件墨染",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.JinDanOnly,
-                mutate:                     (j, dj) => new MutateDefinition[]
-                {
-                    MutateDefinition.RemoveCondMutate,
-                },
-                cast:                       (j, dj) => new ProcedureDefinition[]
-                {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：移除目标的条件")),
-                }),
-            
-            new(id:                         "Skill07_006",
-                name:                       "免费墨染",
-                wuXing:                     WuXing.Jin,
-                jingJieBound:               JingJie.JinDanOnly,
-                mutate:                     (j, dj) => new MutateDefinition[]
-                {
-                    MutateDefinition.RemoveCostMutate,
-                },
-                cast:                       (j, dj) => new ProcedureDefinition[]
-                {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：使目标免费")),
-                }),
-            
-            new(id:                         "Skill07_007",
+            new(id:                         "Skill07_011",
                 name:                       "升华墨染",
-                wuXing:                     WuXing.Jin,
+                wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDanOnly,
                 mutate:                     (j, dj) => new MutateDefinition[]
                 {
@@ -2418,17 +2470,95 @@ public class SkillCategory : Category<SkillEntry>
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：使目标使用后升华")),
                 }),
             
-            new(id:                         "Skill07_008",
-                name:                       "净化墨染",
-                wuXing:                     WuXing.Jin,
+            new(id:                         "Skill07_012",
+                name:                       "二动墨染",
+                wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.JinDanOnly,
                 mutate:                     (j, dj) => new MutateDefinition[]
                 {
-                    MutateDefinition.RemoveDebuffMutate,
+                    MutateDefinition.SwiftMutate,
                 },
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：移除目标负面效果")),
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以二动")),
+                }),
+            
+            new(id:                         "Skill07_013",
+                name:                       "条件墨染",
+                wuXing:                     WuXing.Mu,
+                jingJieBound:               JingJie.YuanYingOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.RemoveCondMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：移除目标的条件")),
+                }),
+            
+            new(id:                         "Skill07_014",
+                name:                       "吸血墨染",
+                wuXing:                     WuXing.Shui,
+                jingJieBound:               JingJie.YuanYingOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.LifeStealMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以吸血")),
+                }),
+            
+            // new(id:                         "Skill07_015",
+            //     name:                       "长生墨染",
+            //     wuXing:                     WuXing.Mu,
+            //     jingJieBound:               JingJie.YuanYingOnly,
+            //     mutate:                     (j, dj) => new MutateDefinition[]
+            //     {
+            //         MutateDefinition.LongevityMutate,
+            //     },
+            //     cast:                       (j, dj) => new ProcedureDefinition[]
+            //     {
+            //         new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标可以容纳4个墨染")),
+            //     }),
+            
+            new(id:                         "Skill07_016",
+                name:                       "吟唱墨染",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.YuanYingOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.CostChannelMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：吟唱消耗-1")),
+                }),
+            
+            new(id:                         "Skill07_017",
+                name:                       "禁制墨染",
+                wuXing:                     WuXing.Tu,
+                jingJieBound:               JingJie.HuaShenOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.RemoveForbiddenMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：移除一个禁止词条")),
+                }),
+            
+            new(id:                         "Skill07_018",
+                name:                       "狂战墨染",
+                wuXing:                     WuXing.Huo,
+                jingJieBound:               JingJie.HuaShenOnly,
+                mutate:                     (j, dj) => new MutateDefinition[]
+                {
+                    MutateDefinition.BerserkMutate,
+                },
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：攻击次数+1")),
                 }),
 
             #endregion
@@ -4900,4 +5030,38 @@ public class SkillCategory : Category<SkillEntry>
     }
 
     public SkillEntry Default() => FromName("卡池已空");
+
+    private SkillEntry[] _mutators;
+
+    public SkillEntry[] Mutators
+    {
+        get
+        {
+            if (_mutators != null)
+                return _mutators;
+
+            _mutators = new SkillEntry[]
+            {
+                Encyclopedia.SkillCategory.FromId("Skill07_001"),
+                Encyclopedia.SkillCategory.FromId("Skill07_002"),
+                Encyclopedia.SkillCategory.FromId("Skill07_003"),
+                Encyclopedia.SkillCategory.FromId("Skill07_004"),
+                Encyclopedia.SkillCategory.FromId("Skill07_005"),
+                // Encyclopedia.SkillCategory.FromId("Skill07_006"),
+                Encyclopedia.SkillCategory.FromId("Skill07_007"),
+                Encyclopedia.SkillCategory.FromId("Skill07_008"),
+                Encyclopedia.SkillCategory.FromId("Skill07_009"),
+                Encyclopedia.SkillCategory.FromId("Skill07_010"),
+                Encyclopedia.SkillCategory.FromId("Skill07_011"),
+                Encyclopedia.SkillCategory.FromId("Skill07_012"),
+                Encyclopedia.SkillCategory.FromId("Skill07_013"),
+                Encyclopedia.SkillCategory.FromId("Skill07_014"),
+                // Encyclopedia.SkillCategory.FromId("Skill07_015"),
+                Encyclopedia.SkillCategory.FromId("Skill07_016"),
+                Encyclopedia.SkillCategory.FromId("Skill07_017"),
+                Encyclopedia.SkillCategory.FromId("Skill07_018"),
+            };
+            return _mutators;
+        }
+    }
 }

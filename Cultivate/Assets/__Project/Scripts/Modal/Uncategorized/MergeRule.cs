@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
 
@@ -68,10 +69,11 @@ public class MergeRule
             {
                 d.MergeTarget = new MutateMergeTarget(
                     mergeType:              "墨染",
-                    resultEntry:            rhs.GetEntry(),
-                    resultJingJie:          (rhs.GetJingJie() + 2).ClampUpper(rhs.GetEntry().HighestJingJie),
-                    resultWuXing:           rhs.GetWuXing(),
-                    rhsIsMutator:           rhsIsMutator);
+                    resultEntry:            skill.GetEntry(),
+                    resultJingJie:          skill.GetJingJie(),
+                    resultWuXing:           skill.GetWuXing(),
+                    oldMutators:            skill.GetMutators(),
+                    newMutator:             mutator.GetEntry());
                 d.State = MergeDetails.MergeState.Success;
             }
             else
@@ -104,7 +106,9 @@ public class MergeRule
                 mergeType:              "全等合成",
                 resultEntry:            rhs.GetEntry(),
                 resultJingJie:          (rhs.GetJingJie() + 2).ClampUpper(rhs.GetEntry().HighestJingJie),
-                resultWuXing:           rhs.GetWuXing());
+                resultWuXing:           rhs.GetWuXing(),
+                lhsMutators:            lhs.GetMutators(),
+                rhsMutators:            rhs.GetMutators());
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -128,7 +132,9 @@ public class MergeRule
                 mergeType:              "同名合成",
                 resultEntry:            rhs.GetEntry(),
                 resultJingJie:          (Mathf.Max(lhs.GetJingJie(), rhs.GetJingJie()) + 1).ClampUpper(rhs.GetEntry().HighestJingJie),
-                resultWuXing:           rhs.GetWuXing());
+                resultWuXing:           rhs.GetWuXing(),
+                lhsMutators:            lhs.GetMutators(),
+                rhsMutators:            rhs.GetMutators());
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -173,10 +179,12 @@ public class MergeRule
             RunSkill lowerJingJieSkill = lhs.GetJingJie() < rhs.GetJingJie() ? lhs : rhs;
 
             d.MergeTarget = new AssignMergeTarget(
-                mergeType: "境界置换",
-                resultEntry: lowerJingJieSkill.GetEntry(),
-                resultJingJie: (lowerJingJie + 1).ClampUpper(lowerJingJieSkill.GetEntry().HighestJingJie),
-                resultWuXing: lowerJingJieSkill.GetWuXing());
+                mergeType:              "境界置换",
+                resultEntry:            lowerJingJieSkill.GetEntry(),
+                resultJingJie:          (lowerJingJie + 1).ClampUpper(lowerJingJieSkill.GetEntry().HighestJingJie),
+                resultWuXing:           lowerJingJieSkill.GetWuXing(),
+                lhsMutators:            lowerJingJieSkill.GetMutators(),
+                rhsMutators:            null);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -452,7 +460,9 @@ public class MergeRule
                 mergeType:              "补天丹",
                 resultEntry:            tgt.GetEntry(),
                 resultJingJie:          tgt.GetEntry().HighestJingJie,
-                resultWuXing:           tgt.GetWuXing());
+                resultWuXing:           tgt.GetWuXing(),
+                lhsMutators:            tgt.GetMutators(),
+                rhsMutators:            null);
             d.State = MergeDetails.MergeState.Success;
         });
 }

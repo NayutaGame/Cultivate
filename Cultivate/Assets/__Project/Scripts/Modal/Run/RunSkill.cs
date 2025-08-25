@@ -1,37 +1,23 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using Sirenix.Utilities;
 using UnityEngine;
 
 [Serializable]
-public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
+public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill, RunClosureListener
 {
-    [SerializeReference] private SkillSlot _skillSlot;
+    [Obsolete] [SerializeReference] private SkillSlot _skillSlot;
+    [Obsolete] [SerializeField] private bool _borrowed;
+    [Obsolete] [SerializeField] protected int _runUsedTimes;
+    [Obsolete] [SerializeField] protected int _runEquippedTimes;
+    
     [SerializeField] private SkillEntry _entry;
     [SerializeField] private JingJie _jingJie;
-    [SerializeField] protected int _runUsedTimes;
-    [SerializeField] protected int _runEquippedTimes;
-    [Obsolete] [SerializeField] private bool _borrowed;
-
     [SerializeField] private List<SkillEntry> _appliedMutators;
-    [NonSerialized] private SkillDefinition _skillDefinition;
     
-    public SkillEntry GetEntry() => _entry;
-    public void SetEntry(SkillEntry entry) => _entry = entry;
-    public SkillSlot GetSkillSlot() => _skillSlot;
-    public void SetSkillSlot(SkillSlot value) => _skillSlot = value;
-    public JingJie JingJie
-    {
-        get => _jingJie;
-        set => _jingJie = Mathf.Clamp(value, GetEntry().LowestJingJie, GetEntry().HighestJingJie);
-    }
-    public int Dj
-        => GetJingJie() - _entry.LowestJingJie;
-    public int GetRunUsedTimes() => _runUsedTimes;
-    public void SetRunUsedTimes(int value) => _runEquippedTimes = value;
-    public int GetRunEquippedTimes() => _runEquippedTimes;
-    public void SetRunEquippedTimes(int value) => _runEquippedTimes = value;
+    [NonSerialized] private SkillDefinition _skillDefinition;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -39,17 +25,15 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
         { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
-    private RunSkill(SkillEntry entry, JingJie jingJie, int runUsedTimes, int runEquippedTimes, List<SkillEntry> appliedMutators)
+    private RunSkill(SkillEntry entry, JingJie jingJie, List<SkillEntry> appliedMutators)
     {
         _entry = entry;
-        _jingJie = jingJie;
-        _runUsedTimes = runUsedTimes;
-        _runEquippedTimes = runEquippedTimes;
+        _jingJie = Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie);
         _appliedMutators = appliedMutators ?? new();
     }
 
     public static RunSkill FromEntryJingJie(SkillEntry entry, JingJie jingJie)
-        => new(entry, Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie), 0, 0, null);
+        => new(entry, jingJie, null);
 
     public static RunSkill FromEntryId(string id)
         => FromEntry(Encyclopedia.SkillCategory.FromId(id));
@@ -57,87 +41,60 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
     public static RunSkill FromEntry(SkillEntry entry)
         => FromEntryJingJie(entry, entry.LowestJingJie);
 
+    public static RunSkill FromChangeJingJie(RunSkill original, JingJie jingJie)
+        => new(original._entry, jingJie, original._appliedMutators);
+
+    public static RunSkill FromMutation(SkillEntry entry, JingJie jingJie, List<SkillEntry> mutators)
+        => new(entry, jingJie, mutators);
+
     public RunSkill Clone()
-        => new(_entry, _jingJie, _runUsedTimes, _runEquippedTimes, _appliedMutators);
-
-    public Sprite GetSprite()
-        => _entry.GetSprite();
-
-    public WuXing GetWuXing()
-        => _entry.WuXing;
-
-    public string GetName()
-        => _entry.GetName();
-
-    public TagComposite GetTagComposite()
-        => _entry.GetTagComposite();
-
-    public PackEntry GetPackEntry()
-        => _entry.GetPackEntry();
-
-    public string GetTrivia()
-        => _entry.GetTrivia();
-
-    public JingJie GetJingJie()
-        => _jingJie;
-
-    public JingJie GetLowestJingJie()
-        => _entry.LowestJingJie;
-
-    public JingJie GetHighestJingJie()
-        => _entry.HighestJingJie;
+    {
+        List<SkillEntry> appliedMutators = new();
+        foreach (SkillEntry mutator in _appliedMutators)
+            appliedMutators.Add(mutator);
+        return new(_entry, _jingJie, appliedMutators);
+    }
+    
+    public SkillEntry GetEntry() => _entry;
+    public int Dj => GetJingJie() - _entry.LowestJingJie;
+    public Sprite GetSprite() => _entry.GetSprite();
+    public WuXing GetWuXing() => _entry.WuXing;
+    public string GetName() => _entry.GetName();
+    public TagComposite GetTagComposite() => _entry.GetTagComposite();
+    public PackEntry GetPackEntry() => _entry.GetPackEntry();
+    public string GetTrivia() => _entry.GetTrivia();
+    public JingJie GetJingJie() => _jingJie;
+    public JingJie GetLowestJingJie() => _entry.LowestJingJie;
+    public JingJie GetHighestJingJie() => _entry.HighestJingJie;
+    public Sprite GetJingJieSprite(JingJie showingJingJie) => _entry.GetJingJieSprite(showingJingJie);
+    public JingJie NextJingJie(JingJie showingJingJie) => _entry.NextJingJie(showingJingJie);
+    public override string ToString() => $"[{GetJingJie()}]{GetEntry().GetName()}";
+    public bool CanShowAnnotation() => true;
+    public List<SkillEntry> GetMutators() => _appliedMutators;
 
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie)
     {
         if (_jingJie != showingJingJie)
             return GetEntry().GetLiteralCostDescription(showingJingJie);
-        
-        CostDescription actualCostDescription = _skillSlot?.ActualCostDescription;
-        if (actualCostDescription != null)
-            return actualCostDescription;
             
         return SkillDefinition.GetLiteralCostDescription();
     }
 
     public Description GetDescription(JingJie showingJingJie)
     {
-        if (GetEntry().GetName() == "金刃")
-            ;
-        
         if (_jingJie != showingJingJie)
             return GetEntry().GetDescription(showingJingJie);
-        
-        Description actualDescription = _skillSlot?.ActualDescription;
-        if (actualDescription != null)
-            return actualDescription;
 
         return SkillDefinition.GetLiteralDescription();
     }
 
-    public Sprite GetJingJieSprite(JingJie showingJingJie)
-        => _entry.GetJingJieSprite(showingJingJie);
-
-    public JingJie NextJingJie(JingJie showingJingJie)
-        => _entry.NextJingJie(showingJingJie);
-
-    public override string ToString()
-        => $"[{GetJingJie()}]{GetEntry().GetName()}";
-
-    public DeckIndex ToDeckIndex()
-        => RunManager.Instance.Environment.DeckIndexFromSkill(this).Value;
+    public DeckIndex ToDeckIndex() => RunManager.Instance.Environment.DeckIndexFromSkill(this).Value;
 
     public bool CanMutate(RunSkill mutator)
     {
         MutateDefinition[] mutateDefinitions = mutator.GetEntry().GetMutateDefinitions();
         SkillDefinition skillDefinition = GetSkillDefinitionFromDj(Dj);
         return skillDefinition.CanMutate(mutateDefinitions);
-    }
-
-    public void Mutate(RunSkill mutator)
-    {
-        SkillEntry entry = mutator.GetEntry();
-        _appliedMutators.Add(entry);
-        _skillDefinition = null;
     }
 
     public SkillDefinition SkillDefinition
@@ -163,7 +120,6 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
         if (dj != Dj)
             return GetEntry().GetSkillDefinitionFromDj(dj);
         return SkillDefinition;
-        
     }
 
     public SkillDefinition GetUnmutatedSkillDefinitionFromDj(int dj)
@@ -184,7 +140,4 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill
             }
         }
     }
-
-    public bool CanShowAnnotation()
-        => true;
 }

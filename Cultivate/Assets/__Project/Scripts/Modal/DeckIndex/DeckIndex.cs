@@ -49,4 +49,9 @@ public struct DeckIndex : IDeckIndex, IEquatable<DeckIndex>
 
     public DeckIndex Reify()
         => this;
+
+    public override string ToString()
+    {
+        return $"{_region}:{_index}";
+    }
 }

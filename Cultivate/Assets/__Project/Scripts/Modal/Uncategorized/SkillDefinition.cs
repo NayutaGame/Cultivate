@@ -88,9 +88,6 @@ public class SkillDefinition
             description.AppendReturn();
             description.Join(descriptionFromCost);
         }
-        
-        // description.ProcessExtraReturn();
-        // description.ProcessSoftReturn();
 
         return description;
     }

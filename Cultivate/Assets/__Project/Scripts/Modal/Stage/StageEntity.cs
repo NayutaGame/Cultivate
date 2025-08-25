@@ -70,7 +70,7 @@ public class StageEntity : Addressable, StageClosureListener
     {
         foreach (var skill in _skills)
         {
-            if (!skill.Entry.HasStartStageCast()) continue;
+            if (!skill.GetSkillDefinition().HasStartStageCast) continue;
             await StartStageCastProcedure(skill);
         }
     }
@@ -127,7 +127,7 @@ public class StageEntity : Addressable, StageClosureListener
         SkillDefinition skillDefinition = castDetails.Skill.GetSkillDefinition();
         await skillDefinition.Cast(castDetails);
         
-        CostDescription actualCostDescription = _costDetails.CostDescription.Clone();
+        CostDescription actualCostDescription = _costDetails?.CostDescription.Clone() ?? CostDescription.Empty;
         Description actualDescription = skillDefinition.GetActualDescription(_costDetails?.CostResult, castResult);
         _env.Result.TryAppendNote(Index, castDetails.Skill, actualCostDescription, actualDescription);
         _env.Result.TryAppend($"\n");

@@ -29,7 +29,7 @@ namespace CLLibrary
 
         public static int[] GetCombination(int n, int k)
         {
-            Pool<int> pool = new Pool<int>();
+            FinitePool<int> pool = new FinitePool<int>();
             n.Do(i => pool.Populate(i));
             pool.Shuffle();
             int[] popped = new int[k];

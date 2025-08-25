@@ -129,6 +129,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeField] private JingJie _jingJie;
     [SerializeReference] private Map _map;
     [SerializeReference] private SkillPool _skillPool;
+    [NonSerialized] private MutatorPool _mutatorPool;
     [SerializeReference] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
     [SerializeReference] private RunEntity _home;
@@ -191,7 +192,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             EngageEnemyNeuron.Add(AppendBattleReport);
             PanelChangedNeuron.Add(AppendPickDiscoveredSkillReport);
         }
+        
+        if (AllowMutate())
+        {
+            _mutatorPool = new();
+        }
     }
+    
+    private bool AllowMutate()
+        => _config.DifficultyProfile.GetEntry().AllowMutate;
 
     private void Deinit()
     {
@@ -223,6 +232,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public RunEntity Away => _away;
     public JingJie JingJie => _jingJie;
     public SkillPool SkillPool => _skillPool;
+    public MutatorPool MutatorPool => _mutatorPool;
     public SkillInventory Hand => _hand;
     public void SendEvent(int eventId, RunClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
@@ -364,13 +374,21 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public DeckIndex? DeckIndexFromSkill(RunSkill runSkill)
     {
-        SkillSlot skillSlot = runSkill.GetSkillSlot();
-        if (skillSlot != null)
-            return DeckIndex.FromField(skillSlot.GetIndex());
+        int? handIndex = Hand.FirstIdx(skill => skill == runSkill);
+        if (handIndex.HasValue)
+            return DeckIndex.FromHand(handIndex.Value);
 
-        if (Hand.Contains(runSkill))
-            return DeckIndex.FromHand(Hand.IndexOf(runSkill));
-
+        int? slotIndex = Home.TraversalCurrentSlots().FirstIdx(slot => slot.Skill == runSkill);
+        if (slotIndex.HasValue)
+            return DeckIndex.FromField(slotIndex.Value);
+        
+        if (_panel is CardPickerCell cardPickerCell)
+        {
+            int? requirementIndex = cardPickerCell.RequirementSlotList.FirstIdx(slot => slot.Skill == runSkill);
+            if (requirementIndex.HasValue)
+                return DeckIndex.FromRequirement(requirementIndex.Value);
+        }
+        
         return null;
     }
 
@@ -496,7 +514,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         {
             SkillPool.Populate(pack.Cards);
         }));
-
+        
         SkillPool.Shuffle();
     }
 
@@ -509,27 +527,16 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (d.Cancel)
             return;
 
-        int count = _home.GetSlotCount();
         int preservedCount = d.PreserveFirstDeplete ? 1 : 0;
-        for (int i = 0; i < count; i++)
+        foreach (SkillSlot slot in d.DepletingSlots)
         {
-            SkillSlot slot = _home.GetSlot(i);
             RunSkill skill = slot.Skill;
-            
-            if (skill == null)
-                continue;
-            
-            bool depleted = skill.GetEntry().GetTagComposite().Contains(TagCategory.Deplete);
-            if (!depleted)
-                continue;
 
             if (preservedCount > 0)
             {
                 preservedCount--;
                 continue;
             }
-
-            Debug.Log($"Depleting skill: {skill.GetEntry().GetName()}");
 
             d.DepletedSkills.Add(skill);
             slot.Skill = null;
@@ -785,6 +792,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         GainSkillBuilder b = new();
         b.Draw(d.Descriptor);
+        if (AllowMutate())
+            b.DrawMutator(JingJie);
         
         d.Skills.AddRange(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
 
@@ -1174,6 +1183,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Home.GetSlot(deckIndex.Index).Skill = null;
         else if (deckIndex.Region == SkillRegion.Hand)
             Hand.RemoveAt(deckIndex.Index);
+        else if (deckIndex.Region == SkillRegion.Requirement)
+        {
+            CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
+            Assert.IsTrue(cardPickerCell != null);
+            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = null;
+        }
 
         RemoveSkillNeuron.Invoke(d);
     }
@@ -1181,18 +1196,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void SkillSetJingJieProcedure(JingJie jingJie, DeckIndex deckIndex)
     {
         SkillSetJingJieDetails d = new(jingJie, deckIndex);
-        
-        if (deckIndex.Region == SkillRegion.Field)
-            _home.GetSlot(deckIndex.Index).Skill.JingJie = jingJie;
-        else if (deckIndex.Region == SkillRegion.Hand)
-            Hand[deckIndex.Index].JingJie = jingJie;
-        else if (deckIndex.Region == SkillRegion.Requirement)
-        {
-            CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
-            Assert.IsTrue(cardPickerCell != null);
-            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill.JingJie = jingJie;
-        }
-
+        RunSkill template = SkillFromDeckIndex(deckIndex);
+        ReplaceSkillProcedure(RunSkill.FromChangeJingJie(template, jingJie), deckIndex);
         SkillSetJingJieNeuron.Invoke(d);
     }
 

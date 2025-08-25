@@ -15,6 +15,7 @@ public class DifficultyEntry : Entry
     [NonSerialized] public bool HomeAllowFormation;
     [NonSerialized] public bool AwayAllowFormation;
     [NonSerialized] public bool AllowRotate;
+    [NonSerialized] public bool AllowMutate;
     [NonSerialized] public RunClosure[] _runClosures;
     [NonSerialized] public StageClosure[] _stageClosures;
 
@@ -28,6 +29,7 @@ public class DifficultyEntry : Entry
         bool homeAllowFormation = false,
         bool awayAllowFormation = false,
         bool allowRotate = false,
+        bool allowMutate = false,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id, name)
     {
@@ -39,6 +41,7 @@ public class DifficultyEntry : Entry
         HomeAllowFormation = homeAllowFormation;
         AwayAllowFormation = awayAllowFormation;
         AllowRotate = allowRotate;
+        AllowMutate = allowMutate;
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
