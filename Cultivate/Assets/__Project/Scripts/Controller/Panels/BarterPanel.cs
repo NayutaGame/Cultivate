@@ -1,11 +1,12 @@
 
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
     public ListView ListView;
 
-    public Button ExitButton;
+    public Button4State ExitButton;
 
     private Address _address;
 
@@ -15,19 +16,18 @@ public class BarterPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Inventory"));
-
-        ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(ExitShop);
     }
 
     private void OnEnable()
     {
+        ExitButton.LeftClickNeuron.Add(ExitShop);
         RunManager.Instance.Environment.ExchangeSkillNeuron.Add(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
         RunManager.Instance.Environment.MergeNeuron.Add(Refresh);
     }
 
     private void OnDisable()
     {
+        ExitButton.LeftClickNeuron.Remove(ExitShop);
         RunManager.Instance.Environment.ExchangeSkillNeuron.Remove(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
         RunManager.Instance.Environment.MergeNeuron.Remove(Refresh);
     }
@@ -45,7 +45,7 @@ public class BarterPanel : Panel
         return ListView.ViewFromIndex(commodityIndex);
     }
 
-    private void ExitShop()
+    private void ExitShop(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ExitShopProcedure();
     }

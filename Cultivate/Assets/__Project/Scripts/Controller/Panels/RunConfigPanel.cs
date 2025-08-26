@@ -16,7 +16,7 @@ public class RunConfigPanel : Panel
     [SerializeField] private XButton ReturnButton;
     [SerializeField] private XButton StartRunButton;
 
-    [SerializeField] private XButton PackConfigButton;
+    [SerializeField] private Button4State PackConfigButton;
 
     [SerializeField] private PackConfigPanel PackConfigPanel;
 
@@ -39,12 +39,6 @@ public class RunConfigPanel : Panel
         StartRunButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
 
         StartRunButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
-        
-        PackConfigButton._button.onClick.RemoveAllListeners();
-        PackConfigButton._button.onClick.AddListener(EnterPackConfig);
-        PackConfigButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
-
-        PackConfigButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
         CharacterListView.LeftClickNeuron.Join(Select);
@@ -62,6 +56,10 @@ public class RunConfigPanel : Panel
 
     private void OnEnable()
     {
+        PackConfigButton.LeftClickNeuron.Add(EnterPackConfig);
+        PackConfigButton.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
+        PackConfigButton.GetInteractBehaviour().PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
+        
         CharacterListView.Sync();
         Refresh();
         AppManager.Instance.PushEscFunc(Return);
@@ -69,6 +67,10 @@ public class RunConfigPanel : Panel
 
     private void OnDisable()
     {
+        PackConfigButton.LeftClickNeuron.Remove(EnterPackConfig);
+        PackConfigButton.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+        PackConfigButton.GetInteractBehaviour().PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+        
         AppManager.Instance.PopEscFunc();
     }
 
@@ -77,7 +79,7 @@ public class RunConfigPanel : Panel
         CloseRunConfigPanel();
     }
 
-    private void EnterPackConfig()
+    private void EnterPackConfig(InteractBehaviour ib, PointerEventData d)
     {
         PackConfigPanel.SetUnmodifiedPackPreset(AppManager.Instance.ConfigManager.WriteCurrentIntoPackPreset());
         PackConfigPanel.GetAnimator().SetStateAsync(1);

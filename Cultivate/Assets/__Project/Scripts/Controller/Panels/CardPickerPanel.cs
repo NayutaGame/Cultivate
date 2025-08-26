@@ -12,7 +12,7 @@ public class CardPickerPanel : Panel
     [SerializeField] public ListView Requirements;
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text ContentText;
-    [SerializeField] private Button ConfirmButton;
+    [SerializeField] private Button4State ConfirmButton;
     
     private Address _address;
 
@@ -26,8 +26,6 @@ public class CardPickerPanel : Panel
         Requirements.BeginDragNeuron.Join(DragBeginRunSkill);
         Requirements.EndDragNeuron.Join(DragEndRunSkill);
         Requirements.DroppingNeuron.Join(DragEndRunSkill);
-        ConfirmButton.onClick.RemoveAllListeners();
-        ConfirmButton.onClick.AddListener(ConfirmSelections);
     }
 
     public override void Refresh()
@@ -40,6 +38,7 @@ public class CardPickerPanel : Panel
 
     private void OnEnable()
     {
+        ConfirmButton.LeftClickNeuron.Add(ConfirmSelections);
         RunManager.Instance.Environment.SubmitFromHandNeuron.Add(SubmitFromHandStaging);
         RunManager.Instance.Environment.SubmitFromFieldNeuron.Add(SubmitFromFieldStaging);
         RunManager.Instance.Environment.WithdrawToHandNeuron.Add(WithdrawToHandStaging);
@@ -52,6 +51,7 @@ public class CardPickerPanel : Panel
 
     private void OnDisable()
     {
+        ConfirmButton.LeftClickNeuron.Remove(ConfirmSelections);
         RunManager.Instance.Environment.SubmitFromHandNeuron.Remove(SubmitFromHandStaging);
         RunManager.Instance.Environment.SubmitFromFieldNeuron.Remove(SubmitFromFieldStaging);
         RunManager.Instance.Environment.WithdrawToHandNeuron.Remove(WithdrawToHandStaging);
@@ -73,7 +73,7 @@ public class CardPickerPanel : Panel
         RunManager.Instance.Environment.DragEndRunSkill.Invoke();
     }
     
-    private void ConfirmSelections()
+    private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ConfirmDeckSelectionsProcedure();
     }

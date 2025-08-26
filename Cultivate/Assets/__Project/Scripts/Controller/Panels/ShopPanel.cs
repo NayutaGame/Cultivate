@@ -8,7 +8,7 @@ public class ShopPanel : Panel
     public TMP_Text TitleText;
     public ListView ListView;
     public Image Illustration;
-    public Button ExitButton;
+    public Button4State ExitButton;
 
     private Address _address;
 
@@ -18,9 +18,22 @@ public class ShopPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Commodities"));
+    }
 
-        ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(ExitShop);
+    private void OnEnable()
+    {
+        RunManager.Instance.Environment.BuySkillNeuron.Add(CanvasManager.Instance.RunCanvas.BuySkillStaging);
+        RunManager.Instance.Environment.GainGoldNeuron.Add(GainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Add(LoseGold);
+        ExitButton.LeftClickNeuron.Add(ExitShop);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.BuySkillNeuron.Remove(CanvasManager.Instance.RunCanvas.BuySkillStaging);
+        RunManager.Instance.Environment.GainGoldNeuron.Remove(GainGold);
+        RunManager.Instance.Environment.LoseGoldNeuron.Remove(LoseGold);
+        ExitButton.LeftClickNeuron.Remove(ExitShop);
     }
 
     public override void Refresh()
@@ -38,21 +51,7 @@ public class ShopPanel : Panel
     private void LoseGold(int value)
         => ListView.Refresh();
 
-    private void OnEnable()
-    {
-        RunManager.Instance.Environment.BuySkillNeuron.Add(CanvasManager.Instance.RunCanvas.BuySkillStaging);
-        RunManager.Instance.Environment.GainGoldNeuron.Add(GainGold);
-        RunManager.Instance.Environment.LoseGoldNeuron.Add(LoseGold);
-    }
-
-    private void OnDisable()
-    {
-        RunManager.Instance.Environment.BuySkillNeuron.Remove(CanvasManager.Instance.RunCanvas.BuySkillStaging);
-        RunManager.Instance.Environment.GainGoldNeuron.Remove(GainGold);
-        RunManager.Instance.Environment.LoseGoldNeuron.Remove(LoseGold);
-    }
-
-    private void ExitShop()
+    private void ExitShop(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ExitShopProcedure();
     }

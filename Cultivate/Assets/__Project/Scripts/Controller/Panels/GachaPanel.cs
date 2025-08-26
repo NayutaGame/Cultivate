@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class GachaPanel : Panel
 {
     public TMP_Text PriceTag;
-    public Button BuyButton;
-    public Button ExitButton;
+    public Button4State BuyButton;
+    public Button4State ExitButton;
     public ListView ListView;
 
     private Address _address;
@@ -16,15 +16,22 @@ public class GachaPanel : Panel
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Items"));
-        
-        BuyButton.onClick.RemoveAllListeners();
-        BuyButton.onClick.AddListener(Gacha);
+    }
 
-        ExitButton.onClick.RemoveAllListeners();
-        ExitButton.onClick.AddListener(ExitShop);
+    private void OnEnable()
+    {
+        BuyButton.LeftClickNeuron.Add(Gacha);
+        ExitButton.LeftClickNeuron.Add(ExitShop);
+        RunManager.Instance.Environment.GachaNeuron.Add(CanvasManager.Instance.RunCanvas.GachaStaging);
+    }
+
+    private void OnDisable()
+    {
+        BuyButton.LeftClickNeuron.Remove(Gacha);
+        ExitButton.LeftClickNeuron.Remove(ExitShop);
+        RunManager.Instance.Environment.GachaNeuron.Remove(CanvasManager.Instance.RunCanvas.GachaStaging);
     }
 
     public override void Refresh()
@@ -33,29 +40,19 @@ public class GachaPanel : Panel
         
         GachaCell d = _address.Get<GachaCell>();
         PriceTag.text = $"每抽 {d.GetPrice()} 金";
-        BuyButton.interactable = !d.ItemsIsEmpty;
+        BuyButton.SetStateToInactiveFrom(d.ItemsIsEmpty);
     }
 
-    private void OnEnable()
-    {
-        RunManager.Instance.Environment.GachaNeuron.Add(CanvasManager.Instance.RunCanvas.GachaStaging);
-    }
-
-    private void OnDisable()
-    {
-        RunManager.Instance.Environment.GachaNeuron.Remove(CanvasManager.Instance.RunCanvas.GachaStaging);
-    }
-
-    private void Gacha()
+    private void Gacha(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.CloseAnnotation();
         
         GachaCell gachaCell = _address.Get<GachaCell>();
         gachaCell.GachaProcedure();
-        BuyButton.interactable = !gachaCell.ItemsIsEmpty;
+        BuyButton.SetStateToInactiveFrom(gachaCell.ItemsIsEmpty);
     }
 
-    private void ExitShop()
+    private void ExitShop(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ExitShopProcedure();
     }

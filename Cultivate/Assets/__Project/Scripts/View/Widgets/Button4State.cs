@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Button4State : XView
 {
-    public enum DiamondButtonState
+    public enum ButtonState
     {
         Idle,
         Hover,
@@ -19,7 +19,7 @@ public class Button4State : XView
     [SerializeField] private Image HideWhenInactive;
     [SerializeField] private Image[] ShowWhenHover;
 
-    private DiamondButtonState _state;
+    private ButtonState _state;
     private Sequence _handle;
 
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
@@ -57,24 +57,30 @@ public class Button4State : XView
         _interactBehaviour.RightClickNeuron.Remove(RightClickNeuron);
     }
 
-    public DiamondButtonState GetState()
+    public ButtonState GetState()
         => _state;
 
-    public void SetState(DiamondButtonState state)
+    public void SetState(ButtonState state)
     {
         _state = state;
         UpdateAnimation();
         UpdateInteractable();
     }
 
+    public void SetStateToInactiveFrom(bool shouldInactive)
+    {
+        if (shouldInactive)
+            SetState(ButtonState.Inactive);
+    }
+
     private void SetStateToIdle(InteractBehaviour ib, PointerEventData d)
-        => SetState(DiamondButtonState.Idle);
+        => SetState(ButtonState.Idle);
 
     private void SetStateToHover(InteractBehaviour ib, PointerEventData d)
-        => SetState(DiamondButtonState.Hover);
+        => SetState(ButtonState.Hover);
 
     private void SetStateToPress(InteractBehaviour ib, PointerEventData d)
-        => SetState(DiamondButtonState.Press);
+        => SetState(ButtonState.Press);
 
     private void UpdateAnimation()
     {
@@ -83,16 +89,16 @@ public class Button4State : XView
         
         switch (_state)
         {
-            case DiamondButtonState.Idle:
+            case ButtonState.Idle:
                 JoinIdleTween(_handle);
                 break;
-            case DiamondButtonState.Hover:
+            case ButtonState.Hover:
                 JoinHoverTween(_handle);
                 break;
-            case DiamondButtonState.Press:
+            case ButtonState.Press:
                 JoinPressTween(_handle);
                 break;
-            case DiamondButtonState.Inactive:
+            case ButtonState.Inactive:
                 JoinInactiveTween(_handle);
                 break;
         }
@@ -143,7 +149,7 @@ public class Button4State : XView
     
     private void UpdateInteractable()
     {
-        bool interactable = _state != DiamondButtonState.Inactive;
+        bool interactable = _state != ButtonState.Inactive;
         _interactBehaviour.SetInteractable(interactable);
     }
 }

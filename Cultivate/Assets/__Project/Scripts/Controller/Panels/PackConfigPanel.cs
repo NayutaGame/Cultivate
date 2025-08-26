@@ -12,7 +12,7 @@ public class PackConfigPanel : PopupPanel
     
     [SerializeField] private ListView ConstraintListView;
     [SerializeField] private ListView SelectionListView;
-    [SerializeField] private Button ConfirmButton;
+    [SerializeField] private Button4State ConfirmButton;
     [SerializeField] private Button CancelButton;
 
     private PackPreset _unmodifiedPackPreset;
@@ -24,22 +24,50 @@ public class PackConfigPanel : PopupPanel
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-        
         ConstraintListView.SetAddress(new Address("Config.PackConstraints"));
         ConstraintListView.LeftClickNeuron.Join(PackConstraintClicked);
         ConstraintListView.PointerEnterNeuron.Join(HoverConstraint);
         ConstraintListView.PointerExitNeuron.Join(UnhoverConstraint);
-
+        
         SelectionListView.SetAddress(new Address("Config.PackSelections"));
         SelectionListView.LeftClickNeuron.Join(PackSelectionClicked);
         SelectionListView.PointerEnterNeuron.Join(HoverSelection);
         SelectionListView.PointerExitNeuron.Join(UnhoverSelection);
-        
-        ConfirmButton.onClick.RemoveAllListeners();
-        ConfirmButton.onClick.AddListener(Confirm);
+    }
+
+    private void OnEnable()
+    {
+        ConfirmButton.LeftClickNeuron.Add(Confirm);
         
         CancelButton.onClick.RemoveAllListeners();
         CancelButton.onClick.AddListener(Cancel);
+        
+        PackSelectionClickedEvent.Add(AppManager.Instance.ConfigManager.PackSelectionClickedProcedure);
+        PackConstraintClickedEvent.Add(AppManager.Instance.ConfigManager.PackConstraintClickedProcedure);
+        AppManager.Instance.ConfigManager.EquipPackNeuron.Add(EquipPackStaging);
+        AppManager.Instance.ConfigManager.UnequipPackNeuron.Add(UnequipPackStaging);
+        Refresh();
+        
+        ConstraintListView.ForceLayoutRebuild();
+        ConstraintListView.RefreshPivots();
+        
+        SelectionListView.RefreshPivots();
+        
+        AppManager.Instance.PushEscFunc(Return);
+    }
+
+    private void OnDisable()
+    {
+        ConfirmButton.LeftClickNeuron.Remove(Confirm);
+        
+        CancelButton.onClick.RemoveAllListeners();
+        
+        PackSelectionClickedEvent.Remove(AppManager.Instance.ConfigManager.PackSelectionClickedProcedure);
+        PackConstraintClickedEvent.Remove(AppManager.Instance.ConfigManager.PackConstraintClickedProcedure);
+        AppManager.Instance.ConfigManager.EquipPackNeuron.Remove(EquipPackStaging);
+        AppManager.Instance.ConfigManager.UnequipPackNeuron.Remove(UnequipPackStaging);
+        
+        AppManager.Instance.PopEscFunc();
     }
 
     public override void Refresh()
@@ -62,32 +90,6 @@ public class PackConfigPanel : PopupPanel
     {
         PackConstraintClickedDetails packConstraintClickedDetails = new(ib.Get<PackConstraint>());
         PackConstraintClickedEvent.Invoke(packConstraintClickedDetails);
-    }
-
-    private void OnEnable()
-    {
-        PackSelectionClickedEvent.Add(AppManager.Instance.ConfigManager.PackSelectionClickedProcedure);
-        PackConstraintClickedEvent.Add(AppManager.Instance.ConfigManager.PackConstraintClickedProcedure);
-        AppManager.Instance.ConfigManager.EquipPackNeuron.Add(EquipPackStaging);
-        AppManager.Instance.ConfigManager.UnequipPackNeuron.Add(UnequipPackStaging);
-        Refresh();
-        
-        ConstraintListView.ForceLayoutRebuild();
-        ConstraintListView.RefreshPivots();
-        
-        SelectionListView.RefreshPivots();
-        
-        AppManager.Instance.PushEscFunc(Return);
-    }
-
-    private void OnDisable()
-    {
-        PackSelectionClickedEvent.Remove(AppManager.Instance.ConfigManager.PackSelectionClickedProcedure);
-        PackConstraintClickedEvent.Remove(AppManager.Instance.ConfigManager.PackConstraintClickedProcedure);
-        AppManager.Instance.ConfigManager.EquipPackNeuron.Remove(EquipPackStaging);
-        AppManager.Instance.ConfigManager.UnequipPackNeuron.Remove(UnequipPackStaging);
-        
-        AppManager.Instance.PopEscFunc();
     }
 
     private void EquipPackStaging(PackEquipDetails d)
@@ -152,14 +154,14 @@ public class PackConfigPanel : PopupPanel
 
     private void RefreshConfirmButton()
     {
-        ConfirmButton.interactable = AppManager.Instance.ConfigManager.IsConfigurationValid();
+        ConfirmButton.SetStateToInactiveFrom(!AppManager.Instance.ConfigManager.IsConfigurationValid());
     }
 
-    private async void Confirm()
+    private void Confirm(InteractBehaviour ib, PointerEventData d)
     {
         // 保存选择的卡包
         _unmodifiedPackPreset = null;
-        await GetAnimator().SetStateAsync(0);
+        GetAnimator().SetStateAsync(0);
     }
     
     private async void Cancel()

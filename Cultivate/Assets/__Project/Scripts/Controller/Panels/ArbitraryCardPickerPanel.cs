@@ -4,12 +4,11 @@ using System.Linq;
 using CLLibrary;
 using TMPro;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class ArbitraryCardPickerPanel : Panel
 {
     public TMP_Text DetailedText;
-    public Button ConfirmButton;
+    public Button4State ConfirmButton;
     public ListView SkillListView;
 
     private List<SelectBehaviour> _selections;
@@ -19,19 +18,21 @@ public class ArbitraryCardPickerPanel : Panel
     {
         base.AwakeFunction();
         _address = new Address("Run.Environment.ActivePanel");
-
-        ConfirmButton.onClick.RemoveAllListeners();
-        ConfirmButton.onClick.AddListener(ConfirmSelections);
-
         _selections = new();
-
         SkillListView.SetAddress(_address.Append(".Inventory"));
         SkillListView.PointerEnterNeuron.Join(PlayCardHoverSFX);
         SkillListView.LeftClickNeuron.Join(ToggleSkill);
     }
 
+    private void OnEnable()
+    {
+        ConfirmButton.LeftClickNeuron.Add(ConfirmSelections);
+    }
+
     public void OnDisable()
     {
+        ConfirmButton.LeftClickNeuron.Remove(ConfirmSelections);
+        
         _selections.Do(b => b.SetSelect(false));
         _selections.Clear();
     }
@@ -43,7 +44,8 @@ public class ArbitraryCardPickerPanel : Panel
         DetailedText.text = d.GetDetailedText() +
                             $"可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
                             $"已选择 {_selections.Count} 张";
-        ConfirmButton.interactable = d.Bound.Contains(_selections.Count);
+        
+        ConfirmButton.SetStateToInactiveFrom(!d.Bound.Contains(_selections.Count));
         
         SkillListView.Refresh();
     }
@@ -92,7 +94,7 @@ public class ArbitraryCardPickerPanel : Panel
     private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
         => AudioManager.Play("CardHover");
 
-    private void ConfirmSelections()
+    private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)
     {
         List<SkillEntryDescriptor> descriptors = _selections.Map(v => v.Get<SkillEntryDescriptor>()).ToList();
         RunManager.Instance.Environment.ConfirmSelectionsProcedure(descriptors);
