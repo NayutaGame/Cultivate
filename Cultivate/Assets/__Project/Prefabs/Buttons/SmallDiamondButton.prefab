@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 307853037381244806}
   - component: {fileID: 908186020317599931}
   m_Layer: 0
-  m_Name: HexButton
+  m_Name: SmallDiamondButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

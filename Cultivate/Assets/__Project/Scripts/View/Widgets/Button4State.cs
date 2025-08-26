@@ -1,12 +1,11 @@
 
-using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DiamondButton : XView
+public class Button4State : XView
 {
     public enum DiamondButtonState
     {

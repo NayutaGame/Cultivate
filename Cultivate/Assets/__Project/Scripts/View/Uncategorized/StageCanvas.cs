@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class StageCanvas : MonoBehaviour
 {
     [SerializeField] private StagePanelSpeedButton SpeedButton;
-    [SerializeField] private DiamondButton SkipButton;
+    [SerializeField] private Button4State SkipButton;
 
     [SerializeField] private StageEntityView HomeStageEntityView;
     [SerializeField] private StageEntityView AwayStageEntityView;
@@ -51,8 +51,8 @@ public class StageCanvas : MonoBehaviour
         SkipButton.LeftClickNeuron.Join(Skip);
 
         bool hasClearDifficulty0 = AppManager.Instance.ProfileManager.GetCurrProfile().DifficultyIsUnlocked("1");
-        DiamondButton.DiamondButtonState state = SkipButton.GetState();
-        SkipButton.SetState(hasClearDifficulty0 ? state : DiamondButton.DiamondButtonState.Inactive);
+        Button4State.DiamondButtonState state = SkipButton.GetState();
+        SkipButton.SetState(hasClearDifficulty0 ? state : Button4State.DiamondButtonState.Inactive);
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
