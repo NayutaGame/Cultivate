@@ -38,8 +38,8 @@ public class BarterItemView : XView
         RightSkillView.Refresh();
 
         bool interactable = barterItem.Affordable();
-        ExchangeButton.ButtonState state = ExchangeButton.GetState();
-        ExchangeButton.SetState(interactable ? state : ExchangeButton.ButtonState.Inactive);
+        ExchangeButton.ExchangeButtonState state = ExchangeButton.GetState();
+        ExchangeButton.SetState(interactable ? state : ExchangeButton.ExchangeButtonState.Inactive);
     }
 
     private void Exchange(InteractBehaviour ib, PointerEventData d)

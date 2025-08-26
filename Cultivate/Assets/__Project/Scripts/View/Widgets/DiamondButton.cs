@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -7,167 +8,143 @@ using UnityEngine.UI;
 
 public class DiamondButton : XView
 {
-    public static readonly int ANY = -1;
-    public static readonly int IDLE = 0;
-    public static readonly int HOVER = 1;
-    public static readonly int PRESS = 2;
-    
-    [SerializeField] private GameObject Content;
-    [SerializeField] private GameObject ContentNoninteractable;
-    [SerializeField] private GameObject Frame;
-    [SerializeField] public GameObject FrameNoninteractable;
-
-    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron;
-    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron;
-
-    [SerializeField] private Image HoverEffect1;
-    [SerializeField] private Image HoverEffect2;
-    [SerializeField] private Image PressEffect;
-
-    private bool _isInteractable;
-    public void SetInteractable(bool value)
+    public enum DiamondButtonState
     {
-        _isInteractable = value;
-        if (Content != null)
-            Content.SetActive(_isInteractable);
-        if (Frame != null)
-            Frame.SetActive(_isInteractable);
-        if (ContentNoninteractable != null)
-            ContentNoninteractable.SetActive(!_isInteractable);
-        if (FrameNoninteractable != null)
-            FrameNoninteractable.SetActive(!_isInteractable);
-        RefreshIb();
-    }
-
-    protected override void AwakeFunction()
-    {
-        LeftClickNeuron = new();
-        RightClickNeuron = new();
-        base.AwakeFunction();
-        SetInteractable(true);
-    }
-
-    protected override Animator InitAnimator()
-    {
-        Animator animator = new(3);
-        animator[ANY, IDLE] = EnterIdle;
-        animator[ANY, HOVER] = EnterHover;
-        animator[ANY, PRESS] = EnterPress;
-        return animator;
-    }
-
-    private void RefreshIb()
-    {
-        InteractBehaviour ib = GetInteractBehaviour();
-        if (ib != null)
-            SetInteractBehaviour(ib);
-        
-        if (_isInteractable)
-        {
-            ib.PointerEnterNeuron.Join(PointerEnter);
-            ib.PointerExitNeuron.Join(PointerExit);
-            ib.PointerDownNeuron.Join(PointerDown);
-            ib.PointerUpNeuron.Join(PointerUp);
-            if (AudioManager.Instance != null)
-            {
-                ib.PointerEnterNeuron.Join(AudioManager.PlayButtonHover);
-                ib.LeftClickNeuron.Join(AudioManager.PlayButtonPress);
-                ib.RightClickNeuron.Join(AudioManager.PlayButtonPress);
-            }
-        
-            ib.LeftClickNeuron.Join(LeftClickNeuron);
-            ib.RightClickNeuron.Join(RightClickNeuron);
-        }
-        else
-        {
-            ib.PointerEnterNeuron.Remove(PointerEnter);
-            ib.PointerExitNeuron.Remove(PointerExit);
-            ib.PointerDownNeuron.Remove(PointerDown);
-            ib.PointerUpNeuron.Remove(PointerUp);
-            if (AudioManager.Instance != null)
-            {
-                ib.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-                ib.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
-                ib.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
-            }
-        
-            ib.LeftClickNeuron.Remove(LeftClickNeuron);
-            ib.RightClickNeuron.Remove(RightClickNeuron);
-        }
-    }
-
-    public override void SetInteractBehaviour(InteractBehaviour ib)
-    {
-        if (_interactBehaviour != null)
-        {
-            ib.PointerEnterNeuron.Remove(PointerEnter);
-            ib.PointerExitNeuron.Remove(PointerExit);
-            ib.PointerDownNeuron.Remove(PointerDown);
-            ib.PointerUpNeuron.Remove(PointerUp);
-            if (AudioManager.Instance != null)
-            {
-                ib.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-                ib.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
-                ib.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
-            }
-        
-            ib.LeftClickNeuron.Join(LeftClickNeuron);
-            ib.RightClickNeuron.Join(RightClickNeuron);
-        }
-        base.SetInteractBehaviour(ib);
-        if (_interactBehaviour != null)
-        {
-            ib.PointerEnterNeuron.Join(PointerEnter);
-            ib.PointerExitNeuron.Join(PointerExit);
-            ib.PointerDownNeuron.Join(PointerDown);
-            ib.PointerUpNeuron.Join(PointerUp);
-            if (AudioManager.Instance != null)
-            {
-                ib.PointerEnterNeuron.Join(AudioManager.PlayButtonHover);
-                ib.LeftClickNeuron.Join(AudioManager.PlayButtonPress);
-                ib.RightClickNeuron.Join(AudioManager.PlayButtonPress);
-            }
-        
-            ib.LeftClickNeuron.Join(LeftClickNeuron);
-            ib.RightClickNeuron.Join(RightClickNeuron);
-        }
-    }
-
-    private Tween EnterIdle()
-        => DOTween.Sequence()
-            .Append(HoverEffect1.DOFade(0, 0.15f))
-            .Join(HoverEffect2.DOFade(0, 0.15f))
-            .Join(PressEffect.DOFade(0, 0.15f));
-
-    private Tween EnterHover()
-        => DOTween.Sequence()
-            .Append(HoverEffect1.DOFade(1, 0.15f))
-            .Join(HoverEffect2.DOFade(1, 0.15f))
-            .Join(PressEffect.DOFade(0, 0.15f));
-
-    private Tween EnterPress()
-        => DOTween.Sequence()
-            .Append(HoverEffect1.DOFade(0, 0.15f))
-            .Join(HoverEffect2.DOFade(0, 0.15f))
-            .Join(PressEffect.DOFade(1, 0.15f));
-    
-    private void PointerEnter(InteractBehaviour ib, PointerEventData d)
-    {
-        GetAnimator().SetStateAsync(HOVER);
+        Idle,
+        Hover,
+        Press,
+        Inactive,
     }
     
-    private void PointerExit(InteractBehaviour ib, PointerEventData d)
+    [SerializeField] private Image ShowWhenInactive;
+    [SerializeField] private Image HideWhenInactive;
+    [SerializeField] private Image[] ShowWhenHover;
+
+    private DiamondButtonState _state;
+    private Sequence _handle;
+
+    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
+    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
+
+    private void OnEnable()
     {
-        GetAnimator().SetStateAsync(IDLE);
+        _interactBehaviour.PointerEnterNeuron.Add(SetStateToHover);
+        _interactBehaviour.PointerExitNeuron.Add(SetStateToIdle);
+        _interactBehaviour.PointerDownNeuron.Add(SetStateToPress);
+        _interactBehaviour.PointerUpNeuron.Add(SetStateToIdle);
+        if (AudioManager.Instance != null)
+        {
+            _interactBehaviour.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
+            _interactBehaviour.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
+            _interactBehaviour.RightClickNeuron.Add(AudioManager.PlayButtonPress);
+        }
+        
+        _interactBehaviour.LeftClickNeuron.Add(LeftClickNeuron);
+        _interactBehaviour.RightClickNeuron.Add(RightClickNeuron);
     }
 
-    private void PointerDown(InteractBehaviour ib, PointerEventData d)
+    private void OnDisable()
     {
-        GetAnimator().SetStateAsync(PRESS);
+        _interactBehaviour.PointerEnterNeuron.Remove(SetStateToHover);
+        _interactBehaviour.PointerExitNeuron.Remove(SetStateToIdle);
+        _interactBehaviour.PointerDownNeuron.Remove(SetStateToPress);
+        _interactBehaviour.PointerUpNeuron.Remove(SetStateToIdle);
+        
+        _interactBehaviour.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+        _interactBehaviour.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+        _interactBehaviour.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
+        
+        _interactBehaviour.LeftClickNeuron.Remove(LeftClickNeuron);
+        _interactBehaviour.RightClickNeuron.Remove(RightClickNeuron);
     }
 
-    private void PointerUp(InteractBehaviour ib, PointerEventData d)
+    public DiamondButtonState GetState()
+        => _state;
+
+    public void SetState(DiamondButtonState state)
     {
-        GetAnimator().SetStateAsync(IDLE);
+        _state = state;
+        UpdateAnimation();
+        UpdateInteractable();
+    }
+
+    private void SetStateToIdle(InteractBehaviour ib, PointerEventData d)
+        => SetState(DiamondButtonState.Idle);
+
+    private void SetStateToHover(InteractBehaviour ib, PointerEventData d)
+        => SetState(DiamondButtonState.Hover);
+
+    private void SetStateToPress(InteractBehaviour ib, PointerEventData d)
+        => SetState(DiamondButtonState.Press);
+
+    private void UpdateAnimation()
+    {
+        _handle?.Kill();
+        _handle = DOTween.Sequence();
+        
+        switch (_state)
+        {
+            case DiamondButtonState.Idle:
+                JoinIdleTween(_handle);
+                break;
+            case DiamondButtonState.Hover:
+                JoinHoverTween(_handle);
+                break;
+            case DiamondButtonState.Press:
+                JoinPressTween(_handle);
+                break;
+            case DiamondButtonState.Inactive:
+                JoinInactiveTween(_handle);
+                break;
+        }
+
+        _handle.SetAutoKill();
+        _handle.Restart();
+    }
+
+    private void JoinIdleTween(Sequence seq)
+    {
+        seq.Join(ShowWhenInactive.DOFade(0, 0.15f))
+            .Join(HideWhenInactive.DOFade(1, 0.15f));
+        foreach (Image image in ShowWhenHover)
+        {
+            seq.Join(image.DOFade(0, 0.15f));
+        }
+    }
+
+    private void JoinHoverTween(Sequence seq)
+    {
+        seq.Join(ShowWhenInactive.DOFade(0, 0.15f))
+            .Join(HideWhenInactive.DOFade(1, 0.15f));
+        foreach (Image image in ShowWhenHover)
+        {
+            seq.Join(image.DOFade(1, 0.15f));
+        }
+    }
+
+    private void JoinPressTween(Sequence seq)
+    {
+        seq.Join(ShowWhenInactive.DOFade(0.6f, 0.15f))
+            .Join(HideWhenInactive.DOFade(1, 0.15f));
+        foreach (Image image in ShowWhenHover)
+        {
+            seq.Join(image.DOFade(1, 0.15f));
+        }
+    }
+
+    private void JoinInactiveTween(Sequence seq)
+    {
+        seq.Join(ShowWhenInactive.DOFade(1, 0.15f))
+            .Join(HideWhenInactive.DOFade(0, 0.15f));
+        foreach (Image image in ShowWhenHover)
+        {
+            seq.Join(image.DOFade(0, 0.15f));
+        }
+    }
+    
+    private void UpdateInteractable()
+    {
+        bool interactable = _state != DiamondButtonState.Inactive;
+        _interactBehaviour.SetInteractable(interactable);
     }
 }

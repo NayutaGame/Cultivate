@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 
 public class ExchangeButton : XView
 {
-    public enum ButtonState
+    public enum ExchangeButtonState
     {
         Idle,
         Hover,
@@ -18,39 +19,44 @@ public class ExchangeButton : XView
     [SerializeField] private Image HideWhenInactive;
     [SerializeField] private Image[] ShowWhenHover;
 
-    private ButtonState _state;
+    private ExchangeButtonState _state;
     private Sequence _handle;
     
     public Neuron<InteractBehaviour, PointerEventData> OnClickNeuron = new();
 
-    protected override void AwakeFunction()
+    private void OnEnable()
     {
-        base.AwakeFunction();
-        _interactBehaviour.LeftClickNeuron.Join(OnClickNeuron.Invoke);
-        _interactBehaviour.PointerEnterNeuron.Join(SetStateToHover);
-        _interactBehaviour.PointerExitNeuron.Join(SetStateToIdle);
-        
+        _interactBehaviour.LeftClickNeuron.Add(OnClickNeuron);
+        _interactBehaviour.PointerEnterNeuron.Add(SetStateToHover);
+        _interactBehaviour.PointerExitNeuron.Add(SetStateToIdle);
     }
 
-    public ButtonState GetState()
+    private void OnDisable()
+    {
+        _interactBehaviour.LeftClickNeuron.Remove(OnClickNeuron);
+        _interactBehaviour.PointerEnterNeuron.Remove(SetStateToHover);
+        _interactBehaviour.PointerExitNeuron.Remove(SetStateToIdle);
+    }
+
+    public ExchangeButtonState GetState()
         => _state;
 
-    private void SetStateToIdle(InteractBehaviour ib, PointerEventData d)
-        => SetState(ButtonState.Idle);
-
-    private void SetStateToHover(InteractBehaviour ib, PointerEventData d)
-        => SetState(ButtonState.Hover);
-
-    public void SetState(ButtonState state)
+    public void SetState(ExchangeButtonState state)
     {
         _state = state;
         UpdateAnimation();
         UpdateInteractable();
     }
 
+    private void SetStateToIdle(InteractBehaviour ib, PointerEventData d)
+        => SetState(ExchangeButtonState.Idle);
+
+    private void SetStateToHover(InteractBehaviour ib, PointerEventData d)
+        => SetState(ExchangeButtonState.Hover);
+
     private void UpdateInteractable()
     {
-        bool interactable = _state != ButtonState.Inactive;
+        bool interactable = _state != ExchangeButtonState.Inactive;
         _interactBehaviour.SetInteractable(interactable);
     }
 
@@ -61,14 +67,14 @@ public class ExchangeButton : XView
         
         switch (_state)
         {
-            case ButtonState.Idle:
-                AppendIdle(_handle);
+            case ExchangeButtonState.Idle:
+                JoinIdleTween(_handle);
                 break;
-            case ButtonState.Hover:
-                AppendHover(_handle);
+            case ExchangeButtonState.Hover:
+                JoinHoverTween(_handle);
                 break;
-            case ButtonState.Inactive:
-                AppendInactive(_handle);
+            case ExchangeButtonState.Inactive:
+                JoinInactiveTween(_handle);
                 break;
         }
 
@@ -76,7 +82,7 @@ public class ExchangeButton : XView
         _handle.Restart();
     }
 
-    private void AppendIdle(Sequence seq)
+    private void JoinIdleTween(Sequence seq)
     {
         seq.Join(ShowWhenInactive.DOFade(0, 0.15f))
             .Join(HideWhenInactive.DOFade(1, 0.15f));
@@ -86,7 +92,7 @@ public class ExchangeButton : XView
         }
     }
 
-    private void AppendHover(Sequence seq)
+    private void JoinHoverTween(Sequence seq)
     {
         seq.Join(ShowWhenInactive.DOFade(0, 0.15f))
             .Join(HideWhenInactive.DOFade(1, 0.15f));
@@ -96,7 +102,7 @@ public class ExchangeButton : XView
         }
     }
 
-    private void AppendInactive(Sequence seq)
+    private void JoinInactiveTween(Sequence seq)
     {
         seq.Join(ShowWhenInactive.DOFade(1, 0.15f))
             .Join(HideWhenInactive.DOFade(0, 0.15f));

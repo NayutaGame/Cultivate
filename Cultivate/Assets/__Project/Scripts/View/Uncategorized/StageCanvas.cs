@@ -11,7 +11,7 @@ public class StageCanvas : MonoBehaviour
     [SerializeField] private StageEntityView HomeStageEntityView;
     [SerializeField] private StageEntityView AwayStageEntityView;
 
-    [SerializeField] private XView SkipButtonInactiveHint;
+    // [SerializeField] private XView SkipButtonInactiveHint;
 
     public TimelineView TimelineView;
 
@@ -51,12 +51,13 @@ public class StageCanvas : MonoBehaviour
         SkipButton.LeftClickNeuron.Join(Skip);
 
         bool hasClearDifficulty0 = AppManager.Instance.ProfileManager.GetCurrProfile().DifficultyIsUnlocked("1");
-        SkipButton.SetInteractable(hasClearDifficulty0);
+        DiamondButton.DiamondButtonState state = SkipButton.GetState();
+        SkipButton.SetState(hasClearDifficulty0 ? state : DiamondButton.DiamondButtonState.Inactive);
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));
         
-        SkipButtonInactiveHint.SetAddress(_address.Append(".SkipButtonInactiveHint"));
+        // SkipButtonInactiveHint.SetAddress(_address.Append(".SkipButtonInactiveHint"));
 
         TimelineView.Configure();
     }
