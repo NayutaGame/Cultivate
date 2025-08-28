@@ -12,9 +12,9 @@ public class SettingsPanel : PopupPanel
 
     [SerializeField] private LegacyListView TabListView;
 
-    [SerializeField] private Button ToTitleButton;
-    [SerializeField] private Button ToDesktopButton;
-    [SerializeField] private Button ResumeButton;
+    [SerializeField] private Button4State ToTitleButton;
+    [SerializeField] private Button4State ToDesktopButton;
+    [SerializeField] private Button4State ResumeButton;
 
     public void ShowExitButtons()
     {
@@ -30,6 +30,10 @@ public class SettingsPanel : PopupPanel
 
     private void OnEnable()
     {
+        ToTitleButton.LeftClickNeuron.Add(ToTitle);
+        ToDesktopButton.LeftClickNeuron.Add(ToDesktop);
+        ResumeButton.LeftClickNeuron.Add(Return);
+        
         AudioManager.PlayEnterSettings();
         
         AppManager.Instance.PushEscFunc(Return);
@@ -37,6 +41,10 @@ public class SettingsPanel : PopupPanel
 
     private void OnDisable()
     {
+        ToTitleButton.LeftClickNeuron.Remove(ToTitle);
+        ToDesktopButton.LeftClickNeuron.Remove(ToDesktop);
+        ResumeButton.LeftClickNeuron.Remove(Return);
+        
         AudioManager.PlayExitSettings();
         
         AppManager.Instance.PopEscFunc();
@@ -49,15 +57,6 @@ public class SettingsPanel : PopupPanel
         _address = new Address("Settings");
         Settings settings = _address.Get<Settings>();
         settings.ResetSelectedTab();
-
-        ResumeButton.onClick.RemoveAllListeners();
-        ResumeButton.onClick.AddListener(Return);
-
-        ToTitleButton.onClick.RemoveAllListeners();
-        ToTitleButton.onClick.AddListener(ToTitle);
-
-        ToDesktopButton.onClick.RemoveAllListeners();
-        ToDesktopButton.onClick.AddListener(ToDesktop);
         
         TabListView.SetAddress(_address.Append(".Tabs"));
         TabListView.LeftClickNeuron.Join(ClickedTab);
@@ -85,19 +84,19 @@ public class SettingsPanel : PopupPanel
         WidgetListView.Refresh();
     }
 
-    public override void Return()
+    private void Return(InteractBehaviour ib, PointerEventData d)
     {
         AppManager.Instance.Settings.SaveProcedure();
         AppManager.Instance.Pop();
     }
 
-    private void ToTitle()
+    private void ToTitle(InteractBehaviour ib, PointerEventData d)
     {
         AppManager.Instance.Settings.SaveProcedure();
         AppManager.Instance.Pop(2);
     }
 
-    private void ToDesktop()
+    private void ToDesktop(InteractBehaviour ib, PointerEventData d)
     {
         AppManager.Instance.Settings.SaveProcedure();
         AppManager.ExitGame();

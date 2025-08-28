@@ -41,7 +41,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
     
     public class AsyncNeuron
@@ -80,7 +80,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 
     public class Neuron<T1>
@@ -118,7 +118,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 
     public class Neuron<T1, T2>
@@ -156,7 +156,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 
     public class Neuron<T1, T2, T3>
@@ -194,7 +194,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 
     public class Neuron<T1, T2, T3, T4>
@@ -232,7 +232,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 
     public class Neuron<T1, T2, T3, T4, T5>
@@ -270,7 +270,7 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 
     public class Neuron<T1, T2, T3, T4, T5, T6>
@@ -308,6 +308,6 @@ namespace CLLibrary
             _neurons = new();
         }
 
-        public int Count => Action.GetInvocationList().Length + _neurons.Count;
+        public int Count => (Action?.GetInvocationList().Length ?? 0) + _neurons.Count;
     }
 }

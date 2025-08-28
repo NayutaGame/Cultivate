@@ -1368,7 +1368,7 @@ public class AchievementCategory : Category<AchievementEntry>
             // 角色锁
             new(id: "ACH201",
                 name: "初窥门径",
-                rawConditionDescription: "存档等级达到2级",
+                rawConditionDescription: "存档等级达到7级",
                 rawRewardDescription: "可以使用子非鱼角色",
                 lockIndex: LockIndex.FromCharacter("子非鱼"),
                 runClosures: new RunClosure[]
@@ -1378,8 +1378,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         RunCommitDetails d = (RunCommitDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 2) return;
-                        if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
+                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 7) return;
 
                         p.Unlock();
                     })
@@ -1387,7 +1386,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH202",
                 name: "略有小成",
-                rawConditionDescription: "存档等级达到3级",
+                rawConditionDescription: "存档等级达到9级",
                 rawRewardDescription: "可以使用子非燕角色",
                 lockIndex: LockIndex.FromCharacter("子非燕"),
                 runClosures: new RunClosure[]
@@ -1397,8 +1396,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         RunCommitDetails d = (RunCommitDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 3) return;
-                        if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
+                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 9) return;
 
                         p.Unlock();
                     })
@@ -1417,7 +1415,6 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         if (p.IsUnlocked()) return;
                         if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 5) return;
-                        if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
 
                         p.Unlock();
                     })
@@ -1425,7 +1422,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH204",
                 name: "出神入化",
-                rawConditionDescription: "存档等级达到7级",
+                rawConditionDescription: "存档等级达到3级",
                 rawRewardDescription: "可以使用彼此卿角色",
                 lockIndex: LockIndex.FromCharacter("彼此卿"),
                 runClosures: new RunClosure[]
@@ -1435,8 +1432,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         RunCommitDetails d = (RunCommitDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 7) return;
-                        if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
+                        if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 3) return;
 
                         p.Unlock();
                     })
@@ -1455,7 +1451,6 @@ public class AchievementCategory : Category<AchievementEntry>
             //
             //             if (p.IsUnlocked()) return;
             //             if (AppManager.Instance.ProfileManager.GetCurrProfile().LevelProfile.Level < 10) return;
-            //             if (d.RunEnvironment.GetResult().GetOutcome() != RunResult.RunOutcome.Victorious) return;
             //
             //             p.Unlock();
             //         })

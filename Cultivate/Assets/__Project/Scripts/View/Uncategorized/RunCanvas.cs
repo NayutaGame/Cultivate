@@ -212,7 +212,7 @@ public class RunCanvas : Panel
     {
         void SetPosition(SlotView view, Vector3 position)
         {
-            view.GetAnimator().SetState(4);
+            view.GetAnimator().SetState(SlotView.FREE);
             view.GetContentView().GetRect().position = position;
             view.GetContentView().GetRect().localScale = Vector3.zero;
         }
@@ -265,7 +265,7 @@ public class RunCanvas : Panel
         
         foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
         {
-            SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex) as SlotView;
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex);
             seq.AppendCallback(() => SetIdle(view))
                 .AppendInterval(0.1f);
         }
@@ -410,7 +410,7 @@ public class RunCanvas : Panel
     {
         void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
         {
-            view.GetAnimator().SetState(4);
+            view.GetAnimator().SetState(SlotView.FREE);
             view.GetContentView().GetRect().position = position;
             view.GetContentView().GetRect().localScale = localScale;
         }
@@ -438,7 +438,7 @@ public class RunCanvas : Panel
     {
         void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
         {
-            view.GetAnimator().SetState(4);
+            view.GetAnimator().SetState(SlotView.FREE);
             view.GetContentView().GetRect().position = position;
             view.GetContentView().GetRect().localScale = localScale;
         }
@@ -466,7 +466,7 @@ public class RunCanvas : Panel
     {
         void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
         {
-            view.GetAnimator().SetState(4);
+            view.GetAnimator().SetState(SlotView.FREE);
             view.GetContentView().GetRect().position = position;
             view.GetContentView().GetRect().localScale = localScale;
         }

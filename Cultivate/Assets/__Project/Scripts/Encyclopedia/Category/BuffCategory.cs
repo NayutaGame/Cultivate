@@ -656,6 +656,7 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.Emphasize();
                         d.DoesntConsumeJianYi = true;
+                        await b.LoseStackProcedure();
                     }),
                 }),
             

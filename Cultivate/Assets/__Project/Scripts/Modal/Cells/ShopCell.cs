@@ -92,17 +92,34 @@ public class ShopCell : Cell
     public static ShopCell FromShouCangJia(int ladder)
         => new(ladder, priceMultiplier: 2, "收藏家", "收藏家");
 
-    public static ShopCell FromYiBaoZhai(int ladder)
+    public static CardPickerCell FromYiBaoZhai(int ladder)
     {
-        int goldReward = RoomDefinition.GetGoldRewardFromLadder(ladder);
+        CardPickerCell cardPickerCell = new(
+            titleText:          $"交易",
+            detailedText:       $"选择1张牌卖掉",
+            descriptor:         RunSkillDescriptorListModel.FromCount(1));
 
-        ShopCell B = new ShopCell(ladder, 2, "易宝斋", "收藏家");
-        B.SetEnter(panelDescriptor =>
+        ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", "收藏家");
+
+        cardPickerCell.SetSubmitOperation(cell =>
         {
-            panelDescriptor.DefaultEnter(panelDescriptor);
-            RunManager.Instance.Environment.SetDGoldProcedure(goldReward);
+            cell.RequirementSlotList.Do(slot =>
+            {
+                if (slot.Skill == null)
+                    return;
+
+                JingJie jingJie = slot.Skill.GetJingJie();
+                int skillValue = 2 << jingJie;
+                RunManager.Instance.Environment.SetDGoldProcedure(skillValue);
+                
+                slot.Skill = null;
+            });
+            
+            cell.WithdrawAll();
+            return shopCell;
         });
-        return B;
+
+        return cardPickerCell;
     }
 
     public static ShopCell FromHeiShi(int ladder)
@@ -138,41 +155,6 @@ public class ShopCell : Cell
             B.SetCommodities(commodities);
         });
         
-        return B;
-    }
-
-    public static ShopCell FromBiYeJi(int ladder)
-    {
-        JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound baseJingJieBound = new Bound(JingJie.LianQi,
-            (jingJieFromLadder - 2).ClampLower(JingJie.LianQi) + 1);
-
-        ShopCell B = new(ladder, 0.5f, "毕业季", "毕业季");
-        B.SetEnter(panelDescriptor =>
-        {
-            ShopCell shop = (ShopCell)panelDescriptor;
-            CommodityListModel commodities = new CommodityListModel();
-
-            SkillEntryCollectionDescriptor descriptor = new(
-                pred: e => baseJingJieBound.Contains(e.LowestJingJie),
-                count: 4,
-                consume: false);
-
-            GainSkillBuilder b = new();
-            b.Draw(descriptor);
-
-            foreach (SkillEntry e in b.DrawnSkillEntries)
-            {
-                int cardJingJie = e.LowestJingJie;
-                int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
-                int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
-                price = price.ClampLower(1);
-                float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie), price, shop.Buy, discount));
-            }
-
-            B.SetCommodities(commodities);
-        });
         return B;
     }
 }

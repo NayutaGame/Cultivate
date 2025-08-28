@@ -52,14 +52,14 @@ public class TagComposite : Addressable
 
     public bool Contains(TagComposite other)
     {
-        return ((this & other) == other) &&
-               (this | other) == this;
+        return ((_value & other._value) == other._value) &&
+               ((_value | other._value) == _value);
     }
 
     public bool Contains(TagEntry other)
     {
         return ((_value & other.Value) == other.Value) &&
-               (this | other.Value)._value == _value;
+               (_value | other.Value) == _value;
     }
 
     public static implicit operator long(TagComposite tagComposite) => tagComposite._value;

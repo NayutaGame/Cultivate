@@ -201,4 +201,7 @@ public class SkillEntry : Entry, AnnotatableSkill
         
         return false;
     }
+
+    public override string ToString()
+        => $"SkillEntry:{GetName()}";
 }

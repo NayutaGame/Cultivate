@@ -21,7 +21,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                9,
                         trivia:                                                     null,
                         rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
-                                                                                    "\n4张：击伤时：施加6减甲" +
+                                                                                    "\n4张：击伤时：施加6破甲" +
                                                                                     "\n6张：开局效果额外触发一次" +
                                                                                     "\n9张：死亡不会停止战斗",
                         stageClosures: new StageClosure[]
@@ -51,7 +51,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                6,
                         trivia:                                                     null,
                         rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
-                        "\n4张：击伤时：施加6减甲" +
+                        "\n4张：击伤时：施加6破甲" +
                         "\n6张：开局效果额外触发一次" +
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -80,7 +80,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                4,
                         trivia:                                                     null,
                         rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
-                        "\n4张：击伤时：施加6减甲" +
+                        "\n4张：击伤时：施加6破甲" +
                         "\n6张：开局效果额外触发一次".ApplyInactive() +
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -101,7 +101,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                2,
                         trivia:                                                     null,
                         rawRewardDescription:                                          "2张：开局及每轮：获得1暴击" +
-                        "\n4张：击伤时：施加6减甲".ApplyInactive() +
+                        "\n4张：击伤时：施加6破甲".ApplyInactive() +
                         "\n6张：开局效果额外触发一次".ApplyInactive() +
                         "\n9张：死亡不会停止战斗".ApplyInactive(),
                         stageClosures: new StageClosure[]
@@ -121,7 +121,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         requirement:                                                0,
                         trivia:                                                     null,
                         rawRewardDescription:                                          "2张：开局及每轮：获得1暴击".ApplyInactive() +
-                        "\n4张：击伤时：施加6减甲".ApplyInactive() +
+                        "\n4张：击伤时：施加6破甲".ApplyInactive() +
                         "\n6张：开局效果额外触发一次".ApplyInactive() +
                         "\n9张：死亡不会停止战斗".ApplyInactive()),
                 }),

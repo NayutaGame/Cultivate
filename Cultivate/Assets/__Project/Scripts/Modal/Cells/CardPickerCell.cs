@@ -110,4 +110,60 @@ public class CardPickerCell : Cell
             }
         });
     }
+
+    public static CardPickerCell FromTianJiGe()
+    {
+        CardPickerCell cell = new(
+            titleText:          $"天机阁",
+            detailedText:       $"选择1张牌，复制1次",
+            descriptor:         RunSkillDescriptorListModel.FromCount(1));
+
+        cell.SetSubmitOperation(cardPickerCell =>
+        {
+            bool fulfilled = cardPickerCell.AllFulfilled();
+            if (!fulfilled)
+            {
+                cardPickerCell.WithdrawAll();
+                return null;
+            }
+
+            int count = cardPickerCell.RequirementSlotList.Count();
+            RequirementSlot copyingSlot = cardPickerCell.RequirementSlotList[RandomManager.Range(0, count)];
+            RunSkill copyingSkill = copyingSlot.Skill;
+            
+            RunManager.Instance.Environment.PickSkillProcedure(copyingSkill.GetEntry(), copyingSkill.GetJingJie());
+                        
+            cardPickerCell.WithdrawAll();
+            return null;
+        });
+
+        return cell;
+    }
+
+    public static CardPickerCell FromBaiCaoTang(int ladder)
+    {
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+        JingJie nextJingJie = currJingJie + 1;
+        
+        CardPickerCell cell = new(
+            titleText:          $"百草堂",
+            detailedText:       $"选择2张牌，提升到{nextJingJie.GetName()}",
+            descriptor:         RunSkillDescriptorListModel.FromCount(2));
+
+        cell.SetSubmitOperation(cardPickerCell =>
+        {
+            cardPickerCell.RequirementSlotList.Do(slot =>
+            {
+                if (slot.Skill == null)
+                    return;
+                
+                slot.Skill = RunSkill.FromChangeJingJie(slot.Skill, nextJingJie);
+            });
+                        
+            cardPickerCell.WithdrawAll();
+            return null;
+        });
+
+        return cell;
+    }
 }

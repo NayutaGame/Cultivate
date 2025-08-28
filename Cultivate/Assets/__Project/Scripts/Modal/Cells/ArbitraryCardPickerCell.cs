@@ -1,7 +1,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
+using FMOD;
 
 public class ArbitraryCardPickerCell : Cell
 {
@@ -60,5 +62,146 @@ public class ArbitraryCardPickerCell : Cell
         }
 
         return this;
+    }
+
+    public static ArbitraryCardPickerCell FromJianChi(int ladder)
+    {
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+
+        ArbitraryCardPickerCell cell = new(
+            titleText: $"剑池",
+            detailedText: $"检索1张{currJingJie.GetName()}攻击牌",
+            bound: new Bound(0, 2)
+        );
+        
+        SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
+            tagComposite: TagCategory.Attack,
+            count: 10,
+            consume: false);
+        
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
+        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
+            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
+            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
+            .ToList();
+        cell.PopulateInventory(list);
+        cell.SetConfirmOperation(skills =>
+        {
+            GainSkillBuilder b = new();
+            skills.Do(item => b.Pick(item.Entry));
+            skills.Do(item => b.SingleCreate(item.JingJie));
+            b.Add();
+            b.Invoke();
+            return null;
+        });
+        
+        return cell;
+    }
+
+    public static ArbitraryCardPickerCell FromFengYuLou(int ladder)
+    {
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+
+        ArbitraryCardPickerCell cell = new(
+            titleText: $"风雨楼",
+            detailedText: $"检索1张{currJingJie.GetName()}防御牌",
+            bound: new Bound(0, 2)
+        );
+        
+        SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
+            tagComposite: TagCategory.Defend,
+            count: 10,
+            consume: false);
+        
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
+        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
+            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
+            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
+            .ToList();
+        cell.PopulateInventory(list);
+        cell.SetConfirmOperation(skills =>
+        {
+            GainSkillBuilder b = new();
+            skills.Do(item => b.Pick(item.Entry));
+            skills.Do(item => b.SingleCreate(item.JingJie));
+            b.Add();
+            b.Invoke();
+            return null;
+        });
+        
+        return cell;
+    }
+
+    public static ArbitraryCardPickerCell FromXingGong(int ladder)
+    {
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+
+        ArbitraryCardPickerCell cell = new(
+            titleText: $"星宫",
+            detailedText: $"检索1张{currJingJie.GetName()}灵气牌",
+            bound: new Bound(0, 2)
+        );
+        
+        SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
+            tagComposite: TagCategory.Mana,
+            count: 10,
+            consume: false);
+        
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
+        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
+            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
+            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
+            .ToList();
+        cell.PopulateInventory(list);
+        cell.SetConfirmOperation(skills =>
+        {
+            GainSkillBuilder b = new();
+            skills.Do(item => b.Pick(item.Entry));
+            skills.Do(item => b.SingleCreate(item.JingJie));
+            b.Add();
+            b.Invoke();
+            return null;
+        });
+        
+        return cell;
+    }
+
+    public static ArbitraryCardPickerCell FromBiYeJi(int ladder)
+    {
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+        Bound jingJieBound = new Bound(JingJie.LianQi,
+            (currJingJie - 2).ClampLower(JingJie.LianQi) + 1);
+
+        ArbitraryCardPickerCell cell = new(
+            titleText: $"毕业季",
+            detailedText: $"请选择至多两张牌",
+            bound: new Bound(0, 3)
+        );
+        
+        SkillEntryCollectionDescriptor descriptor = new(pred: e => jingJieBound.Contains(e.LowestJingJie),
+            count: 10,
+            consume: false);
+        
+        GainSkillBuilder b = new();
+        b.Draw(descriptor);
+        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
+            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
+            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie))
+            .ToList();
+        cell.PopulateInventory(list);
+        cell.SetConfirmOperation(skills =>
+        {
+            GainSkillBuilder b = new();
+            skills.Do(item => b.Pick(item.Entry));
+            skills.Do(item => b.SingleCreate(item.JingJie));
+            b.Add();
+            b.Invoke();
+            return null;
+        });
+        
+        return cell;
     }
 }

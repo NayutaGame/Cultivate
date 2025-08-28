@@ -427,7 +427,7 @@ MonoBehaviour:
   Requirements: {fileID: 2117648732444001936}
   TitleText: {fileID: 6331469468988794903}
   ContentText: {fileID: 6084952911115749896}
-  ConfirmButton: {fileID: 0}
+  SubmitButton: {fileID: 628836822032112687}
 --- !u!1 &8291989421293472734
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +741,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}
+--- !u!114 &628836822032112687 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7203221303288264703, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}
+  m_PrefabInstance: {fileID: 7731810152523574224}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa603e052389efd49a763dc49ac27dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4758791314936109574 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2974195594875515350, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}

@@ -184,9 +184,12 @@ public class InteractBehaviour : MonoBehaviour
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
             LeftClickNeuron.Invoke(this, eventData);
-        } else if (eventData.button == PointerEventData.InputButton.Right) {
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
             RightClickNeuron.Invoke(this, eventData);
         }
     }

@@ -13,31 +13,17 @@ public class Description
     private static readonly Regex TrimReturnRegex = new Regex(@"^(?:\n|\|\|)+|(?:\n|\|\|)+$", RegexOptions.Compiled);
     private static Regex SymbolizeRegex;
     private static Regex FindSymbolRegex;
-    private static Tuple<ICategory<Entry>, string>[] HandleDetailsArray;
     
     private Dirty<string> CalcHighlightedString;
     private StringBuilder _sb;
 
     public static void InitStaticValues()
     {
-        HandleDetailsArray = new Tuple<ICategory<Entry>, string>[]
-        {
-            new(Encyclopedia.PackCategory, "pack"),
-            new(Encyclopedia.SkillCategory, "skill"),
-            new(Encyclopedia.KeywordCategory, "buff"),
-            new(Encyclopedia.CharacterCategory, "character"),
-            new(Encyclopedia.BuffCategory, "keyword"),
-            new(Encyclopedia.JingJieCategory, "jingJie"),
-            new(Encyclopedia.TagCategory, "tag"),
-        };
-        
-        
-        
         List<string> patterns = new List<string>();
 
-        foreach (Tuple<ICategory<Entry>, string> t in HandleDetailsArray)
+        foreach (AnnotationManager.CategoryDetails d in AnnotationManager.CategoryDetailsMappings)
         {
-            foreach (Entry entry in t.Item1)
+            foreach (Entry entry in d.Category)
             {
                 patterns.Add(Regex.Escape(entry.GetName()));
             }
@@ -50,9 +36,9 @@ public class Description
 
         StringBuilder midString = new();
 
-        foreach (Tuple<ICategory<Entry>, string> t in HandleDetailsArray)
+        foreach (AnnotationManager.CategoryDetails d in AnnotationManager.CategoryDetailsMappings)
         {
-            midString.Append($"{t.Item2}|");
+            midString.Append($"{d.CategoryShortName}|");
         }
         
         midString.Remove(midString.Length - 1, 1);
@@ -80,10 +66,10 @@ public class Description
         {
             string keyword = match.Value;
 
-            foreach (Tuple<ICategory<Entry>, string> t in HandleDetailsArray)
+            foreach (AnnotationManager.CategoryDetails d in AnnotationManager.CategoryDetailsMappings)
             {
-                ICategory<Entry> category = t.Item1;
-                string s = t.Item2;
+                ICategory<Entry> category = d.Category;
+                string s = d.CategoryShortName;
                 if (category.ContainsName(keyword))
                     return $"[{s}:{keyword}]";
             }

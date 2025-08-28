@@ -179,7 +179,6 @@ public class PackConfigPanel : PopupPanel
     
     public override void Return()
     {
-        base.Return();
         Cancel();
     }
 

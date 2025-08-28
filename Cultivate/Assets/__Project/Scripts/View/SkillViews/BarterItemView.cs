@@ -6,7 +6,7 @@ public class BarterItemView : XView
 {
     public SkillView LeftSkillView;
     public SkillView RightSkillView;
-    public ExchangeButton ExchangeButton;
+    public Button4State ExchangeButton;
 
     protected override void AwakeFunction()
     {
@@ -21,7 +21,7 @@ public class BarterItemView : XView
         LeftSkillView.SetAddress(GetAddress().Append(".FromSkill"));
         RightSkillView.SetAddress(GetAddress().Append(".ToSkill"));
 
-        ExchangeButton.OnClickNeuron.Join(Exchange);
+        ExchangeButton.LeftClickNeuron.Join(Exchange);
     }
 
     public override void Refresh()
@@ -37,9 +37,7 @@ public class BarterItemView : XView
         LeftSkillView.Refresh();
         RightSkillView.Refresh();
 
-        bool interactable = barterItem.Affordable();
-        ExchangeButton.ExchangeButtonState state = ExchangeButton.GetState();
-        ExchangeButton.SetState(interactable ? state : ExchangeButton.ExchangeButtonState.Inactive);
+        ExchangeButton.SetStateToInactiveFrom(!barterItem.Affordable());
     }
 
     private void Exchange(InteractBehaviour ib, PointerEventData d)

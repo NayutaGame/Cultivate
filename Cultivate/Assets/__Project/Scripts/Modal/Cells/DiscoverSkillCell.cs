@@ -85,7 +85,7 @@ public class DiscoverSkillCell : Cell
 
         DiscoverSkillCell d = new(
             titleText: $"凌云峰",
-            descriptionText: $"选择1张{currJingJie}金牌",
+            descriptionText: $"选择1张{currJingJie.GetName()}金牌",
             descriptor: new(wuXing: WuXing.Jin, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
             preferredJingJie: currJingJie
         );
@@ -99,7 +99,7 @@ public class DiscoverSkillCell : Cell
 
         DiscoverSkillCell d = new(
             titleText: $"逍遥海",
-            descriptionText: $"选择1张{currJingJie}水牌",
+            descriptionText: $"选择1张{currJingJie.GetName()}水牌",
             descriptor: new(wuXing: WuXing.Shui, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
             preferredJingJie: currJingJie
         );
@@ -113,7 +113,7 @@ public class DiscoverSkillCell : Cell
         
         DiscoverSkillCell d = new(
             titleText: $"桃花宫",
-            descriptionText: $"选择1张{currJingJie}木牌",
+            descriptionText: $"选择1张{currJingJie.GetName()}木牌",
             descriptor: new(wuXing: WuXing.Mu, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
             preferredJingJie: currJingJie
         );
@@ -127,7 +127,7 @@ public class DiscoverSkillCell : Cell
         
         DiscoverSkillCell d = new(
             titleText: $"长明殿",
-            descriptionText: $"选择1张{currJingJie}火牌",
+            descriptionText: $"选择1张{currJingJie.GetName()}火牌",
             descriptor: new(wuXing: WuXing.Huo, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
             preferredJingJie: currJingJie
         );
@@ -141,7 +141,7 @@ public class DiscoverSkillCell : Cell
         
         DiscoverSkillCell d = new(
             titleText: $"环岳岭",
-            descriptionText: $"选择1张{currJingJie}土牌",
+            descriptionText: $"选择1张{currJingJie.GetName()}土牌",
             descriptor: new(wuXing: WuXing.Tu, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
             preferredJingJie: currJingJie
         );
@@ -154,7 +154,7 @@ public class DiscoverSkillCell : Cell
 
         DiscoverSkillCell d = new(
             titleText: $"散修",
-            descriptionText: $"选择1张基础境界是{currJingJie}期的牌",
+            descriptionText: $"选择1张基础境界是{currJingJie.GetName()}期的牌",
             descriptor: new(pred: e => e.LowestJingJie == currJingJie, count: 3),
             preferredJingJie: currJingJie
         );

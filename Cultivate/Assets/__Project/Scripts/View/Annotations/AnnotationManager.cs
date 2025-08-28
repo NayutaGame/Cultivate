@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
@@ -10,6 +11,8 @@ using UnityEngine.UI;
 
 public class AnnotationManager : XView, Addressable
 {
+    private static CategoryDetails[] _categoryDetailsMappings;
+    
     [SerializeField] private XView Background;
     [SerializeField] private ListView Annotations;
     [SerializeField] private Image ProgressCircle;
@@ -287,5 +290,70 @@ public class AnnotationManager : XView, Addressable
     {
         return Annotations.TraversalActive().FirstIdx(slotView =>
             (slotView.GetContentView() as AnnotationView).CoverIb == ib) ?? -1;
+    }
+
+    public static CategoryDetails[] CategoryDetailsMappings
+    {
+        get
+        {
+            if (_categoryDetailsMappings != null)
+                return _categoryDetailsMappings;
+        
+            _categoryDetailsMappings = new CategoryDetails[]
+            {
+                new(Encyclopedia.KeywordCategory, AnnotationViewType.TextAnnotation, "KeywordCategory", "keyword"),
+                new(Encyclopedia.TagCategory, AnnotationViewType.TagAnnotation, "TagCategory", "tag"),
+                new(Encyclopedia.JingJieCategory, AnnotationViewType.JingJieAnnotation, "JingJieCategory", "jingJie"),
+                new(Encyclopedia.CharacterCategory, AnnotationViewType.CharacterAnnotation, "CharacterCategory", "character"),
+                new(Encyclopedia.BuffCategory, AnnotationViewType.BuffAnnotation, "BuffCategory", "buff"),
+                new(Encyclopedia.SkillCategory, AnnotationViewType.SkillAnnotation, "SkillCategory", "skill"),
+                new(Encyclopedia.PackCategory, AnnotationViewType.PackAnnotation, "PackCategory", "pack"),
+            };
+
+            return _categoryDetailsMappings;
+        }
+    }
+    
+    public readonly struct CategoryDetails
+    {
+        public readonly ICategory<Entry> Category;
+        public readonly AnnotationViewType AnnotationViewType;
+        public readonly string CategoryName;
+        public readonly string CategoryShortName;
+
+        public CategoryDetails(
+            ICategory<Entry> category,
+            AnnotationViewType annotationViewType,
+            string categoryName,
+            string categoryShortName)
+        {
+            Category = category;
+            AnnotationViewType = annotationViewType;
+            CategoryName = categoryName;
+            CategoryShortName = categoryShortName;
+        }
+
+        public bool TryInterpret(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect,
+            out AnnotationDetails annotationDetails)
+        {
+            if (!Category.ContainsName(linkId))
+            {
+                annotationDetails = null;
+                return false;
+            }
+
+            Entry entry = Category.FromName(linkId);
+        
+            int characterIndex = entry.GetName().IndexOf(criticalCharInfo.character);
+            annotationDetails = new AnnotationDetails(
+                AnnotationViewType,
+                null,
+                new Address($"Encyclopedia.{CategoryName}.Dict.{entry.GetId()}"),
+                null,
+                0.2f,
+                0,
+                new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
+            return true;
+        }
     }
 }

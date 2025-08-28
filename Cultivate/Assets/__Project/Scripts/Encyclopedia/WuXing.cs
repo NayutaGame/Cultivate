@@ -106,7 +106,7 @@ public class WuXing : Entry
         => Encyclopedia.WuXingCategory[index];
 
     public static bool XiangSheng(WuXing lhs, WuXing rhs)
-        => lhs != null && rhs != null && (lhs.Next == rhs || rhs.Prev == lhs);
+        => lhs != null && rhs != null && (lhs.Next == rhs || lhs.Prev == rhs);
 
     public static WuXing XiangShengNext(WuXing lhs, WuXing rhs)
     {

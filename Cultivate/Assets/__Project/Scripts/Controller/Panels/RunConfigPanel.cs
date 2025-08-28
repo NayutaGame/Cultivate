@@ -13,8 +13,8 @@ public class RunConfigPanel : Panel
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
     
     [SerializeField] private DifficultyPickerView DifficultyPickerView;
-    [SerializeField] private XButton ReturnButton;
-    [SerializeField] private XButton StartRunButton;
+    [SerializeField] private Button4State ReturnButton;
+    [SerializeField] private Button4State StartRunButton;
 
     [SerializeField] private Button4State PackConfigButton;
 
@@ -27,18 +27,6 @@ public class RunConfigPanel : Panel
         PackConfigPanel.CheckAwake();
 
         DifficultyPickerView.Configure();
-
-        ReturnButton._button.onClick.RemoveAllListeners();
-        ReturnButton._button.onClick.AddListener(Return);
-        ReturnButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
-
-        ReturnButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
-
-        StartRunButton._button.onClick.RemoveAllListeners();
-        StartRunButton._button.onClick.AddListener(StartRun);
-        StartRunButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
-
-        StartRunButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
 
         CharacterListView.SetAddress(new Address("Profile.ProfileList.Current.CharacterProfileList"));
         CharacterListView.LeftClickNeuron.Join(Select);
@@ -56,6 +44,12 @@ public class RunConfigPanel : Panel
 
     private void OnEnable()
     {
+        ReturnButton.LeftClickNeuron.Add(Return);
+        ReturnButton.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
+        ReturnButton.GetInteractBehaviour().PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
+        StartRunButton.LeftClickNeuron.Add(StartRun);
+        StartRunButton.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
+        StartRunButton.GetInteractBehaviour().PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
         PackConfigButton.LeftClickNeuron.Add(EnterPackConfig);
         PackConfigButton.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
         PackConfigButton.GetInteractBehaviour().PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
@@ -67,12 +61,21 @@ public class RunConfigPanel : Panel
 
     private void OnDisable()
     {
+        ReturnButton.LeftClickNeuron.Remove(Return);
+        ReturnButton.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+        ReturnButton.GetInteractBehaviour().PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+        StartRunButton.LeftClickNeuron.Remove(StartRun);
+        StartRunButton.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+        StartRunButton.GetInteractBehaviour().PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
         PackConfigButton.LeftClickNeuron.Remove(EnterPackConfig);
         PackConfigButton.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
         PackConfigButton.GetInteractBehaviour().PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
         
         AppManager.Instance.PopEscFunc();
     }
+
+    private void Return(InteractBehaviour ib, PointerEventData d)
+        => Return();
 
     private void Return()
     {
@@ -91,7 +94,7 @@ public class RunConfigPanel : Panel
         await CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(1);
     }
 
-    private void StartRun()
+    private void StartRun(InteractBehaviour ib, PointerEventData d)
     {
         CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
         List<PackEntry> packEntries = AppManager.Instance.ConfigManager.GetEquippedPacks();
@@ -153,6 +156,7 @@ public class RunConfigPanel : Panel
         bool interactable = characterProfile.IsUnlocked() &&
                             !characterProfile.IsDemoLocked() &&
                             !DifficultyPickerView.GetSelection().IsDemoLocked();
-        StartRunButton._button.interactable = interactable;
+        
+        StartRunButton.SetStateToInactiveFrom(!interactable);
     }
 }

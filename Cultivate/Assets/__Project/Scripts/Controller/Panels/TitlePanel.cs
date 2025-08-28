@@ -82,26 +82,11 @@ public class TitlePanel : Panel
     {
         Profile currProfile = AppManager.Instance.ProfileManager.GetCurrProfile();
         bool firstRun = !currProfile.IsFirstRunFinished();
-        bool hasValidSave = currProfile.HasValidSave(); 
-
-        if (firstRun)
-        {
-            ContinueButton.gameObject.SetActive(false);
-            StartRunButton.gameObject.SetActive(false);
-            StartPrologueButton.gameObject.SetActive(true);
-        }
-        else if (hasValidSave)
-        {
-            ContinueButton.gameObject.SetActive(true);
-            StartRunButton.gameObject.SetActive(true);
-            StartPrologueButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            ContinueButton.gameObject.SetActive(false);
-            StartRunButton.gameObject.SetActive(true);
-            StartPrologueButton.gameObject.SetActive(true);
-        }
+        bool hasValidSave = currProfile.HasValidSave();
+        
+        ContinueButton.gameObject.SetActive(hasValidSave);
+        StartRunButton.gameObject.SetActive(!firstRun);
+        StartPrologueButton.gameObject.SetActive(true);
 
         bool audienceIsPlayer = AppManager.Instance.AudienceIsPlayer();
         

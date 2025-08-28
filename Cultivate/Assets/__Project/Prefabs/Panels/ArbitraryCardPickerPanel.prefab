@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DetailedText: {fileID: 8547782225459925130}
-  ConfirmButton: {fileID: 0}
+  ConfirmButton: {fileID: 1471117399367034326}
   SkillListView: {fileID: 8334282509836943799}
 --- !u!1 &6699344098802649707
 GameObject:
@@ -1428,6 +1428,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}
+--- !u!114 &1471117399367034326 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7203221303288264703, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}
+  m_PrefabInstance: {fileID: 8618920907809673769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa603e052389efd49a763dc49ac27dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6835050005304763391 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2974195594875515350, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}

@@ -2354,6 +2354,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ConfirmButton
       objectReference: {fileID: 0}
+    - target: {fileID: 7440976451811727369, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}
+      propertyPath: m_text
+      value: "\u786E\u8BA4"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 129b68e0aa3f15a42989f8cdbc075046, type: 3}
 --- !u!114 &1526840369585615129 stripped

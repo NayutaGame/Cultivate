@@ -506,18 +506,18 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    // 0 -> 凌云峰，选择1张下一境界的金牌
-                    // 1 -> 逍遥海，选择1张下一境界的水牌
-                    // 2 -> 桃花宫，选择1张下一境界的木牌
-                    // 3 -> 长明殿，选择1张下一境界的火牌
-                    // 4 -> 环岳岭，选择1张下一境界的土牌
-                    // 5 -> 易宝斋，得到2/4/8/16金钱，访问一次商店
-                    // 6 -> 剑池，选择2张当前境界的攻击牌
-                    // 7 -> 风雨楼，选择2张当前境界的防御牌
-                    // 8 -> 百草堂，得到4/8/16/32气血上限
-                    // 9 -> 星宫，选择2张当前境界的灵气牌
-                    // 10 -> 天机阁，卡池中，当前及以下境界的牌，被移除一半
-                    // 11 -> 散修，选择1基础境界是下一境界的牌
+                    // 0 -> 凌云峰，发现1张下一境界的金牌
+                    // 1 -> 逍遥海，发现1张下一境界的水牌
+                    // 2 -> 桃花宫，发现1张下一境界的木牌
+                    // 3 -> 长明殿，发现1张下一境界的火牌
+                    // 4 -> 环岳岭，发现1张下一境界的土牌
+                    // 5 -> 散修，发现1基础境界是下一境界的牌
+                    // 6 -> 剑池，检索1张当前境界的攻击牌
+                    // 7 -> 风雨楼，检索1张当前境界的防御牌
+                    // 8 -> 星宫，检索1张当前境界的灵气牌
+                    // 9 -> 天机阁，选择1张牌复制1次
+                    // 10 -> 百草堂，选择2张牌，提升到下一境界
+                    // 11 -> 易宝斋，选择1张牌卖掉，之后访问一次商店
                     
                     RunEnvironment env = RunManager.Instance.Environment;
                     JingJie currJingJie = env.JingJie;
@@ -525,21 +525,19 @@ public class RoomCategory : Category<RoomEntry>
                     
                     string[] descriptions = new string[12]
                     {
-                        $"凌云峰，选择1张{nextJingJie.GetName()}金牌",
-                        $"逍遥海，选择1张{nextJingJie.GetName()}水牌",
-                        $"桃花宫，选择1张{nextJingJie.GetName()}木牌",
-                        $"长明殿，选择1张{nextJingJie.GetName()}火牌",
-                        $"环岳岭，选择1张{nextJingJie.GetName()}土牌",
-                        $"易宝斋，得到{2 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}金钱，访问一次商店",
-                        $"剑池，获得2张{currJingJie.GetName()}攻击牌",
-                        $"风雨楼，获得2张{currJingJie.GetName()}防御牌",
-                        $"百草堂，得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限",
-                        $"星宫，获得2张{currJingJie.GetName()}灵气牌",
-                        $"天机阁，从卡池中，移除一半不高于{currJingJie.GetName()}的牌，之后更加可能抽到高境界的牌",
-                        $"散修，选择1基础境界是{nextJingJie.GetName()}期的牌",
+                        $"凌云峰，发现1张{nextJingJie.GetName()}金牌",
+                        $"逍遥海，发现1张{nextJingJie.GetName()}水牌",
+                        $"桃花宫，发现1张{nextJingJie.GetName()}木牌",
+                        $"长明殿，发现1张{nextJingJie.GetName()}火牌",
+                        $"环岳岭，发现1张{nextJingJie.GetName()}土牌",
+                        $"剑池，检索1张{currJingJie.GetName()}攻击牌",
+                        $"风雨楼，检索1张{currJingJie.GetName()}防御牌",
+                        $"星宫，检索1张{currJingJie.GetName()}灵气牌",
+                        $"天机阁，选择1张牌，复制1次",
+                        $"百草堂，选择2张牌，提升到{nextJingJie.GetName()}",
+                        $"易宝斋，选择1张牌卖掉，之后访问一次商店",
+                        $"散修，发现1张基础境界是{nextJingJie.GetName()}期的牌",
                     };
-
-                    Bound jingJieBound = new(JingJie.LianQi, nextJingJie + 1);
 
                     Cell[] panels = new Cell[12]
                     {
@@ -548,34 +546,15 @@ public class RoomCategory : Category<RoomEntry>
                         DiscoverSkillCell.FromTaohuaGong(room.Ladder + 3),
                         DiscoverSkillCell.FromChangMingDian(room.Ladder + 3),
                         DiscoverSkillCell.FromHuanYueLing(room.Ladder + 3),
-                        // 易宝斋，得到2/4/8/16金钱，访问一次商店
+                        ArbitraryCardPickerCell.FromJianChi(room.Ladder),
+                        ArbitraryCardPickerCell.FromFengYuLou(room.Ladder),
+                        ArbitraryCardPickerCell.FromXingGong(room.Ladder),
+                        CardPickerCell.FromTianJiGe(),
+                        CardPickerCell.FromBaiCaoTang(room.Ladder),
                         ShopCell.FromYiBaoZhai(room.Ladder + 3),
-                        new DialogCell("剑池", $"获得2张{currJingJie.GetName()}攻击牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie.GetName()}攻击牌", new(jingJie: currJingJie, tagComposite: TagCategory.Attack, count: 2))),
-                        new DialogCell("风雨楼", $"获得2张{currJingJie.GetName()}防御牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie.GetName()}防御牌", new(jingJie: currJingJie, tagComposite: TagCategory.Defend, count: 2))),
-                        new DialogCell($"百草堂", $"得到{4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder)}气血上限")
-                            .SetReward(new ResourceReward(health: 4 * RoomDefinition.GetGoldRewardFromLadder(room.Ladder))),
-                        new DialogCell("星宫", $"获得2张{currJingJie.GetName()}灵气牌")
-                            .SetReward(new DrawSkillReward($"2张{currJingJie.GetName()}灵气牌", new(jingJie: currJingJie, tagComposite: TagCategory.Mana, count: 2))),
-                        new DialogCell("天机阁", $"从卡池中，移除一半不高于{currJingJie.GetName()}的牌，之后更加可能抽到高境界的牌")
-                            .SetEnter(panelDescriptor =>
-                            {
-                                panelDescriptor.DefaultEnter(panelDescriptor);
-                                
-                                List<SkillEntry> lowList = new();
-                                while (env.SkillPool.TryPopItem(out SkillEntry skillEntry, pred: s => s.LowestJingJie <= currJingJie))
-                                    lowList.Add(skillEntry);
-
-                                int count = lowList.Count / 2;
-                                count.Do(i => env.SkillPool.Populate(lowList[i]));
-                                
-                                env.SkillPool.Shuffle();
-                            }),
                         DiscoverSkillCell.FromSanXiu(room.Ladder + 3),
                     };
-
-
+                    
                     int[] combination;
                     if (currJingJie == JingJie.LianQi)
                     {
@@ -900,7 +879,7 @@ public class RoomCategory : Category<RoomEntry>
                     BattleCell A = new(enemyEntity);
                     
                     DeckIndex firstDeckIndex = DeckIndex.FromField(1);
-                    SkillEntryDescriptor descriptor = new SkillEntryDescriptor(skill => skill.GetName() == "恋花");
+                    SkillEntryDescriptor descriptor = SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.LianQi);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -1327,9 +1306,9 @@ public class RoomCategory : Category<RoomEntry>
                 {
                     DialogCell A = new(
                         titleText: "毕业季",
-                        detailedText: "一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能打折卖出。");
+                        detailedText: "一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能白送，先到先得。");
                     
-                    ShopCell B = ShopCell.FromBiYeJi(room.Ladder);
+                    ArbitraryCardPickerCell B = ArbitraryCardPickerCell.FromBiYeJi(room.Ladder);
                     
                     A[0].SetSelect(option => B);
                     
@@ -1409,12 +1388,14 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell A = new(
                         titleText: "琴仙",
                         detailedText: "你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
-                        "来一首欢快的曲子吧", "来一首悲伤的曲子吧", "赶路着急，没时间留下来听曲子了");
+                        "来一首欢快的曲子吧",
+                        "来一首悲伤的曲子吧",
+                        "赶路着急，没时间留下来听曲子了");
 
                     DialogCell B = new DialogCell(
                             titleText: "琴仙",
                             detailedText: "那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromId("春雨"), RunManager.Instance.Environment.JingJie));
+                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("春雨"), RunManager.Instance.Environment.JingJie));
                     DialogCell C = new DialogCell(
                             titleText: "琴仙",
                             detailedText: "那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class AppStateMachine
 {
@@ -138,22 +139,13 @@ public class AppStateMachine
     private async UniTask FromRunToTitle(bool isAwait, object args)
     {
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
-        
         RunEnvironment runEnv = RunManager.Instance.Environment;
-        
         runEnv.SetGuideToFinish();
         CanvasManager.Instance.RefreshGuide();
-        
         CanvasManager.Instance.RunCanvas.SetPanelToNull();
-        
-        RunResult result = runEnv.GetResult();
         RunManager.Instance.SetEnvironmentToNull();
         
-        
-        
-        
         AudioManager.Play("BGMTitle");
-        
         await CanvasManager.Instance.AppCanvas.TitlePanel.GetAnimator().SetStateAsync(1);
     }
 

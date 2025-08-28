@@ -55,7 +55,7 @@ MonoBehaviour:
   _interactBehaviour: {fileID: 0}
   LeftSkillView: {fileID: 1720421335187203421}
   RightSkillView: {fileID: 6803829397602826302}
-  ExchangeButton: {fileID: 3028324977302972411}
+  ExchangeButton: {fileID: 2875115218812217813}
 --- !u!1001 &382294646736880461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -153,15 +153,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e45565d79520504490e90294e77e0f4, type: 3}
---- !u!114 &3028324977302972411 stripped
+--- !u!114 &2875115218812217813 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3407231988717790390, guid: 5e45565d79520504490e90294e77e0f4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2497343825548552856, guid: 5e45565d79520504490e90294e77e0f4, type: 3}
   m_PrefabInstance: {fileID: 382294646736880461}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ad0d747525b567498b74ef28e679776, type: 3}
+  m_Script: {fileID: 11500000, guid: aa603e052389efd49a763dc49ac27dcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &6366942190678223908 stripped

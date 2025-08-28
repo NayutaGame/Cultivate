@@ -9,22 +9,10 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
 {
     [SerializeField] private TMP_Text Text;
     private Neuron<TMP_Text, TMP_LinkInfo> _neuron = new();
-    
-    private static HandleDetails[] HandleDetailsArray;
 
     private void Awake()
     {
         RegisterCallback(LinkCallback);
-        HandleDetailsArray = new HandleDetails[]
-        {
-            new(Encyclopedia.TagCategory, AnnotationViewType.TagAnnotation, "TagCategory"),
-            new(Encyclopedia.JingJieCategory, AnnotationViewType.JingJieAnnotation, "JingJieCategory"),
-            new(Encyclopedia.KeywordCategory, AnnotationViewType.TextAnnotation, "KeywordCategory"),
-            new(Encyclopedia.CharacterCategory, AnnotationViewType.CharacterAnnotation, "CharacterCategory"),
-            new(Encyclopedia.BuffCategory, AnnotationViewType.BuffAnnotation, "BuffCategory"),
-            new(Encyclopedia.SkillCategory, AnnotationViewType.SkillAnnotation, "SkillCategory"),
-            new(Encyclopedia.PackCategory, AnnotationViewType.PackAnnotation, "PackCategory"),
-        };
     }
 
     public void RegisterCallback(Action<TMP_Text, TMP_LinkInfo> func)
@@ -90,7 +78,7 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
         string linkId = linkInfo.GetLinkID();
 
         AnnotationDetails annotationDetails = null;
-        foreach (HandleDetails handleDetails in HandleDetailsArray)
+        foreach (AnnotationManager.CategoryDetails handleDetails in AnnotationManager.CategoryDetailsMappings)
         {
             if (handleDetails.TryInterpret(linkId, criticalCharInfo, alignRect, out annotationDetails))
             {
@@ -102,42 +90,5 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
         
         if (annotationDetails == null)
             return;
-    }
-}
-
-public readonly struct HandleDetails
-{
-    public readonly ICategory<Entry> Category;
-    public readonly AnnotationViewType AnnotationViewType;
-    public readonly string CategoryName;
-
-    public HandleDetails(ICategory<Entry> category, AnnotationViewType annotationViewType, string categoryName)
-    {
-        Category = category;
-        AnnotationViewType = annotationViewType;
-        CategoryName = categoryName;
-    }
-
-    public bool TryInterpret(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect,
-        out AnnotationDetails annotationDetails)
-    {
-        if (!Category.ContainsName(linkId))
-        {
-            annotationDetails = null;
-            return false;
-        }
-
-        Entry entry = Category.FromName(linkId);
-        
-        int characterIndex = entry.GetName().IndexOf(criticalCharInfo.character);
-        annotationDetails = new AnnotationDetails(
-            AnnotationViewType,
-            null,
-            new Address($"Encyclopedia.{CategoryName}.Dict.{entry.GetId()}"),
-            null,
-            0,
-            0,
-            new CharacterAnnotationAlignmentDetails(characterIndex, alignRect));
-        return true;
     }
 }

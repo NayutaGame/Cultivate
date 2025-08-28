@@ -65,17 +65,24 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public RunEnvironment Environment
     {
-        get => _environmentCache;
+        get
+        {
+            if (_environmentCache == null)
+                return null;
+            return JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(_environmentCache));
+        }
         set
         {
             if (value != null)
             {
                 value.WriteTime();
+                _runSaveState = RunSaveState.Valid;
                 _environmentCache = JsonUtility.FromJson<RunEnvironment>(JsonUtility.ToJson(value));
                 FileUtility.WritePersistentFile(_environmentCache, GetRunFilename());
             }
             else
             {
+                _runSaveState = RunSaveState.None;
                 _environmentCache = null;
                 FileUtility.DeletePersistentFile(GetRunFilename());
             }

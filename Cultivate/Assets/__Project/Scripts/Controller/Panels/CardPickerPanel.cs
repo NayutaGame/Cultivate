@@ -5,6 +5,7 @@ using CLLibrary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CardPickerPanel : Panel
@@ -12,7 +13,7 @@ public class CardPickerPanel : Panel
     [SerializeField] public ListView Requirements;
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text ContentText;
-    [SerializeField] private Button4State ConfirmButton;
+    [SerializeField] private Button4State SubmitButton;
     
     private Address _address;
 
@@ -38,7 +39,7 @@ public class CardPickerPanel : Panel
 
     private void OnEnable()
     {
-        ConfirmButton.LeftClickNeuron.Add(ConfirmSelections);
+        SubmitButton.LeftClickNeuron.Add(ConfirmSelections);
         RunManager.Instance.Environment.SubmitFromHandNeuron.Add(SubmitFromHandStaging);
         RunManager.Instance.Environment.SubmitFromFieldNeuron.Add(SubmitFromFieldStaging);
         RunManager.Instance.Environment.WithdrawToHandNeuron.Add(WithdrawToHandStaging);
@@ -51,7 +52,7 @@ public class CardPickerPanel : Panel
 
     private void OnDisable()
     {
-        ConfirmButton.LeftClickNeuron.Remove(ConfirmSelections);
+        SubmitButton.LeftClickNeuron.Remove(ConfirmSelections);
         RunManager.Instance.Environment.SubmitFromHandNeuron.Remove(SubmitFromHandStaging);
         RunManager.Instance.Environment.SubmitFromFieldNeuron.Remove(SubmitFromFieldStaging);
         RunManager.Instance.Environment.WithdrawToHandNeuron.Remove(WithdrawToHandStaging);

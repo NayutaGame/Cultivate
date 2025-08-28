@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
@@ -25,6 +26,14 @@ public class Button4State : XView
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
     public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
 
+    protected override void AwakeFunction()
+    {
+        base.AwakeFunction();
+        
+        _interactBehaviour.LeftClickNeuron.Join(LeftClickNeuron);
+        _interactBehaviour.RightClickNeuron.Join(RightClickNeuron);
+    }
+
     private void OnEnable()
     {
         _interactBehaviour.PointerEnterNeuron.Add(SetStateToHover);
@@ -38,8 +47,7 @@ public class Button4State : XView
             _interactBehaviour.RightClickNeuron.Add(AudioManager.PlayButtonPress);
         }
         
-        _interactBehaviour.LeftClickNeuron.Add(LeftClickNeuron);
-        _interactBehaviour.RightClickNeuron.Add(RightClickNeuron);
+        SetState(ButtonState.Idle);
     }
 
     private void OnDisable()
@@ -52,9 +60,6 @@ public class Button4State : XView
         _interactBehaviour.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
         _interactBehaviour.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
         _interactBehaviour.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
-        
-        _interactBehaviour.LeftClickNeuron.Remove(LeftClickNeuron);
-        _interactBehaviour.RightClickNeuron.Remove(RightClickNeuron);
     }
 
     public ButtonState GetState()
@@ -68,10 +73,7 @@ public class Button4State : XView
     }
 
     public void SetStateToInactiveFrom(bool shouldInactive)
-    {
-        if (shouldInactive)
-            SetState(ButtonState.Inactive);
-    }
+        => SetState(shouldInactive ? ButtonState.Inactive : ButtonState.Idle);
 
     private void SetStateToIdle(InteractBehaviour ib, PointerEventData d)
         => SetState(ButtonState.Idle);

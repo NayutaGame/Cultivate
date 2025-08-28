@@ -1,13 +1,15 @@
 
+using System;
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RunResultPanel : Panel
 {
-    [SerializeField] private Button ReturnButton;
+    [SerializeField] private Button4State ReturnButton;
     [SerializeField] private TMP_Text OutcomeText;
     [SerializeField] private Image ResultIllustration;
     
@@ -30,9 +32,6 @@ public class RunResultPanel : Panel
     {
         base.AwakeFunction();
 
-        ReturnButton.onClick.RemoveAllListeners();
-        ReturnButton.onClick.AddListener(Return);
-
         Address address = new Address("Run.Environment.ActivePanel");
         MilestoneList.SetAddress(address.Append(".Milestones"));
         UnlockList.SetAddress(address.Append(".Achievements"));
@@ -47,6 +46,16 @@ public class RunResultPanel : Panel
         
         animator.SetState(0);
         return animator;
+    }
+
+    private void OnEnable()
+    {
+        ReturnButton.LeftClickNeuron.Add(Return);
+    }
+
+    private void OnDisable()
+    {
+        ReturnButton.LeftClickNeuron.Remove(Return);
     }
     
     public override void Refresh()
@@ -187,7 +196,7 @@ public class RunResultPanel : Panel
         ExperienceText.text = $"{restExperience}";
     }
 
-    private void Return()
+    private void Return(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.ReturnToTitle();
     }
