@@ -49,7 +49,7 @@ public class StageEntity : Addressable, StageClosureListener
     {
         if (_costDefinition == null)
         {
-            StageSkill skill = _skills[_p];
+            StageSkill skill = Skills[_p];
             _costDetails = new(_env, this, skill);
             _costDefinition = skill.GetSkillDefinition().GetCostDefinition();
             _costDetails.CostDescription = _costDefinition.GetLiteralCostDescription();
@@ -68,7 +68,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     public async UniTask StartStageExecuteProcedure()
     {
-        foreach (var skill in _skills)
+        foreach (var skill in Skills)
         {
             if (!skill.GetSkillDefinition().HasStartStageCast) continue;
             await StartStageCastProcedure(skill);
@@ -77,7 +77,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     private async UniTask ExecuteProcedure()
     {
-        StageSkill skill = _skills[_p];
+        StageSkill skill = Skills[_p];
         ExecuteDetails d = new ExecuteDetails(_env, this, skill);
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_EXECUTE, d);
 
@@ -150,24 +150,24 @@ public class StageEntity : Addressable, StageClosureListener
             return;
 
         int dir = Forward ? 1 : -1;
-        for (int i = 0; i < _skills.Length; i++)
+        for (int i = 0; i < Skills.Length; i++)
         {
             _p += dir;
 
-            bool within = 0 <= _p && _p < _skills.Length;
+            bool within = 0 <= _p && _p < Skills.Length;
             if (!within)
             {
-                _p = (_p + _skills.Length) % _skills.Length;
+                _p = (_p + Skills.Length) % Skills.Length;
                 await _env.ClosureDict.SendEvent(StageClosureDict.DID_ROUND, new RoundDetails(_env, this));
                 await _env.ClosureDict.SendEvent(StageClosureDict.WIL_ROUND, new RoundDetails(_env, this));
             }
 
-            if (_skills[_p].Exhausted)
+            if (Skills[_p].Exhausted)
                 continue;
 
             if (await TryConsumeProcedure("飞龙在天"))
             {
-                _skills[_p].IncreaseBonusCastedCount();
+                Skills[_p].IncreaseBonusCastedCount();
                 continue;
             }
 
@@ -258,8 +258,8 @@ public class StageEntity : Addressable, StageClosureListener
     public bool IsFullHealth => Hp >= GetFullHealthThreshold() || GetStackOfBuff("天人形态") > 0;
     public bool IsLowHealth => Hp <= GetLowHealthThreshold() || GetStackOfBuff("天人形态") > 0;
     public bool Forward => GetStackOfBuff("鹤回翔") == 0;
-    public int ExhaustedCount => TraversalSkills().Count(skill => skill.Exhausted);
-    public int AttackCount => TraversalSkills().Count(skill => skill.GetTagComposite().Contains(TagCategory.Attack));
+    public int ExhaustedCount => Skills.Count(skill => skill.Exhausted);
+    public int AttackCount => Skills.Count(skill => skill.GetTagComposite().Contains(TagCategory.Attack));
 
     public async UniTask<bool> OppoHasFragile(bool useFocus = false)
     {
@@ -302,7 +302,7 @@ public class StageEntity : Addressable, StageClosureListener
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Skills",                     thisObject => ((StageEntity)thisObject)._skills },
+        { "Skills",                     thisObject => ((StageEntity)thisObject).Skills },
         { "Formations",                 thisObject => ((StageEntity)thisObject)._formations },
         { "Buffs",                      thisObject => ((StageEntity)thisObject)._buffs },
         { "ArmorDescription",           thisObject => ((StageEntity)thisObject).GetArmorDescription() },
@@ -347,11 +347,11 @@ public class StageEntity : Addressable, StageClosureListener
         Hp = _runEntity.GetHealth();
         Armor = 0;
 
-        _skills = new StageSkill[_runEntity.GetSlotCount()];
-        for (int i = 0; i < _skills.Length; i++)
+        Skills = new StageSkill[_runEntity.GetSlotCount()];
+        for (int i = 0; i < Skills.Length; i++)
         {
             SkillSlot slot = _runEntity.GetSlot(i + 0);
-            _skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
+            Skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
         }
 
         _emptyAction = StageSkill.FromSkillEntry(this, Encyclopedia.SkillCategory.FromName("发呆"));
@@ -411,33 +411,37 @@ public class StageEntity : Addressable, StageClosureListener
     #region Skill
     
     public StageSkill[] _skills;
-    public IEnumerable<StageSkill> TraversalSkills() => _skills;
+    public StageSkill[] Skills
+    {
+        get => _skills;
+        set => _skills = value;
+    }
 
     public IEnumerable<StageSkill> NextSkills(int index, bool loop = false)
     {
         int p = index;
-        for (int i = 0; i < _skills.Length - 1; i++)
+        for (int i = 0; i < Skills.Length - 1; i++)
         {
             int? nextP = Next(p, loop);
             if (!nextP.HasValue)
                 yield break;
             
             p = nextP.Value;
-            yield return _skills[p];
+            yield return Skills[p];
         }
     }
 
     public IEnumerable<StageSkill> PrevSkills(int index, bool loop = false)
     {
         int p = index;
-        for (int i = 0; i < _skills.Length - 1; i++)
+        for (int i = 0; i < Skills.Length - 1; i++)
         {
             int? prevP = Prev(p, loop);
             if (!prevP.HasValue)
                 yield break;
             
             p = prevP.Value;
-            yield return _skills[p];
+            yield return Skills[p];
         }
     }
 
@@ -447,7 +451,7 @@ public class StageEntity : Addressable, StageClosureListener
         if (!p.HasValue)
             return null;
         
-        return _skills[p.Value];
+        return Skills[p.Value];
     }
 
     public StageSkill PrevSkill(int index, bool loop = false)
@@ -456,16 +460,16 @@ public class StageEntity : Addressable, StageClosureListener
         if (!p.HasValue)
             return null;
         
-        return _skills[p.Value];
+        return Skills[p.Value];
     }
 
     private int? Next(int index, bool loop)
     {
         int p = index + 1;
         if (loop)
-            p %= _skills.Length;
+            p %= Skills.Length;
 
-        if (p >= _skills.Length)
+        if (p >= Skills.Length)
             return null;
 
         return p;
@@ -475,7 +479,7 @@ public class StageEntity : Addressable, StageClosureListener
     {
         int p = index - 1;
         if (loop)
-            p = (p + _skills.Length) % _skills.Length;
+            p = (p + Skills.Length) % Skills.Length;
 
         if (p < 0)
             return null;

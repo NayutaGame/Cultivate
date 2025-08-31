@@ -61,7 +61,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageCommitDetails d = (StageCommitDetails)details;
 
                         if (p.IsUnlocked()) return;
-                        int attackCount = d.Env.Home._skills.Count(s => s.Entry.GetTagComposite().Contains(TagCategory.Attack));
+                        int attackCount = d.Env.Home.Skills.Count(s => s.Entry.GetTagComposite().Contains(TagCategory.Attack));
                         if (attackCount < 5) return;
                         if (d.Flag != 1) return;
 
@@ -198,7 +198,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = d.Env.Home;
-                        int depleteCardCount = home.TraversalSkills().Count(s =>
+                        int depleteCardCount = home.Skills.Count(s =>
                             s.Entry.GetTagComposite().Contains(TagCategory.Deplete));
                             
                         const string USED_DEPLETE_KEY = "UsedDepleteCards";
@@ -245,7 +245,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = d.Env.Home;
-                        int usedStartStageCardsCount = home.TraversalSkills().Count(s => s.Entry.HasStartStageCast());
+                        int usedStartStageCardsCount = home.Skills.Count(s => s.Entry.HasStartStageCast());
                         const string USED_START_STAGE_CARDS_COUNT_KEY = "UsedStartStageCardsCount";
                         p.Memory.PerformMax(USED_START_STAGE_CARDS_COUNT_KEY, usedStartStageCardsCount);
                         
@@ -270,7 +270,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = d.Env.Home;
-                        int uniqueWuXingCount = home.TraversalSkills().Select(s => s.Entry.GetWuXing()).Distinct().Count();
+                        int uniqueWuXingCount = home.Skills.Select(s => s.Entry.GetWuXing()).Distinct().Count();
                             
                         const string USED_UNIQUE_WUXING_KEY = "UsedUniqueWuXingCards";
                         p.Memory.PerformMax(USED_UNIQUE_WUXING_KEY, uniqueWuXingCount);
@@ -850,7 +850,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = d.Env.Home;
-                        int count = home.TraversalSkills().Count(s =>
+                        int count = home.Skills.Count(s =>
                         {
                             CostDescription costDescription = s.Entry.GetLiteralCostDescription(s.GetJingJie());
                             return costDescription.Type == CostType.Mana && costDescription.Value >= 3;
@@ -898,7 +898,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = d.Env.Home;
-                        int huashenCardsCount = home.TraversalSkills().Count(s => s.GetJingJie() == JingJie.HuaShen);
+                        int huashenCardsCount = home.Skills.Count(s => s.GetJingJie() == JingJie.HuaShen);
                         if (huashenCardsCount < 12) return;
                         p.Unlock();
                     })
@@ -1066,7 +1066,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (d.Flag != 1) return;
 
                         StageEntity home = d.Env.Home;
-                        int count = home.TraversalSkills().Count(s => s.TotalStageCastedCount > 6);
+                        int count = home.Skills.Count(s => s.TotalStageCastedCount > 6);
                         if (count < 1) return;
                         p.Unlock();
                     })
@@ -1288,7 +1288,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         int lastCastedSkillIndex = home.Memory.TryGetVariable(LAST_CASTED_SKILL_INDEX, -1);
                         if (lastCastedSkillIndex == -1) return;
 
-                        StageSkill lastCastedSkill = home._skills[lastCastedSkillIndex];
+                        StageSkill lastCastedSkill = home.Skills[lastCastedSkillIndex];
                         bool lastCastedSkillIsAttack = lastCastedSkill.GetTagComposite().Contains(TagCategory.Attack);
                         if (!lastCastedSkillIsAttack) return;
                         p.Unlock();
@@ -1310,7 +1310,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         StageEntity home = d.Env.Home;
                         if (d.Owner != home) return;
 
-                        int count = home.TraversalSkills().Count(s => s.GetTagComposite().Contains(TagCategory.Deplete));
+                        int count = home.Skills.Count(s => s.GetTagComposite().Contains(TagCategory.Deplete));
                         
                         const string TOTAL_DEPLETE_USED_KEY = "TotalDepleteSkillsUsed";
                         int totalDepleteUsed = p.Memory.PerformAggregate(TOTAL_DEPLETE_USED_KEY, count);

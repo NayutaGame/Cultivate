@@ -10,6 +10,6 @@ public class EndStepDetails : StageClosureDetails
         Owner = owner;
         P = p;
         
-        Skill = owner._skills[P];
+        Skill = owner.Skills[P];
     }
 }

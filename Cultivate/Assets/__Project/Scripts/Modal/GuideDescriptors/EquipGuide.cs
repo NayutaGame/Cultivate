@@ -12,7 +12,7 @@ public class EquipGuide : Guide
 
     public override void ReceiveSignal(Cell cell, Signal signal)
     {
-        if (signal is DeckChangedSignal fieldChangedSignal && CheckComplete(fieldChangedSignal))
+        if (signal is DeckChangedSignal deckChangedSignal && CheckComplete(deckChangedSignal))
             SetComplete(cell);
     }
 
@@ -27,7 +27,7 @@ public class EquipGuide : Guide
     {
         RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(_to);
         if (skill == null)
-            return true;
+            return false;
         return _from.Contains(skill);
     }
 }

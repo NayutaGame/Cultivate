@@ -40,6 +40,10 @@ public class RunSkillDescriptor : AnnotatableLine
         => new(jingJieBound: new Bound(low, highExclusive),
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)(highExclusive - 1)).GetName()}之间的牌"));
 
+    public static RunSkillDescriptor FromJingJieBoundAndHasWuXing(JingJie low, JingJie highExclusive)
+        => new(jingJieBound: new Bound(low, highExclusive), pred: s => s.GetWuXing() != WuXing.Wu,
+            description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)(highExclusive - 1)).GetName()}之间，具有五行的牌"));
+
     public static RunSkillDescriptor FromTagComposite(TagComposite tagComposite)
         => new(tagComposite: tagComposite, description: new($"请提交一张包含{tagComposite.GetTagListString()}的牌"));
 

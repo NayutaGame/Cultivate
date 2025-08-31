@@ -18,9 +18,16 @@ public class StageSkill : StageClosureListener
     private readonly int? _runSlotIndex;
     public SkillSlot GetSlot()
         => _runSlotIndex == null ? null : _owner.RunEntity.GetSlot(_runSlotIndex.Value + 0);
+    // public SkillDefinition GetSkillDefinition()
+    //     => GetSlot()?.PlacedSkill.GetSkillDefinitionFromDj(Dj) ?? Entry.GetSkillDefinitionFromDj(Dj);
     public SkillDefinition GetSkillDefinition()
-        => GetSlot()?.Skill?.GetSkillDefinitionFromDj(Dj) ?? Entry.GetSkillDefinitionFromDj(Dj);
-    
+    {
+        SkillSlot slot = GetSlot();
+        if (slot != null)
+            return slot.PlacedSkill.GetSkillDefinitionFromDj(Dj);
+        return Entry.GetSkillDefinitionFromDj(Dj);
+    }
+
     private readonly SkillEntry _entry;
     public SkillEntry Entry => _entry;
 

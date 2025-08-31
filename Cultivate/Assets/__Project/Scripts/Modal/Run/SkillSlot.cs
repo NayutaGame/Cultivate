@@ -8,8 +8,8 @@ using UnityEngine;
 public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
 {
     [NonSerialized] public Neuron ChangedNeuron = new();
-    [NonSerialized] public PlacedSkill PlacedSkill;
 
+    [NonSerialized] private PlacedSkill _placeSkill;
     [NonSerialized] public CostDescription ActualCostDescription;
     [NonSerialized] public Description ActualDescription;
     
@@ -28,6 +28,12 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
     {
         _index = index;
         _hidden = true;
+    }
+    
+    public PlacedSkill PlacedSkill
+    {
+        get => _placeSkill;
+        set => _placeSkill = value;
     }
     
     public int GetIndex() => _index;

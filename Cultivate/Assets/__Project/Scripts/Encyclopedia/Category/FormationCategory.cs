@@ -268,7 +268,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
                                 await f.Owner.GainBuffProcedure("多重");
-                                foreach (var s in f.Owner._skills)
+                                foreach (var s in f.Owner.Skills)
                                     s.IncreaseBonusCastedCount();
                                 await f.Owner.GainBuffProcedure("通透世界");
                             }),
@@ -292,8 +292,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 await f.Owner.GainBuffProcedure("穿透");
                                 await f.Owner.GainBuffProcedure("轮穿透");
                                 await f.Owner.GainBuffProcedure("多重");
-                                foreach (var s in f.Owner._skills)
-                                    s.IncreaseBonusCastedCount();
+                                f.Owner.Skills.Do(skill => skill.IncreaseBonusCastedCount());
                             }),
                         }),
                     new FormationEntry(

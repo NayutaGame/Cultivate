@@ -327,7 +327,7 @@ public class SkillCategory : Category<SkillEntry>
                                                     async (listener, closure, closureDetails) =>
                                                     {
                                                         CostDetails d = closureDetails as CostDetails;
-                                                        d.Value -= d.Entity.TraversalSkills().Count(s => s.Entry.WuXing == WuXing.Shui);
+                                                        d.Value -= d.Entity.Skills.Count(s => s.Entry.WuXing == WuXing.Shui);
                                                     }, key: "KongHuanClosure", "每携带1水：消耗-1", checkListener: true);
 
     private static readonly StageClosure XieYiClosure = new(StageClosureDict.DID_ATTACK, 0,
@@ -1511,12 +1511,12 @@ public class SkillCategory : Category<SkillEntry>
                         {
                             if (!d.Recursive)
                                 return;
-                            if (!d.Caster._skills[0].Exhausted)
-                                await d.Caster.CastProcedure(d.Caster._skills[0], false);
+                            if (!d.Caster.Skills[0].Exhausted)
+                                await d.Caster.CastProcedure(d.Caster.Skills[0], false);
                         
                             if (d.J >= JingJie.HuaShen)
-                                if (!d.Caster._skills[1].Exhausted)
-                                    await d.Caster.CastProcedure(d.Caster._skills[1], false);
+                                if (!d.Caster.Skills[1].Exhausted)
+                                    await d.Caster.CastProcedure(d.Caster.Skills[1], false);
                         })
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join(j < JingJie.HuaShen
                             ? $"使用第一张牌\n已升华的牌无效"
@@ -1549,13 +1549,13 @@ public class SkillCategory : Category<SkillEntry>
                             int leftIndex = d.Skill.PrevSkill(true).SlotIndex;
                             int rightIndex = d.Skill.NextSkill(true).SlotIndex;
                         
-                            var tempStageSkill = d.Caster._skills[leftIndex];
-                            d.Caster._skills[leftIndex] = d.Caster._skills[rightIndex];
-                            d.Caster._skills[rightIndex] = tempStageSkill;
+                            var tempStageSkill = d.Caster.Skills[leftIndex];
+                            d.Caster.Skills[leftIndex] = d.Caster.Skills[rightIndex];
+                            d.Caster.Skills[rightIndex] = tempStageSkill;
 
-                            var tempIndex = d.Caster._skills[leftIndex].SlotIndex;
-                            d.Caster._skills[leftIndex].SlotIndex = d.Caster._skills[rightIndex].SlotIndex;
-                            d.Caster._skills[rightIndex].SlotIndex = tempIndex;
+                            var tempIndex = d.Caster.Skills[leftIndex].SlotIndex;
+                            d.Caster.Skills[leftIndex].SlotIndex = d.Caster.Skills[rightIndex].SlotIndex;
+                            d.Caster.Skills[rightIndex].SlotIndex = tempIndex;
                         })
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("交换左右牌")),
                     new SetActionPointProcedureDefinition(2)
@@ -1800,7 +1800,7 @@ public class SkillCategory : Category<SkillEntry>
                             for (int i = 0; i < 1 + d.Dj; i++)
                             {
                                 StageSkill skill = d.Caster.PrevSkills(d.Caster._p, loop: false)
-                                    .FirstObj(skill => !skill.Exhausted) ?? d.Caster._skills[d.Caster._p];
+                                    .FirstObj(skill => !skill.Exhausted) ?? d.Caster.Skills[d.Caster._p];
                                 await skill.ExhaustProcedure();
                             }
                         })
@@ -2633,7 +2633,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new DirectProcedureDefinition(async d =>
                         {
-                            d.Caster.TraversalSkills().Do(skill => skill.IncreaseBonusCastedCount());
+                            d.Caster.Skills.Do(skill => skill.IncreaseBonusCastedCount());
                         })
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join($"所有牌成长一次")),
                 }),
@@ -2670,7 +2670,7 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new DirectProcedureDefinition(async d =>
                         {
-                            foreach (StageSkill skill in d.Caster._skills)
+                            foreach (StageSkill skill in d.Caster.Skills)
                             {
                                 if (skill.GetTagComposite().Contains(TagCategory.Exhaust))
                                     await skill.ExhaustProcedure();
@@ -2891,7 +2891,7 @@ public class SkillCategory : Category<SkillEntry>
 
                             await d.Skill.ExhaustProcedure();
                     
-                            foreach (StageSkill s in d.Caster._skills)
+                            foreach (StageSkill s in d.Caster.Skills)
                             {
                                 if (!s.Exhausted)
                                     continue;
@@ -3624,7 +3624,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"{3 + dj}攻 每携带1张火，多1次",
                 castGenerator:              async d =>
                 {
-                    int value = d.Caster.TraversalSkills().Count(s => s.Entry.WuXing == WuXing.Huo);
+                    int value = d.Caster.Skills.Count(s => s.Entry.WuXing == WuXing.Huo);
                     await d.AttackProcedure(3 + d.Dj, times: 1 + value);
                 }),
             
@@ -3674,7 +3674,7 @@ public class SkillCategory : Category<SkillEntry>
                     $"升华所有卡牌",
                 castGenerator:              async d =>
                 {
-                    await d.Caster._skills.Do(async s => await s.ExhaustProcedure());
+                    await d.Caster.Skills.Do(async s => await s.ExhaustProcedure());
                 }),
 
             // 6 12 26 52 102

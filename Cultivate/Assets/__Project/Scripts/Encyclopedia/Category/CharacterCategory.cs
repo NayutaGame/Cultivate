@@ -92,7 +92,7 @@ public class CharacterCategory : Category<CharacterEntry>
                             
                             // 设置模仿的技能
                             slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
-                                oppoSlot.Skill.GetEntry(), 
+                                oppoSlot.Skill.GetEntry(),
                                 oppoSlot.Skill.GetJingJie()
                             );
                             

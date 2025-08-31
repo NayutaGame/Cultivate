@@ -47,7 +47,7 @@ public class ArbitraryCardPickerPanel : Panel
         
         ConfirmButton.SetStateToInactiveFrom(!d.Bound.Contains(_selections.Count));
         
-        SkillListView.Refresh();
+        SkillListView.Sync();
     }
 
     private void ToggleSkill(InteractBehaviour ib, PointerEventData eventData)

@@ -1354,7 +1354,7 @@ public class BuffCategory : Category<BuffEntry>
                         if (b.Owner != d.Owner) return;
                         
                         b.Emphasize();
-                        foreach (StageSkill skill in d.Owner.TraversalSkills())
+                        foreach (StageSkill skill in d.Owner.Skills)
                         {
                             if (!skill.GetTagComposite().Contains(TagCategory.Attack)) continue;
                             await b.Owner.CastProcedure(skill, fromWanJian: true);

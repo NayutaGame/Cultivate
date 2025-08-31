@@ -56,12 +56,19 @@ public class ShopCell : Cell
             int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(currJingJie);
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
-            float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-            _commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, currJingJie), price, Buy, discount));
+            Commodity commodity = new Commodity(
+                skill: SkillEntryDescriptor.FromEntryJingJie(e, currJingJie),
+                price: price,
+                payWithGoldFunc: PayWithGold,
+                payWithHealthFunc: null,
+                discount: RandomManager.value < 0.2f ? 0.5f : 1f,
+                acceptGold: true,
+                acceptHealth: false);
+            _commodities.Add(commodity);
         }
     }
 
-    private void Buy(Commodity commodity)
+    private void PayWithGold(Commodity commodity)
     {
         BuySkillDetails details = new(commodity, _commodities.IndexOf(commodity));
         if (!_commodities.Contains(commodity))
@@ -71,6 +78,21 @@ public class ShopCell : Cell
             return;
 
         RunManager.Instance.Environment.SetDGoldProcedure(-commodity.FinalPrice);
+        _commodities.Remove(commodity);
+
+        RunManager.Instance.Environment.BuySkillProcedure(details);
+    }
+
+    private void PayWithHealth(Commodity commodity)
+    {
+        BuySkillDetails details = new(commodity, _commodities.IndexOf(commodity));
+        if (!_commodities.Contains(commodity))
+            return;
+
+        if (RunManager.Instance.Environment.Home.GetHealth() < commodity.FinalPrice)
+            return;
+
+        RunManager.Instance.Environment.LoseHealthProcedure(commodity.FinalPrice);
         _commodities.Remove(commodity);
 
         RunManager.Instance.Environment.BuySkillProcedure(details);
@@ -94,32 +116,46 @@ public class ShopCell : Cell
 
     public static CardPickerCell FromYiBaoZhai(int ladder)
     {
-        CardPickerCell cardPickerCell = new(
+        CardPickerCell cardPickerCell = CardPickerCell.FromLiteral(
             titleText:          $"交易",
-            detailedText:       $"选择1张牌卖掉",
+            getDetailedText:    GetDetailedText,
             descriptor:         RunSkillDescriptorListModel.FromCount(1));
 
         ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", "收藏家");
 
-        cardPickerCell.SetSubmitOperation(cell =>
+        cardPickerCell.SetSubmitOperation(SellCard);
+
+        return cardPickerCell;
+
+        string GetDetailedText(ListModel<RequirementSlot> requirementSlots)
+        {
+            int totalSkillValue = 0;
+            requirementSlots.Do(slot =>
+            {
+                if (slot.Skill == null) return;
+                JingJie jingJie = slot.Skill.GetJingJie();
+                totalSkillValue += (2 << jingJie);
+            });
+
+            return totalSkillValue == 0 ? "选择1张牌卖掉" : $"选择1张牌卖掉(有人愿意以{totalSkillValue}收购您的卡牌)";
+        }
+
+        Cell SellCard(CardPickerCell cell)
         {
             cell.RequirementSlotList.Do(slot =>
             {
-                if (slot.Skill == null)
-                    return;
+                if (slot.Skill == null) return;
 
                 JingJie jingJie = slot.Skill.GetJingJie();
                 int skillValue = 2 << jingJie;
                 RunManager.Instance.Environment.SetDGoldProcedure(skillValue);
-                
+
                 slot.Skill = null;
             });
-            
+
             cell.WithdrawAll();
             return shopCell;
-        });
-
-        return cardPickerCell;
+        }
     }
 
     public static ShopCell FromHeiShi(int ladder)
@@ -128,7 +164,7 @@ public class ShopCell : Cell
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
-        ShopCell B = new(ladder, 2, "黑市", "黑市");
+        ShopCell B = new(ladder, 1.5f, "黑市", "黑市");
         B.SetEnter(panelDescriptor =>
         {
             ShopCell shop = (ShopCell)panelDescriptor;
@@ -148,8 +184,15 @@ public class ShopCell : Cell
                 int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
                 int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
                 price = price.ClampLower(1);
-                float discount = RandomManager.value < 0.2f ? 0.5f : 1f;
-                commodities.Add(new Commodity(SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie), price, shop.Buy, discount));
+                Commodity commodity = new Commodity(
+                    skill:SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie),
+                    price: price,
+                    payWithGoldFunc: shop.PayWithGold,
+                    payWithHealthFunc: shop.PayWithHealth,
+                    discount: RandomManager.value < 0.2f ? 0.5f : 1f,
+                    acceptGold: true,
+                    acceptHealth: true);
+                commodities.Add(commodity);
             }
 
             B.SetCommodities(commodities);

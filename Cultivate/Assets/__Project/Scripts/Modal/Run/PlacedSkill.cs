@@ -5,6 +5,13 @@ public class PlacedSkill
     public SkillEntry Entry;
     public JingJie JingJie;
 
+    private PlacedSkill(RunSkill runSkill, SkillEntry entry, JingJie jingJie)
+    {
+        RunSkill = runSkill;
+        Entry = entry;
+        JingJie = jingJie;
+    }
+
     public static PlacedSkill FromRunSkill(RunSkill runSkill)
         => new(runSkill, runSkill.GetEntry(), runSkill.GetJingJie());
 
@@ -14,10 +21,10 @@ public class PlacedSkill
     public static PlacedSkill FromEntryAndJingJie(SkillEntry entry, JingJie jingJie)
         => new(null, entry, jingJie);
 
-    private PlacedSkill(RunSkill runSkill, SkillEntry entry, JingJie jingJie)
+    public SkillDefinition GetSkillDefinitionFromDj(int dj)
     {
-        RunSkill = runSkill;
-        Entry = entry;
-        JingJie = jingJie;
+        if (RunSkill != null)
+            return RunSkill.GetSkillDefinitionFromDj(dj);
+        return Entry.GetSkillDefinitionFromDj(dj);
     }
 }

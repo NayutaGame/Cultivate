@@ -15,11 +15,14 @@ public class DiscoverSkillCell : Cell
 
     private ListModel<SkillEntryDescriptor> _skills;
     public ListModel<SkillEntryDescriptor> GetSkills() => _skills;
-    public int GetSkillCount() => _skills.Count();
-    public SkillEntryDescriptor GetSkill(int i) => _skills[i];
-    public int GetIndexOfSkill(SkillEntryDescriptor skill) => _skills.IndexOf(skill);
 
     private SkillEntryCollectionDescriptor _descriptor;
+    public DiscoverSkillCell SetDescriptor(SkillEntryCollectionDescriptor descriptor)
+    {
+        _descriptor = descriptor;
+        return this;
+    }
+
     private JingJie _preferredJingJie;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
@@ -74,6 +77,17 @@ public class DiscoverSkillCell : Cell
             titleText: "灵感",
             descriptionText: "请选择一张卡作为奖励",
             descriptor: new(jingJie: currJingJie, count: 3),
+            preferredJingJie: currJingJie
+        );
+    }
+
+    public static DiscoverSkillCell FromTitleDescription(int ladder, string title, string description)
+    {
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+        
+        return new(
+            titleText: "灵感",
+            descriptionText: "请选择一张卡作为奖励",
             preferredJingJie: currJingJie
         );
     }

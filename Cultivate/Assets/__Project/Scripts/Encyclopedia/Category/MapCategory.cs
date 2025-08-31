@@ -9,7 +9,7 @@ public class MapCategory : Category<MapEntry>
         {
             new(id: "Map0001",
                 name: "测试",
-                envJingJie: JingJie.ZhuJi,
+                envJingJie: JingJie.LianQi,
                 slotCount: 5,
                 gold: 0,
                 skillJingJie: JingJie.LianQi,
@@ -18,7 +18,10 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
+                        new DirectRoomDefinition(0, "教学10"),
+                        new DirectRoomDefinition(0, "天界树"),
                         new DirectRoomDefinition(0, "出门"),
+                        new DirectRoomDefinition(0, "明心庐"),
                         new DirectRoomDefinition(0, "以物易物"),
                         new DirectRoomDefinition(0, "以物易物"),
                         new DirectRoomDefinition(0, "以物易物"),

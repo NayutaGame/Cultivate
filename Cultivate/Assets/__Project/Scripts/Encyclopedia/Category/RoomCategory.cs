@@ -534,7 +534,7 @@ public class RoomCategory : Category<RoomEntry>
                         $"风雨楼，检索1张{currJingJie.GetName()}防御牌",
                         $"星宫，检索1张{currJingJie.GetName()}灵气牌",
                         $"天机阁，选择1张牌，复制1次",
-                        $"百草堂，选择2张牌，提升到{nextJingJie.GetName()}",
+                        $"百草堂，选择2张不高于{currJingJie}牌，提升到{nextJingJie.GetName()}",
                         $"易宝斋，选择1张牌卖掉，之后访问一次商店",
                         $"散修，发现1张基础境界是{nextJingJie.GetName()}期的牌",
                     };
@@ -599,7 +599,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     JingJie currJingJie = RunManager.Instance.Environment.JingJie;
                     JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
-                    CardPickerCell B = new CardPickerCell(
+                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText:          "感悟",
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
@@ -1154,27 +1154,28 @@ public class RoomCategory : Category<RoomEntry>
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌10");
                     
                     BattleCell A = new(enemyEntity);
-                    
-                    A.SetGuideDescriptors(new Guide[]
+
+                    Guide[] guide = new Guide[]
                     {
                         new ConfirmGuide("在梦中手中突然多出了5张牌"),
                         new EquipGuide("对面明显是一个多段攻击的角色，徐福如果能有很高的灼烧的话。。",
-                            SkillEntryDescriptor.FromId("0709"), DeckIndex.FromField(4)),
+                            SkillEntryDescriptor.FromId("Skill09_009"), DeckIndex.FromField(4)),
                         new EquipGuide("明显单一张灼烧叠的太慢了，五行中说是木生火，如果我们获得灼烧之前有力量的话。" +
                                        "这些力量就可以一并流转成为灼烧" +
                                        "\n哈哈，这场对决，是徐福的胜利了！",
-                            SkillEntryDescriptor.FromId("0708"), DeckIndex.FromField(3)),
+                            SkillEntryDescriptor.FromId("Skill09_008"), DeckIndex.FromField(3)),
                         new EquipGuide("果然不太够么。虽说流转一次已经叠层效率翻倍了，但是如果获得力量之前就有格挡的话？" +
                                        "水生木，格挡会一起变成力量，最终都会成为灼烧哒！",
-                            SkillEntryDescriptor.FromId("0707"), DeckIndex.FromField(2)),
+                            SkillEntryDescriptor.FromId("Skill09_007"), DeckIndex.FromField(2)),
                         new EquipGuide("对方生命减少了，明显起到了效果，继续置入一张凝水。利用金生水的规则，将锋锐流转成格挡",
-                            SkillEntryDescriptor.FromId("0706"), DeckIndex.FromField(1)),
+                            SkillEntryDescriptor.FromId("Skill09_006"), DeckIndex.FromField(1)),
                         new EquipGuide("最后放一张土属性的牌，提供坚毅，之后可以流转成锋锐",
-                            SkillEntryDescriptor.FromId("0705"), DeckIndex.FromField(0)),
+                            SkillEntryDescriptor.FromId("Skill09_005"), DeckIndex.FromField(0)),
                         new ClickBattleGuide("成了，巧用流转的规则，可以快速叠层本不富裕的增益" +
                                              "\n开始战斗吧",
                             new Vector2(965f, 913.5f)),
-                    });
+                    };
+                    A.SetGuideDescriptors(guide);
                     
                     DialogCell R = new(
                         titleText: "重试",
@@ -1494,11 +1495,11 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
                         "尝试观看两人对弈（需要一张二动牌）", "请教两人路怎么走（需要一张治疗牌）");
 
-                    CardPickerCell B = new CardPickerCell(
+                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张二动牌",
                         descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
-                    CardPickerCell C = new CardPickerCell(
+                    CardPickerCell C = CardPickerCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张治疗牌",
                         descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Health), 1));
@@ -1650,85 +1651,41 @@ public class RoomCategory : Category<RoomEntry>
                 }),
 
             new(id:                                 "Room0029",
-                name:                               "解梦师",
-                description:                        "解梦师",
+                name:                               "明心庐",
+                description:                        "明心庐",
                 ladderBound:                        new Bound(5, 15),
                 difficultyBound:                    new Bound(0, 11),
-                withInPool:                         false,
+                withInPool:                         true,
                 create:                             (map, room) =>
                 {
                     DialogCell A = new(
-                        titleText: "解梦师",
-                        detailedText: "你来到一个镇上，见到了当地有名的解梦师。你请他解梦，你梦中出现了什么？",
-                        "没有灵气的贫民", "一些灵气的贵族", "灵气充沛的灵泉");
+                        titleText: "明心庐",
+                        detailedText: "你看到一栋建筑，上面写着明心庐，见到了当地有名的解梦师。你请他解梦，他问你梦中是怎么样的？",
+                        "挥舞着刀剑，大杀四方", "身披重甲，坚不可摧", "饮用着灵泉中的泉水");
 
-                    ArbitraryCardPickerCell B = new(
-                        titleText: "解梦师",
-                        detailedText: "原来如此，你最近是否常常想着");
+                    DiscoverSkillCell B = DiscoverSkillCell.FromTitleDescription(room.Ladder, "明心庐", "选择1张梦中所想的牌");
+                    
                     DialogCell C = new(
-                        titleText: "解梦师",
-                        detailedText: "这正是我现在需要的，先生真乃神医也。\n\n得到一张牌");
-
+                        titleText: "明心庐",
+                        detailedText: "这正是我现在需要的，先生真乃神通也。");
+                    
+                    JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(room.Ladder);
+                    
                     A[0].SetSelect(option =>
-                    {
-                        Bound manaCost = 0;
-
-                        SkillEntryCollectionDescriptor descriptor = new(
-                            pred: e => manaCost.Contains(e.GetLiteralCostDescription(RunManager.Instance.Environment.JingJie)
-                                .ByType(CostType.Mana)),
-                            jingJie: RunManager.Instance.Environment.JingJie,
-                            count: 3,
-                            distinct: true,
-                            consume: false);
-
-                        GainSkillBuilder b = new();
-                        b.Draw(descriptor);
-                        
-                        B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
-                        return B;
-                    });
+                        B.SetDescriptor(new(tagComposite: TagCategory.Attack, jingJie: currJingJie, count: 3)));
                     A[1].SetSelect(option =>
-                    {
-                        Bound manaCost = new Bound(1, 10);
-
-                        SkillEntryCollectionDescriptor descriptor = new(
-                            pred: e => manaCost.Contains(e.GetLiteralCostDescription(RunManager.Instance.Environment.JingJie)
-                                .ByType(CostType.Mana)),
-                            jingJie: RunManager.Instance.Environment.JingJie,
-                            count: 3,
-                            distinct: true,
-                            consume: false);
-
-                        GainSkillBuilder b = new();
-                        b.Draw(descriptor);
-
-                        B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
-                        return B;
-                    });
+                        B.SetDescriptor(new(tagComposite: TagCategory.Defend, jingJie: currJingJie, count: 3)));
                     A[2].SetSelect(option =>
-                    {
-                        SkillEntryCollectionDescriptor descriptor = new(
-                            jingJie: RunManager.Instance.Environment.JingJie,
-                            tagComposite: TagCategory.Mana,
-                            count: 3,
-                            distinct: true,
-                            consume: false);
+                        B.SetDescriptor(new(tagComposite: TagCategory.Mana, jingJie: currJingJie, count: 3)));
 
-                        GainSkillBuilder b = new();
-                        b.Draw(descriptor);
-                        B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
+                    B._receiveSignal = signal =>
+                    {
+                        if (signal is PickDiscoveredSkillSignal pickDiscoveredSkillSignal)
+                        {
+                            return C;
+                        }
                         return B;
-                    });
-
-                    B.SetConfirmOperation(skills =>
-                    {
-                        GainSkillBuilder b = new();
-                        skills.Do(item => b.Pick(item.Entry));
-                        skills.Do(item => b.SingleCreate(item.JingJie));
-                        b.Add();
-                        b.Invoke();
-                        return C;
-                    });
+                    };
 
                     return A;
                 }),
@@ -1780,7 +1737,7 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     DialogCell A = new(
-                        titleText: "无穷",
+                        titleText: "论无穷",
                         detailedText: "你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
                                       "\n我每天跑步，只要一只能跑下去，跑的路程就是无穷的" +
                                       "\n有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。" +
@@ -1788,14 +1745,14 @@ public class RoomCategory : Category<RoomEntry>
                         "看一眼蓝色服装考官", "看一眼绿色服装考官", "看一眼红色服装考官");
 
                     DialogCell B = new DialogCell(
-                            titleText: "无穷",
+                            titleText: "论无穷",
                             detailedText: "你痛快写了800字，时间没过5分钟，已经写完了。" +
                             "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张二动牌",
                             new(jingJie: RunManager.Instance.Environment.JingJie,
                                 tagComposite: TagCategory.Swift)));
                     DialogCell C = new DialogCell(
-                            titleText: "无穷",
+                            titleText: "论无穷",
                             detailedText: "你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                           "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
                                           "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
@@ -1804,7 +1761,7 @@ public class RoomCategory : Category<RoomEntry>
                             new(jingJie: RunManager.Instance.Environment.JingJie,
                                 tagComposite: TagCategory.ZiZhi)));
                     DialogCell D = new DialogCell(
-                            titleText: "无穷",
+                            titleText: "论无穷",
                             detailedText: "考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
                                           "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
                                           "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
@@ -1832,7 +1789,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
                         "试试这个机器可以做什么", "离开");
 
-                    CardPickerCell B = new(
+                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请选择2张牌，随机将其中一张变成另一张",
                         descriptor: RunSkillDescriptorListModel.FromCount(2));
@@ -1871,55 +1828,34 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            // new(id:                                 "天界树",
-            //     description:                        "天界树",
-            //     ladderBound:                        new Bound(11, 15),
-            //     difficultyBound:                    new Bound(2, 11),
-            //     withInPool:                         true,
-            //     create:                             (map, room) =>
-            //     {
-            //         DialogPanelDescriptor A = new("你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
-            //             "吃树上的果子",
-            //             "尝试感悟五行相生的规律");
-            //
-            //         DialogPanelDescriptor B = new DialogPanelDescriptor("久闻天界树，3000年才能开花结果，醒来之后，身上所有伤都不见了。\n\n命元+2")
-            //             .SetReward(Reward.FromMingYuan(2));
-            //         DialogPanelDescriptor C = new("你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
-            //                                       "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，现在手中所有的卡牌都即将不属于自己，要继续感悟么？",
-            //             "停止感悟，吃树上的果子",
-            //             "继续感悟（高风险）");
-            //         DialogPanelDescriptor D = new("金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
-            //                                       "到最后，你已经不知道你是树，还是树是你了。" +
-            //                                       "感悟了五行相生，所有五行牌都被相生的元素替换了。");
-            //
-            //         A[0].SetSelect(option => B);
-            //         A[1].SetSelect(option => C);
-            //         C[0].SetSelect(option => B);
-            //         C[1].SetSelect(option =>
-            //         {
-            //             RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
-            //             {
-            //                 RunSkill skill = RunManager.Instance.Environment.GetSkillAtDeckIndex(deckIndex);
-            //                 if (skill == null)
-            //                     return;
-            //
-            //                 SkillEntry entry = skill.GetEntry();
-            //                 if (!entry.WuXing.HasValue)
-            //                     return;
-            //
-            //                 WuXing wuXing = entry.WuXing.Value.Next;
-            //                 JingJie jingJie = RandomManager.Range(skill.GetJingJie(), RunManager.Instance.Environment.JingJie + 1);
-            //                 
-            //                 RunManager.Instance.Environment.DrawSkillProcedure(
-            //                     SkillEntryDescriptor.FromWuXingJingJie(wuXing, jingJie),
-            //                     deckIndex);
-            //             });
-            //
-            //             return D;
-            //         });
-            //
-            //         return A;
-            //     }),
+            new(id:                                 "Room0033",
+                name:                               "天界树",
+                description:                        "天界树",
+                ladderBound:                        new Bound(5, 15),
+                difficultyBound:                    new Bound(4, 11),
+                withInPool:                         true,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("天界树",
+                        "你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
+                        "尝试感悟五行相生的规律");
+                    
+                    DialogCell B = new("天界树",
+                        "你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
+                                       "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，仿佛手中的卡牌已经产生了某种变化，要继续感悟么？",
+                        "继续感悟");
+                    
+                    DialogCell D = new("天界树", "金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
+                                       "到最后，你已经不知道你是树，还是树是你了。" +
+                                       "感悟了五行相生，所有五行牌都被相生的元素替换了。");
+                    
+                    CardPickerCell C = CardPickerCell.FromTianJieShu(room.Ladder, D);
+            
+                    A[0].SetSelect(option => B);
+                    B[0].SetSelect(option => C);
+            
+                    return A;
+                }),
 
             new(id:                                 "Room0033",
                 name:                               "连抽五张",
@@ -2000,6 +1936,9 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
+                    int normalGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
+                    int successGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder + 3);
+                    
                     DialogCell A = new(
                         titleText: "护送",
                         detailedText: "有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
@@ -2011,19 +1950,20 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "于是他解释道：”我看此等山贼都是少智无谋之辈，如果在此伏击我等，定然能让我们元气大伤。哈哈哈哈哈哈哈哈。。。“" +
                                       "\n只见他正在笑着，然后一伙山贼就出现了。",
                         options: "和山贼战斗");
-                    DialogCell C = new(
+                    DialogCell C = new DialogCell(
                         titleText: "护送",
-                        detailedText: "他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n金+2");
+                        detailedText: $"他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n获得{normalGoldReward}金")
+                        .SetReward(Reward.FromGold(normalGoldReward));
 
                     map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(room.Ladder + 3));
                     BattleCell B1 = new(template);
                     DialogCell B1win = new DialogCell(
                             titleText: "护送",
-                            detailedText: "你打过了山贼，商人对你十分感激。\n\n金+6")
-                        .SetReward(Reward.FromGold(6));
+                            detailedText: $"你打过了山贼，商人对你十分感激。\n\n获得{successGoldReward}金")
+                        .SetReward(Reward.FromGold(successGoldReward));
                     DialogCell B1lose = new(
                         titleText: "护送",
-                        detailedText: "你没打过山贼，货物被抢走了。索性没有人受伤。");
+                        detailedText: "你没打过山贼，货物被抢走了。所幸没有人受伤。");
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -2445,7 +2385,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你来到了忘忧堂，听说这里的服务是将不想再见到的卡牌交给他们。忘忧堂会为您斩断与此牌的因果。",
                         "走进去看一看", "离开");
 
-                    CardPickerCell B = new(
+                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText: "割舍",
                         detailedText: "请选择0到5张牌送出",
                         descriptor: RunSkillDescriptorListModel.FromCount(5));
@@ -2751,7 +2691,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你看到鬼兵打算带走一个将死之人，但是那人请求鬼兵在给自己一点时间。鬼兵说那人的命元已尽，不该继续留在阳间",
                         "助他炼丹（需要一张牌）", "给他传气（需要一命元）", "帮他造业（需要100金）", "装作看不见");
 
-                    CardPickerCell BPick = new CardPickerCell(
+                    CardPickerCell BPick = CardPickerCell.FromConstantDetailedText(
                         titleText: "仪式感",
                         detailedText: "炼丹需要消耗一张牌",
                         descriptor: RunSkillDescriptorListModel.FromCount(1));
@@ -3002,7 +2942,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "少年将你的招式记在了心里，又开始了自顾自的练习。",
                         options: "继续上路");
                     
-                    CardPickerCell C = new CardPickerCell(
+                    CardPickerCell C = CardPickerCell.FromConstantDetailedText(
                         titleText:          "后羿",
                         detailedText:       "请提交一张牌",
                         descriptor:         RunSkillDescriptorListModel.FromCount(1));
@@ -3622,7 +3562,7 @@ public class RoomCategory : Category<RoomEntry>
                     list.Add(RunSkillDescriptor.FromWuXing(WuXing.Huo));
                     list.Add(RunSkillDescriptor.FromWuXing(WuXing.Tu));
 
-                    CardPickerCell B = new(
+                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请提交每种五行的牌各一张",
                         descriptor: list);
