@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEngine;
 
 public class MutateDefinition
 {
@@ -100,7 +101,7 @@ public class MutateDefinition
         });
     
     public static readonly MutateDefinition CostHealthMutate = new(
-        skillDefinition => skillDefinition.GetCostDefinition() is HealthCostDefinition,
+        skillDefinition => true,
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
@@ -112,17 +113,65 @@ public class MutateDefinition
                 newProcedureDefinitions.Add(cloned);
             }
 
-            HealthCostDefinition oldHealthCost = skillDefinition.GetCostDefinition() as HealthCostDefinition;
-            HealthCostDefinition newHealthCost = new HealthCostDefinition(
-                (oldHealthCost.Value + 1) / 2,
-                oldHealthCost.Closures
-            );
+            CostDefinition oldCostDefinition = skillDefinition.GetCostDefinition();
+            HealthCostDefinition newCostDefinition;
 
-            return SkillDefinition.FromDefinition(newHealthCost, newProcedureDefinitions.ToArray());
+            if (oldCostDefinition is ArmorCostDefinition armorCostDefinition)
+            {
+                newCostDefinition = new HealthCostDefinition(Mathf.Max(1, armorCostDefinition.Value), armorCostDefinition.Closures);
+            }
+            else if (oldCostDefinition is ChannelCostDefinition channelCostDefinition)
+            {
+                newCostDefinition = new HealthCostDefinition(Mathf.Max(1, channelCostDefinition.Value * 30), channelCostDefinition.Closures);
+            }
+            else if (oldCostDefinition is EmptyCostDefinition emptyCostDefinition)
+            {
+                newCostDefinition = new HealthCostDefinition(1, emptyCostDefinition.Closures);
+            }
+            else if (oldCostDefinition is HealthCostDefinition healthCostDefinition)
+            {
+                newCostDefinition = new HealthCostDefinition((healthCostDefinition.Value + 1) / 2, healthCostDefinition.Closures);
+            }
+            else if (oldCostDefinition is ManaCostDefinition manaCostDefinition)
+            {
+                newCostDefinition = new HealthCostDefinition(Mathf.Max(1, manaCostDefinition.Value * 6), manaCostDefinition.Closures);
+            }
+            else
+            {
+                newCostDefinition = new HealthCostDefinition(1, oldCostDefinition.Closures);
+            }
+
+            return SkillDefinition.FromDefinition(newCostDefinition, newProcedureDefinitions.ToArray());
         });
     
     public static readonly MutateDefinition CycleMutate = new(
-        skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd => pd is CycleProcedureDefinition || pd is FollowingCycleProcedureDefinition),
+        skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd => pd is CycleProcedureDefinition),
+        skillDefinition =>
+        {
+            ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
+            List<ProcedureDefinition> newProcedureDefinitions = new();
+
+            for (int i = 0; i < oldProcedureDefinitions.Length; i++)
+            {
+                ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
+                
+                if (cloned is CycleProcedureDefinition c)
+                {
+                    c.WuXing = c.WuXing.Next;
+                }
+                
+                newProcedureDefinitions.Add(cloned);
+            }
+
+            return SkillDefinition.FromDefinition(skillDefinition.GetCostDefinition().Clone(), newProcedureDefinitions.ToArray());
+        });
+    
+    public static readonly MutateDefinition AccumulateMutate = new(
+        skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd =>
+            pd is CycleProcedureDefinition ||
+            pd is FollowingCycleProcedureDefinition ||
+            pd is GainBuffProcedureDefinition ||
+            pd is GiveBuffProcedureDefinition),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
@@ -136,10 +185,17 @@ public class MutateDefinition
                 {
                     c.Gain += 1;
                 }
-                
-                if (cloned is FollowingCycleProcedureDefinition fc)
+                else if (cloned is FollowingCycleProcedureDefinition fc)
                 {
                     fc.Gain += 1;
+                }
+                else if (cloned is GainBuffProcedureDefinition gainBuff)
+                {
+                    gainBuff.Stack += 1;
+                }
+                else if (cloned is GiveBuffProcedureDefinition giveBuff)
+                {
+                    giveBuff.Stack += 1;
                 }
                 
                 newProcedureDefinitions.Add(cloned);
@@ -148,10 +204,10 @@ public class MutateDefinition
             return SkillDefinition.FromDefinition(skillDefinition.GetCostDefinition().Clone(), newProcedureDefinitions.ToArray());
         });
     
-    // RecycleMutate
-    
-    public static readonly MutateDefinition CostManaMutate = new(
-        skillDefinition => skillDefinition.GetCostDefinition() is ManaCostDefinition,
+    public static readonly MutateDefinition ManaMutate = new(
+        skillDefinition => skillDefinition.GetCostDefinition() is ManaCostDefinition ||
+                           skillDefinition.GetProcedureDefinitions().AnyMatch(pd =>
+                               pd is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry == Encyclopedia.BuffCategory.FromName("灵气")),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
@@ -160,6 +216,12 @@ public class MutateDefinition
             for (int i = 0; i < oldProcedureDefinitions.Length; i++)
             {
                 ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
+
+                if (cloned is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry == Encyclopedia.BuffCategory.FromName("灵气"))
+                {
+                    gainBuff.Stack += 2;
+                }
+                
                 newProcedureDefinitions.Add(cloned);
             }
 

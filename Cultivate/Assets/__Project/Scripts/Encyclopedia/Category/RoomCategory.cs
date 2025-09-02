@@ -534,7 +534,7 @@ public class RoomCategory : Category<RoomEntry>
                         $"风雨楼，检索1张{currJingJie.GetName()}防御牌",
                         $"星宫，检索1张{currJingJie.GetName()}灵气牌",
                         $"天机阁，选择1张牌，复制1次",
-                        $"百草堂，选择2张不高于{currJingJie}牌，提升到{nextJingJie.GetName()}",
+                        $"百草堂，选择2张不高于{currJingJie.GetName()}牌，提升到{nextJingJie.GetName()}",
                         $"易宝斋，选择1张牌卖掉，之后访问一次商店",
                         $"散修，发现1张基础境界是{nextJingJie.GetName()}期的牌",
                     };

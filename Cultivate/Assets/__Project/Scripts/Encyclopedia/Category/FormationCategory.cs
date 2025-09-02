@@ -32,9 +32,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("人间无戈");
                             }),
                             new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, closure, stageEventDetails) =>
@@ -43,6 +47,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 CastDetails d = (CastDetails)stageEventDetails;
                                 if (f.Owner != d.Caster) return;
 
+                                f.Emphasize();
                                 d.StartStageCastTimes += 1;
                             }),
                         }),
@@ -62,8 +67,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                             }),
                             new(StageClosureDict.WIL_START_STAGE_CAST, 0, async (listener, closure, stageEventDetails) =>
@@ -72,6 +80,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 CastDetails d = (CastDetails)stageEventDetails;
                                 if (f.Owner != d.Caster) return;
 
+                                f.Emphasize();
                                 d.StartStageCastTimes += 1;
                             }),
                         }),
@@ -91,8 +100,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("诸行无常", 6);
                             }),
                         }),
@@ -112,7 +124,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("暴击");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮暴击");
                             }),
                         }),
@@ -150,9 +164,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("免费");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("吸血");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮吸血");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("心斋");
                             }),
                             new(StageClosureDict.WIL_ACTION, 1, async (listener, closure, stageEventDetails) =>
@@ -163,7 +181,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 if (!d.IsSwift) return;
                                 if (f.Owner.GetStackOfBuff("摩诃钵特摩") > 0) return;
                                 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("摩诃钵特摩");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("不堪一击");
                                 f.Emphasize();
                                 d.Owner.SetActionPoint(d.Owner.GetActionPoint() + 8);
@@ -185,9 +205,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("免费");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("吸血");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮吸血");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("心斋");
                             }),
                         }),
@@ -207,8 +231,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("免费");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("吸血");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮吸血");
                             }),
                         }),
@@ -228,6 +255,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("免费");
                             }),
                         }),
@@ -265,11 +293,15 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("多重");
-                                foreach (var s in f.Owner.Skills)
-                                    s.IncreaseBonusCastedCount();
+                                f.Emphasize();
+                                f.Owner.Skills.Do(skill => skill.IncreaseBonusCastedCount());
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("通透世界");
                             }),
                         }),
@@ -289,9 +321,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("多重");
+                                f.Emphasize();
                                 f.Owner.Skills.Do(skill => skill.IncreaseBonusCastedCount());
                             }),
                         }),
@@ -311,8 +347,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("多重");
                             }),
                         }),
@@ -332,7 +371,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("穿透");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("轮穿透");
                             }),
                         }),
@@ -370,9 +411,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("火升华");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("淬体");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("剑心");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("凤凰涅槃");
                             }),
                         }),
@@ -392,8 +437,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("火升华");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("淬体");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("剑心");
                             }),
                         }),
@@ -413,7 +461,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("火升华");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("淬体");
                             }),
                         }),
@@ -433,6 +483,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("火升华");
                             }),
                         }),
@@ -470,8 +521,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("净体");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("击伤赋予护甲");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("连岳");
                             }),
                             new(StageClosureDict.WIL_GAIN_BUFF, 0, async (listener, closure, stageEventDetails) =>
@@ -505,8 +559,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("净体");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("击伤赋予护甲");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("连岳");
                             }),
                         }),
@@ -526,7 +583,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("净体");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("击伤赋予护甲");
                             }),
                         }),
@@ -546,6 +605,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("净体");
                             }),
                         }),
@@ -582,8 +642,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("碎防");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("力量", 2);
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("万剑归宗");
                             }),
                         }),
@@ -602,7 +665,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("碎防");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("力量", 2);
                             }),
                         }),
@@ -621,6 +686,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("碎防");
                             }),
                         }),
@@ -680,7 +746,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("护甲返还");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("高速吟唱");
                             }),
                         }),
@@ -699,7 +767,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("护甲返还");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("高速吟唱");
                             }),
                         }),
@@ -718,6 +788,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("护甲返还");
                             }),
                         }),
@@ -753,8 +824,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("灵气", 4);
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("抱朴");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("清心", 2);
                             }),
                         }),
@@ -773,7 +847,9 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("灵气", 4);
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("抱朴");
                             }),
                         }),
@@ -792,6 +868,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("灵气", 4);
                             }),
                         }),
@@ -827,10 +904,13 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 int value = (int)(f.Owner.MaxHp * 0.2f);
                                 f.Owner.MaxHp += value;
                                 await f.Owner.HealProcedure(value);
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("太虚");
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("盛开");
                             }),
                         }),
@@ -849,9 +929,11 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
                                 
+                                f.Emphasize();
                                 int value = (int)(f.Owner.MaxHp * 0.2f);
                                 f.Owner.MaxHp += value;
                                 await f.Owner.HealProcedure(value);
+                                f.Emphasize();
                                 await f.Owner.GainBuffProcedure("太虚");
                             }),
                         }),
@@ -870,6 +952,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 StageDetails d = (StageDetails)stageEventDetails;
                                 if (f.Owner != d.Owner) return;
 
+                                f.Emphasize();
                                 int value = (int)(f.Owner.MaxHp * 0.2f);
                                 f.Owner.MaxHp += value;
                                 await f.Owner.HealProcedure(value);

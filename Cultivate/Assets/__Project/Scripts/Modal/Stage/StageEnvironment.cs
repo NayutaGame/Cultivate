@@ -245,11 +245,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         if (d.Src == d.Tgt)
         {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         else
         {
-            await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
+            await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
         buff.Emphasize();

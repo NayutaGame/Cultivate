@@ -64,8 +64,14 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
     {
         WuXing wuXing = castDetails.Caster.Memory.TryGetVariable<WuXing>(StageEntity.LastRotatedWuXingKey, null);
         if (wuXing == null || !wuXing.IsBasic())
+        {
+            castDetails.CastResult["WuXing"] = $"{WuXing.Wu.GetName()}";
             return;
-        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, wuXing.Next));
+        }
+
+        WuXing nextWuXing = wuXing.Next;
+        castDetails.CastResult["WuXing"] = $"{nextWuXing.GetName()}";
+        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, nextWuXing));
     }
 
     public override void DefaultGetDescription(
@@ -76,8 +82,27 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
     {
         FollowingCycleProcedureDefinition pd = procedureDefinition as FollowingCycleProcedureDefinition;
         description.Join(pd.PostCondDefinition.Description);
-        
-        description.Join($"跟随流转");
+
+        WuXing wuXing = WuXing.Wu;
+        if (castResult.ContainsKey("WuXing"))
+        {
+            wuXing = Encyclopedia.WuXingCategory.FromName(castResult["WuXing"]) ?? WuXing.Wu;
+        }
+
+        if (wuXing == WuXing.Wu)
+        {
+            description.Join($"跟随流转");
+        }
+        else
+        {
+            description.Join($"跟随流转({wuXing.GetElementaryBuff().GetName()})");
+        }
+
+        if (Gain != 0)
+        {
+            description.AppendSoftReturn();
+            description.Join($"额外获得{Gain}层");
+        }
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)
