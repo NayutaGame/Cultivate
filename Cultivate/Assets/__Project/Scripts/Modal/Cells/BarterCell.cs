@@ -7,8 +7,10 @@ using UnityEngine.Assertions;
 
 public class BarterCell : Cell
 {
+    private int _targetItemCount;
     private BarterInventory _inventory;
-    public BarterInventory GetInventory() => _inventory;
+    private Predicate<RunSkill> _fromPred;
+    private Predicate<SkillEntry> _toPred;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -16,9 +18,26 @@ public class BarterCell : Cell
         { "Inventory",                  thisObject => ((BarterCell)thisObject).GetInventory() },
     };
     public override object Get(string s) => Accessor[s](this);
-    public BarterCell()
+    private BarterCell(int targetItemCount, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
     {
+        _targetItemCount = targetItemCount;
+        _inventory = new();
+        _fromPred = fromPred;
+        _toPred = toPred;
     }
+
+    public static BarterCell FromLiteral(int targetItemCount, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
+        => new(targetItemCount, fromPred, toPred);
+
+    public static BarterCell FromCount(int targetItemCount = 2)
+        => new(targetItemCount, null, null);
+
+    public static BarterCell FromFanXuMingYuanShop()
+    {
+        return new(6, runSkill => runSkill.GetEntry() == Encyclopedia.SkillCategory.FromName("命石"), null);
+    }
+    
+    public BarterInventory GetInventory() => _inventory;
 
     public override void DefaultEnter(Cell cell)
     {
@@ -30,33 +49,42 @@ public class BarterCell : Cell
         pool.Populate(env.TraversalDeckIndices()
             .Map(env.SkillFromDeckIndex)
             .FilterObj(skill => skill != null)
+            .FilterObj(skill => _fromPred == null || _fromPred(skill))
             .Map(SkillEntryDescriptor.FromRunSkill));
         pool.Shuffle();
 
-        int count = Mathf.Min(pool.Count(), 2);
+        int count = Mathf.Min(pool.Count(), _targetItemCount);
 
         SkillEntryDescriptor[] fromSkills = new SkillEntryDescriptor[count];
         for (int i = 0; i < fromSkills.Length; i++)
+        {
             pool.TryPopItem(out fromSkills[i]);
+        }
 
         SkillEntryDescriptor[] toSkills = new SkillEntryDescriptor[count];
         for (int i = 0; i < toSkills.Length; i++)
         {
-            SkillEntryDescriptor descriptor = SkillEntryDescriptor.FromPredJingJie(
+            List<Predicate<SkillEntry>> predicates = new List<Predicate<SkillEntry>>
+            {
                 skillEntry =>
                 {
                     foreach(var s in fromSkills)
                         if (skillEntry == s.Entry)
                             return false;
                     return true;
-                }, fromSkills[i].JingJie);
+                }
+            };
+            if (_toPred != null)
+                predicates.Add(_toPred);
+            SkillEntryDescriptor descriptor = SkillEntryDescriptor.FromPredJingJie(
+                predicates, fromSkills[i].JingJie);
             Assert.IsTrue(fromSkills[i].JingJie != null);
             GainSkillBuilder b = new();
             b.Draw(descriptor);
             toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(b.DrawnSkillEntries[0], fromSkills[i].JingJie); // distinct, non consume
         }
         
-        _inventory = new();
+        _inventory.Clear();
         for (int i = 0; i < fromSkills.Length; i++)
             _inventory.Add(new BarterItem(fromSkills[i], toSkills[i], Exchange));
     }

@@ -74,7 +74,8 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0111", "土行大圣", "Images/Monsters/鹿仙人"),
 
             // 卡牌
-            new("Sprite0112", "Skill缺失插画",                              "Images/CardIllustrations/缺失插画"),
+            new("Sprite08_001", "SkillCard缺失插画", "Images/SkillCardIllustrations/缺失插画"),
+            new("Sprite08_002", "SkillBar缺失插画", "Images/SkillBarIllustrations/缺失插画"),
             
             // 合成
             new("Sprite0113", "无法合成", "Images/MergeIllustrations/Invalid"),
@@ -274,7 +275,8 @@ public class SpriteCategory : Category<SpriteEntry>
         });
     }
 
-    public SpriteEntry MissingSkillIllustration() => FromName("Skill缺失插画");
+    public SpriteEntry MissingSkillCardIllustration() => FromName("SkillCard缺失插画");
+    public SpriteEntry MissingSkillBarIllustration() => FromName("SkillBar缺失插画");
     public SpriteEntry ErrorBuffIcon() => FromName("Buff不存在");
     public SpriteEntry MissingBuffIcon() => FromName("Buff缺失插画");
     public SpriteEntry MissingCharacterPortrait() => FromName("CharacterPortrait缺失立绘");

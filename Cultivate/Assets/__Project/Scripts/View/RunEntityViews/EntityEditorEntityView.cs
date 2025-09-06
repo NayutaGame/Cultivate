@@ -204,7 +204,7 @@ public class EntityEditorEntityView : XView
     private void HealthChanged(string value)
     {
         int.TryParse(value, out int health);
-        health = Mathf.Clamp(health, 1, 9999);
+        health = Mathf.Clamp(health, 1, 99999);
 
         IEntity entity = Get<IEntity>();
         entity.SetHealth(health);

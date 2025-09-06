@@ -165,7 +165,7 @@ public class EncyclopediaEditorWindow : EditorWindow
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("技能图标", EditorStyles.boldLabel);
-        var sprite = skill.GetSprite();
+        var sprite = skill.GetCardIllustration();
         if (sprite != null)
         {
             float aspectRatio = 285f / 311f;

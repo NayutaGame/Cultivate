@@ -17,7 +17,7 @@ public class TagEntry : Entry, AnnotatableTag
 
     private SpriteEntry _spriteEntry;
     public Sprite GetIcon()
-        => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
+        => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillCardIllustration().Sprite;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -34,7 +34,7 @@ public class TagEntry : Entry, AnnotatableTag
         _index = index;
         _value = value;
         _spriteEntry = Encyclopedia.SpriteCategory.FromName($"Tag{GetName()}") ??
-                       Encyclopedia.SpriteCategory.MissingSkillIllustration();
+                       Encyclopedia.SpriteCategory.MissingSkillCardIllustration();
         _rawDescription = rawDescription;
     }
     

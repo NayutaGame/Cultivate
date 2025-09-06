@@ -843,6 +843,31 @@ public class MapCategory : Category<MapEntry>
                         //     && env.GetRunConfig().GetDifficulty() == 4),
                     },
                 }),
+            
+            new(id: "Map0020",
+                name: "返虚测试",
+                envJingJie: JingJie.HuaShen,
+                slotCount: 12,
+                gold: 289,
+                skillJingJie: JingJie.JinDan,
+                skillCount: 41,
+                levels: new RoomDefinition[][]
+                {
+                    new RoomDefinition[]
+                    {
+                        new BattleRoomDefinition(13, 12, 12),
+                    },
+                    new RoomDefinition[]
+                    {
+                        new DirectRoomDefinition(13, "斩断尘缘"),
+                        new DirectRoomDefinition(13, "无名泉水"),
+                        new DirectRoomDefinition(13, "气血商店"),
+                        new DirectRoomDefinition(13, "命元商店"),
+                        new DirectRoomDefinition(13, "镜中世界"),
+                        new DirectRoomDefinition(13, "空荡回廊"),
+                        new DirectRoomDefinition(13, "返虚战斗"),
+                    },
+                }),
         });
     }
 

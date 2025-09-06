@@ -1,11 +1,12 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 public class SkillEntryDescriptor : AnnotatableSkill
 {
-    private Predicate<SkillEntry> _pred;
+    private List<Predicate<SkillEntry>> _predicates;
     private SkillEntry _entry;
     private WuXing _wuXing;
     private JingJie _jingJie;
@@ -17,14 +18,14 @@ public class SkillEntryDescriptor : AnnotatableSkill
         { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
-    public SkillEntryDescriptor(
-        Predicate<SkillEntry> pred = null,
+    private SkillEntryDescriptor(
+        List<Predicate<SkillEntry>> predicates = null,
         SkillEntry entry = null,
         WuXing wuXing = null,
         JingJie jingJie = null,
         TagComposite tagComposite = null)
     {
-        _pred = pred;
+        _predicates = predicates ?? new List<Predicate<SkillEntry>>();
         _entry = entry;
         _wuXing = wuXing;
         _jingJie = jingJie;
@@ -46,8 +47,8 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public static SkillEntryDescriptor FromNameJingJie(string name, JingJie jingJie)
         => new(entry: Encyclopedia.SkillCategory.FromName(name), jingJie: jingJie);
 
-    public static SkillEntryDescriptor FromPredJingJie(Predicate<SkillEntry> pred, JingJie jingJie)
-        => new(pred: pred, jingJie: jingJie);
+    public static SkillEntryDescriptor FromPredJingJie(List<Predicate<SkillEntry>> predicates, JingJie jingJie)
+        => new(predicates: predicates, jingJie: jingJie);
     
     public static SkillEntryDescriptor FromJingJie(JingJie jingJie)
         => new(jingJie: jingJie);
@@ -58,10 +59,14 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public static SkillEntryDescriptor FromWuXingJingJie(WuXing wuXing, JingJie jingJie)
         => new(wuXing: wuXing, jingJie: jingJie);
 
+    public static SkillEntryDescriptor FromPredWuXingJingJie(Predicate<SkillEntry> pred, WuXing wuXing, JingJie jingJie)
+        => new(predicates: pred == null ? null : new List<Predicate<SkillEntry>> { pred }, wuXing: wuXing, jingJie: jingJie);
+
     public static SkillEntryDescriptor AnySkill()
         => new();
     
     public SkillEntry Entry => _entry;
+    
     public JingJie JingJie => _jingJie;
 
     public JingJie GetLowestJingJie()
@@ -70,8 +75,8 @@ public class SkillEntryDescriptor : AnnotatableSkill
     public JingJie GetHighestJingJie()
         => _entry?.GetHighestJingJie() ?? _jingJie;
 
-    public Sprite GetSprite()
-        => _entry?.GetSprite();
+    public Sprite GetCardIllustration() => _entry?.GetCardIllustration();
+    public Sprite GetBarIllustration() => _entry?.GetBarIllustration();
 
     public string GetName()
         => _entry?.GetName();
@@ -104,8 +109,8 @@ public class SkillEntryDescriptor : AnnotatableSkill
     {
         if (_entry != null && skillEntry != _entry)
             return false;
-        
-        if (_pred != null && !_pred(skillEntry))
+
+        if (!_predicates.AllMatch(pred => pred(skillEntry)))
             return false;
 
         if (_wuXing != null && skillEntry.WuXing != _wuXing)
@@ -124,8 +129,8 @@ public class SkillEntryDescriptor : AnnotatableSkill
     {
         if (_entry != null && skill.GetEntry() != _entry)
             return false;
-        
-        if (_pred != null && !_pred(skill.GetEntry()))
+
+        if (!_predicates.AllMatch(pred => pred(skill.GetEntry())))
             return false;
 
         if (_wuXing != null && skill.GetEntry().WuXing != _wuXing)

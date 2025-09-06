@@ -137,7 +137,7 @@ public class MergePreresultView : XView
         
         if (_mergeTarget.ResultEntry != null)
         {
-            CardImage.sprite = _mergeTarget.ResultEntry.GetSprite();
+            CardImage.sprite = _mergeTarget.ResultEntry.GetCardIllustration();
             return;
         }
 

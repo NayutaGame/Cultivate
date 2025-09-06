@@ -177,6 +177,56 @@ public class CardPickerCell : Cell
         return cell;
     }
 
+    public static CardPickerCell FromZhanDuanChenYuan(int ladder, Cell nextCell)
+    {
+        JingJie currJingJie = JingJie.FanXu;
+
+        RunSkillDescriptorListModel descriptorList = RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(
+                RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, JingJie.FanXu + 1), 
+                5);
+            
+        CardPickerCell cell = FromConstantDetailedText(
+            titleText:          $"斩断尘缘",
+            detailedText:       $"选择至多5张牌，将被替换成新的牌。无法再遇到被选择的牌。",
+            descriptor:         descriptorList);
+
+        cell.SetSubmitOperation(cardPickerCell =>
+        {
+            cardPickerCell.RequirementSlotList.Do(slot =>
+            {
+                RunSkill skillToDepopulate = slot.Skill;
+                if (skillToDepopulate == null)
+                    return;
+
+                RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skillToDepopulate.GetEntry());
+            });
+            
+            cardPickerCell.RequirementSlotList.Do(slot =>
+            {
+                if (slot.Skill == null)
+                    return;
+                
+                JingJie targetJingJie = slot.Skill.GetJingJie();
+                
+                GainSkillBuilder b = new();
+                SkillEntryCollectionDescriptor descriptor = new(
+                    jingJie: targetJingJie,
+                    count: 1,
+                    consume: true);
+                
+                b.Draw(descriptor);
+                SkillEntry newSkill = b.DrawnSkillEntries[0];
+                
+                slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
+            });
+                        
+            cardPickerCell.WithdrawAll();
+            return nextCell;
+        });
+
+        return cell;
+    }
+
     #endregion
     
     public string GetTitleText() => _titleText;

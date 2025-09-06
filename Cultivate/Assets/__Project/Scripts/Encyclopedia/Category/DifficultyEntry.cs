@@ -16,6 +16,10 @@ public class DifficultyEntry : Entry
     [NonSerialized] public bool AwayAllowFormation;
     [NonSerialized] public bool AllowRotate;
     [NonSerialized] public bool AllowMutate;
+    [NonSerialized] public bool EnemyInitiate;
+    [NonSerialized] public bool AllowFanXuMerge;
+    [NonSerialized] public bool AllowFanXuBoss;
+    [NonSerialized] public bool FanXuBossEncore;
     [NonSerialized] public RunClosure[] _runClosures;
     [NonSerialized] public StageClosure[] _stageClosures;
 
@@ -30,6 +34,10 @@ public class DifficultyEntry : Entry
         bool awayAllowFormation = false,
         bool allowRotate = false,
         bool allowMutate = false,
+        bool enemyInitiate = false,
+        bool allowFanXuMerge = false,
+        bool allowFanXuBoss = false,
+        bool fanXuBossEncore = false,
         RunClosure[] runClosures = null,
         StageClosure[] stageClosures = null) : base(id, name)
     {
@@ -42,6 +50,10 @@ public class DifficultyEntry : Entry
         AwayAllowFormation = awayAllowFormation;
         AllowRotate = allowRotate;
         AllowMutate = allowMutate;
+        EnemyInitiate = enemyInitiate;
+        AllowFanXuMerge = allowFanXuMerge;
+        AllowFanXuBoss = allowFanXuBoss;
+        FanXuBossEncore = fanXuBossEncore;
 
         _runClosures = runClosures ?? Array.Empty<RunClosure>();
         _stageClosures = stageClosures ?? Array.Empty<StageClosure>();

@@ -47,5 +47,5 @@ public class AchievementEntry : Entry
     public RunClosure[] GetRunClosures() => _runClosures;
     public StageClosure[] GetStageClosures() => _stageClosures;
     public LockIndex? GetLockIndex() => _lockIndex;
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillCardIllustration().Sprite;
 }

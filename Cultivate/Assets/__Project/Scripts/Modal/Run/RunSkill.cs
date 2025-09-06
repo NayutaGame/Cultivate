@@ -57,7 +57,8 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill, RunClo
     
     public SkillEntry GetEntry() => _entry;
     public int Dj => GetJingJie() - _entry.LowestJingJie;
-    public Sprite GetSprite() => _entry.GetSprite();
+    public Sprite GetCardIllustration() => _entry.GetCardIllustration();
+    public Sprite GetBarIllustration() => _entry.GetBarIllustration();
     public WuXing GetWuXing() => _entry.WuXing;
     public string GetName() => _entry.GetName();
     public TagComposite GetTagComposite() => _entry.GetTagComposite();

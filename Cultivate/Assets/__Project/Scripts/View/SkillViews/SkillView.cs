@@ -37,7 +37,7 @@ public class SkillView : XView
         CostView.SetShowingJingJie(_showingJingJie);
 
         AnnotatableSkill skill = Get<AnnotatableSkill>();
-        Illustration.sprite = skill.GetSprite();
+        Illustration.sprite = skill.GetCardIllustration();
         NameText.text = skill.GetName();
         DescriptionText.text = skill.GetDescription(_showingJingJie).GetHighlightedString();
         JingJieImage.sprite = skill.GetJingJieSprite(_showingJingJie);

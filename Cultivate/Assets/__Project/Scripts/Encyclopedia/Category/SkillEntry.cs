@@ -17,7 +17,8 @@ public class SkillEntry : Entry, AnnotatableSkill
     [NonSerialized] private MergeRule _overridingMergeRule;
     [NonSerialized] private bool _hasStartStageCast;
     [NonSerialized] private MutateDefinition[] _mutate;
-    [NonSerialized] private SpriteEntry _spriteEntry;
+    [NonSerialized] private SpriteEntry _cardIllustration;
+    [NonSerialized] private SpriteEntry _barIllustration;
     [NonSerialized] private SkillDefinition[] _skillDefinitions;
     [NonSerialized] private PackEntry _packEntry;
     
@@ -67,22 +68,24 @@ public class SkillEntry : Entry, AnnotatableSkill
 
     public override void Init()
     {
-        CreateSprite();
+        CreateIllustration();
+        CreateBarIllustration();
     }
 
-    public void CreateSprite()
+    public void CreateIllustration()
     {
-        string name = $"Skill{GetName()}";
-        if (Encyclopedia.SpriteCategory.ContainsName(name))
-        {
-            _spriteEntry = Encyclopedia.SpriteCategory.FromName(name);
-        }
-        else
-        {
-            string id = $"SpriteAuto{Encyclopedia.SpriteCategory.Count():0000}";
-            _spriteEntry = new(id, name, $"Images/CardIllustrations/{GetName()}");
-            Encyclopedia.SpriteCategory.Add(_spriteEntry);
-        }
+        string name = $"SkillCard{GetName()}";
+        string id = $"AutoSkillCard{Encyclopedia.SpriteCategory.Count():0000}";
+        _cardIllustration = new(id, name, $"Images/SkillCardIllustrations/{GetName()}");
+        Encyclopedia.SpriteCategory.Add(_cardIllustration);
+    }
+
+    public void CreateBarIllustration()
+    {
+        string nameBar = $"SkillBar{GetName()}";
+        string idBar = $"AutoSkillBar{Encyclopedia.SpriteCategory.Count():0000}";
+        _barIllustration = new(idBar, nameBar, $"Images/SkillBarIllustrations/{GetName()}");
+        Encyclopedia.SpriteCategory.Add(_barIllustration);
     }
 
     public PackEntry GetPackEntry() => _packEntry;
@@ -131,7 +134,8 @@ public class SkillEntry : Entry, AnnotatableSkill
         }
     }
 
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingSkillIllustration().Sprite;
+    public Sprite GetCardIllustration() => _cardIllustration?.Sprite ? _cardIllustration?.Sprite : Encyclopedia.SpriteCategory.MissingSkillCardIllustration().Sprite;
+    public Sprite GetBarIllustration() => _barIllustration?.Sprite ? _barIllustration?.Sprite : Encyclopedia.SpriteCategory.MissingSkillBarIllustration().Sprite;
     public WuXing GetWuXing() => WuXing;
     public TagComposite GetTagComposite() => _tagComposite;
     public string GetTrivia() => _trivia;

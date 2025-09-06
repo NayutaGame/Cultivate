@@ -15,6 +15,6 @@ public class SkillBarView : XView
         AnnotatableSkill skill = Get<AnnotatableSkill>();
         Name.text = skill.GetName();
         // BackgroundImage.color = CanvasManager.Instance.JingJieColors[skill.GetJingJie()];
-        // BarIllustration.sprite = ;
+        BarIllustration.sprite = skill.GetBarIllustration();
     }
 }

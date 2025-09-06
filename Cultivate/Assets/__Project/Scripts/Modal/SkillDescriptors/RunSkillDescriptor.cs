@@ -36,11 +36,11 @@ public class RunSkillDescriptor : AnnotatableLine
     public static RunSkillDescriptor FromWuXing(WuXing wuXing)
         => new(wuXing: wuXing, description: new($"请提交一张五行为{wuXing.GetName()}的牌"));
 
-    public static RunSkillDescriptor FromJingJieBound(JingJie low, JingJie highExclusive)
+    public static RunSkillDescriptor FromJingJieBound(int low, int highExclusive)
         => new(jingJieBound: new Bound(low, highExclusive),
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)(highExclusive - 1)).GetName()}之间的牌"));
 
-    public static RunSkillDescriptor FromJingJieBoundAndHasWuXing(JingJie low, JingJie highExclusive)
+    public static RunSkillDescriptor FromJingJieBoundAndHasWuXing(int low, int highExclusive)
         => new(jingJieBound: new Bound(low, highExclusive), pred: s => s.GetWuXing() != WuXing.Wu,
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)(highExclusive - 1)).GetName()}之间，具有五行的牌"));
 

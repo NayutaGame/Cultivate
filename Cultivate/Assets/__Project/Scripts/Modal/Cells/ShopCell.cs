@@ -25,14 +25,12 @@ public class ShopCell : Cell
         { "Commodities",                thisObject => ((ShopCell)thisObject).GetCommodities() },
     };
     public override object Get(string s) => Accessor[s](this);
-    private ShopCell(int ladder, float priceMultiplier = 1, string title = null, string spriteName = null)
-        : this(ladder, priceMultiplier, title, Encyclopedia.SpriteCategory.FromName(spriteName ?? "收藏家")) { }
-    private ShopCell(int ladder, float priceMultiplier = 1, string title = null, SpriteEntry spriteEntry = null)
+    private ShopCell(int ladder, float priceMultiplier, string title, SpriteEntry spriteEntry)
     {
         _ladder = ladder;
         _priceMultiplier = priceMultiplier;
-        _title = title ?? "商店";
-        _spriteEntry = spriteEntry ?? Encyclopedia.SpriteCategory.FromName("收藏家");
+        _title = title;
+        _spriteEntry = spriteEntry;
     }
 
     public override void DefaultEnter(Cell cell)
@@ -112,7 +110,7 @@ public class ShopCell : Cell
         => FromShouCangJia(ladder);
 
     public static ShopCell FromShouCangJia(int ladder)
-        => new(ladder, priceMultiplier: 2, "收藏家", "收藏家");
+        => new(ladder, priceMultiplier: 2, "收藏家", Encyclopedia.SpriteCategory.FromName("收藏家"));
 
     public static CardPickerCell FromYiBaoZhai(int ladder)
     {
@@ -121,7 +119,7 @@ public class ShopCell : Cell
             getDetailedText:    GetDetailedText,
             descriptor:         RunSkillDescriptorListModel.FromCount(1));
 
-        ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", "收藏家");
+        ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", Encyclopedia.SpriteCategory.FromName("收藏家"));
 
         cardPickerCell.SetSubmitOperation(SellCard);
 
@@ -164,7 +162,7 @@ public class ShopCell : Cell
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
-        ShopCell B = new(ladder, 1.5f, "黑市", "黑市");
+        ShopCell B = new(ladder, 1.5f, "黑市", Encyclopedia.SpriteCategory.FromName("黑市"));
         B.SetEnter(panelDescriptor =>
         {
             ShopCell shop = (ShopCell)panelDescriptor;
@@ -188,6 +186,49 @@ public class ShopCell : Cell
                     skill:SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie),
                     price: price,
                     payWithGoldFunc: shop.PayWithGold,
+                    payWithHealthFunc: shop.PayWithHealth,
+                    discount: RandomManager.value < 0.2f ? 0.5f : 1f,
+                    acceptGold: true,
+                    acceptHealth: true);
+                commodities.Add(commodity);
+            }
+
+            B.SetCommodities(commodities);
+        });
+        
+        return B;
+    }
+
+    public static ShopCell FromFanXuHealthShop(int ladder)
+    {
+        JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
+        Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
+            (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
+
+        ShopCell B = new(ladder, 1.5f, "气血商店", Encyclopedia.SpriteCategory.FromName("黑市"));
+        B.SetEnter(panelDescriptor =>
+        {
+            ShopCell shop = (ShopCell)panelDescriptor;
+            CommodityListModel commodities = new CommodityListModel();
+
+            SkillEntryCollectionDescriptor descriptor = new(
+                pred: e => baseJingJieBound.Contains(e.LowestJingJie),
+                count: 8,
+                consume: false);
+
+            GainSkillBuilder b = new();
+            b.Draw(descriptor);
+
+            foreach (SkillEntry e in b.DrawnSkillEntries)
+            {
+                int cardJingJie = e.LowestJingJie;
+                int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(cardJingJie);
+                int price = Mathf.RoundToInt(basePrice * shop._priceMultiplier * RandomManager.Range(0.8f, 1.2f));
+                price = price.ClampLower(1);
+                Commodity commodity = new Commodity(
+                    skill:SkillEntryDescriptor.FromEntryJingJie(e, cardJingJie),
+                    price: price,
+                    payWithGoldFunc: null,
                     payWithHealthFunc: shop.PayWithHealth,
                     discount: RandomManager.value < 0.2f ? 0.5f : 1f,
                     acceptGold: true,

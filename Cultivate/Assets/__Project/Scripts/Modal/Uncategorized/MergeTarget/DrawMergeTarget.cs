@@ -10,7 +10,7 @@ public class DrawMergeTarget : MergeTarget
 
     public override void Execute(MergeDetails d, SkillInventory hand)
     {
-        SkillEntryDescriptor skillEntryDescriptor = new(
+        SkillEntryDescriptor skillEntryDescriptor = SkillEntryDescriptor.FromPredWuXingJingJie(
             pred: d.MergeTarget.Pred,
             wuXing: d.MergeTarget.ResultWuXing,
             jingJie: d.MergeTarget.ResultJingJie);

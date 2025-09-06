@@ -17,7 +17,11 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 homeAllowFormation: false,
                 awayAllowFormation: false,
                 allowRotate: false,
-                allowMutate: false),
+                allowMutate: false,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false),
             
             new(id: "Difficulty0002",
                 name: "1",
@@ -28,6 +32,10 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 awayAllowFormation: false,
                 allowRotate: false,
                 allowMutate: false,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -47,6 +55,10 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 awayAllowFormation: false,
                 allowRotate: false,
                 allowMutate: false,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -61,10 +73,15 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 order: 3,
                 description: "可以到达化神境界",
                 inheritedDifficultyNames: new string[] { "2", "1" },
+                finalJingJie: JingJie.HuaShen,
                 homeAllowFormation: true,
                 awayAllowFormation: false,
                 allowRotate: false,
                 allowMutate: false,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -79,10 +96,15 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 order: 4,
                 description: "解锁流转规则",
                 inheritedDifficultyNames: new string[] { "3", "2", "1" },
+                finalJingJie: JingJie.HuaShen,
                 homeAllowFormation: true,
                 awayAllowFormation: false,
                 allowRotate: true,
                 allowMutate: false,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -97,10 +119,15 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 order: 5,
                 description: "敌人也可以使用阵法",
                 inheritedDifficultyNames: new string[] { "4", "3", "2", "1" },
+                finalJingJie: JingJie.HuaShen,
                 homeAllowFormation: true,
                 awayAllowFormation: true,
                 allowRotate: true,
                 allowMutate: false,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -115,10 +142,15 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 order: 6,
                 description: "解锁墨染规则",
                 inheritedDifficultyNames: new string[] { "5", "4", "3", "2", "1" },
+                finalJingJie: JingJie.HuaShen,
                 homeAllowFormation: true,
                 awayAllowFormation: true,
                 allowRotate: true,
                 allowMutate: true,
+                enemyInitiate: false,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -133,10 +165,15 @@ public class DifficultyCategory : Category<DifficultyEntry>
                 order: 7,
                 description: "敌人获得先手",
                 inheritedDifficultyNames: new string[] { "6", "5", "4", "3", "2", "1" },
+                finalJingJie: JingJie.HuaShen,
                 homeAllowFormation: true,
                 awayAllowFormation: true,
                 allowRotate: true,
                 allowMutate: true,
+                enemyInitiate: true,
+                allowFanXuMerge: false,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -149,12 +186,17 @@ public class DifficultyCategory : Category<DifficultyEntry>
             new(id: "Difficulty0009",
                 name: "8",
                 order: 8,
-                description: "解锁天道规则",
+                description: "解锁返虚合成",
                 inheritedDifficultyNames: new string[] { "7", "6", "5", "4", "3", "2", "1" },
+                finalJingJie: JingJie.HuaShen,
                 homeAllowFormation: true,
                 awayAllowFormation: true,
                 allowRotate: true,
                 allowMutate: true,
+                enemyInitiate: true,
+                allowFanXuMerge: true,
+                allowFanXuBoss: false,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -167,12 +209,17 @@ public class DifficultyCategory : Category<DifficultyEntry>
             new(id: "Difficulty0010",
                 name: "9",
                 order: 9,
-                description: "最终Boss需要击败两次",
+                description: "解锁返虚战斗",
                 inheritedDifficultyNames: new string[] { "8", "7", "6", "5", "4", "3", "2", "1" },
+                finalJingJie: JingJie.FanXu,
                 homeAllowFormation: true,
                 awayAllowFormation: true,
                 allowRotate: true,
                 allowMutate: true,
+                enemyInitiate: true,
+                allowFanXuMerge: true,
+                allowFanXuBoss: true,
+                fanXuBossEncore: false,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
@@ -185,12 +232,17 @@ public class DifficultyCategory : Category<DifficultyEntry>
             new(id: "Difficulty0011",
                 name: "10",
                 order: 10,
-                description: "萌新都玩这个难度",
+                description: "返虚Boss需要击败两次",
                 inheritedDifficultyNames: new string[] { "9", "8", "7", "6", "5", "4", "3", "2", "1" },
+                finalJingJie: JingJie.FanXu,
                 homeAllowFormation: true,
                 awayAllowFormation: true,
                 allowRotate: true,
                 allowMutate: true,
+                enemyInitiate: true,
+                allowFanXuMerge: true,
+                allowFanXuBoss: true,
+                fanXuBossEncore: true,
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>

@@ -49,7 +49,8 @@ public class RequirementSlot : AnnotatableSkill
     public JingJie GetJingJie() => _skill.GetJingJie();
     public JingJie GetLowestJingJie() => _skill.GetLowestJingJie();
     public JingJie GetHighestJingJie() => _skill.GetHighestJingJie();
-    public Sprite GetSprite() => _skill.GetSprite();
+    public Sprite GetCardIllustration() => _skill.GetCardIllustration();
+    public Sprite GetBarIllustration() => _skill.GetBarIllustration();
     public CostDescription GetLiteralCostDescription(JingJie showingJingJie) => _skill.GetLiteralCostDescription(showingJingJie);
     public string GetName() => _skill.GetName();
     public Description GetDescription(JingJie showingJingJie) => _skill.GetDescription(showingJingJie);

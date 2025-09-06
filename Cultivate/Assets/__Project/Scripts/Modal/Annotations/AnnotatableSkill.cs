@@ -5,7 +5,8 @@ public interface AnnotatableSkill : AnnotatableCost
 {
     JingJie GetLowestJingJie();
     JingJie GetHighestJingJie();
-    Sprite GetSprite();
+    Sprite GetCardIllustration();
+    Sprite GetBarIllustration();
     string GetName();
     Description GetDescription(JingJie showingJingJie);
     string GetTrivia();

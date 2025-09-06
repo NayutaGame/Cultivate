@@ -6,6 +6,7 @@ using System.Text;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class RunEnvironment : Addressable, RunClosureListener, ISerializationCallbackReceiver
@@ -133,6 +134,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeReference] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
     [SerializeReference] private RunEntity _home;
+    [SerializeReference] private EntityEntry _huaShenBossEntity;
     [SerializeField] private RunResult _result;
 
     [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
@@ -166,6 +168,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _skillPool = new();
         _hand = new();
         _gold = new(0);
+        _huaShenBossEntity = null;
         _result = new();
         _newlyUnlockedAchievements = new();
 
@@ -268,6 +271,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     }
 
     public bool AwayIsDummy() => _awayIsDummy;
+
+    public EntityEntry HuaShenBossEntity
+    {
+        get => _huaShenBossEntity;
+        set => _huaShenBossEntity = value;
+    }
 
     public void Register()
     {
@@ -1361,6 +1370,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _startTime = DateTime.Now;
         _loadedTime = TimeSpan.FromMilliseconds(_miliseconds);
         _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
+        
+        if (_huaShenBossEntity != null)
+            _huaShenBossEntity = string.IsNullOrEmpty(_huaShenBossEntity.GetId()) ? null : Encyclopedia.EntityCategory.FromId(_huaShenBossEntity.GetId());
         
         InitNeurons();
 

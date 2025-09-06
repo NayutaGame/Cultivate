@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class RoomCategory : Category<RoomEntry>
 {
@@ -10,7 +11,7 @@ public class RoomCategory : Category<RoomEntry>
     {
         AddRange(new List<RoomEntry>()
         {
-            #region Core
+            #region 01_Core
             
             new(id:                                 "Room0001",
                 name:                               "不存在的事件",
@@ -37,33 +38,50 @@ public class RoomCategory : Category<RoomEntry>
                     BattleRoomDefinition roomDefinition = room.GetDescriptor() as BattleRoomDefinition;
                     int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
                     int goldValue = Mathf.RoundToInt(baseGoldReward * RandomManager.Range(0.9f, 1.1f));
+
+                    RunEntity enemy = room.GetPredrewRunEntity();
                     
-                    BattleCell A = new(room.GetPredrewRunEntity());
+                    BattleCell A = new(enemy);
 
                     DiscoverSkillCell B = DiscoverSkillCell.FromDefault(room.Ladder);
 
                     bool shouldUpdateSlotCount = roomDefinition.ShouldUpdateSlotCount;
+                    
+                    bool isHuaShenFinalBoss = roomDefinition._isBoss && RunManager.Instance.Environment.JingJie == JingJie.HuaShen;
+                    if (isHuaShenFinalBoss)
+                        RunManager.Instance.Environment.HuaShenBossEntity = enemy.GetEntry();
 
-                    bool isFinalBoss = roomDefinition._isBoss && RunManager.Instance.Environment.IsFinalJingJie();
+                    bool allowFanXu = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().AllowFanXuBoss;
 
-                    A.SetWinOperation(() =>
+                    bool willCommit = roomDefinition._isBoss &&
+                                      RunManager.Instance.Environment.IsFinalJingJie() &&
+                                      !(isHuaShenFinalBoss && allowFanXu);
+                    if (willCommit)
                     {
-                        if (!isFinalBoss)
+                        A.SetWinOperation(() =>
+                        {
+                            RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                            return null;
+                        });
+
+                        A.SetLoseOperation(() =>
+                        {
+                            RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                            return null;
+                        });
+                    }
+                    else
+                    {
+                        A.SetWinOperation(() =>
                         {
                             B.SetTitleText("胜利");
                             B.SetDescriptionText($"获得了<style=\"Gold\">{goldValue}金钱</style>\n请选择<style=\"Red\">一张卡牌</style>作为奖励");
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDefinition._slotCountAfter);
                             return B;
-                        }
-                        
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
-                        return null;
-                    });
+                        });
 
-                    A.SetLoseOperation(() =>
-                    {
-                        if (!isFinalBoss)
+                        A.SetLoseOperation(() =>
                         {
                             RunManager.Instance.Environment.SetDMingYuanProcedure(-2);
                             
@@ -73,11 +91,8 @@ public class RoomCategory : Category<RoomEntry>
                             if (shouldUpdateSlotCount)
                                 RunManager.Instance.Environment.Home.SetSlotCount(roomDefinition._slotCountAfter);
                             return B;
-                        }
-                        
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
-                        return null;
-                    });
+                        });
+                    }
 
                     B._receiveSignal = signal =>
                     {
@@ -660,7 +675,7 @@ public class RoomCategory : Category<RoomEntry>
             
             #endregion
 
-            #region Tutorial
+            #region 02_Tutorial
 
             new(id:                                 "Room0008",
                 name:                               "漫画",
@@ -1221,7 +1236,7 @@ public class RoomCategory : Category<RoomEntry>
 
             #endregion
 
-            #region Shop
+            #region 03_Shop
             
             new(id:                                 "Room0017",
                 name:                               "存钱",
@@ -1290,7 +1305,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "集会",
                         detailedText: "你收到了神秘集会的入场券，大家在集会上交换技能。");
                     
-                    BarterCell B = new();
+                    BarterCell B = BarterCell.FromCount();
 
                     A[0].SetSelect(option => B);
                     
@@ -1337,7 +1352,7 @@ public class RoomCategory : Category<RoomEntry>
 
             #endregion
 
-            #region Adventure
+            #region 04_Adventure
             
             new(id:                                 "Room0023",
                 name:                               "天津四",
@@ -2370,7 +2385,352 @@ public class RoomCategory : Category<RoomEntry>
             
             #endregion
 
-            #region Reserved
+            #region 05_FanXu
+            
+            new(id:                                 "Room05_001",
+                name:                               "斩断尘缘",
+                description:                        "斩断尘缘",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("斩断尘缘",
+                        "和最终的首领战斗过于激烈，你的元神到达了一个未知的空间。在你还没想到要怎么回到现实世界时。" +
+                        "\n一颗无比熟悉的树吸引了你的注意。你越发感觉如果继续看下去，就难以返回现实了。",
+                        "继续看下去");
+                    
+                    DialogCell B = new("斩断尘缘",
+                        "你隐约察觉这棵树在告诉你，他可能帮助你斩断和卡牌的因果，让你再也无法回忆起技能使用时的细节。" +
+                        "\n你有想要忘却的过去么？",
+                        "回忆开始变得模糊");
+                    
+                    DialogCell D = new("斩断尘缘", "事情发生得太快，一瞬间，你已经不记得自己用了什么和眼前的树做了交易，甚至连交易本身是否存在都已经不确定了。" +
+                                               "\n你趁着自己还清醒着，检查了新的技能，然后悻悻离去。");
+                    
+                    CardPickerCell C = CardPickerCell.FromZhanDuanChenYuan(room.Ladder, D);
+            
+                    A[0].SetSelect(option => B);
+                    B[0].SetSelect(option => C);
+            
+                    return A;
+                }),
+            
+            new(id:                                 "Room05_002",
+                name:                               "无名泉水",
+                description:                        "无名泉水",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("无名泉水",
+                        "你走到一处泉水旁边，你查觉泉水灵力充沛，正好可以治愈自己一身的伤痛。" +
+                        "\n自己是怎么受伤的？你正在思索着，然后看到前方有个穿着奇异的小孩看着自己。");
+                    
+                    DialogCell B = new("无名泉水",
+                        "“你不该在这里的。”" +
+                        "\n“妄图以区区凡人之躯，向仙人的领域发起挑战，真是傲慢啊。”");
+                    
+                    DialogCell C = new("无名泉水",
+                        "“算了，看在你这么不知死活的份上。我帮你激发一下潜力，对身体造成的小小负担，你可要承受住了。”" +
+                        "你感受到，刚刚回复的命元，正在一点一点的从体内流失。");
+                    
+                    DialogCell D = new("无名泉水",
+                        "“不用谢我。这些身外之物你暂时也用不到了，我替你收好了。”" +
+                        "给你点什么呢？再帮你强化一下身体好了。");
+                    
+                    DialogCell E = new("无名泉水",
+                        "你看到一阵血雾向自己飞来，然后逐渐被自己所吸收。感觉经脉确实是强壮了一些。");
+
+                    A[0].SetSelect(option =>
+                    {
+                        MingYuan mingYuan = RunManager.Instance.Environment.GetMingYuan();
+                        int gap = mingYuan.UpperBound - mingYuan.Curr;
+                        RunManager.Instance.Environment.SetDMingYuanProcedure(gap);
+                        return B;
+                    });
+
+                    B[0].SetSelect(option => C);
+
+                    C[0].SetSelect(option =>
+                    {
+                        MingYuan mingYuan = RunManager.Instance.Environment.GetMingYuan();
+                        int space = Mathf.Max(mingYuan.Curr - 1, 0);
+                        RunManager.Instance.Environment.SetDMingYuanProcedure(-space);
+                        
+                        GainSkillBuilder b = new();
+                        for (int i = 0; i < space; i++)
+                        {
+                            b.Pick(Encyclopedia.SkillCategory.FromName("命石"));
+                        }
+                        b.Create(JingJie.HuaShen);
+                        for (int i = 0; i < space; i++)
+                        {
+                            b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                        }
+                        b.Add();
+                        b.Invoke();
+                        
+                        return D;
+                    });
+
+                    D[0].SetSelect(option =>
+                    {
+                        int value = RunManager.Instance.Environment.GetGold().Curr;
+                        RunManager.Instance.Environment.SetDGoldProcedure(-value);
+                        RunManager.Instance.Environment.GainHealthProcedure(value);
+                        return E;
+                    });
+                    
+                    return A;
+                }),
+            
+            new(id:                                 "Room05_003",
+                name:                               "气血商店",
+                description:                        "气血商店",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("气血商店",
+                        "你看到一个商店，正懊恼着刚才的小孩将自己的金钱取走了。可惜了这么多商品。" +
+                        "\n结果你看到商品没有标价，带着奇怪的马脸面具的店家说这里只收气血。",
+                        "怪不得感到一阵阴风");
+
+                    ShopCell B = ShopCell.FromFanXuHealthShop(room.Ladder);
+                    
+                    DialogCell C = new("气血商店",
+                        "你想到自己气血是多么的宝贵，此时再有了这些技能对自己又有什么帮助呢。不禁一阵唏嘘。");
+
+                    A[0].SetSelect(option => B);
+
+                    B._receiveSignal = signal =>
+                    {
+                        if (signal is ExitShopSignal)
+                            return C;
+                        return B;
+                    };
+                    
+                    return A;
+                }),
+            
+            new(id:                                 "Room05_004",
+                name:                               "命元商店",
+                description:                        "命元商店",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("命元商店",
+                        "又路过一个商店，你在奇怪，这家商店会不会正常一些。" +
+                        "\n看到阴森的街道，你感到了一丝不安。" +
+                        "\n带着牛脸面具的人向你招呼道，再往前走，命石以对你无用，何不来我这里消费消费？",
+                        "你虽然脚还再往前走，但是商品还是吸引到了你的注意");
+
+                    BarterCell B = BarterCell.FromFanXuMingYuanShop();
+
+                    DialogCell C = new("命元商店",
+                        "你回想起了修仙路上的人，包括曾经的自己，曾经竟为了一时的胜负而大打出手，真是可笑。");
+                        
+                    A[0].SetSelect(option => B);
+
+                    B._receiveSignal = signal =>
+                    {
+                        if (signal is ExitShopSignal)
+                            return C;
+                        return B;
+                    };
+                    
+                    return A;
+                }),
+            
+            new(id:                                 "Room05_005",
+                name:                               "镜中世界",
+                description:                        "镜中世界",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("镜中世界",
+                        "路边有一个镜子，你不知缘由走入了镜中。" +
+                        "四个一模一样镜灵看着你，分别向你讨要一张卡牌。");
+
+                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                        titleText: "选择",
+                        detailedText: "请选择0~4张牌，将所有牌变成其中随机的一张",
+                        descriptor: RunSkillDescriptorListModel.FromCount(4));
+                    
+                    DialogCell C0 = new("镜中世界",
+                        "你拒绝了镜灵的提议，决定继续前行。");
+                    
+                    DialogCell C1 = new("镜中世界",
+                        "你选择了1张牌递给了其中一个镜灵，镜灵们都看着你摇了摇头。");
+                    
+                    DialogCell C2 = new("镜中世界",
+                        "你选择了2张牌递给了其中两个镜灵，两个镜灵看了一眼你的卡牌，然后还给了你，你发现2张牌变成同一张牌了。");
+                    
+                    DialogCell C3 = new("镜中世界",
+                        "你选择了3张牌递给了其中三个镜灵，三个镜灵看了一眼你的卡牌，然后还给了你，你发现3张牌变成同一张牌了。");
+                    
+                    DialogCell C4 = new("镜中世界",
+                        "你选择了4张牌递给了每个镜灵，镜灵们看了一眼你的卡牌，然后还给了你，你发现4张牌变成同一张牌了。");
+
+                    DialogCell[] CList = new DialogCell[] { C0, C1, C2, C3, C4 };
+
+                    B.SetSubmitOperation(cardPickerCell =>
+                    {
+                        List<int> indices = new();
+                        for (int i = 0; i < cardPickerCell.RequirementSlotList.Count(); i++)
+                        {
+                            if (cardPickerCell.RequirementSlotList[i].Skill != null)
+                                indices.Add(i);
+                        }
+
+                        int count = indices.Count;
+                        if (count == 0)
+                            return CList[count];
+
+                        int copyingIndex = indices[RandomManager.Range(0, count)];
+                        RequirementSlot copyingSlot = cardPickerCell.RequirementSlotList[copyingIndex];
+                        RunSkill copyingSkill = copyingSlot.Skill;
+
+                        foreach (int index in indices)
+                        {
+                            RequirementSlot slot = cardPickerCell.RequirementSlotList[index];
+                            RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, slot.ToDeckIndex());
+                        }
+                        
+                        cardPickerCell.WithdrawAll();
+
+                        return CList[count];
+                    });
+
+                    A[0].SetSelect(option => B);
+
+                    return A;
+                }),
+            
+            new(id:                                 "Room05_006",
+                name:                               "空荡回廊",
+                description:                        "空荡回廊",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("空荡回廊",
+                        "你走进了一个黑漆漆的大厅中。" +
+                        "“有人么？”，你大喊道。",
+                        "继续");
+                    
+                    DialogCell B = new("空荡回廊",
+                        "没有得到回应。你只好继续走下去。你有预感，这场旅途总会迎来一个终点。");
+
+                    A[0].SetSelect(option => B);
+                    
+                    return A;
+                }),
+            
+            new(id:                                 "Room05_007",
+                name:                               "返虚战斗",
+                description:                        "返虚战斗",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    DialogCell A = new("返虚战斗",
+                        "过了不知多少年，你已经变老，和孙子辈的人在吹嘘当年自己是怎么打败一个又一个的敌人。" +
+                        "\n小孩们说你又在吹牛。你气急败坏，描述起了细节，我跟你们说，其中最凶险的一次。" +
+                        "\n只见对方这样一个招式过来，然后我就一挡，再。。。我就一档？然后就。。",
+                        "睁眼");
+                    
+                    DialogCell B = new("返虚战斗",
+                        "可能自己是太累了，讲着讲着就睡着了。小孩们拉起你的手，说故事不好听了，一起出去转转吧。" +
+                        "\n你一边答应着，一边觉得站起来有些费劲。",
+                        "睁眼");
+                    
+                    DialogCell C = new("返虚战斗",
+                        "自己怎么趴在工作桌上睡着了。旁边是自己编撰的小说，基于年轻时的冒险经历。" +
+                        "\n哎，一会吃碗面然后休息一下吧。" +
+                        "\n稿件快赶不上时间了，细节的部分要跳过一些了。你想到。",
+                        "睁眼！！！");
+                    
+                    DialogCell D = new("返虚战斗",
+                        "你发现了自己正在出于和敌人的大战之中。敌人看到你还活着有些惊讶。" +
+                        "\n仿佛意思是刚才那一招出手，自己应该已经死了。",
+                        "");
+                    
+                    EntityEntry finalBoss = RunManager.Instance.Environment.HuaShenBossEntity ?? Encyclopedia.EntityCategory.FromName("凌霄大圣");
+                    bool encore = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry()
+                        .FanXuBossEncore;
+                    
+                    RunEntity[] entities = AppManager.Instance.EditorManager.EntityEditableList
+                        .FilterObj(e => e.GetEntry() == finalBoss && e.GetJingJie() == JingJie.FanXu)
+                        .ToArray();
+                    
+                    Assert.IsTrue(entities.Length >= 2);
+                    
+                    RunEntity firstBoss = entities[0];
+                    RunEntity secondBoss = entities[1];
+                    
+                    BattleCell battleCell1 = new(firstBoss);
+                    BattleCell battleCell2 = new(secondBoss);
+                    
+                    DialogCell firstWinNoEncore = new("返虚战斗",
+                        "终于胜利了。比起胜利的喜悦，享受此时片刻的安宁对你来说更为重要。");
+                    
+                    DialogCell firstWinWithEncore = new("返虚战斗",
+                        "你知道你的胜利只是侥幸。你的招式短暂的突破到了返虚的境界，但是肉体欠的功夫可不只是一朝一夕能达到的。" +
+                        "\n只见对手并不承认你的胜利，换了一套招式，再度向你袭来。");
+                    
+                    DialogCell secondWin = new("返虚战斗",
+                        "好几次，你都以为自己已经要被打败了，只不过到了最后关头，自己的术法总是快了一步。" +
+                        "\n从未经历这种级别的战斗。出乎意料的，你现在脑海中想的不是功法啊，修为啊，这种自己一直以来追求的。" +
+                        "\n自己这个境界长久不进食，也不会有问题。但是第一次，你开始思索着，今天晚饭吃什么好呢？");
+
+                    A[0].SetSelect(option => B);
+                    B[0].SetSelect(option => C);
+                    C[0].SetSelect(option => D);
+                    D[0].SetSelect(option => battleCell1);
+                    battleCell1.SetWinOperation(() => encore ? firstWinWithEncore : firstWinNoEncore);
+                    battleCell1.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        return null;
+                    });
+                    
+                    firstWinNoEncore[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        return null;
+                    });
+
+                    firstWinWithEncore[0].SetSelect(option => battleCell2);
+                    
+                    battleCell2.SetWinOperation(() => secondWin);
+                    battleCell2.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        return null;
+                    });
+                    
+                    secondWin[0].SetSelect(option =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        return null;
+                    });
+
+                    return A;
+                }),
+            
+            #endregion
+
+            #region 06_Reserved
 
             new(id:                                 "Room0043",
                 name:                               "忘忧堂",
@@ -2882,7 +3242,7 @@ public class RoomCategory : Category<RoomEntry>
 
             #endregion
 
-            #region Series
+            #region 07_Series
 
             new(id:                                 "Room0053",
                 name:                               "后羿1",
@@ -3293,7 +3653,7 @@ public class RoomCategory : Category<RoomEntry>
             
             #endregion
 
-            #region ForTesting
+            #region 08_ForTesting
 
             new(id:                                 "Room0059",
                 name:                               "动画测试",

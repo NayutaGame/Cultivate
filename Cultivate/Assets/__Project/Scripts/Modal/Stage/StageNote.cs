@@ -40,8 +40,8 @@ public class StageNote : AnnotatableSkill
     private int _maxCounter;
     public int GetMaxCounter() => _maxCounter;
 
-    public Sprite GetSprite()
-        => Skill.Entry.GetSprite();
+    public Sprite GetCardIllustration() => Skill.Entry.GetCardIllustration();
+    public Sprite GetBarIllustration() => Skill.Entry.GetBarIllustration();
 
     public WuXing GetWuXing()
         => Skill.Entry.GetWuXing();
