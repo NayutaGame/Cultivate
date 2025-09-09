@@ -25,20 +25,20 @@ public class TagCategory : Category<TagEntry>
         });
     }
     
-    public static TagEntry Jin      => Encyclopedia.TagCategory.List[0];
-    public static TagEntry Shui     => Encyclopedia.TagCategory.List[1];
-    public static TagEntry Mu       => Encyclopedia.TagCategory.List[2];
-    public static TagEntry Huo      => Encyclopedia.TagCategory.List[3];
-    public static TagEntry Tu       => Encyclopedia.TagCategory.List[4];
-    public static TagEntry Wu       => Encyclopedia.TagCategory.List[5];
-    public static TagEntry Attack   => Encyclopedia.TagCategory.List[6];
-    public static TagEntry Defend   => Encyclopedia.TagCategory.List[7];
-    public static TagEntry Mana     => Encyclopedia.TagCategory.List[8];
-    public static TagEntry Health   => Encyclopedia.TagCategory.List[9];
-    public static TagEntry Swift    => Encyclopedia.TagCategory.List[10];
-    public static TagEntry ZiZhi    => Encyclopedia.TagCategory.List[11];
-    public static TagEntry Exhaust  => Encyclopedia.TagCategory.List[12];
-    public static TagEntry Deplete  => Encyclopedia.TagCategory.List[13];
+    public static TagEntry Jin          => Encyclopedia.TagCategory.List[0];
+    public static TagEntry Shui         => Encyclopedia.TagCategory.List[1];
+    public static TagEntry Mu           => Encyclopedia.TagCategory.List[2];
+    public static TagEntry Huo          => Encyclopedia.TagCategory.List[3];
+    public static TagEntry Tu           => Encyclopedia.TagCategory.List[4];
+    public static TagEntry Wu           => Encyclopedia.TagCategory.List[5];
+    public static TagEntry Attack       => Encyclopedia.TagCategory.List[6];
+    public static TagEntry Defend       => Encyclopedia.TagCategory.List[7];
+    public static TagEntry Mana         => Encyclopedia.TagCategory.List[8];
+    public static TagEntry Health       => Encyclopedia.TagCategory.List[9];
+    public static TagEntry Swift        => Encyclopedia.TagCategory.List[10];
+    public static TagEntry Growth       => Encyclopedia.TagCategory.List[11];
+    public static TagEntry Exhaust      => Encyclopedia.TagCategory.List[12];
+    public static TagEntry Deplete      => Encyclopedia.TagCategory.List[13];
 
     public static int Length => Encyclopedia.TagCategory.Count();
 }

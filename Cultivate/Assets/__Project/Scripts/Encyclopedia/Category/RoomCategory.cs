@@ -1774,7 +1774,7 @@ public class RoomCategory : Category<RoomEntry>
                                           "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张自指牌",
                             new(jingJie: RunManager.Instance.Environment.JingJie,
-                                tagComposite: TagCategory.ZiZhi)));
+                                tagComposite: TagCategory.Growth)));
                     DialogCell D = new DialogCell(
                             titleText: "论无穷",
                             detailedText: "考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
@@ -2646,7 +2646,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell A = new("返虚战斗",
                         "过了不知多少年，你已经变老，和孙子辈的人在吹嘘当年自己是怎么打败一个又一个的敌人。" +
                         "\n小孩们说你又在吹牛。你气急败坏，描述起了细节，我跟你们说，其中最凶险的一次。" +
-                        "\n只见对方这样一个招式过来，然后我就一挡，再。。。我就一档？然后就。。",
+                        "\n只见对方这样一个招式过来，然后我就一挡，再。。。我就一挡？然后就。。",
                         "睁眼");
                     
                     DialogCell B = new("返虚战斗",

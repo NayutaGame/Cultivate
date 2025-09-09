@@ -55,7 +55,7 @@ public class StageSkill : StageClosureListener
     public void IncreaseRealCastedCount() => _realStageCastedCount += 1;
     private int _bonusStageCastedCount;
     public void SetBonusStageCastedCount(int value) => _bonusStageCastedCount = value;
-    public void IncreaseBonusCastedCount() => _bonusStageCastedCount += 1;
+    public void IncreaseBonusCastedCount(int value = 1) => _bonusStageCastedCount += value;
 
     public int TotalStageCastedCount => _realStageCastedCount + _bonusStageCastedCount;
 

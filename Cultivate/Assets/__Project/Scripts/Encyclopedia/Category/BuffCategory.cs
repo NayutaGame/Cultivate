@@ -595,6 +595,28 @@ public class BuffCategory : Category<BuffEntry>
                     }),
                 }),
 
+            new(id:                         "Buff03_015",
+                name:                       "时光",
+                rawDescription:             $"下次使用成长牌前，先成长[层数]次",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_EXECUTE, -1, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        ExecuteDetails d = (ExecuteDetails)closureDetails;
+                        if (b.Owner != d.Caster) return;
+                        if (!d.Skill.Entry.GetTagComposite().Contains(TagCategory.Growth)) return;
+                        
+                        d.Skill.IncreaseBonusCastedCount(b.Stack);
+
+                        b.Emphasize();
+                        await b.LoseStackProcedure(b.Stack);
+                    }),
+                }),
+
             #endregion
             
             #region 04火
@@ -895,6 +917,68 @@ public class BuffCategory : Category<BuffEntry>
                         
                         b.Emphasize();
                         await b.Owner.HealProcedure(b.Owner.MaxHp - b.Owner.Hp);
+                    }),
+                }),
+            
+            new(id:                         "Buff04_012",
+                name:                       "藏锋",
+                rawDescription:             "攻击的效果变成获得护甲",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_ATTACK, 2, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        AttackDetails d = (AttackDetails)closureDetails;
+
+                        if (d.Src != b.Owner) return;
+                        d.Cancel = true;
+                        
+                        b.Emphasize();
+                        await b.Owner.GainArmorProcedure(d.Value, induced: d.Induced);
+                    }),
+                }),
+            
+            new(id:                         "Buff04_013",
+                name:                       "明镜",
+                rawDescription:             "下[Stack]次失去生命时，获得护甲",
+                buffStackRule:              BuffStackRule.Add,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_DAMAGE, 2, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        DamageDetails d = (DamageDetails)closureDetails;
+
+                        if (d.Tgt != b.Owner) return;
+                        b.Emphasize();
+                        await b.LoseStackProcedure();
+                        await b.Owner.GainArmorProcedure(d.Value, induced: true);
+                    }),
+                }),
+            
+            new(id:                         "Buff04_014",
+                name:                       "不动明王决",
+                rawDescription:             "使用非攻击牌后将其升华",
+                buffStackRule:              BuffStackRule.One,
+                friendly:                   true,
+                dispellable:                false,
+                closures:                   new StageClosure[]
+                {
+                    new(StageClosureDict.DID_CAST, 0, async (owner, closure, closureDetails) =>
+                    {
+                        Buff b = (Buff)owner;
+                        CastDetails d = (CastDetails)closureDetails;
+
+                        if (b.Owner != d.Caster) return;
+                        if (d.Skill.Exhausted) return;
+                        
+                        b.Emphasize();
+                        await d.Skill.ExhaustProcedure();
                     }),
                 }),
 

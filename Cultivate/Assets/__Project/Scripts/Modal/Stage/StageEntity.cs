@@ -703,8 +703,12 @@ public class StageEntity : Addressable, StageClosureListener
 
     public void RegisterEntityClosures()
     {
+        _env.ClosureDict.Register(this, RecordTriggeredCritTimes);
+        _env.ClosureDict.Register(this, RecordTriggeredLifestealTimes);
+        _env.ClosureDict.Register(this, RecordTriggeredPenetrateTimes);
         _env.ClosureDict.Register(this, RecordActualHeal);
         _env.ClosureDict.Register(this, RecordBurnTimes);
+        _env.ClosureDict.Register(this, RecordHighestAttack);
         _env.ClosureDict.Register(this, RecordHighestMana);
         _env.ClosureDict.Register(this, RecordHighestJianYi);
         _env.ClosureDict.Register(this, OppoLoseArmorTimes);
@@ -713,13 +717,50 @@ public class StageEntity : Addressable, StageClosureListener
 
     public void UnregisterEntityClosures()
     {
+        _env.ClosureDict.Unregister(this, RecordTriggeredCritTimes);
+        _env.ClosureDict.Unregister(this, RecordTriggeredLifestealTimes);
+        _env.ClosureDict.Unregister(this, RecordTriggeredPenetrateTimes);
         _env.ClosureDict.Unregister(this, RecordActualHeal);
         _env.ClosureDict.Unregister(this, RecordBurnTimes);
+        _env.ClosureDict.Unregister(this, RecordHighestAttack);
         _env.ClosureDict.Unregister(this, RecordHighestMana);
         _env.ClosureDict.Unregister(this, RecordHighestJianYi);
         _env.ClosureDict.Unregister(this, OppoLoseArmorTimes);
         _env.ClosureDict.Unregister(this, LastRotatedWuXing);
     }
+
+    public static string TriggeredCritTimesKey = "TriggeredCritTimes";
+    private static StageClosure RecordTriggeredCritTimes =
+        new(StageClosureDict.WIL_DAMAGE, 1, async (listener, closure, closureDetails) =>
+        {
+            StageEntity entity = listener as StageEntity;
+            DamageDetails d = (DamageDetails)closureDetails;
+                    
+            if (entity != d.Src) return;
+            entity.Memory.PerformOperation(TriggeredCritTimesKey, 0, record => record += d.Crit ? 1 : 0);
+        });
+
+    public static string TriggeredLifestealTimesKey = "TriggeredLifestealTimes";
+    private static StageClosure RecordTriggeredLifestealTimes =
+        new(StageClosureDict.WIL_DAMAGE, 1, async (listener, closure, closureDetails) =>
+        {
+            StageEntity entity = listener as StageEntity;
+            DamageDetails d = (DamageDetails)closureDetails;
+                    
+            if (entity != d.Src) return;
+            entity.Memory.PerformOperation(TriggeredLifestealTimesKey, 0, record => record += d.LifeSteal ? 1 : 0);
+        });
+
+    public static string TriggeredPenetrateTimesKey = "TriggeredPenetrateTimes";
+    private static StageClosure RecordTriggeredPenetrateTimes =
+        new(StageClosureDict.WIL_ATTACK, 1, async (listener, closure, closureDetails) =>
+        {
+            StageEntity entity = listener as StageEntity;
+            AttackDetails d = (AttackDetails)closureDetails;
+                    
+            if (entity != d.Src) return;
+            entity.Memory.PerformOperation(TriggeredPenetrateTimesKey, 0, record => record += d.Penetrate ? 1 : 0);
+        });
 
     public static string ActualHealKey = "ActualHeal";
     private static StageClosure RecordActualHeal =
@@ -744,6 +785,18 @@ public class StageEntity : Addressable, StageClosureListener
             entity.Memory.PerformOperation(BurnTimesKey, 0, record => record + 1);
         });
 
+    public static string HighestAttackKey = "HighestAttack";
+    private static StageClosure RecordHighestAttack =
+        new(StageClosureDict.DID_ATTACK, -1, async (owner, closure, closureDetails) =>
+        {
+            StageEntity entity = owner as StageEntity;
+            AttackDetails d = (AttackDetails)closureDetails;
+            
+            if (entity != d.Src) return;
+            
+            entity.Memory.PerformOperation(HighestAttackKey, 0, record => Mathf.Max(record, d.Value));
+        });
+
     public static string HighestManaKey = "HighestMana";
     private static StageClosure RecordHighestMana =
         new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closure, closureDetails) =>
@@ -757,7 +810,7 @@ public class StageEntity : Addressable, StageClosureListener
             entity.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("灵气")));
         });
 
-    public static string HighestJianYiKey = "HighestMana";
+    public static string HighestJianYiKey = "HighestJianYi";
     private static StageClosure RecordHighestJianYi =
         new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closure, closureDetails) =>
         {
@@ -765,7 +818,7 @@ public class StageEntity : Addressable, StageClosureListener
             GainBuffDetails d = (GainBuffDetails)closureDetails;
 
             if (entity != d.Tgt) return;
-            if (d.BuffEntry.GetName() != "剑意") return;
+            if (d.BuffEntry != Encyclopedia.BuffCategory.FromName("剑意")) return;
             
             entity.Memory.PerformOperation(HighestJianYiKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("剑意")));
         });
