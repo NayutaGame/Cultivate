@@ -65,9 +65,6 @@ public class MergeDetails : RunClosureDetails
     public void CalcMergeTarget()
     {
         ProcessOverridingRules();
-        if (State != MergeState.Continue)
-            return;
-
         ProcessDefaultRules();
     }
 

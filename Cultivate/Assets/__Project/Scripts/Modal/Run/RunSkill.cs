@@ -130,6 +130,8 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill, RunClo
 
     public void OnAfterDeserialize()
     {
+        if (!string.IsNullOrEmpty(_entry.GetId()) && Encyclopedia.SkillCategory.FromId(_entry.GetId()) == null)
+            Debug.Log($"缺失RunSkill Id: {_entry.GetId()}");
         _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.SkillCategory.FromId(_entry.GetId());
         _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
 

@@ -12,7 +12,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Jin,
                 rawDescription:      "以迅疾的剑势破开敌人防御，每一击都直指要害。剑招连绵不绝，令敌人难以喘息。",
                 trivia:              "无常剑法讲究'心无常处即是常'，剑随心动，无迹可循。",
-                cardNames:           new string[] { "金刃", "起势", "敛息", "流云", "刃雨", "盘旋", "白刃", "山风", "无妄" },
+                cardNames:           new string[] { "金刃", "起势", "敛息", "磨刀", "刃雨", "弹指", "摇曳", "秋露白", "无妄" },
                 startCardNames:      new string[] { "起势", "金刃", "敛息" }
                 ),
             
@@ -21,8 +21,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Jin,
                 rawDescription:      "一击必杀的极致剑术。以凌厉的剑气撕裂空间，在瞬息之间决定胜负。",
                 trivia:              "大音希声，大象无形。此剑法追求剑道极致，一剑既出，天地俱寂。",
-                cardNames:           new string[] { "寻猎", "秋露白", "天地同寿", "醉意", "摇曳", "刺穴", "袖里乾坤", "一莲托生", "闪击" },
-                startCardNames:      new string[] { "秋露白", "寻猎", "天地同寿" }
+                cardNames:           new string[] { "寻猎", "醉意", "流云", "天地同寿", "闪击", "袖里乾坤", "山风", "盘旋", "一莲托生" },
+                startCardNames:      new string[] { "寻猎", "醉意", "天地同寿" }
                 ),
             
             new(id:                  "Pack0003",
@@ -30,8 +30,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Shui,
                 rawDescription:      "引导天地元气，化为己用。可汇聚灵气疗伤，亦可凝聚剑气伤敌。",
                 trivia:              "相传天河剑仙观天河之势，悟天地元气流转之理，创此神功。修习者常年观星引气，终有望羽化登仙。",
-                cardNames:           new string[] { "恋花", "吐纳", "止水", "调和", "大鱼", "海啸", "彩虹", "飞鸿踏雪", "一梦如是" },
-                startCardNames:      new string[] { "吐纳", "恋花", "止水" }
+                cardNames:           new string[] { "恋花", "吐纳", "止水", "大鱼", "一梦如是", "彩虹", "海啸", "飞鸿踏雪", "奔腾" },
+                startCardNames:      new string[] { "恋花", "吐纳", "止水" }
                 ),
             
             new(id:                  "Pack0004",
@@ -48,8 +48,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Mu,
                 rawDescription:      "如同参天大树般稳固持久的心法。每次运功都会增强功力，蕴养己身。",
                 trivia:              "大椿者，以八千岁为春，八千岁为秋。此功讲究厚积薄发，修习者需有大毅力。",
-                cardNames:           new string[] { "小松", "入木三分", "明神", "回春", "落英", "钟声", "一心一剑", "梅开二度", "一叶知秋" },
-                startCardNames:      new string[] { "小松", "明神", "回春" }
+                cardNames:           new string[] { "若竹", "小松", "入木三分", "回春", "落英", "钟声", "一心一剑", "梅开二度", "一叶知秋" },
+                startCardNames:      new string[] { "若竹", "小松", "回春" }
                 ),
             
             new(id:                  "Pack0006",
@@ -57,8 +57,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Mu,
                 rawDescription:      "灵动如龙的身法，可随心所欲地穿梭于敌阵之中。攻守之势，瞬息万变。",
                 trivia:              "此功原是观龙游天时所创，讲究顺应自然，随风而动。",
-                cardNames:           new string[] { "潜龙在渊", "见龙在田", "生机", "清泉", "飞龙在天", "回响", "亢龙有悔", "鹤回翔", "一念无量劫" },
-                startCardNames:      new string[] { "潜龙在渊", "见龙在田", "生机" }
+                cardNames:           new string[] { "潜龙在渊", "见龙在田", "时光", "明神", "飞龙在天", "回响", "亢龙有悔", "鹤回翔", "一念无量劫" },
+                startCardNames:      new string[] { "潜龙在渊", "见龙在田", "时光" }
                 ),
             
             new(id:                  "Pack0007",
@@ -66,8 +66,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 rawDescription:      "集攻防于一体的剑舞。每一式都蕴含多重变化，可攻可守，令敌人难以应对。",
                 trivia:              "剑法灵感来自归鸿展翅，十二式浑然一体，如同天成。",
-                cardNames:           new string[] { "云袖", "正念", "剑王行", "战意", "天衣无缝", "晚霞", "常夏", "登宝塔", "一舞惊鸿" },
-                startCardNames:      new string[] { "云袖", "正念", "战意" }
+                cardNames:           new string[] { "云袖", "一切皆苦", "剑王行", "拂晓", "天衣无缝", "窑土", "一舞惊鸿", "晚霞", "藏锋" },
+                startCardNames:      new string[] { "云袖", "剑王行", "拂晓" }
                 ),
             
             new(id:                  "Pack0008",
@@ -75,8 +75,8 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Huo,
                 rawDescription:      "以燃烧气血为代价，爆发出惊人的威力。使用者与敌人同归于尽的觉悟越强，威力越大。",
                 trivia:              "此功原是佛门明王法，后流落江湖，习者多有走火入魔之危。",
-                cardNames:           new string[] { "一力降十会", "轰天", "拂晓", "明镜", "浴火", "藏锋", "红莲", "观众生", "炎爆" },
-                startCardNames:      new string[] { "轰天", "一力降十会", "拂晓" }
+                cardNames:           new string[] { "轰天", "怒瞳", "断罪", "浴火", "阿修罗", "明镜", "罗刹", "舍生", "不动明王诀" },
+                startCardNames:      new string[] { "轰天", "怒瞳", "浴火" }
                 ),
             
             new(id:                  "Pack0009",

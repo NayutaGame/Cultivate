@@ -75,15 +75,20 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
         }
     }
 
-    public static CLLibrary.Bound LianQi2HuaShen => new(0, 5);
     public static CLLibrary.Bound LianQiOnly => new(0, 1);
-    public static CLLibrary.Bound ZhuJi2HuaShen => new(1, 5);
+    public static CLLibrary.Bound LianQi2HuaShen => new(0, 5);
+    public static CLLibrary.Bound LianQi2FanXu => new(0, 6);
     public static CLLibrary.Bound ZhuJiOnly => new(1, 2);
-    public static CLLibrary.Bound JinDan2HuaShen => new(2, 5);
+    public static CLLibrary.Bound ZhuJi2HuaShen => new(1, 5);
+    public static CLLibrary.Bound ZhuJi2FanXu => new(1, 6);
     public static CLLibrary.Bound JinDanOnly => new(2, 3);
-    public static CLLibrary.Bound YuanYing2HuaShen => new(3, 5);
+    public static CLLibrary.Bound JinDan2HuaShen => new(2, 5);
+    public static CLLibrary.Bound JinDan2FanXu => new(2, 6);
     public static CLLibrary.Bound YuanYingOnly => new(3, 4);
+    public static CLLibrary.Bound YuanYing2HuaShen => new(3, 5);
+    public static CLLibrary.Bound YuanYing2FanXu => new(3, 6);
     public static CLLibrary.Bound HuaShenOnly => new(4, 5);
+    public static CLLibrary.Bound HuaShen2FanXu => new(4, 6);
     public static CLLibrary.Bound FanXuOnly => new(5, 6);
     
     public static implicit operator int(JingJie jingJie) => jingJie._index;

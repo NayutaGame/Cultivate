@@ -123,6 +123,9 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
             }
 
             slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(d.OverridingSkillEntry, d.OverridingJingJie);
+
+            if (slot.PlacedSkill == null)
+                ;
         });
 
         RunManager.Instance.Environment.SendEvent(RunClosureDict.DID_PLACEMENT, d);

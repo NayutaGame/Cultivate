@@ -8,6 +8,7 @@ using UnityEngine.Assertions;
 public class BarterCell : Cell
 {
     private int _targetItemCount;
+    private bool _targetIsMutator;
     private BarterInventory _inventory;
     private Predicate<RunSkill> _fromPred;
     private Predicate<SkillEntry> _toPred;
@@ -18,23 +19,24 @@ public class BarterCell : Cell
         { "Inventory",                  thisObject => ((BarterCell)thisObject).GetInventory() },
     };
     public override object Get(string s) => Accessor[s](this);
-    private BarterCell(int targetItemCount, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
+    private BarterCell(int targetItemCount, bool targetIsMutator, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
     {
         _targetItemCount = targetItemCount;
+        _targetIsMutator = targetIsMutator;
         _inventory = new();
         _fromPred = fromPred;
         _toPred = toPred;
     }
 
     public static BarterCell FromLiteral(int targetItemCount, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
-        => new(targetItemCount, fromPred, toPred);
+        => new(targetItemCount, false, fromPred, toPred);
 
     public static BarterCell FromCount(int targetItemCount = 2)
-        => new(targetItemCount, null, null);
+        => new(targetItemCount, false, null, null);
 
     public static BarterCell FromFanXuMingYuanShop()
     {
-        return new(6, runSkill => runSkill.GetEntry() == Encyclopedia.SkillCategory.FromName("命石"), null);
+        return new(6, true, runSkill => runSkill.GetEntry() == Encyclopedia.SkillCategory.FromName("命石"), null);
     }
     
     public BarterInventory GetInventory() => _inventory;
@@ -80,7 +82,14 @@ public class BarterCell : Cell
                 predicates, fromSkills[i].JingJie);
             Assert.IsTrue(fromSkills[i].JingJie != null);
             GainSkillBuilder b = new();
-            b.Draw(descriptor);
+            if (!_targetIsMutator)
+            {
+                b.Draw(descriptor);
+            }
+            else
+            {
+                b.DrawMutator(JingJie.HuaShen);
+            }
             toSkills[i] = SkillEntryDescriptor.FromEntryJingJie(b.DrawnSkillEntries[0], fromSkills[i].JingJie); // distinct, non consume
         }
         
