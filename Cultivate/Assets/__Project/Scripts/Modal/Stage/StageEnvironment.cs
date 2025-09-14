@@ -316,8 +316,11 @@ public class StageEnvironment : Addressable, StageClosureListener
         {
             AttackDetails d = attackDetails.ShallowClone();
             await _closureDict.SendEvent(StageClosureDict.WIL_ATTACK, d);
-            await SingleAttackProcedure(d);
-            await _closureDict.SendEvent(StageClosureDict.DID_ATTACK, d);
+            if (!d.Cancel)
+            {
+                await SingleAttackProcedure(d);
+                await _closureDict.SendEvent(StageClosureDict.DID_ATTACK, d);
+            }
             await NextKey(d.Induced);
         }
 

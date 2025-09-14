@@ -512,7 +512,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：每轮：净化2" +
                                                                                     "\n4张：第一次造成伤害时，获得护甲" +
                                                                                     "\n6张：最后两张都有终结效果" +
-                                                                                    "\n9张：可以抵挡一次禁制Debuff",
+                                                                                    "\n9张：所有非吟唱类的消耗，都变成1吟唱",
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -528,20 +528,14 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 f.Emphasize();
                                 await f.Owner.GainBuffProcedure("连岳");
                             }),
-                            new(StageClosureDict.WIL_GAIN_BUFF, 0, async (listener, closure, stageEventDetails) =>
-                            {
-                                Formation f = (Formation)listener;
-                                GainBuffDetails d = (GainBuffDetails)stageEventDetails;
-                                if (f.Owner != d.Tgt) return;
-                                if (d.Cancel) return;
-                                if (d.Stack == 0) return;
-                                if (f.Owner.GetStackOfBuff("天人合一") > 0) return;
-                                if (!d.BuffEntry.IsForbiddenDebuff) return;
-                                
-                                await f.Owner.GainBuffProcedure("天人合一");
-                                f.Emphasize();
-                                d.Cancel = true;
-                            }),
+                            // new(StageClosureDict.WIL_MANA_COST, -4, async (owner, closure, closureDetails) =>
+                            // {
+                            //     Buff b = (Buff)owner;
+                            //     CostDetails d = closureDetails as CostDetails;
+                            //
+                            //     b.Emphasize();
+                            //     d.Value = 0;
+                            // }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
@@ -550,7 +544,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：第一次造成伤害时，获得护甲" +
                         "\n6张：最后两张都有终结效果" +
-                        "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
+                        "\n9张：所有非吟唱类的消耗，都变成1吟唱".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -574,7 +568,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：每轮：净化2" +
                         "\n4张：第一次造成伤害时，获得护甲" +
                         "\n6张：最后两张都有终结效果".ApplyInactive() +
-                        "\n9张：可以抵挡一次禁制Debuff".ApplyInactive(),
+                        "\n9张：所有非吟唱类的消耗，都变成1吟唱".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -616,7 +610,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：每轮：净化2".ApplyInactive() +
                         "\n4张：第一次造成伤害时，获得护甲".ApplyInactive() +
                         "\n6张：最后两张都有终结效果".ApplyInactive() +
-                        "\n9张：可以抵挡一次禁制Debuff".ApplyInactive()),
+                        "\n所有非吟唱类的消耗，都变成1吟唱".ApplyInactive()),
                 }),
             
             new(id: "FormationGroup0006",

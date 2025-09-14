@@ -13,38 +13,59 @@ public class BarterCell : Cell
     private Predicate<RunSkill> _fromPred;
     private Predicate<SkillEntry> _toPred;
 
+    private RunCostDefinition _refreshCost;
+
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Guide",                      thisObject => ((BarterCell)thisObject).GetGuideDescriptor() },
         { "Inventory",                  thisObject => ((BarterCell)thisObject).GetInventory() },
     };
     public override object Get(string s) => Accessor[s](this);
-    private BarterCell(int targetItemCount, bool targetIsMutator, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
+    private BarterCell(int targetItemCount, bool targetIsMutator, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred, RunCostDefinition refreshCost)
     {
         _targetItemCount = targetItemCount;
         _targetIsMutator = targetIsMutator;
         _inventory = new();
         _fromPred = fromPred;
         _toPred = toPred;
+        _refreshCost = refreshCost;
     }
 
     public static BarterCell FromLiteral(int targetItemCount, Predicate<RunSkill> fromPred, Predicate<SkillEntry> toPred)
-        => new(targetItemCount, false, fromPred, toPred);
+        => new(targetItemCount, false, fromPred, toPred, null);
 
     public static BarterCell FromCount(int targetItemCount = 2)
-        => new(targetItemCount, false, null, null);
+        => new(targetItemCount, false, null, null, null);
 
     public static BarterCell FromFanXuMingYuanShop()
     {
-        return new(6, true, runSkill => runSkill.GetEntry() == Encyclopedia.SkillCategory.FromName("命石"), null);
+        return new(6,
+            true,
+            runSkill => runSkill.GetEntry() == Encyclopedia.SkillCategory.FromName("命石"),
+            null,
+            new SkillCostDefinition(RunSkillDescriptor.FromName("命石"), "需要1命石"));
     }
-    
-    public BarterInventory GetInventory() => _inventory;
 
-    public override void DefaultEnter(Cell cell)
+    public bool RefreshItemsIsAllowed()
+        => _refreshCost != null;
+
+    public bool RefreshItemsIsAffordable()
+        => _refreshCost?.Affordable() ?? false;
+
+    public string GetRefreshItemsDescription()
+        => $"刷新 {_refreshCost.GetDescription()}";
+
+    public void RefreshItems()
     {
-        base.DefaultEnter(cell);
+        if (!RefreshItemsIsAffordable())
+            return;
 
+        _refreshCost.Consume();
+        PopulateInventory();
+    }
+
+    private void PopulateInventory()
+    {
         RunEnvironment env = RunManager.Instance.Environment;
 
         FinitePool<SkillEntryDescriptor> pool = new FinitePool<SkillEntryDescriptor>();
@@ -98,6 +119,15 @@ public class BarterCell : Cell
             _inventory.Add(new BarterItem(fromSkills[i], toSkills[i], Exchange));
     }
     
+    public BarterInventory GetInventory() => _inventory;
+
+    public override void DefaultEnter(Cell cell)
+    {
+        base.DefaultEnter(cell);
+        
+        PopulateInventory();
+    }
+    
     private void Exchange(BarterItem barterItem)
     {
         ExchangeSkillDetails details = new(barterItem);
@@ -109,7 +139,14 @@ public class BarterCell : Cell
             return;
 
         GainSkillBuilder b = new();
-        b.Draw(barterItem.ToSkill);
+        if (!_targetIsMutator)
+        {
+            b.Draw(barterItem.ToSkill);
+        }
+        else
+        {
+            b.Pick(barterItem.ToSkill.Entry);
+        }
         b.Create(barterItem.ToSkill.JingJie);
         b.RecordDeckIndex(deckIndex);
         b.Add();

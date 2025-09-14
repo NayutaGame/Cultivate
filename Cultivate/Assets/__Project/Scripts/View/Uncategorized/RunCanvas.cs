@@ -180,6 +180,9 @@ public class RunCanvas : Panel
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
 
+        // TODO： 这里报过一个很奇怪的错误
+        // 环境是Run胜利，回到Title，再进入Run，BattlePanel中，打开卡牌Annotation，查看卡包
+        // 然后过了一小段时间，不到一秒，报了错，下面这句为空
         Cell d = RunManager.Instance.Environment.GetPanel();
         bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
                         d is DiscoverSkillCell;

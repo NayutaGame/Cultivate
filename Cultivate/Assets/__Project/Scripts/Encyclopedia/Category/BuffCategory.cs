@@ -1107,55 +1107,6 @@ public class BuffCategory : Category<BuffEntry>
                         await b.Owner.DispelProcedure(2);
                     }),
                 }),
-            
-            new(id:                         "Buff05_008",
-                name:                       "天人合一",
-                rawDescription:             "已经触发过天人合一",
-                buffStackRule:              BuffStackRule.One,
-                friendly:                   true,
-                dispellable:                false),
-            
-            new(id:                         "Buff05_009",
-                name:                       "那由他",
-                rawDescription:             "灵气/吟唱消耗为零，Step阶段无法受影响，所有Buff层数不会再变化",
-                buffStackRule:              BuffStackRule.One,
-                friendly:                   true,
-                dispellable:                false,
-                closures:                   new StageClosure[]
-                {
-                    new(StageClosureDict.WIL_MANA_COST, -4, async (owner, closure, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        CostDetails d = closureDetails as CostDetails;
-
-                        b.Emphasize();
-                        d.Value = 0;
-                    }),
-                    new(StageClosureDict.WIL_GAIN_BUFF, 0, async (owner, closure, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        GainBuffDetails d = (GainBuffDetails)closureDetails;
-
-                        b.Emphasize();
-                        d.Stack = 0;
-                    }),
-                    new(StageClosureDict.WIL_LOSE_BUFF, 0, async (owner, closure, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        LoseBuffDetails d = (LoseBuffDetails)closureDetails;
-
-                        b.Emphasize();
-                        d.Stack = 0;
-                    }),
-                    new(StageClosureDict.WIL_TURN, 101, async (owner, closure, closureDetails) =>
-                    {
-                        Buff b = (Buff)owner;
-                        TurnDetails d = (TurnDetails)closureDetails;
-
-                        b.Emphasize();
-                        d.Cancel = false;
-                    }),
-                }),
 
             #endregion
             

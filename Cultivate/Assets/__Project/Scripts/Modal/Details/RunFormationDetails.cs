@@ -18,8 +18,6 @@ public class RunFormationDetails : RunClosureDetails
         foreach (SkillSlot slot in entity.TraversalCurrentSlots())
         {
             SkillEntry entry = slot.PlacedSkill.Entry;
-            if (entry == null)
-                ;
             JingJie jingJie = slot.PlacedSkill.JingJie;
 
             WuXing wuXing = entry.WuXing;

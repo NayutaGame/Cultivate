@@ -33,6 +33,9 @@ public class RunSkillDescriptor : AnnotatableLine
     public static RunSkillDescriptor AnySkill()
         => new(description: new("请提交任意一张牌"));
 
+    public static RunSkillDescriptor FromName(string name)
+        => new(pred: skill => skill.GetEntry() == Encyclopedia.SkillCategory.FromName(name), description: new($"需要提交{name}卡牌"));
+
     public static RunSkillDescriptor FromWuXing(WuXing wuXing)
         => new(wuXing: wuXing, description: new($"请提交一张五行为{wuXing.GetName()}的牌"));
 

@@ -1,11 +1,13 @@
 
+using TMPro;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
     public ListView ListView;
 
+    public TMP_Text RefreshItemsText;
+    public Button4State RefreshItemsButton;
     public Button4State ExitButton;
 
     private Address _address;
@@ -20,13 +22,16 @@ public class BarterPanel : Panel
 
     private void OnEnable()
     {
+        RefreshItemsButton.LeftClickNeuron.Add(RefreshItems);
         ExitButton.LeftClickNeuron.Add(ExitShop);
         RunManager.Instance.Environment.ExchangeSkillNeuron.Add(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
         RunManager.Instance.Environment.MergeNeuron.Add(Refresh);
+        RefreshRefreshItemsButton();
     }
 
     private void OnDisable()
     {
+        RefreshItemsButton.LeftClickNeuron.Remove(RefreshItems);
         ExitButton.LeftClickNeuron.Remove(ExitShop);
         RunManager.Instance.Environment.ExchangeSkillNeuron.Remove(CanvasManager.Instance.RunCanvas.ExchangeSkillStaging);
         RunManager.Instance.Environment.MergeNeuron.Remove(Refresh);
@@ -38,6 +43,30 @@ public class BarterPanel : Panel
     public override void Refresh()
     {
         ListView.Refresh();
+        RefreshRefreshItemsButton();
+    }
+
+    private void RefreshRefreshItemsButton()
+    {
+        BarterCell barterCell = _address.Get<BarterCell>();
+        if (!barterCell.RefreshItemsIsAllowed())
+        {
+            RefreshItemsButton.gameObject.SetActive(false);
+            return;
+        }
+        
+        RefreshItemsButton.gameObject.SetActive(true);
+        RefreshItemsText.text = barterCell.GetRefreshItemsDescription();
+        RefreshItemsButton.SetStateToInactiveFrom(!barterCell.RefreshItemsIsAffordable());
+    }
+
+    private void RefreshItems(InteractBehaviour ib, PointerEventData d)
+    {
+        BarterCell barterCell = _address.Get<BarterCell>();
+        barterCell.RefreshItems();
+        
+        ListView.Sync();
+        RefreshRefreshItemsButton();
     }
 
     public XView BarterItemFromIndex(int commodityIndex)

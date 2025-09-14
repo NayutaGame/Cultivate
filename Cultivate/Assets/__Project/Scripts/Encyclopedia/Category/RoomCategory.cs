@@ -2663,7 +2663,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell D = new("返虚战斗",
                         "你发现了自己正在出于和敌人的大战之中。敌人看到你还活着有些惊讶。" +
                         "\n仿佛意思是刚才那一招出手，自己应该已经死了。",
-                        "");
+                        "战斗");
                     
                     EntityEntry finalBoss = RunManager.Instance.Environment.HuaShenBossEntity ?? Encyclopedia.EntityCategory.FromName("凌霄大圣");
                     bool encore = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry()
@@ -2674,9 +2674,12 @@ public class RoomCategory : Category<RoomEntry>
                         .ToArray();
                     
                     Assert.IsTrue(entities.Length >= 2);
-                    
-                    RunEntity firstBoss = entities[0];
-                    RunEntity secondBoss = entities[1];
+
+                    FinitePool<RunEntity> pool = new FinitePool<RunEntity>();
+                    pool.Populate(entities);
+                    pool.Shuffle();
+                    pool.TryPopItem(out RunEntity firstBoss);
+                    pool.TryPopItem(out RunEntity secondBoss);
                     
                     BattleCell battleCell1 = new(firstBoss);
                     BattleCell battleCell2 = new(secondBoss);
@@ -2726,6 +2729,63 @@ public class RoomCategory : Category<RoomEntry>
                     });
 
                     return A;
+                }),
+            
+            new(id:                                 "Room05_008",
+                name:                               "返虚三战斗",
+                description:                        "返虚三战斗",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    EntityEntry finalBoss = RunManager.Instance.Environment.HuaShenBossEntity ?? Encyclopedia.EntityCategory.FromName("凌霄大圣");
+                    bool encore = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry()
+                        .FanXuBossEncore;
+                    
+                    RunEntity[] entities = AppManager.Instance.EditorManager.EntityEditableList
+                        .FilterObj(e => e.GetEntry() == finalBoss && e.GetJingJie() == JingJie.FanXu)
+                        .ToArray();
+                    
+                    Assert.IsTrue(entities.Length >= 3);
+
+                    FinitePool<RunEntity> pool = new FinitePool<RunEntity>();
+                    pool.Populate(entities);
+                    pool.Shuffle();
+                    pool.TryPopItem(out RunEntity firstBoss);
+                    pool.TryPopItem(out RunEntity secondBoss);
+                    pool.TryPopItem(out RunEntity thirdBoss);
+                    
+                    BattleCell battleCell1 = new(firstBoss);
+                    BattleCell battleCell2 = new(secondBoss);
+                    BattleCell battleCell3 = new(thirdBoss);
+                    
+                    battleCell1.SetWinOperation(() => battleCell2);
+                    battleCell1.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        return null;
+                    });
+                    
+                    battleCell2.SetWinOperation(() => battleCell3);
+                    battleCell2.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        return null;
+                    });
+                    
+                    battleCell3.SetWinOperation(() =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        return null;
+                    });
+                    battleCell3.SetLoseOperation(() =>
+                    {
+                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        return null;
+                    });
+
+                    return battleCell1;
                 }),
             
             #endregion

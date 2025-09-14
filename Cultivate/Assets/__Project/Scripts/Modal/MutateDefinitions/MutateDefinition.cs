@@ -170,8 +170,8 @@ public class MutateDefinition
         skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd =>
             pd is CycleProcedureDefinition ||
             pd is FollowingCycleProcedureDefinition ||
-            pd is GainBuffProcedureDefinition ||
-            pd is GiveBuffProcedureDefinition),
+            (pd is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry.BuffStackRule != BuffStackRule.One) ||
+            pd is GiveBuffProcedureDefinition giveBuff && giveBuff.BuffEntry.BuffStackRule != BuffStackRule.One),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
@@ -189,11 +189,11 @@ public class MutateDefinition
                 {
                     fc.Gain += 1;
                 }
-                else if (cloned is GainBuffProcedureDefinition gainBuff)
+                else if (cloned is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry.BuffStackRule != BuffStackRule.One)
                 {
                     gainBuff.Stack += 1;
                 }
-                else if (cloned is GiveBuffProcedureDefinition giveBuff)
+                else if (cloned is GiveBuffProcedureDefinition giveBuff && giveBuff.BuffEntry.BuffStackRule != BuffStackRule.One)
                 {
                     giveBuff.Stack += 1;
                 }
@@ -225,13 +225,18 @@ public class MutateDefinition
                 newProcedureDefinitions.Add(cloned);
             }
 
-            ManaCostDefinition oldManaCost = skillDefinition.GetCostDefinition() as ManaCostDefinition;
-            ManaCostDefinition newManaCost = new ManaCostDefinition(
-                Math.Max(0, oldManaCost.Value - 2),
-                oldManaCost.Closures
-            );
-
-            return SkillDefinition.FromDefinition(newManaCost, newProcedureDefinitions.ToArray());
+            if (skillDefinition.GetCostDefinition() is ManaCostDefinition manaCost)
+            {
+                ManaCostDefinition newManaCost = new ManaCostDefinition(
+                    Math.Max(0, manaCost.Value - 2),
+                    manaCost.Closures
+                );
+                return SkillDefinition.FromDefinition(newManaCost, newProcedureDefinitions.ToArray());
+            }
+            else
+            {
+                return SkillDefinition.FromDefinition(skillDefinition.GetCostDefinition(), newProcedureDefinitions.ToArray());
+            }
         });
     
     public static readonly MutateDefinition CritMutate = new(

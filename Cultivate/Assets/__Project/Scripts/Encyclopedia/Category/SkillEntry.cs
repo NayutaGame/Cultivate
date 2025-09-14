@@ -92,7 +92,7 @@ public class SkillEntry : Entry, AnnotatableSkill
     public void SetPackEntry(PackEntry value) => _packEntry = value;
     
     public WuXing WuXing => _wuXing;
-    public bool JingJieContains(JingJie jingJie) => _jingJieBound.Contains(jingJie);
+    public bool JingJieContains(int jingJie) => _jingJieBound.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieBound.Start;
     public JingJie HighestJingJie => _jingJieBound.End - 1;
     public StageClosure[] Closures => _closures;

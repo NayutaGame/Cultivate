@@ -65,7 +65,7 @@ public class Button4State : XView
     public ButtonState GetState()
         => _state;
 
-    public void SetState(ButtonState state)
+    private void SetState(ButtonState state)
     {
         _state = state;
         UpdateAnimation();

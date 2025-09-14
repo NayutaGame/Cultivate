@@ -865,7 +865,7 @@ public class MapCategory : Category<MapEntry>
                         new DirectRoomDefinition(13, "命元商店"),
                         new DirectRoomDefinition(13, "镜中世界"),
                         new DirectRoomDefinition(13, "空荡回廊"),
-                        new DirectRoomDefinition(13, "返虚战斗"),
+                        new DirectRoomDefinition(13, "返虚三战斗"),
                     },
                 }),
         });

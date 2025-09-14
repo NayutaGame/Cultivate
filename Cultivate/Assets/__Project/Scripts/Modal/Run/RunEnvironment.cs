@@ -401,6 +401,27 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         return null;
     }
 
+    public bool DeckIndexFromDescriptor(out DeckIndex result, RunSkillDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
+    {
+        omit ??= Array.Empty<DeckIndex>();
+        
+        result = default;
+        
+        foreach (DeckIndex deckIndex in TraversalDeckIndices(excludingField, excludingHand))
+        {
+            if (omit.Contains(deckIndex))
+                continue;
+            RunSkill skill = SkillFromDeckIndex(deckIndex);
+            if (skill != null && descriptor.Contains(skill))
+            {
+                result = deckIndex;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool DeckIndexFromDescriptor(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
         omit ??= Array.Empty<DeckIndex>();

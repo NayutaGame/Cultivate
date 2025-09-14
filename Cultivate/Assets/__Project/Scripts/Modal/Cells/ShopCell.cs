@@ -202,8 +202,7 @@ public class ShopCell : Cell
     public static ShopCell FromFanXuHealthShop(int ladder)
     {
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
-            (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
+        Bound baseJingJieBound = JingJie.JinDan2HuaShen;
 
         ShopCell B = new(ladder, 1.5f, "气血商店", Encyclopedia.SpriteCategory.FromName("黑市"));
         B.SetEnter(panelDescriptor =>
