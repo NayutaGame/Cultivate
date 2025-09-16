@@ -13,11 +13,8 @@ public class StageEntity : Addressable, StageClosureListener
         TurnDetails d = new TurnDetails(_env, this, turnCount);
         ResetActionPoint();
 
-        string thisTurnAttackedKey = "thisTurnAttacked";
-        string thisTurnPreserveJianYiKey = "thisTurnPreserveJianYi";
-
-        Memory.SetVariable(thisTurnAttackedKey, false);
-        Memory.SetVariable(thisTurnPreserveJianYiKey, false);
+        Memory.SetVariable(ThisTurnAttackedKey, false);
+        Memory.SetVariable(ThisTurnPreserveJianYiKey, false);
 
         await _env.ClosureDict.SendEvent(StageClosureDict.WIL_TURN, d);
         if (!d.Cancel)
@@ -50,9 +47,14 @@ public class StageEntity : Addressable, StageClosureListener
         if (_costDefinition == null)
         {
             StageSkill skill = Skills[_p];
-            _costDetails = new(_env, this, skill);
-            _costDefinition = skill.GetSkillDefinition().GetCostDefinition();
-            _costDetails.CostDescription = _costDefinition.GetLiteralCostDescription();
+
+            SetCostDefinitionDetails d = new(_env, this, skill);
+            
+            await _env.ClosureDict.SendEvent(StageClosureDict.WIL_SET_COST_DEFINITION, d);
+            _costDefinition = d.CostDefinition;
+            await _env.ClosureDict.SendEvent(StageClosureDict.DID_SET_COST_DEFINITION, d);
+            
+            _costDetails = new(_env, this, skill, _costDefinition.GetLiteralCostDescription());
 
             await _costDefinition.WillCostEvent(_costDetails);
         }
@@ -227,8 +229,9 @@ public class StageEntity : Addressable, StageClosureListener
 
     public int _p;
     private int _actionPoint;
-    private CostDetails _costDetails;
+    
     private CostDefinition _costDefinition;
+    private CostDetails _costDetails;
     
     public int GetActionPoint() => _actionPoint;
     public void SetActionPoint(int value) => _actionPoint = Mathf.Max(_actionPoint, value);
@@ -703,67 +706,66 @@ public class StageEntity : Addressable, StageClosureListener
 
     public void RegisterEntityClosures()
     {
-        _env.ClosureDict.Register(this, RecordTriggeredCritTimes);
-        _env.ClosureDict.Register(this, RecordTriggeredLifestealTimes);
-        _env.ClosureDict.Register(this, RecordTriggeredPenetrateTimes);
-        _env.ClosureDict.Register(this, RecordActualHeal);
-        _env.ClosureDict.Register(this, RecordBurnTimes);
-        _env.ClosureDict.Register(this, RecordHighestAttack);
-        _env.ClosureDict.Register(this, RecordHighestMana);
-        _env.ClosureDict.Register(this, RecordHighestJianYi);
-        _env.ClosureDict.Register(this, OppoLoseArmorTimes);
-        _env.ClosureDict.Register(this, LastRotatedWuXing);
+        _env.ClosureDict.Register(this, EntityClosures);
     }
 
     public void UnregisterEntityClosures()
     {
-        _env.ClosureDict.Unregister(this, RecordTriggeredCritTimes);
-        _env.ClosureDict.Unregister(this, RecordTriggeredLifestealTimes);
-        _env.ClosureDict.Unregister(this, RecordTriggeredPenetrateTimes);
-        _env.ClosureDict.Unregister(this, RecordActualHeal);
-        _env.ClosureDict.Unregister(this, RecordBurnTimes);
-        _env.ClosureDict.Unregister(this, RecordHighestAttack);
-        _env.ClosureDict.Unregister(this, RecordHighestMana);
-        _env.ClosureDict.Unregister(this, RecordHighestJianYi);
-        _env.ClosureDict.Unregister(this, OppoLoseArmorTimes);
-        _env.ClosureDict.Unregister(this, LastRotatedWuXing);
+        _env.ClosureDict.Unregister(this, EntityClosures);
     }
-
+    
+    public static string ThisTurnAttackedKey = "ThisTurnAttacked";
+    public static string ThisTurnPreserveJianYiKey = "ThisTurnPreserveJianYi";
     public static string TriggeredCritTimesKey = "TriggeredCritTimes";
-    private static StageClosure RecordTriggeredCritTimes =
+    public static string TriggeredLifestealTimesKey = "TriggeredLifestealTimes";
+    public static string TriggeredPenetrateTimesKey = "TriggeredPenetrateTimes";
+    public static string ActualHealKey = "ActualHeal";
+    public static string BurnTimesKey = "BurnTimes";
+    public static string HighestAttackKey = "HighestAttack";
+    public static string HighestManaKey = "HighestMana";
+    public static string HighestJianYiKey = "HighestJianYi";
+    public static string OppoLoseArmorTimesKey = "OppoLoseArmorTimes";
+    public static string LastRotatedWuXingKey = "LastRotatedWuXing";
+
+    private static StageClosure[] EntityClosures = new StageClosure[]
+    {
         new(StageClosureDict.WIL_DAMAGE, 1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
             DamageDetails d = (DamageDetails)closureDetails;
-                    
+
             if (entity != d.Src) return;
             entity.Memory.PerformOperation(TriggeredCritTimesKey, 0, record => record += d.Crit ? 1 : 0);
-        });
+        }, "RecordTriggeredCritTimesFromWilDamage"),
+        
+        new(StageClosureDict.DID_LOSE_BUFF, 1, async (listener, closure, closureDetails) =>
+        {
+            StageEntity entity = listener as StageEntity;
+            LoseBuffDetails d = (LoseBuffDetails)closureDetails;
 
-    public static string TriggeredLifestealTimesKey = "TriggeredLifestealTimes";
-    private static StageClosure RecordTriggeredLifestealTimes =
+            if (entity != d.Tgt) return;
+            if (d.BuffEntry != Encyclopedia.BuffCategory.FromName("暴击")) return;
+            entity.Memory.PerformOperation(TriggeredCritTimesKey, 0, record => record += d.Stack);
+        }, "RecordTriggeredCritTimesFromLoseBuff"),
+        
         new(StageClosureDict.WIL_DAMAGE, 1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
             DamageDetails d = (DamageDetails)closureDetails;
-                    
+            
             if (entity != d.Src) return;
             entity.Memory.PerformOperation(TriggeredLifestealTimesKey, 0, record => record += d.LifeSteal ? 1 : 0);
-        });
-
-    public static string TriggeredPenetrateTimesKey = "TriggeredPenetrateTimes";
-    private static StageClosure RecordTriggeredPenetrateTimes =
+        }, "RecordTriggeredLifestealTimes"),
+        
         new(StageClosureDict.WIL_ATTACK, 1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
             AttackDetails d = (AttackDetails)closureDetails;
-                    
+            
             if (entity != d.Src) return;
             entity.Memory.PerformOperation(TriggeredPenetrateTimesKey, 0, record => record += d.Penetrate ? 1 : 0);
-        });
-
-    public static string ActualHealKey = "ActualHeal";
-    private static StageClosure RecordActualHeal =
+        }, "RecordTriggeredPenetrateTimes"),
+        
         new(StageClosureDict.DID_HEAL, 1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
@@ -771,10 +773,8 @@ public class StageEntity : Addressable, StageClosureListener
 
             if (entity != d.Tgt) return;
             entity.Memory.PerformOperation(ActualHealKey, 0, record => record + d.Value);
-        });
-
-    public static string BurnTimesKey = "BurnTimes";
-    private static StageClosure RecordBurnTimes =
+        }, "RecordActualHeal"),
+        
         new(StageClosureDict.DID_BURN, -1, async (listener, closure, closureDetails) =>
         {
             StageEntity entity = listener as StageEntity;
@@ -783,10 +783,8 @@ public class StageEntity : Addressable, StageClosureListener
             if (entity != d.Owner) return;
 
             entity.Memory.PerformOperation(BurnTimesKey, 0, record => record + 1);
-        });
-
-    public static string HighestAttackKey = "HighestAttack";
-    private static StageClosure RecordHighestAttack =
+        }, "RecordBurnTimes"),
+        
         new(StageClosureDict.DID_ATTACK, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
@@ -795,10 +793,8 @@ public class StageEntity : Addressable, StageClosureListener
             if (entity != d.Src) return;
             
             entity.Memory.PerformOperation(HighestAttackKey, 0, record => Mathf.Max(record, d.Value));
-        });
-
-    public static string HighestManaKey = "HighestMana";
-    private static StageClosure RecordHighestMana =
+        }, "RecordHighestAttack"),
+        
         new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
@@ -808,10 +804,8 @@ public class StageEntity : Addressable, StageClosureListener
             if (d.BuffEntry.GetName() != "灵气") return;
             
             entity.Memory.PerformOperation(HighestManaKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("灵气")));
-        });
-
-    public static string HighestJianYiKey = "HighestJianYi";
-    private static StageClosure RecordHighestJianYi =
+        }, "RecordHighestMana"),
+        
         new(StageClosureDict.DID_GAIN_BUFF, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
@@ -821,10 +815,8 @@ public class StageEntity : Addressable, StageClosureListener
             if (d.BuffEntry != Encyclopedia.BuffCategory.FromName("剑意")) return;
             
             entity.Memory.PerformOperation(HighestJianYiKey, 0, record => Mathf.Max(record, entity.GetStackOfBuff("剑意")));
-        });
-
-    public static string OppoLoseArmorTimesKey = "OppoLoseArmorTimes";
-    private static StageClosure OppoLoseArmorTimes =
+        }, "RecordHighestJianYi"),
+        
         new(StageClosureDict.DID_LOSE_ARMOR, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
@@ -834,10 +826,8 @@ public class StageEntity : Addressable, StageClosureListener
             if (entity.Opponent().Armor >= 0) return;
 
             entity.Memory.PerformOperation(OppoLoseArmorTimesKey, 0, record => record += 1);
-        });
-
-    public static string LastRotatedWuXingKey = "LastRotatedWuXing";
-    private static StageClosure LastRotatedWuXing =
+        }, "OppoLoseArmorTimes"),
+        
         new(StageClosureDict.DID_CYCLE, -1, async (owner, closure, closureDetails) =>
         {
             StageEntity entity = owner as StageEntity;
@@ -848,5 +838,6 @@ public class StageEntity : Addressable, StageClosureListener
 
             WuXing wuXing = d.WuXing;
             entity.Memory.PerformOperation<WuXing>(LastRotatedWuXingKey, null, record => record = wuXing);
-        });
+        }, "LastRotatedWuXing"),
+    };
 }

@@ -646,10 +646,8 @@ public class BuffCategory : Category<BuffEntry>
                         TurnDetails d = (TurnDetails)closureDetails;
                         if (b.Owner != d.Owner) return;
 
-                        string thisTurnAttackedKey = "thisTurnAttacked";
-                        string thisTurnPreserveJianYiKey = "thisTurnPreserveJianYi";
-                        bool thisTurnAttacked = d.Owner.Memory.TryGetVariable(thisTurnAttackedKey, false);
-                        bool thisTurnPreserveJianYi = d.Owner.Memory.TryGetVariable(thisTurnPreserveJianYiKey, false);
+                        bool thisTurnAttacked = d.Owner.Memory.TryGetVariable(StageEntity.ThisTurnAttackedKey, false);
+                        bool thisTurnPreserveJianYi = d.Owner.Memory.TryGetVariable(StageEntity.ThisTurnPreserveJianYiKey, false);
 
                         bool preserveJianYi = !thisTurnAttacked || thisTurnPreserveJianYi;
                         if (preserveJianYi) return;

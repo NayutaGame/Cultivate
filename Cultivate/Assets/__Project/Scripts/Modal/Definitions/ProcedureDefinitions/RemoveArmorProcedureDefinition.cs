@@ -63,7 +63,9 @@ public class RemoveArmorProcedureDefinition : ProcedureDefinition
     {
         RemoveArmorProcedureDefinition pd = procedureDefinition as RemoveArmorProcedureDefinition;
         description.Join(pd.PostCondDefinition.Description);
-        description.Join($"施加{pd.Value}破甲");
+        
+        if (pd.Value > 0)
+            description.Join($"施加{pd.Value}破甲");
         
         if (pd.Closures != null)
             foreach (StageClosure c in pd.Closures)

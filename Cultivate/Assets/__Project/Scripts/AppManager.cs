@@ -8,7 +8,6 @@ using DG.Tweening;
 using UnityEditor;
 #endif
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class AppManager : Singleton<AppManager>, Addressable
 {

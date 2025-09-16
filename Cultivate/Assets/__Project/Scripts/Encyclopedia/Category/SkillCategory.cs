@@ -58,6 +58,16 @@ public class SkillCategory : Category<SkillEntry>
             await d.Src.GainBuffProcedure("灵气", qiShiLingQiGain, induced: true);
         }, key: "QiShiClosure", rawDescription: "击伤：灵气+[QiShiLingQiGain]", checkListener: true);
 
+    private static readonly StageClosure QiShi2Closure = new(StageClosureDict.DID_DAMAGE, 0,
+        async (listener, closure, closureDetails) =>
+        {
+            DamageDetails d = closureDetails as DamageDetails;
+            StageSkill skill = listener as StageSkill;
+            // int qiShiLingQiGain = 1 + skill.J;
+            // d.CastResult["QiShiLingQiGain"] = qiShiLingQiGain.ToString();
+            await d.Src.GainBuffProcedure("灵气", d.Value, induced: true);
+        }, key: "QiShi2Closure", rawDescription: "击伤：获得等量灵气", checkListener: true);
+
     private static readonly StageClosure LianXiClosure = new(StageClosureDict.WIL_DAMAGE, 0,
         async (listener, closure, closureDetails) =>
         {
@@ -66,14 +76,14 @@ public class SkillCategory : Category<SkillEntry>
             d.Cancel = true;
         }, key: "LianXiClosure", rawDescription: "击伤：伤害转为破甲", checkListener: true);
 
-    private static readonly StageClosure MoDaoClosure = new(StageClosureDict.DID_GAIN_BUFF, 0,
+    private static readonly StageClosure MoDaoClosure = new(StageClosureDict.WIL_GAIN_BUFF, 0,
         async (listener, closure, closureDetails) =>
         {
             GainBuffDetails d = closureDetails as GainBuffDetails;
             StageSkill skill = listener as StageSkill;
 
             int maxReturn = skill.J;
-            int actualReturn = Mathf.Min(maxReturn, d.Src.Memory.TryGetVariable(StageEntity.TriggeredCritTimesKey, 0));
+            int actualReturn = d.Src.Memory.TryGetVariable(StageEntity.TriggeredCritTimesKey, 0).ClampUpper(maxReturn);
 
             d.CastResult["MoDaoCritReturn"] = maxReturn.ToString();
 
@@ -169,24 +179,23 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.Times += (prevIsJin ? 1 : 0) + (nextIsJin ? 1 : 0);
                                                     }, key: "RenYuClosure", rawDescription: "每相邻1张金，多1次", checkListener: true);
 
-    private static readonly StageClosure TanZhiClosure = new(StageClosureDict.DID_GAIN_BUFF, 0,
-                                                    async (listener, closure, closureDetails) =>
-                                                    {
-                                                        GainBuffDetails d = closureDetails as GainBuffDetails;
-                                                        StageSkill skill = listener as StageSkill;
+    private static readonly StageClosure TanZhiClosure = new(StageClosureDict.WIL_GAIN_BUFF, 0,
+        async (listener, closure, closureDetails) =>
+        {
+            GainBuffDetails d = closureDetails as GainBuffDetails;
+            StageSkill skill = listener as StageSkill;
 
-                                                        bool cond = await skill.Owner.TryConsumeProcedure("暴击");
-                                                        if (!cond)
-                                                        {
-                                                            d.CastResult.Append("TanZhiClosure", false);
-                                                            return;
-                                                        }
+            bool cond = await skill.Owner.TryConsumeProcedure("暴击");
+            if (!cond)
+            {
+                d.CastResult.Append("TanZhiClosure", false);
+                return;
+            }
 
-                                                        int tanZhiExtra = skill.J switch { 0 => 3, 1 => 3, 2 => 3, 3 => 4, 4 => 5, _ => 6 };
-                                                        d.Stack += tanZhiExtra;
-
-                                                        d.CastResult["TanZhiExtra"] = tanZhiExtra.ToString();
-                                                    }, key: "TanZhiClosure", rawDescription: "消耗1暴击：多[TanZhiExtra]", checkListener: true);
+            int tanZhiExtra = skill.J switch { 0 => 3, 1 => 3, 2 => 3, 3 => 4, 4 => 5, _ => 6 };
+            d.Stack += tanZhiExtra;
+            d.CastResult["TanZhiExtra"] = tanZhiExtra.ToString();
+        }, key: "TanZhiClosure", rawDescription: "消耗1暴击：多[TanZhiExtra]", checkListener: true);
 
     private static readonly StageClosure PanXuanClosure = new(StageClosureDict.WIL_GAIN_ARMOR, 0,
                                                     async (listener, closure, closureDetails) =>
@@ -615,6 +624,22 @@ public class SkillCategory : Category<SkillEntry>
                                                         await d.Src.GainBuffProcedure("灵气", induced: true);
                                                     }, key: "JianWangXingClosure", rawDescription: "击伤：灵气+1", checkListener: true);
 
+    private static readonly StageClosure JianWangXing2Closure = new(StageClosureDict.DID_DAMAGE, 0,
+                                                    async (listener, closure, closureDetails) =>
+                                                    {
+                                                        DamageDetails d = closureDetails as DamageDetails;
+                                                        await d.Src.GainBuffProcedure("剑意", induced: true);
+                                                    }, key: "JianWangXing2Closure", rawDescription: "击伤：剑意+1", checkListener: true);
+
+    private static readonly StageClosure JianWangXing3Closure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
+                                                    async (listener, closure, closureDetails) =>
+                                                    {
+                                                        AttackDetails d = closureDetails as AttackDetails;
+                                                        StageSkill s = listener as StageSkill;
+                                                        if (s.Owner != d.Src) return;
+                                                        d.DoesntConsumeJianYi = true;
+                                                    }, key: "JianWangXing2Closure", rawDescription: "不消耗剑意", checkListener: true);
+
     private static readonly StageClosure ZhanYiClosure = new(StageClosureDict.WIL_GAIN_ARMOR, 0,
                                                     async (listener, closure, closureDetails) =>
                                                     {
@@ -650,6 +675,9 @@ public class SkillCategory : Category<SkillEntry>
             int target = d.Src.Memory.TryGetVariable(StageEntity.HighestJianYiKey, 0) + d.Stack;
             int current = d.Src.GetStackOfBuff("剑意");
             d.Stack = target - current;
+            
+            d.Src.Memory.SetVariable(StageEntity.ThisTurnAttackedKey, false);
+            
         }, key: "WanXiaClosure", rawDescription: "", checkListener: true);
 
     private static readonly StageClosure HongTianClosure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
@@ -898,9 +926,16 @@ public class SkillCategory : Category<SkillEntry>
                 tagComposite:               TagCategory.Attack | TagCategory.Mana,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new TrySetValueProcedureDefinition("QiShiLingQiGain", (1 + j).ToString()),
+                    new TrySetValueProcedureDefinition("QiShiLingQiGain", (1 + j).ToString())
+                        .SetPreCondDefinition(PreCondDefinition.LeHuaShen),
                     new AttackProcedureDefinition(4)
-                        .AddClosure(QiShiClosure),
+                        .AddClosure(QiShiClosure)
+                        .SetPreCondDefinition(PreCondDefinition.LeHuaShen),
+                    
+                    new AttackProcedureDefinition(4)
+                        .AddClosure(QiShi2Closure)
+                        .SetPreCondDefinition(PreCondDefinition.GeFanXu),
+                    
                     new GainBuffProcedureDefinition("灵气", 1 + j, induced: false)
                         .SetPostCondDefinition(PostCondDefinition.StartStage),
                 }),
@@ -1512,26 +1547,23 @@ public class SkillCategory : Category<SkillEntry>
                 {
                     new(StageClosureDict.WIL_FULL_ATTACK, -1, async (listener, closure, closureDetails) =>
                     {
-                        StageSkill s = listener as StageSkill;
+                        StageSkill yiYeZhiQiu = listener as StageSkill;
                         AttackDetails d = (AttackDetails)closureDetails;
 
-                        if (s.Owner != d.Src) return;
-                        if (d.Listener == s) return;
-                        StageSkill skill = d.Listener as StageSkill;
-                        if (skill == null) return;
-                        if (skill.Entry == s.Entry) return;
+                        if (yiYeZhiQiu.Owner != d.Src) return;
+                        StageSkill invokingSkill = d.Listener as StageSkill;
+                        if (invokingSkill == null) return;
+                        if (invokingSkill.Entry == yiYeZhiQiu.Entry) return;
 
                         string key = "UsedClosureDict";
-                        s.Owner.Memory.PerformOperation(key, new Dictionary<StageSkill, List<StageClosure>>(), record =>
+                        yiYeZhiQiu.Owner.Memory.PerformOperation(key, new List<StageClosure>(), record =>
                         {
-                            if (record.ContainsKey(skill))
+                            foreach (StageClosure closure in d.Closures)
                             {
-                                bool newHasMore = d.Closures.Length > record[skill].Count;
-                                if (newHasMore)
-                                    record[skill] = d.Closures.ToList();
-                                return record;
+                                if (record.Contains(closure))
+                                    continue;
+                                record.Add(closure);
                             }
-                            record[skill] = d.Closures.ToList();
                             return record;
                         });
                     }),
@@ -1542,11 +1574,16 @@ public class SkillCategory : Category<SkillEntry>
                     new DirectProcedureDefinition(async d =>
                         {
                             string key = "UsedClosureDict";
-                            Dictionary<StageSkill, List<StageClosure>> dict = d.Caster.Memory.TryGetVariable(key, new Dictionary<StageSkill, List<StageClosure>>());
-                            List<StageClosure> flattenedList = new List<StageClosure>();
-                            dict.Do(kvp => flattenedList.AddRange(kvp.Value));
-                    
-                            StageClosure[] closures = flattenedList.ToArray();
+                            List<StageClosure> list = d.Caster.Memory.TryGetVariable(key, new List<StageClosure>());
+                            StageClosure[] closures = list.ToArray();
+                            
+                            foreach (StageClosure c in closures)
+                            {
+                                if (c.Description == null)
+                                    return;
+                                d.CastResult.Append(c.Key, false);
+                            }
+                            
                             await d.AttackProcedure(1, closures: closures);
 
                             Description extraDescription = new Description();
@@ -1636,8 +1673,24 @@ public class SkillCategory : Category<SkillEntry>
                     new GainBuffProcedureDefinition("闪避"),
                     new GainBuffProcedureDefinition("飞龙在天", 2 + 2 * dj, induced: true)
                         .SetPostCondDefinition(PostCondDefinition.FirstTime)
-                        .SetDescription((d, procedureDefinition, costResult, castResult)
-                            => d.Join($"跳过下{(procedureDefinition as GainBuffProcedureDefinition).Stack}张牌，使其成长")),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) =>
+                        {
+                            GainBuffProcedureDefinition pd = procedureDefinition as GainBuffProcedureDefinition;
+                            d.Join(pd.PostCondDefinition.Description);
+                            d.Join($"跳过下{(procedureDefinition as GainBuffProcedureDefinition).Stack}张牌，使其成长");
+        
+                            if (pd.Closures != null)
+                                foreach (StageClosure c in pd.Closures)
+                                {
+                                    d.AppendSoftReturn();
+                                    Description closureDescription = c.Description;
+                                    closureDescription.ApplyReplaceValues(castResult);
+                                    closureDescription.ApplyResult(castResult, c.Key);
+                                    d.Join(closureDescription);
+                                }
+        
+                            d.ApplyStyle(castResult, pd);
+                        }),
                 }),
 
             new(id:                         "Skill03_015",
@@ -1749,7 +1802,13 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new AttackProcedureDefinition(1, times: 2 + dj)
-                        .AddClosure(JianWangXingClosure),
+                        .AddClosure(JianWangXingClosure)
+                        .SetPreCondDefinition(PreCondDefinition.LeHuaShen),
+                    
+                    new AttackProcedureDefinition(1, times: 2 + dj)
+                        .AddClosure(JianWangXing2Closure)
+                        .AddClosure(JianWangXing3Closure)
+                        .SetPreCondDefinition(PreCondDefinition.GeFanXu),
                 }),
 
             new(id:                         "Skill04_012",

@@ -56,24 +56,26 @@ public class StageClosureDict : Dictionary<int, StageClosureRow>
     public static readonly int DID_EXHAUST              = 47;
     public static readonly int WIL_CHANNEL              = 48;
     public static readonly int DID_CHANNEL              = 49;
-    public static readonly int WIL_CHANNEL_COST         = 50;
-    public static readonly int DID_CHANNEL_COST         = 51;
-    public static readonly int WIL_MANA_COST            = 52;
-    public static readonly int DID_MANA_COST            = 53;
-    public static readonly int WIL_ARMOR_COST           = 54;
-    public static readonly int DID_ARMOR_COST           = 55;
-    public static readonly int WIL_HEALTH_COST          = 56;
-    public static readonly int DID_HEALTH_COST          = 57;
-    public static readonly int WIL_MANA_SHORTAGE        = 58;
-    public static readonly int DID_MANA_SHORTAGE        = 59;
-    public static readonly int WIL_ARMOR_SHORTAGE       = 60;
-    public static readonly int DID_ARMOR_SHORTAGE       = 61;
-    public static readonly int WIL_CYCLE                = 62;
-    public static readonly int DID_CYCLE                = 63;
-    public static readonly int WIL_DISPEL               = 64;
-    public static readonly int DID_DISPEL               = 65;
-    public static readonly int WIL_COMMIT               = 66;
-    public static readonly int DID_COMMIT               = 67;
+    public static readonly int WIL_SET_COST_DEFINITION  = 50;
+    public static readonly int DID_SET_COST_DEFINITION  = 51;
+    public static readonly int WIL_CHANNEL_COST         = 52;
+    public static readonly int DID_CHANNEL_COST         = 53;
+    public static readonly int WIL_MANA_COST            = 54;
+    public static readonly int DID_MANA_COST            = 55;
+    public static readonly int WIL_ARMOR_COST           = 56;
+    public static readonly int DID_ARMOR_COST           = 57;
+    public static readonly int WIL_HEALTH_COST          = 58;
+    public static readonly int DID_HEALTH_COST          = 59;
+    public static readonly int WIL_MANA_SHORTAGE        = 60;
+    public static readonly int DID_MANA_SHORTAGE        = 61;
+    public static readonly int WIL_ARMOR_SHORTAGE       = 62;
+    public static readonly int DID_ARMOR_SHORTAGE       = 63;
+    public static readonly int WIL_CYCLE                = 64;
+    public static readonly int DID_CYCLE                = 65;
+    public static readonly int WIL_DISPEL               = 66;
+    public static readonly int DID_DISPEL               = 67;
+    public static readonly int WIL_COMMIT               = 68;
+    public static readonly int DID_COMMIT               = 69;
 
     public void Register(StageClosureListener listener, StageClosure[] closures)
     {

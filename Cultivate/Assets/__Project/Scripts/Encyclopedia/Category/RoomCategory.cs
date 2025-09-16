@@ -2761,18 +2761,10 @@ public class RoomCategory : Category<RoomEntry>
                     BattleCell battleCell3 = new(thirdBoss);
                     
                     battleCell1.SetWinOperation(() => battleCell2);
-                    battleCell1.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
-                        return null;
-                    });
+                    battleCell1.SetLoseOperation(() => battleCell2);
                     
                     battleCell2.SetWinOperation(() => battleCell3);
-                    battleCell2.SetLoseOperation(() =>
-                    {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
-                        return null;
-                    });
+                    battleCell2.SetLoseOperation(() => battleCell3);
                     
                     battleCell3.SetWinOperation(() =>
                     {

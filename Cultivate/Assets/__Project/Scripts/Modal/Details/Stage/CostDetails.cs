@@ -3,12 +3,11 @@ public class CostDetails : StageClosureDetails
 {
     public StageEntity Entity;
     public StageSkill Skill;
-
-    public ResultDict CostResult;
     public CostDescription CostDescription;
-    
+
     public bool Blocking = false;
     public int Counter;
+    public ResultDict CostResult;
 
     public int Value
     {
@@ -25,10 +24,13 @@ public class CostDetails : StageClosureDetails
     public CostDetails(
         StageEnvironment env,
         StageEntity entity,
-        StageSkill skill) : base(env)
+        StageSkill skill,
+        CostDescription costDescription) : base(env)
     {
         Entity = entity;
         Skill = skill;
+        CostDescription = costDescription;
+        
         CostResult = new();
     }
 

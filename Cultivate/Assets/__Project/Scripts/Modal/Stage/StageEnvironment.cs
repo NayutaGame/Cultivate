@@ -307,10 +307,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         await FullAttackStaging(attackDetails);
 
         if (!attackDetails.DoesntConsumeJianYi)
-        {
-            string thisTurnAttackedKey = "thisTurnAttacked";
-            attackDetails.Src.Memory.SetVariable(thisTurnAttackedKey, true);
-        }
+            attackDetails.Src.Memory.SetVariable(StageEntity.ThisTurnAttackedKey, true);
 
         for (int i = 0; i < attackDetails.Times; i++)
         {

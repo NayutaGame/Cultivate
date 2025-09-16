@@ -528,14 +528,22 @@ public class FormationCategory : Category<FormationGroupEntry>
                                 f.Emphasize();
                                 await f.Owner.GainBuffProcedure("连岳");
                             }),
-                            // new(StageClosureDict.WIL_MANA_COST, -4, async (owner, closure, closureDetails) =>
-                            // {
-                            //     Buff b = (Buff)owner;
-                            //     CostDetails d = closureDetails as CostDetails;
-                            //
-                            //     b.Emphasize();
-                            //     d.Value = 0;
-                            // }),
+                            new(StageClosureDict.WIL_SET_COST_DEFINITION, 0, async (owner, closure, closureDetails) =>
+                            {
+                                Formation f = (Formation)owner;
+                                SetCostDefinitionDetails d = closureDetails as SetCostDefinitionDetails;
+                            
+                                f.Emphasize();
+
+                                if (d.CostDefinition is ChannelCostDefinition)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    d.CostDefinition = new ChannelCostDefinition(1);
+                                }
+                            }),
                         }),
                     new FormationEntry(
                         jingJie:                                                    JingJie.YuanYing,
