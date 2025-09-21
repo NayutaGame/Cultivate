@@ -10,9 +10,9 @@ public class CommodityItemView : XView
     public GameObject DiscountSign;
     public TMP_Text DiscountText;
 
-    public Button PayWithGoldButton;
+    public BuyButton PayWithGoldButton;
     public TMP_Text GoldPriceText;
-    public Button PayWithHealthButton;
+    public BuyButton PayWithHealthButton;
     public TMP_Text HealthPriceText;
 
     public override void SetAddress(Address address)
@@ -20,11 +20,8 @@ public class CommodityItemView : XView
         base.SetAddress(address);
         SkillView.SetAddress(GetAddress().Append(".Skill"));
         
-        PayWithGoldButton.onClick.RemoveAllListeners();
-        PayWithGoldButton.onClick.AddListener(PayWithGold);
-        
-        PayWithHealthButton.onClick.RemoveAllListeners();
-        PayWithHealthButton.onClick.AddListener(PayWithHealth);
+        PayWithGoldButton.LeftClickNeuron.Join(PayWithGold);
+        PayWithHealthButton.LeftClickNeuron.Join(PayWithHealth);
     }
 
     public override void Refresh()
@@ -59,7 +56,7 @@ public class CommodityItemView : XView
             return;
         
         GoldPriceText.text = commodity.GetGoldPrice();
-        GoldPriceText.color = commodity.GoldAffordable() ? Color.black : Color.red;
+        PayWithGoldButton.SetStateToInactiveFrom(!commodity.GoldAffordable());
     }
 
     private void ConfigureHealthButton(Commodity commodity)
@@ -70,16 +67,16 @@ public class CommodityItemView : XView
             return;
 
         HealthPriceText.text = commodity.GetHealthPrice();
-        HealthPriceText.color = commodity.HealthAffordable() ? Color.black : Color.red;
+        PayWithHealthButton.SetStateToInactiveFrom(!commodity.HealthAffordable());
     }
 
-    private void PayWithGold()
+    private void PayWithGold(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.CloseAnnotation();
         Get<Commodity>().PayWithGold();
     }
 
-    private void PayWithHealth()
+    private void PayWithHealth(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.CloseAnnotation();
         Get<Commodity>().PayWithHealth();

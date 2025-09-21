@@ -40,10 +40,10 @@ public class Commodity : Addressable
     }
 
     public string GetGoldPrice()
-        => $"{FinalPrice}金";
+        => $"{FinalPrice}";
 
     public string GetHealthPrice()
-        => $"{FinalPrice}气血";
+        => $"{FinalPrice}";
 
     public bool AcceptGold()
         => _acceptGold;

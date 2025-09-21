@@ -34,7 +34,7 @@ public class Button4State : XView
         _interactBehaviour.RightClickNeuron.Join(RightClickNeuron);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _interactBehaviour.PointerEnterNeuron.Add(SetStateToHover);
         _interactBehaviour.PointerExitNeuron.Add(SetStateToIdle);
@@ -50,7 +50,7 @@ public class Button4State : XView
         SetState(ButtonState.Idle);
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _interactBehaviour.PointerEnterNeuron.Remove(SetStateToHover);
         _interactBehaviour.PointerExitNeuron.Remove(SetStateToIdle);
@@ -109,40 +109,49 @@ public class Button4State : XView
         _handle.Restart();
     }
 
-    private void JoinIdleTween(Sequence seq)
+    protected virtual void JoinIdleTween(Sequence seq)
     {
-        seq.Join(ShowWhenInactive.DOFade(0, 0.15f))
-            .Join(HideWhenInactive.DOFade(1, 0.15f));
+        if (ShowWhenInactive != null)
+            seq.Join(ShowWhenInactive.DOFade(0, 0.15f));
+        if (HideWhenInactive != null)
+            seq.Join(HideWhenInactive.DOFade(1, 0.15f));
+        
         foreach (Image image in ShowWhenHover)
         {
             seq.Join(image.DOFade(0, 0.15f));
         }
     }
 
-    private void JoinHoverTween(Sequence seq)
+    protected virtual void JoinHoverTween(Sequence seq)
     {
-        seq.Join(ShowWhenInactive.DOFade(0, 0.15f))
-            .Join(HideWhenInactive.DOFade(1, 0.15f));
+        if (ShowWhenInactive != null)
+            seq.Join(ShowWhenInactive.DOFade(0, 0.15f));
+        if (HideWhenInactive != null)
+            seq.Join(HideWhenInactive.DOFade(1, 0.15f));
         foreach (Image image in ShowWhenHover)
         {
             seq.Join(image.DOFade(1, 0.15f));
         }
     }
 
-    private void JoinPressTween(Sequence seq)
+    protected virtual void JoinPressTween(Sequence seq)
     {
-        seq.Join(ShowWhenInactive.DOFade(0.6f, 0.15f))
-            .Join(HideWhenInactive.DOFade(1, 0.15f));
+        if (ShowWhenInactive != null)
+            seq.Join(ShowWhenInactive.DOFade(0.6f, 0.15f));
+        if (HideWhenInactive != null)
+            seq.Join(HideWhenInactive.DOFade(1, 0.15f));
         foreach (Image image in ShowWhenHover)
         {
             seq.Join(image.DOFade(1, 0.15f));
         }
     }
 
-    private void JoinInactiveTween(Sequence seq)
+    protected virtual void JoinInactiveTween(Sequence seq)
     {
-        seq.Join(ShowWhenInactive.DOFade(1, 0.15f))
-            .Join(HideWhenInactive.DOFade(0, 0.15f));
+        if (ShowWhenInactive != null)
+            seq.Join(ShowWhenInactive.DOFade(1, 0.15f));
+        if (HideWhenInactive != null)
+            seq.Join(HideWhenInactive.DOFade(0, 0.15f));
         foreach (Image image in ShowWhenHover)
         {
             seq.Join(image.DOFade(0, 0.15f));
