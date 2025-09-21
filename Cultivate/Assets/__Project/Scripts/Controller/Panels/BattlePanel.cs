@@ -16,7 +16,8 @@ public class BattlePanel : Panel
     [SerializeField] private XView HomeHealthAnnotationProvider;
     [SerializeField] private TMP_Text AwayHealth;
     [SerializeField] private XView AwayHealthAnnotationProvider;
-    
+
+    [SerializeField] public CombatGlow CombatGlow;
     [SerializeField] public CombatButton CombatButton;
     [SerializeField] private GameObject VictoryStamp;
 
