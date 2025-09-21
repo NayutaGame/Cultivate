@@ -2561,7 +2561,8 @@ public class RoomCategory : Category<RoomEntry>
 
                     CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText: "选择",
-                        detailedText: "请选择0~4张牌，将所有牌变成其中随机的一张",
+                        detailedText: "请选择0~4张牌，将所有牌变成其中随机的一张。" +
+                                      "\n镜灵们看起来对你的命石很感兴趣，你有些担心他们不会还给你了。",
                         descriptor: RunSkillDescriptorListModel.FromCount(4));
                     
                     DialogCell C0 = new("镜中世界",
@@ -2578,23 +2579,37 @@ public class RoomCategory : Category<RoomEntry>
                     
                     DialogCell C4 = new("镜中世界",
                         "你选择了4张牌递给了每个镜灵，镜灵们看了一眼你的卡牌，然后还给了你，你发现4张牌变成同一张牌了。");
+                    
+                    DialogCell CN = new("镜中世界",
+                        "你将牌递给了镜灵之后，镜灵不愿意将牌还给你了，并把你赶出了镜中世界。真是贪婪的镜灵。");
 
                     DialogCell[] CList = new DialogCell[] { C0, C1, C2, C3, C4 };
 
                     B.SetSubmitOperation(cardPickerCell =>
                     {
                         List<int> indices = new();
+                        List<int> possibleIndices = new();
                         for (int i = 0; i < cardPickerCell.RequirementSlotList.Count(); i++)
                         {
-                            if (cardPickerCell.RequirementSlotList[i].Skill != null)
-                                indices.Add(i);
+                            if (cardPickerCell.RequirementSlotList[i].Skill == null)
+                                continue;
+                            if (cardPickerCell.RequirementSlotList[i].Skill.GetEntry() !=
+                                Encyclopedia.SkillCategory.FromName("命石"))
+                            {
+                                possibleIndices.Add(i);
+                            }
+                            indices.Add(i);
                         }
 
                         int count = indices.Count;
+                        int possibleCount = possibleIndices.Count;
                         if (count == 0)
-                            return CList[count];
+                            return CList[0];
 
-                        int copyingIndex = indices[RandomManager.Range(0, count)];
+                        if (possibleCount == 0)
+                            return CN;
+
+                        int copyingIndex = possibleIndices[RandomManager.Range(0, possibleCount)];
                         RequirementSlot copyingSlot = cardPickerCell.RequirementSlotList[copyingIndex];
                         RunSkill copyingSkill = copyingSlot.Skill;
 

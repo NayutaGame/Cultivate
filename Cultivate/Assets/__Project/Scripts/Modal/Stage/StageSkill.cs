@@ -33,9 +33,10 @@ public class StageSkill : StageClosureListener
 
     private JingJie _jingJie;
     public JingJie GetJingJie() => _jingJie;
-    public async UniTask<bool> TryUpgradeJingJie()
+    public async UniTask<bool> TryUpgradeJingJie(JingJie upperBound = null)
     {
-        if (_jingJie >= _entry.HighestJingJie)
+        upperBound ??= _entry.HighestJingJie;
+        if (_jingJie >= upperBound)
             return false;
         _jingJie += 1;
         return true;

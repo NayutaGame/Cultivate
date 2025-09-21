@@ -383,7 +383,7 @@ public class SkillCategory : Category<SkillEntry>
 
                                                     }, key: "ShanJiClosureHighest2", rawDescription: "破甲将补至本局最高", checkListener: true);
 
-    private static readonly StageClosure CaiHongClosure = new(StageClosureDict.WIL_ATTACK, 0,
+    private static readonly StageClosure CaiHongClosure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
                                                     async (listener, closure, closureDetails) =>
                                                     {
                                                         AttackDetails d = closureDetails as AttackDetails;
@@ -396,7 +396,7 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.Value += mana * haiXiaoConvert;
                                                     }, key: "CaiHongClosure", rawDescription: "消耗每1灵气，多[CaiHongConvert]攻", checkListener: true);
 
-    private static readonly StageClosure CaiHong2Closure = new(StageClosureDict.WIL_ATTACK, 0,
+    private static readonly StageClosure CaiHong2Closure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
                                                     async (listener, closure, closureDetails) =>
                                                     {
                                                         AttackDetails d = closureDetails as AttackDetails;
@@ -735,7 +735,7 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.CastResult["HuaBuExtra"] = value.ToString();
                                                     }, key: "HuaBuClosure", rawDescription: "有护甲：多[HuaBuExtra]", checkListener: true);
 
-    private static readonly StageClosure BaJiQuanClosure = new(StageClosureDict.WIL_ATTACK, 0,
+    private static readonly StageClosure BaJiQuanClosure = new(StageClosureDict.WIL_FULL_ATTACK, 0,
                                                     async (listener, closure, closureDetails) =>
                                                     {
                                                         AttackDetails d = closureDetails as AttackDetails;
@@ -793,7 +793,7 @@ public class SkillCategory : Category<SkillEntry>
                                                         StageSkill skill = listener as StageSkill;
                                                         int baWangConvert = 6 - skill.Dj.ClampUpper(4);
                                                         d.CastResult["BaWangConvert"] = baWangConvert.ToString();
-                                                        int value = Mathf.Abs(d.Src.MaxHp - d.Tgt.MaxHp);
+                                                        int value = (d.Src.MaxHp - d.Tgt.MaxHp).ClampLower(0);
                                                         d.Value += value / baWangConvert;
                                                     }, key: "BaWangClosure", rawDescription: "每[BaWangConvert]气血上限差，多1", checkListener: true);
 
@@ -1947,7 +1947,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "浴火",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.LianQi2FanXu,
-                tagComposite:               TagCategory.Health,
+                tagComposite:               TagCategory.Health | TagCategory.Defend,
                 cost:                       HealthCostDefinition.FromValue(1),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
@@ -1977,7 +1977,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "明镜",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.JinDan2FanXu,
-                tagComposite:               TagCategory.Health,
+                tagComposite:               TagCategory.Health | TagCategory.Defend,
                 cost:                       HealthCostDefinition.FromValue(1),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {

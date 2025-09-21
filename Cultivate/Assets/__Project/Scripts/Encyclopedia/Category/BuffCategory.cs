@@ -395,7 +395,7 @@ public class BuffCategory : Category<BuffEntry>
                         CastDetails d = (CastDetails)closureDetails;
                         if (b.Owner != d.Caster || d.Caster != d.Skill.Owner) return;
 
-                        if (await d.Skill.TryUpgradeJingJie())
+                        if (await d.Skill.TryUpgradeJingJie(upperBound: JingJie.HuaShen))
                         {
                             b.Emphasize();
                             await b.LoseStackProcedure();
