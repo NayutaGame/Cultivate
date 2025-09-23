@@ -5,25 +5,15 @@ using UnityEngine;
 
 public class BuffEntry : Entry, AnnotatableBuff
 {
-    private string _rawDescription;
-    private Description _description;
-    public Description GetDescription() => _description;
-
-    public readonly BuffStackRule BuffStackRule;
-    public readonly bool Friendly;
-    public readonly bool Dispellable;
-    public readonly bool IsForbiddenDebuff;
-
-    private string _trivia;
-    public string GetTrivia() => _trivia;
-
-    [NonSerialized]
-    public readonly StageClosure[] Closures;
-
-    private SpriteEntry _spriteEntry;
-    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
-    
-    public bool CanShowAnnotation() => true;
+    [NonSerialized] private string _rawDescription;
+    [NonSerialized] private Description _description;
+    [NonSerialized] public readonly BuffStackRule BuffStackRule;
+    [NonSerialized] public readonly bool Friendly;
+    [NonSerialized] public readonly bool Dispellable;
+    [NonSerialized] public readonly bool IsForbiddenDebuff;
+    [NonSerialized] private string _trivia;
+    [NonSerialized] public readonly StageClosure[] Closures;
+    [NonSerialized] private SpriteEntry _spriteEntry;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -33,7 +23,8 @@ public class BuffEntry : Entry, AnnotatableBuff
     /// <summary>
     /// 定义一个Buff
     /// </summary>
-    /// <param name="id">名称</param>
+    /// <param name="id">Id</param>
+    /// <param name="name">名称</param>
     /// <param name="rawDescription">描述</param>
     /// <param name="buffStackRule">堆叠规则</param>
     /// <param name="friendly">是否有益</param>
@@ -61,6 +52,11 @@ public class BuffEntry : Entry, AnnotatableBuff
         _trivia = trivia;
         Closures = closures ?? Array.Empty<StageClosure>();
     }
+    
+    public Description GetDescription() => _description;
+    public string GetTrivia() => _trivia;
+    public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingBuffIcon().Sprite;
+    public bool CanShowAnnotation() => true;
     
     public override void Init()
     {

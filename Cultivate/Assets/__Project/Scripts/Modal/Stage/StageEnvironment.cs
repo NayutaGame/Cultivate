@@ -89,7 +89,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     {
         List<GainFormationDetails> details = new();
 
-        foreach (var entity in _entities)
+        foreach (var entity in EntitiesInitiateOrder)
         foreach (var runFormation in entity.RunFormations())
             if (runFormation.IsActivated())
                 details.Add(new GainFormationDetails(this, entity, runFormation));
@@ -127,7 +127,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         Play(new FormationVFXAnimation(d, false));
         Play(TextAnimation.FromGainFormationDetails(d));
         await PlayAsync(d.Owner.Model().GetAnimationFromBuffSelf(d.Induced));
-        CanvasManager.Instance.StageCanvas.GainFormationStaging(d.Owner == _entities[0]);
+        CanvasManager.Instance.StageCanvas.GainFormationStaging(d.Owner == Home);
         f.Emphasize();
     }
 
@@ -230,7 +230,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             await PlayAsync(d.Src.Model().GetAnimationFromBuffSelf(d.Induced));
         }
         
-        CanvasManager.Instance.StageCanvas.GainBuffStaging(d.Tgt == _entities[0]);
+        CanvasManager.Instance.StageCanvas.GainBuffStaging(d.Tgt == Home);
         buff.Emphasize();
     }
 
@@ -272,7 +272,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         //     await PlayAsync(d.Tgt.Model().GetAnimationFromBuffSelf(d.Induced));
         // }
         
-        CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == _entities[0], buffIndex);
+        CanvasManager.Instance.StageCanvas.LoseBuffStaging(d.Tgt == Home, buffIndex);
     }
 
     private async UniTask LoseBuffStackStaging(LoseBuffDetails d, Buff buff)
@@ -755,20 +755,20 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask MingYuanPenaltyProcedure()
     {
-        await _entities[0].MingYuan.MingYuanPenaltyProcedure(_entities[0]);
-        await _entities[1].MingYuan.MingYuanPenaltyProcedure(_entities[1]);
+        foreach (var entity in EntitiesInitiateOrder)
+            await entity.MingYuan.MingYuanPenaltyProcedure(entity);
     }
 
     private async UniTask StartStageProcedure()
     {
-        foreach (var e in _entities)
+        foreach (var e in EntitiesInitiateOrder)
         {
             if (_shouldSkip)
                 return;
             await _closureDict.SendEvent(StageClosureDict.WIL_STAGE, new StageDetails(this, e));
         }
 
-        foreach (var e in _entities)
+        foreach (var e in EntitiesInitiateOrder)
         {
             if (_shouldSkip)
                 return;
@@ -778,7 +778,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask BodyProcedure()
     {
-        int whosTurn = 0;
+        int whosTurn = !_config.RunConfig.DifficultyProfile.GetEntry().EnemyInitiate ? 0 : 1;
         for (int turnCount = 0; turnCount < MAX_TURN_COUNT; turnCount++)
         {
             if (_shouldSkip)
@@ -805,8 +805,8 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private async UniTask EndStageProcedure()
     {
-        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(this, _entities[1]));
-        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(this, _entities[0]));
+        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(this, Away));
+        await _closureDict.SendEvent(StageClosureDict.DID_STAGE, new StageDetails(this, Home));
     }
 
     private async UniTask<int> CommitProcedure(int turn, int whosTurn)
@@ -846,14 +846,14 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         if (flag == 1)
         {
-            UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromWin());
-            UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromLose());
+            UniTask t1 = PlayAsync(Home.Model().GetAnimationFromWin());
+            UniTask t2 = PlayAsync(Away.Model().GetAnimationFromLose());
             await UniTask.WhenAll(t1, t2);
         }
         else if (flag == 2)
         {
-            UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromLose());
-            UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromWin());
+            UniTask t1 = PlayAsync(Home.Model().GetAnimationFromLose());
+            UniTask t2 = PlayAsync(Away.Model().GetAnimationFromWin());
             await UniTask.WhenAll(t1, t2);
         }
         
@@ -871,6 +871,17 @@ public class StageEnvironment : Addressable, StageClosureListener
     private StageEntity[] _entities;
     public StageEntity[] Entities => _entities;
 
+    private StageEntity[] _entitiesInitiateOrder;
+    public void CalcEntitiesInitiateOrder()
+    {
+        _entitiesInitiateOrder = !_config.RunConfig.DifficultyProfile.GetEntry().EnemyInitiate
+            ? new[] { _entities[0], _entities[1] }
+            : new[] { _entities[1], _entities[0] };
+    }
+
+    public StageEntity[] EntitiesInitiateOrder
+        => _entitiesInitiateOrder;
+
     public StageEntity Home => _entities[0];
     public StageEntity Away => _entities[1];
 
@@ -884,8 +895,8 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Home",                       thisObject => ((StageEnvironment)thisObject)._entities[0] },
-        { "Away",                       thisObject => ((StageEnvironment)thisObject)._entities[1] },
+        { "Home",                       thisObject => ((StageEnvironment)thisObject).Home },
+        { "Away",                       thisObject => ((StageEnvironment)thisObject).Away },
         { "Report",                     thisObject => ((StageEnvironment)thisObject)._result },
     };
     public object Get(string s) => Accessor[s](this);
@@ -900,6 +911,8 @@ public class StageEnvironment : Addressable, StageClosureListener
             new(this, _config.Home, 0),
             new(this, _config.Away, 1),
         };
+        
+        CalcEntitiesInitiateOrder();
 
         _kernel = config.Kernel;
 
@@ -917,10 +930,10 @@ public class StageEnvironment : Addressable, StageClosureListener
             return;
 
         AudioManager.PlayEnterStage();
-        PlayAsync(_entities[0].Model().GetAnimationFromTrack0());
-        PlayAsync(_entities[1].Model().GetAnimationFromTrack0());
-        UniTask t1 = PlayAsync(_entities[0].Model().GetAnimationFromEntering());
-        UniTask t2 = PlayAsync(_entities[1].Model().GetAnimationFromEntering());
+        PlayAsync(Home.Model().GetAnimationFromTrack0());
+        PlayAsync(Away.Model().GetAnimationFromTrack0());
+        UniTask t1 = PlayAsync(Home.Model().GetAnimationFromEntering());
+        UniTask t2 = PlayAsync(Away.Model().GetAnimationFromEntering());
 
         await UniTask.WhenAll(t1, t2);
     }
@@ -1017,22 +1030,22 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private void RegisterSkillClosures()
     {
-        _entities.Do(e => e._skills.Do(s => _closureDict.Register(s, s.Entry.Closures)));
+        EntitiesInitiateOrder.Do(e => e._skills.Do(s => _closureDict.Register(s, s.Entry.Closures)));
     }
 
     private void UnregisterSkillClosures()
     {
-        _entities.Do(e => e._skills.Do(s => _closureDict.Unregister(s, s.Entry.Closures)));
+        EntitiesInitiateOrder.Do(e => e._skills.Do(s => _closureDict.Unregister(s, s.Entry.Closures)));
     }
 
     private void RegisterEntityClosures()
     {
-        _entities.Do(e => e.RegisterEntityClosures());
+        EntitiesInitiateOrder.Do(e => e.RegisterEntityClosures());
     }
 
     private void UnregisterEntityClosures()
     {
-        _entities.Do(e => e.UnregisterEntityClosures());
+        EntitiesInitiateOrder.Do(e => e.UnregisterEntityClosures());
     }
 
     private bool RegisterTempClosures(NestedStageClosureDetails d)
@@ -1075,7 +1088,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     
     private void ClearResults()
     {
-        _entities[0].RunEntity.ClearSlotResults();
-        _entities[1].RunEntity.ClearSlotResults();
+        Home.RunEntity.ClearSlotResults();
+        Away.RunEntity.ClearSlotResults();
     }
 }

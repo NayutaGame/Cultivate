@@ -81,16 +81,17 @@ public class CharacterCategory : Category<CharacterEntry>
                         // 清空之前模仿的记录
                         env.Memory.SetVariable<SkillEntryDescriptor>(key, null);
                         
-                        // 遍历所有槽位，找到幻化牌
                         d.Owner.TraversalCurrentSlots().Do(slot => 
                         {
                             if (slot.Skill == null || slot.Skill.GetEntry().GetName() != "幻化") return;
                             
-                            // 获取对手对应位置的技能
                             SkillSlot oppoSlot = oppo.GetSlot(slot.GetIndex());
-                            if (oppoSlot.Skill == null) return;
+                            if (oppoSlot.Skill == null)
+                            {
+                                slot.PlacedSkill = null;
+                                return;
+                            }
                             
-                            // 设置模仿的技能
                             slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
                                 oppoSlot.Skill.GetEntry(),
                                 oppoSlot.Skill.GetJingJie()
@@ -170,7 +171,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
 
-                        bool ownerIsHome = env.Entities[0] == d.Owner;
+                        bool ownerIsHome = env.Home == d.Owner;
                         if (!ownerIsHome)
                             return;
 
@@ -198,7 +199,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         StageEnvironment env = (StageEnvironment)listener;
                         StageDetails d = (StageDetails)eventDetails;
 
-                        bool ownerIsHome = env.Entities[0] == d.Owner;
+                        bool ownerIsHome = env.Home == d.Owner;
                         if (!ownerIsHome)
                             return;
                     }),

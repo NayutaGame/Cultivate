@@ -114,20 +114,44 @@ public class EditorManager : Singleton<EditorManager>, Addressable
 
     private void PlacementProcedure()
     {
-        Home.PlacementProcedure();
-        Away.PlacementProcedure();
+        if (RunManager.Instance.Environment.IsPlayerInitiate())
+        {
+            Home.PlacementProcedure();
+            Away.PlacementProcedure();
+        }
+        else
+        {
+            Away.PlacementProcedure();
+            Home.PlacementProcedure();
+        }
     }
 
     private void FormationProcedure()
     {
-        Home.FormationProcedure();
-        Away.FormationProcedure();
+        if (RunManager.Instance.Environment.IsPlayerInitiate())
+        {
+            Home.FormationProcedure();
+            Away.FormationProcedure();
+        }
+        else
+        {
+            Away.FormationProcedure();
+            Home.FormationProcedure();
+        }
     }
 
     private void SecondPlacementProcedure()
     {
-        Home.SecondPlacementProcedure();
-        Away.SecondPlacementProcedure();
+        if (RunManager.Instance.Environment.IsPlayerInitiate())
+        {
+            Home.SecondPlacementProcedure();
+            Away.SecondPlacementProcedure();
+        }
+        else
+        {
+            Away.SecondPlacementProcedure();
+            Home.SecondPlacementProcedure();
+        }
     }
 
     public void CopyToTop()

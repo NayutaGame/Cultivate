@@ -135,7 +135,7 @@ public class ShopCell : Cell
                 totalSkillValue += (2 << jingJie);
             });
 
-            return totalSkillValue == 0 ? "选择1张牌卖掉" : $"选择1张牌卖掉(有人愿意以{totalSkillValue}收购您的卡牌)";
+            return totalSkillValue == 0 ? "请选择1张牌卖掉" : $"请选择1张牌卖掉\n有人愿意以{totalSkillValue}金收购您的卡牌";
         }
 
         Cell SellCard(CardPickerCell cell)

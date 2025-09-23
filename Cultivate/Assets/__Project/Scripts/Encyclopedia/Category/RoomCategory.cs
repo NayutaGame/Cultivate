@@ -1186,8 +1186,9 @@ public class RoomCategory : Category<RoomEntry>
                             SkillEntryDescriptor.FromId("Skill09_006"), DeckIndex.FromField(1)),
                         new EquipGuide("最后放一张土属性的牌，提供坚毅，之后可以流转成锋锐",
                             SkillEntryDescriptor.FromId("Skill09_005"), DeckIndex.FromField(0)),
-                        new ClickBattleGuide("成了，巧用流转的规则，可以快速叠层本不富裕的增益" +
-                                             "\n开始战斗吧",
+                        new ConfirmGuide("成了，巧用流转的规则，可以快速叠层本不富裕的增益"),
+                        new ConfirmGuide("流转的顺序是锋锐->格挡->力量->灼烧->坚毅。可以随时查看上面的五行图标看到五行介绍和流转规则。"),
+                        new ClickBattleGuide("开始战斗吧",
                             new Vector2(965f, 913.5f)),
                     };
                     A.SetGuideDescriptors(guide);
@@ -2978,7 +2979,7 @@ public class RoomCategory : Category<RoomEntry>
 
                             if (d.Forced)
                             {
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
                             else
                             {
@@ -2988,7 +2989,7 @@ public class RoomCategory : Category<RoomEntry>
                                 if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
 
                             if (d.Flag == 0)
@@ -3023,7 +3024,7 @@ public class RoomCategory : Category<RoomEntry>
 
                             if (d.Forced)
                             {
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
                             else
                             {
@@ -3033,7 +3034,7 @@ public class RoomCategory : Category<RoomEntry>
                                 if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
 
                             if (d.Flag == 0)
@@ -3339,7 +3340,7 @@ public class RoomCategory : Category<RoomEntry>
 
                             if (d.Forced)
                             {
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
                             else
                             {
@@ -3349,7 +3350,7 @@ public class RoomCategory : Category<RoomEntry>
                                 if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
 
                             if (d.Flag == 0)
@@ -3441,7 +3442,7 @@ public class RoomCategory : Category<RoomEntry>
 
                             if (d.Forced)
                             {
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
                             else
                             {
@@ -3451,7 +3452,7 @@ public class RoomCategory : Category<RoomEntry>
                                 if (d.Turn < 6)
                                     return 0;
 
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
 
                             if (d.Flag == 0)
@@ -3555,7 +3556,7 @@ public class RoomCategory : Category<RoomEntry>
             
                             if (d.Forced)
                             {
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
                             else
                             {
@@ -3565,7 +3566,7 @@ public class RoomCategory : Category<RoomEntry>
                                 if (d.Turn < 6)
                                     return 0;
             
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
             
                             if (d.Flag == 0)
@@ -3642,7 +3643,7 @@ public class RoomCategory : Category<RoomEntry>
             
                             if (d.Forced)
                             {
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
                             else
                             {
@@ -3652,7 +3653,7 @@ public class RoomCategory : Category<RoomEntry>
                                 if (d.Turn < 6)
                                     return 0;
             
-                                d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                             }
             
                             if (d.Flag == 0)

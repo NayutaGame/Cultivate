@@ -7,6 +7,10 @@ using UnityEngine;
 [Serializable]
 public class WuXing : Entry
 {
+    [NonSerialized] private string _rawDescription;
+    [NonSerialized] private Description _description;
+    public Description GetDescription() => _description;
+    
     [NonSerialized] private int _index;
     [NonSerialized] private bool _isBasic;
     [NonSerialized] private string _elementaryBuffName;
@@ -17,8 +21,15 @@ public class WuXing : Entry
     [NonSerialized] private SpriteEntry _icon;
     [NonSerialized] private SpriteEntry _deco;
     
-    public WuXing(string id, string name, int index, bool isBasic, string elementaryBuffName) : base(id, name)
+    public WuXing(
+        string id,
+        string name,
+        string rawDescription,
+        int index,
+        bool isBasic,
+        string elementaryBuffName) : base(id, name)
     {
+        _rawDescription = rawDescription;
         _index = index;
         _isBasic = isBasic;
         _elementaryBuffName = elementaryBuffName;
@@ -44,6 +55,8 @@ public class WuXing : Entry
             _icon = Encyclopedia.SpriteCategory.FromName($"Tag{GetName()}");
             _deco = Encyclopedia.SpriteCategory.FromName($"WuXingDeco{GetName()}");
         }
+        
+        _description = new Description(_rawDescription);
     }
 
     public static int Length => 5;

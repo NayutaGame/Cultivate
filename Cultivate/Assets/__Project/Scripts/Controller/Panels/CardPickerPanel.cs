@@ -46,6 +46,8 @@ public class CardPickerPanel : Panel
         RunManager.Instance.Environment.WithdrawToFieldNeuron.Add(WithdrawToFieldStaging);
         RunManager.Instance.Environment.RequirementSwapNeuron.Add(RequirementSwapStaging);
         
+        RunManager.Instance.Environment.SkillMovedNeuron.Add(RefreshContentText);
+        
         CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Add(HighlightQualifiers);
         CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Add(UnhighlightQualifiers);
     }
@@ -59,8 +61,16 @@ public class CardPickerPanel : Panel
         RunManager.Instance.Environment.WithdrawToFieldNeuron.Remove(WithdrawToFieldStaging);
         RunManager.Instance.Environment.RequirementSwapNeuron.Remove(RequirementSwapStaging);
         
+        RunManager.Instance.Environment.SkillMovedNeuron.Remove(RefreshContentText);
+        
         CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Remove(HighlightQualifiers);
         CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Remove(UnhighlightQualifiers);
+    }
+
+    private void RefreshContentText(SkillMovedDetails d)
+    {
+        CardPickerCell cell = _address.Get<CardPickerCell>();
+        ContentText.text = cell.GetDetailedText();
     }
 
     private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)

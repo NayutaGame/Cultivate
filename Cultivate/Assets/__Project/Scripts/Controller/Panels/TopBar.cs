@@ -9,6 +9,8 @@ public class TopBar : MonoBehaviour
     public ResourceView MingYuan;
     public ResourceView Gold;
     public ResourceView Health;
+
+    public XView CycleIcon;
     
     public TMP_Text JingJieText;
     public XView JingJieAnnotationProvider;
@@ -51,6 +53,9 @@ public class TopBar : MonoBehaviour
         MingYuan.Configure(1, RunManager.Instance.Environment.GetMingYuan, "Run.Environment.MingYuanDescription");
         Gold.Configure(1, RunManager.Instance.Environment.GetGold, "Run.Environment.GoldDescription");
         Health.Configure(1, RunManager.Instance.Environment.Home.GetHealthBounded, "Run.Environment.HealthDescription");
+        
+        bool allowRotate = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().AllowRotate;
+        CycleIcon.gameObject.SetActive(allowRotate);
         
         RunManager.Instance.Environment.GainMingYuanNeuron.Add(GainMingYuan);
         RunManager.Instance.Environment.LoseMingYuanNeuron.Add(LoseMingYuan);

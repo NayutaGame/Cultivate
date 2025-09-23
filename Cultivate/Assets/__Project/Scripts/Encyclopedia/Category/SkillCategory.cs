@@ -696,7 +696,7 @@ public class SkillCategory : Category<SkillEntry>
             int hongTianExtra = Fib.ToValue(4 + skill.J) * 3;
             d.Value += hongTianExtra;
             d.CastResult["HongTianExtra"] = hongTianExtra.ToString();
-        }, key: "HongTianClosure", rawDescription: "初次：多[HongTianExtra]次", checkListener: true);
+        }, key: "HongTianClosure", rawDescription: "初次：多[HongTianExtra]", checkListener: true);
 
     private static readonly StageClosure NuTongClosure = new(StageClosureDict.WIL_HEALTH_COST, -1,
                                                     async (listener, closure, closureDetails) =>
@@ -1898,6 +1898,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "藏锋",
                 wuXing:                     WuXing.Huo,
                 jingJieBound:               JingJie.HuaShen2FanXu,
+                tagComposite:               TagCategory.Defend | TagCategory.Exhaust,
                 cost:                       ManaCostDefinition.FromValue(2),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {

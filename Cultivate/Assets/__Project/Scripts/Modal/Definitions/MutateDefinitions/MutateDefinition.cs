@@ -79,14 +79,16 @@ public class MutateDefinition
 
     public static readonly MutateDefinition RemoveDebuffMutate = new(
         skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd => 
-            pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly),
+            (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly) ||
+            (pd is RemoveArmorProcedureDefinition)),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
             List<ProcedureDefinition> newProcedureDefinitions = new();
 
             Predicate<ProcedureDefinition> pred = pd =>
-                pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly;
+                (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly) ||
+                (pd is RemoveArmorProcedureDefinition);
             
             for (int i = 0; i < oldProcedureDefinitions.Length; i++)
             {

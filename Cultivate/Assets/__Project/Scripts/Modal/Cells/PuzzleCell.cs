@@ -109,7 +109,7 @@ public class PuzzleCell : Cell
 
                 if (d.Forced)
                 {
-                    d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                    d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                 }
                 else
                 {
@@ -119,7 +119,7 @@ public class PuzzleCell : Cell
                     if (d.Turn < 6)
                         return 0;
 
-                    d.Flag = d.Env.Entities[0].Hp > 0 ? 1 : 2;
+                    d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
                 }
 
                 if (d.Flag == 0)

@@ -246,6 +246,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public RunReport GetRunReport() => _runReport;
     public BoundedInt GetGold() => _gold;
     public MingYuan GetMingYuan() => _home.GetMingYuan();
+    
+    public bool IsPlayerInitiate() => !_config.DifficultyProfile.GetEntry().EnemyInitiate;
 
     public bool IsCompatible()
         => Version.IsRunCompatible(_version);
@@ -612,11 +614,31 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void PlacementProcedure()
     {
-        _home.PlacementProcedure();
-        _away.PlacementProcedure();
+        if (RunManager.Instance.Environment.IsPlayerInitiate())
+        {
+            _home.PlacementProcedure();
+            _away.PlacementProcedure();
+        }
+        else
+        {
+            _away.PlacementProcedure();
+            _home.PlacementProcedure();
+        }
     }
 
     private void FormationProcedure()
+    {
+        if (RunManager.Instance.Environment.IsPlayerInitiate())
+        {
+            PlayerInitiateFormationProcedure();
+        }
+        else
+        {
+            EnemyInitiateFormationProcedure();
+        }
+    }
+
+    private void PlayerInitiateFormationProcedure()
     {
         bool homeAllowFormation = _config.DifficultyProfile.GetEntry().HomeAllowFormation;
         if (homeAllowFormation)
@@ -631,10 +653,33 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             _away.ClearFormationProcedure();
     }
 
+    private void EnemyInitiateFormationProcedure()
+    {
+        bool awayAllowFormation = _config.DifficultyProfile.GetEntry().AwayAllowFormation;
+        if (awayAllowFormation)
+            _away.FormationProcedure();
+        else
+            _away.ClearFormationProcedure();
+        
+        bool homeAllowFormation = _config.DifficultyProfile.GetEntry().HomeAllowFormation;
+        if (homeAllowFormation)
+            _home.FormationProcedure();
+        else
+            _home.ClearFormationProcedure();
+    }
+
     private void SecondPlacementProcedure()
     {
-        _home.SecondPlacementProcedure();
-        _away.SecondPlacementProcedure();
+        if (RunManager.Instance.Environment.IsPlayerInitiate())
+        {
+            _home.SecondPlacementProcedure();
+            _away.SecondPlacementProcedure();
+        }
+        else
+        {
+            _away.SecondPlacementProcedure();
+            _home.SecondPlacementProcedure();
+        }
     }
 
     public MergeTarget GetMergePreresult(RunSkill lhs, RunSkill rhs)

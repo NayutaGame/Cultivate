@@ -31,8 +31,8 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         }
         else
         {
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准");
-            MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("返虚测试");
+            MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("返虚测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("墨染测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准无教程");
@@ -42,7 +42,6 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("多段测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("拖拽测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("结算测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("排局3");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("商店测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("教学10");
         }

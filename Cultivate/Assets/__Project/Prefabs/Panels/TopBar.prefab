@@ -138,6 +138,7 @@ MonoBehaviour:
   MingYuan: {fileID: 347709136655550440}
   Gold: {fileID: 8493412847900645391}
   Health: {fileID: 5407775051557479670}
+  CycleIcon: {fileID: 3834495929018652741}
   JingJieText: {fileID: 2500656310281601456}
   JingJieAnnotationProvider: {fileID: 6482350953503862742}
   DifficultyText: {fileID: 3767078979536271319}
