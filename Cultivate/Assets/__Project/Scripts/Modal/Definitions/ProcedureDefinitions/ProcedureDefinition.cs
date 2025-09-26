@@ -65,7 +65,7 @@ public abstract class ProcedureDefinition
         castDetails.CastResult.Append(this, postCond);
     }
     
-    public virtual async UniTask Cast(CastDetails castDetails)
+    public virtual async UniTask Cast(CastDetails d)
     {
     }
 

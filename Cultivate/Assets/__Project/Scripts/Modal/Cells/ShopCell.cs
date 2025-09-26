@@ -11,6 +11,9 @@ public class ShopCell : Cell
 
     private string _title;
     public string GetTitle() => _title;
+
+    private string _contentText;
+    public string GetContentText() => _contentText;
     
     private CommodityListModel _commodities;
     public CommodityListModel GetCommodities() => _commodities;
@@ -25,11 +28,12 @@ public class ShopCell : Cell
         { "Commodities",                thisObject => ((ShopCell)thisObject).GetCommodities() },
     };
     public override object Get(string s) => Accessor[s](this);
-    private ShopCell(int ladder, float priceMultiplier, string title, SpriteEntry spriteEntry)
+    private ShopCell(int ladder, float priceMultiplier, string title, string contentText, SpriteEntry spriteEntry)
     {
         _ladder = ladder;
         _priceMultiplier = priceMultiplier;
         _title = title;
+        _contentText = contentText;
         _spriteEntry = spriteEntry;
     }
 
@@ -110,7 +114,7 @@ public class ShopCell : Cell
         => FromShouCangJia(ladder);
 
     public static ShopCell FromShouCangJia(int ladder)
-        => new(ladder, priceMultiplier: 2, "收藏家", Encyclopedia.SpriteCategory.FromName("收藏家"));
+        => new(ladder, priceMultiplier: 2, "收藏家", "可以花钱购买卡牌", Encyclopedia.SpriteCategory.FromName("收藏家"));
 
     public static CardPickerCell FromYiBaoZhai(int ladder)
     {
@@ -119,7 +123,7 @@ public class ShopCell : Cell
             getDetailedText:    GetDetailedText,
             descriptor:         RunSkillDescriptorListModel.FromCount(1));
 
-        ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", Encyclopedia.SpriteCategory.FromName("收藏家"));
+        ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", "可以花钱购买卡牌",Encyclopedia.SpriteCategory.FromName("收藏家"));
 
         cardPickerCell.SetSubmitOperation(SellCard);
 
@@ -162,7 +166,7 @@ public class ShopCell : Cell
         Bound baseJingJieBound = new Bound((jingJieFromLadder + 2).ClampUpper(JingJie.HuaShen),
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen) + 1);
 
-        ShopCell B = new(ladder, 1.5f, "黑市", Encyclopedia.SpriteCategory.FromName("黑市"));
+        ShopCell B = new(ladder, 1.5f, "黑市", "可以花钱购买卡牌\n如果钱不够，可以使用气血支付", Encyclopedia.SpriteCategory.FromName("黑市"));
         B.SetEnter(panelDescriptor =>
         {
             ShopCell shop = (ShopCell)panelDescriptor;
@@ -204,7 +208,7 @@ public class ShopCell : Cell
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound baseJingJieBound = JingJie.JinDan2HuaShen;
 
-        ShopCell B = new(ladder, 1.5f, "气血商店", Encyclopedia.SpriteCategory.FromName("黑市"));
+        ShopCell B = new(ladder, 1.5f, "气血商店", "可以使用气血购买卡牌", Encyclopedia.SpriteCategory.FromName("黑市"));
         B.SetEnter(panelDescriptor =>
         {
             ShopCell shop = (ShopCell)panelDescriptor;
@@ -230,7 +234,7 @@ public class ShopCell : Cell
                     payWithGoldFunc: null,
                     payWithHealthFunc: shop.PayWithHealth,
                     discount: RandomManager.value < 0.2f ? 0.5f : 1f,
-                    acceptGold: true,
+                    acceptGold: false,
                     acceptHealth: true);
                 commodities.Add(commodity);
             }

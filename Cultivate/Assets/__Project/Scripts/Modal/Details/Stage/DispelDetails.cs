@@ -11,12 +11,10 @@ public class DispelDetails : NestedStageClosureDetails
         StageClosureListener listener,
         StageClosure[] closures,
         ResultDict castResult,
-        bool induced) : base(env, induced)
+        bool closureHasRegistered,
+        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Entity = entity;
         Value = value;
-        Listener = listener;
-        Closures = closures;
-        CastResult = castResult;
     }
 }

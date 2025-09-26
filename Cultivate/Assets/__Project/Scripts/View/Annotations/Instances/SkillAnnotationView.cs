@@ -1,4 +1,5 @@
 
+using CLLibrary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,6 +54,21 @@ public class SkillAnnotationView : AnnotationView
         UpdateTrivia();
     }
 
+    private JingJie GetJingJieUpperBound()
+    {
+        RunEnvironment env = RunManager.Instance?.Environment;
+        if (env != null)
+        {
+            return env.GetRunConfig().DifficultyProfile.GetEntry().AllowFanXuMerge
+                ? JingJie.FanXu
+                : JingJie.HuaShen;
+        }
+        else
+        {
+            return JingJie.FanXu;
+        }
+    }
+
     private void UpdateJingJieSlider()
     {
         AnnotationDetails d = Get<AnnotationDetails>();
@@ -60,6 +76,7 @@ public class SkillAnnotationView : AnnotationView
         
         int lowestJingJie = skill.GetLowestJingJie();
         int highestJingJie = skill.GetHighestJingJie();
+        highestJingJie = highestJingJie.ClampUpper(GetJingJieUpperBound());
 
         for (int i = 0; i < JingJieBits.Length; i++)
         {

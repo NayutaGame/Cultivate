@@ -51,12 +51,13 @@ public class GiveArmorProcedureDefinition : ProcedureDefinition
             tgt: d.Caster.Opponent(),
             value: Value,
             listener: d.Skill,
-            castResult: d.CastResult,
             closures: ClosuresArray,
+            castResult: d.CastResult,
+            closureHasRegistered: false,
             induced: Induced);
 
-    public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.GainArmorProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails d)
+        => await d.Env.GainArmorProcedure(GetDetailsFromCastDetails(d));
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

@@ -38,8 +38,8 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
         );
     }
     
-    public override async UniTask Cast(CastDetails castDetails)
-        => castDetails.Caster.SetActionPoint(ActionPoint);
+    public override async UniTask Cast(CastDetails d)
+        => d.Caster.SetActionPoint(ActionPoint);
     
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

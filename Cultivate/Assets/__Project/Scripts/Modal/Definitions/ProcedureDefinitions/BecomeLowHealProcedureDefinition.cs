@@ -30,16 +30,16 @@ public class BecomeLowHealProcedureDefinition : ProcedureDefinition
         );
     }
 
-    public override async UniTask Cast(CastDetails castDetails)
+    public override async UniTask Cast(CastDetails d)
     {
         if (Closures != null)
             foreach (StageClosure closure in Closures)
             {
                 if (closure.Description == null)
                     return;
-                castDetails.CastResult.Append(closure.Key, false);
+                d.CastResult.Append(closure.Key, false);
             }
-        await castDetails.BecomeLowHealth();
+        await d.BecomeLowHealth();
     }
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)

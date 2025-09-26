@@ -111,7 +111,7 @@ public class CardPickerCell : Cell
         
         CardPickerCell cell = FromConstantDetailedText(
             titleText:          $"百草堂",
-            detailedText:       $"选择0~2张不高于{currJingJie}牌，提升到{nextJingJie.GetName()}",
+            detailedText:       $"选择0~2张不高于{currJingJie.GetName()}牌，提升到{nextJingJie.GetName()}",
             descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(singleDescriptor, 2));
 
         cell.SetSubmitOperation(cardPickerCell =>

@@ -10,6 +10,8 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
     [SerializeReference] public DifficultyProfile DifficultyProfile;
     [SerializeReference] public List<PackEntry> PacksToStartWith;
     [SerializeField] public MapEntry MapEntry;
+
+    [NonSerialized] private MergeRule[] _defaultMergeRules;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -45,6 +47,10 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("商店测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("教学10");
         }
+
+        _defaultMergeRules = DifficultyProfile.GetEntry().AllowFanXuMerge
+            ? MergeRule.DefaultMergeRules
+            : MergeRule.DefaultMergeRulesLockFanXu;
     }
 
     public void OnBeforeSerialize() { }
@@ -58,7 +64,14 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
             PackEntry entry = PacksToStartWith[i];
             PacksToStartWith[i] = string.IsNullOrEmpty(entry.GetId()) ? null : Encyclopedia.PackCategory.FromId(entry.GetId());
         }
+
+        _defaultMergeRules = DifficultyProfile.GetEntry().AllowFanXuMerge
+            ? MergeRule.DefaultMergeRules
+            : MergeRule.DefaultMergeRulesLockFanXu;
     }
+
+    public MergeRule[] GetDefaultMergeRules()
+        => _defaultMergeRules;
 
     public static RunConfig FirstRun()
     {

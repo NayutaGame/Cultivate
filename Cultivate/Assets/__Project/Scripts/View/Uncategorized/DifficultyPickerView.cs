@@ -1,4 +1,5 @@
 
+using System;
 using CLLibrary;
 using TMPro;
 using UnityEngine;
@@ -28,18 +29,7 @@ public class DifficultyPickerView : MonoBehaviour
         _address = new Address("Profile.Curr.DifficultyProfileList");
 
         DifficultyProfileList profiles = _address.Get<DifficultyProfileList>();
-
-        for (int i = profiles.Count() - 1; i >= 0; i--)
-        {
-            var p = profiles[i];
-            if (p.IsUnlocked())
-            {
-                _selectionIndex = i;
-                break;
-            }
-        }
-
-        // _selectionIndex = profiles.LastIdx(p => p.IsUnlocked()).Value;
+        SetSelectionIndexToHighest(profiles);
 
         PrevDifficultyButton.onClick.RemoveAllListeners();
         PrevDifficultyButton.onClick.AddListener(PrevDifficulty);
@@ -53,6 +43,13 @@ public class DifficultyPickerView : MonoBehaviour
         
         NextButtonPropagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
 
+        Refresh();
+    }
+
+    private void OnEnable()
+    {
+        DifficultyProfileList profiles = _address.Get<DifficultyProfileList>();
+        SetSelectionIndexToHighest(profiles);
         Refresh();
     }
 
@@ -79,6 +76,21 @@ public class DifficultyPickerView : MonoBehaviour
         
         DemoMask.gameObject.SetActive(curr.IsDemoLocked());
         DemoText.gameObject.SetActive(curr.IsDemoLocked());
+    }
+
+    private void SetSelectionIndexToHighest(DifficultyProfileList profiles)
+    {
+        for (int i = profiles.Count() - 1; i >= 0; i--)
+        {
+            var p = profiles[i];
+            if (p.IsUnlocked())
+            {
+                _selectionIndex = i;
+                break;
+            }
+        }
+
+        // _selectionIndex = profiles.LastIdx(p => p.IsUnlocked()).Value;
     }
 
     private void PrevDifficulty()

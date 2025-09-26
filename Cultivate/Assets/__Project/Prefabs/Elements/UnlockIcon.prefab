@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fbd5c70a5cb1a8a48b984d1c6c4e317a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 08c11e6cde447904cbba33729f3094ec, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -302,7 +302,6 @@ MonoBehaviour:
   _ib: {fileID: 0}
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: 
   AnnotationViewType: 9
   UseRectAlignment: 1
 --- !u!225 &2893177524455415213

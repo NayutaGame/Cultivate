@@ -30,8 +30,8 @@ public class ExhaustProcedureDefinition : ProcedureDefinition
         );
     }
 
-    public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.ExhaustProcedure(castDetails.Caster, castDetails.Skill);
+    public override async UniTask Cast(CastDetails d)
+        => await d.Env.ExhaustProcedure(d.Caster, d.Skill);
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

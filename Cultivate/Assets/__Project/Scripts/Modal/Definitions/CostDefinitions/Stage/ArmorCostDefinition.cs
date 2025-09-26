@@ -64,8 +64,6 @@ public class ArmorCostDefinition : CostDefinition
         await d.Entity.LoseArmorProcedure(total, induced: false);
         
         d.Env.Result.TryAppend($"{d.Entity.GetName()}消耗了{d.Value}护甲，不足的部分变成了三倍的减甲，以使用{d.Skill.Entry.GetName()}\n");
-        // suspicious
-        await d.Env.LoseHealthProcedure(d.Entity, d.Value, false, d.Skill, Closures, null, induced: true);
     }
     
     public override async UniTask DidCostEvent(CostDetails d)

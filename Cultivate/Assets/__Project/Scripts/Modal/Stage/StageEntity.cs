@@ -578,18 +578,12 @@ public class StageEntity : Addressable, StageClosureListener
     public async UniTask AttackProcedure(
         int value,
         int times = 1,
-        StageClosureListener initiator = null,
         WuXing wuXing = null,
-        bool crit = false,
-        bool lifeSteal = false,
-        bool penetrate = false,
-        bool doesntConsumeJianYi = false,
-        bool shatter = false,
         bool recursive = true,
-        ResultDict castResult = null,
+        StageClosureListener listener = null,
         StageClosure[] closures = null,
         bool induced = false)
-        => await _env.AttackProcedure(new AttackDetails(_env, this, Opponent(), value, times, initiator, wuXing, crit, lifeSteal, penetrate, doesntConsumeJianYi, shatter, false, recursive, castResult, closures, induced));
+        => await _env.AttackProcedure(AttackDetails.FromEntity(this, value, times, wuXing, recursive, listener, closures, induced));
     
     public async UniTask IndirectProcedure(
         int value,
@@ -602,62 +596,57 @@ public class StageEntity : Addressable, StageClosureListener
         => await _env.IndirectProcedure(new IndirectDetails(_env, this, Opponent(), value, initiator, wuXing, lifeSteal, recursive, castResult, induced));
     
     public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, ResultDict castResult = null, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(_env, this, this, value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(_env, this, this, value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, false, induced));
     
     public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, ResultDict castResult, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(_env, this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, induced));
+        => await _env.DamageProcedure(new DamageDetails(_env, this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, false, induced));
     
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, StageSkill srcSkill = null, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseHealthProcedure(new LoseHealthDetails(_env, this, value, causedByAttack, srcSkill, null, castResult, induced));
+        => await _env.LoseHealthProcedure(new LoseHealthDetails(_env, this, value, causedByAttack, srcSkill, null, castResult, false, induced));
     
     public async UniTask HealProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.HealProcedure(new HealDetails(_env, this, this, value, false, null, castResult, null, induced));
+        => await _env.HealProcedure(new HealDetails(_env, this, this, value, false, null, null, castResult, false, induced));
     
     public async UniTask HealOppoProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.HealProcedure(new HealDetails(_env, this, Opponent(), value, false, null, castResult, null, induced));
+        => await _env.HealProcedure(new HealDetails(_env, this, Opponent(), value, false, null, null, castResult, false, induced));
     
     public async UniTask GainArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, this, value, null, castResult, null, induced));
+        => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, this, value, null, null, castResult, false, induced));
     
     public async UniTask GiveArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, Opponent(), value, null, castResult, null, induced));
+        => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, Opponent(), value, null, null, castResult, false, induced));
     
     public async UniTask LoseArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, this, value, null, null, castResult, induced, true));
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, this, value, null, null, castResult, false, induced, true));
     
     public async UniTask RemoveArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, Opponent(), value, null, null, castResult, induced, true));
-    
-    public async UniTask GainBuffProcedure(string buffName, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
-        => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, this, Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, null, castResult, null, induced));
-    public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
-        => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, this, buffEntry, stack, recursive, null, castResult, null, induced));
+        => await _env.LoseArmorProcedure(new LoseArmorDetails(_env, this, Opponent(), value, null, null, castResult, false, induced, true));
 
-
-    public async UniTask GiveBuffProcedure(string buffName, int stack = 1, bool recursive = true,
-        ResultDict castResult = null, bool induced = false)
-        => await GiveBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, castResult, induced);
-    public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, ResultDict castResult = null, bool induced = false)
-        => await _env.GainBuffProcedure(new GainBuffDetails(_env, this, Opponent(), buffEntry, stack, recursive, null, castResult, null, induced));
-
+    public async UniTask GainBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await _env.GainBuffProcedure(GainBuffDetails.FromEntity(this, true, Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced));
+    public async UniTask GainBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+        => await _env.GainBuffProcedure(GainBuffDetails.FromEntity(this, true, buffEntry, stack, recursive, induced));
+    public async UniTask GiveBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
+        => await _env.GainBuffProcedure(GainBuffDetails.FromEntity(this, false, Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced));
+    public async UniTask GiveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
+        => await _env.GainBuffProcedure(GainBuffDetails.FromEntity(this, false, buffEntry, stack, recursive, induced));
     public async UniTask LoseBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
-        => await LoseBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
+        => await _env.LoseBuffProcedure(LoseBuffDetails.FromEntity(this, true, Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced));
     public async UniTask LoseBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
-        => await _env.LoseBuffProcedure(new LoseBuffDetails(_env, this, this, buffEntry, stack, recursive, induced));
-
+        => await _env.LoseBuffProcedure(LoseBuffDetails.FromEntity(this, true, buffEntry, stack, recursive, induced));
     public async UniTask RemoveBuffProcedure(string buffName, int stack = 1, bool recursive = true, bool induced = false)
-        => await RemoveBuffProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced);
+        => await _env.LoseBuffProcedure(LoseBuffDetails.FromEntity(this, false, Encyclopedia.BuffCategory.FromName(buffName), stack, recursive, induced));
     public async UniTask RemoveBuffProcedure(BuffEntry buffEntry, int stack = 1, bool recursive = true, bool induced = false)
-        => await _env.LoseBuffProcedure(new LoseBuffDetails(_env, this, Opponent(), buffEntry, stack, recursive, induced));
+        => await _env.LoseBuffProcedure(LoseBuffDetails.FromEntity(this, false, buffEntry, stack, recursive, induced));
     
     public async UniTask CycleProcedure(WuXing wuXing, bool rotate = true, int gain = 0, int recover = 0, ResultDict castResult = null, bool induced = false)
-        => await _env.CycleProcedure(new CycleDetails(_env, this, rotate, wuXing, gain, recover, null, null, castResult, induced));
+        => await _env.CycleProcedure(new CycleDetails(_env, this, rotate, wuXing, gain, recover, null, null, castResult, false, induced));
     
     public async UniTask DispelProcedure(int stack, ResultDict castResult = null, bool induced = false)
-        => await _env.DispelProcedure(new DispelDetails(_env, this, stack, null, null, castResult, induced));
+        => await _env.DispelProcedure(new DispelDetails(_env, this, stack, null, null, castResult, false, induced));
 
     public async UniTask LoseMaxHealthProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.LoseMaxHealthProcedure(new LoseMaxHealthDetails(_env, this, value, null, castResult, null, induced));
+        => await _env.LoseMaxHealthProcedure(new LoseMaxHealthDetails(_env, this, value, null, null, castResult, false, induced));
 
     public async UniTask<bool> TryConsumeProcedure(string buffName, int stack = 1, bool recursive = true)
         => await TryConsumeProcedure(Encyclopedia.BuffCategory.FromName(buffName), stack, recursive);
@@ -674,32 +663,6 @@ public class StageEntity : Addressable, StageClosureListener
         }
     
         return false;
-    }
-    
-    public async UniTask TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? maxFlow = null, int? upperBound = null)
-    {
-        int flow = GetStackOfBuff(fromBuff) / fromStack;
-        if (upperBound.HasValue)
-        {
-            int gap = upperBound.Value - GetStackOfBuff(toBuff);
-            if (gap >= 0)
-                flow = flow.ClampUpper(gap);
-        }
-        
-        if (maxFlow.HasValue)
-            flow = flow.ClampUpper(maxFlow.Value);
-        
-        if (consuming)
-            await LoseBuffProcedure(fromBuff, flow * fromStack);
-    
-        await GainBuffProcedure(toBuff, flow * toStack);
-    }
-    
-    public async UniTask BecomeLowHealth()
-    {
-        int gap = Hp - GetLowHealthThreshold();
-        if (gap > 0)
-            await LoseHealthProcedure(gap, false);
     }
 
     #endregion

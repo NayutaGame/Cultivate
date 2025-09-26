@@ -58,20 +58,20 @@ public class FollowingCycleProcedureDefinition : ProcedureDefinition
     }
     
     public CycleDetails GetDetailsFromCastDetails(CastDetails d, WuXing toRotateWuXing)
-        => new(d.Env, d.Caster, Rotate, toRotateWuXing, Gain, Recover, d.Skill, ClosuresArray, d.CastResult, Induced);
+        => new(d.Env, d.Caster, Rotate, toRotateWuXing, Gain, Recover, d.Skill, ClosuresArray, d.CastResult, false, Induced);
 
-    public override async UniTask Cast(CastDetails castDetails)
+    public override async UniTask Cast(CastDetails d)
     {
-        WuXing wuXing = castDetails.Caster.Memory.TryGetVariable<WuXing>(StageEntity.LastRotatedWuXingKey, null);
+        WuXing wuXing = d.Caster.Memory.TryGetVariable<WuXing>(StageEntity.LastRotatedWuXingKey, null);
         if (wuXing == null || !wuXing.IsBasic())
         {
-            castDetails.CastResult["WuXing"] = $"{WuXing.Wu.GetName()}";
+            d.CastResult["WuXing"] = $"{WuXing.Wu.GetName()}";
             return;
         }
 
         WuXing nextWuXing = wuXing.Next;
-        castDetails.CastResult["WuXing"] = $"{nextWuXing.GetName()}";
-        await castDetails.Env.CycleProcedure(GetDetailsFromCastDetails(castDetails, nextWuXing));
+        d.CastResult["WuXing"] = $"{nextWuXing.GetName()}";
+        await d.Env.CycleProcedure(GetDetailsFromCastDetails(d, nextWuXing));
     }
 
     public override void DefaultGetDescription(

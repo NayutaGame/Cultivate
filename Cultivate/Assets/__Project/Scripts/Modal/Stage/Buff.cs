@@ -50,10 +50,10 @@ public class Buff : StageClosureListener, IEmphasizable, AnnotatableBuff
         => _owner.Env.ClosureDict.Unregister(this, _entry.Closures);
 
     public async UniTask GainStackProcedure(int stack)
-        => await _owner.Env.GainBuffProcedure(new(_owner.Env, _owner, _owner, GetEntry(), stack, true, null, null, null, true));
+        => await _owner.Env.GainBuffProcedure(GainBuffDetails.FromBuff(this, stack));
 
     public async UniTask LoseStackProcedure(int stack = 1)
-        => await _owner.Env.LoseBuffProcedure(new(_owner.Env, _owner, _owner, GetEntry(), stack, true, true));
+        => await _owner.Env.LoseBuffProcedure(LoseBuffDetails.FromBuff(this, stack));
 
     public bool CanShowAnnotation()
         => true;

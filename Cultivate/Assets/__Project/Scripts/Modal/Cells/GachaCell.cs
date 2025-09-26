@@ -64,12 +64,15 @@ public class GachaCell : Cell
         _price = (int) (_price * _priceMultiplier / _items.Count());
     }
 
+    public bool IsAffordable()
+        => RunManager.Instance.Environment.GetGold().Curr < _price;
+
     public void GachaProcedure()
     {
         if (_items.Count() <= 0)
             return;
 
-        if (RunManager.Instance.Environment.GetGold().Curr < _price)
+        if (IsAffordable())
             return;
 
         RunManager.Instance.Environment.SetDGoldProcedure(-_price);

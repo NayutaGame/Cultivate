@@ -38,8 +38,8 @@ public class DirectProcedureDefinition : ProcedureDefinition
         );
     }
     
-    public override async UniTask Cast(CastDetails castDetails)
-        => await _cast(castDetails);
+    public override async UniTask Cast(CastDetails d)
+        => await _cast(d);
     
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

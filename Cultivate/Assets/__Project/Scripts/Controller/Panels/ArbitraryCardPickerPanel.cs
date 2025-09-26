@@ -42,8 +42,8 @@ public class ArbitraryCardPickerPanel : Panel
         ArbitraryCardPickerCell d = _address.Get<ArbitraryCardPickerCell>();
 
         DetailedText.text = d.GetDetailedText() +
-                            $"可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
-                            $"已选择 {_selections.Count} 张";
+                            $"\n可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
+                            $"\n已选择 {_selections.Count} 张";
         
         ConfirmButton.SetStateToInactiveFrom(!d.Bound.Contains(_selections.Count));
         

@@ -63,36 +63,16 @@ public class AttackProcedureDefinition : ProcedureDefinition
         );
     }
 
-    public AttackDetails GetDetailsFromCastDetails(CastDetails d)
-        => new(
-            env: d.Env,
-            src: d.Caster,
-            tgt: d.Caster.Opponent(),
-            value: Value,
-            times: Times,
-            listener: d.Skill,
-            wuxing: WuXing ?? d.Skill.Entry.WuXing,
-            crit: false,
-            lifeSteal: false,
-            penetrate: false,
-            doesntConsumeJianYi: false,
-            shatter: false,
-            evade: false,
-            recursive: Recursive,
-            castResult: d.CastResult,
-            closures: ClosuresArray,
-            induced: Induced);
-
-    public override async UniTask Cast(CastDetails castDetails)
+    public override async UniTask Cast(CastDetails d)
     {
         if (Closures != null)
             foreach (StageClosure closure in Closures)
             {
                 if (closure.Description == null)
                     return;
-                castDetails.CastResult.Append(closure.Key, false);
+                d.CastResult.Append(closure.Key, false);
             }
-        await castDetails.Env.AttackProcedure(GetDetailsFromCastDetails(castDetails));
+        await d.Env.AttackProcedure(AttackDetails.FromAttackProcedureDefinition(this, d));
     }
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)

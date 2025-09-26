@@ -49,7 +49,7 @@ public class GachaPanel : Panel
         
         GachaCell gachaCell = _address.Get<GachaCell>();
         gachaCell.GachaProcedure();
-        BuyButton.SetStateToInactiveFrom(gachaCell.ItemsIsEmpty);
+        BuyButton.SetStateToInactiveFrom(gachaCell.ItemsIsEmpty && !gachaCell.IsAffordable());
     }
 
     private void ExitShop(InteractBehaviour ib, PointerEventData d)

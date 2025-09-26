@@ -42,7 +42,8 @@ public class DamageDetails : NestedStageClosureDetails
         StageClosureListener listener,
         StageClosure[] closures,
         ResultDict castResult,
-        bool induced) : base(env, induced)
+        bool closureHasRegistered,
+        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -51,20 +52,17 @@ public class DamageDetails : NestedStageClosureDetails
         LifeSteal = lifeSteal;
         CausedByAttack = causedByAttack;
         Recursive = recursive;
-        Listener = listener;
-        Closures = closures;
-        CastResult = castResult;
     }
 
     public static DamageDetails FromAttackDetails(AttackDetails d)
-        => new(d.Env, d.Src, d.Tgt, d.Value, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, d.Value, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, d.Induced);
 
     public static DamageDetails FromIndirectDetails(IndirectDetails d)
-        => new(d.Env, d.Src, d.Tgt, d.Value, false, d.LifeSteal, false, d.Recursive, d.SrcSkill, null, d.CastResult, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, d.Value, false, d.LifeSteal, false, d.Recursive, d.SrcSkill, null, d.CastResult, false, d.Induced);
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
-        => new(d.Env, d.Src, d.Tgt, 0, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.Induced);
+        => new(d.Env, d.Src, d.Tgt, 0, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, d.Induced);
     
     public static DamageDetails FromBurn(BurnDetails d)
-        => new(d.Env, d.Owner, d.Owner, d.Value, false, false, false, true, null, null, null, d.Induced);
+        => new(d.Env, d.Owner, d.Owner, d.Value, false, false, false, true, null, null, null, false, d.Induced);
 }

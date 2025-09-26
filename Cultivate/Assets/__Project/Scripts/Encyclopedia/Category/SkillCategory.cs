@@ -144,7 +144,7 @@ public class SkillCategory : Category<SkillEntry>
                                                     {
                                                         DamageDetails d = closureDetails as DamageDetails;
                                                         StageSkill skill = d.Listener as StageSkill;
-                                                        int liuXianConvert = 10 - skill.GetJingJie();
+                                                        int liuXianConvert = 10 - skill.J;
                                                         int gain = d.Value / liuXianConvert;
                                                         await d.Src.CycleProcedure(WuXing.Shui, gain: gain);
                                                         d.CastResult["LiuXianConvert"] = liuXianConvert.ToString();
@@ -504,7 +504,7 @@ public class SkillCategory : Category<SkillEntry>
                                                     {
                                                         AttackDetails d = closureDetails as AttackDetails;
                                                         StageSkill skill = listener as StageSkill;
-                                                        int xiaoSongGrow = Fib.ToValue(3 + skill.Dj);
+                                                        int xiaoSongGrow = Fib.ToValue(4 + skill.J);
                                                         d.Value += xiaoSongGrow * skill.TotalStageCastedCount;
                                                         d.CastResult["XiaoSongGrow"] = xiaoSongGrow.ToString();
                                                     }, key: "XiaoSongClosure", rawDescription: $"成长：多[XiaoSongGrow]", checkListener: true);
@@ -1457,8 +1457,8 @@ public class SkillCategory : Category<SkillEntry>
                 tagComposite:               TagCategory.Attack | TagCategory.Growth,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new TrySetValueProcedureDefinition("XiaoSongGrow", Fib.ToValue(3 + dj).ToString()),
-                    new AttackProcedureDefinition(Fib.ToValue(4 + dj))
+                    new TrySetValueProcedureDefinition("XiaoSongGrow", Fib.ToValue(4 + j).ToString()),
+                    new AttackProcedureDefinition(Fib.ToValue(3 + j))
                         .AddClosure(XiaoSongClosure),
                 }),
 
@@ -1869,7 +1869,8 @@ public class SkillCategory : Category<SkillEntry>
                             int times = d.J <= JingJie.HuaShen ? 1 : 2;
                             for (int i = 0; i < times; i++)
                             {
-                                StageSkill skill = d.Caster.PrevSkills(d.Caster._p, loop: false)
+                                int slotIndex = d.Skill.SlotIndex;
+                                StageSkill skill = d.Caster.PrevSkills(slotIndex, loop: false)
                                     .FirstObj(skill => !skill.Exhausted);
                                 if (skill != null)
                                     await skill.ExhaustProcedure();
@@ -2457,7 +2458,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new TrySetValueProcedureDefinition("LiuXianConvert", (10 - j).ToString()),
-                    new AttackProcedureDefinition(9 + 3 * dj)
+                    new AttackProcedureDefinition(6 + 3 * j)
                         .AddClosure(LiuXianClosure),
                 }),
 
@@ -3045,8 +3046,8 @@ public class SkillCategory : Category<SkillEntry>
                 cost:                       ManaCostDefinition.FromValue(2),
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new TrySetValueProcedureDefinition("LiuXianConvert", (9 - dj).ToString()),
-                    new AttackProcedureDefinition(9 + 3 * dj)
+                    new TrySetValueProcedureDefinition("LiuXianConvert", (10 - j).ToString()),
+                    new AttackProcedureDefinition(6 + 3 * j)
                         .AddClosure(LiuXianClosure),
                 }),
             
@@ -3639,7 +3640,7 @@ public class SkillCategory : Category<SkillEntry>
 
                     if (cond)
                     {
-                        await d.Caster.RemoveBuffProcedure("火墙", stack);
+                        await d.RemoveBuffProcedure("火墙", stack);
                         await d.AttackProcedure(50);
                     }
 

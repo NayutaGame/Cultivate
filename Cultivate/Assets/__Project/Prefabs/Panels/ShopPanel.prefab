@@ -56,6 +56,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TitleText: {fileID: 3244539001436381014}
+  ContentText: {fileID: 5275153604827116729}
   ListView: {fileID: 469018508848194812}
   Illustration: {fileID: 9144050821340534358}
   ExitButton: {fileID: 8114922822335002739}

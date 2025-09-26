@@ -52,10 +52,11 @@ public class DispelProcedureDefinition : ProcedureDefinition
             listener: d.Skill,
             closures: ClosuresArray,
             castResult: d.CastResult,
+            closureHasRegistered: false,
             induced: Induced);
 
-    public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.DispelProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails d)
+        => await d.Env.DispelProcedure(GetDetailsFromCastDetails(d));
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

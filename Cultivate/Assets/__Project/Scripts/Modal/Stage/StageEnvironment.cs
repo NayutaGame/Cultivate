@@ -43,7 +43,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         RegisterEntityClosures();
         RegisterSkillClosures();
 
-        await EnteringProcedure();
+        await EnteringStaging();
 
         await MingYuanPenaltyProcedure();
         
@@ -71,12 +71,10 @@ public class StageEnvironment : Addressable, StageClosureListener
             RunManager.Instance.Environment.DepleteProcedure();
 
         if (!_shouldSkip)
-        {
-            await AnimationToFinishProcedure();
-        }
+            await ExitingStaging();
     }
 
-    private async UniTask AnimationToFinishProcedure()
+    private async UniTask ExitingStaging()
     {
         if (!_config.Animated)
             return;
@@ -364,6 +362,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (isEvaded)
         {
             await EvadedStaging(EvadedDetails.FromAttackDetails(d));
+            await _closureDict.SendEvent(StageClosureDict.DID_EVADE, d);
             await _closureDict.SendEvent(StageClosureDict.UNDAMAGED, DamageDetails.FromAttackDetailsUndamaged(d));
             return;
         }
@@ -375,7 +374,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             if (negate > 0)
             {
                 d.Value -= negate / ratio;
-                await LoseArmorProcedure(new LoseArmorDetails(this, d.Src, d.Tgt, negate, d.Listener, d.Closures, d.CastResult, true, false));
+                await LoseArmorProcedure(LoseArmorDetails.FromAttackDetails(d, negate));
             }
         }
 
@@ -392,7 +391,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         bool isGuarded = d.Value == 0;
         if (isGuarded)
         {
-            await GuardedProcedure(GuardedDetails.FromAttackDetails(d));
+            await GuardedStaging(GuardedDetails.FromAttackDetails(d));
             await _closureDict.SendEvent(StageClosureDict.UNDAMAGED, DamageDetails.FromAttackDetailsUndamaged(d));
             return;
         }
@@ -410,20 +409,17 @@ public class StageEnvironment : Addressable, StageClosureListener
             await PlayAsync(d.Tgt.Model().GetAnimationFromEvaded(d.Induced));
         }
         _result.TryAppend($"    攻击被闪避");
-
-        await _closureDict.SendEvent(StageClosureDict.DID_EVADE, d);
     }
 
-    private async UniTask GuardedProcedure(GuardedDetails d)
+    private async UniTask GuardedStaging(GuardedDetails d)
     {
-        await PlayAsync(new GuardedVFXAnimation(d, false));
-        await PlayAsync(TextAnimation.FromGuardedDetails(d));
+        if (_config.Animated)
+        {
+            await PlayAsync(new GuardedVFXAnimation(d, false));
+            await PlayAsync(TextAnimation.FromGuardedDetails(d));
+        }
         _result.TryAppend($"    攻击被格挡");
     }
-
-    public async UniTask IndirectProcedure(StageEntity src, StageEntity tgt, int value, StageSkill srcSkill,
-        ResultDict castResult, WuXing wuXing = null, bool lifesteal = false, bool recursive = true, bool induced = false)
-        => await IndirectProcedure(new IndirectDetails(this, src, tgt, value, srcSkill, wuXing, lifesteal, recursive, castResult, induced));
 
     public async UniTask IndirectProcedure(IndirectDetails indirectDetails)
     {
@@ -443,7 +439,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             if (negate > 0)
             {
                 d.Value -= negate;
-                await LoseArmorProcedure(new LoseArmorDetails(this, d.Src, d.Tgt, negate, d.SrcSkill, null, d.CastResult, true, false));
+                await LoseArmorProcedure(LoseArmorDetails.FromIndirectDetails(d, negate));
             }
         }
 
@@ -487,17 +483,13 @@ public class StageEnvironment : Addressable, StageClosureListener
             await PlayAsync(d.Tgt.Model().GetAnimationFromDamaged(d.Induced));
             await PlayAsync(TextAnimation.FromDamageDetails(d));
         }
-        await LoseHealthProcedure(d.Tgt, d.Value, d.CausedByAttack, d.Listener, d.Closures, d.CastResult, d.Induced);
+        await LoseHealthProcedure(LoseHealthDetails.FromDamageDetails(d));
 
         await _closureDict.SendEvent(StageClosureDict.DID_DAMAGE, d);
 
         if (!d.Cancel && d.LifeSteal)
-            await HealProcedure(d.Src, d.Src, d.Value, false, d.Listener, d.CastResult, null,true);
+            await HealProcedure(HealDetails.FromLifeSteal(d));
     }
-
-    public async UniTask LoseHealthProcedure(
-        StageEntity owner, int value, bool causedByAttack, StageClosureListener listener, StageClosure[] closures, ResultDict castResult, bool induced)
-        => await LoseHealthProcedure(new LoseHealthDetails(this, owner, value, causedByAttack, listener, closures, castResult, induced));
 
     public async UniTask LoseHealthProcedure(LoseHealthDetails d)
     {
@@ -511,10 +503,6 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_HEALTH, d);
     }
-
-    public async UniTask HealProcedure(StageEntity src, StageEntity tgt, int value, bool penetrate,
-        StageClosureListener initiator, ResultDict castResult, StageClosure[] closures, bool induced)
-        => await HealProcedure(new(this, src, tgt, value, penetrate, initiator, castResult, closures, induced));
 
     public async UniTask HealProcedure(HealDetails d)
     {
@@ -534,8 +522,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             int gap = finalMaxHp - d.Tgt.MaxHp;
             if (gap > 0)
             {
-                GainMaxHealthDetails gainMaxHealthDetails = new(this, d.Tgt, gap, d.Listener, d.CastResult, d.Closures, d.Induced);
-                await GainMaxHealthProcedure(gainMaxHealthDetails);
+                await GainMaxHealthProcedure(GainMaxHealthDetails.FromHealPenetrate(d, gap));
             }
             
             actualHealed = d.Value;
@@ -592,9 +579,6 @@ public class StageEnvironment : Addressable, StageClosureListener
         await _closureDict.SendEvent(StageClosureDict.DID_LOSE_MAX_HEALTH, d);
         UnregisterTempClosures(d, registeredHere);
     }
-
-    public async UniTask BurnProcedure(StageEntity owner, int value, bool induced)
-        => await BurnProcedure(new BurnDetails(this, owner, value, induced));
 
     public async UniTask BurnProcedure(BurnDetails d)
     {
@@ -859,6 +843,58 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         return flag;
     }
+    
+    // public async UniTask TransferProcedure(
+    //     int fromStack,
+    //     BuffEntry fromBuff,
+    //     int toStack,
+    //     BuffEntry toBuff,
+    //     bool consuming,
+    //     int? maxFlow = null,
+    //     int? upperBound = null)
+    // {
+    //     int flow = Caster.GetStackOfBuff(fromBuff) / fromStack;
+    //     if (upperBound.HasValue)
+    //     {
+    //         int gap = upperBound.Value - Caster.GetStackOfBuff(toBuff);
+    //         if (gap >= 0)
+    //             flow = flow.ClampUpper(gap);
+    //     }
+    //     
+    //     if (maxFlow.HasValue)
+    //         flow = flow.ClampUpper(maxFlow.Value);
+    //     
+    //     if (consuming)
+    //         await LoseBuffProcedure(fromBuff, flow * fromStack);
+    //
+    //     await GainBuffProcedure(toBuff, flow * toStack);
+    // }
+    
+    // public async UniTask TransferProcedure(int fromStack, BuffEntry fromBuff, int toStack, BuffEntry toBuff, bool consuming, int? maxFlow = null, int? upperBound = null)
+    // {
+    //     int flow = GetStackOfBuff(fromBuff) / fromStack;
+    //     if (upperBound.HasValue)
+    //     {
+    //         int gap = upperBound.Value - GetStackOfBuff(toBuff);
+    //         if (gap >= 0)
+    //             flow = flow.ClampUpper(gap);
+    //     }
+    //     
+    //     if (maxFlow.HasValue)
+    //         flow = flow.ClampUpper(maxFlow.Value);
+    //     
+    //     if (consuming)
+    //         await LoseBuffProcedure(fromBuff, flow * fromStack);
+    //
+    //     await GainBuffProcedure(toBuff, flow * toStack);
+    // }
+    //
+    // public async UniTask BecomeLowHealth()
+    // {
+    //     int gap = Hp - GetLowHealthThreshold();
+    //     if (gap > 0)
+    //         await LoseHealthProcedure(gap, false);
+    // }
 
     #endregion
 
@@ -924,7 +960,7 @@ public class StageEnvironment : Addressable, StageClosureListener
     public static StageEnvironment FromConfig(StageConfig config)
         => new(config);
 
-    public async UniTask EnteringProcedure()
+    public async UniTask EnteringStaging()
     {
         if (!_config.Animated)
             return;
@@ -1050,7 +1086,7 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private bool RegisterTempClosures(NestedStageClosureDetails d)
     {
-        if (d.HasRegistered)
+        if (d.ClosureHasRegistered)
             return false;
         
         // TODO: to be removed after guarantee all listeners is not null
@@ -1058,7 +1094,7 @@ public class StageEnvironment : Addressable, StageClosureListener
             return false;
         
         _closureDict.Register(d.Listener, d.Closures);
-        d.HasRegistered = true;
+        d.ClosureHasRegistered = true;
         return true;
     }
 

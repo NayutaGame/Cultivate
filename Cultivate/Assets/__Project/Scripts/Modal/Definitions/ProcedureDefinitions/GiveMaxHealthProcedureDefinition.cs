@@ -49,12 +49,13 @@ public class GiveMaxHealthProcedureDefinition : ProcedureDefinition
             entity: d.Caster.Opponent(),
             value: Value,
             listener: d.Skill,
-            castResult: d.CastResult,
             closures: ClosuresArray,
+            castResult: d.CastResult,
+            closureHasRegistered: false,
             induced: Induced);
 
-    public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.GainMaxHealthProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails d)
+        => await d.Env.GainMaxHealthProcedure(GetDetailsFromCastDetails(d));
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

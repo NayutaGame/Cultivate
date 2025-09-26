@@ -358,6 +358,9 @@ public class MutateDefinition
             for (int i = 0; i < oldProcedureDefinitions.Length; i++)
             {
                 ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
+                
+                if (cloned.GetPostCondDefinition() == PostCondDefinition.HasOtherAttack)
+                    continue;
 
                 cloned.SetPostCondDefinition(PostCondDefinition.Default);
                 

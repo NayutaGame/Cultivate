@@ -457,7 +457,10 @@ public class RunCanvas : Panel
         SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
         SlotView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as SlotView;
         
-        DeckPanel.HandView.Modified(d.DeckIndex.Index);
+        if (d.DeckIndex.Region == SkillRegion.Hand)
+            DeckPanel.HandView.Modified(d.DeckIndex.Index);
+        else if (d.DeckIndex.Region == SkillRegion.Field)
+            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
         BarterPanel.ListView.RemoveItemAt(d.BarterItemIndex);
         BarterPanel.ListView.Sync();
         

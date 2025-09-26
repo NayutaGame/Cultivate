@@ -55,8 +55,7 @@ public class AttackDetails : NestedStageClosureDetails
         StageEntity tgt,
         int value,
         int times,
-        StageClosureListener listener,
-        WuXing wuxing,
+        WuXing wuXing,
         bool crit,
         bool lifeSteal,
         bool penetrate,
@@ -64,16 +63,17 @@ public class AttackDetails : NestedStageClosureDetails
         bool shatter,
         bool evade,
         bool recursive,
-        ResultDict castResult,
+        StageClosureListener listener,
         StageClosure[] closures,
-        bool induced) : base(env, induced)
+        ResultDict castResult,
+        bool closureHasRegistered,
+        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Src = src;
         Tgt = tgt;
         Value = value;
         Times = times;
-        Listener = listener;
-        WuXing = wuxing;
+        WuXing = wuXing;
         Crit = crit;
         LifeSteal = lifeSteal;
         Penetrate = penetrate;
@@ -81,8 +81,6 @@ public class AttackDetails : NestedStageClosureDetails
         Shatter = shatter;
         Evade = evade;
         Recursive = recursive;
-        CastResult = castResult;
-        Closures = closures ?? Array.Empty<StageClosure>();
     }
 
     public AttackDetails ShallowClone() => new(
@@ -91,7 +89,6 @@ public class AttackDetails : NestedStageClosureDetails
         Tgt,
         Value,
         Times,
-        Listener,
         WuXing,
         Crit,
         LifeSteal,
@@ -100,7 +97,72 @@ public class AttackDetails : NestedStageClosureDetails
         Shatter,
         Evade,
         Recursive,
-        CastResult,
+        Listener,
         Closures,
+        CastResult,
+        ClosureHasRegistered,
         Induced);
+
+    public static AttackDetails FromAttackProcedureDefinition(AttackProcedureDefinition pd, CastDetails d)
+        => new(
+            env: d.Env,
+            src: d.Caster,
+            tgt: d.Caster.Opponent(),
+            value: pd.Value,
+            times: pd.Times,
+            wuXing: pd.WuXing ?? d.Skill.Entry.WuXing,
+            crit: false,
+            lifeSteal: false,
+            penetrate: false,
+            doesntConsumeJianYi: false,
+            shatter: false,
+            evade: false,
+            recursive: pd.Recursive,
+            listener: d.Skill,
+            closures: pd.ClosuresArray,
+            castResult: d.CastResult,
+            closureHasRegistered: false,
+            induced: pd.Induced);
+
+    public static AttackDetails FromCastDetails(CastDetails d, int value, int times, WuXing wuXing, bool recursive, StageClosure[] closures, bool induced)
+        => new(
+            env: d.Env,
+            src: d.Caster,
+            tgt: d.Caster.Opponent(),
+            value: value,
+            times: times,
+            wuXing: wuXing ?? d.Skill.Entry.WuXing,
+            crit: false,
+            lifeSteal: false,
+            penetrate: false,
+            doesntConsumeJianYi: false,
+            shatter: false,
+            evade: false,
+            recursive: recursive,
+            listener: d.Skill,
+            closures: closures,
+            castResult: d.CastResult,
+            closureHasRegistered: false,
+            induced: induced);
+
+    public static AttackDetails FromEntity(StageEntity e, int value, int times, WuXing wuXing, bool recursive, StageClosureListener listener, StageClosure[] closures, bool induced)
+        => new(
+            env: e.Env,
+            src: e,
+            tgt: e.Opponent(),
+            value: value,
+            times: times,
+            wuXing: wuXing ?? WuXing.Wu,
+            crit: false,
+            lifeSteal: false,
+            penetrate: false,
+            doesntConsumeJianYi: false,
+            shatter: false,
+            evade: false,
+            recursive: recursive,
+            listener: listener,
+            closures: closures,
+            castResult: null,
+            closureHasRegistered: false,
+            induced: induced);
 }

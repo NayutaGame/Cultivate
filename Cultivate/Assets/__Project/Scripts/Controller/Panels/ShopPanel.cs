@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopPanel : Panel
 {
     public TMP_Text TitleText;
+    public TMP_Text ContentText;
     public ListView ListView;
     public Image Illustration;
     public Button4State ExitButton;
@@ -40,9 +41,10 @@ public class ShopPanel : Panel
     {
         ShopCell pd = _address.Get<ShopCell>();
         TitleText.text = pd.GetTitle();
+        ContentText.text = pd.GetContentText();
         Illustration.sprite = pd.GetSprite().Sprite;
 
-        ListView.Refresh();
+        ListView.Sync();
     }
 
     private void GainGold(int value)

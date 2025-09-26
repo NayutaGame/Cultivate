@@ -9,16 +9,17 @@ public class GainMaxHealthDetails : NestedStageClosureDetails
         StageEntity entity,
         int value,
         StageClosureListener listener,
-        ResultDict castResult,
         StageClosure[] closures,
-        bool induced) : base(env, induced)
+        ResultDict castResult,
+        bool closureHasRegistered,
+        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Entity = entity;
         Value = value;
-        Listener = listener;
-        CastResult = castResult;
-        Closures = closures;
     }
     
-    public GainMaxHealthDetails ShallowClone() => new(Env, Entity, Value, Listener, CastResult, Closures, Induced);
+    public GainMaxHealthDetails ShallowClone() => new(Env, Entity, Value, Listener, Closures, CastResult, ClosureHasRegistered, Induced);
+
+    public static GainMaxHealthDetails FromHealPenetrate(HealDetails d, int gap)
+        => new(d.Env, d.Tgt, gap, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, d.Induced);
 }

@@ -47,7 +47,8 @@ public class Button4State : XView
             _interactBehaviour.RightClickNeuron.Add(AudioManager.PlayButtonPress);
         }
         
-        SetState(ButtonState.Idle);
+        UpdateAnimation();
+        UpdateInteractable();
     }
 
     protected virtual void OnDisable()

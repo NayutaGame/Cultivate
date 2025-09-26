@@ -722,7 +722,7 @@ public class BuffCategory : Category<BuffEntry>
                             d.DoesntConsumeJianYi = true;
                         });
 
-                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, initiator: owner,
+                        await d.Owner.AttackProcedure(b.Stack, wuXing: WuXing.Huo, listener: owner,
                             closures: new[] { stageClosure }, induced: false);
                     }),
                     new(StageClosureDict.WIL_CAST, 0, async (owner, closure, closureDetails) =>
@@ -1277,7 +1277,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         b.Emphasize();
-                        await b.Owner.AttackProcedure(b.Stack, initiator: owner);
+                        await b.Owner.AttackProcedure(b.Stack, listener: owner);
                         await b.Owner.LoseBuffProcedure(b.GetEntry(), b.Stack);
                     }),
                 }),

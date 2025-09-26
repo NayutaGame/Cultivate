@@ -101,7 +101,7 @@ public class MergeDetails : RunClosureDetails
 
     private void ProcessDefaultRules()
     {
-        foreach (MergeRule mergeRule in MergeRule.DefaultMergeRules)
+        foreach (MergeRule mergeRule in RunManager.Instance.Environment.GetRunConfig().GetDefaultMergeRules())
         {
             if (State != MergeState.Continue)
                 break;

@@ -13,13 +13,14 @@ public class LoseHealthDetails : NestedStageClosureDetails
         StageClosureListener listener,
         StageClosure[] closures,
         ResultDict castResult,
-        bool induced) : base(env, induced)
+        bool closureHasRegistered,
+        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Victim = victim;
         Value = value;
         CausedByAttack = causedByAttack;
-        Listener = listener;
-        Closures = closures;
-        CastResult = castResult;
     }
+
+    public static LoseHealthDetails FromDamageDetails(DamageDetails d)
+        => new(d.Env, d.Tgt, d.Value, d.CausedByAttack, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, d.Induced);
 }

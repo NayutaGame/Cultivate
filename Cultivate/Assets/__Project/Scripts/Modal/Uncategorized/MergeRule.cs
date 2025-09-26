@@ -94,7 +94,7 @@ public class MergeRule
             {
                 d.State = MergeDetails.MergeState.Cancel;
                 d.MergeTarget = new InvalidMergeTarget(
-                    mergeType:              "含有返虚",
+                    mergeType:              "同名含有返虚",
                     errorMessage:           "无法合成原因\n返虚已经是最高等级了，无法参与合成");
                 return;
             }
@@ -535,6 +535,50 @@ public class MergeRule
         SameNameHasFanXu,
         SameNameBothHuaShen,
         SameNameOneHuaShen,
+        SameNameSameJingJieLEYuanYing,
+        SameNameDiffJingJieLEYuanYing,
+        JingJieLimitGEEither,
+        DiffJingJieHasFanXu,
+        DiffJingJie,
+        JingJieLimitGEBoth,
+        SameWuXingBothFanXu,
+        SameWuXingBothHuaShen,
+        SameWuXingBothLEYuanYing,
+        XiangShengWuXingBothFanXu,
+        XiangShengWuXingBothHuaShen,
+        XiangShengWuXingBothLEYuanYing,
+        BothFanXu,
+        BothHuaShen,
+        BothLEYuanYing,
+        Fallback,
+    };
+
+    public static readonly MergeRule SameNameHasHuaShenLockFanXu = new(
+        name: "同名包含化神，返虚锁住",
+        processMerge: d =>
+        {
+            RunSkill lhs = d.Lhs;
+            RunSkill rhs = d.Rhs;
+            
+            bool cond = lhs.GetEntry() == rhs.GetEntry() &&
+                        (lhs.GetJingJie() == JingJie.HuaShen || rhs.GetJingJie() == JingJie.HuaShen);
+            if (cond)
+            {
+                d.State = MergeDetails.MergeState.Cancel;
+                d.MergeTarget = new InvalidMergeTarget(
+                    mergeType:              "同名含有化神",
+                    errorMessage:           "无法合成原因\n化神已经是最高等级了，无法参与合成");
+                return;
+            }
+
+            d.State = MergeDetails.MergeState.Continue;
+        });
+    
+    public static readonly MergeRule[] DefaultMergeRulesLockFanXu = new[] {
+        BothMutator,
+        Mutate,
+        SameNameHasFanXu,
+        SameNameHasHuaShenLockFanXu,
         SameNameSameJingJieLEYuanYing,
         SameNameDiffJingJieLEYuanYing,
         JingJieLimitGEEither,

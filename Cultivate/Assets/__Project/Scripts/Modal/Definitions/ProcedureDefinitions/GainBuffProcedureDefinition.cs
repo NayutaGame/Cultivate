@@ -62,21 +62,8 @@ public class GainBuffProcedureDefinition : ProcedureDefinition
         );
     }
 
-    public GainBuffDetails GetDetailsFromCastDetails(CastDetails d)
-        => new(
-            env: d.Env,
-            src: d.Caster,
-            tgt: d.Caster,
-            buffEntry: BuffEntry,
-            stack: Stack,
-            recursive: Recursive,
-            listener: d.Skill,
-            castResult: d.CastResult,
-            closures: ClosuresArray,
-            induced: Induced);
-
-    public override async UniTask Cast(CastDetails castDetails)
-        => await castDetails.Env.GainBuffProcedure(GetDetailsFromCastDetails(castDetails));
+    public override async UniTask Cast(CastDetails d)
+        => await d.Env.GainBuffProcedure(GainBuffDetails.FromGainBuffProcedureDefinition(this, d));
 
     public override void DefaultGetDescription(Description description, ProcedureDefinition procedureDefinition, ResultDict costResult, ResultDict castResult)
     {

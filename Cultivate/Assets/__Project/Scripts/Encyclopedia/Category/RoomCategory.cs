@@ -1918,7 +1918,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell B = new DialogCell(
                         titleText: "膨胀",
                         detailedText: "你在太虚之中呆了良久，感受到了天道已经在注视自己的，然后大喊了一声，你过来啊。" +
-                                      "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。气血上限变为100。" +
+                                      "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。气血上限减少100。" +
                                       "万幸，太虚境中确实对修炼的提升很大。所有牌境界提升至最高。");
                     DialogCell C = new DialogCell(
                             titleText: "膨胀",
@@ -1927,14 +1927,15 @@ public class RoomCategory : Category<RoomEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetHealthProcedure(100);
+                        RunManager.Instance.Environment.LoseHealthProcedure(150);
                         RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
                         {
                             RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(deckIndex);
                             if (skill == null)
                                 return;
-                            
-                            RunManager.Instance.Environment.SkillSetJingJieProcedure(skill.GetEntry().HighestJingJie, deckIndex);
+
+                            JingJie toJingJie = ((int)(skill.GetEntry().HighestJingJie)).ClampUpper(JingJie.HuaShen);
+                            RunManager.Instance.Environment.SkillSetJingJieProcedure(toJingJie, deckIndex);
                         });
 
                         return B;
