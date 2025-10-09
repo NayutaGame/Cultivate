@@ -635,7 +635,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n6张：开局：力量+2" +
-                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌",
+                                                                                    "\n8张：使用攻击牌会变成伺机而动。第二轮开始，每轮：使用所有攻击牌",
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -658,7 +658,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n6张：开局：力量+2" +
-                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
+                                                                                    "\n8张：使用攻击牌会变成伺机而动。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -679,7 +679,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲" +
                                                                                     "\n6张：开局：力量+2".ApplyInactive() +
-                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
+                                                                                    "\n8张：使用攻击牌会变成伺机而动。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -698,7 +698,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         trivia:                                                     null,
                         rawRewardDescription:                                          "4张：第一次攻击时，每1点伤害抵消2点护甲".ApplyInactive() +
                                                                                     "\n6张：开局：力量+2".ApplyInactive() +
-                                                                                    "\n8张：使用攻击牌会变成发呆。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
+                                                                                    "\n8张：使用攻击牌会变成伺机而动。第二轮开始，每轮：使用所有攻击牌".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>

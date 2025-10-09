@@ -2813,12 +2813,12 @@ public class SkillCategory : Category<SkillEntry>
                 }),
 
             new(id:                         "Skill00_005",
-                name:                       "发呆",
+                name:                       "伺机而动",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQiOnly,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"就真的只是发呆")),
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"正在准备着")),
                 }),
 
             new(id:                         "Skill00_006",

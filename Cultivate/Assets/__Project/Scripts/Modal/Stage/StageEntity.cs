@@ -357,7 +357,7 @@ public class StageEntity : Addressable, StageClosureListener
             Skills[i] = StageSkill.FromPlacedSkill(this, i, slot.PlacedSkill);
         }
 
-        _emptyAction = StageSkill.FromSkillEntry(this, Encyclopedia.SkillCategory.FromName("发呆"));
+        _emptyAction = StageSkill.FromSkillEntry(this, Encyclopedia.SkillCategory.FromName("伺机而动"));
         _manaShortageAction = StageSkill.FromSkillEntry(this, Encyclopedia.SkillCategory.FromName("灵气匮乏"));
 
         _p = 0;

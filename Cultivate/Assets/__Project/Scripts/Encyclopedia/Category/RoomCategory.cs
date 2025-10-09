@@ -677,22 +677,7 @@ public class RoomCategory : Category<RoomEntry>
 
             #region 02_Tutorial
 
-            new(id:                                 "Room0008",
-                name:                               "漫画",
-                description:                        "漫画",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    ComicCell A = new("第一张");
-                    ComicCell B = new("第二张");
-                    A.Next = B;
-                    B.Next = null;
-                    return A;
-                }),
-
-            new(id:                                 "Room0009",
+            new(id:                                 "Room02_001",
                 name:                               "教学1",
                 description:                        "教学1",
                 ladderBound:                        new Bound(0, 15),
@@ -744,7 +729,7 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "Room0010",
+            new(id:                                 "Room02_002",
                 name:                               "教学2",
                 description:                        "教学2",
                 ladderBound:                        new Bound(0, 15),
@@ -810,7 +795,7 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "Room0011",
+            new(id:                                 "Room02_003",
                 name:                               "教学3",
                 description:                        "教学3",
                 ladderBound:                        new Bound(0, 15),
@@ -876,8 +861,8 @@ public class RoomCategory : Category<RoomEntry>
                     return A;
                 }),
 
-            new(id:                                 "Room0012",
-                name:                               "教学4",
+            new(id:                                 "Room02_004",
+                name:                               "教学4", // 同名同境界合成
                 description:                        "教学4",
                 ladderBound:                        new Bound(0, 15),
                 difficultyBound:                    new Bound(0, 11),
@@ -965,7 +950,7 @@ public class RoomCategory : Category<RoomEntry>
                     return Dialog;
                 }),
 
-            new(id:                                 "Room0013",
+            new(id:                                 "Room02_005",
                 name:                               "教学5",
                 description:                        "教学5",
                 ladderBound:                        new Bound(0, 15),
@@ -1004,8 +989,8 @@ public class RoomCategory : Category<RoomEntry>
                     return D1;
                 }),
 
-            new(id:                                 "Room0014",
-                name:                               "教学6",
+            new(id:                                 "Room02_006",
+                name:                               "教学6", // 同名不同境界合成
                 description:                        "教学6",
                 ladderBound:                        new Bound(0, 15),
                 difficultyBound:                    new Bound(0, 11),
@@ -1053,7 +1038,55 @@ public class RoomCategory : Category<RoomEntry>
                     return Dialog;
                 }),
 
-            new(id:                                 "Room0015",
+            new(id:                                 "Room02_007",
+                name:                               "教学7", // 不同名同境界合成
+                description:                        "教学7",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物7"));
+                    
+                    BattleCell A = new(enemyEntity);
+                    GainSkillBuilder b = new();
+                    b.Pick(Encyclopedia.SkillCategory.FromName("云袖"));
+                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.LianQi);
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.Add();
+                    b.Invoke();
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new ConfirmGuide("记得之前有过这种情况，将两张不一样的牌合成。"),
+                        new MergeGuide("让我来试试",
+                            SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.LianQi)),
+                        new ConfirmGuide("真的合成了诶。\n徐福发现了新的规律，不同名同境界两张牌，也可以合成。"),
+                        new ConfirmGuide("效果是随机发现一张其他的牌。\n新发现的牌会比用于合成的牌，境界高一阶。"),
+                        new ConfirmGuide("这样就可以缓解战斗区的牌质量不足，而手牌太多帮不上忙的问题了。"),
+                        new ConfirmGuide("用现有的牌击败对手吧。"),
+                    });
+
+                    DialogCell Dialog = new DialogCell(
+                        titleText: "不同名合成",
+                        detailedText: "手牌有点多了，但是都用不到，而且准备区的牌也凑不到对子，强度有点跟不上了。");
+
+                    DialogCell Dialog2 = new DialogCell(
+                        titleText: "不同名合成",
+                        detailedText: "对合成的神秘，有了更进一步的理解了。");
+                    
+                    Dialog[0].SetSelect(option => A);
+
+                    A.SetWinOperation(() => Dialog2);
+                    A.SetLoseOperation(() => Dialog2);
+                    
+                    return Dialog;
+                }),
+
+            new(id:                                 "Room02_008",
                 name:                               "教学8",
                 description:                        "教学8",
                 ladderBound:                        new Bound(0, 15),
@@ -1139,7 +1172,55 @@ public class RoomCategory : Category<RoomEntry>
                     return Dialog;
                 }),
 
-            new(id:                                 "Room0016",
+            new(id:                                 "Room02_009",
+                name:                               "教学9", // 不同名不同境界合成
+                description:                        "教学9",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物9"));
+                    
+                    BattleCell A = new(enemyEntity);
+                    GainSkillBuilder b = new();
+                    b.Pick(Encyclopedia.SkillCategory.FromName("云袖"));
+                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
+                    b.SingleCreate(JingJie.LianQi);
+                    b.SingleCreate(JingJie.ZhuJi);
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                    b.Add();
+                    b.Invoke();
+                    
+                    A.SetGuideDescriptors(new Guide[]
+                    {
+                        new ConfirmGuide("徐福回想起了还有一种合成方式，但是因为亏境界，所以这种合成不怎么流行。"),
+                        new MergeGuide("让我来试试",
+                            SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.ZhuJi)),
+                        new ConfirmGuide("合成成功了。徐福又双叒叕发现了规律，不同名不同境界之间，也可以亏本进行合成。"),
+                        new ConfirmGuide("比如，练气云袖 + 筑基恋花 = 筑基云袖\n这样没有凑到对子的云袖，境界也能提升。"),
+                        new ConfirmGuide("每当需要使用的牌境界较低，而手牌的闲牌境界较高的时候就可以合成。强行将需要使用的牌拉高一个境界。"),
+                        new ConfirmGuide("用现有的牌击败对手吧。"),
+                    });
+
+                    DialogCell Dialog = new DialogCell(
+                        titleText: "境界置换",
+                        detailedText: "熟练掌握了不同名同境界的合成之后，确实将牌境界拉的高了，常常手中金光闪闪。但是不巧，经常手中的卡牌都不是迫切需要的。");
+
+                    DialogCell Dialog2 = new DialogCell(
+                        titleText: "境界置换",
+                        detailedText: "同名同境界，同名不同境界，不同名同境界，不同名不同境界，善用四种合成，将会带来极大的便利。");
+                    
+                    Dialog[0].SetSelect(option => A);
+
+                    A.SetWinOperation(() => Dialog2);
+                    A.SetLoseOperation(() => Dialog2);
+                    
+                    return Dialog;
+                }),
+
+            new(id:                                 "Room02_010",
                 name:                               "教学10",
                 description:                        "教学10",
                 ladderBound:                        new Bound(0, 15),
@@ -1233,6 +1314,21 @@ public class RoomCategory : Category<RoomEntry>
                     Dialog3[0].SetSelect(option => null);
                     
                     return Dialog;
+                }),
+
+            new(id:                                 "Room02_011",
+                name:                               "漫画",
+                description:                        "漫画",
+                ladderBound:                        new Bound(0, 15),
+                difficultyBound:                    new Bound(0, 11),
+                withInPool:                         false,
+                create:                             (map, room) =>
+                {
+                    ComicCell A = new("第一张");
+                    ComicCell B = new("第二张");
+                    A.Next = B;
+                    B.Next = null;
+                    return A;
                 }),
 
             #endregion
