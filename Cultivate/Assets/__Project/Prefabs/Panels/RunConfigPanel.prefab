@@ -4679,11 +4679,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 257
+      value: -149
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -64.20001
+      value: -62
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5322,15 +5322,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.66
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.66
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.66
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5362,7 +5362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 349.3
+      value: -16.700012
       objectReference: {fileID: 0}
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5379,6 +5379,10 @@ PrefabInstance:
     - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4260364855408610441, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}
