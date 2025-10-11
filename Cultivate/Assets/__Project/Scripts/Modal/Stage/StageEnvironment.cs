@@ -37,6 +37,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         };
 
         ClearResults();
+        ResetDamageThreshold();
 
         RegisterConfigClosures();
         RegisterAchievementClosures();
@@ -300,6 +301,14 @@ public class StageEnvironment : Addressable, StageClosureListener
 
         attackDetails.Value = Mathf.Max(1, attackDetails.Value);
         attackDetails.Times = Mathf.Max(1, attackDetails.Times);
+        
+        bool shouldMoveCamera = attackDetails.CalcCritical(ref _damageThreshold);
+        
+        if (shouldMoveCamera)
+        {
+            float cameraDegree = GetCameraDegree(attackDetails);
+            await CameraMovementStaging(cameraDegree);
+        }
 
         await _closureDict.SendEvent(StageClosureDict.WIL_FULL_ATTACK, attackDetails);
         await FullAttackStaging(attackDetails);
@@ -325,6 +334,36 @@ public class StageEnvironment : Addressable, StageClosureListener
         
         // check win condition, but do not commit
         await RecoverStaging(attackDetails);
+    }
+    
+    private float GetCameraDegree(AttackDetails attackDetails)
+    {
+        if (attackDetails.Src == Home)
+            return 1f;
+        
+        if (attackDetails.Src == Away)
+            return -1f;
+        
+        return 0f;
+    }
+
+    private float _damageThreshold;
+
+    private void ResetDamageThreshold()
+    {
+        // 初始阈值 = (home.maxhp * away.maxhp)^(1/2) * 1/4
+        int homeMaxHp = Home.MaxHp;
+        int awayMaxHp = Away.MaxHp;
+        _damageThreshold = Mathf.Sqrt(homeMaxHp * awayMaxHp) * 0.25f;
+    }
+
+    // -1 for home, 0 for center, 1 for away
+    private async UniTask CameraMovementStaging(float degree)
+    {
+        if (!_config.Animated)
+            return;
+        
+        CameraManager.Instance.CameraMovementAnimation(degree);
     }
 
     private async UniTask FullAttackStaging(AttackDetails attackDetails)
@@ -763,14 +802,18 @@ public class StageEnvironment : Addressable, StageClosureListener
     private async UniTask BodyProcedure()
     {
         int whosTurn = !_config.RunConfig.DifficultyProfile.GetEntry().EnemyInitiate ? 0 : 1;
-        for (int turnCount = 0; turnCount < MAX_TURN_COUNT; turnCount++)
+
+        _turnCount = 0;
+        for (; _turnCount < MAX_TURN_COUNT;)
         {
             if (_shouldSkip)
                 return;
             StageEntity actor = _entities[whosTurn];
 
-            _result.TryAppend($"--------第{turnCount}回合, {actor.GetName()}行动--------\n");
-            await actor.TurnProcedure(turnCount);
+            _result.TryAppend($"--------第{_turnCount}回合, {actor.GetName()}行动--------\n");
+
+            await actor.TurnProcedure(_turnCount);
+            await CameraMovementStaging(0f);
 
             _entities.Do(e =>
             {
@@ -780,10 +823,11 @@ public class StageEnvironment : Addressable, StageClosureListener
                 _result.TryAppend("\n");
             });
 
-            if (0 != await CommitProcedure(turnCount, whosTurn))
+            if (0 != await CommitProcedure(_turnCount, whosTurn))
                 return;
 
             whosTurn = 1 - whosTurn;
+            IncreaseTurnCount();
         }
     }
 
@@ -900,6 +944,19 @@ public class StageEnvironment : Addressable, StageClosureListener
 
     private StageConfig _config;
     public StageConfig GetConfig() => _config;
+
+    private int _turnCount;
+    public void IncreaseTurnCount()
+    {
+        _turnCount++;
+        
+        if (!_config.Animated)
+            return;
+        
+        CanvasManager.Instance.StageCanvas.TurnCountChangedStaging(_turnCount);
+    }
+
+    public int GetTurnCount() => _turnCount;
 
     private StageClosureDict _closureDict;
     public StageClosureDict ClosureDict => _closureDict;

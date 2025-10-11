@@ -595,11 +595,11 @@ public class StageEntity : Addressable, StageClosureListener
         bool induced = false)
         => await _env.IndirectProcedure(new IndirectDetails(_env, this, Opponent(), value, initiator, wuXing, lifeSteal, recursive, castResult, induced));
     
-    public async UniTask DamageSelfProcedure(int value, StageSkill srcSkill = null, ResultDict castResult = null, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(_env, this, this, value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, false, induced));
+    public async UniTask DamageSelfProcedure(int value, StageSkill listener = null, bool recursive = true, bool induced = false)
+        => await _env.DamageProcedure(DamageDetails.FromEntity(this, true, value, recursive, listener, null, induced));
     
-    public async UniTask DamageOppoProcedure(int value, StageSkill srcSkill, ResultDict castResult, bool recursive = true, bool induced = false)
-        => await _env.DamageProcedure(new DamageDetails(_env, this, Opponent(), value, crit: false, lifeSteal: false, false, recursive, srcSkill, null, castResult, false, induced));
+    public async UniTask DamageOppoProcedure(int value, StageSkill listener = null, bool recursive = true, bool induced = false)
+        => await _env.DamageProcedure(DamageDetails.FromEntity(this, false, value, recursive, listener, null, induced));
     
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, StageSkill srcSkill = null, ResultDict castResult = null, bool induced = false)
         => await _env.LoseHealthProcedure(new LoseHealthDetails(_env, this, value, causedByAttack, srcSkill, null, castResult, false, induced));

@@ -65,12 +65,12 @@ public class CastDetails : StageClosureDetails
         int value,
         bool recursive = true,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Env, Caster, Caster, value, crit: false, lifeSteal: false, false, recursive, Skill, null, CastResult, false, induced));
+        => await Env.DamageProcedure(DamageDetails.FromCastDetails(this, true, value, recursive, induced));
 
     public async UniTask DamageOppoProcedure(int value,
         bool recursive = true,
         bool induced = false)
-        => await Env.DamageProcedure(new DamageDetails(Env, Caster, Caster.Opponent(), value, crit: false, lifeSteal: false, false, recursive, Skill, null, CastResult, false, induced));
+        => await Env.DamageProcedure(DamageDetails.FromCastDetails(this, false, value, recursive, induced));
 
     public async UniTask LoseHealthProcedure(int value, bool causedByAttack, bool induced)
         => await Env.LoseHealthProcedure(new LoseHealthDetails(Env, Caster, value, causedByAttack, Skill, null, CastResult, false, induced));

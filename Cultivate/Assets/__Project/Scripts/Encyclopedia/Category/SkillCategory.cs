@@ -2050,7 +2050,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new AttackProcedureDefinition(Fib.ToValue(6 + dj)),
-                    new GainBuffProcedureDefinition("软弱", j switch { 0 => 4, 1 => 6, 2 => 8, 3 => 11, _ => 15 }),
+                    new GainBuffProcedureDefinition("软弱", j switch { 0 => 4, 1 => 6, 2 => 8, 3 => 11, _ => 15 }, induced: true),
                 }),
 
             new(id:                         "Skill05_002",

@@ -192,7 +192,7 @@ public class AnnotationManager : XView, Addressable
 
     private Vector3 ClampToScreenBounds(RectTransform rectTransform, Vector3 targetPosition)
     {
-        Vector2 targetPosition_UI = CanvasManager.Instance.World2UI(targetPosition);
+        Vector2 targetPosition_UI = CameraManager.World2UI(targetPosition);
         Vector2 screenSize_UI = new Vector2(Screen.width, Screen.height);
         
         // 获取RectTransform在屏幕上的实际边界
@@ -209,7 +209,7 @@ public class AnnotationManager : XView, Addressable
         {
             // 应用偏移量到corner位置
             Vector3 adjustedCorner = corners[i] + offset;
-            screenCorners[i] = CanvasManager.Instance.World2UI(adjustedCorner);
+            screenCorners[i] = CameraManager.World2UI(adjustedCorner);
         }
         
         // 计算annotation在屏幕上的边界
@@ -244,7 +244,7 @@ public class AnnotationManager : XView, Addressable
             adjustedPosition_UI.y = targetPosition_UI.y - (maxY - screenSize_UI.y);
         }
         
-        return CanvasManager.Instance.UI2World(adjustedPosition_UI);
+        return CameraManager.UI2World(adjustedPosition_UI);
     }
 
     private void RegisterCoverForSecondLast()

@@ -195,7 +195,7 @@ public class SlotView : XView
     
     private void Drag(InteractBehaviour ib, PointerEventData eventData)
     {
-        GetContentView().GetRect().position = CanvasManager.Instance.UI2World(eventData.position);
+        GetContentView().GetRect().position = CameraManager.UI2World(eventData.position);
     }
     
     private void DragUseGrabber(InteractBehaviour ib, PointerEventData eventData)

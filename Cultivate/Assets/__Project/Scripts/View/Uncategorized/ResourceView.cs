@@ -51,7 +51,7 @@ public class ResourceView : MonoBehaviour
 
     public void Gain(Vector2 position, int value)
     {
-        _emitterTransform.position = CanvasManager.Instance.UI2World(position);
+        _emitterTransform.position = CameraManager.UI2World(position);
         _emitter.Emit(new ParticleSystem.EmitParams(), value);
     }
 

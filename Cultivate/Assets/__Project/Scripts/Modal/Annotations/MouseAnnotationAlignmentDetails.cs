@@ -30,6 +30,6 @@ public class MouseAnnotationAlignmentDetails : AnnotationAlignmentDetails
         float offsetY = Mathf.Lerp(-offsetLength, offsetLength, quadrant.y);
         
         Vector2 screenPosition = new Vector2(basePointX + offsetX, basePointY + offsetY);
-        return CanvasManager.Instance.UI2World(screenPosition);
+        return CameraManager.UI2World(screenPosition);
     }
 }

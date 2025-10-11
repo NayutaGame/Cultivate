@@ -1,10 +1,13 @@
 
 using CLLibrary;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class StageCanvas : MonoBehaviour
 {
+    [SerializeField] private TMP_Text TurnCountText;
+    
     [SerializeField] private StagePanelSpeedButton SpeedButton;
     [SerializeField] private Button4State SkipButton;
 
@@ -62,6 +65,7 @@ public class StageCanvas : MonoBehaviour
 
     public void Refresh()
     {
+        TurnCountText.text = "0";
         HomeStageEntityView.Refresh();
         AwayStageEntityView.Refresh();
     }
@@ -94,6 +98,11 @@ public class StageCanvas : MonoBehaviour
 
         ResetSpeed();
         Refresh();
+    }
+
+    public void TurnCountChangedStaging(int turnCount)
+    {
+        TurnCountText.text = turnCount.ToString();
     }
 
     public void GainBuffStaging(bool tgtIsHome)

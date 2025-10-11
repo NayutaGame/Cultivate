@@ -17,7 +17,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("General")] public RunCanvas RunCanvas;
     [TabGroup("General")] public StageCanvas StageCanvas;
     [TabGroup("General")] public AnnotationManager AnnotationManager;
-    [TabGroup("General")] [SerializeField] private Camera Camera;
     [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
     [TabGroup("General")] [SerializeField] private ConsolePanel ConsolePanel;
     
@@ -38,8 +37,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("List")] public Sprite[] RatingBarSegmentSprites;
     
 
-    public Camera GetCamera()
-        => Camera;
 
     public Grabber GetGrabber()
         => Grabber;
@@ -90,38 +87,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     }
 
     private List<RaycastResult> _results;
-
-    public bool RayCastIsHit(PointerEventData d)
-    {
-        _results.Clear();
-        Raycaster.Raycast(d, _results);
-        return _results.Count >= 1 && _results[0].gameObject.GetComponent<LegacyInteractBehaviour>() != null;
-    }
-
-    public LegacyInteractBehaviour FirstRayCastHit(PointerEventData d)
-    {
-        _results.Clear();
-        Raycaster.Raycast(d, _results);
-        if (_results.Count < 1)
-            return null;
-        
-        return _results[0].gameObject.GetComponent<LegacyInteractBehaviour>();
-    }
-
-    public Vector3 UI2World(Vector2 screenPosition)
-    {
-        return Camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10));
-    }
-
-    public Vector3 World2UI(Vector3 worldPosition)
-    {
-        return Camera.WorldToScreenPoint(worldPosition);
-    }
-
-    public Vector3 ScreenCenterInWorld()
-    {
-        return Camera.ScreenToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
-    }
 
     public string GetGraphicRaycastResult()
     {
@@ -201,7 +166,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public void UIFloatTextVFX(string context, Color color)
     {
-        GameObject gao = Instantiate(FloatTextVFXPrefab, UI2World(new Vector2(Screen.width / 2, Screen.height / 2)),
+        GameObject gao = Instantiate(FloatTextVFXPrefab, CameraManager.UI2World(new Vector2(Screen.width / 2, Screen.height / 2)),
             Quaternion.identity, VFXPoolTransform);
     
         TMP_Text text = gao.GetComponent<UIFloatTextVFX>().Text;

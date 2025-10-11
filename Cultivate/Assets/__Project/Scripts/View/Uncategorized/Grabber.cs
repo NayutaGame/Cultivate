@@ -73,7 +73,7 @@ public class Grabber : MonoBehaviour
 
     public void SetPosition(PointerEventData eventData)
     {
-        Vector3 position = CanvasManager.Instance.UI2World(eventData.position);
+        Vector3 position = CameraManager.UI2World(eventData.position);
         GetRect().position = position;
     }
 }

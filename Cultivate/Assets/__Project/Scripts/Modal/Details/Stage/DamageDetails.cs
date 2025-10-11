@@ -15,7 +15,8 @@ public class DamageDetails : NestedStageClosureDetails
     public bool LifeSteal;
     public bool CausedByAttack;
     public bool Recursive;
-
+    public bool IsCritical;
+    
     /// <summary>
     /// 描述一次伤害行为的细节，不会结算目标的护甲
     /// </summary>
@@ -43,7 +44,8 @@ public class DamageDetails : NestedStageClosureDetails
         StageClosure[] closures,
         ResultDict castResult,
         bool closureHasRegistered,
-        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
+        bool induced,
+        bool isCritical) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -52,17 +54,108 @@ public class DamageDetails : NestedStageClosureDetails
         LifeSteal = lifeSteal;
         CausedByAttack = causedByAttack;
         Recursive = recursive;
+        IsCritical = isCritical;
     }
 
+    public static DamageDetails FromCastDetails(CastDetails d, bool tgtIsSrc, int value, bool recursive, bool induced)
+        => new(
+            env: d.Env,
+            src: d.Caster,
+            tgt: tgtIsSrc ? d.Caster : d.Caster.Opponent(),
+            value: value,
+            crit: false,
+            lifeSteal: false,
+            causedByAttack: false,
+            recursive: recursive,
+            listener: d.Skill,
+            closures: null,
+            castResult: d.CastResult,
+            closureHasRegistered: false,
+            induced: induced,
+            isCritical: false);
+    
+    public static DamageDetails FromEntity(StageEntity e, bool tgtIsSrc, int value, bool recursive, StageClosureListener listener, StageClosure[] closures, bool induced)
+        => new(
+            env: e.Env,
+            src: e,
+            tgt: tgtIsSrc ? e : e.Opponent(),
+            value: value,
+            crit: false,
+            lifeSteal: false,
+            causedByAttack: false,
+            recursive: recursive,
+            listener: listener,
+            closures: closures,
+            castResult: null,
+            closureHasRegistered: false,
+            induced: induced,
+            isCritical: false);
+
     public static DamageDetails FromAttackDetails(AttackDetails d)
-        => new(d.Env, d.Src, d.Tgt, d.Value, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, d.Induced);
+        => new(
+            d.Env,
+            d.Src,
+            d.Tgt,
+            d.Value,
+            d.Crit,
+            d.LifeSteal,
+            true,
+            d.Recursive,
+            d.Listener,
+            d.Closures,
+            d.CastResult,
+            d.ClosureHasRegistered,
+            d.Induced,
+            d.IsCritical);
 
     public static DamageDetails FromIndirectDetails(IndirectDetails d)
-        => new(d.Env, d.Src, d.Tgt, d.Value, false, d.LifeSteal, false, d.Recursive, d.SrcSkill, null, d.CastResult, false, d.Induced);
+        => new(
+            d.Env,
+            d.Src,
+            d.Tgt,
+            d.Value,
+            false,
+            d.LifeSteal,
+            false,
+            d.Recursive,
+            d.SrcSkill,
+            null,
+            d.CastResult,
+            false,
+            d.Induced,
+            false);
 
     public static DamageDetails FromAttackDetailsUndamaged(AttackDetails d)
-        => new(d.Env, d.Src, d.Tgt, 0, d.Crit, d.LifeSteal, true, d.Recursive, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, d.Induced);
+        => new(
+            d.Env,
+            d.Src,
+            d.Tgt,
+            0,
+            d.Crit,
+            d.LifeSteal,
+            true,
+            d.Recursive,
+            d.Listener,
+            d.Closures,
+            d.CastResult,
+            d.ClosureHasRegistered,
+            d.Induced,
+            d.IsCritical);
     
     public static DamageDetails FromBurn(BurnDetails d)
-        => new(d.Env, d.Owner, d.Owner, d.Value, false, false, false, true, null, null, null, false, d.Induced);
+        => new(
+            d.Env,
+            d.Owner,
+            d.Owner,
+            d.Value,
+            false,
+            false,
+            false,
+            true,
+            null,
+            null,
+            null,
+            false,
+            d.Induced,
+            false);
 }

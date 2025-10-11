@@ -100,9 +100,9 @@ public class TimelineView : Singleton<TimelineView>
 
             int nextIndex = spatialIndex - 1;
             RectTransform nextSlot = (note.IsHome ? HomeSlots : AwaySlots)[nextIndex];
-            Vector3 nextPos = nextSlot.position;
+            Vector3 nextPos = nextSlot.localPosition;
 
-            seq.Join(_views[i].transform.DOMove(nextPos, 0.6f).SetEase(Ease.InOutQuad));
+            seq.Join(_views[i].transform.DOLocalMove(nextPos, 0.6f).SetEase(Ease.InOutQuad));
 
             if (spatialIndex == IndexOfCurr)
             {

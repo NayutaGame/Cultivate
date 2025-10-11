@@ -30,6 +30,8 @@ public class AttackDetails : NestedStageClosureDetails
     public bool Evade;
     public bool Recursive;
 
+    public bool IsCritical;
+
     /// <summary>
     /// 一次攻击行为的细节
     /// </summary>
@@ -67,7 +69,8 @@ public class AttackDetails : NestedStageClosureDetails
         StageClosure[] closures,
         ResultDict castResult,
         bool closureHasRegistered,
-        bool induced) : base(env, listener, closures, castResult, closureHasRegistered, induced)
+        bool induced,
+        bool isCritical) : base(env, listener, closures, castResult, closureHasRegistered, induced)
     {
         Src = src;
         Tgt = tgt;
@@ -81,6 +84,7 @@ public class AttackDetails : NestedStageClosureDetails
         Shatter = shatter;
         Evade = evade;
         Recursive = recursive;
+        IsCritical = isCritical;
     }
 
     public AttackDetails ShallowClone() => new(
@@ -101,7 +105,8 @@ public class AttackDetails : NestedStageClosureDetails
         Closures,
         CastResult,
         ClosureHasRegistered,
-        Induced);
+        Induced,
+        IsCritical);
 
     public static AttackDetails FromAttackProcedureDefinition(AttackProcedureDefinition pd, CastDetails d)
         => new(
@@ -122,7 +127,8 @@ public class AttackDetails : NestedStageClosureDetails
             closures: pd.ClosuresArray,
             castResult: d.CastResult,
             closureHasRegistered: false,
-            induced: pd.Induced);
+            induced: pd.Induced,
+            isCritical: false);
 
     public static AttackDetails FromCastDetails(CastDetails d, int value, int times, WuXing wuXing, bool recursive, StageClosure[] closures, bool induced)
         => new(
@@ -143,7 +149,8 @@ public class AttackDetails : NestedStageClosureDetails
             closures: closures,
             castResult: d.CastResult,
             closureHasRegistered: false,
-            induced: induced);
+            induced: induced,
+            isCritical: false);
 
     public static AttackDetails FromEntity(StageEntity e, int value, int times, WuXing wuXing, bool recursive, StageClosureListener listener, StageClosure[] closures, bool induced)
         => new(
@@ -164,5 +171,30 @@ public class AttackDetails : NestedStageClosureDetails
             closures: closures,
             castResult: null,
             closureHasRegistered: false,
-            induced: induced);
+            induced: induced,
+            isCritical: false);
+
+    public bool CalcCritical(ref float currDamageThreshold)
+    {
+        int armorBonus = Tgt.Armor < 0 ? -Tgt.Armor : 0;
+        int expectedDamage = Value * Times + armorBonus;
+        
+        if (expectedDamage > Tgt.Hp / 2)
+        {
+            currDamageThreshold *= 1.5f;
+            IsCritical = true;
+            return IsCritical;
+        }
+        
+        if (expectedDamage > currDamageThreshold)
+        {
+            currDamageThreshold *= 1.5f;
+            IsCritical = true;
+            return IsCritical;
+        }
+        
+        currDamageThreshold *= 0.9f;
+        IsCritical = false;
+        return IsCritical;
+    }
 }

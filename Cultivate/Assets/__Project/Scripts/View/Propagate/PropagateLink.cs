@@ -31,7 +31,7 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
     
     public void OnPointerMove(PointerEventData eventData)
     {
-        int linkIndex = TMP_TextUtilities.FindIntersectingLink(Text, eventData.position, CanvasManager.Instance.GetCamera());
+        int linkIndex = TMP_TextUtilities.FindIntersectingLink(Text, eventData.position, CameraManager.Instance.GetCamera());
         if (linkIndex != -1)
         {
             TMP_LinkInfo linkInfo = Text.textInfo.linkInfo[linkIndex];
@@ -45,7 +45,7 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
         int firstCharIndex = linkInfo.linkTextfirstCharacterIndex;
         int lastCharIndex = firstCharIndex + linkInfo.linkTextLength - 1;
 
-        Vector3 mouseWorldPos = CanvasManager.Instance.UI2World(Input.mousePosition);
+        Vector3 mouseWorldPos = CameraManager.UI2World(Input.mousePosition);
         
         // 记录最短距离和索引
         float minDist = float.MaxValue;
