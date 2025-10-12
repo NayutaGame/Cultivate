@@ -84,12 +84,14 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         AnnotationManager.AnnotationOpened.Join(SetAnnotatingToTrue);
         AnnotationManager.AnnotationClosed.Join(SetAnnotatingToFalse);
+        CameraManager.Instance.SetParallaxEnabled(true);
     }
 
     private void OnDisable()
     {
         AnnotationManager.AnnotationOpened.Remove(SetAnnotatingToTrue);
         AnnotationManager.AnnotationClosed.Remove(SetAnnotatingToFalse);
+        CameraManager.Instance.SetParallaxEnabled(false);
     }
 
     public static Neuron<InteractBehaviour, PointerEventData> SetHoverToTrue = new();

@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class ParallaxEffect : MonoBehaviour
@@ -51,5 +52,10 @@ public class ParallaxEffect : MonoBehaviour
         
         // 保持原始的z分量
         transform.localPosition = new Vector3(smoothedPos.x, smoothedPos.y, currentPos.z);
+    }
+
+    private void OnDisable()
+    {
+        transform.localPosition = initialPosition;
     }
 }

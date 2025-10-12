@@ -2683,6 +2683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraMovementTransform: {fileID: 1320459724}
   Camera: {fileID: 900511290}
+  ParallaxEffect: {fileID: 1771466804}
 --- !u!1 &1604468906
 GameObject:
   m_ObjectHideFlags: 0
@@ -4108,7 +4109,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771466802}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9cc52ad60223fc4699f422eaf609ae5, type: 3}
   m_Name: 

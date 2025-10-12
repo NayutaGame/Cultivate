@@ -54,7 +54,6 @@ public class Grabber : MonoBehaviour
 
     public void Release(SlotView view)
     {
-        Debug.Log("Release");
         _state = GrabState.Empty;
         if (_view == null || view != _view)
             return;

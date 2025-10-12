@@ -115,11 +115,13 @@ public class TitlePanel : Panel
     {
         AppManager.Instance.ClearEscStack();
         AppManager.Instance.PushEscFunc(ExitGame);
+        CameraManager.Instance.SetParallaxEnabled(true);
         Refresh();
     }
 
     private void OnDisable()
     {
+        CameraManager.Instance.SetParallaxEnabled(false);
         AppManager.Instance.PopEscFunc();
     }
 

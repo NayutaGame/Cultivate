@@ -7,6 +7,7 @@ public class CameraManager : Singleton<CameraManager>
 {
     [SerializeField] private Transform CameraMovementTransform;
     [SerializeField] private Camera Camera;
+    [SerializeField] private ParallaxEffect ParallaxEffect;
     
     private Tween _cameraMovementHandle;
 
@@ -54,4 +55,9 @@ public class CameraManager : Singleton<CameraManager>
     
     public Camera GetCamera()
         => Camera;
+
+    public void SetParallaxEnabled(bool value)
+    {
+        ParallaxEffect.enabled = value;
+    }
 }
