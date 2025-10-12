@@ -179,6 +179,7 @@ public class AppStateMachine
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         
         StageManager.Instance.SetEnvironmentFromConfig(stageConfig);
+        StageManager.Instance.SetSceneFromConfig(stageConfig);
         StageManager.Instance.SetAwayFromRunEntity(stageConfig.Away);
         
         CanvasManager.Instance.StageCanvas.Configure();
@@ -192,6 +193,7 @@ public class AppStateMachine
     {
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(false);
+        AppManager.Instance.StageManager.SetSceneToNull();
         AppManager.Instance.StageManager.gameObject.SetActive(false);
         await StageManager.Instance.Exit();
         
@@ -219,6 +221,7 @@ public class AppStateMachine
         AppManager.Instance.StageManager.gameObject.SetActive(true);
         
         StageManager.Instance.SetEnvironmentFromConfig(stageConfig);
+        StageManager.Instance.SetSceneFromConfig(stageConfig);
         StageManager.Instance.SetAwayFromRunEntity(stageConfig.Away);
         
         CanvasManager.Instance.StageCanvas.Configure();
@@ -232,6 +235,7 @@ public class AppStateMachine
     {
         await CanvasManager.Instance.Curtain.GetAnimator().SetStateAsync(1);
         CanvasManager.Instance.StageCanvas.gameObject.SetActive(false);
+        AppManager.Instance.StageManager.SetSceneToNull();
         AppManager.Instance.StageManager.gameObject.SetActive(false);
         await StageManager.Instance.Exit();
         

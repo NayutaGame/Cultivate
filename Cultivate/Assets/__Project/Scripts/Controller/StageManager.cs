@@ -9,6 +9,19 @@ using UnityEngine.EventSystems;
 public class StageManager : Singleton<StageManager>, Addressable
 {
     public Transform VFXPool;
+
+    [SerializeField] private StageScene[] StageScenes;
+
+    public Transform HomeAnchor;
+    private PrefabEntry HomePrefabEntry;
+    private GameObject HomeGameObject;
+    [HideInInspector] public IStageModel HomeModel;
+    
+    public Transform AwayAnchor;
+    private PrefabEntry AwayPrefabEntry;
+    private GameObject AwayGameObject;
+    [HideInInspector] public IStageModel AwayModel;
+    
     public GameObject FloatTextVFXPrefab;
     public GameObject[] PiercingVFXFromWuXing;
     public GameObject[] HitVFXFromWuXing;
@@ -21,16 +34,6 @@ public class StageManager : Singleton<StageManager>, Addressable
     public GameObject FragileVFXPrefab;
     public GameObject LoseArmorVFXPrefab;
     public GameObject DodgeVFXPrefab;
-
-    public Transform HomeAnchor;
-    private PrefabEntry HomePrefabEntry;
-    private GameObject HomeGameObject;
-    [HideInInspector] public IStageModel HomeModel;
-    
-    public Transform AwayAnchor;
-    private PrefabEntry AwayPrefabEntry;
-    private GameObject AwayGameObject;
-    [HideInInspector] public IStageModel AwayModel;
 
     public StageAnimationController StageAnimationController;
     private StageEnvironment _environment;
@@ -58,6 +61,27 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         _environment = StageEnvironment.FromConfig(config);
         Timeline = StageResult.FromConfig(StageConfig.ForTimeline(config.Home, config.Away, config.RunConfig)).Timeline;
+    }
+
+    public void SetSceneFromConfig(StageConfig config)
+    {
+        int jingJie = RunManager.Instance.Environment.JingJie;
+        jingJie = jingJie.Clamp(0, 4);
+        for (int i = 0; i < StageScenes.Length; i++)
+        {
+            StageScenes[i].gameObject.SetActive(i == jingJie);
+        }
+
+        HomeAnchor.position = StageScenes[jingJie].HomeAnchor.position;
+        AwayAnchor.position = StageScenes[jingJie].AwayAnchor.position;
+    }
+
+    public void SetSceneToNull()
+    {
+        for (int i = 0; i < StageScenes.Length; i++)
+        {
+            StageScenes[i].gameObject.SetActive(false);
+        }
     }
 
     public async UniTask Enter()
