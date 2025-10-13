@@ -21,6 +21,8 @@ public class StageManager : Singleton<StageManager>, Addressable
     private PrefabEntry AwayPrefabEntry;
     private GameObject AwayGameObject;
     [HideInInspector] public IStageModel AwayModel;
+
+    public Sprite[] FloatTextIcons;
     
     public GameObject FloatTextVFXPrefab;
     public GameObject[] PiercingVFXFromWuXing;

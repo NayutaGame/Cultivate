@@ -377,10 +377,8 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             DifficultyEntry curr = env.GetRunConfig().DifficultyProfile.GetEntry();
             DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
 
-            if (next == null)
-                return;
-        
-            _difficultyProfileList.UnlockDifficulty(next);
+            if (next != null)
+                _difficultyProfileList.UnlockDifficulty(next);
         }
         
         AppManager.Instance.ProfileManager.SaveProcedure();

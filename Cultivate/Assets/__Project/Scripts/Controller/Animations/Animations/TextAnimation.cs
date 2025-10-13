@@ -43,53 +43,56 @@ public class TextAnimation : Animation
     
         FloatTextVFX vfx = gao.GetComponent<FloatTextVFX>();
         TMP_Text text = vfx.Text;
+        
+        SpriteRenderer sr = vfx.Icon;
+        int index = (int)type;
+        sr.sprite = StageManager.Instance.FloatTextIcons[index];
 
         text.text = content;
         text.alpha = 1;
     
         gao.transform.localScale = Vector3.zero;
-        text.transform.localScale = Vector3.one;
-        text.transform.localPosition = Vector3.zero;
-        text.transform.localRotation = Quaternion.identity;
         float orient = _model.transform.right.x;
+        
+        text.fontSize = 5f;
 
         switch (type)
         {
             case TextEffectType.Buff:
-                SpawnBuffText(text, gao, spawnPos);
+                SpawnBuffText(gao, sr, text, spawnPos);
                 return;
             case TextEffectType.Debuff:
-                SpawnDebuffText(text, gao, spawnPos);
+                SpawnDebuffText(gao, sr, text, spawnPos);
                 return;
             case TextEffectType.Mana:
-                SpawnManaText(text, gao, spawnPos);
+                SpawnManaText(gao, sr, text, spawnPos);
                 return;
             case TextEffectType.LoseBuff:
-                SpawnLoseBuffText(text, gao, spawnPos);
+                SpawnLoseBuffText(gao, sr, text, spawnPos);
                 return;
             case TextEffectType.NoDamage:
-                text.color = new Color(0.8f, 0.8f, 0.8f);
-                break;
+                SpawnNoDamageText(gao, sr, text, spawnPos);
+                return;
             case TextEffectType.Damage:
-                SpawnDamageText(text, gao, spawnPos, orient);
+                SpawnDamageText(gao, sr, text, spawnPos, orient);
                 return;
             case TextEffectType.HighDamage:
-                SpawnHighDamageText(text, gao, spawnPos, orient);
+                SpawnHighDamageText(gao, sr, text, spawnPos, orient);
                 return;
             case TextEffectType.LoseArmor:
-                SpawnLoseArmorText(text, gao, spawnPos);
+                SpawnLoseArmorText(gao, sr, text, spawnPos);
                 return;
             case TextEffectType.GainArmor:
-                SpawnGainArmorText(text, gao, spawnPos);
+                SpawnGainArmorText(gao, sr, text, spawnPos);
                 return;
             case TextEffectType.Heal:
-                text.color = new Color(0.2f, 0.9f, 0.3f);
-                break;
+                SpawnHealText(gao, sr, text, spawnPos);
+                return;
             case TextEffectType.Guarded:
-                SpawnGuardedText(text, gao, spawnPos, orient);
+                SpawnGuardedText(gao, sr, text, spawnPos, orient);
                 return;
             case TextEffectType.Formation:
-                SpawnFormationText(text, gao, spawnPos);
+                SpawnFormationText(gao, sr, text, spawnPos);
                 return;
         }
         
@@ -103,32 +106,92 @@ public class TextAnimation : Animation
             .SetAutoKill().Restart();
 
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.5f))
+            .AppendInterval(0.5f)
+            .Append(text.DOFade(0, 0.5f))
+            .Join(sr.DOFade(0, 0.5f))
             .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(type), gao))
             .SetAutoKill().Restart();
     }
 
-    private void SpawnGuardedText(TMP_Text text, GameObject gao, Vector3 spawnPos, float orient)
+    private void SpawnBuffText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
     {
-        text.color = new Color(0.9f, 0.8f, 0.1f);
-        
-        gao.transform.localScale = Vector3.one * 2.5f;
-        gao.transform.position = spawnPos + new Vector3(orient * 0.5f, 1.5f, 0f);
-        
+        text.color = new Color(0.965f, 0.898f, 0.445f, 1f);
+        sr.color = new Color(1f, 0.823f, 0.411f, 1f);
+                
         DOTween.Sequence()
-            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.InCubic))
+            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+            .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
             .SetAutoKill().Restart();
 
+        float yGain = Random.Range(-0.5f, 0.5f);
         DOTween.Sequence()
-            .AppendInterval(0.7f)
-            .Append(text.DOFade(0, 0.1f)).SetDelay(0.2f).SetEase(Ease.OutCubic)
-            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Guarded), gao))
+            .Append(gao.transform.DOMoveY(spawnPos.y + 2f + yGain, .5f).SetEase(Ease.OutCubic))
+            .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-.5f, .5f), .5f))
+            .Append(gao.transform.DOMoveY(spawnPos.y + 2.5f + yGain, .3f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+                
+        DOTween.Sequence()
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .Join(sr.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Buff), gao))
+            .SetAutoKill().Restart();
+    }
+    
+    private void SpawnDebuffText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
+    {
+        text.color = new Color(0.886f, 0.528f, 0.808f, 1f);
+        sr.color = new Color(0.799f, 0.385f, 0.936f, 1f);
+        
+        DOTween.Sequence()
+            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+            .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+
+        float yGain = Random.Range(-0.5f, 0.5f);
+        DOTween.Sequence()
+            .Append(gao.transform.DOMoveY(spawnPos.y + 2f + yGain, .5f).SetEase(Ease.OutCubic))
+            .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-.5f, .5f), .5f))
+            .Append(gao.transform.DOMoveY(spawnPos.y + 1.5f + yGain, .3f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+                
+        DOTween.Sequence()
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .Join(sr.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Debuff), gao))
+            .SetAutoKill().Restart();
+    }
+    
+    private void SpawnManaText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
+    {
+        text.color = new Color(0.454f, 0.687f, 1f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
+                
+        DOTween.Sequence()
+            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
+            .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+
+        float yGain = Random.Range(-0.5f, 0.5f);
+        DOTween.Sequence()
+            .Append(gao.transform.DOMoveY(spawnPos.y + 2f + yGain, .5f).SetEase(Ease.OutCubic))
+            .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-.5f, .5f), .5f))
+            .Append(gao.transform.DOMoveY(spawnPos.y + 2.5f + yGain, .3f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+                
+        DOTween.Sequence()
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .Join(sr.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Mana), gao))
             .SetAutoKill().Restart();
     }
 
-    private void SpawnLoseBuffText(TMP_Text text, GameObject gao, Vector3 spawnPos)
+    private void SpawnLoseBuffText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
     {
-        text.color = new Color(0.8f, 0.8f, 0.8f);
+        text.color = new Color(0.661f, 0.618f, 0.752f, 1f);
+        sr.color = new Color(0.640f, 0.559f, 0.73f, 1f);
         
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
@@ -140,14 +203,17 @@ public class TextAnimation : Animation
             .SetAutoKill().Restart();
 
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f))
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f))
+            .Join(sr.DOFade(0, 0.5f))
             .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.LoseBuff), gao))
             .SetAutoKill().Restart();
     }
 
-    private void SpawnLoseArmorText(TMP_Text text, GameObject gao, Vector3 spawnPos)
+    private void SpawnNoDamageText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
     {
-        text.color = new Color(0.6f, 0.3f, 1f);
+        text.color = new Color(0.8f, 0.8f, 0.8f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
         
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
@@ -155,20 +221,52 @@ public class TextAnimation : Animation
             .SetAutoKill().Restart();
         
         DOTween.Sequence()
-            .Append(gao.transform.DOMoveY(spawnPos.y - 1, .7f).From(spawnPos.y + 1).SetEase(Ease.InQuad))
+            .Append(gao.transform.DOMoveY(spawnPos.y + 3, 1f))
             .SetAutoKill().Restart();
 
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f))
-            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.LoseArmor), gao))
+            .AppendInterval(0.5f)
+            .Append(text.DOFade(0, 0.5f))
+            .Join(sr.DOFade(0, 0.5f))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.NoDamage), gao))
             .SetAutoKill().Restart();
     }
 
-    private void SpawnHighDamageText(TMP_Text text, GameObject gao, Vector3 spawnPos, float orient)
+    private void SpawnDamageText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos, float orient)
     {
-        text.color = new Color(0.9f, 0.2f, 0.1f);
+        text.color = new Color(0.9f, 0.2f, 0.1f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
         
-        gao.transform.localScale = Vector3.one * 3f;
+        text.fontSize = 6.5f;
+        
+        DOTween.Sequence()
+            .Append(gao.transform.DOScale(3, 0.3f).SetEase(Ease.OutCubic))
+            .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+        
+        Vector2 gain = new Vector2(Random.Range(1.5f, 2.5f), Random.Range(0.5f, 1.5f));
+        DOTween.Sequence()
+            .Append(gao.transform.DOMoveX(spawnPos.x - orient * gain.x, 1f).SetEase(Ease.InOutQuad))
+            .SetAutoKill().Restart();
+        
+        DOTween.Sequence()
+            .Append(gao.transform.DOMoveY(spawnPos.y + gain.y, .3f).SetEase(Ease.OutQuad))
+            .Append(gao.transform.DOMoveY(spawnPos.y + gain.y - 2f, .7f).SetEase(Ease.InQuad))
+            .SetAutoKill().Restart();
+                
+        DOTween.Sequence()
+            .Append(text.DOFade(0, 2f))
+            .Join(sr.DOFade(0, 2f))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Damage), gao))
+            .SetAutoKill().Restart();
+    }
+
+    private void SpawnHighDamageText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos, float orient)
+    {
+        text.color = new Color(0.902f, 0.102f, 0.181f, 1f);
+        sr.color = new Color(1f, 0.936f, 0.468f, 1f);
+        
+        gao.transform.localScale = Vector3.one * 4f;
         DOTween.Sequence()
             .Append(gao.transform.DOPunchScale(
                 punch: Vector3.one * 2f,
@@ -192,61 +290,39 @@ public class TextAnimation : Animation
             .SetAutoKill().Restart();
         
         DOTween.Sequence()
-            .Append(text.DOFade(0, .3f).SetDelay(1f))
+            .AppendInterval(1f)
+            .Append(text.DOFade(0, .3f))
+            .Join(sr.DOFade(0, .3f))
             .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.HighDamage), gao))
             .SetAutoKill().Restart();
     }
 
-    private void SpawnDamageText(TMP_Text text, GameObject gao, Vector3 spawnPos, float orient)
+    private void SpawnLoseArmorText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
     {
-        text.color = new Color(0.9f, 0.2f, 0.1f);
-                
-        DOTween.Sequence()
-            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
-            .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
-            .SetAutoKill().Restart();
-        
-        Vector2 gain = new Vector2(Random.Range(1.5f, 2.5f), Random.Range(0.5f, 1.5f));
-        DOTween.Sequence()
-            .Append(gao.transform.DOMoveX(spawnPos.x - orient * gain.x, 1f).SetEase(Ease.InOutQuad))
-            .SetAutoKill().Restart();
-        
-        DOTween.Sequence()
-            .Append(gao.transform.DOMoveY(spawnPos.y + gain.y, .3f).SetEase(Ease.OutQuad))
-            .Append(gao.transform.DOMoveY(spawnPos.y + gain.y - 2f, .7f).SetEase(Ease.InQuad))
-            .SetAutoKill().Restart();
-                
-        DOTween.Sequence()
-            .Append(text.DOFade(0, 2f))
-            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Damage), gao))
-            .SetAutoKill().Restart();
-    }
-
-    private void SpawnDebuffText(TMP_Text text, GameObject gao, Vector3 spawnPos)
-    {
-        text.color = new Color(0.76f, 0.17f, 0.72f);
+        text.color = new Color(0.765f, 0.529f, 0.957f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
         
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
             .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
             .SetAutoKill().Restart();
-
-        float yGain = Random.Range(-0.5f, 0.5f);
+        
         DOTween.Sequence()
-            .Append(gao.transform.DOMoveY(spawnPos.y + 2f + yGain, .5f).SetEase(Ease.OutCubic))
-            .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-.5f, .5f), .5f))
-            .Append(gao.transform.DOMoveY(spawnPos.y + 1.5f + yGain, .3f).SetEase(Ease.InCubic))
+            .Append(gao.transform.DOMoveY(spawnPos.y - 1, .7f).From(spawnPos.y + 1).SetEase(Ease.InQuad))
             .SetAutoKill().Restart();
-                
+
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f).SetEase(Ease.InOutQuart))
-            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Debuff), gao))
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f))
+            .Join(sr.DOFade(0, 0.5f))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.LoseArmor), gao))
             .SetAutoKill().Restart();
     }
 
-    private void SpawnBuffText(TMP_Text text, GameObject gao, Vector3 spawnPos)
+    private void SpawnGainArmorText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
     {
-        text.color = new Color(0.9f, 0.8f, 0.1f);
+        text.color = new Color(0.902f, 0.853f, 0.518f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
                 
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
@@ -261,58 +337,59 @@ public class TextAnimation : Animation
             .SetAutoKill().Restart();
                 
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f).SetEase(Ease.InOutQuart))
-            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Buff), gao))
-            .SetAutoKill().Restart();
-    }
-
-    private void SpawnGainArmorText(TMP_Text text, GameObject gao, Vector3 spawnPos)
-    {
-        text.color = new Color(0.9f, 0.8f, 0.1f);
-                
-        DOTween.Sequence()
-            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
-            .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
-            .SetAutoKill().Restart();
-
-        float yGain = Random.Range(-0.5f, 0.5f);
-        DOTween.Sequence()
-            .Append(gao.transform.DOMoveY(spawnPos.y + 2f + yGain, .5f).SetEase(Ease.OutCubic))
-            .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-.5f, .5f), .5f))
-            .Append(gao.transform.DOMoveY(spawnPos.y + 2.5f + yGain, .3f).SetEase(Ease.InCubic))
-            .SetAutoKill().Restart();
-                
-        DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f).SetEase(Ease.InOutQuart))
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .Join(sr.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
             .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.GainArmor), gao))
             .SetAutoKill().Restart();
     }
-    
-    private void SpawnManaText(TMP_Text text, GameObject gao, Vector3 spawnPos)
+
+    private void SpawnHealText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
     {
-        text.color = new Color(0.65f, 0.8f, 1f);
-                
+        text.color = new Color(0.474f, 0.902f, 0.533f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
+        
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
             .Append(gao.transform.DOScale(.5f, 0.7f).SetEase(Ease.InCubic))
             .SetAutoKill().Restart();
-
-        float yGain = Random.Range(-0.5f, 0.5f);
+        
         DOTween.Sequence()
-            .Append(gao.transform.DOMoveY(spawnPos.y + 2f + yGain, .5f).SetEase(Ease.OutCubic))
-            .Join(gao.transform.DOMoveX(spawnPos.x + Random.Range(-.5f, .5f), .5f))
-            .Append(gao.transform.DOMoveY(spawnPos.y + 2.5f + yGain, .3f).SetEase(Ease.InCubic))
+            .Append(gao.transform.DOMoveY(spawnPos.y + 3, 1f))
             .SetAutoKill().Restart();
-                
+
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f).SetEase(Ease.InOutQuart))
-            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Mana), gao))
+            .AppendInterval(0.5f)
+            .Append(text.DOFade(0, 0.5f))
+            .Join(sr.DOFade(0, 0.5f))
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Heal), gao))
             .SetAutoKill().Restart();
     }
     
-    private void SpawnFormationText(TMP_Text text, GameObject gao, Vector3 spawnPos)
+    private void SpawnGuardedText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos, float orient)
     {
-        text.color = new Color(0.9f, 0.8f, 0.1f);
+        text.color = new Color(0.918f, 0.837f, 1f, 1f);
+        sr.color = new Color(1, 1, 1, 1);
+        
+        gao.transform.localScale = Vector3.one * 2.5f;
+        gao.transform.position = spawnPos + new Vector3(orient * 0.5f, 1.5f, 0f);
+        
+        DOTween.Sequence()
+            .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.InCubic))
+            .SetAutoKill().Restart();
+
+        DOTween.Sequence()
+            .AppendInterval(0.9f)
+            .Append(text.DOFade(0, 0.1f)).SetEase(Ease.OutCubic)
+            .Join(sr.DOFade(0, 0.1f)).SetEase(Ease.OutCubic)
+            .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Guarded), gao))
+            .SetAutoKill().Restart();
+    }
+    
+    private void SpawnFormationText(GameObject gao, SpriteRenderer sr, TMP_Text text, Vector3 spawnPos)
+    {
+        text.color = new Color(0.902f, 0.850f, 0.492f, 1f);
+        sr.color = new Color(1f, 0.842f, 0.553f, 1f);
                 
         DOTween.Sequence()
             .Append(gao.transform.DOScale(2, 0.3f).SetEase(Ease.OutCubic))
@@ -327,7 +404,9 @@ public class TextAnimation : Animation
             .SetAutoKill().Restart();
                 
         DOTween.Sequence()
-            .Append(text.DOFade(0, 0.5f).SetDelay(0.3f).SetEase(Ease.InOutQuart))
+            .AppendInterval(0.3f)
+            .Append(text.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
+            .Join(sr.DOFade(0, 0.5f).SetEase(Ease.InOutQuart))
             .OnComplete(() => StageManager.Instance.ReturnObject(GetPrefab(TextEffectType.Formation), gao))
             .SetAutoKill().Restart();
     }
@@ -378,10 +457,10 @@ public class TextAnimation : Animation
         => new(d.Tgt.Model(), TextEffectType.NoDamage, "无伤害", false, d.Induced);
     
     public static TextAnimation FromGainArmorDetails(GainArmorDetails d)
-        => new(d.Tgt.Model(), TextEffectType.GainArmor, $"护甲+{d.Value}", false, d.Induced);
+        => new(d.Tgt.Model(), TextEffectType.GainArmor, $"+{d.Value}", false, d.Induced);
     
     public static TextAnimation FromLoseArmorDetails(LoseArmorDetails d)
-        => new(d.Tgt.Model(), TextEffectType.LoseArmor, $"护甲-{d.Value}", false, d.Induced);
+        => new(d.Tgt.Model(), TextEffectType.LoseArmor, $"-{d.Value}", false, d.Induced);
     
     public static TextAnimation FromGuardedDetails(GuardedDetails d)
         => new(d.Tgt.Model(), TextEffectType.Guarded, "完全防御", false, d.Induced);

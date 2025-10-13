@@ -5,4 +5,5 @@ using UnityEngine;
 public class FloatTextVFX : MonoBehaviour
 {
     public TMP_Text Text;
+    public SpriteRenderer Icon;
 }

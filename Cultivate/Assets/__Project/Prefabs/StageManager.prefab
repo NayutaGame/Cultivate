@@ -85,6 +85,23 @@ MonoBehaviour:
   - {fileID: 1081809318476159883}
   - {fileID: 7181969564378385392}
   - {fileID: 5877578201110237526}
+  HomeAnchor: {fileID: 6063789939908671654}
+  HomeModel: {fileID: 0}
+  AwayAnchor: {fileID: 5798137947473041208}
+  AwayModel: {fileID: 0}
+  FloatTextIcons:
+  - {fileID: 21300000, guid: 6b8efebd26ed72d47b49de673db67dae, type: 3}
+  - {fileID: 21300000, guid: b3ec330d9bf480647988d445f2fad44b, type: 3}
+  - {fileID: 21300000, guid: 78ec5f1a0b7296644ad61baf047bdb88, type: 3}
+  - {fileID: 21300000, guid: e7f3d7f52e6e16847925808d722d989b, type: 3}
+  - {fileID: 21300000, guid: 6115353781566744dbc71f2de1fdaac7, type: 3}
+  - {fileID: 21300000, guid: 0c8d15000d651674bb93dacc851ca84b, type: 3}
+  - {fileID: 21300000, guid: 2ef4622e4efb4d94b8048640feeaf45e, type: 3}
+  - {fileID: 21300000, guid: d9e3acb4754da6447881526cd01c28b6, type: 3}
+  - {fileID: 21300000, guid: 0ac3bafb95b21f54f908bb7b9688aea7, type: 3}
+  - {fileID: 21300000, guid: 711df829ea99f8b47833120492098b35, type: 3}
+  - {fileID: 21300000, guid: d154599ff7d8ec04089b255fd4bf4a54, type: 3}
+  - {fileID: 21300000, guid: 3795458015bfba8438fa2b67a496692c, type: 3}
   FloatTextVFXPrefab: {fileID: 7866473307321664959, guid: 58c3f5dc9fe79084fa90a4d7954a53f5, type: 3}
   PiercingVFXFromWuXing:
   - {fileID: 8367835152781022940, guid: d141decd91a58304caaf74b5aa78a176, type: 3}
@@ -107,10 +124,6 @@ MonoBehaviour:
   FragileVFXPrefab: {fileID: 1333619476989984813, guid: 21cc4438f0ed66944b9c3d935273690e, type: 3}
   LoseArmorVFXPrefab: {fileID: 6065844356219096424, guid: 8870d3206d8a4e545a8cf1c4a6a21661, type: 3}
   DodgeVFXPrefab: {fileID: 5615462012574240374, guid: d6d38f9c4f207ae4fbf9467c2ae36f0b, type: 3}
-  HomeAnchor: {fileID: 6063789939908671654}
-  HomeModel: {fileID: 0}
-  AwayAnchor: {fileID: 5798137947473041208}
-  AwayModel: {fileID: 0}
 --- !u!1 &427517689962010137
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +493,62 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8276784393988240450}
     m_Modifications:
+    - target: {fileID: 103114189854505407, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502335640948155749, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502335640948155749, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502335640948155749, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502335640948155749, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567511354437188631, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567511354437188631, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567511354437188631, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Overridden
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357519168341723855, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357519168341723855, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[5].m_Name
+      value: Emission
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357519168341723855, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Value
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357519168341723855, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[5].m_Value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357519168341723855, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2357519168341723855, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[5].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2593605328850228572, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -535,6 +604,22 @@ PrefabInstance:
     - target: {fileID: 5594953026023890085, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594953026023890086, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594953026023890086, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594953026023890086, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
+      value: -2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5594953026023890086, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
+      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Overridden
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7478768045985197357, guid: 3607354c8bfd6f547a19022946ff9688, type: 3}
       propertyPath: m_Enabled
