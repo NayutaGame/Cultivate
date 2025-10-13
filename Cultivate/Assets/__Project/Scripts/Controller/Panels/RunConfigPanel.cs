@@ -149,13 +149,14 @@ public class RunConfigPanel : Panel
         RefreshStartRunButton();
     }
 
-    private void RefreshStartRunButton()
+    public void RefreshStartRunButton()
     {
         CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
 
         bool interactable = characterProfile.IsUnlocked() &&
                             !characterProfile.IsDemoLocked() &&
-                            !DifficultyPickerView.GetSelection().IsDemoLocked();
+                            !DifficultyPickerView.GetSelection().IsDemoLocked() &&
+                            DifficultyPickerView.GetSelection().IsUnlocked();
         
         StartRunButton.SetStateToInactiveFrom(!interactable);
     }

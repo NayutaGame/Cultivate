@@ -1,5 +1,4 @@
 
-using System;
 using CLLibrary;
 using TMPro;
 using UnityEngine;
@@ -76,6 +75,8 @@ public class DifficultyPickerView : MonoBehaviour
         
         DemoMask.gameObject.SetActive(curr.IsDemoLocked());
         DemoText.gameObject.SetActive(curr.IsDemoLocked());
+        
+        CanvasManager.Instance.AppCanvas.RunConfigPanel.RefreshStartRunButton();
     }
 
     private void SetSelectionIndexToHighest(DifficultyProfileList profiles)
@@ -83,6 +84,9 @@ public class DifficultyPickerView : MonoBehaviour
         for (int i = profiles.Count() - 1; i >= 0; i--)
         {
             var p = profiles[i];
+            if (p.IsDemoLocked())
+                continue;
+            
             if (p.IsUnlocked())
             {
                 _selectionIndex = i;
