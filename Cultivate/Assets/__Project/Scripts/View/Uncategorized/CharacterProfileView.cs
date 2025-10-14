@@ -27,6 +27,6 @@ public class CharacterProfileView : XView
         _selectBehaviour.SetSelectionSprite(p.GetEntry().GetCharacterIconSelectSprite());
         CharacterIcon.color = p.IsUnlocked() ? Color.white : Color.gray;
         
-        IsDemoLockedIcon.gameObject.SetActive(p.IsDemoLocked());
+        IsDemoLockedIcon.gameObject.SetActive(p.IsDemoLocked() || p.IsForStreamLocked());
     }
 }

@@ -41,6 +41,9 @@ public class CharacterProfile : ISerializationCallbackReceiver, AnnotatableChara
     public bool IsDemoLocked()
         => _entry != Encyclopedia.CharacterCategory.FromName("徐福") && AppManager.Instance.PackageIsDemo();
 
+    public bool IsForStreamLocked()
+        => _entry != Encyclopedia.CharacterCategory.FromName("徐福") && AppManager.Instance.PackageIsForStream();
+
     public bool SlotIsUnlocked(int slotIndex)
     {
         var profile = AppManager.Instance.ProfileManager.GetCurrProfile();

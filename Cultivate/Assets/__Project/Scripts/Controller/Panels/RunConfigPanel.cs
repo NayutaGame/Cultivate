@@ -34,7 +34,7 @@ public class RunConfigPanel : Panel
 
     public override void Refresh()
     {
-        DemoLockedSign.SetActive(AppManager.Instance.PackageIsDemo());
+        DemoLockedSign.SetActive(AppManager.Instance.PackageIsDemo() || AppManager.Instance.PackageIsForStream());
         CharacterListView.Refresh();
         AppManager.Instance.ConfigManager.SelectFirstCharacter();
         RefreshAllSelection();
@@ -155,6 +155,7 @@ public class RunConfigPanel : Panel
 
         bool interactable = characterProfile.IsUnlocked() &&
                             !characterProfile.IsDemoLocked() &&
+                            !characterProfile.IsForStreamLocked() &&
                             !DifficultyPickerView.GetSelection().IsDemoLocked() &&
                             DifficultyPickerView.GetSelection().IsUnlocked();
         
