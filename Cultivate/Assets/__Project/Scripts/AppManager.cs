@@ -22,6 +22,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         Developer,
         Tester,
         Player,
+        Streamer,
     }
 
     [SerializeField] private TargetAudience _targetAudience;
@@ -29,6 +30,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     public bool AudienceIsDeveloper() => _targetAudience == TargetAudience.Developer;
     public bool AudienceIsTester() => _targetAudience == TargetAudience.Tester;
     public bool AudienceIsPlayer() => _targetAudience == TargetAudience.Player;
+    public bool AudienceIsStreamer() => _targetAudience == TargetAudience.Streamer;
     
     public enum TargetPackage
     {

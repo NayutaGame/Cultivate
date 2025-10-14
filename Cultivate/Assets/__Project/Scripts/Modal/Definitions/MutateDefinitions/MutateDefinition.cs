@@ -88,7 +88,7 @@ public class MutateDefinition
 
             Predicate<ProcedureDefinition> pred = pd =>
                 (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly) ||
-                (pd is RemoveArmorProcedureDefinition);
+                (pd is LoseArmorProcedureDefinition);
             
             for (int i = 0; i < oldProcedureDefinitions.Length; i++)
             {

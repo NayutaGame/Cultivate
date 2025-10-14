@@ -477,20 +477,32 @@ public class MapCategory : Category<MapEntry>
             
             new(id: "Map0009",
                 name: "境界测试",
-                envJingJie: JingJie.LianQi,
-                slotCount: 3,
+                envJingJie: JingJie.HuaShen,
+                slotCount: 6,
                 gold: 3,
-                skillJingJie: JingJie.LianQi,
+                skillJingJie: JingJie.HuaShen,
                 skillCount: 0,
+                onStartRun: env =>
+                {
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("泰山落"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("起势"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("震脚"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一舞惊鸿"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一梦如是"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一心一剑"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("恋花"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("若竹"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一叶知秋"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("条件墨染"));
+                },
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
                     {
-                        new AscensionRoomDefinition(1),
-                        new AscensionRoomDefinition(4),
-                        new AscensionRoomDefinition(7),
-                        new AscensionRoomDefinition(10),
-                        new AdventureRoomDefinition(12),
+                        new BattleRoomDefinition(3, 6, 6),
+                        new BattleRoomDefinition(3, 6, 6),
+                        new BattleRoomDefinition(3, 6, 6),
+                        new BattleRoomDefinition(3, 6, 6),
                     },
                 }),
             
