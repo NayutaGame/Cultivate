@@ -476,33 +476,33 @@ public class MapCategory : Category<MapEntry>
                 }),
             
             new(id: "Map0009",
-                name: "境界测试",
+                name: "排局",
                 envJingJie: JingJie.HuaShen,
-                slotCount: 6,
+                slotCount: 8,
                 gold: 3,
                 skillJingJie: JingJie.HuaShen,
                 skillCount: 0,
                 onStartRun: env =>
                 {
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("泰山落"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("起势"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("震脚"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一舞惊鸿"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一梦如是"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一心一剑"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("恋花"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("若竹"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一叶知秋"));
-                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("条件墨染"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("镜花水月"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("踏浪"), JingJie.HuaShen);
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("踏浪"), JingJie.HuaShen);
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("踏浪"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("起势"), JingJie.HuaShen);
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一切皆苦"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("气吞山河"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.HuaShen);
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("玄武吐息法"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("吞天"));
                 },
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
                     {
-                        new BattleRoomDefinition(3, 6, 6),
-                        new BattleRoomDefinition(3, 6, 6),
-                        new BattleRoomDefinition(3, 6, 6),
-                        new BattleRoomDefinition(3, 6, 6),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new BattleRoomDefinition(5, 8, 8),
+                        new BattleRoomDefinition(5, 8, 8),
                     },
                 }),
             

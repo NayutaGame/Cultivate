@@ -41,7 +41,7 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准无教程");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("发现");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("动画测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("境界测试");
+            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("排局");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("多段测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("拖拽测试");
             // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("结算测试");
