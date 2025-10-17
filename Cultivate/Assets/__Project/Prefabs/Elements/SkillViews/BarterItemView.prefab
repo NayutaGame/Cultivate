@@ -324,6 +324,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30a23a871c055924a95509ec64a3c668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8450337625796458931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3884236967567233956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 2492431255879672556}
+  OpenDetails: 3
+  FirstCounter: 0.5
+  SecondCounter: 2
+  AnnotationViewType: 1
+  UseRectAlignment: 1
+--- !u!114 &7795018773926430339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3884236967567233956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 2492431255879672556}
+  HoverAudioId: CardHover
+  LeftClickAudioId: 
+  RightClickAudioId: JingJieSwitch
 --- !u!114 &5523477820991795445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,39 +388,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7795018773926430339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3884236967567233956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 2492431255879672556}
-  HoverAudioId: CardHover
-  LeftClickAudioId: 
-  RightClickAudioId: JingJieSwitch
---- !u!114 &8450337625796458931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3884236967567233956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37e61612fd0594947ab1e72e860727f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 2492431255879672556}
-  FirstCounter: 0.5
-  SecondCounter: 2
-  AnnotationViewType: 1
-  UseRectAlignment: 1
 --- !u!1001 &7791048193054274068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,10 +551,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 3337111819934794221}
+  OpenDetails: 3
   FirstCounter: 0.5
   SecondCounter: 2
   AnnotationViewType: 1
   UseRectAlignment: 1
+--- !u!114 &6482443021840973595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8965453196518936263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 3337111819934794221}
+  HoverAudioId: CardHover
+  LeftClickAudioId: 
+  RightClickAudioId: JingJieSwitch
 --- !u!114 &5712351810162031089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,22 +602,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6482443021840973595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8965453196518936263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ib: {fileID: 3337111819934794221}
-  HoverAudioId: CardHover
-  LeftClickAudioId: 
-  RightClickAudioId: JingJieSwitch
 --- !u!224 &9042917720970252739 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1252485361950958551, guid: 624e353993f651047b0108a03c633312, type: 3}

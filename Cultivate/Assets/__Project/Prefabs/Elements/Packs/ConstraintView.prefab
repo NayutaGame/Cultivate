@@ -80,9 +80,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
+  OpenDetails: 3
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: 
   AnnotationViewType: 8
   UseRectAlignment: 1
 --- !u!1 &6181189619793093448

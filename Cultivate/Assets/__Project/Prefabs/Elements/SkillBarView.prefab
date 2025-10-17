@@ -393,7 +393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
-  FirstCounter: 0.5
-  SecondCounter: 2
+  OpenDetails: 3
   AnnotationViewType: 1
   UseRectAlignment: 0

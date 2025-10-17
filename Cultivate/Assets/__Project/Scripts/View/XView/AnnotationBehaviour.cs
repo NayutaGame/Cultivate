@@ -6,13 +6,24 @@ using UnityEngine.EventSystems;
 public class AnnotationBehaviour : XBehaviour
 {
     [SerializeField] private InteractBehaviour _ib;
-    [SerializeField] private float FirstCounter = 0f;
-    [SerializeField] private float SecondCounter = 0f;
+    [SerializeField] private AnnotationOpenDetails OpenDetails;
     [SerializeField] private AnnotationViewType AnnotationViewType;
     [SerializeField] private bool UseRectAlignment = true;
 
     public Neuron InvokeShowAnnotation = new();
     public Neuron InvokeHideAnnotation = new();
+
+    private (float firstCounter, float secondCounter) GetCounterValues()
+    {
+        return OpenDetails switch
+        {
+            AnnotationOpenDetails.Instant => (0f, 0f),
+            AnnotationOpenDetails.VeryShortInterval => (0.2f, 0f),
+            AnnotationOpenDetails.LongInterval => (0.5f, 2f),
+            AnnotationOpenDetails.RightClick => (0f, 0f),
+            _ => (0f, 0f)
+        };
+    }
 
     public override void AwakeFunction()
     {
@@ -24,7 +35,23 @@ public class AnnotationBehaviour : XBehaviour
     {
         if (_ib != null)
         {
-            _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+            // 根据OpenDetails移除之前注册的事件
+            switch (OpenDetails)
+            {
+                case AnnotationOpenDetails.Instant:
+                    _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+                    break;
+                case AnnotationOpenDetails.VeryShortInterval:
+                    _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+                    break;
+                case AnnotationOpenDetails.LongInterval:
+                    _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+                    break;
+                case AnnotationOpenDetails.RightClick:
+                    _ib.RightClickNeuron.Remove(ShowAnnotation);
+                    break;
+            }
+            
             _ib.PointerExitNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
             _ib.BeginDragNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
         }
@@ -32,13 +59,29 @@ public class AnnotationBehaviour : XBehaviour
         _ib = ib;
         if (_ib != null)
         {
-            _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+            // 根据OpenDetails注册相应的事件
+            switch (OpenDetails)
+            {
+                case AnnotationOpenDetails.Instant:
+                    _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+                    break;
+                case AnnotationOpenDetails.VeryShortInterval:
+                    _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+                    break;
+                case AnnotationOpenDetails.LongInterval:
+                    _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+                    break;
+                case AnnotationOpenDetails.RightClick:
+                    _ib.RightClickNeuron.Join(ShowAnnotation);
+                    break;
+            }
+            
             _ib.PointerExitNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
             _ib.BeginDragNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
         }
     }
 
-    public void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
+    public void ShowAnnotation(InteractBehaviour ib, PointerEventData d)
     {
         AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
             ? new ImageAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
@@ -49,8 +92,27 @@ public class AnnotationBehaviour : XBehaviour
             GetView().GetRect(),
             ib.GetAddress(),
             this,
-            FirstCounter,
-            SecondCounter,
+            0,
+            0,
+            alignmentDetails);
+        CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+    }
+
+    public void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
+    {
+        AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
+            ? new ImageAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
+            : new MouseAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()).rect);
+        
+        var (firstCounter, secondCounter) = GetCounterValues();
+        
+        AnnotationDetails annotationDetails = new AnnotationDetails(
+            AnnotationViewType,
+            GetView().GetRect(),
+            ib.GetAddress(),
+            this,
+            firstCounter,
+            secondCounter,
             alignmentDetails);
         CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
     }

@@ -5371,6 +5371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 2465787810969772559}
+  OpenDetails: 1
   FirstCounter: 0
   SecondCounter: 0
   AnnotationViewType: 5
