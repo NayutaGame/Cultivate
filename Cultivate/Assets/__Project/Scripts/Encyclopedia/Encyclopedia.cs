@@ -23,6 +23,7 @@ public class Encyclopedia : Addressable
     public static FormationCategory FormationCategory;
     public static CharacterCategory CharacterCategory;
     public static DifficultyCategory DifficultyCategory;
+    public static MapNodeCategory MapNodeCategory;
     public static MapCategory MapCategory;
     public static AchievementCategory AchievementCategory;
 
@@ -59,6 +60,7 @@ public class Encyclopedia : Addressable
             FormationCategory   = new(),
             CharacterCategory   = new(),
             DifficultyCategory  = new(),
+            MapNodeCategory     = new(),
             MapCategory         = new(),
             AchievementCategory = new(),
         };

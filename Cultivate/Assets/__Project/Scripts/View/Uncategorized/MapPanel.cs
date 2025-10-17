@@ -15,11 +15,15 @@ public class MapPanel : Panel
     [SerializeField] private PropagatePointerEnter OpenZone;
     [SerializeField] private PropagatePointerEnter CloseZone;
 
+    [SerializeField] private ListView MapNodeListView;
+
     public override void AwakeFunction()
     {
         base.AwakeFunction();
-        
-        RoomListView.SetAddress(new Address("Run.Environment.Map.CurrLevel.Rooms"));
+
+        Address address = new Address("Run.Environment.Map");
+        RoomListView.SetAddress(address.Append(".CurrLevel.Rooms"));
+        MapNodeListView.SetAddress(address.Append(".MapNodes"));
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
@@ -39,6 +43,7 @@ public class MapPanel : Panel
     {
         RunManager.Instance.Environment.RoomChangedNeuron.Add(RoomChanged);
         RunManager.Instance.Environment.LevelChangedNeuron.Add(LevelChanged);
+        MapNodeListView.Sync();
     }
 
     private void OnDisable()
