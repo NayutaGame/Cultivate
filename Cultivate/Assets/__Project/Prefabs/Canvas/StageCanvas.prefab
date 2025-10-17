@@ -464,6 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 8294711995312187638}
+  OpenDetails: 1
   FirstCounter: 0
   SecondCounter: 0
   AnnotationViewType: 5
@@ -1605,6 +1606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 7587718519836617415}
+  OpenDetails: 1
   FirstCounter: 0
   SecondCounter: 0
   AnnotationViewType: 5

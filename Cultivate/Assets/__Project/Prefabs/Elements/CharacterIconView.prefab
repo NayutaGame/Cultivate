@@ -234,9 +234,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ib: {fileID: 3836593868854003027}
+  OpenDetails: 1
   FirstCounter: 0.5
   SecondCounter: 2
-  AnnotationAddress: 
   AnnotationViewType: 7
   UseRectAlignment: 1
 --- !u!114 &8025067070832918378
