@@ -129,6 +129,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeReference] private RunConfig _config;
     [SerializeField] private JingJie _jingJie;
     [SerializeReference] private Map _map;
+    
+    private MapNodeListModel _mapNodes;
+    private Dictionary<CharacterEntry, NPC> _npcDict;
+    
     [SerializeReference] private SkillPool _skillPool;
     [NonSerialized] private MutatorPool _mutatorPool;
     [SerializeReference] private SkillInventory _hand;
@@ -145,6 +149,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         { "Home",                       thisObject => ((RunEnvironment)thisObject)._home },
         { "Away",                       thisObject => ((RunEnvironment)thisObject)._away },
         { "Map",                        thisObject => ((RunEnvironment)thisObject)._map },
+        { "MapNodes",                   thisObject => ((RunEnvironment)thisObject)._mapNodes },
         { "Hand",                       thisObject => ((RunEnvironment)thisObject)._hand },
         { "ActivePanel",                thisObject => ((RunEnvironment)thisObject).GetPanel() },
         { "MingYuanDescription",        thisObject => ((RunEnvironment)thisObject).GetMingYuanDescription() },
@@ -165,6 +170,14 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _config = config;
         _jingJie = JingJie.LianQi;
         _map = new(_config.MapEntry);
+
+        _mapNodes = new();
+        _npcDict = new Dictionary<CharacterEntry, NPC>();
+        Encyclopedia.CharacterCategory.Do(characterEntry =>
+        {
+            _npcDict.Add(characterEntry, new NPC(characterEntry));
+        });
+        
         _skillPool = new();
         _hand = new();
         _gold = new(0);
@@ -504,6 +517,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             return profile.GetAchievementProfileFromLockIndex(lockIndex);
         });
     }
+    
+    public int GetIndexOfMapNode(MapNode mapNode)
+        => _mapNodes.IndexOf(mapNode);
 
     #endregion
 
@@ -525,7 +541,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         Map.Init(profile, this);
-        InitPanel();
+        InitPanelFromCreation();
         
         SendEvent(RunClosureDict.START_RUN, d);
         StartRunNeuron.Invoke();
@@ -537,7 +553,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         SetJingJieProcedure(_jingJie);
         
-        InitPanel();
+        InitPanelFromLoad();
     }
 
     private void InitSkillPool()
@@ -1321,6 +1337,13 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         if (RunIsFinished())
             return;
+        
+        if (_panel == null && signal is SelectedMapNodeSignal selectedMapNodeSignal)
+        {
+            Cell cell = RoomGraph.CreateRoomGraph(selectedMapNodeSignal.MapNode, _jingJie, 0, _home);
+            SetPanel(cell);
+            return;
+        }
 
         Cell panel = _panel.ReceiveSignal(signal);
         if (RunIsFinished())
@@ -1401,7 +1424,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public bool RunIsFinished()
         => _result.GetOutcome() != RunResult.RunOutcome.InProgress;
 
-    private void InitPanel()
+    private void InitPanelFromCreation()
+    {
+    }
+
+    private void InitPanelFromLoad()
     {
         SetPanel(Map.CreatePanelFromCurrRoom());
         Room newRoom = Map.GetCurrRoom();

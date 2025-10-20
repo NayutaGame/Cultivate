@@ -180,14 +180,21 @@ public class RunCanvas : Panel
             await PanelSM[newState].GetAnimator().SetStateAsync(1);
         }
 
-        // TODO： 这里报过一个很奇怪的错误
-        // 环境是Run胜利，回到Title，再进入Run，BattlePanel中，打开卡牌Annotation，查看卡包
-        // 然后过了一小段时间，不到一秒，报了错，下面这句为空
-        Cell d = RunManager.Instance.Environment.GetPanel();
-        bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
-                        d is DiscoverSkillCell;
+        {
+            // TODO： 这里报过一个很奇怪的错误
+            // 环境是Run胜利，回到Title，再进入Run，BattlePanel中，打开卡牌Annotation，查看卡包
+            // 然后过了一小段时间，不到一秒，报了错，下面这句为空，大概率是上一场对局的环境没有清理干净，还有一个线程再跑，然后下面访问Environment自然是空
+            Cell d = RunManager.Instance.Environment.GetPanel();
+            bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
+                            d is DiscoverSkillCell;
 
-        await DeckPanel.GetAnimator().SetStateAsync(showDeck ? 2 : 0);
+            await DeckPanel.GetAnimator().SetStateAsync(showDeck ? 2 : 0);
+        }
+
+        {
+            bool showMap = newState.Index == 0;
+            await MapPanel.GetAnimator().SetStateAsync(showMap ? 2 : 0);
+        }
     }
 
     public void SetPanelToNull()

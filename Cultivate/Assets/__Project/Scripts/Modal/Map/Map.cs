@@ -17,21 +17,16 @@ public class Map : Addressable, ISerializationCallbackReceiver
     [SerializeReference] public RoomPool RoomPool;
     [SerializeReference] public RoomPool InsertedRoomPool;
 
-    // [SerializeReference]
-    private MapNodeListModel _mapNodes;
-
     #region Core
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "CurrLevel",                  thisObject => ((Map)thisObject).GetCurrLevel() },
-        { "MapNodes",                   thisObject => ((Map)thisObject)._mapNodes },
     };
     public object Get(string s) => Accessor[s](this);
     public Map(MapEntry entry)
     {
         _entry = entry;
-        _mapNodes = new();
     }
     
     public MapEntry GetEntry() => _entry;
@@ -116,8 +111,9 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     public Sprite GetCurrEventIllustration()
     {
-        Room room = GetCurrRoom();
-        return room?.GetEntry().GetSprite() ?? Encyclopedia.SpriteCategory.MissingEventIllustration().Sprite;
+        return Encyclopedia.SpriteCategory.MissingEventIllustration().Sprite;
+        // Room room = GetCurrRoom();
+        // return room?.GetEntry().GetSprite() ?? Encyclopedia.SpriteCategory.MissingEventIllustration().Sprite;
     }
 
     public bool IsAboutToFinish()

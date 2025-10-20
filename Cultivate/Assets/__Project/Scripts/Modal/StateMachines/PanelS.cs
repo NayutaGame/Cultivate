@@ -19,6 +19,8 @@ public struct PanelS : IEquatable<PanelS>
 
     public static PanelS FromPanelDescriptor(Cell cell)
     {
+        if (cell == null)
+            return FromHide();
         return new(Dict[cell.GetType()]);
     }
 

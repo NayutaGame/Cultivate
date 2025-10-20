@@ -2,7 +2,6 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 public class MapPanel : Panel
 {
@@ -23,7 +22,9 @@ public class MapPanel : Panel
 
         Address address = new Address("Run.Environment.Map");
         RoomListView.SetAddress(address.Append(".CurrLevel.Rooms"));
-        MapNodeListView.SetAddress(address.Append(".MapNodes"));
+        MapNodeListView.SetAddress(new("Run.Environment.MapNodes"));
+        
+        MapNodeListView.LeftClickNeuron.Join(SelectedMapNode);
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
@@ -86,4 +87,10 @@ public class MapPanel : Panel
             .AppendCallback(() => OpenZone.gameObject.SetActive(true))
             .AppendCallback(() => CloseZone.gameObject.SetActive(false))
             .Join(BodyTransform.DOAnchorPos(BodyHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
+    
+    private void SelectedMapNode(InteractBehaviour ib, PointerEventData d)
+    {
+        MapNode mapNode = ib.Get<MapNode>();
+        RunManager.Instance.Environment.ReceiveSignalProcedure(SelectedMapNodeSignal.FromMapNode(mapNode));
+    }
 }

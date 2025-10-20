@@ -614,6 +614,7 @@ public class RoomCategory : Category<RoomEntry>
 
                     JingJie currJingJie = RunManager.Instance.Environment.JingJie;
                     JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
+                    
                     CardPickerCell B = CardPickerCell.FromConstantDetailedText(
                         titleText:          "感悟",
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
