@@ -113,7 +113,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [NonSerialized] private Memory _memory;
     [NonSerialized] private RunClosureDict _closureDict;
     [NonSerialized] private Dirty<StageResult> _simulateResult;
+    
+    private RoomEnvironment _roomEnvironment;
     [NonSerialized] private Cell _panel;
+    
     [NonSerialized] private RunEntity _away;
     [NonSerialized] private bool _awayIsDummy;
 
@@ -1340,8 +1343,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         if (_panel == null && signal is SelectedMapNodeSignal selectedMapNodeSignal)
         {
-            Cell cell = RoomGraph.CreateRoomGraph(selectedMapNodeSignal.MapNode, _jingJie, 0, _home);
-            SetPanel(cell);
+            _roomEnvironment = RoomEnvironment.Create(selectedMapNodeSignal.MapNode, _jingJie, 0, _home);
+            _roomEnvironment.Interpret();
+            // Cell cell = _roomEnvironment.GetPanel();
+            // SetPanel(cell);
             return;
         }
 
