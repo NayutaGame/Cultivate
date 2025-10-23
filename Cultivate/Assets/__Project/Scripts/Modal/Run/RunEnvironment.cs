@@ -114,9 +114,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [NonSerialized] private RunClosureDict _closureDict;
     [NonSerialized] private Dirty<StageResult> _simulateResult;
     
-    private RoomEnvironment _roomEnvironment;
-    [NonSerialized] private Cell _panel;
-    
     [NonSerialized] private RunEntity _away;
     [NonSerialized] private bool _awayIsDummy;
 
@@ -154,7 +151,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         { "Map",                        thisObject => ((RunEnvironment)thisObject)._map },
         { "MapNodes",                   thisObject => ((RunEnvironment)thisObject)._mapNodes },
         { "Hand",                       thisObject => ((RunEnvironment)thisObject)._hand },
-        { "ActivePanel",                thisObject => ((RunEnvironment)thisObject).GetPanel() },
+        { "ActivePanel",                thisObject => ((RunEnvironment)thisObject).Cell },
         { "MingYuanDescription",        thisObject => ((RunEnvironment)thisObject).GetMingYuanDescription() },
         { "GoldDescription",            thisObject => ((RunEnvironment)thisObject).GetGoldDescription() },
         { "HealthDescription",          thisObject => ((RunEnvironment)thisObject).GetHealthDescription() },
@@ -349,7 +346,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return Home.GetSlot(deckIndex.Index).Skill;
             case SkillRegion.Requirement:
-                if (_panel is CardPickerCell cardPickerCell)
+                if (Cell is CardPickerCell cardPickerCell)
                 {
                     return cardPickerCell.RequirementSlotList[deckIndex.Index].Skill;
                 }
@@ -386,7 +383,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return null;
             case SkillRegion.Requirement:
-                if (_panel is CardPickerCell cardPickerCell)
+                if (Cell is CardPickerCell cardPickerCell)
                 {
                     return cardPickerCell.RequirementSlotList[deckIndex.Index];
                 }
@@ -409,7 +406,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (slotIndex.HasValue)
             return DeckIndex.FromField(slotIndex.Value);
         
-        if (_panel is CardPickerCell cardPickerCell)
+        if (Cell is CardPickerCell cardPickerCell)
         {
             int? requirementIndex = cardPickerCell.RequirementSlotList.FirstIdx(slot => slot.Skill == runSkill);
             if (requirementIndex.HasValue)
@@ -484,7 +481,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void SetGuideToFinish()
     {
-        GetPanel().SetGuideToFinish();
+        // TODO
+        // GetPanel().SetGuideToFinish();
     }
 
     private Hint GetMingYuanDescription()
@@ -1279,7 +1277,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Hand.RemoveAt(deckIndex.Index);
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
-            CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
+            CardPickerCell cardPickerCell = Cell as CardPickerCell;
             Assert.IsTrue(cardPickerCell != null);
             cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = null;
         }
@@ -1305,7 +1303,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Hand.Replace(deckIndex.Index, template.Clone());
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
-            CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
+            CardPickerCell cardPickerCell = Cell as CardPickerCell;
             Assert.IsTrue(cardPickerCell != null);
             cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
         }
@@ -1317,44 +1315,74 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region PanelOperations
     
-    public Cell GetPanel() => _panel;
-    private void SetPanel(Cell panel)
+    private RoomEnvironment _roomEnvironment;
+    [NonSerialized] private ICellAdapter _cell;
+
+    public enum RunState
     {
-        if (_panel == panel)
-            return;
-        PanelChangedDetails panelChangedDetails = new(_panel, panel);
-        
-        if (_panel != null)
-            SendEvent(RunClosureDict.WIL_CHANGE_PANEL, panelChangedDetails);
-        _panel?.Exit();
-        _panel = panel;
-        _panel?.Enter();
-        if (_panel != null)
-            PanelChangedNeuron.Invoke(panelChangedDetails);
+        MapSelecting,
+        InRoom,
+        Committed,
+        Uncommon,
     }
 
-    private bool PanelIsFinished(Cell panel)
-        => panel == null;
+    private RunState _runState = RunState.MapSelecting;
+
+    public ICellAdapter Cell
+    {
+        get => _cell;
+        private set
+        {
+            if (_cell == value)
+                return;
+            PanelChangedDetails panelChangedDetails = new(_cell, value);
+        
+            if (_cell != null)
+                SendEvent(RunClosureDict.WIL_CHANGE_CELL, panelChangedDetails);
+            _cell?.Exit();
+            _cell = value;
+            _cell?.Enter();
+            if (_cell != null)
+                PanelChangedNeuron.Invoke(panelChangedDetails);
+        }
+    }
     
     public void ReceiveSignalProcedure(Signal signal)
     {
-        if (RunIsFinished())
+        if (_runState == RunState.Committed)
             return;
-        
-        if (_panel == null && signal is SelectedMapNodeSignal selectedMapNodeSignal)
+
+        if (_runState == RunState.MapSelecting && signal is SelectedMapNodeSignal selectedMapNodeSignal)
         {
-            _roomEnvironment = RoomEnvironment.Create(selectedMapNodeSignal.MapNode, _jingJie, 0, _home);
-            _roomEnvironment.Interpret();
-            // Cell cell = _roomEnvironment.GetPanel();
-            // SetPanel(cell);
+            _runState = RunState.InRoom;
+            _roomEnvironment = RoomEnvironment.CreateRoom(selectedMapNodeSignal.MapNode, _jingJie, 0, _home);
+            _roomEnvironment.Step();
+            Cell = _roomEnvironment.CurrentCell;
             return;
         }
 
-        Cell panel = _panel.ReceiveSignal(signal);
-        if (RunIsFinished())
+        if (_runState == RunState.InRoom)
+        {
+            _roomEnvironment.ReceiveSignal(signal);
+            
+            if (_roomEnvironment.IsFinished())
+            {
+                _runState = RunState.MapSelecting;
+                _roomEnvironment = null;
+                Cell = null;
+            }
+            else
+            {
+                Cell = _roomEnvironment.CurrentCell;
+            }
+            
+            return;
+        }
+        
+        if (_runState == RunState.Committed)
             return;
         
-        if (PanelIsFinished(panel))
+        if (_roomEnvironment.IsFinished())
         {
             if (Map.IsAboutToFinish())
             {
@@ -1376,17 +1404,18 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
                 AppManager.Instance.ProfileManager.GetCurrProfile().Environment = this;
                 
-                panel = Map.CreatePanelFromCurrRoom();
+                ICellAdapter cell = Map.CreateCellFromCurrRoom();
                 
                 if (levelChanged)
                     LevelChangedNeuron.Invoke();
 
                 Room newRoom = Map.GetCurrRoom();
                 RoomChangedNeuron.Invoke(new(oldRoom, newRoom));
+
+                Cell = cell;
+                return;
             }
         }
-        
-        SetPanel(panel);
     }
 
     public void GuideProcedure(SkillMovedDetails d)
@@ -1394,10 +1423,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void GuideProcedure(Signal signal)
     {
-        Guide guide = _panel.GetGuideDescriptor();
-        guide?.ReceiveSignal(_panel, signal);
-        if (guide != null)
-            CanvasManager.Instance.RefreshGuide();
+        // TODO
+        // Guide guide = _cell.GetGuideDescriptor();
+        // guide?.ReceiveSignal(_cell, signal);
+        // if (guide != null)
+        //     CanvasManager.Instance.RefreshGuide();
     }
 
     private bool Step()
@@ -1414,20 +1444,18 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void CommitRunProcedure(RunResult.RunOutcome state)
     {
-        if (RunIsFinished())
+        if (_runState == RunState.Committed)
             return;
 
+        _runState = RunState.Committed;
         _result.SetOutcome(state);
         _runFinishedTime = GetPassedTime();
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
         
         RunResultCell resultPanel = new RunResultCell(this);
-        SetPanel(resultPanel);
+        Cell = resultPanel;
     }
-
-    public bool RunIsFinished()
-        => _result.GetOutcome() != RunResult.RunOutcome.InProgress;
 
     private void InitPanelFromCreation()
     {
@@ -1435,7 +1463,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void InitPanelFromLoad()
     {
-        SetPanel(Map.CreatePanelFromCurrRoom());
+        Cell = Map.CreateCellFromCurrRoom();
         Room newRoom = Map.GetCurrRoom();
         RoomChangedNeuron.Invoke(new(null, newRoom));
     }

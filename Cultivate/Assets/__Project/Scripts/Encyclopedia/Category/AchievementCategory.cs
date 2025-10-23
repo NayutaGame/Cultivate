@@ -142,7 +142,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("徐福", 4),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, closure, details) => {
+                    new(RunClosureDict.WIL_CHANGE_CELL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         PanelChangedDetails d = (PanelChangedDetails)details;
 
@@ -447,7 +447,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("子非燕", 2),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, closure, details) => {
+                    new(RunClosureDict.WIL_CHANGE_CELL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         PanelChangedDetails d = (PanelChangedDetails)details;
 
@@ -819,7 +819,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 lockIndex: LockIndex.FromSlot("风雨晴", 2),
                 runClosures: new RunClosure[]
                 {
-                    new(RunClosureDict.WIL_CHANGE_PANEL, 0, async (owner, closure, details) => {
+                    new(RunClosureDict.WIL_CHANGE_CELL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
                         PanelChangedDetails d = (PanelChangedDetails)details;
 

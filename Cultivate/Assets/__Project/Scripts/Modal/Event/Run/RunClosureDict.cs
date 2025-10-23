@@ -30,7 +30,7 @@ public class RunClosureDict : Dictionary<int, RunClosureRow>
     public static readonly int WIL_MERGE             = 122;
     public static readonly int DID_MERGE             = 123;
     public static readonly int DID_COMMIT_RUN        = 124;
-    public static readonly int WIL_CHANGE_PANEL      = 125;
+    public static readonly int WIL_CHANGE_CELL       = 125;
     
     public void Register(RunClosureListener listener, RunClosure[] closures)
     {

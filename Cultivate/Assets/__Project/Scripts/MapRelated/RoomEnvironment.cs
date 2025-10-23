@@ -1,5 +1,6 @@
 
-using System.Collections.Generic;
+using FMOD;
+using PuppyDragon.uNody.Logic;
 
 public class RoomEnvironment
 {
@@ -9,10 +10,10 @@ public class RoomEnvironment
     private RunEntity _home;
 
     private Memory _memory;
-    private List<RoomScript> _scripts;
+    private LogicGraph _roomGraph;
     private int _index;
 
-    private Cell _cell;
+    public CellNode CurrentCell => _roomGraph.CurrentNode as CellNode;
     
     private RoomEnvironment(MapNode mapNode, JingJie jingJie, int ladder, RunEntity home)
     {
@@ -22,16 +23,25 @@ public class RoomEnvironment
         _home = home;
 
         _memory = new Memory();
-        _scripts = _mapNode.Entry._scripts;
+        _roomGraph = _mapNode.Entry.RoomGraph;
     }
 
-    public static RoomEnvironment Create(MapNode mapNode, JingJie jingJie, int ladder, RunEntity home)
+    public static RoomEnvironment CreateRoom(MapNode mapNode, JingJie jingJie, int ladder, RunEntity home)
     {
         return new RoomEnvironment(mapNode, jingJie, ladder, home);
     }
 
-    public void Interpret()
+    public void Step()
     {
-        
+        _roomGraph.Step();
     }
+
+    public void ReceiveSignal(Signal signal)
+    {
+        CurrentCell.ReceiveSignal(signal);
+        Step();
+    }
+
+    public bool IsFinished()
+        => CurrentCell == null;
 }

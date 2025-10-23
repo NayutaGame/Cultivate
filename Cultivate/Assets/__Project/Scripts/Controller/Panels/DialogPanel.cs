@@ -72,7 +72,8 @@ public class DialogPanel : Panel
 
     public override void Refresh()
     {
-        DialogCell d = _address.Get<DialogCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        DialogCell d = cellAdapter.AsCell() as DialogCell;
 
         Illustration.sprite = RunManager.Instance.Environment.GetCurrEventIllustration();
 

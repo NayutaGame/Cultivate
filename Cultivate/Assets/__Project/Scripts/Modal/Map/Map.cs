@@ -95,11 +95,11 @@ public class Map : Addressable, ISerializationCallbackReceiver
         InsertedRoomPool.Shuffle();
     }
 
-    public Cell CreatePanelFromCurrRoom()
+    public ICellAdapter CreateCellFromCurrRoom()
     {
-        var panel = GetCurrRoom().CreatePanel(this);
+        ICellAdapter cell = GetCurrRoom().CreatePanel(this);
         GetCurrRoom().SetState(Room.RoomState.Curr);
-        return panel;
+        return cell;
     }
 
     #endregion

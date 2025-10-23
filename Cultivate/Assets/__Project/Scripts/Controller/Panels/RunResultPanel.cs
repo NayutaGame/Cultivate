@@ -60,7 +60,7 @@ public class RunResultPanel : Panel
     
     public override void Refresh()
     {
-        RunResultCell cell = RunManager.Instance.Environment.GetPanel() as RunResultCell;
+        RunResultCell cell = RunManager.Instance.Environment.Cell as RunResultCell;
         
         if (cell.GetRunOutcome() == RunResult.RunOutcome.Victorious)
         {
@@ -167,7 +167,7 @@ public class RunResultPanel : Panel
 
     private void InitScoring()
     {
-        RunResultCell cell = RunManager.Instance.Environment.GetPanel() as RunResultCell;
+        RunResultCell cell = RunManager.Instance.Environment.Cell as RunResultCell;
         _details = new(cell.GetInitialExperience(), cell.GetInitialLevel(), cell.GetExperienceGain());
 
         LevelText.text = $"{_details.InitialLevel}";

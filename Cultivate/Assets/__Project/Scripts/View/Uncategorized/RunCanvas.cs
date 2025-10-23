@@ -67,7 +67,7 @@ public class RunCanvas : Panel
 
     private void RefreshPanel()
     {
-        ChangePanel(RunManager.Instance.Environment.GetPanel());
+        ChangePanel(RunManager.Instance.Environment.Cell);
     }
 
     private void OnEnable()
@@ -148,18 +148,18 @@ public class RunCanvas : Panel
     private void ChangePanel(PanelChangedDetails d)
         => ChangePanelAsync(d);
     
-    private void ChangePanel(Cell toPanel)
-        => ChangePanelAsync(toPanel);
+    private void ChangePanel(ICellAdapter toCell)
+        => ChangePanelAsync(toCell);
 
     private async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
         => await ChangePanelAsync(panelChangedDetails.ToPanel);
     
-    private async UniTask ChangePanelAsync(Cell toPanel)
+    private async UniTask ChangePanelAsync(ICellAdapter toCell)
     {
         await _animationQueue.WaitForQueueToComplete();
         
         PanelS oldState = PanelSM.State;
-        PanelS newState = PanelS.FromPanelDescriptor(toPanel);
+        PanelS newState = PanelS.FromPanelDescriptor(toCell.AsCell());
 
         if (oldState.Equals(newState))
         {
@@ -184,7 +184,7 @@ public class RunCanvas : Panel
             // TODO： 这里报过一个很奇怪的错误
             // 环境是Run胜利，回到Title，再进入Run，BattlePanel中，打开卡牌Annotation，查看卡包
             // 然后过了一小段时间，不到一秒，报了错，下面这句为空，大概率是上一场对局的环境没有清理干净，还有一个线程再跑，然后下面访问Environment自然是空
-            Cell d = RunManager.Instance.Environment.GetPanel();
+            Cell d = RunManager.Instance.Environment.Cell.AsCell();
             bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
                             d is DiscoverSkillCell;
 

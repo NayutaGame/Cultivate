@@ -2,13 +2,21 @@
 using System;
 using System.Collections.Generic;
 
-public abstract class Cell : Addressable
+public abstract class Cell : Addressable, ICellAdapter
 {
+    public Cell AsCell() => this;
+    public bool IsCellNode => false;
+    void ICellAdapter.ReceiveSignal(Signal signal)
+    {
+        throw new NotImplementedException();
+    }
+    
     public Func<Signal, Cell> _receiveSignal;
     public Cell ReceiveSignal(Signal signal) => _receiveSignal.Invoke(signal);
     public virtual Cell DefaultReceiveSignal(Signal signal) => this;
 
     public Action<Cell> _enter;
+
     public void Enter() => _enter.Invoke(this);
     public virtual void DefaultEnter(Cell cell) { }
     public Cell SetEnter(Action<Cell> enter)
@@ -19,6 +27,7 @@ public abstract class Cell : Addressable
 
     public Action<Cell> _exit;
     public void Exit() => _exit.Invoke(this);
+
     public virtual void DefaultExit(Cell cell) { }
     public Cell SetExit(Action<Cell> exit)
     {
