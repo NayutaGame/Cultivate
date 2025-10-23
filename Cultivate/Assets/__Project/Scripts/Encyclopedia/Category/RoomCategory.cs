@@ -43,7 +43,7 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemy);
 
-                    DiscoverSkillCell B = DiscoverSkillCell.FromDefault(room.Ladder);
+                    DiscoverCell B = DiscoverCell.FromDefault(room.Ladder);
 
                     bool shouldUpdateSlotCount = roomDefinition.ShouldUpdateSlotCount;
                     
@@ -556,18 +556,18 @@ public class RoomCategory : Category<RoomEntry>
 
                     Cell[] panels = new Cell[12]
                     {
-                        DiscoverSkillCell.FromLingYunFeng(room.Ladder + 3),
-                        DiscoverSkillCell.FromXiaoYaoHai(room.Ladder + 3),
-                        DiscoverSkillCell.FromTaohuaGong(room.Ladder + 3),
-                        DiscoverSkillCell.FromChangMingDian(room.Ladder + 3),
-                        DiscoverSkillCell.FromHuanYueLing(room.Ladder + 3),
-                        ArbitraryCardPickerCell.FromJianChi(room.Ladder),
-                        ArbitraryCardPickerCell.FromFengYuLou(room.Ladder),
-                        ArbitraryCardPickerCell.FromXingGong(room.Ladder),
-                        CardPickerCell.FromTianJiGe(),
-                        CardPickerCell.FromBaiCaoTang(room.Ladder),
+                        DiscoverCell.FromLingYunFeng(room.Ladder + 3),
+                        DiscoverCell.FromXiaoYaoHai(room.Ladder + 3),
+                        DiscoverCell.FromTaohuaGong(room.Ladder + 3),
+                        DiscoverCell.FromChangMingDian(room.Ladder + 3),
+                        DiscoverCell.FromHuanYueLing(room.Ladder + 3),
+                        PickCell.FromJianChi(room.Ladder),
+                        PickCell.FromFengYuLou(room.Ladder),
+                        PickCell.FromXingGong(room.Ladder),
+                        RequireCell.FromTianJiGe(),
+                        RequireCell.FromBaiCaoTang(room.Ladder),
                         ShopCell.FromYiBaoZhai(room.Ladder + 3),
-                        DiscoverSkillCell.FromSanXiu(room.Ladder + 3),
+                        DiscoverCell.FromSanXiu(room.Ladder + 3),
                     };
                     
                     int[] combination;
@@ -615,7 +615,7 @@ public class RoomCategory : Category<RoomEntry>
                     JingJie currJingJie = RunManager.Instance.Environment.JingJie;
                     JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
                     
-                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                    RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText:          "感悟",
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
@@ -1422,7 +1422,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "毕业季",
                         detailedText: "一阵噪音惊扰了你的休息，原来是灵韵宗的毕业季到了，学子们完成了学业后，纷纷将不要的技能白送，先到先得。");
                     
-                    ArbitraryCardPickerCell B = ArbitraryCardPickerCell.FromBiYeJi(room.Ladder);
+                    PickCell B = PickCell.FromBiYeJi(room.Ladder);
                     
                     A[0].SetSelect(option => B);
                     
@@ -1608,11 +1608,11 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
                         "尝试观看两人对弈（需要一张二动牌）", "请教两人路怎么走（需要一张治疗牌）");
 
-                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                    RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张二动牌",
                         descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
-                    CardPickerCell C = CardPickerCell.FromConstantDetailedText(
+                    RequireCell C = RequireCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张治疗牌",
                         descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Health), 1));
@@ -1776,7 +1776,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你看到一栋建筑，上面写着明心庐，见到了当地有名的解梦师。你请他解梦，他问你梦中是怎么样的？",
                         "挥舞着刀剑，大杀四方", "身披重甲，坚不可摧", "饮用着灵泉中的泉水");
 
-                    DiscoverSkillCell B = DiscoverSkillCell.FromTitleDescription(room.Ladder, "明心庐", "选择1张梦中所想的牌");
+                    DiscoverCell B = DiscoverCell.FromTitleDescription(room.Ladder, "明心庐", "选择1张梦中所想的牌");
                     
                     DialogCell C = new(
                         titleText: "明心庐",
@@ -1814,7 +1814,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell A = new(
                         titleText: "天机阁",
                         detailedText: "你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
-                    ArbitraryCardPickerCell B = new(
+                    PickCell B = new(
                         titleText: "天机阁",
                         detailedText: "请从10张牌中选1张获取");
                     DialogCell C = new(
@@ -1902,7 +1902,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
                         "试试这个机器可以做什么", "离开");
 
-                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                    RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请选择2张牌，随机将其中一张变成另一张",
                         descriptor: RunSkillDescriptorListModel.FromCount(2));
@@ -1962,7 +1962,7 @@ public class RoomCategory : Category<RoomEntry>
                                        "到最后，你已经不知道你是树，还是树是你了。" +
                                        "感悟了五行相生，所有五行牌都被相生的元素替换了。");
                     
-                    CardPickerCell C = CardPickerCell.FromTianJieShu(room.Ladder, D);
+                    RequireCell C = RequireCell.FromTianJieShu(room.Ladder, D);
             
                     A[0].SetSelect(option => B);
                     B[0].SetSelect(option => C);
@@ -2507,7 +2507,7 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell D = new("斩断尘缘", "事情发生得太快，一瞬间，你已经不记得自己用了什么和眼前的树做了交易，甚至连交易本身是否存在都已经不确定了。" +
                                                "\n你趁着自己还清醒着，检查了新的技能，然后悻悻离去。");
                     
-                    CardPickerCell C = CardPickerCell.FromZhanDuanChenYuan(room.Ladder, D);
+                    RequireCell C = RequireCell.FromZhanDuanChenYuan(room.Ladder, D);
             
                     A[0].SetSelect(option => B);
                     B[0].SetSelect(option => C);
@@ -2658,7 +2658,7 @@ public class RoomCategory : Category<RoomEntry>
                         "路边有一个镜子，你不知缘由走入了镜中。" +
                         "四个一模一样镜灵看着你，分别向你讨要一张卡牌。");
 
-                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                    RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请选择0~4张牌，将所有牌变成其中随机的一张。" +
                                       "\n镜灵们看起来对你的命石很感兴趣，你有些担心他们不会还给你了。",
@@ -2911,7 +2911,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你来到了忘忧堂，听说这里的服务是将不想再见到的卡牌交给他们。忘忧堂会为您斩断与此牌的因果。",
                         "走进去看一看", "离开");
 
-                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                    RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "割舍",
                         detailedText: "请选择0到5张牌送出",
                         descriptor: RunSkillDescriptorListModel.FromCount(5));
@@ -3217,7 +3217,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你看到鬼兵打算带走一个将死之人，但是那人请求鬼兵在给自己一点时间。鬼兵说那人的命元已尽，不该继续留在阳间",
                         "助他炼丹（需要一张牌）", "给他传气（需要一命元）", "帮他造业（需要100金）", "装作看不见");
 
-                    CardPickerCell BPick = CardPickerCell.FromConstantDetailedText(
+                    RequireCell BPick = RequireCell.FromConstantDetailedText(
                         titleText: "仪式感",
                         detailedText: "炼丹需要消耗一张牌",
                         descriptor: RunSkillDescriptorListModel.FromCount(1));
@@ -3468,7 +3468,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "少年将你的招式记在了心里，又开始了自顾自的练习。",
                         options: "继续上路");
                     
-                    CardPickerCell C = CardPickerCell.FromConstantDetailedText(
+                    RequireCell C = RequireCell.FromConstantDetailedText(
                         titleText:          "后羿",
                         detailedText:       "请提交一张牌",
                         descriptor:         RunSkillDescriptorListModel.FromCount(1));
@@ -3968,7 +3968,7 @@ public class RoomCategory : Category<RoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    return DiscoverSkillCell.FromDefault(room.Ladder);
+                    return DiscoverCell.FromDefault(room.Ladder);
                 }),
 
             new(id:                                 "Room0063",
@@ -4088,7 +4088,7 @@ public class RoomCategory : Category<RoomEntry>
                     list.Add(RunSkillDescriptor.FromWuXing(WuXing.Huo));
                     list.Add(RunSkillDescriptor.FromWuXing(WuXing.Tu));
 
-                    CardPickerCell B = CardPickerCell.FromConstantDetailedText(
+                    RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请提交每种五行的牌各一张",
                         descriptor: list);

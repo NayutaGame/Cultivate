@@ -73,24 +73,24 @@ public class DialogPanel : Panel
     public override void Refresh()
     {
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
-        DialogCell d = cellAdapter.AsCell() as DialogCell;
+        DialogCell cell = cellAdapter.AsCell() as DialogCell;
 
         Illustration.sprite = RunManager.Instance.Environment.GetCurrEventIllustration();
 
-        TitleText.text = d.GetTitleText();
+        TitleText.text = cell.GetTitleText();
 
-        DetailedText.text = d.GetDetailedText();
+        DetailedText.text = cell.GetDetailedText();
 
         for (int i = 0; i < Buttons.Length; i++)
         {
             // bool active = i < d.GetOptionsCount() && !RunManager.Instance.Environment.Map.Choosing;
-            bool active = i < d.GetOptionsCount();
+            bool active = i < cell.GetOptionsCount();
             Buttons[i].gameObject.SetActive(active);
             if(!active)
                 continue;
 
-            Buttons[i].interactable = d.GetOption(i).CanSelect();
-            Texts[i].text = d.GetOption(i).Text;
+            Buttons[i].interactable = cell.GetOption(i).CanSelect();
+            Texts[i].text = cell.GetOption(i).Text;
         }
     }
 

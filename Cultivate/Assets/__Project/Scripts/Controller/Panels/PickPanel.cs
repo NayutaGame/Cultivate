@@ -5,7 +5,7 @@ using CLLibrary;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class ArbitraryCardPickerPanel : Panel
+public class PickPanel : Panel
 {
     public TMP_Text DetailedText;
     public Button4State ConfirmButton;
@@ -39,13 +39,14 @@ public class ArbitraryCardPickerPanel : Panel
 
     public override void Refresh()
     {
-        ArbitraryCardPickerCell d = _address.Get<ArbitraryCardPickerCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        PickCell cell = cellAdapter.AsCell() as PickCell;
 
-        DetailedText.text = d.GetDetailedText() +
-                            $"\n可选择{d.Bound.Start}~{d.Bound.End - 1}张" +
+        DetailedText.text = cell.GetDetailedText() +
+                            $"\n可选择{cell.Bound.Start}~{cell.Bound.End - 1}张" +
                             $"\n已选择 {_selections.Count} 张";
         
-        ConfirmButton.SetStateToInactiveFrom(!d.Bound.Contains(_selections.Count));
+        ConfirmButton.SetStateToInactiveFrom(!cell.Bound.Contains(_selections.Count));
         
         SkillListView.Sync();
     }
@@ -67,10 +68,11 @@ public class ArbitraryCardPickerPanel : Panel
         }
         else
         {
-            ArbitraryCardPickerCell d = _address.Get<ArbitraryCardPickerCell>();
+            ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+            PickCell cell = cellAdapter.AsCell() as PickCell;
             // SkillEntryDescriptor skill = selectBehaviour.Get<SkillEntryDescriptor>();
             
-            if (!d.HasSpace(_selections.Count))
+            if (!cell.HasSpace(_selections.Count))
             {
                 if (_selections.Count > 0)
                 {

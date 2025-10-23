@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLLibrary;
-using FMOD;
 
-public class ArbitraryCardPickerCell : Cell
+public class PickCell : Cell
 {
     private string _titleText;
     public string GetTitleText() => _titleText;
@@ -14,7 +13,7 @@ public class ArbitraryCardPickerCell : Cell
     public string GetDetailedText() => _detailedText;
 
     private ListModel<SkillEntryDescriptor> _inventory;
-    public ListModel<SkillEntryDescriptor> GetInventory() => _inventory;
+    private ListModel<SkillEntryDescriptor> GetInventory() => _inventory;
 
     private Bound _bound;
     public Bound Bound => _bound;
@@ -22,7 +21,7 @@ public class ArbitraryCardPickerCell : Cell
         => _bound.End - 1 > occupied;
 
     private Func<List<SkillEntryDescriptor>, Cell> _confirmOperation;
-    public ArbitraryCardPickerCell SetConfirmOperation(Func<List<SkillEntryDescriptor>, Cell> confirmOperation)
+    public PickCell SetConfirmOperation(Func<List<SkillEntryDescriptor>, Cell> confirmOperation)
     {
         _confirmOperation = confirmOperation;
         return this;
@@ -30,11 +29,11 @@ public class ArbitraryCardPickerCell : Cell
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Guide",                      thisObject => ((ArbitraryCardPickerCell)thisObject).GetGuideDescriptor() },
-        { "Inventory",                  thisObject => ((ArbitraryCardPickerCell)thisObject).GetInventory() },
+        { "Guide",                      thisObject => ((PickCell)thisObject).GetGuideDescriptor() },
+        { "Inventory",                  thisObject => ((PickCell)thisObject).GetInventory() },
     };
     public override object Get(string s) => Accessor[s](this);
-    public ArbitraryCardPickerCell(
+    public PickCell(
         string titleText = null,
         string detailedText = null,
         Bound? bound = null,
@@ -64,11 +63,11 @@ public class ArbitraryCardPickerCell : Cell
         return this;
     }
 
-    public static ArbitraryCardPickerCell FromJianChi(int ladder)
+    public static PickCell FromJianChi(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
 
-        ArbitraryCardPickerCell cell = new(
+        PickCell cell = new(
             titleText: $"剑池",
             detailedText: $"检索1张{currJingJie.GetName()}攻击牌",
             bound: new Bound(0, 2)
@@ -99,11 +98,11 @@ public class ArbitraryCardPickerCell : Cell
         return cell;
     }
 
-    public static ArbitraryCardPickerCell FromFengYuLou(int ladder)
+    public static PickCell FromFengYuLou(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
 
-        ArbitraryCardPickerCell cell = new(
+        PickCell cell = new(
             titleText: $"风雨楼",
             detailedText: $"检索1张{currJingJie.GetName()}防御牌",
             bound: new Bound(0, 2)
@@ -134,11 +133,11 @@ public class ArbitraryCardPickerCell : Cell
         return cell;
     }
 
-    public static ArbitraryCardPickerCell FromXingGong(int ladder)
+    public static PickCell FromXingGong(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
 
-        ArbitraryCardPickerCell cell = new(
+        PickCell cell = new(
             titleText: $"星宫",
             detailedText: $"检索1张{currJingJie.GetName()}灵气牌",
             bound: new Bound(0, 2)
@@ -169,13 +168,13 @@ public class ArbitraryCardPickerCell : Cell
         return cell;
     }
 
-    public static ArbitraryCardPickerCell FromBiYeJi(int ladder)
+    public static PickCell FromBiYeJi(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         Bound jingJieBound = new Bound(JingJie.LianQi,
             (currJingJie - 2).ClampLower(JingJie.LianQi) + 1);
 
-        ArbitraryCardPickerCell cell = new(
+        PickCell cell = new(
             titleText: $"毕业季",
             detailedText: $"请选择至多两张牌",
             bound: new Bound(0, 3)

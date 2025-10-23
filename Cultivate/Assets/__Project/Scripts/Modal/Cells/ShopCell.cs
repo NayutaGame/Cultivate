@@ -116,18 +116,18 @@ public class ShopCell : Cell
     public static ShopCell FromShouCangJia(int ladder)
         => new(ladder, priceMultiplier: 2, "收藏家", "可以花钱购买卡牌", Encyclopedia.SpriteCategory.FromName("收藏家"));
 
-    public static CardPickerCell FromYiBaoZhai(int ladder)
+    public static RequireCell FromYiBaoZhai(int ladder)
     {
-        CardPickerCell cardPickerCell = CardPickerCell.FromLiteral(
+        RequireCell requireCell = RequireCell.FromLiteral(
             titleText:          $"交易",
             getDetailedText:    GetDetailedText,
             descriptor:         RunSkillDescriptorListModel.FromCount(1));
 
         ShopCell shopCell = new ShopCell(ladder, 2, "易宝斋", "可以花钱购买卡牌",Encyclopedia.SpriteCategory.FromName("收藏家"));
 
-        cardPickerCell.SetSubmitOperation(SellCard);
+        requireCell.SetSubmitOperation(SellCard);
 
-        return cardPickerCell;
+        return requireCell;
 
         string GetDetailedText(ListModel<RequirementSlot> requirementSlots)
         {
@@ -142,7 +142,7 @@ public class ShopCell : Cell
             return totalSkillValue == 0 ? "请选择1张牌卖掉" : $"请选择1张牌卖掉\n有人愿意以{totalSkillValue}金收购您的卡牌";
         }
 
-        Cell SellCard(CardPickerCell cell)
+        Cell SellCard(RequireCell cell)
         {
             cell.RequirementSlotList.Do(slot =>
             {

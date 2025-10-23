@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DiscoverSkillPanel : Panel
+public class DiscoverPanel : Panel
 {
     [SerializeField] private RectTransform TitleTransform;
     [SerializeField] private RectTransform TitleIdlePivot;
@@ -27,7 +27,7 @@ public class DiscoverSkillPanel : Panel
 
     private void RefreshInfo()
     {
-        DiscoverSkillCell d = _address.Get<DiscoverSkillCell>();
+        DiscoverCell d = _address.Get<DiscoverCell>();
 
         TitleText.text = d.GetTitleText();
         DescriptionText.text = d.GetDescriptionText();

@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class CardPickerPanel : Panel
+public class RequirePanel : Panel
 {
     [SerializeField] public ListView Requirements;
     [SerializeField] private TMP_Text TitleText;
@@ -31,7 +31,7 @@ public class CardPickerPanel : Panel
 
     public override void Refresh()
     {
-        CardPickerCell d = _address.Get<CardPickerCell>();
+        RequireCell d = _address.Get<RequireCell>();
         Requirements.Sync();
         TitleText.text = d.GetTitleText();
         ContentText.text = d.GetDetailedText();
@@ -69,7 +69,7 @@ public class CardPickerPanel : Panel
 
     private void RefreshContentText(SkillMovedDetails d)
     {
-        CardPickerCell cell = _address.Get<CardPickerCell>();
+        RequireCell cell = _address.Get<RequireCell>();
         ContentText.text = cell.GetDetailedText();
     }
 

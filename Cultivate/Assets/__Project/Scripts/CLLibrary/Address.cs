@@ -61,6 +61,11 @@ public class Address : IEquatable<Address>
             }
             else if (clKey is StringKey { Key: string s })
             {
+                if (curr is CellNode cellNode)
+                {
+                    curr = cellNode.AsCell();
+                }
+                
                 if (curr is Addressable addressable)
                 {
                     curr = addressable.Get(s);

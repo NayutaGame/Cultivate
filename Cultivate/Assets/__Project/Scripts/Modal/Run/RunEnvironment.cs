@@ -346,7 +346,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return Home.GetSlot(deckIndex.Index).Skill;
             case SkillRegion.Requirement:
-                if (Cell is CardPickerCell cardPickerCell)
+                if (Cell is RequireCell cardPickerCell)
                 {
                     return cardPickerCell.RequirementSlotList[deckIndex.Index].Skill;
                 }
@@ -383,7 +383,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return null;
             case SkillRegion.Requirement:
-                if (Cell is CardPickerCell cardPickerCell)
+                if (Cell is RequireCell cardPickerCell)
                 {
                     return cardPickerCell.RequirementSlotList[deckIndex.Index];
                 }
@@ -406,7 +406,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (slotIndex.HasValue)
             return DeckIndex.FromField(slotIndex.Value);
         
-        if (Cell is CardPickerCell cardPickerCell)
+        if (Cell is RequireCell cardPickerCell)
         {
             int? requirementIndex = cardPickerCell.RequirementSlotList.FirstIdx(slot => slot.Skill == runSkill);
             if (requirementIndex.HasValue)
@@ -1277,9 +1277,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Hand.RemoveAt(deckIndex.Index);
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
-            CardPickerCell cardPickerCell = Cell as CardPickerCell;
-            Assert.IsTrue(cardPickerCell != null);
-            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = null;
+            RequireCell requireCell = Cell as RequireCell;
+            Assert.IsTrue(requireCell != null);
+            requireCell.RequirementSlotList[deckIndex.Index].Skill = null;
         }
 
         RemoveSkillNeuron.Invoke(d);
@@ -1303,9 +1303,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Hand.Replace(deckIndex.Index, template.Clone());
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
-            CardPickerCell cardPickerCell = Cell as CardPickerCell;
-            Assert.IsTrue(cardPickerCell != null);
-            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
+            RequireCell requireCell = Cell as RequireCell;
+            Assert.IsTrue(requireCell != null);
+            requireCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
         }
 
         ReplaceSkillNeuron.Invoke(d);
@@ -1586,7 +1586,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void AppendPickDiscoveredSkillReport(PanelChangedDetails d)
     {
-        DiscoverSkillCell cell = d.ToPanel as DiscoverSkillCell;
+        DiscoverCell cell = d.ToPanel as DiscoverCell;
         if (cell == null)
             return;
         

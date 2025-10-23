@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1825232190025974500}
   - component: {fileID: 7993731903739291728}
   m_Layer: 5
-  m_Name: ArbitraryCardPickerPanel
+  m_Name: PickPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

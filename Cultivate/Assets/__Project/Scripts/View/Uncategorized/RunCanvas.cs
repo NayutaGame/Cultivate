@@ -20,12 +20,12 @@ public class RunCanvas : Panel
     public BattlePanel BattlePanel;
     public PuzzlePanel PuzzlePanel;
     public DialogPanel DialogPanel;
-    public DiscoverSkillPanel DiscoverSkillPanel;
-    public CardPickerPanel CardPickerPanel;
+    public DiscoverPanel DiscoverPanel;
+    public RequirePanel RequirePanel;
     public ShopPanel ShopPanel;
     public BarterPanel BarterPanel;
     public GachaPanel GachaPanel;
-    public ArbitraryCardPickerPanel ArbitraryCardPickerPanel;
+    public PickPanel PickPanel;
     public ImagePanel ImagePanel;
     public ComicPanel ComicPanel;
     public RunResultPanel RunResultPanel;
@@ -47,12 +47,12 @@ public class RunCanvas : Panel
             BattlePanel,
             PuzzlePanel,
             DialogPanel,
-            DiscoverSkillPanel,
-            CardPickerPanel,
+            DiscoverPanel,
+            RequirePanel,
             ShopPanel,
             BarterPanel,
             GachaPanel,
-            ArbitraryCardPickerPanel,
+            PickPanel,
             ImagePanel,
             ComicPanel,
             RunResultPanel,
@@ -185,8 +185,8 @@ public class RunCanvas : Panel
             // 环境是Run胜利，回到Title，再进入Run，BattlePanel中，打开卡牌Annotation，查看卡包
             // 然后过了一小段时间，不到一秒，报了错，下面这句为空，大概率是上一场对局的环境没有清理干净，还有一个线程再跑，然后下面访问Environment自然是空
             Cell d = RunManager.Instance.Environment.Cell.AsCell();
-            bool showDeck = d is BattleCell || d is CardPickerCell || d is PuzzleCell ||
-                            d is DiscoverSkillCell;
+            bool showDeck = d is BattleCell || d is RequireCell || d is PuzzleCell ||
+                            d is DiscoverCell;
 
             await DeckPanel.GetAnimator().SetStateAsync(showDeck ? 2 : 0);
         }
@@ -307,7 +307,7 @@ public class RunCanvas : Panel
         }
         else if (d.DeckIndex.Region == SkillRegion.Requirement)
         {
-            CardPickerPanel.Requirements.Modified(d.DeckIndex.Index);
+            RequirePanel.Requirements.Modified(d.DeckIndex.Index);
         }
     }
 
@@ -323,7 +323,7 @@ public class RunCanvas : Panel
         }
         else if (d.DeckIndex.Region == SkillRegion.Requirement)
         {
-            CardPickerPanel.Requirements.Modified(d.DeckIndex.Index);
+            RequirePanel.Requirements.Modified(d.DeckIndex.Index);
         }
     }
 

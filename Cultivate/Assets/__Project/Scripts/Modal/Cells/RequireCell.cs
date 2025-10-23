@@ -3,26 +3,26 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 
-public class CardPickerCell : Cell
+public class RequireCell : Cell
 {
     private string _titleText;
     private Func<ListModel<RequirementSlot>, string> _getDetailedText;
     private ListModel<RequirementSlot> _requirementSlotList;
-    private Func<CardPickerCell, Cell> _submitOperation;
+    private Func<RequireCell, Cell> _submitOperation;
 
     #region Constructors
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Guide",                      thisObject => ((CardPickerCell)thisObject).GetGuideDescriptor() },
-        { "Requirements",               thisObject => ((CardPickerCell)thisObject)._requirementSlotList },
+        { "Guide",                      thisObject => ((RequireCell)thisObject).GetGuideDescriptor() },
+        { "Requirements",               thisObject => ((RequireCell)thisObject)._requirementSlotList },
     };
     public override object Get(string s) => Accessor[s](this);
-    public CardPickerCell(
+    public RequireCell(
         string titleText,
         Func<ListModel<RequirementSlot>, string> getDetailedText,
         RunSkillDescriptorListModel descriptor,
-        Func<CardPickerCell, Cell> submitOperation)
+        Func<RequireCell, Cell> submitOperation)
     {
         _titleText = titleText;
         _getDetailedText = getDetailedText;
@@ -30,23 +30,23 @@ public class CardPickerCell : Cell
         _submitOperation = submitOperation;
     }
 
-    public static CardPickerCell FromLiteral(
+    public static RequireCell FromLiteral(
         string titleText = null,
         Func<ListModel<RequirementSlot>, string> getDetailedText = null,
         RunSkillDescriptorListModel descriptor = null,
-        Func<CardPickerCell, Cell> submitOperation = null)
+        Func<RequireCell, Cell> submitOperation = null)
         => new(titleText ?? "选择", getDetailedText ?? (list => "请选择卡"), descriptor ?? RunSkillDescriptorListModel.Default(), submitOperation);
     
-    public static CardPickerCell FromConstantDetailedText(
+    public static RequireCell FromConstantDetailedText(
         string titleText = null,
         string detailedText = null,
         RunSkillDescriptorListModel descriptor = null,
-        Func<CardPickerCell, Cell> submitOperation = null)
+        Func<RequireCell, Cell> submitOperation = null)
         => new(titleText ?? "选择", list => detailedText ?? "请选择卡", descriptor ?? RunSkillDescriptorListModel.Default(), submitOperation);
 
-    public static CardPickerCell GetTemplate()
+    public static RequireCell GetTemplate()
     {
-        CardPickerCell template = FromConstantDetailedText(
+        RequireCell template = FromConstantDetailedText(
             titleText:          "选择",
             detailedText:       "请选择一张牌",
             descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
@@ -73,9 +73,9 @@ public class CardPickerCell : Cell
         return template;
     }
 
-    public static CardPickerCell FromTianJiGe()
+    public static RequireCell FromTianJiGe()
     {
-        CardPickerCell cell = FromConstantDetailedText(
+        RequireCell cell = FromConstantDetailedText(
             titleText:          $"天机阁",
             detailedText:       $"选择1张牌，复制1次",
             descriptor:         RunSkillDescriptorListModel.FromCount(1));
@@ -102,14 +102,14 @@ public class CardPickerCell : Cell
         return cell;
     }
 
-    public static CardPickerCell FromBaiCaoTang(int ladder)
+    public static RequireCell FromBaiCaoTang(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         JingJie nextJingJie = currJingJie + 1;
 
         RunSkillDescriptor singleDescriptor = RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie);
         
-        CardPickerCell cell = FromConstantDetailedText(
+        RequireCell cell = FromConstantDetailedText(
             titleText:          $"百草堂",
             detailedText:       $"选择0~2张不高于{currJingJie.GetName()}牌，提升到{nextJingJie.GetName()}",
             descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(singleDescriptor, 2));
@@ -131,7 +131,7 @@ public class CardPickerCell : Cell
         return cell;
     }
 
-    public static CardPickerCell FromTianJieShu(int ladder, Cell nextCell)
+    public static RequireCell FromTianJieShu(int ladder, Cell nextCell)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
 
@@ -139,7 +139,7 @@ public class CardPickerCell : Cell
                 RunSkillDescriptor.FromJingJieBoundAndHasWuXing(JingJie.LianQi, JingJie.HuaShen + 1), 
                 5);
             
-        CardPickerCell cell = FromConstantDetailedText(
+        RequireCell cell = FromConstantDetailedText(
             titleText:          $"天界树",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。新的牌和原来的牌的五行有关。",
             descriptor:         descriptorList);
@@ -177,7 +177,7 @@ public class CardPickerCell : Cell
         return cell;
     }
 
-    public static CardPickerCell FromZhanDuanChenYuan(int ladder, Cell nextCell)
+    public static RequireCell FromZhanDuanChenYuan(int ladder, Cell nextCell)
     {
         JingJie currJingJie = JingJie.FanXu;
 
@@ -185,7 +185,7 @@ public class CardPickerCell : Cell
                 RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, JingJie.FanXu + 1), 
                 5);
             
-        CardPickerCell cell = FromConstantDetailedText(
+        RequireCell cell = FromConstantDetailedText(
             titleText:          $"斩断尘缘",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。无法再遇到被选择的牌。",
             descriptor:         descriptorList);
@@ -233,7 +233,7 @@ public class CardPickerCell : Cell
     public string GetDetailedText() => _getDetailedText(_requirementSlotList);
     public ListModel<RequirementSlot> RequirementSlotList => _requirementSlotList;
     
-    public CardPickerCell SetSubmitOperation(Func<CardPickerCell, Cell> submitOperation)
+    public RequireCell SetSubmitOperation(Func<RequireCell, Cell> submitOperation)
     {
         _submitOperation = submitOperation;
         return this;

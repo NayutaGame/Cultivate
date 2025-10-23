@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1216970489611709064}
   - component: {fileID: 533383010836994040}
   m_Layer: 5
-  m_Name: DiscoverSkillPanel
+  m_Name: DiscoverPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

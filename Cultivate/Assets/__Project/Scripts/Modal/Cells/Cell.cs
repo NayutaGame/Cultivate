@@ -1,6 +1,5 @@
 
 using System;
-using System.Collections.Generic;
 
 public abstract class Cell : Addressable, ICellAdapter
 {

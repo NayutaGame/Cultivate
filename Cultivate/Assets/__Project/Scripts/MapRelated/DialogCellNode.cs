@@ -6,6 +6,7 @@ using PuppyDragon.uNody.Logic.BlackboardVariable;
 using UnityEngine;
 
 [NodeWidth(300)]
+[CreateNodeMenu("Cell/Dialog Cell", -9, true)]
 public class DialogCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
