@@ -18,7 +18,7 @@ public class RequireCell : Cell
         { "Requirements",               thisObject => ((RequireCell)thisObject)._requirementSlotList },
     };
     public override object Get(string s) => Accessor[s](this);
-    public RequireCell(
+    private RequireCell(
         string titleText,
         Func<ListModel<RequirementSlot>, string> getDetailedText,
         RunSkillDescriptorListModel descriptor,

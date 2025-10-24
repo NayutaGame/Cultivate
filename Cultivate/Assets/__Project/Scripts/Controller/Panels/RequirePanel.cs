@@ -31,10 +31,12 @@ public class RequirePanel : Panel
 
     public override void Refresh()
     {
-        RequireCell d = _address.Get<RequireCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        RequireCell cell = cellAdapter.AsCell() as RequireCell;
+        
         Requirements.Sync();
-        TitleText.text = d.GetTitleText();
-        ContentText.text = d.GetDetailedText();
+        TitleText.text = cell.GetTitleText();
+        ContentText.text = cell.GetDetailedText();
     }
 
     private void OnEnable()
@@ -69,7 +71,8 @@ public class RequirePanel : Panel
 
     private void RefreshContentText(SkillMovedDetails d)
     {
-        RequireCell cell = _address.Get<RequireCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        RequireCell cell = cellAdapter.AsCell() as RequireCell;
         ContentText.text = cell.GetDetailedText();
     }
 

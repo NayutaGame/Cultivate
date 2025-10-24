@@ -5,7 +5,7 @@ using PuppyDragon.uNody;
 [CustomPropertyDrawer(typeof(WuXingType))]
 public class WuXingTypeDrawer : PropertyDrawer
 {
-    private static readonly string[] wuXingNames = { "金", "水", "木", "火", "土", "无色" };
+    private static readonly string[] wuXingNames = { "金", "水", "木", "火", "土", "无色", "任意" };
     
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {

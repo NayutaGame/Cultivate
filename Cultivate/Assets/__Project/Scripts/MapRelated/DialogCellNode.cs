@@ -42,18 +42,13 @@ public class DialogCellNode : CellNode
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Option4 = new(self => self as ILogicNode);
     
-    protected override void Initialize()
-    {
-    }
-    // 存储玩家选择的选项索引
     private int selectedOptionIndex = -1;
     
     public override NodePort PrevPort => prevs;
     public override NodePort NextPort 
-    { 
+    {
         get 
         {
-            // 根据选择的选项索引返回对应的输出端口
             return selectedOptionIndex switch
             {
                 0 => Option1,

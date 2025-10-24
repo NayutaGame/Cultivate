@@ -50,6 +50,14 @@ public class RunSkillDescriptor : AnnotatableLine
     public static RunSkillDescriptor FromTagComposite(TagComposite tagComposite)
         => new(tagComposite: tagComposite, description: new($"请提交一张包含{tagComposite.GetTagListString()}的牌"));
 
+    public static RunSkillDescriptor FromWuXingJingJieTagComposite(WuXing wuXing, JingJie jingJie, TagComposite tagComposite)
+        => new(wuXing: wuXing, jingJieBound: new Bound((int)jingJie, (int)jingJie + 1), tagComposite: tagComposite, 
+            description: new($"请提交一张五行为{wuXing.GetName()}，境界为{jingJie.GetName()}，包含{tagComposite.GetTagListString()}的牌"));
+
+    public static RunSkillDescriptor FromEverything(WuXing wuXing, Bound jingJieBound, TagComposite tagComposite, string customDescription)
+        => new(wuXing: wuXing, jingJieBound: jingJieBound, tagComposite: tagComposite, 
+            description: new(customDescription));
+
     public RunSkillDescriptor Clone()
         => new(_pred, _wuXing, _jingJieBound, _tagComposite, _description);
     

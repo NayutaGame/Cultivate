@@ -36,6 +36,9 @@ public class SkillEntryCollectionDescriptorNode : Node
     
     public SkillEntryCollectionDescriptor GetDescriptor()
     {
+        if (!Application.isPlaying)
+            return null;
+        
         WuXingType wuXingType = WuXing.Value;
         WuXing wuXing = global::WuXing.FromIndex((int)wuXingType);
         

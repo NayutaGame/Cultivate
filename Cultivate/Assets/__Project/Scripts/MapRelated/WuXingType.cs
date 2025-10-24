@@ -7,4 +7,5 @@ public enum WuXingType
     Huo,
     Tu,
     Wu,
+    Any,  // 没有限制
 }

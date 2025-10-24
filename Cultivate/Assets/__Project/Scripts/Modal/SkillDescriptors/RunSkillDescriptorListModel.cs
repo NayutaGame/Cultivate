@@ -11,6 +11,19 @@ public class RunSkillDescriptorListModel : ListModel<RunSkillDescriptor>
         return list;
     }
     
+    public static RunSkillDescriptorListModel FromDescriptors(RunSkillDescriptor[] descriptors)
+    {
+        RunSkillDescriptorListModel list = new();
+        foreach (var descriptor in descriptors)
+        {
+            if (descriptor != null)
+            {
+                list.Add(descriptor.Clone());
+            }
+        }
+        return list;
+    }
+    
     public static RunSkillDescriptorListModel Default()
         => FromCount(1);
     
