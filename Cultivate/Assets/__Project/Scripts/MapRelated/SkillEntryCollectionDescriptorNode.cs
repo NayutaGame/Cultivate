@@ -6,33 +6,26 @@ using UnityEngine;
 [CreateNodeMenu("Variable/SkillEntryCollectionDescriptor", -9, true)]
 public class SkillEntryCollectionDescriptorNode : Node
 {
-    [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Strict)] 
-    [SerializeField]
-    private OutputPort<SkillEntryCollectionDescriptor> value = new(self => (self as SkillEntryCollectionDescriptorNode).GetDescriptor());
-    
-    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
-    [SerializeField]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<WuXingType> WuXing = new(WuXingType.Wu);
     
-    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
-    [SerializeField]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<JingJieType> JingJie = new(JingJieType.LianQi);
     
-    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
-    [SerializeField]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<TagType> Tag = new(TagType.None);
     
-    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
-    [SerializeField]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<int> Count = new InputPort<int>(3);
     
-    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
-    [SerializeField]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<bool> Distinct = new InputPort<bool>(true);
     
-    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
-    [SerializeField]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<bool> Consume = new InputPort<bool>(true);
+    
+    [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Strict)] [SerializeField]
+    private OutputPort<SkillEntryCollectionDescriptor> value = new(self => (self as SkillEntryCollectionDescriptorNode).GetDescriptor());
     
     public SkillEntryCollectionDescriptor GetDescriptor()
     {
@@ -40,10 +33,10 @@ public class SkillEntryCollectionDescriptorNode : Node
             return null;
         
         WuXingType wuXingType = WuXing.Value;
-        WuXing wuXing = global::WuXing.FromIndex((int)wuXingType);
+        WuXing wuXing = global::WuXing.FromWuXingType(wuXingType);
         
         JingJieType jingJieType = JingJie.Value;
-        JingJie jingJie = (int)jingJieType;
+        JingJie jingJie = global::JingJie.FromJingJieType(jingJieType);
         TagType tagType = Tag.Value;
         TagComposite tagComposite = (TagComposite)((int)tagType << 6);
         int count = Count.Value;

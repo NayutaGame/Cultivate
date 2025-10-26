@@ -35,14 +35,7 @@ public class RunSkillDescriptorNode : Node
         WuXingType wuXingType = WuXing.Value;
         WuXing wuXing;
         
-        if (wuXingType == WuXingType.Any)
-        {
-            wuXing = null;
-        }
-        else
-        {
-            wuXing = global::WuXing.FromIndex((int)wuXingType);
-        }
+        wuXing = global::WuXing.FromWuXingType(wuXingType);
         
         Bound jingJieBound = JingJieBound.Value;
         

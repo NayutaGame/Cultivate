@@ -174,4 +174,18 @@ public class DiscoverCell : Cell
         );
         return d;
     }
+
+    public static DiscoverCell FromEverything(
+        string titleText,
+        string descriptionText,
+        SkillEntryCollectionDescriptor descriptor,
+        JingJie preferredJingJie)
+    {
+        return new(
+            titleText: titleText,
+            descriptionText: descriptionText,
+            descriptor: descriptor,
+            preferredJingJie: preferredJingJie
+        );
+    }
 }

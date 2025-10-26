@@ -93,4 +93,6 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
     
     public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => Encyclopedia.JingJieCategory[index];
+
+    public static JingJie FromJingJieType(JingJieType jingJieType) => (int)jingJieType;
 }

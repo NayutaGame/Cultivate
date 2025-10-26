@@ -27,7 +27,8 @@ public class DiscoverPanel : Panel
 
     private void RefreshInfo()
     {
-        DiscoverCell d = _address.Get<DiscoverCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        DiscoverCell d = cellAdapter.AsCell() as DiscoverCell;
 
         TitleText.text = d.GetTitleText();
         DescriptionText.text = d.GetDescriptionText();
