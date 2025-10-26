@@ -13,7 +13,7 @@ namespace PuppyDragon.uNodyEditor
     {
         public static bool IsNeedUpdatePosition { get; set; } = true;
 
-        private Dictionary<SerializedProperty, Dictionary<string, SerializedProperty>> cachedPropertiesByObject = new();
+        private Dictionary<(int, string), Dictionary<string, SerializedProperty>> cachedPropertiesByObject = new();
         private float cachedSpace = 0;
         private GUIStyle textAreaStyle;
 
@@ -257,10 +257,11 @@ namespace PuppyDragon.uNodyEditor
 
         private SerializedProperty GetCachedSerializedProperty(SerializedProperty property, string fieldName)
         {
-            if (!cachedPropertiesByObject.TryGetValue(property, out var cachedProperties))
+            (int, string) key = GetPropertyKey(property);
+            if (!cachedPropertiesByObject.TryGetValue(key, out var cachedProperties))
             {
                 cachedProperties = new Dictionary<string, SerializedProperty>();
-                cachedPropertiesByObject[property] = cachedProperties;
+                cachedPropertiesByObject[key] = cachedProperties;
             }
 
             if (!cachedProperties.TryGetValue(fieldName, out var cachedProperty))
@@ -270,6 +271,13 @@ namespace PuppyDragon.uNodyEditor
             }
 
             return cachedProperty;
+        }
+
+        private static (int, string) GetPropertyKey(SerializedProperty property)
+        {
+            int instanceId = property.serializedObject.targetObject.GetInstanceID();
+            string propertyPath = property.propertyPath;
+            return (instanceId, propertyPath);
         }
     }
 }

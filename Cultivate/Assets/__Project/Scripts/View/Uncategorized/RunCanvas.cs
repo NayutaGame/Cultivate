@@ -159,7 +159,7 @@ public class RunCanvas : Panel
         await _animationQueue.WaitForQueueToComplete();
         
         PanelS oldState = PanelSM.State;
-        PanelS newState = PanelS.FromPanelDescriptor(toCell.AsCell());
+        PanelS newState = PanelS.FromPanelDescriptor(toCell?.AsCell());
 
         if (oldState.Equals(newState))
         {

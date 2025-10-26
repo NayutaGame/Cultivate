@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Name: "\u5929\u673A\u9601"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: 684.405, y: -569.8483}
-  zoom: 0.59564745
+  panOffset: {x: 31.722015, y: -490.1941}
+  zoom: 0.9214961
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -295,7 +295,7 @@ MonoBehaviour:
       y: 279.5
       width: 16
       height: 16
-    defaultValue: 3
+    defaultValue: 4
   DescriptorList:
     ownerNode: {fileID: 3243228085115525341}
     guid: 8eb01d97-610f-41ca-b424-ad2e76365def

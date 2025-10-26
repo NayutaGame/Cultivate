@@ -25,7 +25,9 @@
 // 镜灵
 // 分子打印机
 
+using System;
 using System.Collections.Generic;
+using CLLibrary;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
@@ -41,7 +43,7 @@ public class RequireCellNode : CellNode
     private InputPort<string> Title = new("提交");
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<string> DetailedText = new("请提交卡");
+    private InputPort<string> DetailedText = new();
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.Consume);
@@ -81,8 +83,13 @@ public class RequireCellNode : CellNode
     {
         var title = Title.Value;
         var detailedText = DetailedText.Value;
+
+        Dictionary<RequireCellBehaviorType, string> defaultDetailedText;
+        
         var behaviorType = BehaviorType.Value;
         var descriptorList = DescriptorList.Value;
+
+        Dictionary<RequireCellBehaviorType, RunSkillDescriptorListModel> defaultRequirements;
         
         var requireCell = RequireCell.FromConstantDetailedText(
             titleText: title,
@@ -90,65 +97,148 @@ public class RequireCellNode : CellNode
             descriptor: descriptorList
         );
         
-        // 设置提交操作
-        requireCell.SetSubmitOperation(cardPickerCell =>
-        {
-            bool fulfilled = cardPickerCell.AllFulfilled();
-            
-            // 根据行为类型处理
-            switch (behaviorType)
-            {
-                case RequireCellBehaviorType.Consume:
-                    if (!fulfilled)
-                    {
-                        cardPickerCell.WithdrawAll();
-                        return GetFailureCell();
-                    }
-                    else
-                    {
-                        cardPickerCell.WithdrawAll();
-                        return GetSuccessCell();
-                    }
-                    
-                case RequireCellBehaviorType.RemoveFromPool:
-                case RequireCellBehaviorType.UpgradeJingJieToCurrent:
-                case RequireCellBehaviorType.UpgradeJingJieToNext:
-                case RequireCellBehaviorType.Copy:
-                case RequireCellBehaviorType.WuXingCycle:
-                    // 这些类型只有成功分支
-                    cardPickerCell.WithdrawAll();
-                    return GetSuccessCell();
-                    
-                // case RequireCellBehaviorType.Complex:
-                //     // 复杂情况暂时返回成功，后续可以扩展
-                //     cardPickerCell.WithdrawAll();
-                //     return GetSuccessCell();
-                    
-                default:
-                    cardPickerCell.WithdrawAll();
-                    return GetSuccessCell();
-            }
-        });
-        
         return requireCell;
-    }
-    
-    private Cell GetSuccessCell()
-    {
-        // var successNode = Success?.Connection?.Node as ILogicNode;
-        // return successNode?.AsCell();
-        return null;
-    }
-    
-    private Cell GetFailureCell()
-    {
-        // var failureNode = Failure?.Connection?.Node as ILogicNode;
-        // return failureNode?.AsCell();
-        return null;
     }
     
     public override void ReceiveSignal(Signal signal)
     {
-        // RequireCell会处理ConfirmDeckSignal，这里不需要额外处理
+        ConfirmDeckSignal confirmDeckSignal = signal as ConfirmDeckSignal;
+        if (confirmDeckSignal == null)
+            return;
+
+        int ladder = 8; // From blackboard
+        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+        JingJie nextJingJie = Mathf.Clamp(currJingJie + 1, 0, 4);
+
+        Dictionary<RequireCellBehaviorType, Func<RequireCell, bool>> behaviorHandlers = new()
+        {
+            { RequireCellBehaviorType.Consume, requireCell =>
+            {
+                bool success = requireCell.AllFulfilled();
+                if (!success)
+                {
+                    requireCell.WithdrawAll();
+                }
+
+                return success;
+            }},
+            { RequireCellBehaviorType.RemoveFromPool, requireCell =>
+            {
+                bool success = requireCell.AnyFulfilled();
+                
+                requireCell.RequirementSlotList.Do(slot =>
+                {
+                    RunSkill skillToDepopulate = slot.Skill;
+                    if (skillToDepopulate == null)
+                        return;
+
+                    RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skillToDepopulate.GetEntry());
+                });
+            
+                requireCell.RequirementSlotList.Do(slot =>
+                {
+                    if (slot.Skill == null)
+                        return;
+                
+                    JingJie targetJingJie = slot.Skill.GetJingJie();
+                
+                    GainSkillBuilder b = new();
+                    SkillEntryCollectionDescriptor descriptor = new(
+                        jingJie: targetJingJie,
+                        count: 1,
+                        consume: true);
+                
+                    b.Draw(descriptor);
+                    SkillEntry newSkill = b.DrawnSkillEntries[0];
+                
+                    slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
+                });
+                        
+                requireCell.WithdrawAll();
+
+                return success;
+            }},
+            { RequireCellBehaviorType.UpgradeJingJieToCurrent, requireCell =>
+            {
+                bool success = requireCell.AnyFulfilled();
+                
+                requireCell.RequirementSlotList.Do(slot =>
+                {
+                    if (slot.Skill == null)
+                        return;
+                
+                    slot.Skill = RunSkill.FromChangeJingJie(slot.Skill, currJingJie);
+                });
+                        
+                requireCell.WithdrawAll();
+                return success;
+            }},
+            { RequireCellBehaviorType.UpgradeJingJieToNext, requireCell =>
+            {
+                bool success = requireCell.AnyFulfilled();
+                
+                requireCell.RequirementSlotList.Do(slot =>
+                {
+                    if (slot.Skill == null)
+                        return;
+                
+                    slot.Skill = RunSkill.FromChangeJingJie(slot.Skill, nextJingJie);
+                });
+                        
+                requireCell.WithdrawAll();
+                return success;
+            }},
+            { RequireCellBehaviorType.Copy, requireCell =>
+            {
+                bool success = requireCell.AnyFulfilled();
+                if (!success)
+                {
+                    requireCell.WithdrawAll();
+                    return false;
+                }
+
+                int count = requireCell.RequirementSlotList.Count();
+                RequirementSlot copyingSlot = requireCell.RequirementSlotList[RandomManager.Range(0, count)];
+                RunSkill copyingSkill = copyingSlot.Skill;
+            
+                RunManager.Instance.Environment.PickSkillProcedure(copyingSkill.GetEntry(), copyingSkill.GetJingJie());
+                        
+                requireCell.WithdrawAll();
+                return true;
+            }},
+            { RequireCellBehaviorType.WuXingCycle, requireCell =>
+            {
+                bool success = requireCell.AnyFulfilled();
+                
+                requireCell.RequirementSlotList.Do(slot =>
+                {
+                    if (slot.Skill == null)
+                        return;
+
+                    if (slot.Skill.GetWuXing() == WuXing.Wu)
+                        return;
+
+                    WuXing targetWuXing = slot.Skill.GetWuXing().Next;
+                    JingJie targetJingJie = slot.Skill.GetJingJie();
+                
+                    GainSkillBuilder b = new();
+                    SkillEntryCollectionDescriptor descriptor = new(
+                        wuXing: targetWuXing,
+                        jingJie: targetJingJie,
+                        count: 1,
+                        consume: true);
+                
+                    b.Draw(descriptor);
+                    SkillEntry newSkill = b.DrawnSkillEntries[0];
+                
+                    slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
+                });
+                        
+                requireCell.WithdrawAll();
+                return success;
+            }},
+        };
+        
+        _isSuccess = behaviorHandlers[BehaviorType.Value](AsCell() as RequireCell);
     }
 }

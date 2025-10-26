@@ -346,9 +346,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return Home.GetSlot(deckIndex.Index).Skill;
             case SkillRegion.Requirement:
-                if (Cell is RequireCell cardPickerCell)
+                if (Cell?.AsCell() is RequireCell requireCell)
                 {
-                    return cardPickerCell.RequirementSlotList[deckIndex.Index].Skill;
+                    return requireCell.RequirementSlotList[deckIndex.Index].Skill;
                 }
                 else
                 {
@@ -383,9 +383,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return null;
             case SkillRegion.Requirement:
-                if (Cell is RequireCell cardPickerCell)
+                if (Cell?.AsCell() is RequireCell requireCell)
                 {
-                    return cardPickerCell.RequirementSlotList[deckIndex.Index];
+                    return requireCell.RequirementSlotList[deckIndex.Index];
                 }
                 else
                 {
@@ -406,7 +406,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (slotIndex.HasValue)
             return DeckIndex.FromField(slotIndex.Value);
         
-        if (Cell is RequireCell cardPickerCell)
+        if (Cell?.AsCell() is RequireCell cardPickerCell)
         {
             int? requirementIndex = cardPickerCell.RequirementSlotList.FirstIdx(slot => slot.Skill == runSkill);
             if (requirementIndex.HasValue)
@@ -1277,7 +1277,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Hand.RemoveAt(deckIndex.Index);
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
-            RequireCell requireCell = Cell as RequireCell;
+            RequireCell requireCell = Cell?.AsCell() as RequireCell;
             Assert.IsTrue(requireCell != null);
             requireCell.RequirementSlotList[deckIndex.Index].Skill = null;
         }
@@ -1303,7 +1303,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             Hand.Replace(deckIndex.Index, template.Clone());
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
-            RequireCell requireCell = Cell as RequireCell;
+            RequireCell requireCell = Cell?.AsCell() as RequireCell;
             Assert.IsTrue(requireCell != null);
             requireCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
         }

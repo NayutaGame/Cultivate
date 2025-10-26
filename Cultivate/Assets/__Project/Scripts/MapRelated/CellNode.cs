@@ -32,6 +32,7 @@ public abstract class CellNode : Node, ILogicNode, ICellAdapter
     public void Exit()
     {
         _cell._exit(_cell);
+        _cell = null;
     }
 
     public abstract void ReceiveSignal(Signal signal);
