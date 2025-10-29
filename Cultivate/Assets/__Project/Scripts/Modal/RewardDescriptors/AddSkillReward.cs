@@ -17,9 +17,8 @@ public class AddSkillReward : Reward
     public override void Claim()
     {
         GainSkillBuilder b = new();
-        b.Pick(_entry);
-        b.Create(_jingJie);
-        b.Add();
+        b.Pick(SkillReference.FromEntryJingJie(_entry, _jingJie));
+        b.Execute();
         b.Invoke();
     }
 

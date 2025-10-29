@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class BarterItem : Addressable
 {
-    public SkillEntryDescriptor FromSkill;
-    public SkillEntryDescriptor ToSkill;
+    public SkillReference FromSkill;
+    public SkillReference ToSkill;
     private Action<BarterItem> ExchangeFunc;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
@@ -14,7 +14,7 @@ public class BarterItem : Addressable
         { "ToSkill",                    thisObject => ((BarterItem)thisObject).ToSkill },
     };
     public object Get(string s) => Accessor[s](this);
-    public BarterItem(SkillEntryDescriptor fromSkill, SkillEntryDescriptor toSkill, Action<BarterItem> exchangeFunc)
+    public BarterItem(SkillReference fromSkill, SkillReference toSkill, Action<BarterItem> exchangeFunc)
     {
         FromSkill = fromSkill;
         ToSkill = toSkill;
@@ -25,5 +25,5 @@ public class BarterItem : Addressable
         => ExchangeFunc.Invoke(this);
 
     public bool Affordable()
-        => RunManager.Instance.Environment.DeckIndexFromDescriptor(out DeckIndex _, FromSkill);
+        => RunManager.Instance.Environment.DeckIndexFromQuery(out DeckIndex _, RunSkillQuery.FromSkillReference(FromSkill));
 }

@@ -13,13 +13,13 @@ public class DiscoverCell : Cell
     public string GetDescriptionText() => _descriptionText;
     public void SetDescriptionText(string value) => _descriptionText = value;
 
-    private ListModel<SkillEntryDescriptor> _skills;
-    public ListModel<SkillEntryDescriptor> GetSkills() => _skills;
+    private ListModel<SkillReference> _skills;
+    public ListModel<SkillReference> GetSkills() => _skills;
 
-    private SkillEntryCollectionDescriptor _descriptor;
-    public DiscoverCell SetDescriptor(SkillEntryCollectionDescriptor descriptor)
+    private List<SkillEntryQuery> _drawStrategies;
+    public DiscoverCell SetDrawStrategy(List<SkillEntryQuery> drawStrategies)
     {
-        _descriptor = descriptor;
+        _drawStrategies = drawStrategies;
         return this;
     }
 
@@ -34,13 +34,13 @@ public class DiscoverCell : Cell
     private DiscoverCell(
         string titleText = null,
         string descriptionText = null,
-        SkillEntryCollectionDescriptor descriptor = null,
+        List<SkillEntryQuery> drawStrategies = null,
         JingJie preferredJingJie = null)
     {
         _titleText = titleText ?? "灵感";
         _descriptionText = descriptionText ?? "请选择一张卡作为奖励";
 
-        _descriptor = descriptor ?? new(jingJie: RunManager.Instance.Environment.JingJie, count: 3);
+        _drawStrategies = drawStrategies ?? SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(3);
         _preferredJingJie = preferredJingJie ?? RunManager.Instance.Environment.JingJie;
         
         _skills = new();
@@ -49,7 +49,7 @@ public class DiscoverCell : Cell
     public override void DefaultEnter(Cell cell)
     {
         base.DefaultEnter(cell);
-        DiscoverSkillDetails d = new DiscoverSkillDetails(_descriptor, _preferredJingJie);
+        DiscoverSkillDetails d = new DiscoverSkillDetails(_drawStrategies, _preferredJingJie);
         RunManager.Instance.Environment.DiscoverSkillProcedure(d);
 
         _skills.Clear();
@@ -61,7 +61,7 @@ public class DiscoverCell : Cell
         if (signal is PickDiscoveredSkillSignal pickDiscoveredSkillSignal)
         {
             int pickedIndex = pickDiscoveredSkillSignal.Selected;
-            SkillEntryDescriptor skill = _skills[pickedIndex];
+            SkillReference skill = _skills[pickedIndex];
             // RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
             return null;
         }
@@ -76,7 +76,7 @@ public class DiscoverCell : Cell
         return new(
             titleText: "灵感",
             descriptionText: "请选择一张卡作为奖励",
-            descriptor: new(jingJie: currJingJie, count: 3),
+            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, currJingJie)).Stack(3),
             preferredJingJie: currJingJie
         );
     }
@@ -95,12 +95,14 @@ public class DiscoverCell : Cell
     public static DiscoverCell FromLingYunFeng(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
 
         DiscoverCell d = new(
             titleText: $"凌云峰",
             descriptionText: $"选择1张{currJingJie.GetName()}金牌",
-            descriptor: new(wuXing: WuXing.Jin, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            drawStrategies: SkillEntryQuery.FromWuXingBaseJingJieBound(
+                wuXing: WuXing.Jin,
+                baseJingJieBound: new(JingJie.LianQi, currJingJie)
+            ).Stack(3),
             preferredJingJie: currJingJie
         );
         return d;
@@ -109,26 +111,30 @@ public class DiscoverCell : Cell
     public static DiscoverCell FromXiaoYaoHai(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
 
         DiscoverCell d = new(
             titleText: $"逍遥海",
             descriptionText: $"选择1张{currJingJie.GetName()}水牌",
-            descriptor: new(wuXing: WuXing.Shui, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            drawStrategies: SkillEntryQuery.FromWuXingBaseJingJieBound(
+                wuXing: WuXing.Shui,
+                baseJingJieBound: new(JingJie.LianQi, currJingJie)
+            ).Stack(3),
             preferredJingJie: currJingJie
         );
         return d;
     }
 
-    public static DiscoverCell FromTaohuaGong(int ladder)
+    public static DiscoverCell FromTaoHuaGong(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
         
         DiscoverCell d = new(
             titleText: $"桃花宫",
             descriptionText: $"选择1张{currJingJie.GetName()}木牌",
-            descriptor: new(wuXing: WuXing.Mu, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            drawStrategies: SkillEntryQuery.FromWuXingBaseJingJieBound(
+                wuXing: WuXing.Mu,
+                baseJingJieBound: new(JingJie.LianQi, currJingJie)
+            ).Stack(3),
             preferredJingJie: currJingJie
         );
         return d;
@@ -137,12 +143,14 @@ public class DiscoverCell : Cell
     public static DiscoverCell FromChangMingDian(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
         
         DiscoverCell d = new(
             titleText: $"长明殿",
             descriptionText: $"选择1张{currJingJie.GetName()}火牌",
-            descriptor: new(wuXing: WuXing.Huo, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            drawStrategies: SkillEntryQuery.FromWuXingBaseJingJieBound(
+                wuXing: WuXing.Huo,
+                baseJingJieBound: new(JingJie.LianQi, currJingJie)
+            ).Stack(3),
             preferredJingJie: currJingJie
         );
         return d;
@@ -151,12 +159,14 @@ public class DiscoverCell : Cell
     public static DiscoverCell FromHuanYueLing(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound jingJieBound = new(JingJie.LianQi, currJingJie + 1);
         
         DiscoverCell d = new(
             titleText: $"环岳岭",
             descriptionText: $"选择1张{currJingJie.GetName()}土牌",
-            descriptor: new(wuXing: WuXing.Tu, pred: e => jingJieBound.Contains(e.LowestJingJie), count: 3),
+            drawStrategies: SkillEntryQuery.FromWuXingBaseJingJieBound(
+                wuXing: WuXing.Tu,
+                baseJingJieBound: new(JingJie.LianQi, currJingJie)
+            ).Stack(3),
             preferredJingJie: currJingJie
         );
         return d;
@@ -169,7 +179,7 @@ public class DiscoverCell : Cell
         DiscoverCell d = new(
             titleText: $"散修",
             descriptionText: $"选择1张基础境界是{currJingJie.GetName()}期的牌",
-            descriptor: new(pred: e => e.LowestJingJie == currJingJie, count: 3),
+            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(currJingJie, currJingJie)).Stack(3),
             preferredJingJie: currJingJie
         );
         return d;
@@ -178,13 +188,13 @@ public class DiscoverCell : Cell
     public static DiscoverCell FromEverything(
         string titleText,
         string descriptionText,
-        SkillEntryCollectionDescriptor descriptor,
+        List<SkillEntryQuery> drawStrategies,
         JingJie preferredJingJie)
     {
         return new(
             titleText: titleText,
             descriptionText: descriptionText,
-            descriptor: descriptor,
+            drawStrategies: drawStrategies,
             preferredJingJie: preferredJingJie
         );
     }

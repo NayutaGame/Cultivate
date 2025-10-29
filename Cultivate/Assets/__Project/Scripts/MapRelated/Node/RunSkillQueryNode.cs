@@ -4,12 +4,12 @@ using PuppyDragon.uNody;
 using UnityEngine;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Variable/RunSkillDescriptor", -9, true)]
-public class RunSkillDescriptorNode : Node
+[CreateNodeMenu("Variable/RunSkillQuery", -9, true)]
+public class RunSkillQueryNode : Node
 {
     [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Strict)] 
     [SerializeField]
-    private OutputPort<RunSkillDescriptor> value = new(self => (self as RunSkillDescriptorNode).GetDescriptor());
+    private OutputPort<RunSkillQuery> value = new(self => (self as RunSkillQueryNode).GetQuery());
     
     [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
     [SerializeField]
@@ -17,7 +17,7 @@ public class RunSkillDescriptorNode : Node
     
     [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
     [SerializeField]
-    private InputPort<Bound> JingJieBound = new(new Bound(0, 1));
+    private InputPort<Bound> JingJieBound = new(JingJie.LianQiOnly);
     
     [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)]
     [SerializeField]
@@ -27,7 +27,7 @@ public class RunSkillDescriptorNode : Node
     [SerializeField]
     private InputPort<string> Description = new("请提交卡牌");
     
-    public RunSkillDescriptor GetDescriptor()
+    public RunSkillQuery GetQuery()
     {
         if (!Application.isPlaying)
             return null;
@@ -44,6 +44,6 @@ public class RunSkillDescriptorNode : Node
         
         string description = Description.Value;
         
-        return RunSkillDescriptor.FromEverything(wuXing, jingJieBound, tagComposite, description);
+        return RunSkillQuery.FromEverything(wuXing, jingJieBound, tagComposite, description);
     }
 }

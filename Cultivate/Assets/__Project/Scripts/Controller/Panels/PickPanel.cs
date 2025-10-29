@@ -43,7 +43,7 @@ public class PickPanel : Panel
         PickCell cell = cellAdapter.AsCell() as PickCell;
 
         DetailedText.text = cell.GetDetailedText() +
-                            $"\n可选择{cell.Bound.Start}~{cell.Bound.End - 1}张" +
+                            $"\n可选择{cell.Bound.Start}~{cell.Bound.End}张" +
                             $"\n已选择 {_selections.Count} 张";
         
         ConfirmButton.SetStateToInactiveFrom(!cell.Bound.Contains(_selections.Count));
@@ -98,7 +98,7 @@ public class PickPanel : Panel
 
     private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)
     {
-        List<SkillEntryDescriptor> descriptors = _selections.Map(v => v.Get<SkillEntryDescriptor>()).ToList();
-        RunManager.Instance.Environment.ConfirmSelectionsProcedure(descriptors);
+        List<SkillReference> skillReferences = _selections.Map(v => v.Get<SkillReference>()).ToList();
+        RunManager.Instance.Environment.ConfirmSelectionsProcedure(skillReferences);
     }
 }

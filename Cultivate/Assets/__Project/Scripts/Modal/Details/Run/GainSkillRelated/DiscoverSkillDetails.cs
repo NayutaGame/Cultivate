@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 public class DiscoverSkillDetails : RunClosureDetails
 {
-    public List<SkillEntryDescriptor> Skills;
-    public SkillEntryCollectionDescriptor Descriptor;
+    public List<SkillReference> Skills;
+    public List<SkillEntryQuery> DrawStrategies;
     public JingJie PreferredJingJie;
 
     public int? MimicIndex;
 
-    public DiscoverSkillDetails(SkillEntryCollectionDescriptor descriptor, JingJie preferredJingJie)
+    public DiscoverSkillDetails(List<SkillEntryQuery> drawStrategies, JingJie preferredJingJie)
     {
         Skills = new();
-        Descriptor = descriptor;
+        DrawStrategies = drawStrategies;
         PreferredJingJie = preferredJingJie;
     }
 }

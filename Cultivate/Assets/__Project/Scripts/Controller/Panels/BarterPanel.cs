@@ -48,7 +48,8 @@ public class BarterPanel : Panel
 
     private void RefreshRefreshItemsButton()
     {
-        BarterCell barterCell = _address.Get<BarterCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        BarterCell barterCell = cellAdapter.AsCell() as BarterCell;
         if (!barterCell.RefreshItemsIsAllowed())
         {
             RefreshItemsButton.gameObject.SetActive(false);
@@ -62,7 +63,8 @@ public class BarterPanel : Panel
 
     private void RefreshItems(InteractBehaviour ib, PointerEventData d)
     {
-        BarterCell barterCell = _address.Get<BarterCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        BarterCell barterCell = cellAdapter.AsCell() as BarterCell;
         barterCell.RefreshItems();
         
         ListView.Sync();

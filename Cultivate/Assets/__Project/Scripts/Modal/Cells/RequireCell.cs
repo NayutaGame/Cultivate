@@ -21,35 +21,35 @@ public class RequireCell : Cell
     private RequireCell(
         string titleText,
         Func<ListModel<RequirementSlot>, string> getDetailedText,
-        RunSkillDescriptorListModel descriptor,
+        List<RunSkillQuery> queries,
         Func<RequireCell, Cell> submitOperation)
     {
         _titleText = titleText;
         _getDetailedText = getDetailedText;
-        _requirementSlotList = RequirementSlotListFromRunSkillDescriptorListModel(descriptor);
+        _requirementSlotList = RequirementSlotListFromQueries(queries);
         _submitOperation = submitOperation;
     }
 
     public static RequireCell FromLiteral(
         string titleText = null,
         Func<ListModel<RequirementSlot>, string> getDetailedText = null,
-        RunSkillDescriptorListModel descriptor = null,
+        List<RunSkillQuery> queries = null,
         Func<RequireCell, Cell> submitOperation = null)
-        => new(titleText ?? "选择", getDetailedText ?? (list => "请选择卡"), descriptor ?? RunSkillDescriptorListModel.Default(), submitOperation);
+        => new(titleText ?? "选择", getDetailedText ?? (list => "请选择卡"), queries ?? RunSkillQuery.AnySkill().Stack(1), submitOperation);
     
     public static RequireCell FromConstantDetailedText(
         string titleText = null,
         string detailedText = null,
-        RunSkillDescriptorListModel descriptor = null,
+        List<RunSkillQuery> queries = null,
         Func<RequireCell, Cell> submitOperation = null)
-        => new(titleText ?? "选择", list => detailedText ?? "请选择卡", descriptor ?? RunSkillDescriptorListModel.Default(), submitOperation);
+        => new(titleText ?? "选择", list => detailedText ?? "请选择卡", queries ?? RunSkillQuery.AnySkill().Stack(1), submitOperation);
 
     public static RequireCell GetTemplate()
     {
         RequireCell template = FromConstantDetailedText(
             titleText:          "选择",
             detailedText:       "请选择一张牌",
-            descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
+            queries:            RunSkillQuery.AnySkill().Stack(1));
         
         DialogCell win = new(
             titleText: "成功",
@@ -78,7 +78,7 @@ public class RequireCell : Cell
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"天机阁",
             detailedText:       $"选择1张牌，复制1次",
-            descriptor:         RunSkillDescriptorListModel.FromCount(1));
+            queries:            RunSkillQuery.AnySkill().Stack(1));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -106,13 +106,11 @@ public class RequireCell : Cell
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         JingJie nextJingJie = currJingJie + 1;
-
-        RunSkillDescriptor singleDescriptor = RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie);
         
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"百草堂",
             detailedText:       $"选择0~2张不高于{currJingJie.GetName()}牌，提升到{nextJingJie.GetName()}",
-            descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(singleDescriptor, 2));
+            queries:            RunSkillQuery.FromJingJieBound(JingJie.LianQi, currJingJie).Stack(2));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -134,15 +132,11 @@ public class RequireCell : Cell
     public static RequireCell FromTianJieShu(int ladder, Cell nextCell)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-
-        RunSkillDescriptorListModel descriptorList = RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(
-                RunSkillDescriptor.FromJingJieBoundAndHasWuXing(JingJie.LianQi, JingJie.HuaShen + 1), 
-                5);
             
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"天界树",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。新的牌和原来的牌的五行有关。",
-            descriptor:         descriptorList);
+            queries:            RunSkillQuery.FromJingJieBoundAndHasWuXing(JingJie.LianQi, JingJie.HuaShen).Stack(5));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -158,16 +152,10 @@ public class RequireCell : Cell
                 JingJie targetJingJie = slot.Skill.GetJingJie();
                 
                 GainSkillBuilder b = new();
-                SkillEntryCollectionDescriptor descriptor = new(
+                b.Draw(SkillEntryQuery.FromWuXingBaseJingJieBound(
                     wuXing: targetWuXing,
-                    jingJie: targetJingJie,
-                    count: 1,
-                    consume: true);
-                
-                b.Draw(descriptor);
-                SkillEntry newSkill = b.DrawnSkillEntries[0];
-                
-                slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
+                    baseJingJieBound: new(JingJie.LianQi, targetJingJie)), targetJingJie, consume: true);
+                slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
             });
                         
             cardPickerCell.WithdrawAll();
@@ -180,15 +168,11 @@ public class RequireCell : Cell
     public static RequireCell FromZhanDuanChenYuan(int ladder, Cell nextCell)
     {
         JingJie currJingJie = JingJie.FanXu;
-
-        RunSkillDescriptorListModel descriptorList = RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(
-                RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, JingJie.FanXu + 1), 
-                5);
             
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"斩断尘缘",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。无法再遇到被选择的牌。",
-            descriptor:         descriptorList);
+            queries:            RunSkillQuery.AnySkill().Stack(5));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -209,15 +193,9 @@ public class RequireCell : Cell
                 JingJie targetJingJie = slot.Skill.GetJingJie();
                 
                 GainSkillBuilder b = new();
-                SkillEntryCollectionDescriptor descriptor = new(
-                    jingJie: targetJingJie,
-                    count: 1,
-                    consume: true);
-                
-                b.Draw(descriptor);
-                SkillEntry newSkill = b.DrawnSkillEntries[0];
-                
-                slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
+                SkillEntryQuery drawStrategy = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, targetJingJie));
+                b.Draw(drawStrategy, targetJingJie, consume: true);
+                slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
             });
                         
             cardPickerCell.WithdrawAll();
@@ -256,12 +234,12 @@ public class RequireCell : Cell
         _requirementSlotList = null;
     }
     
-    private static ListModel<RequirementSlot> RequirementSlotListFromRunSkillDescriptorListModel(RunSkillDescriptorListModel descriptors)
+    private static ListModel<RequirementSlot> RequirementSlotListFromQueries(List<RunSkillQuery> queries)
     {
         ListModel<RequirementSlot> requirementSlotList = new();
-        for (int i = 0; i < descriptors.Count(); i++)
+        for (int i = 0; i < queries.Count; i++)
         {
-            requirementSlotList.Add(new(i, descriptors[i]));
+            requirementSlotList.Add(new(i, queries[i]));
         }
         return requirementSlotList;
     }

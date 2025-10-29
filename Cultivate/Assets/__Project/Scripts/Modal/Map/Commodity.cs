@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Commodity : Addressable
 {
-    public SkillEntryDescriptor Skill;
+    public SkillReference Skill;
     public int Price;
     public float Discount;
     private Action<Commodity> PayWithGoldFunc;
@@ -21,7 +21,7 @@ public class Commodity : Addressable
     };
     public object Get(string s) => Accessor[s](this);
     public Commodity(
-        SkillEntryDescriptor skill,
+        SkillReference skill,
         int price,
         Action<Commodity> payWithGoldFunc,
         Action<Commodity> payWithHealthFunc,

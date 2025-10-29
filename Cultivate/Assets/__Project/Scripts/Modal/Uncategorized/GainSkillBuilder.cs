@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using System.Linq;
 using CLLibrary;
 
 public class GainSkillBuilder
@@ -8,124 +7,101 @@ public class GainSkillBuilder
     private RunEnvironment _env;
     private SkillPool _skillPool;
     private MutatorPool _mutatorPool;
-    private List<SkillEntry> _drawnSkillEntries;
-    public List<SkillEntry> DrawnSkillEntries => _drawnSkillEntries;
-    private List<RunSkill> _createdSkills;
-    public List<RunSkill> CreatedSkills => _createdSkills;
-    private List<IDeckIndex> _preferredDeckIndices;
-    public List<IDeckIndex> PreferredDeckIndices => _preferredDeckIndices;
+
+    private List<GainingSkill> _gainingSkills;
+    public List<GainingSkill> GainingSkills => _gainingSkills;
+
+    private List<SkillReference> _drawnSkills;
+    public List<SkillReference> DrawnSkills => _drawnSkills;
     
     public GainSkillBuilder()
     {
         _env = RunManager.Instance.Environment;
         _skillPool = _env.SkillPool;
         _mutatorPool = _env.MutatorPool;
-        _drawnSkillEntries = new();
-        _createdSkills = new();
-        _preferredDeckIndices = new();
+
+        _gainingSkills = new();
+
+        _drawnSkills = new();
     }
 
-    public void Pick(string skillName)
-        => Pick(Encyclopedia.SkillCategory.FromName(skillName));
-    public void Pick(SkillEntry skillEntry)
+    public void Pick(SkillReference skillReference, IDeckIndex preferredDeckIndex = null)
     {
-        _drawnSkillEntries.Add(skillEntry);
+        _gainingSkills.Add(new(skillReference.GetEntry(), skillReference.GetJingJie(), preferredDeckIndex));
     }
 
-    public void Draw(SkillEntryDescriptor descriptor)
+    public void Draw(SkillEntryQuery drawStrategy, JingJie jingJie, IDeckIndex deckIndex = null, bool consume = true)
     {
-        _skillPool.TryPopItem(out SkillEntry skillEntry, descriptor.Contains);
+        _skillPool.TryPopItem(out SkillEntry skillEntry, drawStrategy.Matches);
         _skillPool.Shuffle();
         skillEntry ??= Encyclopedia.SkillCategory.Default();
-        _drawnSkillEntries.Add(skillEntry);
+        _gainingSkills.Add(new(skillEntry, jingJie, deckIndex));
+        
+        if (!consume && skillEntry != Encyclopedia.SkillCategory.Default())
+            _skillPool.Populate(skillEntry);
     }
 
-    public void Draw(SkillEntryCollectionDescriptor d)
+    public void Draw(List<SkillEntryQuery> drawStrategies, JingJie jingJie, bool filterEmpty = true, bool distinct = true, bool consume = true)
     {
         List<SkillEntry> toRet = new();
         
-        for (int i = 0; i < d.Count; i++)
+        for (int i = 0; i < drawStrategies.Count; i++)
         {
+            SkillEntryQuery drawStrategy = drawStrategies[i];
+            
             _skillPool.TryPopItem(out SkillEntry item, s =>
             {
-                if (!d.Pred(s))
+                if (!drawStrategy.Matches(s))
                     return false;
 
-                if (d.Distinct && toRet.Contains(s))
+                if (distinct && toRet.Contains(s))
                     return false;
 
                 return true;
             });
 
-            item ??= Encyclopedia.SkillCategory.Default();
-            toRet.Add(item);
+            if (!filterEmpty || item != null)
+                toRet.Add(item ?? Encyclopedia.SkillCategory.Default());
         }
 
-        if (!d.Consume)
+        foreach (SkillEntry skillEntry in toRet)
+            _gainingSkills.Add(new(skillEntry, jingJie, new NextHandDeckIndexDefinition()));
+
+        if (!consume)
             _skillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.Default()));
 
         _skillPool.Shuffle();
-        
-        _drawnSkillEntries.AddRange(toRet);
     }
 
-    public void DrawMutator(JingJie jingJie)
+    public void DrawMutator(JingJie jingJie, IDeckIndex deckIndex = null)
     {
         bool success = _mutatorPool.Draw(out SkillEntry skillEntry, jingJie);
         if (success)
-            _drawnSkillEntries.Add(skillEntry);
+            _gainingSkills.Add(new(skillEntry, skillEntry.LowestJingJie, deckIndex));
     }
-    
-    public void Create(JingJie preferredJingJie = null)
+
+    public void Execute()
     {
-        int start = _createdSkills.Count;
-        int count = _drawnSkillEntries.Count - _createdSkills.Count;
-        for (int i = start; i < start + count; i++)
+        for (int i = 0; i < _gainingSkills.Count; i++)
         {
-            _createdSkills.Add(RunSkill.FromEntryJingJie(_drawnSkillEntries[i], preferredJingJie ?? JingJie.LianQi));
-        }
-    }
-
-    public void SingleCreate(JingJie preferredJingJie = null)
-    {
-        int start = _createdSkills.Count;
-        _createdSkills.Add(RunSkill.FromEntryJingJie(_drawnSkillEntries[start], preferredJingJie ?? JingJie.LianQi));
-    }
-
-    public void RecordDeckIndex(IDeckIndex deckIndex)
-    {
-        _preferredDeckIndices.Add(deckIndex);
-    }
-
-    public void Add()
-    {
-        for (int i = 0; i < _createdSkills.Count; i++)
-        {
-            DeckIndex deckIndex;
-            if (i < _preferredDeckIndices.Count)
-            {
-                deckIndex = _preferredDeckIndices[i].Reify();
-                _preferredDeckIndices[i] = deckIndex;
-            }
-            else
-            {
-                deckIndex = new NextHandDeckIndexDefinition().Reify();
-                _preferredDeckIndices.Add(deckIndex);
-            }
+            GainingSkill gainingSkill = _gainingSkills[i];
+            
+            gainingSkill.ReifyDeckIndex();
+            DeckIndex deckIndex = gainingSkill.GetDeckIndex().Reify();
 
             if (deckIndex.Region == SkillRegion.Field)
             {
-                _env.Home.GetSlot(deckIndex.Index).Skill = _createdSkills[i];
+                _env.Home.GetSlot(deckIndex.Index).Skill = RunSkill.FromGainingSkill(gainingSkill);
                 continue;
             }
 
             if (deckIndex.Index < _env.Hand.Count())
             {
-                _env.Hand.Replace(deckIndex.Index, _createdSkills[i]);
+                _env.Hand.Replace(deckIndex.Index, RunSkill.FromGainingSkill(gainingSkill));
                 continue;
             }
             
-            _env.Hand.Add(_createdSkills[i]);
+            _env.Hand.Add(RunSkill.FromGainingSkill(gainingSkill));
         }
     }
 

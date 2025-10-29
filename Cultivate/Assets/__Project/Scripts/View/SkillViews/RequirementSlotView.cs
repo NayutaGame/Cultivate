@@ -41,7 +41,7 @@ public class RequirementSlotView : SlotView
 
     private void InvokeShowAnnotation()
     {
-        Predicate<RunSkill> pred = AnnotationProvider.Get<RunSkillDescriptor>().Contains;
+        Predicate<RunSkill> pred = AnnotationProvider.Get<RunSkillQuery>().Matches;
         CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Invoke(pred);
     }
 
@@ -56,7 +56,7 @@ public class RequirementSlotView : SlotView
     public void MarkInvalidDrop(RunSkill skill)
     {
         RequirementSlot slot = Get<RequirementSlot>();
-        if (slot.Descriptor().Contains(skill))
+        if (slot.GetQuery().Matches(skill))
             return;
         
         _handle1?.Kill();
@@ -95,7 +95,7 @@ public class RequirementSlotView : SlotView
 
     private void InvokeHighlightQualifiers(InteractBehaviour ib, PointerEventData d)
     {
-        Predicate<RunSkill> pred = ib.Get<RunSkillDescriptor>().Contains;
+        Predicate<RunSkill> pred = ib.Get<RunSkillQuery>().Matches;
         CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Invoke(pred);
     }
     

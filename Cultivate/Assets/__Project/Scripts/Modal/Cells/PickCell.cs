@@ -12,16 +12,16 @@ public class PickCell : Cell
     private string _detailedText;
     public string GetDetailedText() => _detailedText;
 
-    private ListModel<SkillEntryDescriptor> _inventory;
-    private ListModel<SkillEntryDescriptor> GetInventory() => _inventory;
+    private ListModel<SkillReference> _inventory;
+    private ListModel<SkillReference> GetInventory() => _inventory;
 
     private Bound _bound;
     public Bound Bound => _bound;
     public bool HasSpace(int occupied)
-        => _bound.End - 1 > occupied;
+        => _bound.End > occupied;
 
-    private Func<List<SkillEntryDescriptor>, Cell> _confirmOperation;
-    public PickCell SetConfirmOperation(Func<List<SkillEntryDescriptor>, Cell> confirmOperation)
+    private Func<List<SkillReference>, Cell> _confirmOperation;
+    public PickCell SetConfirmOperation(Func<List<SkillReference>, Cell> confirmOperation)
     {
         _confirmOperation = confirmOperation;
         return this;
@@ -37,19 +37,19 @@ public class PickCell : Cell
         string titleText = null,
         string detailedText = null,
         Bound? bound = null,
-        Func<List<SkillEntryDescriptor>, Cell> confirmOperation = null)
+        Func<List<SkillReference>, Cell> confirmOperation = null)
     {
         _titleText = titleText ?? "选牌";
         _detailedText = detailedText ?? "请选择卡";
         _bound = bound ?? new Bound(1);
         _confirmOperation = confirmOperation;
         
-        _inventory = new ListModel<SkillEntryDescriptor>();
+        _inventory = new ListModel<SkillReference>();
     }
 
-    public void PopulateInventory(List<SkillEntryDescriptor> skills)
+    public void PopulateInventory(List<SkillReference> skills)
     {
-        foreach(SkillEntryDescriptor skill in skills)
+        foreach(SkillReference skill in skills)
             _inventory.Add(skill);
     }
 
@@ -70,27 +70,21 @@ public class PickCell : Cell
         PickCell cell = new(
             titleText: $"剑池",
             detailedText: $"检索1张{currJingJie.GetName()}攻击牌",
-            bound: new Bound(0, 2)
+            bound: new(0, 1)
         );
         
-        SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
-            tagComposite: TagCategory.Attack,
-            count: 10,
-            consume: false);
+        List<SkillEntryQuery> drawStrategies = SkillEntryQuery.FromBaseJingJieBoundTag(
+            baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+            tagComposite: TagCategory.Attack).Stack(10);
         
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
-            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
-            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
-            .ToList();
-        cell.PopulateInventory(list);
+        b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+        cell.PopulateInventory(b.DrawnSkills);
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
-            skills.Do(item => b.Pick(item.Entry));
-            skills.Do(item => b.SingleCreate(item.JingJie));
-            b.Add();
+            skills.Do(item => b.Pick(item.Clone()));
+            b.Execute();
             b.Invoke();
             return null;
         });
@@ -105,27 +99,21 @@ public class PickCell : Cell
         PickCell cell = new(
             titleText: $"风雨楼",
             detailedText: $"检索1张{currJingJie.GetName()}防御牌",
-            bound: new Bound(0, 2)
+            bound: new(0, 1)
         );
         
-        SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
-            tagComposite: TagCategory.Defend,
-            count: 10,
-            consume: false);
+        List<SkillEntryQuery> drawStrategies = SkillEntryQuery.FromBaseJingJieBoundTag(
+            baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+            tagComposite: TagCategory.Defend).Stack(10);
         
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
-            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
-            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
-            .ToList();
-        cell.PopulateInventory(list);
+        b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+        cell.PopulateInventory(b.DrawnSkills);
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
-            skills.Do(item => b.Pick(item.Entry));
-            skills.Do(item => b.SingleCreate(item.JingJie));
-            b.Add();
+            skills.Do(item => b.Pick(item.Clone()));
+            b.Execute();
             b.Invoke();
             return null;
         });
@@ -140,27 +128,21 @@ public class PickCell : Cell
         PickCell cell = new(
             titleText: $"星宫",
             detailedText: $"检索1张{currJingJie.GetName()}灵气牌",
-            bound: new Bound(0, 2)
+            bound: new(0, 1)
         );
         
-        SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
-            tagComposite: TagCategory.Mana,
-            count: 10,
-            consume: false);
+        List<SkillEntryQuery> drawStrategies = SkillEntryQuery.FromBaseJingJieBoundTag(
+            baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+            tagComposite: TagCategory.Mana).Stack(10);
         
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
-            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
-            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
-            .ToList();
-        cell.PopulateInventory(list);
+        b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+        cell.PopulateInventory(b.DrawnSkills);
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
-            skills.Do(item => b.Pick(item.Entry));
-            skills.Do(item => b.SingleCreate(item.JingJie));
-            b.Add();
+            skills.Do(item => b.Pick(item.Clone()));
+            b.Execute();
             b.Invoke();
             return null;
         });
@@ -171,32 +153,25 @@ public class PickCell : Cell
     public static PickCell FromBiYeJi(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-        Bound jingJieBound = new Bound(JingJie.LianQi,
-            (currJingJie - 2).ClampLower(JingJie.LianQi) + 1);
+        Bound jingJieBound = new(JingJie.LianQi,
+            (currJingJie - 2).ClampLower(JingJie.LianQi));
 
         PickCell cell = new(
             titleText: $"毕业季",
             detailedText: $"请选择至多两张牌",
-            bound: new Bound(0, 3)
+            bound: new(0, 2)
         );
         
-        SkillEntryCollectionDescriptor descriptor = new(pred: e => jingJieBound.Contains(e.LowestJingJie),
-            count: 10,
-            consume: false);
+        List<SkillEntryQuery> drawStrategies = SkillEntryQuery.FromBaseJingJieBound(jingJieBound).Stack(10);
         
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        List<SkillEntryDescriptor> list = b.DrawnSkillEntries
-            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
-            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, e.LowestJingJie))
-            .ToList();
-        cell.PopulateInventory(list);
+        b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+        cell.PopulateInventory(b.DrawnSkills);
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
-            skills.Do(item => b.Pick(item.Entry));
-            skills.Do(item => b.SingleCreate(item.JingJie));
-            b.Add();
+            skills.Do(item => b.Pick(item.Clone()));
+            b.Execute();
             b.Invoke();
             return null;
         });

@@ -1,10 +1,10 @@
 
 public class EquipGuide : Guide
 {
-    private SkillEntryDescriptor _from;
+    private RunSkillQuery _from;
     private DeckIndex _to;
 
-    public EquipGuide(string comment, SkillEntryDescriptor from, DeckIndex to) : base(comment)
+    public EquipGuide(string comment, RunSkillQuery from, DeckIndex to) : base(comment)
     {
         _from = from;
         _to = to;
@@ -20,7 +20,7 @@ public class EquipGuide : Guide
     {
         result = new DeckIndex[2];
         result[1] = _to;
-        return RunManager.Instance.Environment.DeckIndexFromDescriptor(out result[0], _from, omit: new[] { _to });
+        return RunManager.Instance.Environment.DeckIndexFromQuery(out result[0], _from, omit: new[] { _to });
     }
 
     public bool CheckComplete(DeckChangedSignal deckChangedSignal)
@@ -28,6 +28,6 @@ public class EquipGuide : Guide
         RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(_to);
         if (skill == null)
             return false;
-        return _from.Contains(skill);
+        return _from.Matches(skill);
     }
 }

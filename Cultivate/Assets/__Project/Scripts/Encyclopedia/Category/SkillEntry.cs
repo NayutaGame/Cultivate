@@ -94,7 +94,7 @@ public class SkillEntry : Entry, AnnotatableSkill
     public WuXing WuXing => _wuXing;
     public bool JingJieContains(int jingJie) => _jingJieBound.Contains(jingJie);
     public JingJie LowestJingJie => _jingJieBound.Start;
-    public JingJie HighestJingJie => _jingJieBound.End - 1;
+    public JingJie HighestJingJie => _jingJieBound.End;
     public StageClosure[] Closures => _closures;
     public MergeRule OverridingMergeRule => _overridingMergeRule;
     public bool HasStartStageCast() => _hasStartStageCast;

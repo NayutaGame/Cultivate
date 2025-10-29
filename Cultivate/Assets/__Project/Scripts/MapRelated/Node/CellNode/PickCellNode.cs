@@ -21,10 +21,10 @@ public class PickCellNode : CellNode
     private InputPort<string> DetailedText = new(new("请选择卡"));
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<Bound> Bound = new(new Bound(0, 2));
+    private InputPort<Bound> Bound = new(new(1, 1));
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<SkillEntryCollectionDescriptor> DrawStrategy = new(new SkillEntryCollectionDescriptor());
+    private InputPort<List<SkillEntryQuery>> DrawStrategy = new(null);
 
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> ConfirmNext = new(self => self as ILogicNode);
@@ -66,21 +66,11 @@ public class PickCellNode : CellNode
             bound: bound
         );
         
-        var inventory = GenerateInventoryFromDescriptor(drawStrategy);
-        pickCell.PopulateInventory(inventory);
+        GainSkillBuilder b = new();
+        b.Draw(drawStrategy, RunManager.Instance.Environment.JingJie, distinct: true, consume: false);
+        pickCell.PopulateInventory(b.DrawnSkills);
         
         return pickCell;
-    }
-    
-    private List<SkillEntryDescriptor> GenerateInventoryFromDescriptor(SkillEntryCollectionDescriptor drawStrategy)
-    {
-        GainSkillBuilder b = new();
-        b.Draw(drawStrategy);
-        
-        return b.DrawnSkillEntries
-            .FilterObj(e => e != Encyclopedia.SkillCategory.Default())    
-            .Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie))
-            .ToList();
     }
 
     public override void ReceiveSignal(Signal signal)
@@ -94,10 +84,9 @@ public class PickCellNode : CellNode
                 GainSkillBuilder b = new();
                 selectedSkills.Do(item =>
                 {
-                    b.Pick(item.Entry);
-                    b.SingleCreate(item.JingJie);
+                    b.Pick(item.Clone());
                 });
-                b.Add();
+                b.Execute();
                 b.Invoke();
             }
         }

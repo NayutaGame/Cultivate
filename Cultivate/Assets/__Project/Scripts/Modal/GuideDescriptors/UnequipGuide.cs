@@ -1,9 +1,9 @@
 
 public class UnequipGuide : Guide
 {
-    private SkillEntryDescriptor _from;
+    private RunSkillQuery _from;
 
-    public UnequipGuide(string comment, SkillEntryDescriptor from) : base(comment)
+    public UnequipGuide(string comment, RunSkillQuery from) : base(comment)
     {
         _from = from;
     }
@@ -15,5 +15,5 @@ public class UnequipGuide : Guide
     }
 
     public bool CheckComplete(out DeckIndex from)
-        => !RunManager.Instance.Environment.DeckIndexFromDescriptor(out from, _from, excludingHand: true);
+        => !RunManager.Instance.Environment.DeckIndexFromQuery(out from, _from, excludingHand: true);
 }

@@ -31,6 +31,7 @@ using CLLibrary;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 [NodeWidth(400)]
 [CreateNodeMenu("Cell/Require Cell", -9, true)]
@@ -49,7 +50,7 @@ public class RequireCellNode : CellNode
     private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.Consume);
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<RunSkillDescriptorListModel> DescriptorList = new();
+    private InputPort<List<RunSkillQuery>> Queries = new();
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Success = new(self => self as ILogicNode);
@@ -87,14 +88,14 @@ public class RequireCellNode : CellNode
         Dictionary<RequireCellBehaviorType, string> defaultDetailedText;
         
         var behaviorType = BehaviorType.Value;
-        var descriptorList = DescriptorList.Value;
+        var descriptorList = Queries.Value;
 
-        Dictionary<RequireCellBehaviorType, RunSkillDescriptorListModel> defaultRequirements;
+        Dictionary<RequireCellBehaviorType, List<RunSkillQuery>> defaultRequirements;
         
         var requireCell = RequireCell.FromConstantDetailedText(
             titleText: title,
             detailedText: detailedText,
-            descriptor: descriptorList
+            queries: descriptorList
         );
         
         return requireCell;
@@ -134,25 +135,21 @@ public class RequireCellNode : CellNode
 
                     RunManager.Instance.Environment.SkillPool.Depopulate(pred: e => e == skillToDepopulate.GetEntry());
                 });
-            
-                requireCell.RequirementSlotList.Do(slot =>
+
+                for (int i = 0; i < requireCell.RequirementSlotList.Count(); i++)
                 {
+                    var slot = requireCell.RequirementSlotList[i];
+                    
                     if (slot.Skill == null)
-                        return;
+                        continue;
                 
                     JingJie targetJingJie = slot.Skill.GetJingJie();
                 
                     GainSkillBuilder b = new();
-                    SkillEntryCollectionDescriptor descriptor = new(
-                        jingJie: targetJingJie,
-                        count: 1,
-                        consume: true);
-                
-                    b.Draw(descriptor);
-                    SkillEntry newSkill = b.DrawnSkillEntries[0];
-                
-                    slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
-                });
+                    SkillEntryQuery drawStrategy = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, targetJingJie));
+                    b.Draw(drawStrategy, targetJingJie);
+                    slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
+                }
                         
                 requireCell.WithdrawAll();
 
@@ -222,16 +219,11 @@ public class RequireCellNode : CellNode
                     JingJie targetJingJie = slot.Skill.GetJingJie();
                 
                     GainSkillBuilder b = new();
-                    SkillEntryCollectionDescriptor descriptor = new(
+                    SkillEntryQuery drawStrategy = SkillEntryQuery.FromWuXingBaseJingJieBound(
                         wuXing: targetWuXing,
-                        jingJie: targetJingJie,
-                        count: 1,
-                        consume: true);
-                
-                    b.Draw(descriptor);
-                    SkillEntry newSkill = b.DrawnSkillEntries[0];
-                
-                    slot.Skill = RunSkill.FromEntryJingJie(newSkill, targetJingJie);
+                        baseJingJieBound: new(JingJie.LianQi, targetJingJie));
+                    b.Draw(drawStrategy, jingJie: targetJingJie, consume: true);
+                    slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
                 });
                         
                 requireCell.WithdrawAll();

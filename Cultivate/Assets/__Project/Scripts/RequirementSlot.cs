@@ -6,22 +6,22 @@ using UnityEngine;
 public class RequirementSlot : AnnotatableSkill
 {
     private int _index;
-    private RunSkillDescriptor _descriptor;
+    private RunSkillQuery _query;
     private RunSkill _skill;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         // { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
         { "Skill",                      thisObject => ((RequirementSlot)thisObject)._skill },
-        { "Descriptor",                 thisObject => ((RequirementSlot)thisObject)._descriptor },
+        { "Descriptor",                 thisObject => ((RequirementSlot)thisObject)._query },
         { "TagComposite",               thisObject => ((AnnotatableSkill)thisObject).GetTagComposite() },
         { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
-    public RequirementSlot(int index, RunSkillDescriptor descriptor)
+    public RequirementSlot(int index, RunSkillQuery query)
     {
         _index = index;
-        _descriptor = descriptor;
+        _query = query;
         _skill = null;
     }
 
@@ -31,8 +31,8 @@ public class RequirementSlot : AnnotatableSkill
         set => _skill = value?.Clone();
     }
 
-    public RunSkillDescriptor Descriptor()
-        => _descriptor;
+    public RunSkillQuery GetQuery()
+        => _query;
 
     public bool IsOccupied()
         => _skill != null;

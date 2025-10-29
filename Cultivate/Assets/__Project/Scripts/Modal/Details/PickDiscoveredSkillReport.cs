@@ -6,7 +6,7 @@ using UnityEngine;
 public class PickDiscoveredSkillReport : TestReport
 {
     [SerializeReference]
-    public RunSkill PickedSkill;
+    public SkillReference PickedSkill;
 
     public PickDiscoveredSkillReport()
     {
@@ -32,6 +32,6 @@ public class PickDiscoveredSkillReport : TestReport
 
     private void WritePickDiscoveredSkill(PickDiscoveredSkillDetails d)
     {
-        PickedSkill = d.CreatedSkill;
+        PickedSkill = d.Skill.Clone();
     }
 }

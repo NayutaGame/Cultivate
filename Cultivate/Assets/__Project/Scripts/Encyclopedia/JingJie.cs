@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CLLibrary;
 using UnityEngine;
 
 [Serializable]
@@ -75,21 +76,23 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
         }
     }
 
-    public static CLLibrary.Bound LianQiOnly => new(0, 1);
-    public static CLLibrary.Bound LianQi2HuaShen => new(0, 5);
-    public static CLLibrary.Bound LianQi2FanXu => new(0, 6);
-    public static CLLibrary.Bound ZhuJiOnly => new(1, 2);
-    public static CLLibrary.Bound ZhuJi2HuaShen => new(1, 5);
-    public static CLLibrary.Bound ZhuJi2FanXu => new(1, 6);
-    public static CLLibrary.Bound JinDanOnly => new(2, 3);
-    public static CLLibrary.Bound JinDan2HuaShen => new(2, 5);
-    public static CLLibrary.Bound JinDan2FanXu => new(2, 6);
-    public static CLLibrary.Bound YuanYingOnly => new(3, 4);
-    public static CLLibrary.Bound YuanYing2HuaShen => new(3, 5);
-    public static CLLibrary.Bound YuanYing2FanXu => new(3, 6);
-    public static CLLibrary.Bound HuaShenOnly => new(4, 5);
-    public static CLLibrary.Bound HuaShen2FanXu => new(4, 6);
-    public static CLLibrary.Bound FanXuOnly => new(5, 6);
+    public static Bound LianQiOnly => new(0, 0);
+    public static Bound LianQi2ZhuJi => new(0, 1);
+    public static Bound LianQi2HuaShen => new(0, 4);
+    public static Bound LianQi2FanXu => new(0, 5);
+    public static Bound ZhuJiOnly => new(1, 1);
+    public static Bound ZhuJi2HuaShen => new(1, 4);
+    public static Bound ZhuJi2FanXu => new(1, 5);
+    public static Bound JinDanOnly => new(2, 2);
+    public static Bound JinDan2YuanYing => new(2, 3);
+    public static Bound JinDan2HuaShen => new(2, 4);
+    public static Bound JinDan2FanXu => new(2, 5);
+    public static Bound YuanYingOnly => new(3, 3);
+    public static Bound YuanYing2HuaShen => new(3, 4);
+    public static Bound YuanYing2FanXu => new(3, 5);
+    public static Bound HuaShenOnly => new(4, 4);
+    public static Bound HuaShen2FanXu => new(4, 5);
+    public static Bound FanXuOnly => new(5, 5);
     
     public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => Encyclopedia.JingJieCategory[index];

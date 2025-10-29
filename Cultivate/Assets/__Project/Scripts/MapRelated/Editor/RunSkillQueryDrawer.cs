@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomPropertyDrawer(typeof(RunSkillDescriptorListModel))]
-public class RunSkillDescriptorListModelDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(RunSkillQuery))]
+public class RunSkillQueryDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -13,9 +13,9 @@ public class RunSkillDescriptorListModelDrawer : PropertyDrawer
         
         EditorGUI.LabelField(labelRect, label);
         
-        // 由于RunSkillDescriptorListModel是引用类型，我们显示一个只读的文本
+        // 由于RunSkillQuery是引用类型，我们显示一个只读的文本
         EditorGUI.BeginDisabledGroup(true);
-        EditorGUI.TextArea(contentRect, "RunSkillDescriptorListModel (引用类型，无法直接编辑)");
+        EditorGUI.TextArea(contentRect, "RunSkillQuery (引用类型，无法直接编辑)");
         EditorGUI.EndDisabledGroup();
         
         EditorGUI.EndProperty();

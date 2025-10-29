@@ -11,7 +11,7 @@ namespace CLLibrary
         [SerializeField] public int Start;
         [SerializeField] public int End;
 
-        public Bound(int value) : this(value, value + 1) { }
+        public Bound(int value) : this(value, value) { }
 
         public Bound(int start, int end)
         {
@@ -19,14 +19,17 @@ namespace CLLibrary
             End = end;
         }
 
-        public bool Contains(int value)
-            => Start <= value && value < End;
+        private static Bound From(int start, int end)
+            => new(start, end);
 
-        public int Length => End - Start;
+        public bool Contains(int value)
+            => Start <= value && value <= End;
+
+        public int Length => End - Start + 1;
 
         public static implicit operator Bound(int i) => new(i);
 
         public override string ToString()
-            => $"[{Start}, {End})";
+            => $"[{Start}, {End}]";
     }
 }

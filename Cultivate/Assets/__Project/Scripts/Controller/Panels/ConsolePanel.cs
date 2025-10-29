@@ -271,12 +271,11 @@ public class ConsolePanel : Panel
 
     private void DrawSkill()
     {
-        SkillEntryDescriptor descriptor = SkillEntryDescriptor.FromJingJie(RunManager.Instance.Environment.JingJie);
+        SkillEntryQuery query = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie));
         
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        b.Create(descriptor.JingJie);
-        b.Add();
+        b.Draw(query, RunManager.Instance.Environment.JingJie);
+        b.Execute();
         b.Invoke();
         // RunManager.Instance.Environment.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(jingJie: RunManager.Instance.Environment.JingJie, count: 5));
     }
@@ -284,9 +283,8 @@ public class ConsolePanel : Panel
     private void Cheat()
     {
         GainSkillBuilder b = new();
-        b.Pick(Encyclopedia.SkillCategory.FromName("作弊"));
-        b.Create();
-        b.Add();
+        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("作弊")));
+        b.Execute();
         b.Invoke();
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));

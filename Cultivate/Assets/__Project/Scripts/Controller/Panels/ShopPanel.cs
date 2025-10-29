@@ -39,7 +39,8 @@ public class ShopPanel : Panel
 
     public override void Refresh()
     {
-        ShopCell pd = _address.Get<ShopCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        ShopCell pd = cellAdapter.AsCell() as ShopCell;
         TitleText.text = pd.GetTitle();
         ContentText.text = pd.GetContentText();
         Illustration.sprite = pd.GetSprite().Sprite;

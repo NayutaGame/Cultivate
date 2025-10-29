@@ -1,12 +1,13 @@
 
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class GachaCell : Cell
 {
-    private ListModel<SkillEntryDescriptor> _items;
-    public ListModel<SkillEntryDescriptor> GetItems() => _items;
-    public void SetItems(ListModel<SkillEntryDescriptor> items) => _items = items;
+    private ListModel<SkillReference> _items;
+    public ListModel<SkillReference> GetItems() => _items;
+    public void SetItems(ListModel<SkillReference> items) => _items = items;
 
     private int _price;
     public int GetPrice() => _price;
@@ -33,33 +34,19 @@ public class GachaCell : Cell
 
         _items = new();
 
-        SkillEntryCollectionDescriptor[] descriptors = new[]
-        {
-            new SkillEntryCollectionDescriptor(
-                pred: e => e.LowestJingJie <= JingJie.ZhuJi,
-                count: 7,
-                consume: false),
-            new(
-                pred: e => JingJie.JinDan <= e.LowestJingJie && e.LowestJingJie <= JingJie.YuanYing,
-                count: 2,
-                consume: false),
-            new(
-                pred: e => JingJie.HuaShen <= e.LowestJingJie,
-                count: 1,
-                consume: false),
-        };
-
         GainSkillBuilder b = new();
-        foreach(SkillEntryCollectionDescriptor descriptor in descriptors)
-            b.Draw(descriptor);
         
-        foreach(SkillEntry skillEntry in b.DrawnSkillEntries)
-            _items.Add(SkillEntryDescriptor.FromEntryJingJie(skillEntry, skillEntry.LowestJingJie));
+        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQi2ZhuJi).Stack(7), JingJie.LianQi);
+        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.JinDan2YuanYing).Stack(2), JingJie.JinDan);
+        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.HuaShenOnly), JingJie.HuaShen);
+        
+        foreach(SkillReference skillReference in b.DrawnSkills)
+            _items.Add(skillReference.Clone());
 
         _price = 0;
 
         foreach (var item in _items)
-            _price += (1 << item.JingJie);
+            _price += (1 << item.GetJingJie());
 
         _price = (int) (_price * _priceMultiplier / _items.Count());
     }
@@ -78,9 +65,9 @@ public class GachaCell : Cell
         RunManager.Instance.Environment.SetDGoldProcedure(-_price);
 
         int gachaIndex = RandomManager.Range(0, _items.Count());
-        SkillEntryDescriptor skillEntryDescriptor = _items.Get(gachaIndex) as SkillEntryDescriptor;
+        SkillReference skillReference = _items.Get(gachaIndex) as SkillReference;
 
-        GachaDetails details = new(skillEntryDescriptor, gachaIndex);
+        GachaDetails details = new(skillReference, gachaIndex);
         
         _items.RemoveAt(gachaIndex);
 

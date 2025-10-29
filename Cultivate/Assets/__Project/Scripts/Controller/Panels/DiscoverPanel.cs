@@ -53,9 +53,9 @@ public class DiscoverPanel : Panel
 
     private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
     {
-        SkillEntryDescriptor skill = ib.Get<SkillEntryDescriptor>();
+        SkillReference skillReference = ib.Get<SkillReference>();
         int pickedIndex = ListView.IndexFromView(ib.GetView() as SlotView).Value;
-        PickDiscoveredSkillDetails details = new(skill, pickedIndex);
+        PickDiscoveredSkillDetails details = new(skillReference, pickedIndex);
         PickDiscoveredSkillEvent.Invoke(details);
         CanvasManager.Instance.AnnotationManager.StopShowAnnotation();
     }

@@ -1,14 +1,14 @@
 
 public class GachaDetails : RunClosureDetails
 {
-    public SkillEntryDescriptor SkillEntryDescriptor;
+    public SkillReference Skill;
     public int GachaIndex;
 
     public DeckIndex DeckIndex;
     
-    public GachaDetails(SkillEntryDescriptor skillEntryDescriptor, int gachaIndex)
+    public GachaDetails(SkillReference skill, int gachaIndex)
     {
-        SkillEntryDescriptor = skillEntryDescriptor;
+        Skill = skill;
         GachaIndex = gachaIndex;
     }
 }

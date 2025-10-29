@@ -7,6 +7,31 @@ using UnityEngine.Assertions;
 
 public class RoomCategory : Category<RoomEntry>
 {
+    private static readonly Bound AllLadder = new(0, 13);
+    
+    private static readonly Bound LadderIsLianQi = new(0, 1);
+    private static readonly Bound LadderIsLianQiToZhuJi = new(0, 4);
+    private static readonly Bound LadderIsLianQiToJinDan = new(0, 7);
+    private static readonly Bound LadderIsLianQiToYuanYing = new(0, 10);
+    private static readonly Bound LadderIsLianQiToHuaShen = new(0, 13);
+    
+    private static readonly Bound LadderIsZhuJi = new(2, 4);
+    private static readonly Bound LadderIsZhuJiToJinDan = new(2, 7);
+    private static readonly Bound LadderIsZhuJiToYuanYing = new(2, 10);
+    private static readonly Bound LadderIsZhuJiToHuaShen = new(2, 13);
+    
+    private static readonly Bound LadderIsJinDan = new(5, 7);
+    private static readonly Bound LadderIsJinDanToYuanYing = new(5, 10);
+    private static readonly Bound LadderIsJinDanToHuaShen = new(5, 13);
+    
+    private static readonly Bound LadderIsYuanYing = new(8, 10);
+    private static readonly Bound LadderIsYuanYingToHuaShen = new(8, 13);
+    
+    private static readonly Bound LadderIsHuaShen = new(11, 13);
+    
+    private static readonly Bound AllDifficulty = new(0, 10);
+    private static readonly Bound DifficultyIsNotEasy = new(4, 10);
+    
     public RoomCategory()
     {
         AddRange(new List<RoomEntry>()
@@ -16,8 +41,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0001",
                 name:                               "不存在的事件",
                 description:                        "不存在的事件",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -30,8 +55,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0002",
                 name:                               "战斗",
                 description:                        "战斗",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -108,8 +133,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0003",
                 name:                               "出门",
                 description:                        "出门",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -125,11 +150,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("无常路引");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -142,11 +165,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大音希声");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -159,11 +180,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("天河引气录");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -176,11 +195,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("御虚诀");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -193,11 +210,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大椿功");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -210,11 +225,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("游龙遁");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -227,11 +240,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("归鸿十二步");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -244,11 +255,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大焚天秘乘");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -261,11 +270,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("须弥妙法");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -278,11 +285,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("锻体四则");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -310,8 +315,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0004",
                 name:                               "序章出门",
                 description:                        "出门",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -331,11 +336,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("无常路引");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -348,11 +351,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大音希声");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -365,11 +366,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("天河引气录");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -382,11 +381,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("御虚诀");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -399,11 +396,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大椿功");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -416,11 +411,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("游龙遁");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -433,11 +426,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("归鸿十二步");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -450,11 +441,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大焚天秘乘");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -467,11 +456,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("须弥妙法");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -484,11 +471,9 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("锻体四则");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(skillEntry));
-                                    SkillEntryCollectionDescriptor descriptor = new(jingJie: JingJie.LianQi, count: 2);
-                                    b.Draw(descriptor);
-                                    b.Create(JingJie.LianQi);
-                                    b.Add();
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+                                    b.Execute();
                                     b.Invoke();
                                     return null;
                                 })
@@ -516,8 +501,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0005",
                 name:                               "突破境界",
                 description:                        "突破境界",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -558,7 +543,7 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         DiscoverCell.FromLingYunFeng(room.Ladder + 3),
                         DiscoverCell.FromXiaoYaoHai(room.Ladder + 3),
-                        DiscoverCell.FromTaohuaGong(room.Ladder + 3),
+                        DiscoverCell.FromTaoHuaGong(room.Ladder + 3),
                         DiscoverCell.FromChangMingDian(room.Ladder + 3),
                         DiscoverCell.FromHuanYueLing(room.Ladder + 3),
                         PickCell.FromJianChi(room.Ladder),
@@ -602,8 +587,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0006",
                 name:                               "休息",
                 description:                        "休息",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -619,7 +604,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText:          "感悟",
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
-                        descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromJingJieBound(JingJie.LianQi, nextJingJie), 1));
+                        queries:            RunSkillQuery.FromJingJieBound(JingJie.LianQi, currJingJie).Stack(1));
                     
                     B.SetSubmitOperation(cardPickerCell =>
                     {
@@ -655,8 +640,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0007",
                 name:                               "胜利",
                 description:                        "胜利",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -681,8 +666,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_001",
                 name:                               "教学1",
                 description:                        "教学1",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -700,7 +685,7 @@ public class RoomCategory : Category<RoomEntry>
                                          "\n右边的10是对手最终血量" +
                                          "\n现在对手会以10血打败徐福"),
                         new EquipGuide("将卡牌置入战斗区",
-                            SkillEntryDescriptor.FromName("劈砍"), new DeckIndex(SkillRegion.Field, 0)),
+                            RunSkillQuery.FromName("劈砍"), new DeckIndex(SkillRegion.Field, 0)),
                         new ConfirmGuide("将劈砍置入后，左边血量大于右边。" +
                                          "\n表示战斗的最终结果是徐福以4血战胜对手"),
                         new ClickBattleGuide("徐福胜利后，便可以点击对决按钮，进入战斗界面" +
@@ -733,8 +718,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_002",
                 name:                               "教学2",
                 description:                        "教学2",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -749,7 +734,7 @@ public class RoomCategory : Category<RoomEntry>
                                          "\n现在徐福面临着下一个对手"),
                         new ConfirmGuide("冰弹的左上角的消耗标志，表示冰弹需要两点灵气。"),
                         new EquipGuide("来将吐纳置入",
-                            SkillEntryDescriptor.FromName("吐纳"), DeckIndex.FromField(0)),
+                            RunSkillQuery.FromName("吐纳"), DeckIndex.FromField(0)),
                         new ConfirmGuide("灵气不足时，显示的是红色的，变成白色是因为徐福此时灵气足够释放了"),
                         new ClickBattleGuide("请点击对决以查看结算",
                             new Vector2(965f, 913.5f)),
@@ -765,24 +750,18 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("吐纳"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("冰弹"));
-                    b.Create();
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(DeckIndex.FromField(1));
-                    b.Add();
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(Encyclopedia.SkillCategory.FromName("吐纳"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("冰弹"));
-                        b.Create();
-                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                        b.RecordDeckIndex(DeckIndex.FromField(1));
-                        b.Add();
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
+                        b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
                         return R;
@@ -799,8 +778,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_003",
                 name:                               "教学3",
                 description:                        "教学3",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -814,7 +793,7 @@ public class RoomCategory : Category<RoomEntry>
                         new ConfirmGuide("现在徐福和对方手牌一样，并且是徐福先手"),
                         new ConfirmGuide("没能胜利的原因是对方初始气血高于徐福。鼠标放在气血上可以查看战斗开始时的气血"),
                         new UnequipGuide("可以将冲撞卸下来",
-                            SkillEntryDescriptor.FromName("冲撞")),
+                            RunSkillQuery.FromName("冲撞")),
                         new ConfirmGuide("空白的位置相当于一张回复一点灵气。应急的时候可以使用"),
                         new ConfirmGuide("此时对方的恋花还是缺少一点灵气。对方需要额外等待一回合以聚集灵气"),
                         new ClickBattleGuide("请开始战斗",
@@ -831,24 +810,18 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("冲撞"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.Create();
-                    b.RecordDeckIndex(DeckIndex.FromField(0));
-                    b.RecordDeckIndex(DeckIndex.FromField(1));
-                    b.Add();
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(Encyclopedia.SkillCategory.FromName("冲撞"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                        b.Create();
-                        b.RecordDeckIndex(DeckIndex.FromField(0));
-                        b.RecordDeckIndex(DeckIndex.FromField(1));
-                        b.Add();
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                        b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
                         return R;
@@ -865,8 +838,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_004",
                 name:                               "教学4", // 同名同境界合成
                 description:                        "教学4",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -880,24 +853,24 @@ public class RoomCategory : Category<RoomEntry>
                     BattleCell A = new(enemyEntity);
                     
                     DeckIndex firstDeckIndex = DeckIndex.FromField(1);
-                    SkillEntryDescriptor descriptor = SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.LianQi);
+                    RunSkillQuery query = RunSkillQuery.FromNameJingJie("恋花", JingJie.LianQi);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new ConfirmGuide("这张牌，已经有了一张诶" +
                                          "\n对了，试试合成"),
                         new EquipGuide("将两张牌叠起来",
-                            descriptor, firstDeckIndex),
+                            query, firstDeckIndex),
                         new ConfirmGuide("卡牌没有合成" +
                                          "\n好像有个步骤是先将待合成的两张牌卸下至手牌区来着"),
                         new UnequipGuide("将牌卸下到手牌区试试",
-                            descriptor),
+                            query),
                         new MergeGuide("现在应该没问题了",
-                            descriptor, descriptor),
+                            query, query),
                         new ConfirmGuide("合成后的牌卡框边缘从灰色变成了蓝色，代表境界更高了"),
                         new ConfirmGuide("卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄，如果合成之前想查看卡牌不同境界的效果，可以悬停卡牌浏览"),
                         new EquipGuide("将合成后的牌置入战斗区",
-                            SkillEntryDescriptor.FromEntryJingJie(descriptor.Entry, JingJie.JinDan), firstDeckIndex),
+                            RunSkillQuery.FromNameJingJie("恋花", JingJie.JinDan), firstDeckIndex),
                         new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
                                              "\n但是在绝对的实力面前，克制关系也不过尔尔" +
                                              "\n点击开始战斗吧",
@@ -914,28 +887,20 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("冲撞"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.Create();
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(DeckIndex.FromField(1));
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.Add();
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(Encyclopedia.SkillCategory.FromName("冲撞"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                        b.Create();
-                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                        b.RecordDeckIndex(DeckIndex.FromField(1));
-                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                        b.Add();
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
+                        b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
                         return R;
@@ -954,8 +919,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_005",
                 name:                               "教学5",
                 description:                        "教学5",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -993,8 +958,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_006",
                 name:                               "教学6", // 同名不同境界合成
                 description:                        "教学6",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1002,13 +967,9 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemyEntity);
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("云袖"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("云袖"));
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.ZhuJi);
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.Add();
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.ZhuJi));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetGuideDescriptors(new Guide[]
@@ -1016,7 +977,7 @@ public class RoomCategory : Category<RoomEntry>
                         new ConfirmGuide("之前尝试的合成是名字相同，境界也相同。这次的两张牌，名字相同，但是境界不同" +
                                          "但是理论上来说，也有合成的可能性"),
                         new MergeGuide("让我来试试",
-                            SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.ZhuJi)),
+                            RunSkillQuery.FromNameJingJie("云袖", JingJie.LianQi), RunSkillQuery.FromNameJingJie("云袖", JingJie.ZhuJi)),
                         new ConfirmGuide("真的合成了诶。徐福找到了规律，同名同境界的时候，合成可以跨两个境界，即从练气到金丹"),
                         new ConfirmGuide("同名不同境界的时候，合成可以提升一个境界，即从筑基到金丹。"),
                         new ConfirmGuide("想提前确认合成之后的卡牌效果时，可以右键点击卡牌查看。"),
@@ -1042,8 +1003,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_007",
                 name:                               "教学7", // 不同名同境界合成
                 description:                        "教学7",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1051,20 +1012,16 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemyEntity);
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("云袖"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.LianQi);
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.Add();
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.LianQi));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new ConfirmGuide("记得之前有过这种情况，将两张不一样的牌合成。"),
                         new MergeGuide("让我来试试",
-                            SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.LianQi)),
+                            RunSkillQuery.FromNameJingJie("云袖", JingJie.LianQi), RunSkillQuery.FromNameJingJie("恋花", JingJie.LianQi)),
                         new ConfirmGuide("真的合成了诶。\n徐福发现了新的规律，不同名同境界两张牌，也可以合成。"),
                         new ConfirmGuide("效果是随机发现一张其他的牌。\n新发现的牌会比用于合成的牌，境界高一阶。"),
                         new ConfirmGuide("这样就可以缓解战斗区的牌质量不足，而手牌太多帮不上忙的问题了。"),
@@ -1090,8 +1047,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_008",
                 name:                               "教学8",
                 description:                        "教学8",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1108,12 +1065,12 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         new ConfirmGuide("同属性的牌同时处于战斗区就会激活阵法效果"),
                         new EquipGuide("金刃和寻猎都是金属性的牌，装备寻猎",
-                            SkillEntryDescriptor.FromName("寻猎"), DeckIndex.FromField(1)),
+                            RunSkillQuery.FromName("寻猎"), DeckIndex.FromField(1)),
                         new ConfirmGuide("金属性的牌达到了两张，金灵阵激活了，鼠标瞄到头像上方的阵法图标可查看具体效果"),
                         new EquipGuide("另外两张牌都是水属性的，装备激流试试",
-                            SkillEntryDescriptor.FromName("激流"), DeckIndex.FromField(0)),
+                            RunSkillQuery.FromName("激流"), DeckIndex.FromField(0)),
                         new EquipGuide("然后是空幻",
-                            SkillEntryDescriptor.FromName("空幻"), DeckIndex.FromField(1)),
+                            RunSkillQuery.FromName("空幻"), DeckIndex.FromField(1)),
                         new ClickBattleGuide("虽然刚才的金灵阵效果没了，但是两张水系卡牌可以激活水系阵法" +
                                              "\n点击开始战斗吧",
                             new Vector2(965f, 913.5f)),
@@ -1129,32 +1086,22 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("金刃"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("寻猎"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("空幻"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("激流"));
-                    b.Create();
-                    b.RecordDeckIndex(DeckIndex.FromField(0));
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(DeckIndex.FromField(1));
-                    b.Add();
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("金刃")), DeckIndex.FromField(0));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
+                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetLoseOperation(() =>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(Encyclopedia.SkillCategory.FromName("金刃"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("寻猎"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("空幻"));
-                        b.Pick(Encyclopedia.SkillCategory.FromName("激流"));
-                        b.Create();
-                        b.RecordDeckIndex(DeckIndex.FromField(0));
-                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                        b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                        b.RecordDeckIndex(DeckIndex.FromField(1));
-                        b.Add();
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("金刃")), DeckIndex.FromField(0));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
+                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
+                        b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
                         return R;
@@ -1176,8 +1123,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_009",
                 name:                               "教学9", // 不同名不同境界合成
                 description:                        "教学9",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1185,20 +1132,16 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemyEntity);
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("云袖"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.ZhuJi);
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                    b.Add();
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
+                    b.Execute();
                     b.Invoke();
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
                         new ConfirmGuide("徐福回想起了还有一种合成方式，但是因为亏境界，所以这种合成不怎么流行。"),
                         new MergeGuide("让我来试试",
-                            SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.ZhuJi)),
+                            RunSkillQuery.FromNameJingJie("云袖", JingJie.LianQi), RunSkillQuery.FromNameJingJie("恋花", JingJie.ZhuJi)),
                         new ConfirmGuide("合成成功了。徐福又双叒叕发现了规律，不同名不同境界之间，也可以亏本进行合成。"),
                         new ConfirmGuide("比如，练气云袖 + 筑基恋花 = 筑基云袖\n这样没有凑到对子的云袖，境界也能提升。"),
                         new ConfirmGuide("每当需要使用的牌境界较低，而手牌的闲牌境界较高的时候就可以合成。强行将需要使用的牌拉高一个境界。"),
@@ -1224,8 +1167,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_010",
                 name:                               "教学10",
                 description:                        "教学10",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1256,18 +1199,18 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         new ConfirmGuide("在梦中手中突然多出了5张牌"),
                         new EquipGuide("对面明显是一个多段攻击的角色，徐福如果能有很高的灼烧的话。。",
-                            SkillEntryDescriptor.FromId("Skill09_009"), DeckIndex.FromField(4)),
+                            RunSkillQuery.FromId("Skill09_009"), DeckIndex.FromField(4)),
                         new EquipGuide("明显单一张灼烧叠的太慢了，五行中说是木生火，如果我们获得灼烧之前有力量的话。" +
                                        "这些力量就可以一并流转成为灼烧" +
                                        "\n哈哈，这场对决，是徐福的胜利了！",
-                            SkillEntryDescriptor.FromId("Skill09_008"), DeckIndex.FromField(3)),
+                            RunSkillQuery.FromId("Skill09_008"), DeckIndex.FromField(3)),
                         new EquipGuide("果然不太够么。虽说流转一次已经叠层效率翻倍了，但是如果获得力量之前就有格挡的话？" +
                                        "水生木，格挡会一起变成力量，最终都会成为灼烧哒！",
-                            SkillEntryDescriptor.FromId("Skill09_007"), DeckIndex.FromField(2)),
+                            RunSkillQuery.FromId("Skill09_007"), DeckIndex.FromField(2)),
                         new EquipGuide("对方生命减少了，明显起到了效果，继续置入一张凝水。利用金生水的规则，将锋锐流转成格挡",
-                            SkillEntryDescriptor.FromId("Skill09_006"), DeckIndex.FromField(1)),
+                            RunSkillQuery.FromId("Skill09_006"), DeckIndex.FromField(1)),
                         new EquipGuide("最后放一张土属性的牌，提供坚毅，之后可以流转成锋锐",
-                            SkillEntryDescriptor.FromId("Skill09_005"), DeckIndex.FromField(0)),
+                            RunSkillQuery.FromId("Skill09_005"), DeckIndex.FromField(0)),
                         new ConfirmGuide("成了，巧用流转的规则，可以快速叠层本不富裕的增益"),
                         new ConfirmGuide("流转的顺序是锋锐->格挡->力量->灼烧->坚毅。可以随时查看上面的五行图标看到五行介绍和流转规则。"),
                         new ClickBattleGuide("开始战斗吧",
@@ -1292,21 +1235,21 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetWinOperation(() =>
                     {
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0705")); // 蜕变
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0706")); // 凝水
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0707")); // 流霰
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0708")); // 养气丹
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0709")); // 燎原
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0705")); // 蜕变
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0706")); // 凝水
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0707")); // 流霰
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0708")); // 养气丹
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0709")); // 燎原
                         return Dialog3;
                     });
 
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0705"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0706"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0707"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0708"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0709"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0705"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0706"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0707"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0708"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(RunSkillQuery.FromId("0709"));
                         return Dialog3;
                     });
 
@@ -1320,8 +1263,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room02_011",
                 name:                               "漫画",
                 description:                        "漫画",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1339,8 +1282,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0017",
                 name:                               "存钱",
                 description:                        "存钱",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1355,8 +1298,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0018",
                 name:                               "黑市",
                 description:                        "黑市",
-                ladderBound:                        new Bound(0, 8),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsLianQiToJinDan,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1375,8 +1318,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0019",
                 name:                               "收藏家",
                 description:                        "收藏家",
-                ladderBound:                        new Bound(2, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsZhuJiToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1394,8 +1337,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0020",
                 name:                               "以物易物",
                 description:                        "以物易物",
-                ladderBound:                        new Bound(2, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsZhuJiToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1413,8 +1356,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0021",
                 name:                               "毕业季",
                 description:                        "毕业季",
-                ladderBound:                        new Bound(5, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDanToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1432,8 +1375,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0022",
                 name:                               "盲盒",
                 description:                        "盲盒",
-                ladderBound:                        new Bound(8, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYingToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -1455,8 +1398,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0023",
                 name:                               "天津四",
                 description:                        "天津四",
-                ladderBound:                        new Bound(0, 2),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsLianQi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1494,8 +1437,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0024",
                 name:                               "琴仙",
                 description:                        "琴仙",
-                ladderBound:                        new Bound(2, 5),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsZhuJi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1517,7 +1460,9 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell D = new DialogCell(
                             titleText: "琴仙",
                             detailedText: "之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
+                        .SetReward(new DrawSkillReward("获得一个技能",
+                            SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(1),
+                            RunManager.Instance.Environment.JingJie));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -1529,8 +1474,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0025",
                 name:                               "赤壁赋",
                 description:                        "赤壁赋",
-                ladderBound:                        new Bound(5, 8),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDan,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1564,8 +1509,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0026",
                 name:                               "二子学弈",
                 description:                        "二子学弈",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1598,8 +1543,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0027",
                 name:                               "仙人下棋",
                 description:                        "仙人下棋",
-                ladderBound:                        new Bound(11, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1611,11 +1556,11 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张二动牌",
-                        descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Swift), 1));
+                        queries:            RunSkillQuery.FromTagComposite(TagCategory.Swift).Stack(1));
                     RequireCell C = RequireCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张治疗牌",
-                        descriptor:         RunSkillDescriptorListModel.FromRunSkillDescriptorAndCount(RunSkillDescriptor.FromTagComposite(TagCategory.Health), 1));
+                        queries:            RunSkillQuery.FromTagComposite(TagCategory.Health).Stack(1));
 
                     DialogCell BWin = new(
                         titleText: "迷路",
@@ -1703,8 +1648,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0028",
                 name:                               "检测仪",
                 description:                        "检测仪",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1727,36 +1672,51 @@ public class RoomCategory : Category<RoomEntry>
 
                     A0[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Jin,
-                            jingJie: RunManager.Instance.Environment.JingJie));
+                        RunManager.Instance.Environment.DrawSkillProcedure(
+                            SkillEntryQuery.FromWuXingBaseJingJieBound(
+                                wuXing: WuXing.Jin,
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+                            RunManager.Instance.Environment.JingJie);
                         return B;
                     });
 
                     A0[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Shui,
-                            jingJie: RunManager.Instance.Environment.JingJie));
+                        RunManager.Instance.Environment.DrawSkillProcedure(
+                            SkillEntryQuery.FromWuXingBaseJingJieBound(
+                                wuXing: WuXing.Shui,
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+                            RunManager.Instance.Environment.JingJie);
                         return B;
                     });
 
                     A0[2].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Mu,
-                            jingJie: RunManager.Instance.Environment.JingJie));
+                        RunManager.Instance.Environment.DrawSkillProcedure(
+                            SkillEntryQuery.FromWuXingBaseJingJieBound(
+                                wuXing: WuXing.Mu,
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+                            RunManager.Instance.Environment.JingJie);
                         return B;
                     });
 
                     A1[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Huo,
-                            jingJie: RunManager.Instance.Environment.JingJie));
+                        RunManager.Instance.Environment.DrawSkillProcedure(
+                            SkillEntryQuery.FromWuXingBaseJingJieBound(
+                                wuXing: WuXing.Huo,
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+                            RunManager.Instance.Environment.JingJie);
                         return B;
                     });
 
                     A1[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: WuXing.Tu,
-                            jingJie: RunManager.Instance.Environment.JingJie));
+                        RunManager.Instance.Environment.DrawSkillProcedure(
+                            SkillEntryQuery.FromWuXingBaseJingJieBound(
+                                wuXing: WuXing.Tu,
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+                            RunManager.Instance.Environment.JingJie);
                         return B;
                     });
 
@@ -1766,8 +1726,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0029",
                 name:                               "明心庐",
                 description:                        "明心庐",
-                ladderBound:                        new Bound(5, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDanToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1783,13 +1743,19 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "这正是我现在需要的，先生真乃神通也。");
                     
                     JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(room.Ladder);
-                    
-                    A[0].SetSelect(option =>
-                        B.SetDescriptor(new(tagComposite: TagCategory.Attack, jingJie: currJingJie, count: 3)));
-                    A[1].SetSelect(option =>
-                        B.SetDescriptor(new(tagComposite: TagCategory.Defend, jingJie: currJingJie, count: 3)));
-                    A[2].SetSelect(option =>
-                        B.SetDescriptor(new(tagComposite: TagCategory.Mana, jingJie: currJingJie, count: 3)));
+
+                    A[0].SetSelect(option => B.SetDrawStrategy(
+                        SkillEntryQuery.FromBaseJingJieBoundTag(
+                            baseJingJieBound: new(JingJie.LianQi, currJingJie),
+                            tagComposite: TagCategory.Attack).Stack(3)));
+                    A[1].SetSelect(option => B.SetDrawStrategy(
+                        SkillEntryQuery.FromBaseJingJieBoundTag(
+                            baseJingJieBound: new(JingJie.LianQi, currJingJie),
+                            tagComposite: TagCategory.Defend).Stack(3)));
+                    A[2].SetSelect(option => B.SetDrawStrategy(
+                        SkillEntryQuery.FromBaseJingJieBoundTag(
+                            baseJingJieBound: new(JingJie.LianQi, currJingJie),
+                            tagComposite: TagCategory.Mana).Stack(3)));
 
                     B._receiveSignal = signal =>
                     {
@@ -1806,8 +1772,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0030",
                 name:                               "天机阁",
                 description:                        "天机阁",
-                ladderBound:                        new Bound(2, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsZhuJiToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1821,17 +1787,15 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "天机阁",
                         detailedText: "刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    SkillEntryCollectionDescriptor descriptor = new(jingJie: RunManager.Instance.Environment.JingJie,
-                        count: 10, consume: false);
                     GainSkillBuilder b = new();
-                    b.Draw(descriptor);
-                    B.PopulateInventory(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, RunManager.Instance.Environment.JingJie)).ToList());
+                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(10),
+                        RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+                    B.PopulateInventory(b.DrawnSkills);
                     B.SetConfirmOperation(skills =>
                     {
                         GainSkillBuilder b = new();
-                        skills.Do(item => b.Pick(item.Entry));
-                        skills.Do(item => b.SingleCreate(item.JingJie));
-                        b.Add();
+                        skills.Do(item => b.Pick(item.Clone()));
+                        b.Execute();
                         b.Invoke();
                         return C;
                     });
@@ -1844,8 +1808,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0031",
                 name:                               "论无穷",
                 description:                        "论无穷",
-                ladderBound:                        new Bound(11, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1860,10 +1824,12 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell B = new DialogCell(
                             titleText: "论无穷",
                             detailedText: "你痛快写了800字，时间没过5分钟，已经写完了。" +
-                            "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+                                          "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张二动牌",
-                            new(jingJie: RunManager.Instance.Environment.JingJie,
-                                tagComposite: TagCategory.Swift)));
+                                SkillEntryQuery.FromBaseJingJieBoundTag(
+                                    baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+                                    tagComposite: TagCategory.Swift).Stack(1),
+                            RunManager.Instance.Environment.JingJie));
                     DialogCell C = new DialogCell(
                             titleText: "论无穷",
                             detailedText: "你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
@@ -1871,16 +1837,20 @@ public class RoomCategory : Category<RoomEntry>
                                           "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
                                           "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张自指牌",
-                            new(jingJie: RunManager.Instance.Environment.JingJie,
-                                tagComposite: TagCategory.Growth)));
+                            SkillEntryQuery.FromBaseJingJieBoundTag(
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+                                tagComposite: TagCategory.Growth).Stack(1),
+                            RunManager.Instance.Environment.JingJie));
                     DialogCell D = new DialogCell(
                             titleText: "论无穷",
                             detailedText: "考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
                                           "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
                                           "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
                         .SetReward(new DrawSkillReward("得到一张升华牌",
-                            new(jingJie: RunManager.Instance.Environment.JingJie,
-                                tagComposite: TagCategory.Exhaust)));
+                            SkillEntryQuery.FromBaseJingJieBoundTag(
+                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+                                tagComposite: TagCategory.Exhaust).Stack(1),
+                            RunManager.Instance.Environment.JingJie));
 
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -1892,8 +1862,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0032",
                 name:                               "分子打印机",
                 description:                        "分子打印机",
-                ladderBound:                        new Bound(5, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDanToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1905,7 +1875,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请选择2张牌，随机将其中一张变成另一张",
-                        descriptor: RunSkillDescriptorListModel.FromCount(2));
+                        queries: RunSkillQuery.AnySkill().Stack(2));
                     DialogCell C = new(
                         titleText: "分子打印机",
                         detailedText: "来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
@@ -1944,8 +1914,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0033",
                 name:                               "天界树",
                 description:                        "天界树",
-                ladderBound:                        new Bound(5, 15),
-                difficultyBound:                    new Bound(4, 11),
+                ladderBound:                        LadderIsJinDanToHuaShen,
+                difficultyBound:                    DifficultyIsNotEasy,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1973,8 +1943,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0033",
                 name:                               "连抽五张",
                 description:                        "连抽五张",
-                ladderBound:                        new Bound(5, 8),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDan,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -1986,11 +1956,15 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell B = new DialogCell(
                             titleText: "急躁",
                             detailedText: "哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
+                        .SetReward(new DrawSkillReward("获得一个技能",
+                            SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(1),
+                            RunManager.Instance.Environment.JingJie));
                     DialogCell C = new DialogCell(
                             titleText: "急躁",
                             detailedText: "随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
-                        .SetReward(new DrawSkillReward("获得五个技能", new(jingJie: RunManager.Instance.Environment.JingJie, count: 5)));
+                        .SetReward(new DrawSkillReward("获得五个技能",
+                            SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(5),
+                            RunManager.Instance.Environment.JingJie));
 
                     A[0].SetSelect(option => B);
                     A[1].SetCost(new RunCostDetails(health: 30))
@@ -2002,8 +1976,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0034",
                 name:                               "我已膨胀",
                 description:                        "我已膨胀",
-                ladderBound:                        new Bound(11, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2045,8 +2019,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0035",
                 name:                               "曹操三笑",
                 description:                        "曹操三笑",
-                ladderBound:                        new Bound(2, 5),
-                difficultyBound:                    new Bound(2, 11),
+                ladderBound:                        LadderIsZhuJi,
+                difficultyBound:                    DifficultyIsNotEasy,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2091,8 +2065,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0036",
                 name:                               "神灯精灵",
                 description:                        "神灯精灵",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(2, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    DifficultyIsNotEasy,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2136,8 +2110,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0037",
                 name:                               "山木",
                 description:                        "山木",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2216,8 +2190,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0038",
                 name:                               "丢尺子",
                 description:                        "丢尺子",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2266,8 +2240,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0039",
                 name:                               "仙岛玉液酒",
                 description:                        "仙岛玉液酒",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2356,8 +2330,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0040",
                 name:                               "夏虫语冰",
                 description:                        "夏虫语冰",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2389,8 +2363,8 @@ public class RoomCategory : Category<RoomEntry>
                 
             // new(id:                                 "卖剑",
             //     description:                        "卖剑",
-            //     ladderBound:                        new Bound(0, 15),
-            //     difficultyBound:                    new Bound(0, 11),
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
             //     withInPool:                         true,
             //     create:                             (map, room) =>
             //     {
@@ -2425,8 +2399,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0041",
                 name:                               "守株待兔",
                 description:                        "守株待兔",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2457,8 +2431,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0042",
                 name:                               "鸡肉面",
                 description:                        "鸡肉面",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         true,
                 create:                             (map, room) =>
                 {
@@ -2474,7 +2448,11 @@ public class RoomCategory : Category<RoomEntry>
                     DialogCell C = new DialogCell(
                             titleText: "餐馆",
                             detailedText: "一阵烟雾过后。你面前掉落了一幅画，上面赫然画着刚才的餐馆。你对之前的招式又有了新的感悟。获得一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能", new(jingJie: RunManager.Instance.Environment.JingJie)));
+                        .SetReward(new DrawSkillReward("获得一个技能",
+                            SkillEntryQuery
+                                .FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie))
+                                .Stack(1),
+                            RunManager.Instance.Environment.JingJie));
                     
                     A[0].SetSelect(option => B);
                     A[1].SetSelect(option => C);
@@ -2489,8 +2467,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_001",
                 name:                               "斩断尘缘",
                 description:                        "斩断尘缘",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2518,8 +2496,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_002",
                 name:                               "无名泉水",
                 description:                        "无名泉水",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2561,14 +2539,9 @@ public class RoomCategory : Category<RoomEntry>
                         GainSkillBuilder b = new();
                         for (int i = 0; i < space; i++)
                         {
-                            b.Pick(Encyclopedia.SkillCategory.FromName("命石"));
+                            b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("命石"), JingJie.HuaShen));
                         }
-                        b.Create(JingJie.HuaShen);
-                        for (int i = 0; i < space; i++)
-                        {
-                            b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-                        }
-                        b.Add();
+                        b.Execute();
                         b.Invoke();
                         
                         return D;
@@ -2588,8 +2561,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_003",
                 name:                               "气血商店",
                 description:                        "气血商店",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2618,8 +2591,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_004",
                 name:                               "命元商店",
                 description:                        "命元商店",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2649,8 +2622,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_005",
                 name:                               "镜中世界",
                 description:                        "镜中世界",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2662,7 +2635,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "选择",
                         detailedText: "请选择0~4张牌，将所有牌变成其中随机的一张。" +
                                       "\n镜灵们看起来对你的命石很感兴趣，你有些担心他们不会还给你了。",
-                        descriptor: RunSkillDescriptorListModel.FromCount(4));
+                        queries: RunSkillQuery.AnySkill().Stack(4));
                     
                     DialogCell C0 = new("镜中世界",
                         "你拒绝了镜灵的提议，决定继续前行。");
@@ -2731,8 +2704,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_006",
                 name:                               "空荡回廊",
                 description:                        "空荡回廊",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2752,8 +2725,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_007",
                 name:                               "返虚战斗",
                 description:                        "返虚战斗",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2848,8 +2821,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room05_008",
                 name:                               "返虚三战斗",
                 description:                        "返虚三战斗",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2901,8 +2874,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0043",
                 name:                               "忘忧堂",
                 description:                        "忘忧堂",
-                ladderBound:                        new Bound(5, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDanToHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -2914,7 +2887,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "割舍",
                         detailedText: "请选择0到5张牌送出",
-                        descriptor: RunSkillDescriptorListModel.FromCount(5));
+                        queries: RunSkillQuery.AnySkill().Stack(5));
                     DialogCell C = new(
                         titleText: "割舍",
                         detailedText: "果然还是难以割舍心爱的卡牌。");
@@ -2950,8 +2923,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0044",
                 name:                               "人间世",
                 description:                        "人间世",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3013,8 +2986,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0045",
                 name:                               "照相机",
                 description:                        "照相机",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3051,8 +3024,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0046",
                 name:                               "矛与盾",
                 description:                        "矛与盾",
-                ladderBound:                        new Bound(0, 2),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsLianQi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3178,8 +3151,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0047",
                 name:                               "郑人买履",
                 description:                        "郑人买履",
-                ladderBound:                        new Bound(2, 5),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsZhuJi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3207,8 +3180,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0048",
                 name:                               "鬼兵",
                 description:                        "鬼兵",
-                ladderBound:                        new Bound(2, 5),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsZhuJi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3220,7 +3193,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell BPick = RequireCell.FromConstantDetailedText(
                         titleText: "仪式感",
                         detailedText: "炼丹需要消耗一张牌",
-                        descriptor: RunSkillDescriptorListModel.FromCount(1));
+                        queries: RunSkillQuery.AnySkill().Stack(1));
                     DialogCell B = new(
                         titleText: "仪式感",
                         detailedText: "你取出了一张卡牌作为原料，炼出了一枚丹药，给那人吃了。" +
@@ -3261,8 +3234,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0049",
                 name:                               "刻舟求剑",
                 description:                        "刻舟求剑",
-                ladderBound:                        new Bound(5, 8),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDan,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3288,8 +3261,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0050",
                 name:                               "物质还原仪",
                 description:                        "物质还原仪",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3346,8 +3319,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0051",
                 name:                               "悟道",
                 description:                        "悟道",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3366,8 +3339,11 @@ public class RoomCategory : Category<RoomEntry>
                         if (signal is SelectedOptionSignal selectedOptionSignal)
                         {
                             int index = selectedOptionSignal.Selected;
-                            RunManager.Instance.Environment.DrawSkillsProcedure(new(wuXing: options[index],
-                                jingJie: RunManager.Instance.Environment.JingJie));
+                            RunManager.Instance.Environment.DrawSkillProcedure(
+                                SkillEntryQuery.FromWuXingBaseJingJieBound(
+                                    wuXing: options[index],
+                                    baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+                                RunManager.Instance.Environment.JingJie);
                         }
                         return null;
                     };
@@ -3378,8 +3354,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0052",
                 name:                               "愿望单",
                 description:                        "愿望单",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3413,8 +3389,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0053",
                 name:                               "后羿1",
                 description:                        "后羿1",
-                ladderBound:                        new Bound(0, 5),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsLianQiToZhuJi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3471,7 +3447,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell C = RequireCell.FromConstantDetailedText(
                         titleText:          "后羿",
                         detailedText:       "请提交一张牌",
-                        descriptor:         RunSkillDescriptorListModel.FromCount(1));
+                        queries:            RunSkillQuery.AnySkill().Stack(1));
         
                     DialogCell CWin = new(
                         titleText: "后羿",
@@ -3515,8 +3491,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0054",
                 name:                               "后羿2",
                 description:                        "后羿2",
-                ladderBound:                        new Bound(5, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDanToYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3611,8 +3587,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0055",
                 name:                               "后羿3",
                 description:                        "后羿3",
-                ladderBound:                        new Bound(11, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3627,8 +3603,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0056",
                 name:                               "神农氏1",
                 description:                        "神农氏1",
-                ladderBound:                        new Bound(0, 5),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsLianQiToZhuJi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3714,8 +3690,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0057",
                 name:                               "神农氏2",
                 description:                        "神农氏2",
-                ladderBound:                        new Bound(5, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsJinDanToYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3801,8 +3777,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0058",
                 name:                               "神农氏3",
                 description:                        "神农氏3",
-                ladderBound:                        new Bound(11, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsHuaShen,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3824,8 +3800,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0059",
                 name:                               "动画测试",
                 description:                        "动画测试",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3911,8 +3887,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0060",
                 name:                               "快速结算",
                 description:                        "快速结算",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3945,8 +3921,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0061",
                 name:                               "循环",
                 description:                        "循环",
-                ladderBound:                        new Bound(0, 5),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsLianQiToZhuJi,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3963,8 +3939,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0062",
                 name:                               "发现一张牌",
                 description:                        "发现一张牌",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -3974,19 +3950,16 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0063",
                 name:                               "排局1",
                 description:                        "排局1",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("空幻"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("吐纳"));
-                    b.SingleCreate(JingJie.ZhuJi);
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.LianQi);
-                    b.Add();
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
+                    b.Execute();
                     b.Invoke();
                     
                     RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局1");
@@ -4000,27 +3973,20 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0064",
                 name:                               "排局2",
                 description:                        "排局2",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
                     GainSkillBuilder b = new();
-                    b.Pick(Encyclopedia.SkillCategory.FromName("吐纳"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("吐纳"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("空幻"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("空幻"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("恋花"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("止水"));
-                    b.Pick(Encyclopedia.SkillCategory.FromName("回春"));
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.LianQi);
-                    b.SingleCreate(JingJie.ZhuJi);
-                    b.SingleCreate(JingJie.ZhuJi);
-                    b.SingleCreate(JingJie.ZhuJi);
-                    b.Add();
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("止水"), JingJie.ZhuJi));
+                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("回春"), JingJie.ZhuJi));
+                    b.Execute();
                     b.Invoke();
                     
                     RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局2");
@@ -4034,17 +4000,14 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0065",
                 name:                               "排局3抽牌",
                 description:                        "排局3抽牌",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    SkillEntryCollectionDescriptor descriptor =
-                        new SkillEntryCollectionDescriptor(count: 30, jingJie: JingJie.LianQi, distinct: false);
                     GainSkillBuilder b = new();
-                    b.Draw(descriptor);
-                    b.Create(JingJie.LianQi);
-                    b.Add();
+                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(30), JingJie.LianQi, distinct: false);
+                    b.Execute();
                     b.Invoke();
 
                     DialogCell A = new("排局3抽牌", "排局3抽牌");
@@ -4055,8 +4018,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0066",
                 name:                               "排局3",
                 description:                        "排局3",
-                ladderBound:                        new Bound(8, 11),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        LadderIsYuanYing,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -4071,8 +4034,8 @@ public class RoomCategory : Category<RoomEntry>
             new(id:                                 "Room0067",
                 name:                               "提交测试",
                 description:                        "提交测试",
-                ladderBound:                        new Bound(0, 15),
-                difficultyBound:                    new Bound(0, 11),
+                ladderBound:                        AllLadder,
+                difficultyBound:                    AllDifficulty,
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
@@ -4081,17 +4044,17 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "请提交每种五行的牌各一张",
                         "试试", "离开");
 
-                    RunSkillDescriptorListModel list = new RunSkillDescriptorListModel();
-                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Jin));
-                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Shui));
-                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Mu));
-                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Huo));
-                    list.Add(RunSkillDescriptor.FromWuXing(WuXing.Tu));
+                    List<RunSkillQuery> queries = new();
+                    queries.Add(RunSkillQuery.FromWuXing(WuXing.Jin));
+                    queries.Add(RunSkillQuery.FromWuXing(WuXing.Shui));
+                    queries.Add(RunSkillQuery.FromWuXing(WuXing.Mu));
+                    queries.Add(RunSkillQuery.FromWuXing(WuXing.Huo));
+                    queries.Add(RunSkillQuery.FromWuXing(WuXing.Tu));
 
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请提交每种五行的牌各一张",
-                        descriptor: list);
+                        queries: queries);
                     
                     DialogCell C = new(
                         titleText: "提交测试",

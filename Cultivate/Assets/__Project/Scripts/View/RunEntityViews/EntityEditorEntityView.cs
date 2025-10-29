@@ -142,9 +142,9 @@ public class EntityEditorEntityView : XView
 
     private void SetAllowedDifficulty(Bound bound)
     {
-        AllowedDifficultySlider.SetValueWithoutNotify(bound.Start, bound.End - 1);
+        AllowedDifficultySlider.SetValueWithoutNotify(bound.Start, bound.End);
         LowValueLabel.text = bound.Start.ToString();
-        HighValueLabel.text = (bound.End - 1).ToString();
+        HighValueLabel.text = bound.End.ToString();
     }
 
     private void SetInPool(bool inPool)
@@ -221,7 +221,7 @@ public class EntityEditorEntityView : XView
     private void AllowedDifficultySliderChanged(float lowValue, float highValue)
     {
         IEntity entity = Get<IEntity>();
-        entity.SetAllowedDifficulty(new Bound((int)lowValue, (int)highValue + 1));
+        entity.SetAllowedDifficulty(new((int)lowValue, (int)highValue));
         Refresh();
     }
 

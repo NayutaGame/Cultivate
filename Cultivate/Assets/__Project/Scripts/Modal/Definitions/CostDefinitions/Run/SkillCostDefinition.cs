@@ -1,12 +1,12 @@
 
 public class SkillCostDefinition : RunCostDefinition
 {
-    private RunSkillDescriptor _descriptor;
+    private RunSkillQuery _query;
     private string _description;
 
-    public SkillCostDefinition(RunSkillDescriptor descriptor, string description)
+    public SkillCostDefinition(RunSkillQuery query, string description)
     {
-        _descriptor = descriptor;
+        _query = query;
         _description = description;
     }
 
@@ -15,7 +15,7 @@ public class SkillCostDefinition : RunCostDefinition
 
     public override bool Affordable()
     {
-        return RunManager.Instance.Environment.DeckIndexFromDescriptor(out _, _descriptor);
+        return RunManager.Instance.Environment.DeckIndexFromQuery(out _, _query);
     }
 
     public override bool Consume()
@@ -23,7 +23,7 @@ public class SkillCostDefinition : RunCostDefinition
         if (!Affordable())
             return false;
 
-        RunManager.Instance.Environment.DeckIndexFromDescriptor(out DeckIndex deckIndex, _descriptor);
+        RunManager.Instance.Environment.DeckIndexFromQuery(out DeckIndex deckIndex, _query);
         RunManager.Instance.Environment.RemoveSkillProcedure(deckIndex);
         return true;
     }

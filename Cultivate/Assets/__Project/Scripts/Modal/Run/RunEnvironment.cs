@@ -416,7 +416,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         return null;
     }
 
-    public bool DeckIndexFromDescriptor(out DeckIndex result, RunSkillDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
+    public bool DeckIndexFromQuery(out DeckIndex result, RunSkillQuery query, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
         omit ??= Array.Empty<DeckIndex>();
         
@@ -427,7 +427,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             if (omit.Contains(deckIndex))
                 continue;
             RunSkill skill = SkillFromDeckIndex(deckIndex);
-            if (skill != null && descriptor.Contains(skill))
+            if (skill != null && query.Matches(skill))
             {
                 result = deckIndex;
                 return true;
@@ -437,7 +437,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         return false;
     }
 
-    public bool DeckIndexFromDescriptor(out DeckIndex result, SkillEntryDescriptor descriptor, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
+    public bool DeckIndexFromQuery(out DeckIndex result, SkillEntryQuery query, bool excludingField = false, bool excludingHand = false, DeckIndex[] omit = null)
     {
         omit ??= Array.Empty<DeckIndex>();
         
@@ -448,7 +448,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             if (omit.Contains(deckIndex))
                 continue;
             RunSkill skill = SkillFromDeckIndex(deckIndex);
-            if (skill != null && descriptor.Contains(skill))
+            if (skill != null && query.Matches(skill))
             {
                 result = deckIndex;
                 return true;
@@ -535,8 +535,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetJingJieProcedure(mapEntry._envJingJie);
         _home.SetSlotCount(mapEntry._slotCount);
         SetDGoldProcedure(mapEntry._gold);
-        
-        DrawSkillsProcedure(new(jingJie: mapEntry._skillJingJie, count: mapEntry._skillCount));
+
+        DrawSkillsProcedure(
+            SkillEntryQuery.FromBaseJingJieBound(
+                    new(JingJie.LianQi, mapEntry._skillJingJie))
+                .Stack(mapEntry._skillCount), mapEntry._skillJingJie);
         
         mapEntry.OnStartRun(this);
 
@@ -725,19 +728,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
             if (toField)
             {
-                b.Pick(entry);
-                b.SingleCreate(s.Skill.GetJingJie());
-                b.RecordDeckIndex(s.ToDeckIndex());
+                b.Pick(SkillReference.FromEntryJingJie(entry, s.Skill.GetJingJie()), s.ToDeckIndex());
             }
             else
             {
-                b.Pick(entry);
-                b.SingleCreate(s.Skill.GetJingJie());
-                b.RecordDeckIndex(new NextHandDeckIndexDefinition());
+                b.Pick(SkillReference.FromEntryJingJie(entry, s.Skill.GetJingJie()));
             }
         });
         
-        b.Add();
+        b.Execute();
         b.Invoke();
     }
 
@@ -883,11 +882,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SendEvent(RunClosureDict.WIL_DISCOVER_SKILL, d);
 
         GainSkillBuilder b = new();
-        b.Draw(d.Descriptor);
+        b.Draw(d.DrawStrategies, d.PreferredJingJie, distinct: true, consume: true);
         if (AllowMutate())
             b.DrawMutator(JingJie);
-        
-        d.Skills.AddRange(b.DrawnSkillEntries.Map(e => SkillEntryDescriptor.FromEntryJingJie(e, d.PreferredJingJie)));
+
+        b.DrawnSkills.Do(d.Skills.Add);
 
         SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
@@ -996,7 +995,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         RunSkill skill = SkillFromDeckIndex(d.FromIndex);
         RequirementSlot slot = RequirementSlotFromDeckIndex(d.ToIndex);
-        if (!slot.Descriptor().Contains(skill))
+        if (!slot.GetQuery().Matches(skill))
             return;
         
         SubmitFromHandProcedure(new(skill, slot));
@@ -1073,7 +1072,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (skillSlot.Skill == null)
             return;
         
-        if (!requirementSlot.Descriptor().Contains(skillSlot.Skill))
+        if (!requirementSlot.GetQuery().Matches(skillSlot.Skill))
             return;
         
         SubmitFromFieldProcedure(new(skillSlot, requirementSlot));
@@ -1122,7 +1121,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         if (skillSlot.IsOccupied())
         {
-            bool backwardQualified = requirementSlot.Descriptor().Contains(skillSlot.Skill);
+            bool backwardQualified = requirementSlot.GetQuery().Matches(skillSlot.Skill);
             if (!backwardQualified)
             {
                 UnequipProcedure(UnequipDetails.FromSlot(skillSlot));
@@ -1149,13 +1148,13 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (fromSlot.Skill == null)
             return;
 
-        bool forwardQualified = toSlot.Descriptor().Contains(fromSlot.Skill);
+        bool forwardQualified = toSlot.GetQuery().Matches(fromSlot.Skill);
         if (!forwardQualified)
             return;
 
         if (toSlot.Skill != null)
         {
-            bool backwardQualified = fromSlot.Descriptor().Contains(toSlot.Skill);
+            bool backwardQualified = fromSlot.GetQuery().Matches(toSlot.Skill);
             if (!backwardQualified)
             {
                 WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(toSlot));
@@ -1182,43 +1181,33 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void PickSkillProcedure(SkillEntry skillEntry, JingJie preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
     {
         GainSkillBuilder b = new();
-        b.Pick(skillEntry);
-        b.Create(preferredJingJie);
-        if (preferredDeckIndex != null)
-            b.RecordDeckIndex(preferredDeckIndex);
-        else
-            b.RecordDeckIndex(new NextHandDeckIndexDefinition());
-        b.Add();
+        b.Pick(SkillReference.FromEntryJingJie(skillEntry, preferredJingJie), preferredDeckIndex);
+        b.Execute();
         b.Invoke();
     }
     
-    public void DrawSkillProcedure(SkillEntryDescriptor descriptor, DeckIndex? preferredDeckIndex = null)
+    public void DrawSkillProcedure(SkillEntryQuery drawStrategy, JingJie jingJie, DeckIndex? preferredDeckIndex = null)
     {
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        b.Create(descriptor.JingJie);
-        b.RecordDeckIndex(preferredDeckIndex);
-        b.Add();
+        b.Draw(drawStrategy, jingJie, preferredDeckIndex);
+        b.Execute();
         b.Invoke();
     }
 
-    public void DrawSkillsProcedure(SkillEntryCollectionDescriptor descriptor)
+    public void DrawSkillsProcedure(List<SkillEntryQuery> drawStrategies, JingJie jingJie)
     {
         GainSkillBuilder b = new();
-        b.Draw(descriptor);
-        b.Create(descriptor.JingJie);
-        b.Add();
+        b.Draw(drawStrategies, jingJie);
+        b.Execute();
         b.Invoke();
     }
     
     public void PickDiscoveredSkillProcedure(PickDiscoveredSkillDetails d)
     {
         GainSkillBuilder b = new();
-        b.Pick(d.Skill.Entry);
-        b.Create(d.Skill.JingJie);
-        b.Add();
+        b.Pick(d.Skill.Clone());
+        b.Execute();
         
-        d.CreatedSkill = b.CreatedSkills[0].Clone();
         PickDiscoveredSkillNeuron.Invoke(d);
         ReceiveSignalProcedure(new PickDiscoveredSkillSignal(d.PickedIndex));
     }
@@ -1226,11 +1215,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void BuySkillProcedure(BuySkillDetails d)
     {
         GainSkillBuilder b = new();
-        b.Pick(d.Commodity.Skill.Entry);
-        b.Create(d.Commodity.Skill.JingJie);
-        b.Add();
+        b.Pick(d.Commodity.Skill.Clone());
+        b.Execute();
 
-        d.DeckIndex = b.PreferredDeckIndices[0].Reify();
+        d.DeckIndex = b.GainingSkills[0].GetDeckIndex().Reify();
         BuySkillNeuron.Invoke(d);
     }
 
@@ -1242,17 +1230,16 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void GachaProcedure(GachaDetails d)
     {
         GainSkillBuilder b = new();
-        b.Pick(d.SkillEntryDescriptor.Entry);
-        b.Create(d.SkillEntryDescriptor.JingJie);
-        b.Add();
-
-        d.DeckIndex = b.PreferredDeckIndices[0].Reify();
+        b.Pick(d.Skill.Clone());
+        b.Execute();
+        
+        d.DeckIndex = b.GainingSkills[0].GetDeckIndex().Reify();
         GachaNeuron.Invoke(d);
     }
     
-    public void ConfirmSelectionsProcedure(List<SkillEntryDescriptor> descriptors)
+    public void ConfirmSelectionsProcedure(List<SkillReference> skillReferences)
     {
-        ReceiveSignalProcedure(new ConfirmSkillsSignal(descriptors));
+        ReceiveSignalProcedure(new ConfirmSkillsSignal(skillReferences));
     }
 
     public void ConfirmDeckSelectionsProcedure()
@@ -1260,11 +1247,16 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         ReceiveSignalProcedure(new ConfirmDeckSignal());
     }
 
-    public void RemoveSkillProcedure(SkillEntryDescriptor descriptor)
+    public void RemoveSkillProcedure(RunSkillQuery query)
     {
-        bool isFound = DeckIndexFromDescriptor(out DeckIndex deckIndex, descriptor);
+        bool isFound = DeckIndexFromQuery(out DeckIndex deckIndex, query);
         if (isFound)
             RemoveSkillProcedure(deckIndex);
+    }
+
+    public void RemoveSkillProcedure(RunSkill skill)
+    {
+        RemoveSkillProcedure(skill.ToDeckIndex());
     }
 
     public void RemoveSkillProcedure(DeckIndex deckIndex)

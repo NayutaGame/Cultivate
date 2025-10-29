@@ -239,8 +239,10 @@ public class RunCanvas : Panel
             view.GetAnimator().SetStateAsync(1);
         }
 
-        b.PreferredDeckIndices.Do(deckIndex =>
+        b.GainingSkills.Do(gainingSkill =>
         {
+            IDeckIndex deckIndex = gainingSkill.GetDeckIndex();
+
             if (deckIndex.Region == SkillRegion.Field)
             {
                 DeckPanel.PlayerEntity.FieldView.Modified(deckIndex.Index);
@@ -254,9 +256,9 @@ public class RunCanvas : Panel
         Vector3 position = Vector3.zero;
         int offset = 1;
         
-        for (int i = 0; i < b.PreferredDeckIndices.Count; i++)
+        for (int i = 0; i < b.GainingSkills.Count; i++)
         {
-            SlotView view = DeckPanel.SkillItemFromDeckIndex(b.PreferredDeckIndices[i].Reify());
+            SlotView view = DeckPanel.SkillItemFromDeckIndex(b.GainingSkills[i].GetDeckIndex().Reify());
             Vector3 showPosition = position + i * offset * Vector3.left;
             SetPosition(view, showPosition);
         }
@@ -264,8 +266,9 @@ public class RunCanvas : Panel
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(0.05f);
         
-        foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
+        foreach (GainingSkill gainingSkill in b.GainingSkills)
         {
+            DeckIndex deckIndex = gainingSkill.GetDeckIndex().Reify();
             SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex);
             seq.AppendCallback(() => SetShow(view))
                 .AppendInterval(0.15f);
@@ -273,8 +276,9 @@ public class RunCanvas : Panel
         
         seq.AppendInterval(0.2f);
         
-        foreach (DeckIndex deckIndex in b.PreferredDeckIndices)
+        foreach (GainingSkill gainingSkill in b.GainingSkills)
         {
+            DeckIndex deckIndex = gainingSkill.GetDeckIndex().Reify();
             SlotView view = DeckPanel.SkillItemFromDeckIndex(deckIndex);
             seq.AppendCallback(() => SetIdle(view))
                 .AppendInterval(0.1f);
