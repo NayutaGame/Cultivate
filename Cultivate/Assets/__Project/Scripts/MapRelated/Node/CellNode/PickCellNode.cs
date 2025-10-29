@@ -24,7 +24,7 @@ public class PickCellNode : CellNode
     private InputPort<Bound> Bound = new(new(1, 1));
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<List<SkillEntryQuery>> DrawStrategy = new(null);
+    private InputPort<List<SkillEntryQuery>> DrawStrategies = new(null);
 
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> ConfirmNext = new(self => self as ILogicNode);
@@ -58,7 +58,7 @@ public class PickCellNode : CellNode
         var title = Title.Value;
         var detailedText = DetailedText.Value;
         var bound = Bound.Value;
-        var drawStrategy = DrawStrategy.Value;
+        var drawStrategies = DrawStrategies.Value;
         
         var pickCell = new PickCell(
             titleText: title,
@@ -67,8 +67,8 @@ public class PickCellNode : CellNode
         );
         
         GainSkillBuilder b = new();
-        b.Draw(drawStrategy, RunManager.Instance.Environment.JingJie, distinct: true, consume: false);
-        pickCell.PopulateInventory(b.DrawnSkills);
+        b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, distinct: true, consume: false);
+        b.GainingSkills.Do(g => pickCell.PopulateInventory(SkillReference.FromGainingSkill(g)));
         
         return pickCell;
     }

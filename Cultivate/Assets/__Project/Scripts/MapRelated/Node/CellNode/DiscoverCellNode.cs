@@ -51,33 +51,27 @@ public class DiscoverCellNode : CellNode
         if (!Application.isPlaying)
             return null;
             
-        // string title = Title.Value;
-        // string description = Description.Value;
-        //
-        // SkillEntryCollectionDescriptor descriptor = Descriptor.Value;
-        // JingJieType preferredJingJieType = PreferredJingJie.Value;
-        // JingJie preferredJingJie = JingJie.FromJingJieType(preferredJingJieType);
-        //
-        // if (descriptor == null)
-        // {
-        //     Bound jingJieBound = new(JingJie.LianQi, preferredJingJie);
-        //     descriptor = SkillEntryCollectionDescriptor.FromEverything(baseJingJieRange: jingJieBound, count: 3);
-        // }
-        //
-        // return DiscoverCell.FromEverything(
-        //     titleText: title,
-        //     descriptionText: description,
-        //     descriptor: descriptor,
-        //     preferredJingJie: preferredJingJie
-        // );
-        return null;
+        string title = Title.Value;
+        string description = Description.Value;
+        
+        JingJieType preferredJingJieType = PreferredJingJie.Value;
+        JingJie preferredJingJie = JingJie.FromJingJieType(preferredJingJieType);
+        
+        List<SkillEntryQuery> drawStrategies = DrawStrategies.Value ?? SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, preferredJingJie)).Stack(3);
+        
+        return DiscoverCell.FromEverything(
+            titleText: title,
+            descriptionText: description,
+            drawStrategies: drawStrategies,
+            preferredJingJie: preferredJingJie
+        );
     }
 
     public override void ReceiveSignal(Signal signal)
     {
         if (signal is PickDiscoveredSkillSignal pickSignal)
         {
-            // int pickedIndex = pickSignal.Selected;
+            int pickedIndex = pickSignal.Selected;
             // SkillEntryDescriptor skill = (_cell as DiscoverCell).GetSkills()[pickedIndex];
             // RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
         }

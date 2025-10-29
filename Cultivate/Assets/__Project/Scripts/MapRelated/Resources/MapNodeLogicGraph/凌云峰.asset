@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Name: "\u51CC\u4E91\u5CF0"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -520.74786, y: -346.83395}
-  zoom: 1.2087688
+  panOffset: {x: -288.66092, y: -173.77332}
+  zoom: 0.95961857
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -173,7 +173,10 @@ MonoBehaviour:
     guid: b13de3e5-50a5-4ce7-ba28-9fb2987c0cd6
     fieldName: Option1
     elementName: 
-    connections: []
+    connections:
+    - node: {fileID: 5254414691165939901}
+      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
+      reroutes: []
     rect:
       serializedVersion: 2
       x: 550
@@ -186,10 +189,7 @@ MonoBehaviour:
     guid: 77da48a5-6e37-43b6-9a32-e00f43a06fd1
     fieldName: Option2
     elementName: 
-    connections:
-    - node: {fileID: 5254414691165939901}
-      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: 550
@@ -247,7 +247,7 @@ MonoBehaviour:
       guid: b13de3e5-50a5-4ce7-ba28-9fb2987c0cd6
       reroutes: []
     - node: {fileID: 2007083910564809279}
-      guid: 77da48a5-6e37-43b6-9a32-e00f43a06fd1
+      guid: b13de3e5-50a5-4ce7-ba28-9fb2987c0cd6
       reroutes: []
     rect:
       serializedVersion: 2

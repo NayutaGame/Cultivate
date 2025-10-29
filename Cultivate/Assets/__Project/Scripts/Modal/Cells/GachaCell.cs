@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 using Unity.VisualScripting;
 
 public class GachaCell : Cell
@@ -39,9 +40,8 @@ public class GachaCell : Cell
         b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQi2ZhuJi).Stack(7), JingJie.LianQi);
         b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.JinDan2YuanYing).Stack(2), JingJie.JinDan);
         b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.HuaShenOnly), JingJie.HuaShen);
-        
-        foreach(SkillReference skillReference in b.DrawnSkills)
-            _items.Add(skillReference.Clone());
+
+        b.GainingSkills.Do(g => _items.Add(SkillReference.FromGainingSkill(g)));
 
         _price = 0;
 

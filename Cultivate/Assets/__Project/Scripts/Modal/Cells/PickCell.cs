@@ -47,6 +47,11 @@ public class PickCell : Cell
         _inventory = new ListModel<SkillReference>();
     }
 
+    public void PopulateInventory(SkillReference skill)
+    {
+        _inventory.Add(skill);
+    }
+
     public void PopulateInventory(List<SkillReference> skills)
     {
         foreach(SkillReference skill in skills)
@@ -79,7 +84,7 @@ public class PickCell : Cell
         
         GainSkillBuilder b = new();
         b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-        cell.PopulateInventory(b.DrawnSkills);
+        b.GainingSkills.Do(g => cell.PopulateInventory(SkillReference.FromGainingSkill(g)));
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
@@ -108,7 +113,7 @@ public class PickCell : Cell
         
         GainSkillBuilder b = new();
         b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-        cell.PopulateInventory(b.DrawnSkills);
+        b.GainingSkills.Do(g => cell.PopulateInventory(SkillReference.FromGainingSkill(g)));
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
@@ -137,7 +142,7 @@ public class PickCell : Cell
         
         GainSkillBuilder b = new();
         b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-        cell.PopulateInventory(b.DrawnSkills);
+        b.GainingSkills.Do(g => cell.PopulateInventory(SkillReference.FromGainingSkill(g)));
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();
@@ -166,7 +171,7 @@ public class PickCell : Cell
         
         GainSkillBuilder b = new();
         b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-        cell.PopulateInventory(b.DrawnSkills);
+        b.GainingSkills.Do(g => cell.PopulateInventory(SkillReference.FromGainingSkill(g)));
         cell.SetConfirmOperation(skills =>
         {
             GainSkillBuilder b = new();

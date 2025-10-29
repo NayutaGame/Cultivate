@@ -9,7 +9,7 @@ public sealed class RunSkillQuery : AnnotatableLine
     private SkillEntry _entry;
     private WuXing _wuXing;
     private JingJie _jingJie;
-    private Bound? _jingJieBound;
+    private Bound? _baseJingJieBound;
     private TagComposite _tagComposite;
     private Description _description;
 
@@ -23,7 +23,7 @@ public sealed class RunSkillQuery : AnnotatableLine
         SkillEntry entry = null,
         WuXing wuXing = null,
         JingJie jingJie = null,
-        Bound? jingJieBound = null,
+        Bound? baseJingJieBound = null,
         TagComposite tagComposite = null,
         Description description = null)
     {
@@ -31,7 +31,7 @@ public sealed class RunSkillQuery : AnnotatableLine
         _entry = entry;
         _wuXing = wuXing;
         _jingJie = jingJie;
-        _jingJieBound = jingJieBound;
+        _baseJingJieBound = baseJingJieBound;
         _tagComposite = tagComposite;
         _description = description ?? new("未设定的描述");
     }
@@ -58,26 +58,37 @@ public sealed class RunSkillQuery : AnnotatableLine
         => new(entry: skillReference.GetEntry(), jingJie: skillReference.GetJingJie());
 
     public static RunSkillQuery FromJingJieBound(int low, int high)
-        => new(jingJieBound: new(low, high),
+        => new(baseJingJieBound: new(low, high),
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)high).GetName()}之间的牌"));
 
     public static RunSkillQuery FromJingJieBoundAndHasWuXing(int low, int high)
-        => new(jingJieBound: new(low, high), pred: s => s.GetWuXing() != WuXing.Wu,
+        => new(baseJingJieBound: new(low, high), pred: s => s.GetWuXing() != WuXing.Wu,
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)high).GetName()}之间，具有五行的牌"));
 
     public static RunSkillQuery FromTagComposite(TagComposite tagComposite)
         => new(tagComposite: tagComposite, description: new($"请提交一张包含{tagComposite.GetTagListString()}的牌"));
 
     public static RunSkillQuery FromWuXingJingJieTagComposite(WuXing wuXing, JingJie jingJie, TagComposite tagComposite)
-        => new(wuXing: wuXing, jingJieBound: new((int)jingJie, (int)jingJie), tagComposite: tagComposite, 
+        => new(wuXing: wuXing, baseJingJieBound: new((int)jingJie, (int)jingJie), tagComposite: tagComposite, 
             description: new($"请提交一张五行为{wuXing.GetName()}，境界为{jingJie.GetName()}，包含{tagComposite.GetTagListString()}的牌"));
 
-    public static RunSkillQuery FromEverything(WuXing wuXing, Bound jingJieBound, TagComposite tagComposite, string customDescription)
-        => new(wuXing: wuXing, jingJieBound: jingJieBound, tagComposite: tagComposite, 
-            description: new(customDescription));
+    public static RunSkillQuery FromEverything(
+        SkillEntry skillEntry,
+        WuXing wuXing,
+        JingJie jingJie,
+        Bound jingJieBound,
+        TagComposite tagComposite,
+        string description)
+        => new(
+            entry: skillEntry,
+            wuXing: wuXing,
+            jingJie: jingJie,
+            baseJingJieBound: jingJieBound,
+            tagComposite: tagComposite,
+            description: new(description));
 
     public RunSkillQuery Clone()
-        => new(_pred, _entry, _wuXing, _jingJie, _jingJieBound, _tagComposite, _description);
+        => new(_pred, _entry, _wuXing, _jingJie, _baseJingJieBound, _tagComposite, _description);
     
     public List<RunSkillQuery> Stack(int stack)
     {
@@ -101,7 +112,7 @@ public sealed class RunSkillQuery : AnnotatableLine
         if (_jingJie != null && runSkill.GetJingJie() != _jingJie)
             return false;
 
-        if (_jingJieBound != null && !_jingJieBound.Value.Contains(runSkill.GetJingJie()))
+        if (_baseJingJieBound != null && !_baseJingJieBound.Value.Contains(runSkill.GetJingJie()))
             return false;
 
         if (_tagComposite != null && !runSkill.GetTagComposite().Contains(_tagComposite))

@@ -110,21 +110,18 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 0
-  DrawStrategy:
+  DrawStrategies:
     ownerNode: {fileID: -7315539164771039615}
-    guid: 120edd7e-1570-4a81-be51-16305dbe2fb2
-    fieldName: DrawStrategy
+    guid: e2291c8b-8231-4681-88dc-eafa6c44110e
+    fieldName: DrawStrategies
     elementName: 
-    connections:
-    - node: {fileID: -5237148428821466894}
-      guid: b9d733d6-d45f-4cf9-883f-838f5c5328f8
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
-      x: -201.9
-      y: 375.5
-      width: 16
-      height: 16
+      x: 0
+      y: 0
+      width: 0
+      height: 0
   _next:
     ownerNode: {fileID: -7315539164771039615}
     guid: 09f475e9-dfa9-41ef-beef-02f4600b06bb
@@ -138,114 +135,6 @@ MonoBehaviour:
       serializedVersion: 2
       x: 186
       y: 395.5
-      width: 16
-      height: 16
-    hasFunc: 1
---- !u!114 &-5237148428821466894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a170df6deb48f1448e3d7d3f50a514f, type: 3}
-  m_Name: Skill Entry Collection Descriptor
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: -696, y: 392}
-  WuXing:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: ddf5a915-5ca0-447b-9667-1c807a0590de
-    fieldName: WuXing
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -697.9
-      y: 427.5
-      width: 16
-      height: 16
-    defaultValue: 5
-  JingJie:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: 72c395ca-5b36-4066-88dc-bfd11c7e3652
-    fieldName: JingJie
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -697.9
-      y: 447.5
-      width: 16
-      height: 16
-    defaultValue: 0
-  Tag:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: 6a5668ae-e14f-4432-9364-a0aff78ae2bb
-    fieldName: Tag
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -697.9
-      y: 467.5
-      width: 16
-      height: 16
-    defaultValue: 0
-  Count:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: 2e4c5da4-58bf-490f-a45a-2d04c66ce689
-    fieldName: Count
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -697.9
-      y: 487.5
-      width: 16
-      height: 16
-    defaultValue: 3
-  Distinct:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: 5c0ad577-8d2b-4d33-8cb8-6acf93edfeba
-    fieldName: Distinct
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -697.9
-      y: 507.5
-      width: 16
-      height: 16
-    defaultValue: 1
-  Consume:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: 1b34cd2d-fb5d-4b07-8896-1e6d8d09d3b3
-    fieldName: Consume
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -697.9
-      y: 527.5
-      width: 16
-      height: 16
-    defaultValue: 1
-  value:
-    ownerNode: {fileID: -5237148428821466894}
-    guid: b9d733d6-d45f-4cf9-883f-838f5c5328f8
-    fieldName: value
-    elementName: 
-    connections:
-    - node: {fileID: -7315539164771039615}
-      guid: 120edd7e-1570-4a81-be51-16305dbe2fb2
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: -310
-      y: 547.5
       width: 16
       height: 16
     hasFunc: 1
@@ -301,7 +190,6 @@ MonoBehaviour:
   - {fileID: -5107495778688126947}
   - {fileID: 7797061731977044555}
   - {fileID: -7315539164771039615}
-  - {fileID: -5237148428821466894}
   parent: {fileID: 0}
   children: []
   inPoints:

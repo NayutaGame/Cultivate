@@ -10,9 +10,6 @@ public class GainSkillBuilder
 
     private List<GainingSkill> _gainingSkills;
     public List<GainingSkill> GainingSkills => _gainingSkills;
-
-    private List<SkillReference> _drawnSkills;
-    public List<SkillReference> DrawnSkills => _drawnSkills;
     
     public GainSkillBuilder()
     {
@@ -21,8 +18,6 @@ public class GainSkillBuilder
         _mutatorPool = _env.MutatorPool;
 
         _gainingSkills = new();
-
-        _drawnSkills = new();
     }
 
     public void Pick(SkillReference skillReference, IDeckIndex preferredDeckIndex = null)

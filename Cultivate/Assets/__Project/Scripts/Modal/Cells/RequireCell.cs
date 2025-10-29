@@ -21,35 +21,35 @@ public class RequireCell : Cell
     private RequireCell(
         string titleText,
         Func<ListModel<RequirementSlot>, string> getDetailedText,
-        List<RunSkillQuery> queries,
+        List<RunSkillQuery> requirements,
         Func<RequireCell, Cell> submitOperation)
     {
         _titleText = titleText;
         _getDetailedText = getDetailedText;
-        _requirementSlotList = RequirementSlotListFromQueries(queries);
+        _requirementSlotList = RequirementSlotListFromQueries(requirements);
         _submitOperation = submitOperation;
     }
 
     public static RequireCell FromLiteral(
         string titleText = null,
         Func<ListModel<RequirementSlot>, string> getDetailedText = null,
-        List<RunSkillQuery> queries = null,
+        List<RunSkillQuery> requirements = null,
         Func<RequireCell, Cell> submitOperation = null)
-        => new(titleText ?? "选择", getDetailedText ?? (list => "请选择卡"), queries ?? RunSkillQuery.AnySkill().Stack(1), submitOperation);
+        => new(titleText ?? "选择", getDetailedText ?? (list => "请选择卡"), requirements ?? RunSkillQuery.AnySkill().Stack(1), submitOperation);
     
     public static RequireCell FromConstantDetailedText(
         string titleText = null,
         string detailedText = null,
-        List<RunSkillQuery> queries = null,
+        List<RunSkillQuery> requirements = null,
         Func<RequireCell, Cell> submitOperation = null)
-        => new(titleText ?? "选择", list => detailedText ?? "请选择卡", queries ?? RunSkillQuery.AnySkill().Stack(1), submitOperation);
+        => new(titleText ?? "选择", list => detailedText ?? "请选择卡", requirements ?? RunSkillQuery.AnySkill().Stack(1), submitOperation);
 
     public static RequireCell GetTemplate()
     {
         RequireCell template = FromConstantDetailedText(
             titleText:          "选择",
             detailedText:       "请选择一张牌",
-            queries:            RunSkillQuery.AnySkill().Stack(1));
+            requirements:       RunSkillQuery.AnySkill().Stack(1));
         
         DialogCell win = new(
             titleText: "成功",
@@ -78,7 +78,7 @@ public class RequireCell : Cell
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"天机阁",
             detailedText:       $"选择1张牌，复制1次",
-            queries:            RunSkillQuery.AnySkill().Stack(1));
+            requirements:            RunSkillQuery.AnySkill().Stack(1));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -110,7 +110,7 @@ public class RequireCell : Cell
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"百草堂",
             detailedText:       $"选择0~2张不高于{currJingJie.GetName()}牌，提升到{nextJingJie.GetName()}",
-            queries:            RunSkillQuery.FromJingJieBound(JingJie.LianQi, currJingJie).Stack(2));
+            requirements:            RunSkillQuery.FromJingJieBound(JingJie.LianQi, currJingJie).Stack(2));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -136,7 +136,7 @@ public class RequireCell : Cell
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"天界树",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。新的牌和原来的牌的五行有关。",
-            queries:            RunSkillQuery.FromJingJieBoundAndHasWuXing(JingJie.LianQi, JingJie.HuaShen).Stack(5));
+            requirements:            RunSkillQuery.FromJingJieBoundAndHasWuXing(JingJie.LianQi, JingJie.HuaShen).Stack(5));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -155,7 +155,7 @@ public class RequireCell : Cell
                 b.Draw(SkillEntryQuery.FromWuXingBaseJingJieBound(
                     wuXing: targetWuXing,
                     baseJingJieBound: new(JingJie.LianQi, targetJingJie)), targetJingJie, consume: true);
-                slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
+                slot.Skill = RunSkill.FromGainingSkill(b.GainingSkills[0]);
             });
                         
             cardPickerCell.WithdrawAll();
@@ -172,7 +172,7 @@ public class RequireCell : Cell
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"斩断尘缘",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。无法再遇到被选择的牌。",
-            queries:            RunSkillQuery.AnySkill().Stack(5));
+            requirements:            RunSkillQuery.AnySkill().Stack(5));
 
         cell.SetSubmitOperation(cardPickerCell =>
         {
@@ -195,7 +195,7 @@ public class RequireCell : Cell
                 GainSkillBuilder b = new();
                 SkillEntryQuery drawStrategy = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, targetJingJie));
                 b.Draw(drawStrategy, targetJingJie, consume: true);
-                slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
+                slot.Skill = RunSkill.FromGainingSkill(b.GainingSkills[0]);
             });
                         
             cardPickerCell.WithdrawAll();

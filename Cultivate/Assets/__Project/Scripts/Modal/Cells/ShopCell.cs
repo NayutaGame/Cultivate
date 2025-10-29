@@ -64,13 +64,13 @@ public class ShopCell : Cell
         GainSkillBuilder b = new();
         b.Draw(_drawStrategies, currJingJie, distinct: true, consume: false);
         
-        foreach (SkillReference e in b.DrawnSkills)
+        foreach (GainingSkill g in b.GainingSkills)
         {
             int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(currJingJie);
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
             Commodity commodity = new Commodity(
-                skill: e.Clone(),
+                skill: SkillReference.FromGainingSkill(g), 
                 price: price,
                 payWithGoldFunc: _acceptGold ? PayWithGold : null,
                 payWithHealthFunc: _acceptHealth ? PayWithHealth : null,
@@ -140,7 +140,7 @@ public class ShopCell : Cell
         RequireCell requireCell = RequireCell.FromLiteral(
             titleText:          $"交易",
             getDetailedText:    GetDetailedText,
-            queries:            RunSkillQuery.AnySkill().Stack(1));
+            requirements:            RunSkillQuery.AnySkill().Stack(1));
 
         ShopCell shopCell = new ShopCell(
             ladder,

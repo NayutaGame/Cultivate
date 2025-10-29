@@ -20,6 +20,11 @@ public class TagComposite : Addressable
     }
     
     public long Value => _value;
+
+    public static TagComposite FromTagType(TagType tagType)
+    {
+        return (TagType.None == tagType) ? new(0) : new((int)tagType << 6);
+    }
     
     public ListModel<TagEntry> GetTagList()
     {

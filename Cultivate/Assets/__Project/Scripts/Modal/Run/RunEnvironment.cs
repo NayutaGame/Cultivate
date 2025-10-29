@@ -886,7 +886,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (AllowMutate())
             b.DrawMutator(JingJie);
 
-        b.DrawnSkills.Do(d.Skills.Add);
+        b.GainingSkills.Do(g => d.Skills.Add(SkillReference.FromGainingSkill(g)));
 
         SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }

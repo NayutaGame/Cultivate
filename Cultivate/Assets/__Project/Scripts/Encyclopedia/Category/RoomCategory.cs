@@ -604,7 +604,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText:          "感悟",
                         detailedText:       $"在菩提树下坐了一段时间，对境界有了新的见解。" +
                                             $"\n选择一张不高于{currJingJie}期({currJingJie.GetColorName()}色外框)的牌提升至{nextJingJie}期({nextJingJie.GetColorName()}色外框)",
-                        queries:            RunSkillQuery.FromJingJieBound(JingJie.LianQi, currJingJie).Stack(1));
+                        requirements:            RunSkillQuery.FromJingJieBound(JingJie.LianQi, currJingJie).Stack(1));
                     
                     B.SetSubmitOperation(cardPickerCell =>
                     {
@@ -1556,11 +1556,11 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张二动牌",
-                        queries:            RunSkillQuery.FromTagComposite(TagCategory.Swift).Stack(1));
+                        requirements:            RunSkillQuery.FromTagComposite(TagCategory.Swift).Stack(1));
                     RequireCell C = RequireCell.FromConstantDetailedText(
                         titleText:          "提交",
                         detailedText:       "请提交一张治疗牌",
-                        queries:            RunSkillQuery.FromTagComposite(TagCategory.Health).Stack(1));
+                        requirements:            RunSkillQuery.FromTagComposite(TagCategory.Health).Stack(1));
 
                     DialogCell BWin = new(
                         titleText: "迷路",
@@ -1790,7 +1790,7 @@ public class RoomCategory : Category<RoomEntry>
                     GainSkillBuilder b = new();
                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(10),
                         RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-                    B.PopulateInventory(b.DrawnSkills);
+                    b.GainingSkills.Do(g => B.PopulateInventory(SkillReference.FromGainingSkill(g)));
                     B.SetConfirmOperation(skills =>
                     {
                         GainSkillBuilder b = new();
@@ -1875,7 +1875,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请选择2张牌，随机将其中一张变成另一张",
-                        queries: RunSkillQuery.AnySkill().Stack(2));
+                        requirements: RunSkillQuery.AnySkill().Stack(2));
                     DialogCell C = new(
                         titleText: "分子打印机",
                         detailedText: "来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
@@ -2635,7 +2635,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "选择",
                         detailedText: "请选择0~4张牌，将所有牌变成其中随机的一张。" +
                                       "\n镜灵们看起来对你的命石很感兴趣，你有些担心他们不会还给你了。",
-                        queries: RunSkillQuery.AnySkill().Stack(4));
+                        requirements: RunSkillQuery.AnySkill().Stack(4));
                     
                     DialogCell C0 = new("镜中世界",
                         "你拒绝了镜灵的提议，决定继续前行。");
@@ -2887,7 +2887,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "割舍",
                         detailedText: "请选择0到5张牌送出",
-                        queries: RunSkillQuery.AnySkill().Stack(5));
+                        requirements: RunSkillQuery.AnySkill().Stack(5));
                     DialogCell C = new(
                         titleText: "割舍",
                         detailedText: "果然还是难以割舍心爱的卡牌。");
@@ -3193,7 +3193,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell BPick = RequireCell.FromConstantDetailedText(
                         titleText: "仪式感",
                         detailedText: "炼丹需要消耗一张牌",
-                        queries: RunSkillQuery.AnySkill().Stack(1));
+                        requirements: RunSkillQuery.AnySkill().Stack(1));
                     DialogCell B = new(
                         titleText: "仪式感",
                         detailedText: "你取出了一张卡牌作为原料，炼出了一枚丹药，给那人吃了。" +
@@ -3447,7 +3447,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell C = RequireCell.FromConstantDetailedText(
                         titleText:          "后羿",
                         detailedText:       "请提交一张牌",
-                        queries:            RunSkillQuery.AnySkill().Stack(1));
+                        requirements:            RunSkillQuery.AnySkill().Stack(1));
         
                     DialogCell CWin = new(
                         titleText: "后羿",
@@ -4054,7 +4054,7 @@ public class RoomCategory : Category<RoomEntry>
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText: "选择",
                         detailedText: "请提交每种五行的牌各一张",
-                        queries: queries);
+                        requirements: queries);
                     
                     DialogCell C = new(
                         titleText: "提交测试",

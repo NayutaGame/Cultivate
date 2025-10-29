@@ -296,21 +296,18 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 4
-  DescriptorList:
+  Requirements:
     ownerNode: {fileID: 3243228085115525341}
-    guid: 8eb01d97-610f-41ca-b424-ad2e76365def
-    fieldName: DescriptorList
+    guid: e83b574c-fd55-4359-ab4b-e904afcb5f4d
+    fieldName: Requirements
     elementName: 
-    connections:
-    - node: {fileID: 7333838946327458178}
-      guid: 83a2a19d-52ab-41a4-a209-5381996951b7
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
-      x: -121.9
-      y: 321.5
-      width: 16
-      height: 16
+      x: 0
+      y: 0
+      width: 0
+      height: 0
   Success:
     ownerNode: {fileID: 3243228085115525341}
     guid: bbecd7e1-4e35-4a88-bd99-6bb4fc53a7c3
@@ -407,10 +404,7 @@ MonoBehaviour:
     guid: be33d9bb-d1d9-403c-99a3-e61aa90e8d73
     fieldName: value
     elementName: 
-    connections:
-    - node: {fileID: 7333838946327458178}
-      guid: f67e27c7-4b86-46b9-99d8-3fc884ba8b9f
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: -630
@@ -418,6 +412,19 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
+  EntryName:
+    ownerNode: {fileID: 7278644459189762266}
+    guid: 94f52a62-2649-4a76-b149-a938dc22f1ff
+    fieldName: EntryName
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    defaultValue: 
   WuXing:
     ownerNode: {fileID: 7278644459189762266}
     guid: 01394645-c2b9-40f0-a063-e415aab835cd
@@ -431,21 +438,34 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 6
-  JingJieBound:
+  JingJie:
     ownerNode: {fileID: 7278644459189762266}
-    guid: b99eae74-a6f4-445b-bc90-e11d7a1a64fc
-    fieldName: JingJieBound
+    guid: 9b5402af-3b6a-41f6-9939-0640b938d6ae
+    fieldName: JingJie
     elementName: 
     connections: []
     rect:
       serializedVersion: 2
-      x: -1017.9
-      y: 483.5
-      width: 16
-      height: 16
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    defaultValue: 0
+  BaseJingJieBound:
+    ownerNode: {fileID: 7278644459189762266}
+    guid: 6e0e2cc8-4264-400e-90fa-a0f7aba3f45b
+    fieldName: BaseJingJieBound
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
     defaultValue:
       Start: 0
-      End: 3
+      End: 4
   Tag:
     ownerNode: {fileID: 7278644459189762266}
     guid: 28efb6a0-be4f-4537-9d94-6d2417b44caa
@@ -472,51 +492,6 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: "\u8BF7\u63D0\u4EA4\u5361\u724C"
---- !u!114 &7333838946327458178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d89aa86f4328034aa0fc2acc6b74812, type: 3}
-  m_Name: Run Skill Descriptor List Model
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: -552, y: 344}
-  value:
-    ownerNode: {fileID: 7333838946327458178}
-    guid: 83a2a19d-52ab-41a4-a209-5381996951b7
-    fieldName: value
-    elementName: 
-    connections:
-    - node: {fileID: 3243228085115525341}
-      guid: 8eb01d97-610f-41ca-b424-ad2e76365def
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: -166
-      y: 379.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  Descriptor:
-  - ownerNode: {fileID: 7333838946327458178}
-    guid: f67e27c7-4b86-46b9-99d8-3fc884ba8b9f
-    fieldName: Descriptor
-    elementName: Descriptor.0
-    connections:
-    - node: {fileID: 7278644459189762266}
-      guid: be33d9bb-d1d9-403c-99a3-e61aa90e8d73
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: -558.16
-      y: 424.5
-      width: 16
-      height: 16
 --- !u!114 &7797061731977044555
 MonoBehaviour:
   m_ObjectHideFlags: 0

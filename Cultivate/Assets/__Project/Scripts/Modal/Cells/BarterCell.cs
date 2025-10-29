@@ -114,7 +114,7 @@ public class BarterCell : Cell
             {
                 b.DrawMutator(JingJie.HuaShen);
             }
-            toSkills[i] = b.DrawnSkills[0];
+            toSkills[i] = SkillReference.FromGainingSkill(b.GainingSkills[0]);
         }
         
         _inventory.Clear();

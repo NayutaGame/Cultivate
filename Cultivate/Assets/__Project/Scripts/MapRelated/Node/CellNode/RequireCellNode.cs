@@ -50,7 +50,7 @@ public class RequireCellNode : CellNode
     private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.Consume);
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<List<RunSkillQuery>> Queries = new();
+    private InputPort<List<RunSkillQuery>> Requirements = new();
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Success = new(self => self as ILogicNode);
@@ -88,14 +88,14 @@ public class RequireCellNode : CellNode
         Dictionary<RequireCellBehaviorType, string> defaultDetailedText;
         
         var behaviorType = BehaviorType.Value;
-        var descriptorList = Queries.Value;
+        var requirements = Requirements.Value;
 
         Dictionary<RequireCellBehaviorType, List<RunSkillQuery>> defaultRequirements;
         
         var requireCell = RequireCell.FromConstantDetailedText(
             titleText: title,
             detailedText: detailedText,
-            queries: descriptorList
+            requirements: requirements
         );
         
         return requireCell;
@@ -148,7 +148,7 @@ public class RequireCellNode : CellNode
                     GainSkillBuilder b = new();
                     SkillEntryQuery drawStrategy = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, targetJingJie));
                     b.Draw(drawStrategy, targetJingJie);
-                    slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
+                    slot.Skill = RunSkill.FromGainingSkill(b.GainingSkills[0]);
                 }
                         
                 requireCell.WithdrawAll();
@@ -223,7 +223,7 @@ public class RequireCellNode : CellNode
                         wuXing: targetWuXing,
                         baseJingJieBound: new(JingJie.LianQi, targetJingJie));
                     b.Draw(drawStrategy, jingJie: targetJingJie, consume: true);
-                    slot.Skill = RunSkill.FromSkillReference(b.DrawnSkills[0]);
+                    slot.Skill = RunSkill.FromGainingSkill(b.GainingSkills[0]);
                 });
                         
                 requireCell.WithdrawAll();

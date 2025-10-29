@@ -55,6 +55,24 @@ public sealed class SkillEntryQuery
     public static SkillEntryQuery FromSkillReference(SkillReference skillReference)
         => new(entry: skillReference.GetEntry());
 
+    public static SkillEntryQuery FromEverything(
+        SkillEntry entry = null,
+        WuXing wuXing = null,
+        Bound? baseJingJieBound = null,
+        TagComposite tagComposite = null)
+        => new(
+            entry: entry,
+            wuXing: wuXing,
+            baseJingJieBound: baseJingJieBound,
+            tagComposite: tagComposite);
+
+    public static SkillEntryQuery FromOn(EditorSkillEntryQuery on)
+        => new(
+            entry: string.IsNullOrEmpty(on.EntryName) ? null : Encyclopedia.SkillCategory.FromName(on.EntryName),
+            wuXing: (WuXingType.Any == on.WuXing) ? null : global::WuXing.FromWuXingType(on.WuXing),
+            baseJingJieBound: on.BaseJingJieBound,
+            tagComposite: TagComposite.FromTagType(on.Tag));
+
     public SkillEntryQuery Clone()
         => new(_predicates, _entry, _wuXing, _baseJingJieBound, _tagComposite);
 

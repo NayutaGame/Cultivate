@@ -34,6 +34,9 @@ public sealed class SkillReference : AnnotatableSkill, ISerializationCallbackRec
     public static SkillReference FromRunSkill(RunSkill runSkill)
         => new(runSkill.GetEntry(), runSkill.GetJingJie());
 
+    public static SkillReference FromGainingSkill(GainingSkill gainingSkill)
+        => new(gainingSkill.GetEntry(), gainingSkill.GetJingJie());
+
     public SkillReference Clone()
         => new(_entry, _jingJie);
 
