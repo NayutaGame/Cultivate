@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\u900D\u9065\u6D77"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: 52.64759, y: -334.92563}
-  zoom: 1.2393166
+  panOffset: {x: -127.37884, y: -291.77744}
+  zoom: 1.0345743
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Name: Exit Point
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 152, y: -24}
+  nodePosition: {x: 792, y: 8}
   exit:
     ownerNode: {fileID: 5254414691165939901}
     guid: 415163a9-2067-4d77-b32b-efa4791a32e0
@@ -48,8 +48,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 150.1
-      y: 11.5
+      x: 790.1
+      y: 43.5
       width: 16
       height: 16
   next:

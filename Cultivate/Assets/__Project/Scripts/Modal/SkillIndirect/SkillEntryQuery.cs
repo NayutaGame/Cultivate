@@ -66,12 +66,12 @@ public sealed class SkillEntryQuery
             baseJingJieBound: baseJingJieBound,
             tagComposite: tagComposite);
 
-    public static SkillEntryQuery FromOn(EditorSkillEntryQuery on)
+    public static SkillEntryQuery FromEditorQuery(EditorSkillEntryQuery editorQuery)
         => new(
-            entry: string.IsNullOrEmpty(on.EntryName) ? null : Encyclopedia.SkillCategory.FromName(on.EntryName),
-            wuXing: (WuXingType.Any == on.WuXing) ? null : global::WuXing.FromWuXingType(on.WuXing),
-            baseJingJieBound: on.BaseJingJieBound,
-            tagComposite: TagComposite.FromTagType(on.Tag));
+            entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
+            wuXing: (WuXingType.Any == editorQuery.WuXing) ? null : global::WuXing.FromWuXingType(editorQuery.WuXing),
+            baseJingJieBound: editorQuery.BaseJingJieBound,
+            tagComposite: TagComposite.FromTagType(editorQuery.Tag));
 
     public SkillEntryQuery Clone()
         => new(_predicates, _entry, _wuXing, _baseJingJieBound, _tagComposite);

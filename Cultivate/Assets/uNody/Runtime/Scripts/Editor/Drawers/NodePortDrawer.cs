@@ -28,11 +28,11 @@ namespace PuppyDragon.uNodyEditor
                 textAreaStyle = new GUIStyle(EditorStyles.textArea);
                 textAreaStyle.wordWrap = true;
             }
-
+            
             if (!string.IsNullOrEmpty(fieldName))
             {
                 position.y += cachedSpace;
-
+            
                 var node = (property.serializedObject.targetObject as Node);
                 string elementName = GetCachedSerializedProperty(property, "elementName").stringValue;
                 var port = string.IsNullOrEmpty(elementName) ? node.GetPort(fieldName) : node.GetPort(elementName);
@@ -40,16 +40,16 @@ namespace PuppyDragon.uNodyEditor
                 {
                     if (port.IsElement)
                         label.text = label.text.Replace("Element ", "");
-
+            
                     var graphEditor = NodeGraphEditor.GetEditor((property.serializedObject.targetObject as Node).Graph);
                     var style = graphEditor.GetPortStyle(port);
-
+            
                     var defaultValueProperty = GetCachedSerializedProperty(property, "defaultValue");
                     var hasFuncProperty = GetCachedSerializedProperty(property, "hasFunc");
-
+            
                     bool isConnector = (port.Direction == NodePort.IO.Input && NodeReflection.IsInPoint(node)) ||
                         (port.Direction == NodePort.IO.Output && NodeReflection.IsOutPoint(node));
-
+            
                     if (isConnector)
                     {
                         label.text = node.name;
@@ -66,10 +66,10 @@ namespace PuppyDragon.uNodyEditor
                         if (attribute.isHideLabel)
                             label.text = string.Empty;
                     }
-
+            
                     NodeEditorUtilities.GetCachedAttrib<Node.MultilineAttribute>(
                                     property.serializedObject.targetObject.GetType(), fieldName, out var multilineAttribute);
-
+            
                     if (defaultValueProperty != null && (hasFuncProperty == null || !hasFuncProperty.boolValue))
                     {
                         switch (port.ShowBackingValueType)
@@ -90,14 +90,14 @@ namespace PuppyDragon.uNodyEditor
                                     if (multilineAttribute != null)
                                     {
                                         var multilineRect = position;
-
+            
                                         if (!string.IsNullOrEmpty(label.text))
                                         {
                                             multilineRect.height = EditorGUIUtility.singleLineHeight;
                                             EditorGUI.LabelField(multilineRect, label.text);
                                             multilineRect.y += EditorGUIUtility.singleLineHeight;
                                         }
-
+            
                                         multilineRect.height = EditorGUIUtility.singleLineHeight * multilineAttribute.line;
                                         defaultValueProperty.stringValue = EditorGUI.TextArea(multilineRect, defaultValueProperty.stringValue, textAreaStyle);
                                     }
@@ -107,7 +107,7 @@ namespace PuppyDragon.uNodyEditor
                                     }
                                 }
                                 break;
-
+            
                             case Node.ShowBackingValue.Never:
                                 position.height = EditorGUIUtility.singleLineHeight;
                                 // Display a label
@@ -116,19 +116,19 @@ namespace PuppyDragon.uNodyEditor
                                 else
                                     EditorGUI.LabelField(position, label, NodeEditorStyles.OutputPortLabel);
                                 break;
-
+            
                             case Node.ShowBackingValue.Always:
                                 if (multilineAttribute != null)
                                 {
                                     var multilineRect = position;
-
+            
                                     if (!string.IsNullOrEmpty(label.text))
                                     {
                                         multilineRect.height = EditorGUIUtility.singleLineHeight;
                                         EditorGUI.LabelField(multilineRect, label.text);
                                         multilineRect.y += EditorGUIUtility.singleLineHeight;
                                     }
-
+            
                                     multilineRect.height = EditorGUIUtility.singleLineHeight * multilineAttribute.line;
                                     defaultValueProperty.stringValue = EditorGUI.TextArea(multilineRect, defaultValueProperty.stringValue, textAreaStyle);
                                 }
@@ -147,14 +147,14 @@ namespace PuppyDragon.uNodyEditor
                         else
                             EditorGUI.LabelField(position, label, NodeEditorStyles.OutputPortLabel);
                     }
-
+            
                     // If property is an input, display a regular property field and put a port handle on the left side
                     if (port.Direction == NodePort.IO.Input)
                     {
                         float indentLevel = EditorGUI.indentLevel;
                         if (property.propertyPath.Contains("Array.data"))
                             indentLevel += 1.9f;
-
+            
                         position.x -= (NodeEditorStyles.PortSize.x * (1.4f * (indentLevel + 1)));
                         position.y += style.padding.top;
                     }
@@ -163,13 +163,13 @@ namespace PuppyDragon.uNodyEditor
                         position.x += position.width + (NodeEditorStyles.PortSize.x * 0.5f) - 1;
                         position.y += style.padding.top;
                     }
-
+            
                     position.size = NodeEditorStyles.PortSize;
-
+            
                     Color emptyColor = graphEditor.GetPortEmptyColor(port);
                     Color filledColor = graphEditor.GetPortFilledColor(port);
                     var portStyle = graphEditor.GetPortStyle(port);
-
+            
                     Color col = GUI.color;
                     if (port.IsConnected)
                     {
@@ -187,13 +187,13 @@ namespace PuppyDragon.uNodyEditor
                         GUI.DrawTexture(position, portStyle.normal.background);
                     }
                     GUI.color = col;
-
+            
                     if (isConnector)
                     {
                         var root = node.Graph.Parent ?? node.Graph;
                         node = root.Nodes.First(x => (x is SubGraphNode subGraphNode) && subGraphNode.SubGraph == node.Graph);
                     }
-
+            
                     if (Event.current.type == EventType.Repaint && IsNeedUpdatePosition)
                     {
                         Vector2 portPosition = node.NodePosition + position.center;
@@ -246,7 +246,8 @@ namespace PuppyDragon.uNodyEditor
                 if (NodeEditorUtilities.GetCachedAttrib<Node.PortSettingsAttribute>(
                     property.serializedObject.targetObject.GetType(), fieldName, out var attribute))
                 {
-                    if (attribute.isHideLabel && !Mathf.Approximately(defaultHeight, EditorGUIUtility.singleLineHeight))
+					bool foldButtonCase = defaultValueProperty != null && defaultValueProperty.hasChildren && defaultValueProperty.isExpanded;
+                    if (attribute.isHideLabel && !Mathf.Approximately(defaultHeight, EditorGUIUtility.singleLineHeight) && !foldButtonCase)
                         defaultHeight -= (multilineAttribute != null) ? EditorGUIUtility.singleLineHeight * 2f : EditorGUIUtility.singleLineHeight;
                 }
                 return defaultHeight + cachedSpace;
