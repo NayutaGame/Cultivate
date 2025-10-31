@@ -18,19 +18,22 @@ public class ShopCellNode : CellNode
     private InputPort<string> ContentText = new("可以花钱购买卡牌");
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    private InputPort<string> SpriteName = new("收藏家");
+    
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<float> PriceMultiplier = new(2f);
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<string> SpriteName = new("收藏家");
+    private InputPort<List<EditorSkillEntryQuery>> DrawStrategies = new();
+    
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    private InputPort<EditorJingJie> PreferredJingJie = new();
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<bool> AcceptGold = new(true);
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<bool> AcceptHealth = new(false);
-    
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<List<SkillEntryQuery>> DrawStrategies = new();
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> _next = new(self => self as ILogicNode);
@@ -59,28 +62,46 @@ public class ShopCellNode : CellNode
     {
         if (!Application.isPlaying)
             return null;
-            
-        // int ladder = 8; // From blackboard - TODO: get from actual blackboard
-        // float priceMultiplier = PriceMultiplier.Value;
-        // string title = Title.Value;
-        // string contentText = ContentText.Value;
-        // string spriteName = SpriteName.Value;
-        // bool acceptGold = AcceptGold.Value;
-        // bool acceptHealth = AcceptHealth.Value;
-        //
-        // SpriteEntry spriteEntry = Encyclopedia.SpriteCategory.FromName(spriteName);
-        //
-        // SkillEntryCollectionDescriptor drawStrategy = DrawStrategy.Value;
-        // if (drawStrategy == null)
-        // {
-        //     drawStrategy = SkillEntryCollectionDescriptor.FromEverything(
-        //         baseJingJieRange: new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder)),
-        //         count: 8,
-        //         consume: false);
-        // }
-        //
-        // return ShopCell.FromEverything(ladder, priceMultiplier, title, contentText, spriteEntry, acceptGold, acceptHealth, drawStrategy);
-        return null;
+        
+        float priceMultiplier = PriceMultiplier.Value;
+        string title = Title.Value;
+        string contentText = ContentText.Value;
+        string spriteName = SpriteName.Value;
+        bool acceptGold = AcceptGold.Value;
+        bool acceptHealth = AcceptHealth.Value;
+
+        var spriteEntry = global::Encyclopedia.SpriteCategory.FromName(spriteName);
+
+        // 转换抽卡策略
+        List<SkillEntryQuery> drawStrategies = null;
+        List<EditorSkillEntryQuery> editorQueries = DrawStrategies.Value;
+        if (editorQueries != null && editorQueries.Count > 0)
+        {
+            drawStrategies = new List<SkillEntryQuery>(editorQueries.Count);
+            for (int i = 0; i < editorQueries.Count; i++)
+            {
+                var eq = editorQueries[i];
+                if (eq == null) continue;
+                drawStrategies.Add(SkillEntryQuery.FromEditorQuery(eq));
+            }
+        }
+
+        // 首选境界
+        JingJie preferredJingJie = global::JingJie.FromEditor(PreferredJingJie.Value);
+
+        // 兜底策略：基于当前偏好境界，从炼气到该境界，抽8张
+        drawStrategies ??= SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, preferredJingJie)).Stack(8);
+
+        return ShopCell.FromEverything(
+            title: title,
+            contentText: contentText,
+            spriteEntry: spriteEntry,
+            priceMultiplier: priceMultiplier,
+            drawStrategies: drawStrategies,
+            preferredJingJie: preferredJingJie,
+            acceptGold: acceptGold,
+            acceptHealth: acceptHealth
+        );
     }
     
     public override void ReceiveSignal(Signal signal)

@@ -1782,21 +1782,15 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: "你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
                     PickCell B = new(
                         titleText: "天机阁",
-                        detailedText: "请从10张牌中选1张获取");
+                        detailedText: "请从10张牌中选1张获取",
+                        drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(10));
                     DialogCell C = new(
                         titleText: "天机阁",
                         detailedText: "刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
 
-                    GainSkillBuilder b = new();
-                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(10),
-                        RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-                    b.GainingSkills.Do(g => B.PopulateInventory(SkillReference.FromGainingSkill(g)));
-                    B.SetConfirmOperation(skills =>
+                    B.SetConfirmOperation(confirmSkillsSignal =>
                     {
-                        GainSkillBuilder b = new();
-                        skills.Do(item => b.Pick(item.Clone()));
-                        b.Execute();
-                        b.Invoke();
+                        B.DefaultConfirmOperation(confirmSkillsSignal);
                         return C;
                     });
                     

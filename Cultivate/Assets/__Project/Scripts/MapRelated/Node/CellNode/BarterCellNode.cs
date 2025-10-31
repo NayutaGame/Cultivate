@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections.Generic;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
@@ -17,15 +16,12 @@ public class BarterCellNode : CellNode
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<bool> TargetIsMutator = new(false);
-    
+
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<bool> HasRefreshCost = new(false);
-    
+    private InputPort<EditorRunSkillQuery> FromQuery;
+
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<string> RefreshCostSkillName = new();
-    
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<string> RefreshCostDescription = new();
+    private InputPort<EditorSkillEntryQuery> ToQuery;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> _next = new(self => self as ILogicNode);
@@ -55,23 +51,19 @@ public class BarterCellNode : CellNode
         if (!Application.isPlaying)
             return null;
             
-        // int targetItemCount = TargetItemCount.Value;
-        // bool targetIsMutator = TargetIsMutator.Value;
-        //
-        // Predicate<RunSkill> fromPred = null; // Can be extended later
-        // Predicate<SkillEntry> toPred = null; // Can be extended later
-        //
-        // RunCostDefinition refreshCost = null;
-        // if (HasRefreshCost.Value && !string.IsNullOrEmpty(RefreshCostSkillName.Value))
-        // {
-        //     refreshCost = new SkillCostDefinition(
-        //         RunSkillDescriptor.FromName(RefreshCostSkillName.Value),
-        //         RefreshCostDescription.Value
-        //     );
-        // }
-        //
-        // return BarterCell.FromEverything(targetItemCount, targetIsMutator, fromPred, toPred, refreshCost);
-        return null;
+        int targetItemCount = TargetItemCount.Value;
+        bool targetIsMutator = TargetIsMutator.Value;
+        RunSkillQuery fromQuery = RunSkillQuery.FromEditorQuery(FromQuery.Value);
+        SkillEntryQuery toQuery = SkillEntryQuery.FromEditorQuery(ToQuery.Value);
+        RunCostDefinition refreshCost = null; // Can be extended later if needed
+        
+        return BarterCell.FromEverything(
+            targetItemCount: targetItemCount,
+            targetIsMutator: targetIsMutator,
+            fromQuery: fromQuery,
+            toQuery: toQuery,
+            refreshCost: refreshCost
+        );
     }
     
     public override void ReceiveSignal(Signal signal)

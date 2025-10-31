@@ -47,10 +47,10 @@ public class RequireCellNode : CellNode
     private InputPort<string> DetailedText = new();
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.Consume);
-    
+    private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.耗材);
+
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<List<RunSkillQuery>> Requirements = new();
+    private InputPort<List<EditorRunSkillQuery>> Requirements;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Success = new(self => self as ILogicNode);
@@ -82,22 +82,31 @@ public class RequireCellNode : CellNode
     
     protected override Cell CreateInternalCell()
     {
+        if (!Application.isPlaying)
+            return null;
+
         var title = Title.Value;
         var detailedText = DetailedText.Value;
 
-        Dictionary<RequireCellBehaviorType, string> defaultDetailedText;
-        
-        var behaviorType = BehaviorType.Value;
-        var requirements = Requirements.Value;
+        List<RunSkillQuery> runQueries = null;
+        List<EditorRunSkillQuery> editorQueries = Requirements.Value;
+        if (editorQueries != null && editorQueries.Count > 0)
+        {
+            runQueries = new List<RunSkillQuery>(editorQueries.Count);
+            for (int i = 0; i < editorQueries.Count; i++)
+            {
+                var editorQuery = editorQueries[i];
+                if (editorQuery == null) continue;
+                runQueries.Add(RunSkillQuery.FromEditorQuery(editorQuery));
+            }
+        }
 
-        Dictionary<RequireCellBehaviorType, List<RunSkillQuery>> defaultRequirements;
-        
         var requireCell = RequireCell.FromConstantDetailedText(
             titleText: title,
             detailedText: detailedText,
-            requirements: requirements
+            requirements: runQueries
         );
-        
+
         return requireCell;
     }
     
@@ -113,7 +122,7 @@ public class RequireCellNode : CellNode
 
         Dictionary<RequireCellBehaviorType, Func<RequireCell, bool>> behaviorHandlers = new()
         {
-            { RequireCellBehaviorType.Consume, requireCell =>
+            { RequireCellBehaviorType.耗材, requireCell =>
             {
                 bool success = requireCell.AllFulfilled();
                 if (!success)
@@ -123,7 +132,7 @@ public class RequireCellNode : CellNode
 
                 return success;
             }},
-            { RequireCellBehaviorType.RemoveFromPool, requireCell =>
+            { RequireCellBehaviorType.移除, requireCell =>
             {
                 bool success = requireCell.AnyFulfilled();
                 
@@ -155,7 +164,7 @@ public class RequireCellNode : CellNode
 
                 return success;
             }},
-            { RequireCellBehaviorType.UpgradeJingJieToCurrent, requireCell =>
+            { RequireCellBehaviorType.提升境界至当前境界, requireCell =>
             {
                 bool success = requireCell.AnyFulfilled();
                 
@@ -170,7 +179,7 @@ public class RequireCellNode : CellNode
                 requireCell.WithdrawAll();
                 return success;
             }},
-            { RequireCellBehaviorType.UpgradeJingJieToNext, requireCell =>
+            { RequireCellBehaviorType.提升境界至下一境界, requireCell =>
             {
                 bool success = requireCell.AnyFulfilled();
                 
@@ -185,7 +194,7 @@ public class RequireCellNode : CellNode
                 requireCell.WithdrawAll();
                 return success;
             }},
-            { RequireCellBehaviorType.Copy, requireCell =>
+            { RequireCellBehaviorType.复制, requireCell =>
             {
                 bool success = requireCell.AnyFulfilled();
                 if (!success)
@@ -203,7 +212,7 @@ public class RequireCellNode : CellNode
                 requireCell.WithdrawAll();
                 return true;
             }},
-            { RequireCellBehaviorType.WuXingCycle, requireCell =>
+            { RequireCellBehaviorType.五行相生, requireCell =>
             {
                 bool success = requireCell.AnyFulfilled();
                 

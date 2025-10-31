@@ -180,7 +180,7 @@ namespace PuppyDragon.uNody
 
         public void ClearConnections()
         {
-            while (connections.Count > 0)
+            while (connections != null && connections.Count > 0)
                 Disconnect(connections[0].Port);
         }
 

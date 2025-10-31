@@ -118,11 +118,11 @@ public class WuXing : Entry
     public static WuXing FromIndex(int index)
         => Encyclopedia.WuXingCategory[index];
 
-    public static WuXing FromWuXingType(WuXingType wuXingType)
+    public static WuXing FromEditor(EditorWuXing editorWuXing)
     {
-        if (wuXingType == WuXingType.Any)
+        if (editorWuXing == EditorWuXing.无)
             return null;
-        return Encyclopedia.WuXingCategory[(int)wuXingType];
+        return Encyclopedia.WuXingCategory[(int)editorWuXing];
     }
 
     public static bool XiangSheng(WuXing lhs, WuXing rhs)

@@ -16,13 +16,13 @@ namespace PuppyDragon.uNodyEditor
         private Dictionary<(int, string), Dictionary<string, SerializedProperty>> cachedPropertiesByObject = new();
         private float cachedSpace = 0;
         private GUIStyle textAreaStyle;
-
+        
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
-
+        
             string fieldName = GetCachedSerializedProperty(property, "fieldName").stringValue;
-
+        
             if (textAreaStyle == null)
             {
                 textAreaStyle = new GUIStyle(EditorStyles.textArea);
@@ -201,7 +201,7 @@ namespace PuppyDragon.uNodyEditor
                     }
                 }
             }
-
+        
             EditorGUI.EndProperty();
         }
 
@@ -210,23 +210,24 @@ namespace PuppyDragon.uNodyEditor
             var node = (property.serializedObject.targetObject as Node);
             string fieldName = GetCachedSerializedProperty(property, "fieldName").stringValue;
             string elementName = GetCachedSerializedProperty(property, "elementName").stringValue;
-            if (!string.IsNullOrEmpty(fieldName) && string.IsNullOrEmpty(elementName))
+            // if (!string.IsNullOrEmpty(fieldName) && string.IsNullOrEmpty(elementName))
+            if (!string.IsNullOrEmpty(fieldName))
             {
                 var port = string.IsNullOrEmpty(elementName) ? node.GetPort(fieldName) : node.GetPort(elementName);
-
+     
                 if (NodeEditorUtilities.GetCachedAttrib<Node.SpaceLineAttribute>(
                     property.serializedObject.targetObject.GetType(), fieldName, out var spaceLine))
                     cachedSpace = spaceLine.height;
                 else
                     cachedSpace = 0;
-
+     
                 var defaultValueProperty = GetCachedSerializedProperty(property, "defaultValue");
                 var hasFuncProperty = GetCachedSerializedProperty(property, "hasFunc");
                 float defaultHeight = 0f;
-
+     
                 NodeEditorUtilities.GetCachedAttrib<Node.MultilineAttribute>(
                         property.serializedObject.targetObject.GetType(), fieldName, out var multilineAttribute);
-
+     
                 if (port == null ||
                     defaultValueProperty == null ||
                     (hasFuncProperty != null && hasFuncProperty.boolValue) ||
@@ -239,10 +240,10 @@ namespace PuppyDragon.uNodyEditor
                 {
                     if (multilineAttribute != null)
                         defaultHeight = EditorGUIUtility.singleLineHeight * (multilineAttribute.line + 2);
-                    else
-                        defaultHeight = EditorGUI.GetPropertyHeight(defaultValueProperty);
+					else
+						defaultHeight = EditorGUI.GetPropertyHeight(defaultValueProperty);
                 }
-
+     
                 if (NodeEditorUtilities.GetCachedAttrib<Node.PortSettingsAttribute>(
                     property.serializedObject.targetObject.GetType(), fieldName, out var attribute))
                 {

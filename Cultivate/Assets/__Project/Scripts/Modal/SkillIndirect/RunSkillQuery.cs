@@ -72,20 +72,14 @@ public sealed class RunSkillQuery : AnnotatableLine
         => new(wuXing: wuXing, baseJingJieBound: new((int)jingJie, (int)jingJie), tagComposite: tagComposite, 
             description: new($"请提交一张五行为{wuXing.GetName()}，境界为{jingJie.GetName()}，包含{tagComposite.GetTagListString()}的牌"));
 
-    public static RunSkillQuery FromEverything(
-        SkillEntry skillEntry,
-        WuXing wuXing,
-        JingJie jingJie,
-        Bound jingJieBound,
-        TagComposite tagComposite,
-        string description)
+    public static RunSkillQuery FromEditorQuery(EditorRunSkillQuery editorQuery)
         => new(
-            entry: skillEntry,
-            wuXing: wuXing,
-            jingJie: jingJie,
-            baseJingJieBound: jingJieBound,
-            tagComposite: tagComposite,
-            description: new(description));
+            entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
+            wuXing: WuXing.FromEditor(editorQuery.WuXing),
+            jingJie: JingJie.FromEditor(editorQuery.JingJie),
+            baseJingJieBound: editorQuery.BaseJingJieBound,
+            tagComposite: TagComposite.FromEditor(editorQuery.Tag),
+            description: editorQuery.Description);
 
     public RunSkillQuery Clone()
         => new(_pred, _entry, _wuXing, _jingJie, _baseJingJieBound, _tagComposite, _description);

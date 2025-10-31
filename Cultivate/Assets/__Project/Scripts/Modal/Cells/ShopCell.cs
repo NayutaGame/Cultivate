@@ -6,52 +6,48 @@ using UnityEngine;
 
 public class ShopCell : Cell
 {
-    private int _ladder;
-    private float _priceMultiplier;
-
     private string _title;
-    public string GetTitle() => _title;
-
     private string _contentText;
-    public string GetContentText() => _contentText;
-    
-    private CommodityListModel _commodities;
-    public CommodityListModel GetCommodities() => _commodities;
-    public void SetCommodities(CommodityListModel commodities) => _commodities = commodities;
-
     private SpriteEntry _spriteEntry;
-    public SpriteEntry GetSprite() => _spriteEntry;
-
+    
+    private float _priceMultiplier;
+    private List<SkillEntryQuery> _drawStrategies;
+    private JingJie _preferredJingJie;
     private bool _acceptGold;
     private bool _acceptHealth;
-
-    private List<SkillEntryQuery> _drawStrategies;
+    
+    private CommodityListModel _commodities;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Guide",                      thisObject => ((ShopCell)thisObject).GetGuideDescriptor() },
-        { "Commodities",                thisObject => ((ShopCell)thisObject).GetCommodities() },
+        { "Commodities",                thisObject => ((ShopCell)thisObject)._commodities },
     };
     public override object Get(string s) => Accessor[s](this);
     private ShopCell(
-        int ladder,
-        float priceMultiplier,
         string title,
         string contentText,
         SpriteEntry spriteEntry,
+        float priceMultiplier,
+        List<SkillEntryQuery> drawStrategies,
+        JingJie preferredJingJie,
         bool acceptGold,
-        bool acceptHealth,
-        List<SkillEntryQuery> drawStrategies)
+        bool acceptHealth
+        )
     {
-        _ladder = ladder;
-        _priceMultiplier = priceMultiplier;
         _title = title;
         _contentText = contentText;
         _spriteEntry = spriteEntry;
+        _priceMultiplier = priceMultiplier;
+        _drawStrategies = drawStrategies;
+        _preferredJingJie = preferredJingJie;
         _acceptGold = acceptGold;
         _acceptHealth = acceptHealth;
-        _drawStrategies = drawStrategies;
     }
+    
+    public string GetTitle() => _title;
+    public string GetContentText() => _contentText;
+    public SpriteEntry GetSprite() => _spriteEntry;
 
     public override void DefaultEnter(Cell cell)
     {
@@ -59,14 +55,12 @@ public class ShopCell : Cell
 
         _commodities = new CommodityListModel();
         
-        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(_ladder);
-        
         GainSkillBuilder b = new();
-        b.Draw(_drawStrategies, currJingJie, distinct: true, consume: false);
+        b.Draw(_drawStrategies, _preferredJingJie, distinct: true, consume: false);
         
         foreach (GainingSkill g in b.GainingSkills)
         {
-            int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(currJingJie);
+            int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(g.GetJingJie());
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
             Commodity commodity = new Commodity(
@@ -126,14 +120,15 @@ public class ShopCell : Cell
 
     public static ShopCell FromShouCangJia(int ladder)
         => new(
-            ladder,
-            priceMultiplier: 2,
             title: "收藏家",
             contentText: "可以花钱购买卡牌",
             spriteEntry: Encyclopedia.SpriteCategory.FromName("收藏家"),
+            priceMultiplier: 2,
+            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder))).Stack(8),
+            preferredJingJie: RoomDefinition.GetJingJieFromLadder(ladder),
             acceptGold: true,
-            acceptHealth: false,
-            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder))).Stack(8));
+            acceptHealth: false
+            );
 
     public static RequireCell FromYiBaoZhai(int ladder)
     {
@@ -143,14 +138,15 @@ public class ShopCell : Cell
             requirements:            RunSkillQuery.AnySkill().Stack(1));
 
         ShopCell shopCell = new ShopCell(
-            ladder,
-            priceMultiplier: 2,
             title: "易宝斋",
             contentText: "可以花钱购买卡牌",
             spriteEntry: Encyclopedia.SpriteCategory.FromName("收藏家"),
+            priceMultiplier: 2,
+            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder))).Stack(8),
+            preferredJingJie: RoomDefinition.GetJingJieFromLadder(ladder),
             acceptGold: true,
-            acceptHealth: false, 
-            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder))).Stack(8));
+            acceptHealth: false
+            );
 
         requireCell.SetSubmitOperation(SellCard);
 
@@ -194,14 +190,15 @@ public class ShopCell : Cell
             (jingJieFromLadder + 3).ClampUpper(JingJie.HuaShen));
 
         ShopCell B = new(
-            ladder,
-            priceMultiplier: 1.5f,
             title: "黑市",
             contentText: "可以花钱购买卡牌\n如果钱不够，可以使用气血支付",
             spriteEntry: Encyclopedia.SpriteCategory.FromName("黑市"),
+            priceMultiplier: 1.5f,
+            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(baseJingJieBound).Stack(2),
+            preferredJingJie: RoomDefinition.GetJingJieFromLadder(ladder),
             acceptGold: true,
-            acceptHealth: true,
-            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(baseJingJieBound).Stack(2));
+            acceptHealth: true
+            );
         
         return B;
     }
@@ -210,14 +207,28 @@ public class ShopCell : Cell
     {
         JingJie jingJieFromLadder = RoomDefinition.GetJingJieFromLadder(ladder);
 
-        ShopCell B = new(ladder, 1.5f, "气血商店", "可以使用气血购买卡牌", Encyclopedia.SpriteCategory.FromName("黑市"),
-            acceptGold: false, acceptHealth: true, 
-            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(JingJie.JinDan2HuaShen).Stack(8));
+        ShopCell B = new(
+            title: "气血商店",
+            contentText: "可以使用气血购买卡牌",
+            spriteEntry: Encyclopedia.SpriteCategory.FromName("黑市"),
+            priceMultiplier: 1.5f,
+            drawStrategies: SkillEntryQuery.FromBaseJingJieBound(JingJie.JinDan2HuaShen).Stack(8),
+            preferredJingJie: RoomDefinition.GetJingJieFromLadder(ladder),
+            acceptGold: false,
+            acceptHealth: true 
+            );
         
         return B;
     }
 
-    public static ShopCell FromEverything(int ladder, float priceMultiplier, string title, string contentText, SpriteEntry spriteEntry,
-        bool acceptGold, bool acceptHealth, List<SkillEntryQuery> drawStrategies)
-        => new(ladder, priceMultiplier, title, contentText, spriteEntry, acceptGold, acceptHealth, drawStrategies);
+    public static ShopCell FromEverything(
+        string title,
+        string contentText,
+        SpriteEntry spriteEntry,
+        float priceMultiplier,
+        List<SkillEntryQuery> drawStrategies,
+        JingJie preferredJingJie,
+        bool acceptGold,
+        bool acceptHealth)
+        => new(title, contentText, spriteEntry, priceMultiplier, drawStrategies, preferredJingJie, acceptGold, acceptHealth);
 }

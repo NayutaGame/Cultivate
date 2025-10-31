@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\u900D\u9065\u6D77"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -127.37884, y: -291.77744}
-  zoom: 1.0345743
+  panOffset: {x: -187.06604, y: -325.1149}
+  zoom: 0.8008148
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Name: Exit Point
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 792, y: 8}
+  nodePosition: {x: 376, y: -56}
   exit:
     ownerNode: {fileID: 5254414691165939901}
     guid: 415163a9-2067-4d77-b32b-efa4791a32e0
@@ -48,8 +48,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 790.1
-      y: 43.5
+      x: 374.1
+      y: -20.5
       width: 16
       height: 16
   next:
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: Entry Point
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: -328, y: -24}
+  nodePosition: {x: 120, y: -56}
   prevs:
     ownerNode: {fileID: 8404964342545946824}
     guid: 37f23e5b-030a-4adf-8ebf-bc3f603ef0f6
@@ -99,8 +99,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: -210
-      y: 11.5
+      x: 238
+      y: -20.5
       width: 16
       height: 16
     hasFunc: 1

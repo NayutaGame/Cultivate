@@ -16,12 +16,12 @@ public class DiscoverCellNode : CellNode
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> Description = new("请选择一张卡作为奖励");
+
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    private InputPort<List<EditorSkillEntryQuery>> DrawStrategies;
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<List<SkillEntryQuery>> DrawStrategies = new();
-    
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<JingJieType> PreferredJingJie = new(JingJieType.LianQi);
+    private InputPort<EditorJingJie> PreferredJingJie = new(EditorJingJie.练气);
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> _next = new(self => self as ILogicNode);
@@ -53,12 +53,25 @@ public class DiscoverCellNode : CellNode
             
         string title = Title.Value;
         string description = Description.Value;
-        
-        JingJieType preferredJingJieType = PreferredJingJie.Value;
-        JingJie preferredJingJie = JingJie.FromJingJieType(preferredJingJieType);
-        
-        List<SkillEntryQuery> drawStrategies = DrawStrategies.Value ?? SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, preferredJingJie)).Stack(3);
-        
+
+        EditorJingJie preferredJingJieType = PreferredJingJie.Value;
+        JingJie preferredJingJie = JingJie.FromEditor(preferredJingJieType);
+
+        List<SkillEntryQuery> drawStrategies = null;
+        List<EditorSkillEntryQuery> editorQueries = DrawStrategies.Value;
+        if (editorQueries != null && editorQueries.Count > 0)
+        {
+            drawStrategies = new List<SkillEntryQuery>(editorQueries.Count);
+            for (int i = 0; i < editorQueries.Count; i++)
+            {
+                var eq = editorQueries[i];
+                if (eq == null) continue;
+                drawStrategies.Add(SkillEntryQuery.FromEditorQuery(eq));
+            }
+        }
+
+        drawStrategies ??= SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, preferredJingJie)).Stack(3);
+
         return DiscoverCell.FromEverything(
             titleText: title,
             descriptionText: description,

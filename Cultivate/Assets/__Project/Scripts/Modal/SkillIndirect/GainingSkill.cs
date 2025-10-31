@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class GainingSkill
 {
     private SkillEntry _entry;
@@ -12,7 +14,7 @@ public class GainingSkill
     public GainingSkill(SkillEntry entry, JingJie jingJie, IDeckIndex deckIndex)
     {
         _entry = entry;
-        _jingJie = jingJie;
+        _jingJie = Mathf.Clamp(jingJie, entry.LowestJingJie, entry.HighestJingJie);
         _deckIndex = deckIndex ?? new NextHandDeckIndexDefinition();
     }
 

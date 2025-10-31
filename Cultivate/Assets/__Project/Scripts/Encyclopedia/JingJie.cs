@@ -97,5 +97,10 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
     public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => Encyclopedia.JingJieCategory[index];
 
-    public static JingJie FromJingJieType(JingJieType jingJieType) => (int)jingJieType;
+    public static JingJie FromEditor(EditorJingJie editorJingJie)
+    {
+        if (editorJingJie == EditorJingJie.当前)
+            return RunManager.Instance.Environment.JingJie;
+        return (int)editorJingJie;
+    }
 }

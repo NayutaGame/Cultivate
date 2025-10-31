@@ -43,10 +43,10 @@ public class PickPanel : Panel
         PickCell cell = cellAdapter.AsCell() as PickCell;
 
         DetailedText.text = cell.GetDetailedText() +
-                            $"\n可选择{cell.Bound.Start}~{cell.Bound.End}张" +
+                            $"\n可选择{cell.PickCardCountRange.Start}~{cell.PickCardCountRange.End}张" +
                             $"\n已选择 {_selections.Count} 张";
         
-        ConfirmButton.SetStateToInactiveFrom(!cell.Bound.Contains(_selections.Count));
+        ConfirmButton.SetStateToInactiveFrom(!cell.PickCardCountRange.Contains(_selections.Count));
         
         SkillListView.Sync();
     }

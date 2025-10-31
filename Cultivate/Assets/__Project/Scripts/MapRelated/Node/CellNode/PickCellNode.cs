@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using System.Linq;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
@@ -10,8 +9,7 @@ using CLLibrary;
 [CreateNodeMenu("Cell/Pick Cell", -9, true)]
 public class PickCellNode : CellNode
 {
-    [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] 
-    [SerializeField]
+    [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
     private InputPort<ILogicNode> prevs;
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
@@ -21,10 +19,10 @@ public class PickCellNode : CellNode
     private InputPort<string> DetailedText = new(new("请选择卡"));
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<Bound> Bound = new(new(1, 1));
+    private InputPort<Bound> PickCardCountRange = new(new(1, 1));
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<List<SkillEntryQuery>> DrawStrategies = new(null);
+    private InputPort<List<EditorSkillEntryQuery>> DrawStrategies;
 
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> ConfirmNext = new(self => self as ILogicNode);
@@ -55,40 +53,40 @@ public class PickCellNode : CellNode
 
     protected override Cell CreateInternalCell()
     {
-        var title = Title.Value;
-        var detailedText = DetailedText.Value;
-        var bound = Bound.Value;
-        var drawStrategies = DrawStrategies.Value;
+        if (!Application.isPlaying)
+            return null;
+            
+        string title = Title.Value;
+        string detailedText = DetailedText.Value;
+        Bound pickCardCountRange = PickCardCountRange.Value;
         
-        var pickCell = new PickCell(
+        List<SkillEntryQuery> drawStrategies = null;
+        List<EditorSkillEntryQuery> editorQueries = DrawStrategies.Value;
+        if (editorQueries != null && editorQueries.Count > 0)
+        {
+            drawStrategies = new List<SkillEntryQuery>();
+            foreach (var editorQuery in editorQueries)
+            {
+                if (editorQuery != null)
+                {
+                    drawStrategies.Add(SkillEntryQuery.FromEditorQuery(editorQuery));
+                }
+            }
+        }
+        
+        return new PickCell(
             titleText: title,
             detailedText: detailedText,
-            bound: bound
+            pickCardCountRange: pickCardCountRange,
+            drawStrategies: drawStrategies
         );
-        
-        GainSkillBuilder b = new();
-        b.Draw(drawStrategies, RunManager.Instance.Environment.JingJie, distinct: true, consume: false);
-        b.GainingSkills.Do(g => pickCell.PopulateInventory(SkillReference.FromGainingSkill(g)));
-        
-        return pickCell;
     }
 
     public override void ReceiveSignal(Signal signal)
     {
         if (signal is ConfirmSkillsSignal selectedSkillsSignal)
         {
-            var selectedSkills = selectedSkillsSignal.Selected;
-            
-            if (selectedSkills.Count > 0)
-            {
-                GainSkillBuilder b = new();
-                selectedSkills.Do(item =>
-                {
-                    b.Pick(item.Clone());
-                });
-                b.Execute();
-                b.Invoke();
-            }
+            (AsCell() as PickCell)?.DefaultReceiveSignal(selectedSkillsSignal);
         }
     }
 }

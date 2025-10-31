@@ -7,6 +7,8 @@ public class ConfirmSkillsSignal : Signal
 
     public ConfirmSkillsSignal(List<SkillReference> selected)
     {
-        Selected = selected;
+        Selected = new();
+        foreach (SkillReference skillReference in selected)
+            Selected.Add(skillReference.Clone());
     }
 }

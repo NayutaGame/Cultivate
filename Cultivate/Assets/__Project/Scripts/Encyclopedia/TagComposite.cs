@@ -21,9 +21,9 @@ public class TagComposite : Addressable
     
     public long Value => _value;
 
-    public static TagComposite FromTagType(TagType tagType)
+    public static TagComposite FromEditor(EditorTag editorTag)
     {
-        return (TagType.None == tagType) ? new(0) : new((int)tagType << 6);
+        return (EditorTag.无 == editorTag) ? new(0) : new((int)editorTag << 6);
     }
     
     public ListModel<TagEntry> GetTagList()

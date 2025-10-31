@@ -7,7 +7,7 @@ using UnityEngine;
 public class EditorSkillEntryQuery
 {
     [SerializeField] public string EntryName = "";
-    [SerializeField] public WuXingType WuXing = WuXingType.Any;
+    [SerializeField] public EditorWuXing WuXing = EditorWuXing.无;
     [SerializeField] public Bound BaseJingJieBound = JingJie.LianQi2HuaShen;
-    [SerializeField] public TagType Tag = TagType.None;
+    [SerializeField] public EditorTag Tag = EditorTag.无;
 }
