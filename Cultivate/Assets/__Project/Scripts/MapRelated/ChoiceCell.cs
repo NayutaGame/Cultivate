@@ -1,18 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class ChoiceCell : MonoBehaviour
+using System;
+using System.Collections.Generic;
+
+public class ChoiceCell : Cell
 {
-    // Start is called before the first frame update
-    void Start()
+    private ListModel<ChoiceOption> _choiceListModel;
+    
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        
+        { "ChoiceList",                     thisObject => ((ChoiceCell)thisObject)._choiceListModel },
+    };
+    public override object Get(string s) => Accessor[s](this);
+    public ChoiceCell(List<ChoiceOption> choices)
+    {
+        _choiceListModel = new ListModel<ChoiceOption>(choices.ToArray());
     }
 
-    // Update is called once per frame
-    void Update()
+    public override Cell DefaultReceiveSignal(Signal signal)
     {
-        
+        if (signal is SelectedChoiceSignal selectedChoiceSignal)
+        {
+            int i = selectedChoiceSignal.Selected;
+            return _choiceListModel[i].NextCell;
+        }
+
+        return this;
     }
 }

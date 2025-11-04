@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: "\u51CC\u4E91\u5CF0"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -694.9962, y: -569.09393}
+  panOffset: {x: -651.5696, y: -611.24316}
   zoom: 1.2772523
   nodes:
   - {fileID: 8404964342545946824}

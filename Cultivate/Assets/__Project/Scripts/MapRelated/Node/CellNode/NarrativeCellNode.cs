@@ -43,9 +43,6 @@ public class NarrativeCellNode : CellNode
 
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-        
         return new NarrativeCell(Commends ?? new List<Commend>());
     }
 
@@ -60,7 +57,7 @@ public class NarrativeCellNode : CellNode
             }
             else
             {
-                (AsCell() as NarrativeCell).ProcessCommend();
+                c.ProcessCommend();
                 return false;
             }
         }
