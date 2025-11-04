@@ -20,9 +20,9 @@ public class GainSkillBuilder
         _gainingSkills = new();
     }
 
-    public void Pick(SkillReference skillReference, IDeckIndex preferredDeckIndex = null)
+    public void Pick(SkillGhost skillGhost, IDeckIndex preferredDeckIndex = null)
     {
-        _gainingSkills.Add(new(skillReference.GetEntry(), skillReference.GetJingJie(), preferredDeckIndex));
+        _gainingSkills.Add(new(skillGhost.GetEntry(), skillGhost.GetJingJie(), preferredDeckIndex));
     }
 
     public void Draw(SkillEntryQuery drawStrategy, JingJie jingJie, IDeckIndex deckIndex = null, bool consume = true)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class DiscoverSkillDetails : RunClosureDetails
 {
-    public List<SkillReference> Skills;
+    public List<SkillGhost> Skills;
     public List<SkillEntryQuery> DrawStrategies;
     public JingJie PreferredJingJie;
 

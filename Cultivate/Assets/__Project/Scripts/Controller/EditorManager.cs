@@ -224,6 +224,9 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     public static RunEntity FindEntity(string name)
         => Instance.EntityEditableList.FirstObj(e => e.GetEntry().GetName() == name);
 
+    public static RunEntity FindEntity(EntityQuery query)
+        => Instance.EntityEditableList.FirstObj(query.Matches);
+
     public void TryWrite(RunSkill skill, SkillSlot slot)
     {
         bool skillInventoryContainsSkill = FilteredSkillInventory.Contains(skill);

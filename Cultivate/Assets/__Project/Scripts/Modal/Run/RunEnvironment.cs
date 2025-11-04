@@ -57,6 +57,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GuideFinishNeuron = new();
         
         SkillMovedNeuron.Join(SkillMovedInvokeResimulate);
+
+        CommendProcessedNeuron = new();
+
+        NarrativeTextChangedNeuron = new();
+        CharacterNameChangedNeuron = new();
     }
 
     public Neuron StartRunNeuron;
@@ -99,6 +104,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron AppendReportNeuron;
     public Neuron<bool> CommitBattleNeuron;
     public Neuron<Guide> GuideFinishNeuron;
+
+    public Neuron<Commend> CommendProcessedNeuron;
+
+    public Neuron<string> NarrativeTextChangedNeuron;
+    public Neuron<string, bool> CharacterNameChangedNeuron;
     
     public void SkillMovedInvokeResimulate(SkillMovedDetails d)
     {
@@ -728,11 +738,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
             if (toField)
             {
-                b.Pick(SkillReference.FromEntryJingJie(entry, s.Skill.GetJingJie()), s.ToDeckIndex());
+                b.Pick(SkillGhost.FromEntryJingJie(entry, s.Skill.GetJingJie()), s.ToDeckIndex());
             }
             else
             {
-                b.Pick(SkillReference.FromEntryJingJie(entry, s.Skill.GetJingJie()));
+                b.Pick(SkillGhost.FromEntryJingJie(entry, s.Skill.GetJingJie()));
             }
         });
         
@@ -886,7 +896,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (AllowMutate())
             b.DrawMutator(JingJie);
 
-        b.GainingSkills.Do(g => d.Skills.Add(SkillReference.FromGainingSkill(g)));
+        b.GainingSkills.Do(g => d.Skills.Add(SkillGhost.FromGainingSkill(g)));
 
         SendEvent(RunClosureDict.DID_DISCOVER_SKILL, d);
     }
@@ -902,6 +912,30 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         ReceiveSignalProcedure(new SelectedOptionSignal(d.SelectedIndex));
     }
     
+    #endregion
+
+    #region Narrative
+
+    public void SetCharacterNameProcedure(string characterName, bool isHome)
+    {
+        NarrativeCell narrativeCell = Cell?.AsCell() as NarrativeCell;
+        if (narrativeCell == null)
+            return;
+            
+        narrativeCell.SetCharacterName(characterName, isHome);
+        // 通知NarrativePanel更新
+    }
+
+    public void SetNarrativeTextProcedure(string narrativeText)
+    {
+        NarrativeCell narrativeCell = Cell?.AsCell() as NarrativeCell;
+        if (narrativeCell == null)
+            return;
+            
+        narrativeCell.SetNarrativeText(narrativeText);
+        // 通知NarrativePanel更新
+    }
+
     #endregion
 
     #region MoveSkillRelated
@@ -1181,7 +1215,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void PickSkillProcedure(SkillEntry skillEntry, JingJie preferredJingJie = null, DeckIndex? preferredDeckIndex = null)
     {
         GainSkillBuilder b = new();
-        b.Pick(SkillReference.FromEntryJingJie(skillEntry, preferredJingJie), preferredDeckIndex);
+        b.Pick(SkillGhost.FromEntryJingJie(skillEntry, preferredJingJie), preferredDeckIndex);
         b.Execute();
         b.Invoke();
     }
@@ -1237,7 +1271,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GachaNeuron.Invoke(d);
     }
     
-    public void ConfirmSelectionsProcedure(List<SkillReference> skillReferences)
+    public void ConfirmSelectionsProcedure(List<SkillGhost> skillReferences)
     {
         ReceiveSignalProcedure(new ConfirmSkillsSignal(skillReferences));
     }
@@ -1445,7 +1479,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
         
-        RunResultCell resultPanel = new RunResultCell(this);
+        CommitCell resultPanel = new CommitCell(this);
         Cell = resultPanel;
     }
 

@@ -38,7 +38,8 @@ public struct PanelS : IEquatable<PanelS>
         { typeof(PickCell),                  9 },
         { typeof(ImageCell),                10 },
         { typeof(ComicCell),                11 },
-        { typeof(RunResultCell),            12 },
+        { typeof(CommitCell),               12 },
+        { typeof(NarrativeCell),            13 },
     };
 
     public bool Equals(PanelS other)

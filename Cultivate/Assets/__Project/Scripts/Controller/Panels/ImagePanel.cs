@@ -35,7 +35,8 @@ public class ImagePanel : Panel
 
     public override void Refresh()
     {
-        ImageCell cell = _address.Get<ImageCell>();
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        ImageCell cell = cellAdapter.AsCell() as ImageCell;
         ImageButton.image.sprite = cell.GetSprite();
     }
 

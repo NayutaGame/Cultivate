@@ -64,7 +64,7 @@ public class ShopCell : Cell
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
             Commodity commodity = new Commodity(
-                skill: SkillReference.FromGainingSkill(g), 
+                skill: SkillGhost.FromGainingSkill(g), 
                 price: price,
                 payWithGoldFunc: _acceptGold ? PayWithGold : null,
                 payWithHealthFunc: _acceptHealth ? PayWithHealth : null,

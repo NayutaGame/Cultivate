@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 public class ConfirmSkillsSignal : Signal
 {
-    public List<SkillReference> Selected;
+    public List<SkillGhost> Selected;
 
-    public ConfirmSkillsSignal(List<SkillReference> selected)
+    public ConfirmSkillsSignal(List<SkillGhost> selected)
     {
         Selected = new();
-        foreach (SkillReference skillReference in selected)
+        foreach (SkillGhost skillReference in selected)
             Selected.Add(skillReference.Clone());
     }
 }

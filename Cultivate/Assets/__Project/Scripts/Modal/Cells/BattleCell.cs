@@ -1,30 +1,64 @@
 
 using System;
 using System.Collections.Generic;
+using CLLibrary;
 
 public class BattleCell : Cell
 {
     private RunEntity _template;
+    private Func<Cell> _winOperation;
+    private Func<Cell> _loseOperation;
 
     private RunEntity _enemy;
-    public RunEntity GetEnemy() => _enemy;
 
-    public void SetEnemy(RunEntity enemy)
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Guide",                      thisObject => ((BattleCell)thisObject).GetGuideDescriptor() },
+        { "Enemy",                      thisObject => ((BattleCell)thisObject)._enemy },
+    };
+    public override object Get(string s) => Accessor[s](this);
+    public BattleCell(RunEntity template)
+    {
+        _template = template;
+    }
+
+    public static BattleCell FromQuery(EntityQuery query)
+    {
+        RunEntity template;
+        
+        if (query.LimitToPool)
+        {
+            if (!RunManager.Instance.Environment.Map.EntityPool.TryDrawEntity(out template, query))
+            {
+                template = RunEntity.Default();
+            }
+        }
+        else
+        {
+            RunEntity editorEntity = EditorManager.FindEntity(query);
+            template = editorEntity != null ? RunEntity.FromTemplate(editorEntity) : RunEntity.Default();
+        }
+        
+        return new(template);
+    }
+
+    private void SetEnemy(RunEntity enemy)
     {
         _enemy = enemy;
         RunManager.Instance.Environment.SetAway(_enemy);
         RunManager.Instance.Environment.ResimulateNeuron.Invoke();
     }
 
-    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    public BattleCell SetWinOperation(Func<Cell> win)
     {
-        { "Guide",                      thisObject => ((BattleCell)thisObject).GetGuideDescriptor() },
-        { "Enemy",                      thisObject => ((BattleCell)thisObject).GetEnemy() },
-    };
-    public override object Get(string s) => Accessor[s](this);
-    public BattleCell(RunEntity template)
+        _winOperation = win;
+        return this;
+    }
+
+    public BattleCell SetLoseOperation(Func<Cell> lose)
     {
-        _template = template;
+        _loseOperation = lose;
+        return this;
     }
 
     public override void DefaultEnter(Cell cell)
@@ -39,20 +73,6 @@ public class BattleCell : Cell
         SetEnemy(null);
         
         RunManager.Instance.Environment.Home.ClearSlotResults();
-    }
-
-    private Func<Cell> _winOperation;
-    public BattleCell SetWinOperation(Func<Cell> win)
-    {
-        _winOperation = win;
-        return this;
-    }
-
-    private Func<Cell> _loseOperation;
-    public BattleCell SetLoseOperation(Func<Cell> lose)
-    {
-        _loseOperation = lose;
-        return this;
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)

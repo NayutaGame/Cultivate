@@ -35,5 +35,5 @@ public abstract class CellNode : Node, ILogicNode, ICellAdapter
         _cell = null;
     }
 
-    public abstract void ReceiveSignal(Signal signal);
+    public abstract bool ReceiveSignal(Signal signal);
 }

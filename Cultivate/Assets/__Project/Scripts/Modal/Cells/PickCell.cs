@@ -27,8 +27,8 @@ public class PickCell : Cell
         return this;
     }
 
-    private ListModel<SkillReference> _inventory;
-    private ListModel<SkillReference> GetInventory() => _inventory;
+    private ListModel<SkillGhost> _inventory;
+    private ListModel<SkillGhost> GetInventory() => _inventory;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -49,17 +49,17 @@ public class PickCell : Cell
         _drawStrategies = drawStrategies ?? SkillEntryQuery.AnySkill().Stack(3);
         _confirmOperation = confirmOperation ?? DefaultConfirmOperation;
         
-        _inventory = new ListModel<SkillReference>();
+        _inventory = new ListModel<SkillGhost>();
     }
 
-    public void PopulateInventory(SkillReference skill)
+    public void PopulateInventory(SkillGhost skill)
     {
         _inventory.Add(skill);
     }
 
-    public void PopulateInventory(List<SkillReference> skills)
+    public void PopulateInventory(List<SkillGhost> skills)
     {
-        foreach(SkillReference skill in skills)
+        foreach(SkillGhost skill in skills)
             _inventory.Add(skill);
     }
 
@@ -67,12 +67,12 @@ public class PickCell : Cell
     {
         GainSkillBuilder b = new();
         b.Draw(_drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-        b.GainingSkills.Do(g => PopulateInventory(SkillReference.FromGainingSkill(g)));
+        b.GainingSkills.Do(g => PopulateInventory(SkillGhost.FromGainingSkill(g)));
     }
 
     public Cell DefaultConfirmOperation(ConfirmSkillsSignal confirmSkillsSignal)
     {
-        List<SkillReference> skills = confirmSkillsSignal.Selected;
+        List<SkillGhost> skills = confirmSkillsSignal.Selected;
         if (skills.Count <= 0)
             return null;
         GainSkillBuilder b = new();
@@ -158,7 +158,7 @@ public class PickCell : Cell
             PickCell pickCell = cell as PickCell;
             GainSkillBuilder b = new();
             b.Draw(pickCell.GetDrawStrategies(), JingJie.LianQi, filterEmpty: true, distinct: true, consume: false);
-            b.GainingSkills.Do(g => pickCell.PopulateInventory(SkillReference.FromGainingSkill(g)));
+            b.GainingSkills.Do(g => pickCell.PopulateInventory(SkillGhost.FromGainingSkill(g)));
         });
         
         

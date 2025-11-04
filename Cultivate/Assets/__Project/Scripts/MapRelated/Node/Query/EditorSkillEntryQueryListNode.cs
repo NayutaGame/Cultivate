@@ -4,7 +4,7 @@ using PuppyDragon.uNody;
 using UnityEngine;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Variable/EditorSkillEntryQueryList", -6, true)]
+[CreateNodeMenu("Variable/Query/EditorSkillEntryQueryList", -10, true)]
 public class EditorSkillEntryQueryListNode : Node
 {
     [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

@@ -1,10 +1,10 @@
 
 public class PickDiscoveredSkillDetails : RunClosureDetails
 {
-    public SkillReference Skill;
+    public SkillGhost Skill;
     public int PickedIndex;
     
-    public PickDiscoveredSkillDetails(SkillReference skill, int pickedIndex)
+    public PickDiscoveredSkillDetails(SkillGhost skill, int pickedIndex)
     {
         Skill = skill;
         PickedIndex = pickedIndex;

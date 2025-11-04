@@ -98,7 +98,7 @@ public class PickPanel : Panel
 
     private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)
     {
-        List<SkillReference> skillReferences = _selections.Map(v => v.Get<SkillReference>()).ToList();
+        List<SkillGhost> skillReferences = _selections.Map(v => v.Get<SkillGhost>()).ToList();
         RunManager.Instance.Environment.ConfirmSelectionsProcedure(skillReferences);
     }
 }

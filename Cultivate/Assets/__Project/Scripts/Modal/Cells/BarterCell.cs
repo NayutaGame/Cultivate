@@ -62,23 +62,23 @@ public class BarterCell : Cell
     {
         RunEnvironment env = RunManager.Instance.Environment;
 
-        FinitePool<SkillReference> pool = new FinitePool<SkillReference>();
+        FinitePool<SkillGhost> pool = new FinitePool<SkillGhost>();
         pool.Populate(env.TraversalDeckIndices()
             .Map(env.SkillFromDeckIndex)
             .FilterObj(skill => skill != null)
             .FilterObj(skill => _fromQuery == null || _fromQuery.Matches(skill))
-            .Map(SkillReference.FromRunSkill));
+            .Map(SkillGhost.FromRunSkill));
         pool.Shuffle();
 
         int count = Mathf.Min(pool.Count(), _targetItemCount);
 
-        SkillReference[] fromSkills = new SkillReference[count];
+        SkillGhost[] fromSkills = new SkillGhost[count];
         for (int i = 0; i < fromSkills.Length; i++)
         {
             pool.TryPopItem(out fromSkills[i]);
         }
 
-        SkillReference[] toSkills = new SkillReference[count];
+        SkillGhost[] toSkills = new SkillGhost[count];
 
         Predicate<SkillEntry> differsFromFromSkills = skillEntry =>
         {
@@ -103,7 +103,7 @@ public class BarterCell : Cell
             {
                 b.DrawMutator(JingJie.HuaShen);
             }
-            toSkills[i] = SkillReference.FromGainingSkill(b.GainingSkills[0]);
+            toSkills[i] = SkillGhost.FromGainingSkill(b.GainingSkills[0]);
         }
         
         _inventory.Clear();
@@ -142,14 +142,14 @@ public class BarterCell : Cell
         if (!_inventory.Contains(barterItem))
             return;
         
-        bool success = RunManager.Instance.Environment.DeckIndexFromQuery(out DeckIndex deckIndex, RunSkillQuery.FromSkillReference(barterItem.FromSkill));
+        bool success = RunManager.Instance.Environment.DeckIndexFromQuery(out DeckIndex deckIndex, RunSkillQuery.FromSkillGhost(barterItem.FromSkill));
         if (!success)
             return;
 
         GainSkillBuilder b = new();
         if (!_targetIsMutator)
         {
-            b.Draw(SkillEntryQuery.FromSkillReference(barterItem.ToSkill), barterItem.ToSkill.GetJingJie(), deckIndex);
+            b.Draw(SkillEntryQuery.FromSkillGhost(barterItem.ToSkill), barterItem.ToSkill.GetJingJie(), deckIndex);
         }
         else
         {

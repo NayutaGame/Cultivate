@@ -150,7 +150,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("无常路引");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -165,7 +165,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大音希声");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -180,7 +180,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("天河引气录");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -195,7 +195,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("御虚诀");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -210,7 +210,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大椿功");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -225,7 +225,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("游龙遁");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -240,7 +240,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("归鸿十二步");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -255,7 +255,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大焚天秘乘");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -270,7 +270,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("须弥妙法");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -285,7 +285,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("锻体四则");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -336,7 +336,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("无常路引");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -351,7 +351,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大音希声");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -366,7 +366,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("天河引气录");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -381,7 +381,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("御虚诀");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -396,7 +396,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大椿功");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -411,7 +411,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("游龙遁");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -426,7 +426,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("归鸿十二步");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -441,7 +441,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("大焚天秘乘");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -456,7 +456,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("须弥妙法");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -471,7 +471,7 @@ public class RoomCategory : Category<RoomEntry>
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("锻体四则");
                                     
                                     GainSkillBuilder b = new();
-                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillReference.FromEntry(skillEntry)));
+                                    packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
                                     b.Execute();
                                     b.Invoke();
@@ -750,8 +750,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
                     b.Execute();
                     b.Invoke();
                     
@@ -759,8 +759,8 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
                         b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
@@ -810,8 +810,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
                     b.Execute();
                     b.Invoke();
                     
@@ -819,8 +819,8 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
                         b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
@@ -887,9 +887,9 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
                     b.Execute();
                     b.Invoke();
                     
@@ -897,9 +897,9 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
                         b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
@@ -967,8 +967,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemyEntity);
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.ZhuJi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.ZhuJi));
                     b.Execute();
                     b.Invoke();
                     
@@ -1012,8 +1012,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemyEntity);
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.LianQi));
                     b.Execute();
                     b.Invoke();
                     
@@ -1086,10 +1086,10 @@ public class RoomCategory : Category<RoomEntry>
                     
                     RunManager.Instance.Environment.ClearDeckProcedure();
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("金刃")), DeckIndex.FromField(0));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
-                    b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("金刃")), DeckIndex.FromField(0));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
+                    b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
                     b.Execute();
                     b.Invoke();
                     
@@ -1097,10 +1097,10 @@ public class RoomCategory : Category<RoomEntry>
                     {
                         RunManager.Instance.Environment.ClearDeckProcedure();
                         GainSkillBuilder b = new();
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("金刃")), DeckIndex.FromField(0));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("金刃")), DeckIndex.FromField(0));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
                         b.Execute();
                         b.Invoke();
                         A.ResetGuideIndex();
@@ -1132,8 +1132,8 @@ public class RoomCategory : Category<RoomEntry>
                     
                     BattleCell A = new(enemyEntity);
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
                     b.Execute();
                     b.Invoke();
                     
@@ -1384,7 +1384,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "盲盒",
                         detailedText: "前面有一个盲盒商店，你想去看看这期会出什么");
                     
-                    GachaCell B = new(priceMultiplier: 2);
+                    GachaCell B = GachaCell.FromPriceMultiplier(priceMultiplier: 2);
 
                     A[0].SetSelect(option => B);
                     
@@ -2037,7 +2037,7 @@ public class RoomCategory : Category<RoomEntry>
                         detailedText: $"他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n获得{normalGoldReward}金")
                         .SetReward(Reward.FromGold(normalGoldReward));
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(room.Ladder + 3));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, EntityQuery.FromLadder(room.Ladder + 3));
                     BattleCell B1 = new(template);
                     DialogCell B1win = new DialogCell(
                             titleText: "护送",
@@ -2081,7 +2081,7 @@ public class RoomCategory : Category<RoomEntry>
                         titleText: "许愿",
                         detailedText: "实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, new EntityDescriptor(room.Ladder + 3));
+                    map.EntityPool.TryDrawEntity(out RunEntity template, EntityQuery.FromLadder(room.Ladder + 3));
                     BattleCell E = new(template);
                     DialogCell EWin = new DialogCell(
                             titleText: "许愿",
@@ -2533,7 +2533,7 @@ public class RoomCategory : Category<RoomEntry>
                         GainSkillBuilder b = new();
                         for (int i = 0; i < space; i++)
                         {
-                            b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("命石"), JingJie.HuaShen));
+                            b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("命石"), JingJie.HuaShen));
                         }
                         b.Execute();
                         b.Invoke();
@@ -3950,9 +3950,9 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
                     b.Execute();
                     b.Invoke();
                     
@@ -3973,13 +3973,13 @@ public class RoomCategory : Category<RoomEntry>
                 create:                             (map, room) =>
                 {
                     GainSkillBuilder b = new();
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("止水"), JingJie.ZhuJi));
-                    b.Pick(SkillReference.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("回春"), JingJie.ZhuJi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("止水"), JingJie.ZhuJi));
+                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("回春"), JingJie.ZhuJi));
                     b.Execute();
                     b.Invoke();
                     

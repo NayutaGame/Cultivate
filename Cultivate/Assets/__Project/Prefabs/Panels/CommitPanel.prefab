@@ -2469,7 +2469,7 @@ GameObject:
   - component: {fileID: 1778044927708876586}
   - component: {fileID: 3611809206194819580}
   m_Layer: 5
-  m_Name: RunResultPanel
+  m_Name: CommitPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

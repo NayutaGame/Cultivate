@@ -6,5 +6,4 @@ public interface ICellAdapter
 
     void Enter();
     void Exit();
-    void ReceiveSignal(Signal signal);
 }

@@ -99,11 +99,14 @@ public class DialogCellNode : CellNode
         );
     }
 
-    public override void ReceiveSignal(Signal signal)
+    public override bool ReceiveSignal(Signal signal)
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
             selectedOptionIndex = selectedOptionSignal.Selected;
+            return true;
         }
+
+        return false;
     }
 }

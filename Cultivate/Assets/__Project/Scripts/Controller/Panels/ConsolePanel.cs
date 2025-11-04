@@ -283,7 +283,7 @@ public class ConsolePanel : Panel
     private void Cheat()
     {
         GainSkillBuilder b = new();
-        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("作弊")));
+        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("作弊")));
         b.Execute();
         b.Invoke();
         // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));

@@ -110,11 +110,11 @@ public class RequireCellNode : CellNode
         return requireCell;
     }
     
-    public override void ReceiveSignal(Signal signal)
+    public override bool ReceiveSignal(Signal signal)
     {
         ConfirmDeckSignal confirmDeckSignal = signal as ConfirmDeckSignal;
         if (confirmDeckSignal == null)
-            return;
+            return false;
 
         int ladder = 8; // From blackboard
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
@@ -241,5 +241,6 @@ public class RequireCellNode : CellNode
         };
         
         _isSuccess = behaviorHandlers[BehaviorType.Value](AsCell() as RequireCell);
+        return true;
     }
 }

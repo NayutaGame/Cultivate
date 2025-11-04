@@ -1,12 +1,12 @@
 
 public class GachaDetails : RunClosureDetails
 {
-    public SkillReference Skill;
+    public SkillGhost Skill;
     public int GachaIndex;
 
     public DeckIndex DeckIndex;
     
-    public GachaDetails(SkillReference skill, int gachaIndex)
+    public GachaDetails(SkillGhost skill, int gachaIndex)
     {
         Skill = skill;
         GachaIndex = gachaIndex;

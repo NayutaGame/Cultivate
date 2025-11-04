@@ -38,18 +38,20 @@ public class GachaPanel : Panel
     {
         ListView.Sync();
         
-        GachaCell d = _address.Get<GachaCell>();
-        PriceTag.text = $"每抽 {d.GetPrice()} 金";
-        BuyButton.SetStateToInactiveFrom(d.ItemsIsEmpty);
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        GachaCell cell = cellAdapter.AsCell() as GachaCell;
+        PriceTag.text = $"每抽 {cell.GetPrice()} 金";
+        BuyButton.SetStateToInactiveFrom(cell.ItemsIsEmpty);
     }
 
     private void Gacha(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.CloseAnnotation();
         
-        GachaCell gachaCell = _address.Get<GachaCell>();
-        gachaCell.GachaProcedure();
-        BuyButton.SetStateToInactiveFrom(gachaCell.ItemsIsEmpty && !gachaCell.IsAffordable());
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        GachaCell cell = cellAdapter.AsCell() as GachaCell;
+        cell.GachaProcedure();
+        BuyButton.SetStateToInactiveFrom(cell.ItemsIsEmpty && !cell.IsAffordable());
     }
 
     private void ExitShop(InteractBehaviour ib, PointerEventData d)

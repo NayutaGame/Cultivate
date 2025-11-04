@@ -66,10 +66,12 @@ public class BarterCellNode : CellNode
         );
     }
     
-    public override void ReceiveSignal(Signal signal)
+    public override bool ReceiveSignal(Signal signal)
     {
         ExitShopSignal exitShopSignal = signal as ExitShopSignal;
         if (exitShopSignal == null)
-            return;
+            return false;
+        
+        return true;
     }
 }

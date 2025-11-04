@@ -6,7 +6,7 @@ using UnityEngine;
 public class PickDiscoveredSkillReport : TestReport
 {
     [SerializeReference]
-    public SkillReference PickedSkill;
+    public SkillGhost PickedSkill;
 
     public PickDiscoveredSkillReport()
     {

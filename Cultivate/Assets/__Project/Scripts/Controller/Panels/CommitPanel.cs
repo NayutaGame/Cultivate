@@ -1,5 +1,4 @@
 
-using System;
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
@@ -7,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RunResultPanel : Panel
+public class CommitPanel : Panel
 {
     [SerializeField] private Button4State ReturnButton;
     [SerializeField] private TMP_Text OutcomeText;
@@ -60,7 +59,7 @@ public class RunResultPanel : Panel
     
     public override void Refresh()
     {
-        RunResultCell cell = RunManager.Instance.Environment.Cell as RunResultCell;
+        CommitCell cell = RunManager.Instance.Environment.Cell as CommitCell;
         
         if (cell.GetRunOutcome() == RunResult.RunOutcome.Victorious)
         {
@@ -167,7 +166,7 @@ public class RunResultPanel : Panel
 
     private void InitScoring()
     {
-        RunResultCell cell = RunManager.Instance.Environment.Cell as RunResultCell;
+        CommitCell cell = RunManager.Instance.Environment.Cell as CommitCell;
         _details = new(cell.GetInitialExperience(), cell.GetInitialLevel(), cell.GetExperienceGain());
 
         LevelText.text = $"{_details.InitialLevel}";

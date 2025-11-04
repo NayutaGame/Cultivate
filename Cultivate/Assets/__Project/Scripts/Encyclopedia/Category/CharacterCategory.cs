@@ -57,7 +57,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         StartRunDetails d = (StartRunDetails)eventDetails;
 
                         GainSkillBuilder b = new();
-                        b.Pick(SkillReference.FromEntry(Encyclopedia.SkillCategory.FromName("幻化")));
+                        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("幻化")));
                         b.Execute();
                         b.Invoke();
                     }),
@@ -78,7 +78,7 @@ public class CharacterCategory : Category<CharacterEntry>
                         RunEntity oppo = env.Away;
                         
                         // 清空之前模仿的记录
-                        env.Memory.SetVariable<SkillReference>(key, null);
+                        env.Memory.SetVariable<SkillGhost>(key, null);
                         
                         d.Owner.TraversalCurrentSlots().Do(slot => 
                         {
@@ -97,7 +97,7 @@ public class CharacterCategory : Category<CharacterEntry>
                             );
                             
                             // 记录第一个模仿的技能，用于后续奖励
-                            env.Memory.PerformOperation<SkillReference>(key, null, skill => skill ?? SkillReference.FromRunSkill(oppoSlot.Skill));
+                            env.Memory.PerformOperation<SkillGhost>(key, null, skill => skill ?? SkillGhost.FromRunSkill(oppoSlot.Skill));
                         });
                     }),
                     new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, closure, eventDetails) =>
@@ -107,13 +107,13 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         string key = "MimickedSkill";
 
-                        SkillReference copiedSkillEntry = env.Memory.TryGetVariable<SkillReference>(key, null);
+                        SkillGhost copiedSkillEntry = env.Memory.TryGetVariable<SkillGhost>(key, null);
                         if (copiedSkillEntry == null)
                             return;
 
                         d.MimicIndex = d.Skills.Count;
                         d.Skills.Add(copiedSkillEntry);
-                        env.Memory.SetVariable<SkillReference>(key, null);
+                        env.Memory.SetVariable<SkillGhost>(key, null);
                     }),
                 }),
             

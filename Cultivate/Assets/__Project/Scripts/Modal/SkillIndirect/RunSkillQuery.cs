@@ -54,8 +54,8 @@ public sealed class RunSkillQuery : AnnotatableLine
     public static RunSkillQuery FromWuXing(WuXing wuXing)
         => new(wuXing: wuXing, description: new($"请提交一张五行为{wuXing.GetName()}的牌"));
 
-    public static RunSkillQuery FromSkillReference(SkillReference skillReference)
-        => new(entry: skillReference.GetEntry(), jingJie: skillReference.GetJingJie());
+    public static RunSkillQuery FromSkillGhost(SkillGhost skillGhost)
+        => new(entry: skillGhost.GetEntry(), jingJie: skillGhost.GetJingJie());
 
     public static RunSkillQuery FromJingJieBound(int low, int high)
         => new(baseJingJieBound: new(low, high),

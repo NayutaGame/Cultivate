@@ -82,11 +82,14 @@ public class PickCellNode : CellNode
         );
     }
 
-    public override void ReceiveSignal(Signal signal)
+    public override bool ReceiveSignal(Signal signal)
     {
         if (signal is ConfirmSkillsSignal selectedSkillsSignal)
         {
-            (AsCell() as PickCell)?.DefaultReceiveSignal(selectedSkillsSignal);
+            (AsCell() as PickCell)?.DefaultConfirmOperation(selectedSkillsSignal);
+            return true;
         }
+
+        return false;
     }
 }

@@ -5,10 +5,6 @@ public abstract class Cell : Addressable, ICellAdapter
 {
     public Cell AsCell() => this;
     public bool IsCellNode => false;
-    void ICellAdapter.ReceiveSignal(Signal signal)
-    {
-        throw new NotImplementedException();
-    }
     
     public Func<Signal, Cell> _receiveSignal;
     public Cell ReceiveSignal(Signal signal) => _receiveSignal.Invoke(signal);

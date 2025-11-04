@@ -5,7 +5,7 @@ using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
-public class RunResultCell : Cell
+public class CommitCell : Cell
 {
     private RunResult _result;                     // 结果状态
     private RunConfig _config;                     // 角色配置
@@ -23,12 +23,12 @@ public class RunResultCell : Cell
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Guide",                      thisObject => ((RunResultCell)thisObject).GetGuideDescriptor() },
-        { "Milestones",                 thisObject => ((RunResultCell)thisObject)._milestones },
-        { "Achievements",               thisObject => ((RunResultCell)thisObject)._newUnlocks },
+        { "Guide",                      thisObject => ((CommitCell)thisObject).GetGuideDescriptor() },
+        { "Milestones",                 thisObject => ((CommitCell)thisObject)._milestones },
+        { "Achievements",               thisObject => ((CommitCell)thisObject)._newUnlocks },
     };
     public override object Get(string s) => Accessor[s](this);
-    public RunResultCell(RunEnvironment env)
+    public CommitCell(RunEnvironment env)
     {
         Debug.Assert(env != null, "RunEnvironment cannot be null");
         Debug.Assert(env.GetResult() != null, "RunResult cannot be null");

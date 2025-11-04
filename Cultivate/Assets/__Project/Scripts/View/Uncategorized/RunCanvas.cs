@@ -28,7 +28,9 @@ public class RunCanvas : Panel
     public PickPanel PickPanel;
     public ImagePanel ImagePanel;
     public ComicPanel ComicPanel;
-    public RunResultPanel RunResultPanel;
+    public CommitPanel CommitPanel;
+    public NarrativePanel NarrativePanel;
+    public ChoicePanel ChoicePanel;
     
     private AnimationQueue _animationQueue;
     public AnimationQueue GetAnimationQueue() => _animationQueue;
@@ -55,7 +57,9 @@ public class RunCanvas : Panel
             PickPanel,
             ImagePanel,
             ComicPanel,
-            RunResultPanel,
+            CommitPanel,
+            NarrativePanel,
+            ChoicePanel,
         });
 
         // _panelDict.Do(kvp => kvp.Value.Configure());
@@ -199,7 +203,7 @@ public class RunCanvas : Panel
 
     public void SetPanelToNull()
     {
-        _animationQueue.CompleteAnimationQueue();
+        _animationQueue.CompleteAllAnimations();
         
         PanelS oldState = PanelSM.State;
         PanelS newState = PanelS.FromHide();

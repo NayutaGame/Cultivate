@@ -80,13 +80,16 @@ public class DiscoverCellNode : CellNode
         );
     }
 
-    public override void ReceiveSignal(Signal signal)
+    public override bool ReceiveSignal(Signal signal)
     {
         if (signal is PickDiscoveredSkillSignal pickSignal)
         {
             int pickedIndex = pickSignal.Selected;
             // SkillEntryDescriptor skill = (_cell as DiscoverCell).GetSkills()[pickedIndex];
             // RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
+            return true;
         }
+
+        return false;
     }
 }

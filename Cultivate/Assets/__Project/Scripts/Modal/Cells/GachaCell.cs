@@ -6,14 +6,16 @@ using Unity.VisualScripting;
 
 public class GachaCell : Cell
 {
-    private ListModel<SkillReference> _items;
-    public ListModel<SkillReference> GetItems() => _items;
-    public void SetItems(ListModel<SkillReference> items) => _items = items;
+    private float _priceMultiplier;
+    private List<SkillEntryQuery> _drawStrategies;
+    private JingJie _preferredJingJie;
+
+    private ListModel<SkillGhost> _items;
+    public ListModel<SkillGhost> GetItems() => _items;
+    public void SetItems(ListModel<SkillGhost> items) => _items = items;
 
     private int _price;
     public int GetPrice() => _price;
-
-    private float _priceMultiplier;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -21,13 +23,38 @@ public class GachaCell : Cell
         { "Items",                      thisObject => ((GachaCell)thisObject).GetItems() },
     };
     public override object Get(string s) => Accessor[s](this);
-    public GachaCell(float priceMultiplier)
+    private GachaCell(
+        float priceMultiplier,
+        List<SkillEntryQuery> drawStrategies,
+        JingJie preferredJingJie)
     {
         _priceMultiplier = priceMultiplier;
+        _drawStrategies = drawStrategies ?? DefaultDrawStrategies();
+        _preferredJingJie = preferredJingJie ?? JingJie.LianQi;
     }
+
+    public static GachaCell FromPriceMultiplier(float priceMultiplier)
+        => new(priceMultiplier, null, null);
+
+    public static GachaCell FromEverything(
+        float priceMultiplier,
+        List<SkillEntryQuery> drawStrategies,
+        JingJie preferredJingJie)
+        => new(priceMultiplier, drawStrategies, preferredJingJie);
 
     public bool ItemsIsEmpty
         => _items.Count() <= 0;
+
+    public List<SkillEntryQuery> DefaultDrawStrategies()
+    {
+        List<SkillEntryQuery> toRet = new();
+
+        toRet.AddRange(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQi2ZhuJi).Stack(7));
+        toRet.AddRange(SkillEntryQuery.FromBaseJingJieBound(JingJie.JinDan2YuanYing).Stack(2));
+        toRet.Add(SkillEntryQuery.FromBaseJingJieBound(JingJie.HuaShenOnly));
+
+        return toRet;
+    }
 
     public override void DefaultEnter(Cell cell)
     {
@@ -36,12 +63,8 @@ public class GachaCell : Cell
         _items = new();
 
         GainSkillBuilder b = new();
-        
-        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQi2ZhuJi).Stack(7), JingJie.LianQi);
-        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.JinDan2YuanYing).Stack(2), JingJie.JinDan);
-        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.HuaShenOnly), JingJie.HuaShen);
-
-        b.GainingSkills.Do(g => _items.Add(SkillReference.FromGainingSkill(g)));
+        b.Draw(_drawStrategies, _preferredJingJie);
+        b.GainingSkills.Do(g => _items.Add(SkillGhost.FromGainingSkill(g)));
 
         _price = 0;
 
@@ -65,9 +88,9 @@ public class GachaCell : Cell
         RunManager.Instance.Environment.SetDGoldProcedure(-_price);
 
         int gachaIndex = RandomManager.Range(0, _items.Count());
-        SkillReference skillReference = _items.Get(gachaIndex) as SkillReference;
+        SkillGhost skillGhost = _items.Get(gachaIndex) as SkillGhost;
 
-        GachaDetails details = new(skillReference, gachaIndex);
+        GachaDetails details = new(skillGhost, gachaIndex);
         
         _items.RemoveAt(gachaIndex);
 

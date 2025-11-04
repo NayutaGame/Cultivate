@@ -13,8 +13,8 @@ public class DiscoverCell : Cell
     public string GetDescriptionText() => _descriptionText;
     public void SetDescriptionText(string value) => _descriptionText = value;
 
-    private ListModel<SkillReference> _skills;
-    public ListModel<SkillReference> GetSkills() => _skills;
+    private ListModel<SkillGhost> _skills;
+    public ListModel<SkillGhost> GetSkills() => _skills;
 
     private List<SkillEntryQuery> _drawStrategies;
     public DiscoverCell SetDrawStrategy(List<SkillEntryQuery> drawStrategies)
@@ -61,7 +61,7 @@ public class DiscoverCell : Cell
         if (signal is PickDiscoveredSkillSignal pickDiscoveredSkillSignal)
         {
             int pickedIndex = pickDiscoveredSkillSignal.Selected;
-            SkillReference skill = _skills[pickedIndex];
+            SkillGhost skill = _skills[pickedIndex];
             // RunManager.Instance.Environment.PickDiscoveredSkillProcedure(pickedIndex, skill);
             return null;
         }

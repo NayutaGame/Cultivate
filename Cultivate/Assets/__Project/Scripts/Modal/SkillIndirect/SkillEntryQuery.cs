@@ -52,8 +52,8 @@ public sealed class SkillEntryQuery
     public static SkillEntryQuery FromPredWuXingBaseJingJieBound(Predicate<SkillEntry> predicate, WuXing wuXing, Bound baseJingJieBound)
         => new(new() { predicate }, wuXing: wuXing, baseJingJieBound: baseJingJieBound);
 
-    public static SkillEntryQuery FromSkillReference(SkillReference skillReference)
-        => new(entry: skillReference.GetEntry());
+    public static SkillEntryQuery FromSkillGhost(SkillGhost skillGhost)
+        => new(entry: skillGhost.GetEntry());
 
     public static SkillEntryQuery FromEditorQuery(EditorSkillEntryQuery editorQuery)
         => new(

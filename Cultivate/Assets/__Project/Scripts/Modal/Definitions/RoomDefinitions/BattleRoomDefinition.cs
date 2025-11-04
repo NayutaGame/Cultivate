@@ -42,8 +42,8 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
     
     public override RoomEntry Draw(Map map, Room room)
     {
-        EntityDescriptor d = new EntityDescriptor(Ladder);
-        map.EntityPool.TryDrawEntity(out RunEntity entity, d);
+        EntityQuery query = EntityQuery.FromLadder(Ladder);
+        map.EntityPool.TryDrawEntity(out RunEntity entity, query);
         room.SetPredrewRunEntity(entity);
         return Encyclopedia.RoomCategory.FromName("战斗");
     }

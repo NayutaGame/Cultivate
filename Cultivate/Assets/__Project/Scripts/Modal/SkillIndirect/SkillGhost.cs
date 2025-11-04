@@ -1,11 +1,10 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 [Serializable]
-public sealed class SkillReference : AnnotatableSkill, ISerializationCallbackReceiver
+public sealed class SkillGhost : AnnotatableSkill, ISerializationCallbackReceiver
 {
     [SerializeField] private SkillEntry _entry;
     [SerializeField] private JingJie _jingJie;
@@ -16,7 +15,7 @@ public sealed class SkillReference : AnnotatableSkill, ISerializationCallbackRec
         { "PackEntry",                  thisObject => ((AnnotatableSkill)thisObject).GetPackEntry() },
     };
     public object Get(string s) => Accessor[s](this);
-    private SkillReference(SkillEntry entry, JingJie jingJie)
+    private SkillGhost(SkillEntry entry, JingJie jingJie)
     {
         _entry = entry;
         _jingJie = jingJie;
@@ -25,19 +24,19 @@ public sealed class SkillReference : AnnotatableSkill, ISerializationCallbackRec
     public SkillEntry GetEntry() => _entry;
     public JingJie GetJingJie() => _jingJie;
 
-    public static SkillReference FromEntry(SkillEntry entry)
+    public static SkillGhost FromEntry(SkillEntry entry)
         => new(entry, entry.LowestJingJie);
 
-    public static SkillReference FromEntryJingJie(SkillEntry entry, JingJie jingJie)
+    public static SkillGhost FromEntryJingJie(SkillEntry entry, JingJie jingJie)
         => new(entry, jingJie);
 
-    public static SkillReference FromRunSkill(RunSkill runSkill)
+    public static SkillGhost FromRunSkill(RunSkill runSkill)
         => new(runSkill.GetEntry(), runSkill.GetJingJie());
 
-    public static SkillReference FromGainingSkill(GainingSkill gainingSkill)
+    public static SkillGhost FromGainingSkill(GainingSkill gainingSkill)
         => new(gainingSkill.GetEntry(), gainingSkill.GetJingJie());
 
-    public SkillReference Clone()
+    public SkillGhost Clone()
         => new(_entry, _jingJie);
 
     public JingJie GetLowestJingJie() => _entry.GetLowestJingJie();

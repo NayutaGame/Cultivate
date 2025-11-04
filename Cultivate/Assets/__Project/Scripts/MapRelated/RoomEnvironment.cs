@@ -1,5 +1,4 @@
 
-using FMOD;
 using PuppyDragon.uNody.Logic;
 
 public class RoomEnvironment
@@ -38,8 +37,9 @@ public class RoomEnvironment
 
     public void ReceiveSignal(Signal signal)
     {
-        CurrentCell.ReceiveSignal(signal);
-        Step();
+        bool cellIsEnded = CurrentCell.ReceiveSignal(signal);
+        if (cellIsEnded)
+            Step();
     }
 
     public bool IsFinished()

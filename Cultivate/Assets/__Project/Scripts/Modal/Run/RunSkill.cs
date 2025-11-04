@@ -47,8 +47,8 @@ public class RunSkill : ISerializationCallbackReceiver, AnnotatableSkill, RunClo
     public static RunSkill FromMutation(SkillEntry entry, JingJie jingJie, List<SkillEntry> mutators)
         => new(entry, jingJie, mutators);
     
-    public static RunSkill FromSkillReference(SkillReference skillReference)
-        => new(entry: skillReference.GetEntry(), jingJie: skillReference.GetJingJie(), null);
+    public static RunSkill FromSkillGhost(SkillGhost skillGhost)
+        => new(entry: skillGhost.GetEntry(), jingJie: skillGhost.GetJingJie(), null);
 
     public static RunSkill FromGainingSkill(GainingSkill gainingSkill)
         => new(entry: gainingSkill.GetEntry(), jingJie: gainingSkill.GetJingJie(), null);
