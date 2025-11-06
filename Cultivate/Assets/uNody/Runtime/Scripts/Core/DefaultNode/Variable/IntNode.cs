@@ -4,7 +4,7 @@ namespace PuppyDragon.uNody.Variable
 {
     [NodeWidth(NodeSize.Small)]
     [NodeHeaderTint(typeof(int))]
-    [CreateNodeMenu(-6, true)]
+    [CreateNodeMenu("Variable/Int", -6, true)]
     public class IntNode : Node
     {
         [SerializeField]

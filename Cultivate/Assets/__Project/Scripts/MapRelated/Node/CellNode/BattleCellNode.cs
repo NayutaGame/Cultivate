@@ -43,9 +43,6 @@ public class BattleCellNode : CellNode
     
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-        
         EditorEntityQuery editorQuery = EntityQuery.Value;
         if (editorQuery == null)
             return null;

@@ -44,9 +44,6 @@ public class GachaCellNode : CellNode
     
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-        
         float priceMultiplier = PriceMultiplier.Value;
         
         List<SkillEntryQuery> drawStrategies = null;

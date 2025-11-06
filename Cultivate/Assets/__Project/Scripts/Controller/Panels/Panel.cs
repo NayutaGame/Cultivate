@@ -1,6 +1,7 @@
 
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public abstract class Panel : MonoBehaviour
@@ -61,4 +62,13 @@ public abstract class Panel : MonoBehaviour
         => DOTween.Sequence()
             .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(IDLE))
             .AppendCallback(() => gameObject.SetActive(false));
+    
+    [Button("Refresh")]
+    private void EditorRefresh()
+    {
+        if (!Application.isPlaying)
+            return;
+        
+        Refresh();
+    }
 }

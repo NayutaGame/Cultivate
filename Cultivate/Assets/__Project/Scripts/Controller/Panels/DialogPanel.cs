@@ -94,24 +94,10 @@ public class DialogPanel : Panel
         }
     }
 
-    private Neuron<SelectOptionDetails> SelectOptionEvent = new();
-    
-    private void OnEnable()
-    {
-        SelectOptionEvent.Add(RunManager.Instance.Environment.SelectOptionProcedure);
-        RunManager.Instance.Environment.SelectOptionNeuron.Add(SelectOptionStaging);
-    }
-
-    private void OnDisable()
-    {
-        SelectOptionEvent.Remove(RunManager.Instance.Environment.SelectOptionProcedure);
-        RunManager.Instance.Environment.SelectOptionNeuron.Remove(SelectOptionStaging);
-    }
-
     private void SelectOption(int selectedIndex)
     {
-        SelectOptionDetails details = new(selectedIndex);
-        SelectOptionEvent.Invoke(details);
+        SelectOptionStaging();
+        RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(selectedIndex));
     }
 
     private void SelectOption0() => SelectOption(0);
@@ -119,12 +105,10 @@ public class DialogPanel : Panel
     private void SelectOption2() => SelectOption(2);
     private void SelectOption3() => SelectOption(3);
     
-    public void SelectOptionStaging(SelectOptionDetails d)
+    private void SelectOptionStaging()
     {
         // AudioManager.Play("CardPlacement");
-
         Buttons.Do(b => b.interactable = false);
-
         // CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(2));
     }
 

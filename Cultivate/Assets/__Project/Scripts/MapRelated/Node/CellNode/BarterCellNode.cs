@@ -48,9 +48,6 @@ public class BarterCellNode : CellNode
     
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-            
         int targetItemCount = TargetItemCount.Value;
         bool targetIsMutator = TargetIsMutator.Value;
         RunSkillQuery fromQuery = RunSkillQuery.FromEditorQuery(FromQuery.Value);

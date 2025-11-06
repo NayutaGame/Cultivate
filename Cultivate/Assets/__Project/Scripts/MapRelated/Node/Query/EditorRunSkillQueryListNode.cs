@@ -3,7 +3,7 @@ using PuppyDragon.uNody;
 using UnityEngine;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Variable/Query/EditorRunSkillQueryList", -10, true)]
+[CreateNodeMenu("Query/EditorRunSkillQueryList", -10, true)]
 public class EditorRunSkillQueryListNode : Node
 {
 	[PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

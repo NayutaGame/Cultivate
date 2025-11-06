@@ -60,9 +60,6 @@ public class ShopCellNode : CellNode
     
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-        
         float priceMultiplier = PriceMultiplier.Value;
         string title = Title.Value;
         string contentText = ContentText.Value;

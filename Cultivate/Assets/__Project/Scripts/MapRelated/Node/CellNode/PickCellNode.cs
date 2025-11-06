@@ -53,9 +53,6 @@ public class PickCellNode : CellNode
 
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-            
         string title = Title.Value;
         string detailedText = DetailedText.Value;
         Bound pickCardCountRange = PickCardCountRange.Value;

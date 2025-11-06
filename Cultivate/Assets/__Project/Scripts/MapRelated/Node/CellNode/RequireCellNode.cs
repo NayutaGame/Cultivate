@@ -82,9 +82,6 @@ public class RequireCellNode : CellNode
     
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-
         var title = Title.Value;
         var detailedText = DetailedText.Value;
 

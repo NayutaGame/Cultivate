@@ -41,6 +41,8 @@ public struct PanelS : IEquatable<PanelS>
         { typeof(CommitCell),               12 },
         { typeof(NarrativeCell),            13 },
         { typeof(ChoiceCell),               14 },
+        { typeof(DiceCell),                 15 },
+        { typeof(ScribbleCell),             16 },
     };
 
     public bool Equals(PanelS other)

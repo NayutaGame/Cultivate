@@ -3,7 +3,7 @@ using UnityEngine;
 using CLLibrary;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Variable/Query/EditorRunSkillQueryBuilder", -10, true)]
+[CreateNodeMenu("Query/EditorRunSkillQueryBuilder", -10, true)]
 public class EditorRunSkillQueryBuilderNode : Node
 {
 	[PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
@@ -29,6 +29,9 @@ public class EditorRunSkillQueryBuilderNode : Node
 
 	private EditorRunSkillQuery Build()
 	{
+		if (!Application.isPlaying)
+			return null;
+
 		var result = new EditorRunSkillQuery
 		{
 			EntryName = entryName.Value,

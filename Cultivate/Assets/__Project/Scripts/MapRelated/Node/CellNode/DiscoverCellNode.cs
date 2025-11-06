@@ -48,9 +48,6 @@ public class DiscoverCellNode : CellNode
 
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-            
         string title = Title.Value;
         string description = Description.Value;
 

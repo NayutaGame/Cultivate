@@ -3,7 +3,7 @@ using UnityEngine;
 using CLLibrary;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Variable/Query/EditorSkillEntryQueryBuilder", -10, true)]
+[CreateNodeMenu("Query/EditorSkillEntryQueryBuilder", -10, true)]
 public class EditorSkillEntryQueryBuilderNode : Node
 {
     [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

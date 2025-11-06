@@ -31,6 +31,8 @@ public class RunCanvas : Panel
     public CommitPanel CommitPanel;
     public NarrativePanel NarrativePanel;
     public ChoicePanel ChoicePanel;
+    public DicePanel DicePanel;
+    public ScribblePanel ScribblePanel;
     
     private AnimationQueue _animationQueue;
     public AnimationQueue GetAnimationQueue() => _animationQueue;
@@ -60,6 +62,8 @@ public class RunCanvas : Panel
             CommitPanel,
             NarrativePanel,
             ChoicePanel,
+            DicePanel,
+            ScribblePanel,
         });
 
         // _panelDict.Do(kvp => kvp.Value.Configure());

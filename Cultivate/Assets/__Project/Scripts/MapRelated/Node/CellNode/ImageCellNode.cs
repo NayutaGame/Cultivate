@@ -43,9 +43,6 @@ public class ImageCellNode : CellNode
 
     protected override Cell CreateInternalCell()
     {
-        if (!Application.isPlaying)
-            return null;
-            
         string spriteName = SpriteName.Value;
         
         return new ImageCell(spriteName);

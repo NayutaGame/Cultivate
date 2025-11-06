@@ -2,7 +2,7 @@ using PuppyDragon.uNody;
 using UnityEngine;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Variable/Query/EditorEntityQueryBuilder", -10, true)]
+[CreateNodeMenu("Query/EditorEntityQueryBuilder", -10, true)]
 public class EditorEntityQueryBuilderNode : Node
 {
     [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

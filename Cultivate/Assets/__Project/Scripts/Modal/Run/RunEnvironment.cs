@@ -38,7 +38,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         BuySkillNeuron = new();
         ExchangeSkillNeuron = new();
         GachaNeuron = new();
-        SelectOptionNeuron = new();
         JingJieChangedNeuron = new();
         LevelChangedNeuron = new();
         RoomChangedNeuron = new();
@@ -87,7 +86,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<BuySkillDetails> BuySkillNeuron;
     public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron;
     public Neuron<GachaDetails> GachaNeuron;
-    public Neuron<SelectOptionDetails> SelectOptionNeuron;
     public Neuron<JingJieChangedDetails> JingJieChangedNeuron;
     public Neuron LevelChangedNeuron;
     public Neuron<RoomChangedDetails> RoomChangedNeuron;
@@ -904,12 +902,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void ExitShopProcedure()
     {
         ReceiveSignalProcedure(new ExitShopSignal());
-    }
-
-    public void SelectOptionProcedure(SelectOptionDetails d)
-    {
-        SelectOptionNeuron.Invoke(d);
-        ReceiveSignalProcedure(new SelectedOptionSignal(d.SelectedIndex));
     }
     
     #endregion
