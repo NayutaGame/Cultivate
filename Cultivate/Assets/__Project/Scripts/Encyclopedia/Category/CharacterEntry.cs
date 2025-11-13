@@ -15,6 +15,7 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     [NonSerialized] private SpriteEntry _characterIconSelectSprite;
     [NonSerialized] private PrefabEntry _configModel;
     [NonSerialized] private PrefabEntry _stageModel;
+    [NonSerialized] private PrefabEntry _scribbleModel;
     [NonSerialized] public PackPreset _packPreset;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
@@ -43,6 +44,7 @@ public class CharacterEntry : Entry, AnnotatableCharacter
         _characterIconSelectSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect{GetName()}");
         _configModel = Encyclopedia.PrefabCategory.FromName($"ConfigModel{GetName()}");
         _stageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{GetName()}");
+        _scribbleModel = Encyclopedia.PrefabCategory.FromName($"ScribbleModel{GetName()}");
     }
 
     public List<PackEntry> GetDefaultPacks()
@@ -59,10 +61,11 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     public override void Init()
         => _abilityDescription = new Description(_rawAbilityDescription);
 
-    public PrefabEntry GetConfigPrefabEntry() => _configModel ?? Encyclopedia.PrefabCategory.MissingConfigModel();
-    public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
     public Sprite GetCharacterIconSprite() => _characterIconSprite.Sprite;
     public Sprite GetCharacterIconSelectSprite() => _characterIconSelectSprite.Sprite;
+    public PrefabEntry GetConfigPrefabEntry() => _configModel ?? Encyclopedia.PrefabCategory.MissingConfigModel();
+    public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
+    public PrefabEntry GetScribblePrefabEntry() => _scribbleModel ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
 
     public bool CanShowAnnotation()
         => true;
