@@ -5,28 +5,26 @@ using UnityEngine;
 [Serializable]
 public class EntityEntry : Entry
 {
-    [NonSerialized] private string _description;
-    [NonSerialized] private SpriteEntry _spriteEntry;
-    [NonSerialized] private PrefabEntry _stageModel;
-    [NonSerialized] private PrefabEntry _runModel;
+    [NonSerialized] private string _modelName;
+    [NonSerialized] public SpriteEntry CharacterIconSprite;
+    [NonSerialized] public SpriteEntry CharacterIconSelectSprite;
+    [NonSerialized] public PrefabEntry ConfigModel;
+    [NonSerialized] public PrefabEntry StageModel;
+    [NonSerialized] public PrefabEntry RunModel;
+    [NonSerialized] public PrefabEntry ScribbleModel;
 
     public EntityEntry(
         string id,
         string name,
-        string description,
         string modelName = null) : base(id, name)
     {
-        _description = description;
-
-        _spriteEntry = Encyclopedia.SpriteCategory.FromName(GetName());
-
-        _stageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{modelName ?? GetName()}");
-        _runModel = Encyclopedia.PrefabCategory.FromName($"RunModel{modelName ?? GetName()}");
+        _modelName = modelName ?? GetName();
+        
+        CharacterIconSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIcon{_modelName}") ?? Encyclopedia.SpriteCategory.FromName($"CharacterIcon缺失");
+        CharacterIconSelectSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect{_modelName}") ?? Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect缺失");;
+        ConfigModel = Encyclopedia.PrefabCategory.FromName($"ConfigModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingConfigModel();
+        StageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingStageModel();
+        RunModel = Encyclopedia.PrefabCategory.FromName($"RunModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingRunModel();
+        ScribbleModel = Encyclopedia.PrefabCategory.FromName($"ScribbleModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
     }
-    
-    public string GetDescription() => _description;
-    
-    // public Sprite GetSprite() => _spriteEntry?.Sprite ? _spriteEntry?.Sprite : Encyclopedia.SpriteCategory.MissingCharacterPortrait().Sprite;
-    public PrefabEntry GetStageModelPrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
-    public PrefabEntry GetRunModelPrefabEntry() => _runModel ?? Encyclopedia.PrefabCategory.MissingRunModel();
 }

@@ -4,9 +4,9 @@ using System;
 [Serializable]
 public class SuccessRoomDefinition : RoomDefinition
 {
-    public override RoomEntry Draw(Map map, Room room)
+    public override LegacyRoomEntry Draw(Map map, Room room)
     {
-        return Encyclopedia.RoomCategory.FromName("胜利");
+        return Encyclopedia.LegacyRoomCategory.FromName("胜利");
     }
 
     public SuccessRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)

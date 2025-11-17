@@ -36,15 +36,9 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0079", "修炼", "Images/NodeIcons/XiuLian"),
             new("Sprite0080", "以物易物", "Images/NodeIcons/YiWuYiWu"),
             
-            // Characters
-            new("Sprite0081", "CharacterPortrait缺失立绘", "Images/Characters/缺失立绘"),
-            new("Sprite0082", "徐福", "Images/Characters/01"),
-            new("Sprite0083", "子非鱼", "Images/Characters/02"),
-            new("Sprite0084", "子非燕", "Images/Characters/03"),
-            new("Sprite0085", "风雨晴", "Images/Characters/04"),
-            new("Sprite0086", "梦乃遥", "Images/Characters/05"),
-            
             // CharacterIcons
+            new("Sprite0085", $"CharacterIcon缺失", "Images/CharacterIcons/风雨晴"),
+            new("Sprite0086", $"CharacterIconSelect缺失", "Images/CharacterIcons/风雨晴Select"),
             new("Sprite0087", $"CharacterIcon徐福", "Images/CharacterIcons/徐福"),
             new("Sprite0088", $"CharacterIconSelect徐福", "Images/CharacterIcons/徐福Select"),
             new("Sprite0089", $"CharacterIcon子非鱼", "Images/CharacterIcons/子非鱼"),
@@ -55,23 +49,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0094", $"CharacterIconSelect彼此卿", "Images/CharacterIcons/彼此卿Select"),
             new("Sprite0095", $"CharacterIcon风雨晴", "Images/CharacterIcons/风雨晴"),
             new("Sprite0096", $"CharacterIconSelect风雨晴", "Images/CharacterIcons/风雨晴Select"),
-            
-            // Entities
-            new("Sprite0097", "噬金甲", "Images/Monsters/01"),
-            new("Sprite0098", "墨蛟", "Images/Monsters/02"),
-            new("Sprite0099", "渊虾", "Images/Monsters/03"),
-            new("Sprite0100", "九尾狐", "Images/Monsters/04"),
-            new("Sprite0101", "推山兽", "Images/Monsters/05"),
-            new("Sprite0102", "白泽", "Images/Monsters/06"),
-            new("Sprite0103", "鲲", "Images/Monsters/07"),
-            new("Sprite0104", "毕方", "Images/Monsters/08"),
-            new("Sprite0105", "火蟾", "Images/Monsters/09"),
-            new("Sprite0106", "麒麟", "Images/Monsters/10"),
-            new("Sprite0107", "凌霄大圣", "Images/Monsters/鹿仙人"),
-            new("Sprite0108", "龟仙人", "Images/Monsters/鹤仙人"),
-            new("Sprite0109", "鹤仙人", "Images/Monsters/鹿仙人"),
-            new("Sprite0110", "鹿仙人", "Images/Monsters/鹤仙人"),
-            new("Sprite0111", "土行大圣", "Images/Monsters/鹿仙人"),
 
             // 卡牌
             new("Sprite08_001", "SkillCard缺失插画", "Images/SkillCardIllustrations/缺失插画"),
@@ -279,6 +256,5 @@ public class SpriteCategory : Category<SpriteEntry>
     public SpriteEntry MissingSkillBarIllustration() => FromName("SkillBar缺失插画");
     public SpriteEntry ErrorBuffIcon() => FromName("Buff不存在");
     public SpriteEntry MissingBuffIcon() => FromName("Buff缺失插画");
-    public SpriteEntry MissingCharacterPortrait() => FromName("CharacterPortrait缺失立绘");
     public SpriteEntry MissingEventIllustration() => FromName("Event缺失插画");
 }

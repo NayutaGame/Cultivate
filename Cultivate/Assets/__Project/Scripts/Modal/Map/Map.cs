@@ -68,7 +68,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     {
         RoomPool = new();
         int difficulty = env.GetRunConfig().GetDifficulty();
-        RoomPool.Populate(Encyclopedia.RoomCategory.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
+        RoomPool.Populate(Encyclopedia.LegacyRoomCategory.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
         RoomPool.Shuffle();
     }
 
@@ -88,8 +88,8 @@ public class Map : Addressable, ISerializationCallbackReceiver
     }
 
     public void InsertRoom(string roomName)
-        => InsertRoom(Encyclopedia.RoomCategory.FromName(roomName));
-    public void InsertRoom(RoomEntry roomEntry)
+        => InsertRoom(Encyclopedia.LegacyRoomCategory.FromName(roomName));
+    public void InsertRoom(LegacyRoomEntry roomEntry)
     {
         InsertedRoomPool.Populate(roomEntry);
         InsertedRoomPool.Shuffle();

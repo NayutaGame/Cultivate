@@ -81,7 +81,7 @@ public class AnnotationBehaviour : XBehaviour
         }
     }
 
-    public void ShowAnnotation(InteractBehaviour ib, PointerEventData d)
+    private void ShowAnnotation(InteractBehaviour ib, PointerEventData d)
     {
         AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
             ? new ImageAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
@@ -98,7 +98,7 @@ public class AnnotationBehaviour : XBehaviour
         CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
     }
 
-    public void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
+    private void TryShowAnnotation(InteractBehaviour ib, PointerEventData d)
     {
         AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
             ? new ImageAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))

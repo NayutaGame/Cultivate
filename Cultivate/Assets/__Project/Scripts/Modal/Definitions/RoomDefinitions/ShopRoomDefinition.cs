@@ -5,21 +5,21 @@ using CLLibrary;
 [Serializable]
 public class ShopRoomDefinition : RoomDefinition
 {
-    public override RoomEntry Draw(Map map, Room room)
+    public override LegacyRoomEntry Draw(Map map, Room room)
     {
-        FinitePool<RoomEntry> roomPool = new();
+        FinitePool<LegacyRoomEntry> roomPool = new();
         
-        roomPool.Populate(Encyclopedia.RoomCategory.FromName("黑市"));
-        roomPool.Populate(Encyclopedia.RoomCategory.FromName("收藏家"));
-        roomPool.Populate(Encyclopedia.RoomCategory.FromName("以物易物"));
-        roomPool.Populate(Encyclopedia.RoomCategory.FromName("毕业季"));
-        roomPool.Populate(Encyclopedia.RoomCategory.FromName("盲盒"));
+        roomPool.Populate(Encyclopedia.LegacyRoomCategory.FromName("黑市"));
+        roomPool.Populate(Encyclopedia.LegacyRoomCategory.FromName("收藏家"));
+        roomPool.Populate(Encyclopedia.LegacyRoomCategory.FromName("以物易物"));
+        roomPool.Populate(Encyclopedia.LegacyRoomCategory.FromName("毕业季"));
+        roomPool.Populate(Encyclopedia.LegacyRoomCategory.FromName("盲盒"));
         
         roomPool.Depopulate(pred: e => !e.LadderBound.Contains(Ladder));
         
         roomPool.Shuffle();
 
-        roomPool.TryPopItem(out RoomEntry entry);
+        roomPool.TryPopItem(out LegacyRoomEntry entry);
         return entry;
     }
 

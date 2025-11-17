@@ -9,22 +9,6 @@ public class MapNodeCategory : Category<MapNodeEntry>
         {
             new(id:                       "MapNode0001",
                 name:                     "凌云峰"),
-            // int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(ladder);
-            // DialogCell A = new DialogCell(
-            //         titleText: "存钱",
-            //         detailedText: $"获得了{baseGoldReward}金钱")
-            //     .SetReward(Reward.FromGold(baseGoldReward));
-            // return A;
-                    
-            // new WriteBuffer("ladder"),
-            // new ReadConstant("GoldRewardFromLadder"),
-            // new BuildString("获得了{0}金钱"),
-            // new DeclareVariable("detailedText"),
-            //
-            // new WriteBuffer("detailedText"),
-            // new WriteBuffer("存钱"),
-            // new DeclareDialogCell("A", "buffer", "buffer"),
-            // new DialogCellSetReward("A", ...),
             new(id:                       "MapNode0002",
                 name:                     "逍遥海"),
             new(id:                       "MapNode0003",

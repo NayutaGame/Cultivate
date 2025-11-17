@@ -39,7 +39,7 @@ public class BattleEntityView : XView
 
         NameText.text = $"{entity.GetEntry().GetName()}";
         
-        SetModel(entity.GetEntry().GetRunModelPrefabEntry());
+        SetModel(entity.GetEntry().RunModel);
 
         FieldView.Sync();
         FormationList.Sync();

@@ -199,7 +199,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public bool PackIsGenerallyUnlocked(CharacterEntry character, PackEntry pack)
     {
-        int? slotIndex = character._packPreset.PackEntries.FirstIdx(packEntry => packEntry == pack);
+        int? slotIndex = character.PackPreset.PackEntries.FirstIdx(packEntry => packEntry == pack);
         if (!slotIndex.HasValue)
             return PackIsUnlocked(pack);
         
@@ -212,7 +212,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
             return true;
         
         // 卡包未解锁，但是槽位解锁，并且当前角色的初始Preset的这个槽位的卡包是当前卡包
-        return SlotIsUnlocked(character, slotIndex) && character._packPreset.PackEntries[slotIndex] == pack;
+        return SlotIsUnlocked(character, slotIndex) && character.PackPreset.PackEntries[slotIndex] == pack;
     }
 
     public Description GetPackUnlockCondition(CharacterEntry character, PackEntry pack)

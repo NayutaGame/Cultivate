@@ -8,21 +8,23 @@ public class PrefabCategory : Category<PrefabEntry>
         AddRange(new List<PrefabEntry>()
         {
             // Config Models
-            new("Prefab01_001", "ConfigModel缺失模型", "Prefabs/ConfigModels/缺失模型"),
+            new("Prefab01_001", "ConfigModel缺失", "Prefabs/ConfigModels/缺失"),
             new("Prefab01_002", "ConfigModel徐福", "Prefabs/ConfigModels/徐福"),
             new("Prefab01_003", "ConfigModel子非鱼", "Prefabs/ConfigModels/子非鱼"),
             new("Prefab01_004", "ConfigModel子非燕", "Prefabs/ConfigModels/子非燕"),
             new("Prefab01_005", "ConfigModel彼此卿", "Prefabs/ConfigModels/彼此卿"),
             new("Prefab01_006", "ConfigModel风雨晴", "Prefabs/ConfigModels/风雨晴"),
+            // new("Prefab01_007", "ConfigModel梦乃遥", "Prefabs/ConfigModels/梦乃遥"),
             
             // Run Models
-            new("Prefab02_001", "RunModel缺失模型", "Prefabs/RunModels/缺失模型"),
+            new("Prefab02_001", "RunModel缺失模型", "Prefabs/RunModels/缺失"),
             new("Prefab02_002", "RunModel徐福", "Prefabs/RunModels/徐福"),
             new("Prefab02_003", "RunModel子非鱼", "Prefabs/RunModels/子非鱼"),
             new("Prefab02_004", "RunModel子非燕", "Prefabs/RunModels/子非燕"),
             // new("Prefab02_005", "RunModel彼此卿", "Prefabs/RunModels/彼此卿"),
             new("Prefab02_006", "RunModel风雨晴", "Prefabs/RunModels/风雨晴"),
             // new("Prefab02_007", "RunModel梦乃遥", "Prefabs/RunModels/梦乃遥"),
+            
             new("Prefab02_008", "RunModel噬金甲", "Prefabs/RunModels/噬金甲"),
             new("Prefab02_009", "RunModel墨蛟", "Prefabs/RunModels/墨蛟"),
             new("Prefab02_010", "RunModel渊虾", "Prefabs/RunModels/渊虾"),
@@ -33,11 +35,17 @@ public class PrefabCategory : Category<PrefabEntry>
             new("Prefab02_015", "RunModel毕方", "Prefabs/RunModels/毕方"),
             new("Prefab02_016", "RunModel火蟾", "Prefabs/RunModels/火蟾"),
             new("Prefab02_017", "RunModel麒麟", "Prefabs/RunModels/麒麟"),
-            new("Prefab02_018", "RunModel鹤仙人", "Prefabs/RunModels/鹤仙人"),
-            new("Prefab02_019", "RunModel鹿仙人", "Prefabs/RunModels/鹿仙人"),
+            new("Prefab02_018", "RunModel醉良", "Prefabs/RunModels/醉良"),
+            new("Prefab02_019", "RunModel童游", "Prefabs/RunModels/童游"),
+            new("Prefab02_020", "RunModel眠谷", "Prefabs/RunModels/眠谷"),
+            new("Prefab02_021", "RunModel常夏", "Prefabs/RunModels/常夏"),
+            new("Prefab02_022", "RunModel司方", "Prefabs/RunModels/司方"),
+            
+            new("Prefab02_023", "RunModel鹤仙人", "Prefabs/RunModels/鹤仙人"),
+            new("Prefab02_024", "RunModel鹿仙人", "Prefabs/RunModels/鹿仙人"),
             
             // Stage Models
-            new("Prefab03_001", "StageModel缺失模型", "Prefabs/StageModels/缺失模型"),
+            new("Prefab03_001", "StageModel缺失", "Prefabs/StageModels/缺失"),
             new("Prefab03_002", "StageModel徐福", "Prefabs/StageModels/徐福"),
             new("Prefab03_003", "StageModel子非鱼", "Prefabs/StageModels/子非鱼"),
             new("Prefab03_004", "StageModel子非燕", "Prefabs/StageModels/子非燕"),
@@ -55,11 +63,17 @@ public class PrefabCategory : Category<PrefabEntry>
             new("Prefab03_015", "StageModel毕方", "Prefabs/StageModels/毕方"),
             new("Prefab03_016", "StageModel火蟾", "Prefabs/StageModels/火蟾"),
             new("Prefab03_017", "StageModel麒麟", "Prefabs/StageModels/麒麟"),
-            new("Prefab03_018", "StageModel鹤仙人", "Prefabs/StageModels/鹤仙人"),
-            new("Prefab03_019", "StageModel鹿仙人", "Prefabs/StageModels/鹿仙人"),
+            new("Prefab03_018", "StageModel醉良", "Prefabs/StageModels/醉良"),
+            new("Prefab03_019", "StageModel童游", "Prefabs/StageModels/童游"),
+            new("Prefab03_020", "StageModel眠谷", "Prefabs/StageModels/眠谷"),
+            new("Prefab03_021", "StageModel常夏", "Prefabs/StageModels/常夏"),
+            new("Prefab03_022", "StageModel司方", "Prefabs/StageModels/司方"),
+            
+            new("Prefab03_023", "StageModel鹤仙人", "Prefabs/StageModels/鹤仙人"),
+            new("Prefab03_024", "StageModel鹿仙人", "Prefabs/StageModels/鹿仙人"),
             
             // Scribble Models
-            new("Prefab04_001", "ScribbleModel缺失模型", "Prefabs/ScribbleModels/缺失模型"),
+            new("Prefab04_001", "ScribbleModel徐福", "Prefabs/ScribbleModels/缺失"),
             new("Prefab04_002", "ScribbleModel徐福", "Prefabs/ScribbleModels/徐福"),
             new("Prefab04_003", "ScribbleModel子非鱼", "Prefabs/ScribbleModels/子非鱼"),
             new("Prefab04_004", "ScribbleModel子非燕", "Prefabs/ScribbleModels/子非燕"),
@@ -72,8 +86,8 @@ public class PrefabCategory : Category<PrefabEntry>
         });
     }
 
-    public PrefabEntry MissingConfigModel() => FromName("ConfigModel缺失模型");
-    public PrefabEntry MissingStageModel() => FromName("StageModel缺失模型");
-    public PrefabEntry MissingRunModel() => FromName("RunModel缺失模型");
-    public PrefabEntry MissingScribbleModel() => FromName("ScribbleModel徐福");
+    public PrefabEntry MissingConfigModel() => FromName("ConfigModel缺失");
+    public PrefabEntry MissingRunModel() => FromName("RunModel缺失");
+    public PrefabEntry MissingStageModel() => FromName("StageModel缺失");
+    public PrefabEntry MissingScribbleModel() => FromName("ScribbleModel缺失");
 }

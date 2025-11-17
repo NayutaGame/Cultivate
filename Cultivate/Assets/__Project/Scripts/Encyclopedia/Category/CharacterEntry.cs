@@ -9,14 +9,14 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     [NonSerialized] public string Description;
     [NonSerialized] private string _rawAbilityDescription;
     [NonSerialized] private Description _abilityDescription;
-    [NonSerialized] public RunClosure[] _runClosures;
-    [NonSerialized] public StageClosure[] _stageClosures;
-    [NonSerialized] private SpriteEntry _characterIconSprite;
-    [NonSerialized] private SpriteEntry _characterIconSelectSprite;
-    [NonSerialized] private PrefabEntry _configModel;
-    [NonSerialized] private PrefabEntry _stageModel;
-    [NonSerialized] private PrefabEntry _scribbleModel;
-    [NonSerialized] public PackPreset _packPreset;
+    
+    [NonSerialized] public RunClosure[] RunClosures;
+    [NonSerialized] public StageClosure[] StageClosures;
+    [NonSerialized] public PackPreset PackPreset;
+    [NonSerialized] public EntityEntry EntityEntry;
+
+    [NonSerialized] private RoomEntry[] _roomsFromCharacter;
+    [NonSerialized] private RoomEntry _roomFromVisitor;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -35,21 +35,29 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     {
         Description = description ?? "没有描述";
         _rawAbilityDescription = rawAbilityDescription ?? "没有技能描述";
-        _packPreset = packPreset ?? PackPreset.Default;
+        PackPreset = packPreset ?? PackPreset.Default;
 
-        _runClosures = runClosures ?? Array.Empty<RunClosure>();
-        _stageClosures = stageClosures ?? Array.Empty<StageClosure>();
+        RunClosures = runClosures ?? Array.Empty<RunClosure>();
+        StageClosures = stageClosures ?? Array.Empty<StageClosure>();
 
-        _characterIconSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIcon{GetName()}");
-        _characterIconSelectSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect{GetName()}");
-        _configModel = Encyclopedia.PrefabCategory.FromName($"ConfigModel{GetName()}");
-        _stageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{GetName()}");
-        _scribbleModel = Encyclopedia.PrefabCategory.FromName($"ScribbleModel{GetName()}");
+        EntityEntry = Encyclopedia.EntityCategory.FromName(GetName());
+    }
+    
+    public override void Init()
+    {
+        _abilityDescription = new Description(_rawAbilityDescription);
+
+        _roomsFromCharacter = new RoomEntry[]
+        {
+            Encyclopedia.RoomCategory.FromName($"Character{GetName()}1"),
+        };
+        
+        _roomFromVisitor = Encyclopedia.RoomCategory.FromName($"Visitor{GetName()}");
     }
 
     public List<PackEntry> GetDefaultPacks()
     {
-        return _packPreset.PackEntries;
+        return PackPreset.PackEntries;
     }
 
     public string GetTitle()
@@ -57,15 +65,15 @@ public class CharacterEntry : Entry, AnnotatableCharacter
 
     public Description GetAbilityDescription()
         => _abilityDescription;
-    
-    public override void Init()
-        => _abilityDescription = new Description(_rawAbilityDescription);
 
-    public Sprite GetCharacterIconSprite() => _characterIconSprite.Sprite;
-    public Sprite GetCharacterIconSelectSprite() => _characterIconSelectSprite.Sprite;
-    public PrefabEntry GetConfigPrefabEntry() => _configModel ?? Encyclopedia.PrefabCategory.MissingConfigModel();
-    public PrefabEntry GetStagePrefabEntry() => _stageModel ?? Encyclopedia.PrefabCategory.MissingStageModel();
-    public PrefabEntry GetScribblePrefabEntry() => _scribbleModel ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
+    public RoomEntry[] RoomsFromCharacter => _roomsFromCharacter;
+    public RoomEntry RoomFromVisitor => _roomFromVisitor;
+    
+    public Sprite GetCharacterIconSprite() => EntityEntry.CharacterIconSprite.Sprite;
+    public Sprite GetCharacterIconSelectSprite() => EntityEntry.CharacterIconSelectSprite.Sprite;
+    public PrefabEntry GetConfigPrefabEntry() => EntityEntry.ConfigModel;
+    public PrefabEntry GetStagePrefabEntry() => EntityEntry.StageModel;
+    public PrefabEntry GetScribblePrefabEntry() => EntityEntry.ScribbleModel;
 
     public bool CanShowAnnotation()
         => true;

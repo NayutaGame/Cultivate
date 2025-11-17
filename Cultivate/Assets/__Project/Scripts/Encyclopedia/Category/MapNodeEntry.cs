@@ -1,17 +1,29 @@
 
+using System;
 using PuppyDragon.uNody.Logic;
-using UnityEngine;
 
 public class MapNodeEntry : Entry
 {
-    private string _logicGraphPath;
-    private LogicGraph _roomGraph;
+    [NonSerialized] private RoomEntry _roomFromVoid;
+    [NonSerialized] private RoomEntry[] _roomsFromLocation;
     
     public MapNodeEntry(string id, string name) : base(id, name)
     {
-        _logicGraphPath = $"MapNodeLogicGraph/{GetName()}";
-        _roomGraph = Resources.Load<LogicGraph>(_logicGraphPath);
     }
 
-    public LogicGraph RoomGraph => _roomGraph;
+    public override void Init()
+    {
+        base.Init();
+
+        _roomFromVoid = Encyclopedia.RoomCategory.FromName($"Void{GetName()}");
+        _roomsFromLocation = new RoomEntry[]
+        {
+            Encyclopedia.RoomCategory.FromName($"Location{GetName()}1"),
+            Encyclopedia.RoomCategory.FromName($"Location{GetName()}2"),
+            Encyclopedia.RoomCategory.FromName($"Location{GetName()}3"),
+        };
+    }
+
+    public RoomEntry RoomEntryFromVoid => _roomFromVoid;
+    public RoomEntry[] RoomEntriesFromLocation => _roomsFromLocation;
 }

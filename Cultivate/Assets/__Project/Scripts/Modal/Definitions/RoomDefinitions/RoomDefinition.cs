@@ -38,7 +38,7 @@ public abstract class RoomDefinition
     public static int GetCardBasePriceFromJingJie(JingJie jingJie)
         => CardBasePriceFromJingJie[((int)jingJie).Clamp(0, CardBasePriceFromJingJie.Length - 1)];
     
-    public abstract RoomEntry Draw(Map map, Room room);
+    public abstract LegacyRoomEntry Draw(Map map, Room room);
 
     public abstract string GetTitle();
     public abstract SpriteEntry GetSprite();

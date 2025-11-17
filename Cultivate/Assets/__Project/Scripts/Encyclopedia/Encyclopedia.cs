@@ -19,6 +19,7 @@ public class Encyclopedia : Addressable
     public static SkillCategory SkillCategory;
     public static PackCategory PackCategory;
     public static EntityCategory EntityCategory;
+    public static LegacyRoomCategory LegacyRoomCategory;
     public static RoomCategory RoomCategory;
     public static FormationCategory FormationCategory;
     public static CharacterCategory CharacterCategory;
@@ -56,6 +57,7 @@ public class Encyclopedia : Addressable
             SkillCategory       = new(),
             PackCategory        = new(),
             EntityCategory      = new(),
+            LegacyRoomCategory  = new(),
             RoomCategory        = new(),
             FormationCategory   = new(),
             CharacterCategory   = new(),

@@ -1100,7 +1100,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (_config.RunConfig == null)
             return;
 
-        _closureDict.Register(this, _config.RunConfig.GetCharacter()._stageClosures);
+        _closureDict.Register(this, _config.RunConfig.GetCharacter().StageClosures);
 
         DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
         _closureDict.Register(this, difficultyEntry._stageClosures);
@@ -1113,7 +1113,7 @@ public class StageEnvironment : Addressable, StageClosureListener
         if (_config.RunConfig == null)
             return;
 
-        _closureDict.Unregister(this, _config.RunConfig.GetCharacter()._stageClosures);
+        _closureDict.Unregister(this, _config.RunConfig.GetCharacter().StageClosures);
 
         DifficultyEntry difficultyEntry = _config.RunConfig.DifficultyProfile.GetEntry();
         _closureDict.Unregister(this, difficultyEntry._stageClosures);

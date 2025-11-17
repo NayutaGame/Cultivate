@@ -16,7 +16,7 @@ public class Room : ISerializationCallbackReceiver, AnnotatableRoom
 
     [SerializeField] private RoomState _state;
     [SerializeReference] private RoomDefinition _roomDefinition;
-    [SerializeField] private RoomEntry _entry;
+    [SerializeField] private LegacyRoomEntry _entry;
     [SerializeReference] private RunEntity _predrewRunEntity;
 
 
@@ -34,7 +34,7 @@ public class Room : ISerializationCallbackReceiver, AnnotatableRoom
     public RoomState GetState() => _state;
     public void SetState(RoomState state) => _state = state;
     public RoomDefinition GetDescriptor() => _roomDefinition;
-    public RoomEntry GetEntry() => _entry;
+    public LegacyRoomEntry GetEntry() => _entry;
     public RunEntity GetPredrewRunEntity() => _predrewRunEntity;
     public void SetPredrewRunEntity(RunEntity runEntity) => _predrewRunEntity = runEntity;
 
@@ -50,7 +50,7 @@ public class Room : ISerializationCallbackReceiver, AnnotatableRoom
 
     public void OnAfterDeserialize()
     {
-        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.RoomCategory.FromId(_entry.GetId());
+        _entry = string.IsNullOrEmpty(_entry.GetId()) ? null : Encyclopedia.LegacyRoomCategory.FromId(_entry.GetId());
     }
 
     public bool CanShowAnnotation()

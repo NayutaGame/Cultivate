@@ -24,7 +24,8 @@ public class MapPanel : Panel
         RoomListView.SetAddress(address.Append(".CurrLevel.Rooms"));
         MapNodeListView.SetAddress(new("Run.Environment.MapNodes"));
         
-        MapNodeListView.LeftClickNeuron.Join(SelectedMapNode);
+        // MapNodeListView.LeftClickNeuron.Join(SelectedMapNode);
+        MapNodeListView.LeftClickNeuron.Join(CreateMenu);
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
@@ -87,6 +88,13 @@ public class MapPanel : Panel
             .AppendCallback(() => OpenZone.gameObject.SetActive(true))
             .AppendCallback(() => CloseZone.gameObject.SetActive(false))
             .Join(BodyTransform.DOAnchorPos(BodyHidePivot.anchoredPosition, 0.15f).SetEase(Ease.InQuad));
+
+    private void CreateMenu(InteractBehaviour ib, PointerEventData d)
+    {
+        MapNode mapNode = ib.Get<MapNode>();
+        MenuDetails menuDetails = RunManager.Instance.Environment.GetMenuDetailsFromMapNode(mapNode);
+        CanvasManager.Instance.MenuManager.CreateMenu(menuDetails);
+    }
     
     private void SelectedMapNode(InteractBehaviour ib, PointerEventData d)
     {

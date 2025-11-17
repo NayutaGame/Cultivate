@@ -75,6 +75,13 @@ public class Animator
         _handle.Restart();
         await _handle.AsyncWaitForCompletion();
     }
+
+    public void Complete()
+    {
+        if (_handle == null)
+            return;
+        _handle.Kill(true);
+    }
     
     public bool IsAnimating => _handle != null && _handle.active;
 }

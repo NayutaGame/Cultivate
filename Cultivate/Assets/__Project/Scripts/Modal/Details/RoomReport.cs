@@ -6,12 +6,12 @@ using UnityEngine.Serialization;
 [Serializable]
 public class RoomReport : TestReport
 {
-    [SerializeReference] public RoomEntry RoomEntry;
+    [SerializeReference] public LegacyRoomEntry RoomEntry;
 
     [SerializeReference] public RoomDefinition RoomDefinition;
 
     private RoomReport(
-        RoomEntry roomEntry,
+        LegacyRoomEntry roomEntry,
         RoomDefinition roomDefinition
     )
     {

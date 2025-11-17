@@ -6,7 +6,6 @@ using System.Text;
 using CLLibrary;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class RunEnvironment : Addressable, RunClosureListener, ISerializationCallbackReceiver
@@ -136,25 +135,27 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeReference] private SerializableDictionary _intMemory;
     [SerializeReference] private RunConfig _config;
     [SerializeField] private JingJie _jingJie;
-    [SerializeReference] private Map _map;
     
+    [SerializeReference] private Map _map;
     private MapNodeListModel _mapNodes;
-    private Dictionary<CharacterEntry, NPC> _npcDict;
+    
+    private RunCharacter _character;
+    private Dictionary<CharacterEntry, RunNPC> _npcDict;
     
     [SerializeReference] private SkillPool _skillPool;
     [NonSerialized] private MutatorPool _mutatorPool;
     [SerializeReference] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
-    [SerializeReference] private RunEntity _home;
     [SerializeReference] private EntityEntry _huaShenBossEntity;
     [SerializeField] private RunResult _result;
 
     [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
+    // [Obsolete] [SerializeReference] private RunEntity _home;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Config",                     thisObject => ((RunEnvironment)thisObject)._config },
-        { "Home",                       thisObject => ((RunEnvironment)thisObject)._home },
+        { "Home",                       thisObject => ((RunEnvironment)thisObject)._character.Build },
         { "Away",                       thisObject => ((RunEnvironment)thisObject)._away },
         { "Map",                        thisObject => ((RunEnvironment)thisObject)._map },
         { "MapNodes",                   thisObject => ((RunEnvironment)thisObject)._mapNodes },
@@ -180,10 +181,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _map = new(_config.MapEntry);
 
         _mapNodes = new();
-        _npcDict = new Dictionary<CharacterEntry, NPC>();
+        _npcDict = new Dictionary<CharacterEntry, RunNPC>();
         Encyclopedia.CharacterCategory.Do(characterEntry =>
         {
-            _npcDict.Add(characterEntry, new NPC(characterEntry));
+            _npcDict.Add(characterEntry, new RunNPC(characterEntry));
         });
         
         _skillPool = new();
@@ -201,8 +202,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _memory = new();
         _closureDict = new();
         _simulateResult = new(Simulate);
-        
-        SetHome(_home ?? RunEntity.Default());
+
+        _character ??= new(_config.GetCharacter());
+        SetHome(Home ?? RunEntity.Default());
         SetAway(null);
         
         ResimulateNeuron.Add(_simulateResult.SetDirty);
@@ -222,9 +224,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             _mutatorPool = new();
         }
     }
-    
-    private bool AllowMutate()
-        => _config.DifficultyProfile.GetEntry().AllowMutate;
 
     private void Deinit()
     {
@@ -252,7 +251,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public SerializableDictionary IntMemory => _intMemory;
     public RunConfig GetRunConfig() => _config;
     public Map Map => _map;
-    public RunEntity Home => _home;
+    public RunCharacter Character => _character;
+    public RunEntity Home => _character.Build;
     public RunEntity Away => _away;
     public JingJie JingJie => _jingJie;
     public SkillPool SkillPool => _skillPool;
@@ -266,24 +266,27 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public TimeSpan GetPassedTime() => _loadedTime + (DateTime.Now - _startTime);
     public RunReport GetRunReport() => _runReport;
     public BoundedInt GetGold() => _gold;
-    public MingYuan GetMingYuan() => _home.GetMingYuan();
+    public MingYuan GetMingYuan() => Home.GetMingYuan();
     
     public bool IsPlayerInitiate() => !_config.DifficultyProfile.GetEntry().EnemyInitiate;
 
     public bool IsCompatible()
         => Version.IsRunCompatible(_version);
+    
+    private bool AllowMutate()
+        => _config.DifficultyProfile.GetEntry().AllowMutate;
 
     public void SetHome(RunEntity home)
     {
-        _home?.ChangedNeuron.Remove(ResimulateNeuron);
-        _home = home;
-        _home?.ChangedNeuron.Add(ResimulateNeuron);
+        _character.Build?.ChangedNeuron.Remove(ResimulateNeuron);
+        _character.Build = home;
+        _character.Build?.ChangedNeuron.Add(ResimulateNeuron);
     }
 
     public void SetAway(RunEntity away)
     {
         _awayIsDummy = away == null;
-        away ??= RunEntity.FromJingJieHealth(_home.GetJingJie(), 1000000);
+        away ??= RunEntity.FromJingJieHealth(Home.GetJingJie(), 1000000);
         
         _away?.ChangedNeuron.Remove(ResimulateNeuron);
         _away = away;
@@ -303,7 +306,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void Register()
     {
-        RegisterList(_config.GetCharacter()._runClosures);
+        RegisterList(_config.GetCharacter().RunClosures);
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
         RegisterList(difficultyEntry._runClosures);
@@ -325,7 +328,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void Unregister()
     {
-        UnregisterList(_config.GetCharacter()._runClosures);
+        UnregisterList(_config.GetCharacter().RunClosures);
 
         DifficultyEntry difficultyEntry = _config.DifficultyProfile.GetEntry();
         UnregisterList(difficultyEntry._runClosures);
@@ -541,7 +544,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         MapEntry mapEntry = Map.GetEntry();
         
         SetJingJieProcedure(mapEntry._envJingJie);
-        _home.SetSlotCount(mapEntry._slotCount);
+        Home.SetSlotCount(mapEntry._slotCount);
         SetDGoldProcedure(mapEntry._gold);
 
         DrawSkillsProcedure(
@@ -580,7 +583,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void DepleteProcedure()
     {
-        DepleteDetails d = new(_home);
+        DepleteDetails d = new(Home);
 
         SendEvent(RunClosureDict.WIL_DEPLETE, d);
 
@@ -623,7 +626,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetHealthDetails setHealthDetails = SetHealthDetails.FromJingJieChange(d.FromJingJie, d.ToJingJie);
         SetHealthProcedure(setHealthDetails);
         
-        _home.SetJingJie(d.ToJingJie);
+        Home.SetJingJie(d.ToJingJie);
         AudioManager.Play(d.ToJingJie.GetAudio());
 
         SendEvent(RunClosureDict.DID_JINGJIE_CHANGE, d);
@@ -637,20 +640,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         FormationProcedure();
         SecondPlacementProcedure();
         
-        return StageResult.FromConfig(StageConfig.ForSimulate(_home, _away, _config));
+        return StageResult.FromConfig(StageConfig.ForSimulate(Home, _away, _config));
     }
 
     private void PlacementProcedure()
     {
         if (RunManager.Instance.Environment.IsPlayerInitiate())
         {
-            _home.PlacementProcedure();
+            Home.PlacementProcedure();
             _away.PlacementProcedure();
         }
         else
         {
             _away.PlacementProcedure();
-            _home.PlacementProcedure();
+            Home.PlacementProcedure();
         }
     }
 
@@ -670,9 +673,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         bool homeAllowFormation = _config.DifficultyProfile.GetEntry().HomeAllowFormation;
         if (homeAllowFormation)
-            _home.FormationProcedure();
+            Home.FormationProcedure();
         else
-            _home.ClearFormationProcedure();
+            Home.ClearFormationProcedure();
 
         bool awayAllowFormation = _config.DifficultyProfile.GetEntry().AwayAllowFormation;
         if (awayAllowFormation)
@@ -691,28 +694,28 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         bool homeAllowFormation = _config.DifficultyProfile.GetEntry().HomeAllowFormation;
         if (homeAllowFormation)
-            _home.FormationProcedure();
+            Home.FormationProcedure();
         else
-            _home.ClearFormationProcedure();
+            Home.ClearFormationProcedure();
     }
 
     private void SecondPlacementProcedure()
     {
         if (RunManager.Instance.Environment.IsPlayerInitiate())
         {
-            _home.SecondPlacementProcedure();
+            Home.SecondPlacementProcedure();
             _away.SecondPlacementProcedure();
         }
         else
         {
             _away.SecondPlacementProcedure();
-            _home.SecondPlacementProcedure();
+            Home.SecondPlacementProcedure();
         }
     }
 
     public MergeTarget GetMergePreresult(RunSkill lhs, RunSkill rhs)
     {
-        MergeDetails d = MergeDetails.ForDryRun(lhs, rhs, _home.GetJingJie());
+        MergeDetails d = MergeDetails.ForDryRun(lhs, rhs, Home.GetJingJie());
         d.CalcMergeTarget();
         return d.MergeTarget;
     }
@@ -756,7 +759,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             RemoveSkillProcedure(deckIndex);
         }
 
-        foreach (SkillSlot slot in _home.TraversalCurrentSlots())
+        foreach (SkillSlot slot in Home.TraversalCurrentSlots())
         {
             if (slot.Skill == null)
                 return;
@@ -767,20 +770,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void CombatNormal()
     {
         SetGuideToFinish();
-        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForCombatNormal(_home, _away, _config));
+        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForCombatNormal(Home, _away, _config));
     }
 
     public void CombatOnlyAnimation()
     {
         SetGuideToFinish();
-        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForCombatOnlyAnimation(_home, _away, _config));
+        AppManager.Instance.Push(AppStateMachine.STAGE, StageConfig.ForCombatOnlyAnimation(Home, _away, _config));
     }
 
     public void CombatOnlyResult()
     {
         SetGuideToFinish();
         
-        StageResult result = StageResult.FromConfig(StageConfig.ForCombatOnlyResult(_home, _away, _config));
+        StageResult result = StageResult.FromConfig(StageConfig.ForCombatOnlyResult(Home, _away, _config));
         RunManager.Instance.Environment.ReceiveSignalProcedure(new SkipCombatSignal(result.Flag == 1));
     }
     
@@ -849,7 +852,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     private void SetHealthProcedure(SetHealthDetails d)
     {
-        if (d.Value == _home.GetHealth())
+        if (d.Value == Home.GetHealth())
             return;
         
         SendEvent(RunClosureDict.WIL_SET_HEALTH, d);
@@ -857,7 +860,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (d.Cancel)
             return;
 
-        _home.SetHealth(d.Value);
+        Home.SetHealth(d.Value);
         
         SendEvent(RunClosureDict.DID_SET_HEALTH, d);
         if (d.Diff >= 0)
@@ -958,7 +961,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         RunSkill fromSkill = SkillFromDeckIndex(d.FromIndex);
         RunSkill toSkill = SkillFromDeckIndex(d.ToIndex);
-        MergeProcedure(MergeDetails.ForActualRun(fromSkill, toSkill, _home.GetJingJie()));
+        MergeProcedure(MergeDetails.ForActualRun(fromSkill, toSkill, Home.GetJingJie()));
     }
 
     public void MergeProcedure(MergeDetails d)
@@ -1373,7 +1376,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (_runState == RunState.MapSelecting && signal is SelectedMapNodeSignal selectedMapNodeSignal)
         {
             _runState = RunState.InRoom;
-            _roomEnvironment = RoomEnvironment.CreateRoom(selectedMapNodeSignal.MapNode, _jingJie, 0, _home);
+            _roomEnvironment = RoomEnvironment.CreateRoom(selectedMapNodeSignal.MapNode, _jingJie, 0, Home);
             _roomEnvironment.Step();
             Cell = _roomEnvironment.CurrentCell;
             return;
@@ -1486,6 +1489,26 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         RoomChangedNeuron.Invoke(new(null, newRoom));
     }
 
+    public MenuDetails GetMenuDetailsFromMapNode(MapNode mapNode)
+    {
+        List<RoomOption> roomOptions = mapNode.GetRoomOptions();
+
+        List<string> menuOptions = new List<string>();
+        roomOptions.Do(roomOption =>
+        {
+            if (roomOption.RoomEntry != null)
+                menuOptions.Add(roomOption.RoomEntry.GetName());
+        });
+        
+        MenuDetails menuDetails = new MenuDetails(menuOptions);
+        
+        // 对A有点感兴趣
+        // 对B有点感兴趣
+        // 对C有点感兴趣
+        // 正常进入
+        return menuDetails;
+    }
+
     #endregion
 
     #region Serialization
@@ -1563,9 +1586,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     public void WriteIntoEditable()
     {
-        EditorManager.Instance.Add(_home);
+        EditorManager.Instance.Add(Home);
         int ladder = Map.GetCurrRoom().Ladder;
-        _home.SetLadder(ladder);
+        Home.SetLadder(ladder);
         EditorManager.Instance.Save();
     }
     

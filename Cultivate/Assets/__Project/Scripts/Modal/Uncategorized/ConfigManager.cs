@@ -61,7 +61,7 @@ public class ConfigManager : Addressable
 
     private void LoadPackPresetFromCharacter(CharacterProfile character)
     {
-        PackPreset preset = character.GetEntry()._packPreset;
+        PackPreset preset = character.GetEntry().PackPreset;
         LoadPackPreset(preset);
     }
 

@@ -40,12 +40,12 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
     
     public bool ShouldUpdateSlotCount => _slotCountBefore != _slotCountAfter;
     
-    public override RoomEntry Draw(Map map, Room room)
+    public override LegacyRoomEntry Draw(Map map, Room room)
     {
         EntityQuery query = EntityQuery.FromLadder(Ladder);
         map.EntityPool.TryDrawEntity(out RunEntity entity, query);
         room.SetPredrewRunEntity(entity);
-        return Encyclopedia.RoomCategory.FromName("战斗");
+        return Encyclopedia.LegacyRoomCategory.FromName("战斗");
     }
 
     public override string GetTitle()

@@ -151,7 +151,7 @@ public class StageManager : Singleton<StageManager>, Addressable
     public void SetAwayFromRunEntity(RunEntity runEntity)
     {
         // _slots[1].SR.sprite = runEntity.GetEntry().GetSprite();
-        SetAwayModel(runEntity.GetEntry().GetStageModelPrefabEntry());
+        SetAwayModel(runEntity.GetEntry().StageModel);
     }
     
     private void SetHomeModel(PrefabEntry targetPrefabEntry)

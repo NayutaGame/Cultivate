@@ -4,9 +4,9 @@ using System;
 [Serializable]
 public class RestRoomDefinition : RoomDefinition
 {
-    public override RoomEntry Draw(Map map, Room room)
+    public override LegacyRoomEntry Draw(Map map, Room room)
     {
-        return Encyclopedia.RoomCategory.FromName("休息");
+        return Encyclopedia.LegacyRoomCategory.FromName("休息");
     }
 
     public RestRoomDefinition(int ladder, Func<Profile, RunEnvironment, bool> pred = null) : base(ladder, pred)

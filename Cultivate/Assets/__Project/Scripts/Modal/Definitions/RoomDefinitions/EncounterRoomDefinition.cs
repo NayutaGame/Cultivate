@@ -4,9 +4,9 @@ using System;
 [Serializable]
 public class EncounterRoomDefinition : RoomDefinition
 {
-    public override RoomEntry Draw(Map map, Room room)
+    public override LegacyRoomEntry Draw(Map map, Room room)
     {
-        map.RoomPool.TryPopItem(out RoomEntry entry, pred: e => e.CanCreate(map, room));
+        map.RoomPool.TryPopItem(out LegacyRoomEntry entry, pred: e => e.CanCreate(map, room));
         return entry;
     }
 

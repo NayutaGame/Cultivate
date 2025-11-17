@@ -4,10 +4,10 @@ using System;
 [Serializable]
 public class AdventureRoomDefinition : RoomDefinition
 {
-    public override RoomEntry Draw(Map map, Room room)
+    public override LegacyRoomEntry Draw(Map map, Room room)
     {
-        Predicate<RoomEntry> pred = e => e.CanCreate(map, room);
-        RoomEntry entry;
+        Predicate<LegacyRoomEntry> pred = e => e.CanCreate(map, room);
+        LegacyRoomEntry entry;
         
         if (map.InsertedRoomPool.TryPopItem(out entry, pred: pred))
         {
@@ -19,7 +19,7 @@ public class AdventureRoomDefinition : RoomDefinition
         }
         else
         {
-            entry = Encyclopedia.RoomCategory.FromName("不存在的事件");
+            entry = Encyclopedia.LegacyRoomCategory.FromName("不存在的事件");
         }
 
         return entry;
