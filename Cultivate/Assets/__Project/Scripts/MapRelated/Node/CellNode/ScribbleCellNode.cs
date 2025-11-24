@@ -4,6 +4,8 @@ using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
+[NodeWidth(300)]
+[CreateNodeMenu("Cell/Scribble Cell", -9, true)]
 public class ScribbleCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

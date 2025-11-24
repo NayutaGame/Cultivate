@@ -29,7 +29,7 @@ public sealed class EntityQuery
         => new(entry: entry);
 
     public static EntityQuery FromName(string name)
-        => new(entry: Encyclopedia.EntityCategory.FromName(name));
+        => new(entry: Encyclopedia.EntityCategory.FromName(name), limitToPool: false);
 
     public static EntityQuery FromLadder(int ladder)
         => new(ladder: ladder);
@@ -43,7 +43,7 @@ public sealed class EntityQuery
 
     public bool Matches(RunEntity entity)
     {
-        if (_entry != null && entity.GetEntry() != _entry)
+        if (_entry != null && entity.GetModel() != _entry)
             return false;
 
         if (_ladder.HasValue && entity.GetLadder() != _ladder.Value)

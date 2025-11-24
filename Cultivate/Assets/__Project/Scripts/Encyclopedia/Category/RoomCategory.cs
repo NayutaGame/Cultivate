@@ -27,6 +27,9 @@ public class RoomCategory : Category<RoomEntry>
                 name:                     "Visitor子非鱼"),
             new(id:                       "MapNode03_005",
                 name:                     "Visitor子非燕"),
+            
+            new(id:                       "MapNode04_001",
+                name:                     "Character徐福1"),
         });
     }
 }

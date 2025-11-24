@@ -30,8 +30,8 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
 
     #region Accessors
     
-    public EntityEntry GetEntry() => _entry;
-    public void SetEntry(EntityEntry entry) => _entry = entry;
+    public EntityEntry GetModel() => _entry;
+    public void SetModel(EntityEntry entry) => _entry = entry;
     public MingYuan GetMingYuan() => _mingYuan;
     public int GetHealth() => _health;
     public void SetHealth(int value) => _health = value;

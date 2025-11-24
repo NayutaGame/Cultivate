@@ -37,9 +37,9 @@ public class BattleEntityView : XView
         if (entity == null)
             return;
 
-        NameText.text = $"{entity.GetEntry().GetName()}";
+        NameText.text = $"{entity.GetModel().GetName()}";
         
-        SetModel(entity.GetEntry().RunModel);
+        SetModel(entity.GetModel().RunModel);
 
         FieldView.Sync();
         FormationList.Sync();

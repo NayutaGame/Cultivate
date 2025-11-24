@@ -32,7 +32,7 @@ public class PuzzleEntityView : XView
         
         IEntity entity = Get<IEntity>();
 
-        NameText.text = $"{entity.GetJingJie()} {entity.GetEntry().GetName()}";
+        NameText.text = $"{entity.GetJingJie()} {entity.GetModel().GetName()}";
 
         SkillList.Refresh();
         FormationList.Refresh();

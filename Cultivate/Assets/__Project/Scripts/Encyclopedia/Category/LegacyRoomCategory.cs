@@ -66,7 +66,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
 
                     RunEntity enemy = room.GetPredrewRunEntity();
                     
-                    BattleCell A = new(enemy);
+                    BattleCell A = BattleCell.FromTemplate(enemy);
 
                     DiscoverCell B = DiscoverCell.FromDefault(room.Ladder);
 
@@ -74,7 +74,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     
                     bool isHuaShenFinalBoss = roomDefinition._isBoss && RunManager.Instance.Environment.JingJie == JingJie.HuaShen;
                     if (isHuaShenFinalBoss)
-                        RunManager.Instance.Environment.HuaShenBossEntity = enemy.GetEntry();
+                        RunManager.Instance.Environment.HuaShenBossEntity = enemy.GetModel();
 
                     bool allowFanXu = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().AllowFanXuBoss;
 
@@ -329,7 +329,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     Dictionary<PackEntry, DialogOption> optionDict = new Dictionary<PackEntry, DialogOption>()
                     {
                         {
-                            Encyclopedia.PackCategory.FromName("无常路引"), 
+                            Encyclopedia.PackCategory.FromName("无常路引"),
                             DialogOption.FromTextAndSelect("无常路引，金系，擅长暗器，攻击人的弱点",
                                 option =>
                                 {
@@ -671,10 +671,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物1"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌1");
-                    
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromName("教学怪物1");
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -698,11 +695,11 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         detailedText: "请重新尝试教学");
                     R[0].SetSelect(option => A);
 
-                    RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: true);
+                    RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("玩家手牌1", toField: false, overwrite: true);
                     
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("玩家手牌1", toField: false, overwrite: true);
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -723,10 +720,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物2"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物2");
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌2");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
 
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -783,10 +780,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物3"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物3");
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌3");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -847,10 +844,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         titleText: "合成",
                         detailedText: "突然对在之前战斗中使用的牌有些想法。");
                     
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物4"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物4");
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌4");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
                     
                     DeckIndex firstDeckIndex = DeckIndex.FromField(1);
                     RunSkillQuery query = RunSkillQuery.FromNameJingJie("恋花", JingJie.LianQi);
@@ -924,9 +921,9 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物5"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物5");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
 
                     DialogCell D1 = new(
                         titleText: "耍赖",
@@ -963,9 +960,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物6"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物6");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
+                    
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.ZhuJi));
@@ -1008,9 +1006,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物7"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物7");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
+                    
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.LianQi));
@@ -1056,10 +1055,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         titleText: "阵法",
                         detailedText: "逐渐感觉修炼的得心应手起来了，最近隐约能够感到卡牌之间存在某种共鸣。");
                     
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物8"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物8");
                     RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌8");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -1128,9 +1127,10 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物9"));
+                    RunEntity enemyTemplate = EditorManager.FindEntity("教学怪物9");
                     
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromTemplate(enemyTemplate);
+                    
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
@@ -1190,10 +1190,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                       $"\n具体的五行流转顺序可以将鼠标瞄到屏幕上方状态栏的标注查看。"
                     );
                     
-                    RunEntity enemyEntity = RunEntity.FromTemplate(EditorManager.FindEntity("教学怪物10"));
-                    RunEntity playerTemplate = EditorManager.FindEntity("玩家手牌10");
-                    
-                    BattleCell A = new(enemyEntity);
+                    BattleCell A = BattleCell.FromName("教学怪物10");
 
                     Guide[] guide = new Guide[]
                     {
@@ -1230,7 +1227,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(2)));
                         RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(3)));
                         RunManager.Instance.Environment.UnequipProcedure(UnequipDetails.FromDeckIndex(DeckIndex.FromField(4)));
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(playerTemplate, toField: false, overwrite: false);
+                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("玩家手牌10", toField: false, overwrite: false);
                     };
                     
                     A.SetWinOperation(() =>
@@ -2037,8 +2034,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         detailedText: $"他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n获得{normalGoldReward}金")
                         .SetReward(Reward.FromGold(normalGoldReward));
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, EntityQuery.FromLadder(room.Ladder + 3));
-                    BattleCell B1 = new(template);
+                    BattleCell B1 = BattleCell.FromQuery(EntityQuery.FromLadder(room.Ladder + 3));
                     DialogCell B1win = new DialogCell(
                             titleText: "护送",
                             detailedText: $"你打过了山贼，商人对你十分感激。\n\n获得{successGoldReward}金")
@@ -2081,8 +2077,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         titleText: "许愿",
                         detailedText: "实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
 
-                    map.EntityPool.TryDrawEntity(out RunEntity template, EntityQuery.FromLadder(room.Ladder + 3));
-                    BattleCell E = new(template);
+                    BattleCell E = BattleCell.FromQuery(EntityQuery.FromLadder(room.Ladder + 3));
                     DialogCell EWin = new DialogCell(
                             titleText: "许愿",
                             detailedText: "哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n气血上限+8，金+8")
@@ -2751,7 +2746,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         .FanXuBossEncore;
                     
                     RunEntity[] entities = AppManager.Instance.EditorManager.EntityEditableList
-                        .FilterObj(e => e.GetEntry() == finalBoss && e.GetJingJie() == JingJie.FanXu)
+                        .FilterObj(e => e.GetModel() == finalBoss && e.GetJingJie() == JingJie.FanXu)
                         .ToArray();
                     
                     Assert.IsTrue(entities.Length >= 2);
@@ -2762,8 +2757,8 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     pool.TryPopItem(out RunEntity firstBoss);
                     pool.TryPopItem(out RunEntity secondBoss);
                     
-                    BattleCell battleCell1 = new(firstBoss);
-                    BattleCell battleCell2 = new(secondBoss);
+                    BattleCell battleCell1 = BattleCell.FromTemplate(firstBoss);
+                    BattleCell battleCell2 = BattleCell.FromTemplate(secondBoss);
                     
                     DialogCell firstWinNoEncore = new("返虚战斗",
                         "终于胜利了。比起胜利的喜悦，享受此时片刻的安宁对你来说更为重要。");
@@ -2825,7 +2820,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         .FanXuBossEncore;
                     
                     RunEntity[] entities = AppManager.Instance.EditorManager.EntityEditableList
-                        .FilterObj(e => e.GetEntry() == finalBoss && e.GetJingJie() == JingJie.FanXu)
+                        .FilterObj(e => e.GetModel() == finalBoss && e.GetJingJie() == JingJie.FanXu)
                         .ToArray();
                     
                     Assert.IsTrue(entities.Length >= 3);
@@ -2837,9 +2832,9 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     pool.TryPopItem(out RunEntity secondBoss);
                     pool.TryPopItem(out RunEntity thirdBoss);
                     
-                    BattleCell battleCell1 = new(firstBoss);
-                    BattleCell battleCell2 = new(secondBoss);
-                    BattleCell battleCell3 = new(thirdBoss);
+                    BattleCell battleCell1 = BattleCell.FromTemplate(firstBoss);
+                    BattleCell battleCell2 = BattleCell.FromTemplate(secondBoss);
+                    BattleCell battleCell3 = BattleCell.FromTemplate(thirdBoss);
                     
                     battleCell1.SetWinOperation(() => battleCell2);
                     battleCell1.SetLoseOperation(() => battleCell2);
@@ -3799,22 +3794,13 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity homeA = EditorManager.FindEntity("多段HomeA");
-                    RunEntity awayA = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayA"));
-                    RunEntity homeB = EditorManager.FindEntity("多段HomeB");
-                    RunEntity awayB = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayB"));
-                    RunEntity homeC = EditorManager.FindEntity("多段HomeC");
-                    RunEntity awayC = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayC"));
-                    RunEntity homeD = EditorManager.FindEntity("多段HomeD");
-                    RunEntity awayD = RunEntity.FromTemplate(EditorManager.FindEntity("多段AwayD"));
-
                     DialogCell selecting = new("动画测试", "动画测试", 
                         "攻击表现",
                         "闪避表现",
                         "破甲表现",
                         "护甲表现");
                     
-                    BattleCell optionA = new BattleCell(awayA)
+                    BattleCell optionA = BattleCell.FromName("多段AwayA")
                         .SetWinOperation(() =>
                         {
                             return selecting;
@@ -3824,7 +3810,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                             return selecting;
                         });
 
-                    BattleCell optionB = new BattleCell(awayB)
+                    BattleCell optionB = BattleCell.FromName("多段AwayB")
                         .SetWinOperation(() =>
                         {
                             return selecting;
@@ -3834,7 +3820,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                             return selecting;
                         });
 
-                    BattleCell optionC = new BattleCell(awayC)
+                    BattleCell optionC = BattleCell.FromName("多段AwayC")
                         .SetWinOperation(() =>
                         {
                             return selecting;
@@ -3844,7 +3830,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                             return selecting;
                         });
 
-                    BattleCell optionD = new BattleCell(awayD)
+                    BattleCell optionD = BattleCell.FromName("多段AwayD")
                         .SetWinOperation(() =>
                         {
                             return selecting;
@@ -3856,22 +3842,22 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     
                     selecting[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeA, toField: true, overwrite: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeA", toField: true, overwrite: true);
                         return optionA;
                     });
                     selecting[1].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeB, toField: true, overwrite: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeB", toField: true, overwrite: true);
                         return optionB;
                     });
                     selecting[2].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeC, toField: true, overwrite: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeC", toField: true, overwrite: true);
                         return optionC;
                     });
                     selecting[3].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.SetPlayerEqualPreset(homeD, toField: true, overwrite: true);
+                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeD", toField: true, overwrite: true);
                         return optionD;
                     });
                     
@@ -3956,8 +3942,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     b.Execute();
                     b.Invoke();
                     
-                    RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局1");
-                    BattleCell A = new(template);
+                    BattleCell A = BattleCell.FromName("排局1");
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);
 
@@ -3983,8 +3968,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     b.Execute();
                     b.Invoke();
                     
-                    RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局2");
-                    BattleCell A = new(template);
+                    BattleCell A = BattleCell.FromName("排局2");
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);
 
@@ -4017,8 +4001,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                 withInPool:                         false,
                 create:                             (map, room) =>
                 {
-                    RunEntity template = EditorManager.Instance.EntityEditableList.FirstObj(runEntity => runEntity.GetEntry().GetName() == "排局3");
-                    BattleCell A = new(template);
+                    BattleCell A = BattleCell.FromName("排局3");
                     A.SetWinOperation(() => null);
                     A.SetLoseOperation(() => null);
 

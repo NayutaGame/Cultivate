@@ -1,7 +1,7 @@
 
 public class RunCharacter
 {
-    public CharacterEntry CharacterEntry { get; private set; }
+    public CharacterEntry CharacterEntry;
     
     private RunEntity _build;
     public RunEntity Build

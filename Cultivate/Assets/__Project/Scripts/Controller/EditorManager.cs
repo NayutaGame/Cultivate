@@ -222,7 +222,7 @@ public class EditorManager : Singleton<EditorManager>, Addressable
     }
 
     public static RunEntity FindEntity(string name)
-        => Instance.EntityEditableList.FirstObj(e => e.GetEntry().GetName() == name);
+        => Instance.EntityEditableList.FirstObj(e => e.GetModel().GetName() == name);
 
     public static RunEntity FindEntity(EntityQuery query)
         => Instance.EntityEditableList.FirstObj(query.Matches);

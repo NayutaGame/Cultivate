@@ -3,8 +3,8 @@ using CLLibrary;
 
 public interface IEntity
 {
-    EntityEntry GetEntry();
-    void SetEntry(EntityEntry entry);
+    EntityEntry GetModel();
+    void SetModel(EntityEntry entry);
 
     JingJie GetJingJie();
     void SetJingJie(JingJie jingJie);

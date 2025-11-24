@@ -30,10 +30,11 @@ public class MapNode
 
     private void AddFromCharacter(List<RoomOption> roomOptions)
     {
-        RunManager.Instance.Environment.Character.CharacterEntry.RoomsFromCharacter.Do(roomEntry =>
+        CharacterEntry characterEntry = RunManager.Instance.Environment.Character.CharacterEntry;
+        characterEntry.RoomsFromCharacter.Do(roomEntry =>
         {
             // if roomEntry is valid
-            roomOptions.Add(new(roomEntry));
+            roomOptions.Add(new(roomEntry, $"{characterEntry.GetName()}对这里感到有兴趣"));
         });
     }
 
@@ -42,7 +43,7 @@ public class MapNode
         if (_visitor == null)
             return;
         
-        roomOptions.Add(new(_visitor.CharacterEntry.RoomFromVisitor));
+        roomOptions.Add(new(_visitor.CharacterEntry.RoomFromVisitor, $"对{_visitor.CharacterEntry.GetName()}感到有兴趣"));
     }
 
     private void AddFromLocation(List<RoomOption> roomOptions)
@@ -50,12 +51,12 @@ public class MapNode
         Entry.RoomEntriesFromLocation.Do(roomEntry =>
         {
             // if roomEntry is valid
-            roomOptions.Add(new(roomEntry));
+            roomOptions.Add(new(roomEntry, $"对{Entry.GetName()}感到有兴趣"));
         });
     }
 
     private void AddFromVoid(List<RoomOption> roomOptions)
     {
-        roomOptions.Add(new(Entry.RoomEntryFromVoid));
+        roomOptions.Add(new(Entry.RoomEntryFromVoid, "正常进入"));
     }
 }

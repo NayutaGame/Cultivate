@@ -37,6 +37,12 @@ namespace PuppyDragon.uNody.Logic
             CurrentNode?.Execute();
         }
 
+        public void Reset()
+        {
+            isAborting = false;
+            CurrentNode = null;
+        }
+
         public void Abort()
         {
             if (CurrentNode != null)

@@ -16,14 +16,14 @@ public class StageManager : Singleton<StageManager>, Addressable
     private PrefabEntry HomePrefabEntry;
     private GameObject HomeGameObject;
     [HideInInspector] public IStageModel HomeModel;
-    
+
     public Transform AwayAnchor;
     private PrefabEntry AwayPrefabEntry;
     private GameObject AwayGameObject;
     [HideInInspector] public IStageModel AwayModel;
 
     public Sprite[] FloatTextIcons;
-    
+
     public GameObject FloatTextVFXPrefab;
     public GameObject[] PiercingVFXFromWuXing;
     public GameObject[] HitVFXFromWuXing;
@@ -48,11 +48,13 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
-        { "Environment",                thisObject => ((StageManager)thisObject)._environment },
-        { "Timeline",                   thisObject => ((StageManager)thisObject).Timeline },
+        { "Environment", thisObject => ((StageManager)thisObject)._environment },
+        { "Timeline", thisObject => ((StageManager)thisObject).Timeline },
         // { "SkipButtonInactiveHint",     thisObject => ((StageManager)thisObject).GetSkipButtonInactiveHint() },
     };
+
     public object Get(string s) => Accessor[s](this);
+
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -63,9 +65,21 @@ public class StageManager : Singleton<StageManager>, Addressable
     {
         _environment = StageEnvironment.FromConfig(config);
         Timeline = StageResult.FromConfig(StageConfig.ForTimeline(config.Home, config.Away, config.RunConfig)).Timeline;
+        SetSceneFromConfig(config);
+        SetHomeModel(config.Home.GetModel().StageModel);
+        SetAwayModel(config.Away.GetModel().StageModel);
     }
 
-    public void SetSceneFromConfig(StageConfig config)
+    public void SetEnvironmentToNull()
+    {
+        _environment = null;
+        Timeline = null;
+        SetSceneToNull();
+        SetHomeModel(null);
+        SetAwayModel(null);
+    }
+
+    private void SetSceneFromConfig(StageConfig config)
     {
         int jingJie = RunManager.Instance.Environment.JingJie;
         jingJie = jingJie.Clamp(0, 4);
@@ -78,7 +92,7 @@ public class StageManager : Singleton<StageManager>, Addressable
         AwayAnchor.position = StageScenes[jingJie].AwayAnchor.position;
     }
 
-    public void SetSceneToNull()
+    private void SetSceneToNull()
     {
         for (int i = 0; i < StageScenes.Length; i++)
         {
@@ -141,18 +155,6 @@ public class StageManager : Singleton<StageManager>, Addressable
             VFXPool.GetChild(i).gameObject.SetActive(false);
         }
     }
-
-    public void SetHomeFromCharacterProfile(CharacterProfile characterProfile)
-    {
-        // _slots[0].SR.sprite = characterProfile.GetEntry().GetSprite();
-        SetHomeModel(characterProfile.GetEntry().GetStagePrefabEntry());
-    }
-
-    public void SetAwayFromRunEntity(RunEntity runEntity)
-    {
-        // _slots[1].SR.sprite = runEntity.GetEntry().GetSprite();
-        SetAwayModel(runEntity.GetEntry().StageModel);
-    }
     
     private void SetHomeModel(PrefabEntry targetPrefabEntry)
     {
@@ -163,6 +165,9 @@ public class StageManager : Singleton<StageManager>, Addressable
             Destroy(HomeGameObject);
 
         HomePrefabEntry = targetPrefabEntry;
+        if (HomePrefabEntry == null)
+            return;
+        
         HomeGameObject = Instantiate(HomePrefabEntry.Prefab, HomeAnchor);
         HomeModel = HomeGameObject.GetComponent<IStageModel>();
 
@@ -178,6 +183,9 @@ public class StageManager : Singleton<StageManager>, Addressable
             Destroy(AwayGameObject);
 
         AwayPrefabEntry = targetPrefabEntry;
+        if (AwayPrefabEntry == null)
+            return;
+        
         AwayGameObject = Instantiate(AwayPrefabEntry.Prefab, AwayAnchor);
         AwayModel = AwayGameObject.GetComponent<IStageModel>();
         

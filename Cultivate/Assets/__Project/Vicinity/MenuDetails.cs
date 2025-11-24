@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 public class MenuDetails: Addressable
 {
-    public ListModel<string> Options;
+    public ListModel<MenuOption> Options;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Options",            thisObject => ((MenuDetails)thisObject).Options },
     };
     public object Get(string s) => Accessor[s](this);
-    public MenuDetails(List<string> options)
+    public MenuDetails(List<MenuOption> options)
     {
-        Options = new ListModel<string>();
+        Options = new ListModel<MenuOption>();
         Options.AddRange(options);
     }
 }

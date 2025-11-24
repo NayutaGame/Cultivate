@@ -95,10 +95,4 @@ public class MapPanel : Panel
         MenuDetails menuDetails = RunManager.Instance.Environment.GetMenuDetailsFromMapNode(mapNode);
         CanvasManager.Instance.MenuManager.CreateMenu(menuDetails);
     }
-    
-    private void SelectedMapNode(InteractBehaviour ib, PointerEventData d)
-    {
-        MapNode mapNode = ib.Get<MapNode>();
-        RunManager.Instance.Environment.ReceiveSignalProcedure(SelectedMapNodeSignal.FromMapNode(mapNode));
-    }
 }

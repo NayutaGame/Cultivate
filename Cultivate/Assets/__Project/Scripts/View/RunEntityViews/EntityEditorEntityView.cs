@@ -75,7 +75,7 @@ public class EntityEditorEntityView : XView
         {
             EntityDropdown.options = new();
             Encyclopedia.EntityCategory.Do(entityEntry => EntityDropdown.options.Add(new TMP_Dropdown.OptionData(entityEntry.GetName())));
-            EntityDropdown.onValueChanged.AddListener(EntryChanged);
+            EntityDropdown.onValueChanged.AddListener(ModelChanged);
         }
 
         if (AllowedDifficultySlider != null)
@@ -169,7 +169,7 @@ public class EntityEditorEntityView : XView
             return;
         }
         Blank.SetActive(false);
-        SetEntry(entity.GetEntry());
+        SetEntry(entity.GetModel());
         SetAllowedDifficulty(entity.GetAllowedDifficulty());
         SetJingJie(entity.GetJingJie());
         SetSlotCount(entity.GetSlotCount());
@@ -180,10 +180,10 @@ public class EntityEditorEntityView : XView
         FormationListView.Sync();
     }
 
-    private void EntryChanged(int entityEntryIndex)
+    private void ModelChanged(int entityEntryIndex)
     {
         IEntity entity = Get<IEntity>();
-        entity.SetEntry(Encyclopedia.EntityCategory[entityEntryIndex]);
+        entity.SetModel(Encyclopedia.EntityCategory[entityEntryIndex]);
         Refresh();
     }
 

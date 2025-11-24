@@ -205,6 +205,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         _character ??= new(_config.GetCharacter());
         SetHome(Home ?? RunEntity.Default());
+        Home.SetModel(_character.CharacterEntry.EntityEntry);
+        
         SetAway(null);
         
         ResimulateNeuron.Add(_simulateResult.SetDirty);
@@ -719,8 +721,17 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         d.CalcMergeTarget();
         return d.MergeTarget;
     }
+
+    public void SetPlayerModelProcedure(string modelName)
+    {
+        EntityEntry model = Encyclopedia.EntityCategory.FromName(modelName);
+        _character.Build.SetModel(model);
+    }
+
+    public void SetPlayerEqualPresetProcedure(string templateName, bool toField, bool overwrite)
+        => SetPlayerEqualPresetProcedure(EditorManager.FindEntity(templateName), toField, overwrite);
     
-    public void SetPlayerEqualPreset(RunEntity template, bool toField, bool overwrite)
+    public void SetPlayerEqualPresetProcedure(RunEntity template, bool toField, bool overwrite)
     {
         if (overwrite)
         {
@@ -1368,6 +1379,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
     }
     
+    private void SelectedMapNodeWithRoomEntry(MapNode mapNode, RoomEntry roomEntry)
+    {
+        RunManager.Instance.Environment.ReceiveSignalProcedure(SelectedMapNodeSignal.FromMapNodeAndRoomEntry(mapNode, roomEntry));
+    }
+    
     public void ReceiveSignalProcedure(Signal signal)
     {
         if (_runState == RunState.Committed)
@@ -1376,7 +1392,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (_runState == RunState.MapSelecting && signal is SelectedMapNodeSignal selectedMapNodeSignal)
         {
             _runState = RunState.InRoom;
-            _roomEnvironment = RoomEnvironment.CreateRoom(selectedMapNodeSignal.MapNode, _jingJie, 0, Home);
+            _roomEnvironment = RoomEnvironment.CreateRoom(selectedMapNodeSignal.MapNode, selectedMapNodeSignal.RoomEntry, _jingJie, 1, Home);
             _roomEnvironment.Step();
             Cell = _roomEnvironment.CurrentCell;
             return;
@@ -1493,20 +1509,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         List<RoomOption> roomOptions = mapNode.GetRoomOptions();
 
-        List<string> menuOptions = new List<string>();
+        List<MenuOption> menuOptions = new List<MenuOption>();
         roomOptions.Do(roomOption =>
         {
-            if (roomOption.RoomEntry != null)
-                menuOptions.Add(roomOption.RoomEntry.GetName());
+            if (roomOption.RoomEntry == null)
+                return;
+
+            MenuOption menuOption = new(roomOption.Description, ClickAction);
+            menuOptions.Add(menuOption);
+            return;
+            
+            void ClickAction() => SelectedMapNodeWithRoomEntry(mapNode, roomOption.RoomEntry);
         });
         
-        MenuDetails menuDetails = new MenuDetails(menuOptions);
-        
-        // 对A有点感兴趣
-        // 对B有点感兴趣
-        // 对C有点感兴趣
-        // 正常进入
-        return menuDetails;
+        return new MenuDetails(menuOptions);
     }
 
     #endregion

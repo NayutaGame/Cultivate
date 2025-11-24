@@ -1,9 +1,12 @@
 
+using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
+using Unity.VisualScripting;
 
 public class RoomEnvironment
 {
     private MapNode _mapNode;
+    private RoomEntry _roomEntry;
     private JingJie _jingJie;
     private int _ladder;
     private RunEntity _home;
@@ -14,20 +17,32 @@ public class RoomEnvironment
 
     public CellNode CurrentCell => _roomGraph.CurrentNode as CellNode;
     
-    private RoomEnvironment(MapNode mapNode, JingJie jingJie, int ladder, RunEntity home)
+    private RoomEnvironment(MapNode mapNode, RoomEntry roomEntry, JingJie jingJie, int ladder, RunEntity home)
     {
         _mapNode = mapNode;
+        _roomEntry = roomEntry;
         _jingJie = jingJie;
         _ladder = ladder;
         _home = home;
-
+        
         _memory = new Memory();
-        _roomGraph = _mapNode.Entry.RoomEntryFromVoid.RoomGraph;
+
+        ResetRoomGraph();
     }
 
-    public static RoomEnvironment CreateRoom(MapNode mapNode, JingJie jingJie, int ladder, RunEntity home)
+    private void ResetRoomGraph()
     {
-        return new RoomEnvironment(mapNode, jingJie, ladder, home);
+        _roomGraph = _roomEntry.RoomGraph;
+        _roomGraph.Reset();
+        foreach (Node node in _roomGraph.Nodes)
+            if (node is CellNode cellNode)
+                cellNode.Reset();
+        _roomGraph.Blackboard.SetLocalValue(_roomGraph, "Ladder", _ladder);
+    }
+
+    public static RoomEnvironment CreateRoom(MapNode mapNode, RoomEntry roomEntry, JingJie jingJie, int ladder, RunEntity home)
+    {
+        return new RoomEnvironment(mapNode, roomEntry, jingJie, ladder, home);
     }
 
     public void Step()

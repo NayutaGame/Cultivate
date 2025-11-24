@@ -20,7 +20,6 @@ namespace PuppyDragon.uNodyEditor
         private readonly HashSet<UnityEngine.Object> selectionCache = new();
         private readonly HashSet<Node> culledNodes = new();
         private readonly List<Node> drawTargetNodes = new();
-        private readonly HashSet<NodePort> flowPorts = new();
 
         private AnimFloat flowAnim;
 
@@ -52,7 +51,6 @@ namespace PuppyDragon.uNodyEditor
 
                 UpdateAnim();
 
-                CollectFlowPorts();
                 DrawDraggedConnection();
                 DrawConnections();
                 DrawNodes();
@@ -253,7 +251,6 @@ namespace PuppyDragon.uNodyEditor
             Color originalHandlesColor = Handles.color;
             Handles.color = gradient.Evaluate(0f);
             int length = gridPoints.Count;
-            bool isFlowTarget = flowPorts.Contains(outputPort);
    
             var outputNode = GetDrawerNode(outputPort, NodePort.IO.Output);
             if (!NodeSizes.TryGetValue(outputNode, out Vector2 outputNodeSize))
@@ -391,14 +388,6 @@ namespace PuppyDragon.uNodyEditor
 
             bezierPositions.Add(worldGridPoints[worldGridPoints.Count - 1]);
 
-            if (isFlowTarget)
-            {
-                float index = (bezierPositions.Count - 1) * flowAnim.value;
-                var bezierPosition = bezierPositions[(int)index];
-                Handles.color = gradient.Evaluate(index / (bezierPositions.Count - 1));
-                DrawFlowDot(new Rect(bezierPosition - (new Vector2(4, 4) / Zoom), new Vector2(8, 8) / Zoom));
-            }
-
             Handles.color = originalHandlesColor;
 
             worldGridPoints.Clear();
@@ -424,111 +413,6 @@ namespace PuppyDragon.uNodyEditor
             GUI.color = Handles.color;
             GUI.DrawTexture(rect, portStyle.active.background);
             GUI.color = guiColor;
-        }
-
-        public void CollectFlowPorts()
-        {
-            flowPorts.Clear();
-
-            if (Selection.count > 0)
-            {
-                foreach (var obj in Selection.objects)
-                {
-                    var node = obj as Node;
-                    if (node == null)
-                        continue;
-
-                    if (node is ILogicNode logicNode)
-                    {
-                        if (logicNode.PrevPort != null)
-                            CollectFlowInputPort(logicNode.PrevPort, flowPorts);
-
-                        if (logicNode.NextPort != null)
-                            CollectFlowOutputPort(logicNode.NextPort, flowPorts);
-                    }
-                    else if (node is SubGraphNode subGraphNode && subGraphNode.SubGraph is LogicGraph subLogicGraph)
-                    {
-                        CollectFlowInputPort(subLogicGraph.EntryPoint.Inputs.FirstOrDefault(), flowPorts);
-                        CollectFlowOutputPort(subLogicGraph.ExitPoint.Outputs.FirstOrDefault(), flowPorts);
-                    }
-                    else
-                    {
-                        foreach (var input in node.Inputs)
-                            CollectFlowInputPort(input, flowPorts);
-
-                        foreach (var output in node.Outputs)
-                            CollectFlowOutputPort(output, flowPorts);
-                    }
-                }
-            }
-
-            if (hoveredPort != null)
-            {
-                if (hoveredPort.Direction == NodePort.IO.Input)
-                    CollectFlowInputPort(hoveredPort, flowPorts);
-                else
-                    CollectFlowOutputPort(hoveredPort, flowPorts);
-            }
-        }
-
-        private void CollectFlowInputPort(NodePort port, HashSet<NodePort> flowPorts, Type valueTypeFiler = null)
-        {
-            if (port == null)
-                return;
-
-            foreach (var connection in port.Connections)
-            {
-                if (connection.Node.Graph != target && connection.Node is ExitPointNode)
-                {
-                    flowPorts.Add(connection.Port);
-                    port = (connection.Node.Graph as LogicGraph).EntryPoint.Inputs.First();
-                    CollectFlowInputPort(port, flowPorts, valueTypeFiler);
-                    continue;
-                }
-
-                if (connection.Node.Graph != target ||
-                    (valueTypeFiler != null && connection.Port.ValueType != valueTypeFiler))
-                    continue;
-
-                flowPorts.Add(connection.Port);
-
-                if (connection.Node is ILogicNode logicNode)
-                    CollectFlowInputPort(logicNode.PrevPort, flowPorts, valueTypeFiler);
-                else
-                {
-                    foreach (var input in connection.Node.Inputs)
-                        CollectFlowInputPort(input, flowPorts, valueTypeFiler);
-                }
-            }
-        }
-
-        private void CollectFlowOutputPort(NodePort port, HashSet<NodePort> flowPorts, Type valueTypeFiler = null)
-        {
-            if (port == null)
-                return;
-
-            flowPorts.Add(port);
-            foreach (var connection in port.Connections)
-            {
-                if (connection.Node.Graph != target && connection.Node is EntryPointNode)
-                {
-                    port = (connection.Node.Graph as LogicGraph).ExitPoint.Outputs.First();
-                    CollectFlowOutputPort(port, flowPorts, valueTypeFiler);
-                    continue;
-                }
-
-                if (connection.Node.Graph != target ||
-                    (valueTypeFiler != null && connection.Port.ValueType != valueTypeFiler))
-                    continue;
-
-                if (connection.Node is ILogicNode logicNode)
-                    CollectFlowOutputPort(logicNode.NextPort, flowPorts, valueTypeFiler);
-                else
-                {
-                    foreach (var output in connection.Node.Outputs)
-                        CollectFlowOutputPort(output, flowPorts, valueTypeFiler);
-                }
-            }
         }
 
         /// <summary> Draws all connections </summary>

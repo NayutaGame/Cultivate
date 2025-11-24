@@ -1,6 +1,5 @@
 ﻿
 using System.Collections.Generic;
-using FMOD;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 
@@ -36,4 +35,9 @@ public abstract class CellNode : Node, ILogicNode, ICellAdapter
     }
 
     public abstract bool ReceiveSignal(Signal signal);
+
+    public void Reset()
+    {
+        _cell = null;
+    }
 }

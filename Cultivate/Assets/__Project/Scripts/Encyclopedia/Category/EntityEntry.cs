@@ -20,11 +20,17 @@ public class EntityEntry : Entry
     {
         _modelName = modelName ?? GetName();
         
-        CharacterIconSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIcon{_modelName}") ?? Encyclopedia.SpriteCategory.FromName($"CharacterIcon缺失");
-        CharacterIconSelectSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect{_modelName}") ?? Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect缺失");;
-        ConfigModel = Encyclopedia.PrefabCategory.FromName($"ConfigModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingConfigModel();
-        StageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingStageModel();
-        RunModel = Encyclopedia.PrefabCategory.FromName($"RunModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingRunModel();
-        ScribbleModel = Encyclopedia.PrefabCategory.FromName($"ScribbleModel{_modelName}") ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
+        CharacterIconSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIcon{_modelName}")
+                              ?? Encyclopedia.SpriteCategory.FromName($"CharacterIcon缺失");
+        CharacterIconSelectSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect{_modelName}")
+                                    ?? Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect缺失");;
+        ConfigModel = Encyclopedia.PrefabCategory.FromName($"ConfigModel{_modelName}")
+                      ?? Encyclopedia.PrefabCategory.MissingConfigModel();
+        StageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{_modelName}")
+                     ?? Encyclopedia.PrefabCategory.MissingStageModel();
+        RunModel = Encyclopedia.PrefabCategory.FromName($"RunModel{_modelName}")
+                   ?? Encyclopedia.PrefabCategory.MissingRunModel();
+        ScribbleModel = Encyclopedia.PrefabCategory.FromName($"ScribbleModel{_modelName}")
+                        ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
     }
 }

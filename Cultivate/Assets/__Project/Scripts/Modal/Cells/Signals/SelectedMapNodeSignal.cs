@@ -3,16 +3,18 @@ public class SelectedMapNodeSignal : Signal
 {
     public MapNode MapNode;
     public int Index;
+    public RoomEntry RoomEntry;
 
-    private SelectedMapNodeSignal(MapNode mapNode, int index)
+    private SelectedMapNodeSignal(MapNode mapNode, int index, RoomEntry roomEntry)
     {
         MapNode = mapNode;
         Index = index;
+        RoomEntry = roomEntry;
     }
 
-    public static SelectedMapNodeSignal FromMapNode(MapNode mapNode)
+    public static SelectedMapNodeSignal FromMapNodeAndRoomEntry(MapNode mapNode, RoomEntry roomEntry)
     {
         int mapNodeIndex = RunManager.Instance.Environment.GetIndexOfMapNode(mapNode);
-        return new SelectedMapNodeSignal(mapNode, mapNodeIndex);
+        return new SelectedMapNodeSignal(mapNode, mapNodeIndex, roomEntry);
     }
 }

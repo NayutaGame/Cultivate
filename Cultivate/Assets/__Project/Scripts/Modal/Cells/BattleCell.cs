@@ -17,10 +17,16 @@ public class BattleCell : Cell
         { "Enemy",                      thisObject => ((BattleCell)thisObject)._enemy },
     };
     public override object Get(string s) => Accessor[s](this);
-    public BattleCell(RunEntity template)
+    private BattleCell(RunEntity template)
     {
-        _template = template;
+        _template = RunEntity.FromTemplate(template);
     }
+
+    public static BattleCell FromTemplate(RunEntity template)
+        => new(template);
+
+    public static BattleCell FromName(string name)
+        => FromQuery(EntityQuery.FromName(name));
 
     public static BattleCell FromQuery(EntityQuery query)
     {
@@ -35,8 +41,7 @@ public class BattleCell : Cell
         }
         else
         {
-            RunEntity editorEntity = EditorManager.FindEntity(query);
-            template = editorEntity != null ? RunEntity.FromTemplate(editorEntity) : RunEntity.Default();
+            template = EditorManager.FindEntity(query) ?? RunEntity.Default();
         }
         
         return new(template);
