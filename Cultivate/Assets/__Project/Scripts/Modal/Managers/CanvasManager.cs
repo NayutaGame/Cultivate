@@ -46,6 +46,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     {
         { "MenuManager",                  thisObject => ((CanvasManager)thisObject).MenuManager },
         { "AnnotationManager",            thisObject => ((CanvasManager)thisObject).AnnotationManager },
+        { "ConsolePanel",                 thisObject => ((CanvasManager)thisObject).ConsolePanel },
     };
     public object Get(string s) => Accessor[s](this);
     protected override void AwakeFunction()

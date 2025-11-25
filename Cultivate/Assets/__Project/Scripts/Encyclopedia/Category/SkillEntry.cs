@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
-public class SkillEntry : Entry, AnnotatableSkill
+public class SkillEntry : Entry, AnnotatableSkill, ISearchable
 {
     [NonSerialized] private WuXing _wuXing;
     [NonSerialized] private Bound _jingJieBound;

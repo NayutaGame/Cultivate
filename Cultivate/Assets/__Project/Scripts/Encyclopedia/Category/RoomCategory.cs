@@ -1,35 +1,25 @@
 
-using System.Collections.Generic;
+using PuppyDragon.uNody.Logic;
+using UnityEngine;
 
 public class RoomCategory : Category<RoomEntry>
 {
     public RoomCategory()
     {
-        AddRange(new List<RoomEntry>()
+        LogicGraph[] graphs = Resources.LoadAll<LogicGraph>("RoomGraphs");
+        
+        foreach (LogicGraph graph in graphs)
         {
-            new(id:                       "MapNode01_001",
-                name:                     "Void凌云峰"),
+            if (graph == null)
+                continue;
             
-            new(id:                       "MapNode02_001",
-                name:                     "Location凌云峰1"),
-            new(id:                       "MapNode02_002",
-                name:                     "Location凌云峰2"),
-            new(id:                       "MapNode02_003",
-                name:                     "Location凌云峰3"),
+            string id = graph.name;
+            string name = graph.name;
+            string roomPath = $"RoomGraphs/{name}";
             
-            new(id:                       "MapNode03_001",
-                name:                     "Visitor徐福"),
-            new(id:                       "MapNode03_002",
-                name:                     "Visitor彼此卿"),
-            new(id:                       "MapNode03_003",
-                name:                     "Visitor风雨晴"),
-            new(id:                       "MapNode03_004",
-                name:                     "Visitor子非鱼"),
-            new(id:                       "MapNode03_005",
-                name:                     "Visitor子非燕"),
-            
-            new(id:                       "MapNode04_001",
-                name:                     "Character徐福1"),
-        });
+            Add(new RoomEntry(id, name, roomPath, graph));
+        }
+    
+        RefreshDict();
     }
 }

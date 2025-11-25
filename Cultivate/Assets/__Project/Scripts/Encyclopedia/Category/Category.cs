@@ -23,7 +23,7 @@ public abstract class Category<T> : ICategory<T>, Addressable where T : Entry
         _nameDict = new();
     }
     
-    protected ListModel<T> List
+    public ListModel<T> List
         => _list;
 
     public T this[int index] => _list[index];

@@ -1,14 +1,14 @@
 
 using System;
+using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Tween = DG.Tweening.Tween;
 
-public class ConsolePanel : Panel
+public class ConsolePanel : Panel, Addressable
 {
     public TMP_Text MingYuanText;
     [SerializeField] private Button AddMingYuanButton;
@@ -19,13 +19,25 @@ public class ConsolePanel : Panel
     public TMP_Text HealthText;
     [SerializeField] private Button AddHealthButton;
     [SerializeField] private Button ReduceHealthButton;
-    
+
     public TMP_Dropdown JingJieDropdown;
     public Button DrawSkillButton;
-    public Button CheatButton;
-    public Button WinButton;
-    public Button LoseButton;
+    public Button PickSkillButton;
+    public ListViewWithSearchBar SkillBrowser;
 
+    public Button RemoveSkillButton;
+
+    private ListModelWithSearchBar<SkillEntry> SkillListModel;
+    
+    
+    
+
+
+    public TMP_InputField TesterNoteInputField;
+    public Button QuickUpvoteButton;
+    public Button QuickDownvoteButton;
+    public Button CopyReportButton;
+    
     public Button Button1;
     public Button Button5;
     public Button Button10;
@@ -35,18 +47,13 @@ public class ConsolePanel : Panel
 
     public Button ButtonShowGRResult;
     public Button ButtonDoNotShow;
-
-    public Button PrintJsonButton;
-    [FormerlySerializedAs("WriteIntoEditable")] public Button WriteIntoEditableButton;
-
     public TMP_Text GRResultText;
+    public Button PrintJsonButton;
+    public Button WriteIntoEditableButton;
 
+    
+    
     public Button ToggleButton;
-
-    public TMP_InputField TesterNoteInputField;
-    public Button QuickUpvoteButton;
-    public Button QuickDownvoteButton;
-    public Button CopyReportButton;
 
     private void Update() => _update?.Invoke();
 
@@ -58,30 +65,26 @@ public class ConsolePanel : Panel
         => DOTween.Sequence().SetAutoKill()
             .AppendCallback(() => GetRect().anchoredPosition = new Vector2(GetRect().anchoredPosition.x, 840f));
 
+
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "SkillListModel",               thisObject => ((ConsolePanel)thisObject).SkillListModel },
+    };
+    public object Get(string s) => Accessor[s](this);
     public override void AwakeFunction()
     {
         base.AwakeFunction();
+        
+        SkillListModel = new ListModelWithSearchBar<SkillEntry>(Encyclopedia.SkillCategory.List);
+        
+        SkillBrowser.SetAddress("Canvas.ConsolePanel.SkillListModel");
+        SkillBrowser.CheckAwake();
 
         JingJieDropdown.options = new();
         JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.GetName())));
 
         JingJieDropdown.onValueChanged.RemoveAllListeners();
         JingJieDropdown.onValueChanged.AddListener(JingJieChanged);
-
-        DrawSkillButton.onClick.RemoveAllListeners();
-        DrawSkillButton.onClick.AddListener(DrawSkill);
-
-        CheatButton.onClick.RemoveAllListeners();
-        CheatButton.onClick.AddListener(Cheat);
-
-        WinButton.onClick.RemoveAllListeners();
-        WinButton.onClick.AddListener(Win);
-
-        LoseButton.onClick.RemoveAllListeners();
-        LoseButton.onClick.AddListener(Lose);
-
-        ToggleButton.onClick.RemoveAllListeners();
-        ToggleButton.onClick.AddListener(() => ToggleShowing());
         
         
         Button1.onClick.RemoveAllListeners();
@@ -119,6 +122,9 @@ public class ConsolePanel : Panel
         
         CopyReportButton.onClick.RemoveAllListeners();
         CopyReportButton.onClick.AddListener(CopyReport);
+
+        ToggleButton.onClick.RemoveAllListeners();
+        ToggleButton.onClick.AddListener(() => ToggleShowing());
         
         RunManager.Instance.RegisteredRunEnvironmentNeuron.Join(RegisteredRunEnvironment);
         RunManager.Instance.UnregisteredRunEnvironmentNeuron.Join(UnregisteredRunEnvironment);
@@ -186,6 +192,10 @@ public class ConsolePanel : Panel
         ReduceGoldButton.onClick.AddListener(ReduceGold);
         AddHealthButton.onClick.AddListener(AddHealth);
         ReduceHealthButton.onClick.AddListener(ReduceHealth);
+
+        DrawSkillButton.onClick.AddListener(DrawSkill);
+        PickSkillButton.onClick.AddListener(PickSkill);
+        RemoveSkillButton.onClick.AddListener(RemoveSkill);
     }
 
     private void UnregisteredRunEnvironment(RunEnvironment env)
@@ -204,6 +214,10 @@ public class ConsolePanel : Panel
         ReduceGoldButton.onClick.RemoveAllListeners();
         AddHealthButton.onClick.RemoveAllListeners();
         ReduceHealthButton.onClick.RemoveAllListeners();
+
+        DrawSkillButton.onClick.RemoveAllListeners();
+        PickSkillButton.onClick.RemoveAllListeners();
+        RemoveSkillButton.onClick.RemoveAllListeners();
     }
 
     private void OnEnable()
@@ -271,34 +285,29 @@ public class ConsolePanel : Panel
 
     private void DrawSkill()
     {
-        SkillEntryQuery query = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie));
-        
-        GainSkillBuilder b = new();
-        b.Draw(query, RunManager.Instance.Environment.JingJie);
-        b.Execute();
-        b.Invoke();
-        // RunManager.Instance.Environment.DrawSkillsProcedure(new SkillEntryCollectionDescriptor(jingJie: RunManager.Instance.Environment.JingJie, count: 5));
+        JingJie currJingJie = RunManager.Instance.Environment.JingJie;
+        SkillEntryQuery query = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, currJingJie));
+        RunManager.Instance.Environment.DrawSkillProcedure(query, currJingJie);
     }
 
-    private void Cheat()
+    private void PickSkill()
     {
-        GainSkillBuilder b = new();
-        b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("作弊")));
-        b.Execute();
-        b.Invoke();
-        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("玄武吐息法"));
-        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("吞天"));
-        // RunManager.Instance.Environment.AddSkillProcedure(SkillEntry.FromName("童趣"));
+        if (SkillListModel.Count() <= 0)
+            return;
+        SkillEntry firstSkillEntry = SkillListModel.Get(0) as SkillEntry;
+        if (firstSkillEntry == null)
+            return;
+        JingJie jingJie = firstSkillEntry.LowestJingJie;
+        RunManager.Instance.Environment.PickSkillProcedure(firstSkillEntry, jingJie);
     }
 
-    private void Win()
+    private void RemoveSkill()
     {
-        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
-    }
-
-    private void Lose()
-    {
-        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+        int handCount = RunManager.Instance.Environment.Hand.Count();
+        if (handCount == 0)
+            return;
+        DeckIndex lastSkillInHand = DeckIndex.FromHand(handCount - 1);
+        RunManager.Instance.Environment.RemoveSkillProcedure(lastSkillInHand);
     }
 
     private void OnTesterNoteInputFieldEndEdit(string value)

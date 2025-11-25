@@ -11,11 +11,13 @@ public class RoomEntry : Entry
     
     public RoomEntry(
         string id,
-        string name
+        string name,
+        string roomPath,
+        LogicGraph roomGraph
         ) : base(id, name)
     {
-        _roomPath = $"RoomGraphs/{GetName()}";
-        _roomGraph = Resources.Load<LogicGraph>(_roomPath);
+        _roomPath = roomPath;
+        _roomGraph = roomGraph;
     }
 
     public LogicGraph RoomGraph => _roomGraph;
