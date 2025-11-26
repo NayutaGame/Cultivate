@@ -1391,10 +1391,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         if (_runState == RunState.MapSelecting && signal is SelectedMapNodeSignal selectedMapNodeSignal)
         {
-            _runState = RunState.InRoom;
-            _roomEnvironment = RoomEnvironment.CreateRoom(selectedMapNodeSignal.MapNode, selectedMapNodeSignal.RoomEntry, _jingJie, 1, Home);
-            _roomEnvironment.Step();
-            Cell = _roomEnvironment.CurrentCell;
+            EnterRoomProcedure(selectedMapNodeSignal.MapNode, selectedMapNodeSignal.RoomEntry, 0);
             return;
         }
 
@@ -1404,15 +1401,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             
             if (_roomEnvironment.IsFinished())
             {
-                _runState = RunState.MapSelecting;
-                _roomEnvironment = null;
-                Cell = null;
+                ExitRoomProcedure();
             }
             else
             {
                 Cell = _roomEnvironment.CurrentCell;
             }
-            
             return;
         }
         
@@ -1455,16 +1449,19 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
     }
 
-    public void GuideProcedure(SkillMovedDetails d)
-        => GuideProcedure(new DeckChangedSignal(d.FromIndex.Reify(), d.ToIndex.Reify()));
-
-    public void GuideProcedure(Signal signal)
+    public void EnterRoomProcedure(MapNode mapNode, RoomEntry roomEntry, int ladder)
     {
-        // TODO
-        // Guide guide = _cell.GetGuideDescriptor();
-        // guide?.ReceiveSignal(_cell, signal);
-        // if (guide != null)
-        //     CanvasManager.Instance.RefreshGuide();
+        _runState = RunState.InRoom;
+        _roomEnvironment = RoomEnvironment.CreateRoom(mapNode, roomEntry, ladder);
+        _roomEnvironment.Step();
+        Cell = _roomEnvironment.CurrentCell;
+    }
+
+    public void ExitRoomProcedure()
+    {
+        _runState = RunState.MapSelecting;
+        _roomEnvironment = null;
+        Cell = null;
     }
 
     private bool Step()
@@ -1477,6 +1474,18 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         Map.NextStep();
         return false;
+    }
+
+    public void GuideProcedure(SkillMovedDetails d)
+        => GuideProcedure(new DeckChangedSignal(d.FromIndex.Reify(), d.ToIndex.Reify()));
+
+    public void GuideProcedure(Signal signal)
+    {
+        // TODO
+        // Guide guide = _cell.GetGuideDescriptor();
+        // guide?.ReceiveSignal(_cell, signal);
+        // if (guide != null)
+        //     CanvasManager.Instance.RefreshGuide();
     }
 
     public void CommitRunProcedure(RunResult.RunOutcome state)

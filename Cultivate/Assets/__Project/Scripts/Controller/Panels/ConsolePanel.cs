@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,65 +11,68 @@ using Tween = DG.Tweening.Tween;
 
 public class ConsolePanel : Panel, Addressable
 {
-    public TMP_Text MingYuanText;
-    [SerializeField] private Button AddMingYuanButton;
-    [SerializeField] private Button ReduceMingYuanButton;
-    public TMP_Text GoldText;
-    [SerializeField] private Button AddGoldButton;
-    [SerializeField] private Button ReduceGoldButton;
-    public TMP_Text HealthText;
-    [SerializeField] private Button AddHealthButton;
-    [SerializeField] private Button ReduceHealthButton;
+    public GameObject FullContent;
+    
+    [TabGroup("Left")] public TMP_Text MingYuanText;
+    [TabGroup("Left")] [SerializeField] private Button AddMingYuanButton;
+    [TabGroup("Left")] [SerializeField] private Button ReduceMingYuanButton;
+    [TabGroup("Left")] public TMP_Text GoldText;
+    [TabGroup("Left")] [SerializeField] private Button AddGoldButton;
+    [TabGroup("Left")] [SerializeField] private Button ReduceGoldButton;
+    [TabGroup("Left")] public TMP_Text HealthText;
+    [TabGroup("Left")] [SerializeField] private Button AddHealthButton;
+    [TabGroup("Left")] [SerializeField] private Button ReduceHealthButton;
 
-    public TMP_Dropdown JingJieDropdown;
-    public Button DrawSkillButton;
-    public Button PickSkillButton;
-    public ListViewWithSearchBar SkillBrowser;
-
-    public Button RemoveSkillButton;
+    [TabGroup("Left")] public TMP_Dropdown JingJieDropdown;
+    [TabGroup("Left")] public Button DrawSkillButton;
+    [TabGroup("Left")] public Button PickSkillButton;
+    [TabGroup("Left")] public Button RemoveSkillButton;
 
     private ListModelWithSearchBar<SkillEntry> SkillListModel;
-    
-    
-    
+    [TabGroup("Left")] public ListViewWithSearchBar SkillBrowser;
 
+    [TabGroup("Mid")] public TMP_InputField LadderInputField;
+    [TabGroup("Mid")] public Button EnterRoomButton;
+    [TabGroup("Mid")] public Button ExitRoomButton;
 
-    public TMP_InputField TesterNoteInputField;
-    public Button QuickUpvoteButton;
-    public Button QuickDownvoteButton;
-    public Button CopyReportButton;
-    
-    public Button Button1;
-    public Button Button5;
-    public Button Button10;
-    public Button Button25;
-    public Button Button50;
-    public Button Button100;
+    private ListModelWithSearchBar<RoomEntry> RoomListModel;
+    [TabGroup("Mid")] public ListViewWithSearchBar RoomBrowser;
 
-    public Button ButtonShowGRResult;
-    public Button ButtonDoNotShow;
-    public TMP_Text GRResultText;
-    public Button PrintJsonButton;
-    public Button WriteIntoEditableButton;
+    [TabGroup("Right")] public TMP_InputField TesterNoteInputField;
+    [TabGroup("Right")] public Button QuickUpvoteButton;
+    [TabGroup("Right")] public Button QuickDownvoteButton;
+    [TabGroup("Right")] public Button CopyReportButton;
+    
+    [TabGroup("Right")] public Button Button1;
+    [TabGroup("Right")] public Button Button5;
+    [TabGroup("Right")] public Button Button10;
+    [TabGroup("Right")] public Button Button25;
+    [TabGroup("Right")] public Button Button50;
+    [TabGroup("Right")] public Button Button100;
 
+    [TabGroup("Right")] public Button ButtonShowGRResult;
+    [TabGroup("Right")] public Button ButtonDoNotShow;
+    [TabGroup("Right")] public Button PrintJsonButton;
+    [TabGroup("Right")] public Button WriteIntoEditableButton;
     
-    
-    public Button ToggleButton;
+    [TabGroup("Extra")] public TMP_Text GRResultText;
+    [TabGroup("Extra")] public Button ToggleButton;
 
     private void Update() => _update?.Invoke();
 
     public override Tween EnterIdle()
         => DOTween.Sequence().SetAutoKill()
-            .AppendCallback(() => GetRect().anchoredPosition = new Vector2(GetRect().anchoredPosition.x, 243f));
+            .AppendCallback(() => FullContent.gameObject.SetActive(true));
 
     public override Tween EnterHide()
         => DOTween.Sequence().SetAutoKill()
-            .AppendCallback(() => GetRect().anchoredPosition = new Vector2(GetRect().anchoredPosition.x, 840f));
+            .AppendCallback(() => FullContent.gameObject.SetActive(false));
 
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "SkillListModel",               thisObject => ((ConsolePanel)thisObject).SkillListModel },
+        { "RoomListModel",                thisObject => ((ConsolePanel)thisObject).RoomListModel },
     };
     public object Get(string s) => Accessor[s](this);
     public override void AwakeFunction()
@@ -79,6 +83,11 @@ public class ConsolePanel : Panel, Addressable
         
         SkillBrowser.SetAddress("Canvas.ConsolePanel.SkillListModel");
         SkillBrowser.CheckAwake();
+
+        RoomListModel = new ListModelWithSearchBar<RoomEntry>(Encyclopedia.RoomCategory.List);
+
+        RoomBrowser.SetAddress("Canvas.ConsolePanel.RoomListModel");
+        RoomBrowser.CheckAwake();
 
         JingJieDropdown.options = new();
         JingJie.Traversal.Do(jingJie => JingJieDropdown.options.Add(new TMP_Dropdown.OptionData(jingJie.GetName())));
@@ -196,6 +205,9 @@ public class ConsolePanel : Panel, Addressable
         DrawSkillButton.onClick.AddListener(DrawSkill);
         PickSkillButton.onClick.AddListener(PickSkill);
         RemoveSkillButton.onClick.AddListener(RemoveSkill);
+        
+        EnterRoomButton.onClick.AddListener(EnterRoom);
+        ExitRoomButton.onClick.AddListener(ExitRoom);
     }
 
     private void UnregisteredRunEnvironment(RunEnvironment env)
@@ -218,6 +230,9 @@ public class ConsolePanel : Panel, Addressable
         DrawSkillButton.onClick.RemoveAllListeners();
         PickSkillButton.onClick.RemoveAllListeners();
         RemoveSkillButton.onClick.RemoveAllListeners();
+        
+        EnterRoomButton.onClick.RemoveAllListeners();
+        ExitRoomButton.onClick.RemoveAllListeners();
     }
 
     private void OnEnable()
@@ -308,6 +323,23 @@ public class ConsolePanel : Panel, Addressable
             return;
         DeckIndex lastSkillInHand = DeckIndex.FromHand(handCount - 1);
         RunManager.Instance.Environment.RemoveSkillProcedure(lastSkillInHand);
+    }
+
+    private void EnterRoom()
+    {
+        int ladder = int.TryParse(LadderInputField.text, out int result) ? result : 0;
+        
+        if (RoomListModel.Count() <= 0)
+            return;
+        RoomEntry firstRoomEntry = RoomListModel.Get(0) as RoomEntry;
+        if (firstRoomEntry == null)
+            return;
+        RunManager.Instance.Environment.EnterRoomProcedure(null, firstRoomEntry, ladder);
+    }
+
+    private void ExitRoom()
+    {
+        RunManager.Instance.Environment.ExitRoomProcedure();
     }
 
     private void OnTesterNoteInputFieldEndEdit(string value)

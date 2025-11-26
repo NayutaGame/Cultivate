@@ -4,7 +4,7 @@ using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
 [Serializable]
-public class RoomEntry : Entry
+public class RoomEntry : Entry, ISearchable
 {
     [NonSerialized] private string _roomPath;
     [NonSerialized] private LogicGraph _roomGraph;
@@ -21,4 +21,19 @@ public class RoomEntry : Entry
     }
 
     public LogicGraph RoomGraph => _roomGraph;
+    
+    public bool MatchSearchText(string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
+            return true;
+            
+        searchText = searchText.ToLower().Trim();
+        
+        // 1. 直接匹配
+        if (GetName().ToLower().Contains(searchText) || 
+            GetId().ToLower().Contains(searchText))
+            return true;
+        
+        return false;
+    }
 }

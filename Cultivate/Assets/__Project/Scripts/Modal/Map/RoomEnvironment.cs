@@ -7,9 +7,7 @@ public class RoomEnvironment
 {
     private MapNode _mapNode;
     private RoomEntry _roomEntry;
-    private JingJie _jingJie;
     private int _ladder;
-    private RunEntity _home;
 
     private Memory _memory;
     private LogicGraph _roomGraph;
@@ -17,13 +15,11 @@ public class RoomEnvironment
 
     public CellNode CurrentCell => _roomGraph.CurrentNode as CellNode;
     
-    private RoomEnvironment(MapNode mapNode, RoomEntry roomEntry, JingJie jingJie, int ladder, RunEntity home)
+    private RoomEnvironment(MapNode mapNode, RoomEntry roomEntry, int ladder)
     {
         _mapNode = mapNode;
         _roomEntry = roomEntry;
-        _jingJie = jingJie;
         _ladder = ladder;
-        _home = home;
         
         _memory = new Memory();
 
@@ -40,9 +36,14 @@ public class RoomEnvironment
         _roomGraph.Blackboard.SetLocalValue(_roomGraph, "Ladder", _ladder);
     }
 
-    public static RoomEnvironment CreateRoom(MapNode mapNode, RoomEntry roomEntry, JingJie jingJie, int ladder, RunEntity home)
+    public static RoomEnvironment CreateRoom(MapNode mapNode, RoomEntry roomEntry, int ladder)
     {
-        return new RoomEnvironment(mapNode, roomEntry, jingJie, ladder, home);
+        return new RoomEnvironment(mapNode, roomEntry, ladder);
+    }
+
+    public static RoomEnvironment CreateRoom(RoomEntry roomEntry, int ladder)
+    {
+        return new RoomEnvironment(null, roomEntry, ladder);
     }
 
     public void Step()
