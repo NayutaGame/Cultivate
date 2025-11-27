@@ -15,8 +15,20 @@ public abstract class RoomDefinition
         16, 16, 16,
     };
     
+    private static readonly int[] HealthRewardFromLadder = new int[]
+    {
+        1, /*1,*/ 2,
+        2, 2, 4,
+        4, 4, 8,
+        8, 8, 16,
+        16, 16, 16,
+    };
+    
     public static int GetGoldRewardFromLadder(int ladder)
         => GoldRewardFromLadder[ladder.Clamp(0, GoldRewardFromLadder.Length - 1)];
+    
+    public static int GetHealthRewardFromLadder(int ladder)
+        => HealthRewardFromLadder[ladder.Clamp(0, HealthRewardFromLadder.Length - 1)];
 
     public static int GetCardBasePriceFromLadder(int ladder)
         => GetCardBasePriceFromJingJie(GetJingJieFromLadder(ladder));

@@ -3,7 +3,7 @@ using PuppyDragon.uNody;
 using UnityEngine;
 
 [NodeWidth(300)]
-[CreateNodeMenu("Procedure/Set Player Equal Preset", -9, true)]
+[CreateNodeMenu("Procedure/Set Player Equal Preset", -10, true)]
 public class SetPlayerEqualPresetProcedureNode : ProcedureNode
 {
     [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
@@ -15,8 +15,6 @@ public class SetPlayerEqualPresetProcedureNode : ProcedureNode
     
     public override void Procedure()
     {
-        if (!Application.isPlaying)
-            return;
         RunManager.Instance.Environment.SetPlayerEqualPresetProcedure(TemplateName.Value, ToField.Value, Overwrite.Value);
     }
 }

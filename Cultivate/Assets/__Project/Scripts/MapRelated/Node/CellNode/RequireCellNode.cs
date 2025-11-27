@@ -47,6 +47,9 @@ public class RequireCellNode : CellNode
     private InputPort<string> DetailedText = new();
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    private InputPort<int> Ladder = new();
+    
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.耗材);
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
@@ -113,7 +116,7 @@ public class RequireCellNode : CellNode
         if (confirmDeckSignal == null)
             return false;
 
-        int ladder = 8; // From blackboard
+        int ladder = Ladder.Value;
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
         JingJie nextJingJie = Mathf.Clamp(currJingJie + 1, 0, 4);
 
@@ -223,7 +226,7 @@ public class RequireCellNode : CellNode
 
                     WuXing targetWuXing = slot.Skill.GetWuXing().Next;
                     JingJie targetJingJie = slot.Skill.GetJingJie();
-                
+                    
                     GainSkillBuilder b = new();
                     SkillEntryQuery drawStrategy = SkillEntryQuery.FromWuXingBaseJingJieBound(
                         wuXing: targetWuXing,
@@ -231,9 +234,30 @@ public class RequireCellNode : CellNode
                     b.Draw(drawStrategy, jingJie: targetJingJie, consume: true);
                     slot.Skill = RunSkill.FromGainingSkill(b.GainingSkills[0]);
                 });
-                        
+                
                 requireCell.WithdrawAll();
                 return success;
+            }},
+            { RequireCellBehaviorType.分子打印机, requireCell =>
+            {
+                bool success = requireCell.AllFulfilled();
+                if (!success)
+                {
+                    requireCell.WithdrawAll();
+                    return false;
+                }
+                
+                int count = requireCell.RequirementSlotList.Count();
+                RequirementSlot copyingSlot = requireCell.RequirementSlotList[RandomManager.Range(0, count)];
+                RunSkill copyingSkill = copyingSlot.Skill;
+                
+                requireCell.RequirementSlotList.Do(requirementSlot =>
+                {
+                    RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, requirementSlot.ToDeckIndex());
+                });
+                
+                requireCell.WithdrawAll();
+                return true;
             }},
         };
         

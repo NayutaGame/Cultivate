@@ -99,6 +99,8 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
 
     public static JingJie FromEditor(EditorJingJie editorJingJie)
     {
+        if (editorJingJie == EditorJingJie.任意)
+            return null;
         if (editorJingJie == EditorJingJie.当前)
             return RunManager.Instance.Environment.JingJie;
         return (int)editorJingJie;

@@ -1392,515 +1392,515 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
 
             #region 04_Adventure
             
-            new(id:                                 "Room0023",
-                name:                               "天津四",
-                description:                        "天津四",
-                ladderBound:                        LadderIsLianQi,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "缘分",
-                        detailedText: "你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
-                        "祝福他的缘分", "和他说不是每一段相思都能够有结果的");
+            // new(id:                                 "Room0023",
+            //     name:                               "天津四",
+            //     description:                        "天津四",
+            //     ladderBound:                        LadderIsLianQi,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "缘分",
+            //             detailedText: "你看见一个书生，悄悄看着一个织布的少女，应该是对她有意思。他看你道士打扮，于是问道：“先生可否帮我算一卦，算姻缘。”",
+            //             "祝福他的缘分", "和他说不是每一段相思都能够有结果的");
+            //
+            //         DialogCell B = new(
+            //             titleText: "缘分",
+            //             detailedText: "书生表情平静，实际上满心欢喜，说：“我去尝试追求她看看。”",
+            //             options: "过了三十年");
+            //         DialogCell B1 = new DialogCell(
+            //                 titleText: "缘分",
+            //                 detailedText: "你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("遗憾"), RunManager.Instance.Environment.JingJie));
+            //
+            //         DialogCell C = new(
+            //             titleText: "缘分",
+            //             detailedText: "书生表情平静，实际上内心忧愁，然后默默离开了",
+            //             options: "过了三十年");
+            //         DialogCell C1 = new DialogCell(
+            //                 titleText: "缘分",
+            //                 detailedText: "你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("爱恋"), RunManager.Instance.Environment.JingJie));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         B[0].SetSelect(option => B1);
+            //         C[0].SetSelect(option => C1);
+            //
+            //         return A;
+            //     }),
 
-                    DialogCell B = new(
-                        titleText: "缘分",
-                        detailedText: "书生表情平静，实际上满心欢喜，说：“我去尝试追求她看看。”",
-                        options: "过了三十年");
-                    DialogCell B1 = new DialogCell(
-                            titleText: "缘分",
-                            detailedText: "你又见到了当初的书生，他说没有在当年找到合适的姻缘。他给你留下了一些东西。\n\n得到《遗憾》天津四 著")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("遗憾"), RunManager.Instance.Environment.JingJie));
-
-                    DialogCell C = new(
-                        titleText: "缘分",
-                        detailedText: "书生表情平静，实际上内心忧愁，然后默默离开了",
-                        options: "过了三十年");
-                    DialogCell C1 = new DialogCell(
-                            titleText: "缘分",
-                            detailedText: "你又见到了当初的书生，他虽然当时放弃了，但是后来和其他人结成了姻缘。他给你留下了一些东西。\n\n得到《爱恋》天津四 著")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("爱恋"), RunManager.Instance.Environment.JingJie));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    B[0].SetSelect(option => B1);
-                    C[0].SetSelect(option => C1);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0024",
-                name:                               "琴仙",
-                description:                        "琴仙",
-                ladderBound:                        LadderIsZhuJi,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "琴仙",
-                        detailedText: "你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
-                        "来一首欢快的曲子吧",
-                        "来一首悲伤的曲子吧",
-                        "赶路着急，没时间留下来听曲子了");
-
-                    DialogCell B = new DialogCell(
-                            titleText: "琴仙",
-                            detailedText: "那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("春雨"), RunManager.Instance.Environment.JingJie));
-                    DialogCell C = new DialogCell(
-                            titleText: "琴仙",
-                            detailedText: "那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("枯木"), RunManager.Instance.Environment.JingJie));
-                    DialogCell D = new DialogCell(
-                            titleText: "琴仙",
-                            detailedText: "之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
-                        .SetReward(new DrawSkillReward("获得一个技能",
-                            SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(1),
-                            RunManager.Instance.Environment.JingJie));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-
-                    return A;
-                }),
+            // new(id:                                 "Room0024",
+            //     name:                               "琴仙",
+            //     description:                        "琴仙",
+            //     ladderBound:                        LadderIsZhuJi,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "琴仙",
+            //             detailedText: "你遇到了一个弹琴的人，他双目失明，衣衫褴褛，举手投足之间却让人感到大方得体，应该是一名隐士。正好前一首曲毕。向你的方向看了过来，好像知道你来了。",
+            //             "来一首欢快的曲子吧",
+            //             "来一首悲伤的曲子吧",
+            //             "赶路着急，没时间留下来听曲子了");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "琴仙",
+            //                 detailedText: "那人哈哈大笑，然后弹了一首欢快的曲子。你回想起这一生，第一次这么有满足感，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《春雨》")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("春雨"), RunManager.Instance.Environment.JingJie));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "琴仙",
+            //                 detailedText: "那人一声叹息，然后弹了一首悲伤的曲子。你怀疑起了修仙的意义，产生了一些思绪。回过神来，那人已经不见了。\n\n获得《枯木》")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("枯木"), RunManager.Instance.Environment.JingJie));
+            //         DialogCell D = new DialogCell(
+            //                 titleText: "琴仙",
+            //                 detailedText: "之前赶路省下的时间，正好可以用于修炼。\n\n获得一个技能")
+            //             .SetReward(new DrawSkillReward("获得一个技能",
+            //                 SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(1),
+            //                 RunManager.Instance.Environment.JingJie));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[2].SetSelect(option => D);
+            //
+            //         return A;
+            //     }),
             
-            new(id:                                 "Room0025",
-                name:                               "赤壁赋",
-                description:                        "赤壁赋",
-                ladderBound:                        LadderIsJinDan,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "辩论",
-                        detailedText: "你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
-                        "赞同月亮是变化的", "赞同月亮是不变的", "变的不是月亮，而是人");
+            // new(id:                                 "Room0025",
+            //     name:                               "赤壁赋",
+            //     description:                        "赤壁赋",
+            //     ladderBound:                        LadderIsJinDan,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "辩论",
+            //             detailedText: "你见到两个人在辩论。\n一人说，月亮是变化的，今天还是满月，明天就不是了。\n另一人说，月亮是不变的，上个月看是满月，今天看也还是满月。",
+            //             "赞同月亮是变化的", "赞同月亮是不变的", "变的不是月亮，而是人");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "辩论",
+            //                 detailedText: "你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
+            //                               "\n\n得到《须臾》")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("须臾"), jingJie: RunManager.Instance.Environment.JingJie));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "辩论",
+            //                 detailedText: "你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
+            //                               "\n\n得到《永远》")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("永远"), jingJie: RunManager.Instance.Environment.JingJie));
+            //         DialogCell D = new DialogCell(
+            //             titleText: "辩论",
+            //             detailedText: "你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
+            //                           "\n\n得到4金");
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[2].SetSelect(option => D);
+            //
+            //         return A;
+            //     }),
 
-                    DialogCell B = new DialogCell(
-                            titleText: "辩论",
-                            detailedText: "你说到：“盖将自其变者而观之，则天地曾不能以一瞬，月亮是变化的。”\n只见第一个人非常赞同你的观点，给了你一些东西。" +
-                                          "\n\n得到《须臾》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("须臾"), jingJie: RunManager.Instance.Environment.JingJie));
-                    DialogCell C = new DialogCell(
-                            titleText: "辩论",
-                            detailedText: "你说到：“自其不变者而观之，则物与我皆无尽也，月亮是不变的。”\n只见第二个人非常赞同你的观点，给了你一些东西。" +
-                                          "\n\n得到《永远》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("永远"), jingJie: RunManager.Instance.Environment.JingJie));
-                    DialogCell D = new DialogCell(
-                        titleText: "辩论",
-                        detailedText: "你话还没说完，那两人说你是个杠精，马上留下钱买了单，换了一家茶馆去聊天。\n你发现他们还剩下了一些额外的东西。" +
-                                      "\n\n得到4金");
+            // new(id:                                 "Room0026",
+            //     name:                               "二子学弈",
+            //     description:                        "二子学弈",
+            //     ladderBound:                        LadderIsYuanYing,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "学棋",
+            //             detailedText: "你看到一个老者在教两个学童下棋，两个学童在对弈，一名学童注视棋盘，另一名学童四处张望。",
+            //             "注视棋盘的学童能赢", "四处张望的学童能赢");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "学棋",
+            //                 detailedText: "你走近了，准备称赞注视棋盘的学童，顺着他的目光看向棋盘。" +
+            //                               "\n\n你们在对弈啊，你开口道。注视棋盘的学童说，说对弈太抬举我了，我和爷爷是在请教老师。" +
+            //                               "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
+            //                               "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。" +
+            //                               "\n\n得到《一心》")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("一心"), jingJie: RunManager.Instance.Environment.JingJie));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "学棋",
+            //                 detailedText: "你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
+            //                               "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。" +
+            //                               "\n\n得到《童趣》")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("童趣"), jingJie: RunManager.Instance.Environment.JingJie));
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         
+            //         return A;
+            //     }),
 
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
+            // new(id:                                 "Room0027",
+            //     name:                               "仙人下棋",
+            //     description:                        "仙人下棋",
+            //     ladderBound:                        LadderIsHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "迷路",
+            //             detailedText: "你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
+            //             "尝试观看两人对弈（需要一张二动牌）", "请教两人路怎么走（需要一张治疗牌）");
+            //
+            //         RequireCell B = RequireCell.FromConstantDetailedText(
+            //             titleText:          "提交",
+            //             detailedText:       "请提交一张二动牌",
+            //             requirements:            RunSkillQuery.FromTagComposite(TagCategory.Swift).Stack(1));
+            //         RequireCell C = RequireCell.FromConstantDetailedText(
+            //             titleText:          "提交",
+            //             detailedText:       "请提交一张治疗牌",
+            //             requirements:            RunSkillQuery.FromTagComposite(TagCategory.Health).Stack(1));
+            //
+            //         DialogCell BWin = new(
+            //             titleText: "迷路",
+            //             detailedText: "你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。",
+            //             options: "不知过了多久");
+            //         DialogCell BWin2 = new(
+            //             titleText: "迷路",
+            //             detailedText: "你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
+            //         BWin2.SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("观棋烂柯"), RunManager.Instance.Environment.JingJie));
+            //
+            //         DialogCell BLose = new(
+            //             titleText: "迷路",
+            //             detailedText: "虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。",
+            //             options: "不知过了多久");
+            //         DialogCell BLose2 = new(
+            //             titleText: "迷路",
+            //             detailedText: "你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
+            //         BLose2.SetReward(Reward.FromMingYuan(2));
+            //
+            //         DialogCell CWin = new(
+            //             titleText: "迷路",
+            //             detailedText: "你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。",
+            //             options: "不知过了多久");
+            //         DialogCell CWin2 = new(
+            //             titleText: "迷路",
+            //             detailedText: "即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
+            //         CWin2.SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("玄武吐息法"), RunManager.Instance.Environment.JingJie));
+            //
+            //         DialogCell CLose = new(
+            //             titleText: "迷路",
+            //             detailedText: "你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。",
+            //             options: "不知过了多久");
+            //         DialogCell CLose2 = new(
+            //             titleText: "迷路",
+            //             detailedText: "空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。气血上限+10。");
+            //         CLose2.SetReward(Reward.FromHealth(16));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //
+            //         B.SetSubmitOperation(cardPickerCell =>
+            //         {
+            //             bool fulfilled = cardPickerCell.AllFulfilled();
+            //             if (!fulfilled)
+            //             {
+            //                 cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+            //                 {
+            //                     if (requirementSlot.Skill != null)
+            //                     {
+            //                         RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
+            //                     }
+            //                 });
+            //                 return BLose;
+            //             }
+            //
+            //             return BWin;
+            //         });
+            //
+            //         C.SetSubmitOperation(cardPickerCell =>
+            //         {
+            //             bool fulfilled = cardPickerCell.AllFulfilled();
+            //             if (!fulfilled)
+            //             {
+            //                 cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+            //                 {
+            //                     if (requirementSlot.Skill != null)
+            //                     {
+            //                         RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
+            //                     }
+            //                 });
+            //                 return CLose;
+            //             }
+            //
+            //             return CWin;
+            //         });
+            //
+            //         BWin[0].SetSelect(option => BWin2);
+            //         BLose[0].SetSelect(option => BLose2);
+            //         CWin[0].SetSelect(option => CWin2);
+            //         CLose[0].SetSelect(option => CLose2);
+            //
+            //         return A;
+            //     }),
 
-                    return A;
-                }),
+            // new(id:                                 "Room0028",
+            //     name:                               "检测仪",
+            //     description:                        "检测仪",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A0 = new(
+            //             titleText: "检测仪",
+            //             detailedText: "你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
+            //             "金", "水", "木", "下一页");
+            //
+            //         DialogCell A1 = new(
+            //             titleText: "检测仪",
+            //             detailedText: "你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
+            //             "火", "土", "上一页");
+            //
+            //         DialogCell B = new DialogCell(
+            //             titleText: "检测仪",
+            //             detailedText: "仪表盘上出现了一个箭头，你顺着箭头望去，发现一本秘籍，随后仪器没电了。\n\n得到一张牌");
+            //         
+            //         A0[3].SetSelect(option => A1);
+            //         A1[2].SetSelect(option => A0);
+            //
+            //         A0[0].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.DrawSkillProcedure(
+            //                 SkillEntryQuery.FromWuXingBaseJingJieBound(
+            //                     wuXing: WuXing.Jin,
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+            //                 RunManager.Instance.Environment.JingJie);
+            //             return B;
+            //         });
+            //
+            //         A0[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.DrawSkillProcedure(
+            //                 SkillEntryQuery.FromWuXingBaseJingJieBound(
+            //                     wuXing: WuXing.Shui,
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+            //                 RunManager.Instance.Environment.JingJie);
+            //             return B;
+            //         });
+            //
+            //         A0[2].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.DrawSkillProcedure(
+            //                 SkillEntryQuery.FromWuXingBaseJingJieBound(
+            //                     wuXing: WuXing.Mu,
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+            //                 RunManager.Instance.Environment.JingJie);
+            //             return B;
+            //         });
+            //
+            //         A1[0].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.DrawSkillProcedure(
+            //                 SkillEntryQuery.FromWuXingBaseJingJieBound(
+            //                     wuXing: WuXing.Huo,
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+            //                 RunManager.Instance.Environment.JingJie);
+            //             return B;
+            //         });
+            //
+            //         A1[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.DrawSkillProcedure(
+            //                 SkillEntryQuery.FromWuXingBaseJingJieBound(
+            //                     wuXing: WuXing.Tu,
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
+            //                 RunManager.Instance.Environment.JingJie);
+            //             return B;
+            //         });
+            //
+            //         return A0;
+            //     }),
 
-            new(id:                                 "Room0026",
-                name:                               "二子学弈",
-                description:                        "二子学弈",
-                ladderBound:                        LadderIsYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "学棋",
-                        detailedText: "你看到一个老者在教两个学童下棋，两个学童在对弈，一名学童注视棋盘，另一名学童四处张望。",
-                        "注视棋盘的学童能赢", "四处张望的学童能赢");
+            // new(id:                                 "Room0029",
+            //     name:                               "明心庐",
+            //     description:                        "明心庐",
+            //     ladderBound:                        LadderIsJinDanToHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "明心庐",
+            //             detailedText: "你看到一栋建筑，上面写着明心庐，见到了当地有名的解梦师。你请他解梦，他问你梦中是怎么样的？",
+            //             "挥舞着刀剑，大杀四方", "身披重甲，坚不可摧", "饮用着灵泉中的泉水");
+            //
+            //         DiscoverCell B = DiscoverCell.FromTitleDescription(room.Ladder, "明心庐", "选择1张梦中所想的牌");
+            //         
+            //         DialogCell C = new(
+            //             titleText: "明心庐",
+            //             detailedText: "这正是我现在需要的，先生真乃神通也。");
+            //         
+            //         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(room.Ladder);
+            //
+            //         A[0].SetSelect(option => B.SetDrawStrategy(
+            //             SkillEntryQuery.FromBaseJingJieBoundTag(
+            //                 baseJingJieBound: new(JingJie.LianQi, currJingJie),
+            //                 tagComposite: TagCategory.Attack).Stack(3)));
+            //         A[1].SetSelect(option => B.SetDrawStrategy(
+            //             SkillEntryQuery.FromBaseJingJieBoundTag(
+            //                 baseJingJieBound: new(JingJie.LianQi, currJingJie),
+            //                 tagComposite: TagCategory.Defend).Stack(3)));
+            //         A[2].SetSelect(option => B.SetDrawStrategy(
+            //             SkillEntryQuery.FromBaseJingJieBoundTag(
+            //                 baseJingJieBound: new(JingJie.LianQi, currJingJie),
+            //                 tagComposite: TagCategory.Mana).Stack(3)));
+            //
+            //         B._receiveSignal = signal =>
+            //         {
+            //             if (signal is PickDiscoveredSkillSignal pickDiscoveredSkillSignal)
+            //             {
+            //                 return C;
+            //             }
+            //             return B;
+            //         };
+            //
+            //         return A;
+            //     }),
 
-                    DialogCell B = new DialogCell(
-                            titleText: "学棋",
-                            detailedText: "你走近了，准备称赞注视棋盘的学童，顺着他的目光看向棋盘。" +
-                                          "\n\n你们在对弈啊，你开口道。注视棋盘的学童说，说对弈太抬举我了，我和爷爷是在请教老师。" +
-                                          "\n\n原来四处张望的学童竟然是老师，老者却是学子。" +
-                                          "\n\n四处张望的学童转过身来对你说，以身入局才能看到事物真正的流向，孺子可教也。给你留了点东西。" +
-                                          "\n\n得到《一心》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("一心"), jingJie: RunManager.Instance.Environment.JingJie));
-                    DialogCell C = new DialogCell(
-                            titleText: "学棋",
-                            detailedText: "你虽然相隔甚远，看不见棋盘，但是四处张望的学童神态自若，充满自信，你上去夸他。" +
-                                          "\n\n他说到：你虽然眼神不在棋盘中，却也从场外信息判断出了我能赢，孺子可教也。给你留了点东西。" +
-                                          "\n\n得到《童趣》")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("童趣"), jingJie: RunManager.Instance.Environment.JingJie));
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    
-                    return A;
-                }),
+            // new(id:                                 "Room0030",
+            //     name:                               "天机阁",
+            //     description:                        "天机阁",
+            //     ladderBound:                        LadderIsZhuJiToHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "天机阁",
+            //             detailedText: "你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
+            //         PickCell B = new(
+            //             titleText: "天机阁",
+            //             detailedText: "请从10张牌中选1张获取",
+            //             drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(10));
+            //         DialogCell C = new(
+            //             titleText: "天机阁",
+            //             detailedText: "刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
+            //
+            //         B.SetConfirmOperation(confirmSkillsSignal =>
+            //         {
+            //             B.DefaultConfirmOperation(confirmSkillsSignal);
+            //             return C;
+            //         });
+            //         
+            //         A[0].SetSelect(option => B);
+            //
+            //         return A;
+            //     }),
 
-            new(id:                                 "Room0027",
-                name:                               "仙人下棋",
-                description:                        "仙人下棋",
-                ladderBound:                        LadderIsHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "迷路",
-                        detailedText: "你在竹林里迷路了，走了一阵遇到两个人在下棋，其中一个人发现了你，然后继续看棋盘去了。",
-                        "尝试观看两人对弈（需要一张二动牌）", "请教两人路怎么走（需要一张治疗牌）");
-
-                    RequireCell B = RequireCell.FromConstantDetailedText(
-                        titleText:          "提交",
-                        detailedText:       "请提交一张二动牌",
-                        requirements:            RunSkillQuery.FromTagComposite(TagCategory.Swift).Stack(1));
-                    RequireCell C = RequireCell.FromConstantDetailedText(
-                        titleText:          "提交",
-                        detailedText:       "请提交一张治疗牌",
-                        requirements:            RunSkillQuery.FromTagComposite(TagCategory.Health).Stack(1));
-
-                    DialogCell BWin = new(
-                        titleText: "迷路",
-                        detailedText: "你沉下心来仔细看这盘棋，在神识飘到很远的地方之前，回想起了你曾经学过的心法，保持住了自己的神识。",
-                        options: "不知过了多久");
-                    DialogCell BWin2 = new(
-                        titleText: "迷路",
-                        detailedText: "你沉浸在自己的世界里面，两人对弈完了，你和他们互相道别。走出竹林时，你感到自己的心法又精进了一步。\n\n得到《观棋烂柯》。");
-                    BWin2.SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("观棋烂柯"), RunManager.Instance.Environment.JingJie));
-
-                    DialogCell BLose = new(
-                        titleText: "迷路",
-                        detailedText: "虽然你沉下心来想要理解棋盘中发生了什么事，只见两人下棋越来越快，一息之间，那二人已下出千百步，你想说些什么，但是身体却来不及动。",
-                        options: "不知过了多久");
-                    DialogCell BLose2 = new(
-                        titleText: "迷路",
-                        detailedText: "你醒来时，那两人已经不在了。但是莫要紧，美美睡上一觉比什么都重要。命元+2。");
-                    BLose2.SetReward(Reward.FromMingYuan(2));
-
-                    DialogCell CWin = new(
-                        titleText: "迷路",
-                        detailedText: "你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，你回想起了一段关于呼吸的功法，开始强迫自己吐纳，努力在这种环境下获取一些空气。",
-                        options: "不知过了多久");
-                    DialogCell CWin2 = new(
-                        titleText: "迷路",
-                        detailedText: "即使空气非常粘稠，你也可以呼吸自如。慢慢回到了正常的感觉，你悟出了一个关于吐纳的功法。");
-                    CWin2.SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("玄武吐息法"), RunManager.Instance.Environment.JingJie));
-
-                    DialogCell CLose = new(
-                        titleText: "迷路",
-                        detailedText: "你正向前走去，余光看到其中一人正好在一步棋点在天元。一瞬间你仿佛来到了水中，无法呼吸，肺部在不断哀嚎。",
-                        options: "不知过了多久");
-                    DialogCell CLose2 = new(
-                        titleText: "迷路",
-                        detailedText: "空气中的粘稠感终于消失。你赶紧大口吸气呼气，第一次感到空气是这么美好。气血上限+10。");
-                    CLose2.SetReward(Reward.FromHealth(16));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    B.SetSubmitOperation(cardPickerCell =>
-                    {
-                        bool fulfilled = cardPickerCell.AllFulfilled();
-                        if (!fulfilled)
-                        {
-                            cardPickerCell.RequirementSlotList.Do(requirementSlot =>
-                            {
-                                if (requirementSlot.Skill != null)
-                                {
-                                    RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
-                                }
-                            });
-                            return BLose;
-                        }
-
-                        return BWin;
-                    });
-
-                    C.SetSubmitOperation(cardPickerCell =>
-                    {
-                        bool fulfilled = cardPickerCell.AllFulfilled();
-                        if (!fulfilled)
-                        {
-                            cardPickerCell.RequirementSlotList.Do(requirementSlot =>
-                            {
-                                if (requirementSlot.Skill != null)
-                                {
-                                    RunManager.Instance.Environment.WithdrawToHandProcedure(WithdrawToHandDetails.FromSlot(requirementSlot));
-                                }
-                            });
-                            return CLose;
-                        }
-
-                        return CWin;
-                    });
-
-                    BWin[0].SetSelect(option => BWin2);
-                    BLose[0].SetSelect(option => BLose2);
-                    CWin[0].SetSelect(option => CWin2);
-                    CLose[0].SetSelect(option => CLose2);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0028",
-                name:                               "检测仪",
-                description:                        "检测仪",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A0 = new(
-                        titleText: "检测仪",
-                        detailedText: "你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
-                        "金", "水", "木", "下一页");
-
-                    DialogCell A1 = new(
-                        titleText: "检测仪",
-                        detailedText: "你捡到了一个不曾见过的仪器，上面有5个按钮。你决定按下其中一个试试。",
-                        "火", "土", "上一页");
-
-                    DialogCell B = new DialogCell(
-                        titleText: "检测仪",
-                        detailedText: "仪表盘上出现了一个箭头，你顺着箭头望去，发现一本秘籍，随后仪器没电了。\n\n得到一张牌");
-                    
-                    A0[3].SetSelect(option => A1);
-                    A1[2].SetSelect(option => A0);
-
-                    A0[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.DrawSkillProcedure(
-                            SkillEntryQuery.FromWuXingBaseJingJieBound(
-                                wuXing: WuXing.Jin,
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
-                            RunManager.Instance.Environment.JingJie);
-                        return B;
-                    });
-
-                    A0[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.DrawSkillProcedure(
-                            SkillEntryQuery.FromWuXingBaseJingJieBound(
-                                wuXing: WuXing.Shui,
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
-                            RunManager.Instance.Environment.JingJie);
-                        return B;
-                    });
-
-                    A0[2].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.DrawSkillProcedure(
-                            SkillEntryQuery.FromWuXingBaseJingJieBound(
-                                wuXing: WuXing.Mu,
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
-                            RunManager.Instance.Environment.JingJie);
-                        return B;
-                    });
-
-                    A1[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.DrawSkillProcedure(
-                            SkillEntryQuery.FromWuXingBaseJingJieBound(
-                                wuXing: WuXing.Huo,
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
-                            RunManager.Instance.Environment.JingJie);
-                        return B;
-                    });
-
-                    A1[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.DrawSkillProcedure(
-                            SkillEntryQuery.FromWuXingBaseJingJieBound(
-                                wuXing: WuXing.Tu,
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
-                            RunManager.Instance.Environment.JingJie);
-                        return B;
-                    });
-
-                    return A0;
-                }),
-
-            new(id:                                 "Room0029",
-                name:                               "明心庐",
-                description:                        "明心庐",
-                ladderBound:                        LadderIsJinDanToHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "明心庐",
-                        detailedText: "你看到一栋建筑，上面写着明心庐，见到了当地有名的解梦师。你请他解梦，他问你梦中是怎么样的？",
-                        "挥舞着刀剑，大杀四方", "身披重甲，坚不可摧", "饮用着灵泉中的泉水");
-
-                    DiscoverCell B = DiscoverCell.FromTitleDescription(room.Ladder, "明心庐", "选择1张梦中所想的牌");
-                    
-                    DialogCell C = new(
-                        titleText: "明心庐",
-                        detailedText: "这正是我现在需要的，先生真乃神通也。");
-                    
-                    JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(room.Ladder);
-
-                    A[0].SetSelect(option => B.SetDrawStrategy(
-                        SkillEntryQuery.FromBaseJingJieBoundTag(
-                            baseJingJieBound: new(JingJie.LianQi, currJingJie),
-                            tagComposite: TagCategory.Attack).Stack(3)));
-                    A[1].SetSelect(option => B.SetDrawStrategy(
-                        SkillEntryQuery.FromBaseJingJieBoundTag(
-                            baseJingJieBound: new(JingJie.LianQi, currJingJie),
-                            tagComposite: TagCategory.Defend).Stack(3)));
-                    A[2].SetSelect(option => B.SetDrawStrategy(
-                        SkillEntryQuery.FromBaseJingJieBoundTag(
-                            baseJingJieBound: new(JingJie.LianQi, currJingJie),
-                            tagComposite: TagCategory.Mana).Stack(3)));
-
-                    B._receiveSignal = signal =>
-                    {
-                        if (signal is PickDiscoveredSkillSignal pickDiscoveredSkillSignal)
-                        {
-                            return C;
-                        }
-                        return B;
-                    };
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0030",
-                name:                               "天机阁",
-                description:                        "天机阁",
-                ladderBound:                        LadderIsZhuJiToHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "天机阁",
-                        detailedText: "你在沙漠中行走，突然眼前出来了一栋华丽的建筑，上面写着天机阁。你走入其中，前面有个牌子，请选择一张。你正在想是选择什么时，发现有十张卡牌浮在空中。");
-                    PickCell B = new(
-                        titleText: "天机阁",
-                        detailedText: "请从10张牌中选1张获取",
-                        drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(10));
-                    DialogCell C = new(
-                        titleText: "天机阁",
-                        detailedText: "刚一碰到那张卡牌，整个楼阁就突然消失不见，彷佛从未出现过一样。正当你不确定自己是否经历了一场幻觉时，发现留在手中的卡牌是真实的。于是你将这张卡牌收起。\n\n获得一张卡牌");
-
-                    B.SetConfirmOperation(confirmSkillsSignal =>
-                    {
-                        B.DefaultConfirmOperation(confirmSkillsSignal);
-                        return C;
-                    });
-                    
-                    A[0].SetSelect(option => B);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0031",
-                name:                               "论无穷",
-                description:                        "论无穷",
-                ladderBound:                        LadderIsHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "论无穷",
-                        detailedText: "你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
-                                      "\n我每天跑步，只要一只能跑下去，跑的路程就是无穷的" +
-                                      "\n有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。" +
-                                      "\n有个木桩，每天砍一半，过一万年也砍不完，这个叫做无穷。",
-                        "看一眼蓝色服装考官", "看一眼绿色服装考官", "看一眼红色服装考官");
-
-                    DialogCell B = new DialogCell(
-                            titleText: "论无穷",
-                            detailedText: "你痛快写了800字，时间没过5分钟，已经写完了。" +
-                                          "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张二动牌",
-                                SkillEntryQuery.FromBaseJingJieBoundTag(
-                                    baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
-                                    tagComposite: TagCategory.Swift).Stack(1),
-                            RunManager.Instance.Environment.JingJie));
-                    DialogCell C = new DialogCell(
-                            titleText: "论无穷",
-                            detailedText: "你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
-                                          "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
-                                          "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
-                                          "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张自指牌",
-                            SkillEntryQuery.FromBaseJingJieBoundTag(
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
-                                tagComposite: TagCategory.Growth).Stack(1),
-                            RunManager.Instance.Environment.JingJie));
-                    DialogCell D = new DialogCell(
-                            titleText: "论无穷",
-                            detailedText: "考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
-                                          "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
-                                          "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
-                        .SetReward(new DrawSkillReward("得到一张升华牌",
-                            SkillEntryQuery.FromBaseJingJieBoundTag(
-                                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
-                                tagComposite: TagCategory.Exhaust).Stack(1),
-                            RunManager.Instance.Environment.JingJie));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-
-                    return A;
-                }),
+            // new(id:                                 "Room0031",
+            //     name:                               "论无穷",
+            //     description:                        "论无穷",
+            //     ladderBound:                        LadderIsHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "论无穷",
+            //             detailedText: "你听说有奖励，于是来参加了一场考试，内容是写一篇文章，题目是“论无穷”，要如何开题呢？" +
+            //                           "\n我每天跑步，只要一只能跑下去，跑的路程就是无穷的" +
+            //                           "\n有一种蛇，每天吃自己的尾巴，又长出来新的蛇身，永远吃不完，此谓无穷。" +
+            //                           "\n有个木桩，每天砍一半，过一万年也砍不完，这个叫做无穷。",
+            //             "看一眼蓝色服装考官", "看一眼绿色服装考官", "看一眼红色服装考官");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "论无穷",
+            //                 detailedText: "你痛快写了800字，时间没过5分钟，已经写完了。" +
+            //                               "\n\n交卷之后，一名蓝色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+            //             .SetReward(new DrawSkillReward("得到一张二动牌",
+            //                     SkillEntryQuery.FromBaseJingJieBoundTag(
+            //                         baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+            //                         tagComposite: TagCategory.Swift).Stack(1),
+            //                 RunManager.Instance.Environment.JingJie));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "论无穷",
+            //                 detailedText: "你提笔写起来。\n\n从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
+            //                               "从前有座山，山里有座庙，庙里有考试，考试来考生，考生做文章，文章道从前，" +
+            //                               "从前有座山，山里有座庙。。。\n\n你的文章还没写完，考试已经结束了。" +
+            //                               "\n\n交卷之后，一名绿色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+            //             .SetReward(new DrawSkillReward("得到一张自指牌",
+            //                 SkillEntryQuery.FromBaseJingJieBoundTag(
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+            //                     tagComposite: TagCategory.Growth).Stack(1),
+            //                 RunManager.Instance.Environment.JingJie));
+            //         DialogCell D = new DialogCell(
+            //                 titleText: "论无穷",
+            //                 detailedText: "考试过了一半，你只写下了一句话。又过了一半的一半，你又写下了一句话。又过了一半的一半的一半，你再写下了一句话。。。" +
+            //                               "\n\n考试结束时，你已经把所有能写字的地方都写满了。" +
+            //                               "\n\n交卷之后，一名红色服装的考官对你的文章很有兴趣，给你留下了一些东西。")
+            //             .SetReward(new DrawSkillReward("得到一张升华牌",
+            //                 SkillEntryQuery.FromBaseJingJieBoundTag(
+            //                     baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+            //                     tagComposite: TagCategory.Exhaust).Stack(1),
+            //                 RunManager.Instance.Environment.JingJie));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[2].SetSelect(option => D);
+            //
+            //         return A;
+            //     }),
             
-            new(id:                                 "Room0032",
-                name:                               "分子打印机",
-                description:                        "分子打印机",
-                ladderBound:                        LadderIsJinDanToHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "分子打印机",
-                        detailedText: "你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
-                        "试试这个机器可以做什么", "离开");
-
-                    RequireCell B = RequireCell.FromConstantDetailedText(
-                        titleText: "选择",
-                        detailedText: "请选择2张牌，随机将其中一张变成另一张",
-                        requirements: RunSkillQuery.AnySkill().Stack(2));
-                    DialogCell C = new(
-                        titleText: "分子打印机",
-                        detailedText: "来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
-                    DialogCell D = new(
-                        titleText: "分子打印机",
-                        detailedText: "劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
-
-                    B.SetSubmitOperation(cardPickerCell =>
-                    {
-                        bool fulfilled = cardPickerCell.AllFulfilled();
-                        if (!fulfilled)
-                        {
-                            cardPickerCell.WithdrawAll();
-                            return C;
-                        }
-
-                        int count = cardPickerCell.RequirementSlotList.Count();
-                        RequirementSlot copyingSlot = cardPickerCell.RequirementSlotList[RandomManager.Range(0, count)];
-                        RunSkill copyingSkill = copyingSlot.Skill;
-
-                        cardPickerCell.RequirementSlotList.Do(requirementSlot =>
-                        {
-                            RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, requirementSlot.ToDeckIndex());
-                        });
-                        
-                        cardPickerCell.WithdrawAll();
-                        return D;
-                    });
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    return A;
-                }),
+            // new(id:                                 "Room0032",
+            //     name:                               "分子打印机",
+            //     description:                        "分子打印机",
+            //     ladderBound:                        LadderIsJinDanToHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "分子打印机",
+            //             detailedText: "你发现了一个机器，有两个插槽。中间写着一行说明，一边放原料，一边放卡牌。",
+            //             "试试这个机器可以做什么", "离开");
+            //
+            //         RequireCell B = RequireCell.FromConstantDetailedText(
+            //             titleText: "选择",
+            //             detailedText: "请选择2张牌，随机将其中一张变成另一张",
+            //             requirements: RunSkillQuery.AnySkill().Stack(2));
+            //         DialogCell C = new(
+            //             titleText: "分子打印机",
+            //             detailedText: "来路不明的机器还是不要乱碰了，这个机器还是留给有缘人吧。");
+            //         DialogCell D = new(
+            //             titleText: "分子打印机",
+            //             detailedText: "劈里啪啦一阵响声过后，正在你担心自己的卡牌会受到什么非人的折磨的时候。机器的运转声停止了。打开后，你发现两个插槽里面的卡变成同一张了。\n\n得到两张牌");
+            //
+            //         B.SetSubmitOperation(cardPickerCell =>
+            //         {
+            //             bool fulfilled = cardPickerCell.AllFulfilled();
+            //             if (!fulfilled)
+            //             {
+            //                 cardPickerCell.WithdrawAll();
+            //                 return C;
+            //             }
+            //
+            //             int count = cardPickerCell.RequirementSlotList.Count();
+            //             RequirementSlot copyingSlot = cardPickerCell.RequirementSlotList[RandomManager.Range(0, count)];
+            //             RunSkill copyingSkill = copyingSlot.Skill;
+            //
+            //             cardPickerCell.RequirementSlotList.Do(requirementSlot =>
+            //             {
+            //                 RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, requirementSlot.ToDeckIndex());
+            //             });
+            //             
+            //             cardPickerCell.WithdrawAll();
+            //             return D;
+            //         });
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
 
             new(id:                                 "Room0033",
                 name:                               "天界树",
@@ -2364,24 +2364,24 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
             //                         "\n\n"此剑削铁如泥，百炼精钢，是把难得的好剑。"老剑客说道，"只是我年事已高，已无力挥剑，不如转让有缘人。"" +
             //                         "\n\n你仔细一看，发现这把剑确实工艺精湛，但似乎并非他所说的宝剑。",
             //             "买下这把剑", "指出这把剑是赝品");
-
+            //
             //         DialogPanelDescriptor B = new DialogPanelDescriptor(
             //                 titleText: "剑客",
             //                 detailedText: $"你买下了这把剑。老剑客感慨道："能遇到懂剑之人，此剑不枉此生。"" +
             //                             "\n\n临走前，他教了你一招剑法。这招剑法看似普通，实则暗含玄机。" +
             //                             $"\n\n获得{baseGoldReward}气血上限")
             //             .SetReward(Reward.FromHealth(baseGoldReward));
-
+            //
             //         DialogPanelDescriptor C = new DialogPanelDescriptor(
             //                 titleText: "剑客",
             //                 detailedText: "老剑客大笑："年轻人好眼力！这确实不是什么宝剑，而是我年轻时随身佩剑。" +
             //                             "\n\n"我一生行走江湖，最大的领悟就是：剑在人在，剑亡人亡。重要的从来不是剑的品质，而是持剑之人的心境。"" +
             //                             $"\n\n老剑客赠你一些盘缠。获得{baseGoldReward}金")
             //             .SetReward(Reward.FromGold(baseGoldReward));
-                    
+            //         
             //         A[0].SetSelect(option => B);
             //         A[1].SetSelect(option => C);
-
+            //
             //         return A;
             //     }),
 
@@ -3785,228 +3785,6 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
             #endregion
 
             #region 08_ForTesting
-
-            new(id:                                 "Room0059",
-                name:                               "动画测试",
-                description:                        "动画测试",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell selecting = new("动画测试", "动画测试", 
-                        "攻击表现",
-                        "闪避表现",
-                        "破甲表现",
-                        "护甲表现");
-                    
-                    BattleCell optionA = BattleCell.FromName("多段AwayA")
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-
-                    BattleCell optionB = BattleCell.FromName("多段AwayB")
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-
-                    BattleCell optionC = BattleCell.FromName("多段AwayC")
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-
-                    BattleCell optionD = BattleCell.FromName("多段AwayD")
-                        .SetWinOperation(() =>
-                        {
-                            return selecting;
-                        })
-                        .SetLoseOperation(() =>
-                        {
-                            return selecting;
-                        });
-                    
-                    selecting[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeA", toField: true, overwrite: true);
-                        return optionA;
-                    });
-                    selecting[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeB", toField: true, overwrite: true);
-                        return optionB;
-                    });
-                    selecting[2].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeC", toField: true, overwrite: true);
-                        return optionC;
-                    });
-                    selecting[3].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetPlayerEqualPresetProcedure("多段HomeD", toField: true, overwrite: true);
-                        return optionD;
-                    });
-                    
-                    return selecting;
-                }),
-
-            new(id:                                 "Room0060",
-                name:                               "快速结算",
-                description:                        "快速结算",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "结算",
-                        detailedText: "用于测试Run结算",
-                        "胜利结算", "失去所有命元", "失败结算");
-
-                    A[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
-                        return null;
-                    });
-
-                    A[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.SetDMingYuanProcedure(-20);
-                        return A;
-                    });
-
-                    A[2].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
-                        return null;
-                    });
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0061",
-                name:                               "循环",
-                description:                        "循环",
-                ladderBound:                        LadderIsLianQiToZhuJi,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "循环",
-                        detailedText: "循环测试",
-                        "继续循环", "退出循环");
-
-                    A[0].SetSelect(option => A);
-                    A[1].SetSelect(option => null);
-                    return A;
-                }),
-            
-            new(id:                                 "Room0062",
-                name:                               "发现一张牌",
-                description:                        "发现一张牌",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    return DiscoverCell.FromDefault(room.Ladder);
-                }),
-
-            new(id:                                 "Room0063",
-                name:                               "排局1",
-                description:                        "排局1",
-                ladderBound:                        LadderIsYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    GainSkillBuilder b = new();
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
-                    b.Execute();
-                    b.Invoke();
-                    
-                    BattleCell A = BattleCell.FromName("排局1");
-                    A.SetWinOperation(() => null);
-                    A.SetLoseOperation(() => null);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0064",
-                name:                               "排局2",
-                description:                        "排局2",
-                ladderBound:                        LadderIsYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    GainSkillBuilder b = new();
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("吐纳"), JingJie.LianQi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("空幻"), JingJie.LianQi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("止水"), JingJie.ZhuJi));
-                    b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("回春"), JingJie.ZhuJi));
-                    b.Execute();
-                    b.Invoke();
-                    
-                    BattleCell A = BattleCell.FromName("排局2");
-                    A.SetWinOperation(() => null);
-                    A.SetLoseOperation(() => null);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0065",
-                name:                               "排局3抽牌",
-                description:                        "排局3抽牌",
-                ladderBound:                        LadderIsYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    GainSkillBuilder b = new();
-                    b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(30), JingJie.LianQi, distinct: false);
-                    b.Execute();
-                    b.Invoke();
-
-                    DialogCell A = new("排局3抽牌", "排局3抽牌");
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0066",
-                name:                               "排局3",
-                description:                        "排局3",
-                ladderBound:                        LadderIsYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    BattleCell A = BattleCell.FromName("排局3");
-                    A.SetWinOperation(() => null);
-                    A.SetLoseOperation(() => null);
-
-                    return A;
-                }),
 
             new(id:                                 "Room0067",
                 name:                               "提交测试",

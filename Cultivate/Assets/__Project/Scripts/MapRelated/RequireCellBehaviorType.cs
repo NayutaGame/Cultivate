@@ -7,4 +7,5 @@ public enum RequireCellBehaviorType
     提升境界至下一境界,
     复制,
     五行相生,
+    分子打印机,
 }

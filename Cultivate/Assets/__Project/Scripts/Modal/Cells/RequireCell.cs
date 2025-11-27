@@ -132,7 +132,7 @@ public class RequireCell : Cell
     public static RequireCell FromTianJieShu(int ladder, Cell nextCell)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
-            
+        
         RequireCell cell = FromConstantDetailedText(
             titleText:          $"天界树",
             detailedText:       $"选择至多5张牌，将被替换成新的牌。新的牌和原来的牌的五行有关。",

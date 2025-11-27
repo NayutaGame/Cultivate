@@ -7,28 +7,32 @@ using CLLibrary;
 public class EditorSkillEntryQueryBuilderNode : Node
 {
     [PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
-    private OutputPort<EditorSkillEntryQuery> value = new(self => (self as EditorSkillEntryQueryBuilderNode).Build());
+    private OutputPort<EditorSkillEntryQuery> Value = new(self => (self as EditorSkillEntryQueryBuilderNode).Build());
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<string> entryName;
+    private InputPort<string> EntryName;
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<EditorWuXing> wuXing;
+    private InputPort<EditorWuXing> WuXing;
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<Bound> baseJingJieBound;
+    private InputPort<EditorJingJie> LowBaseJingJie;
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<EditorTag> tag;
+    private InputPort<EditorJingJie> HighBaseJingJie;
+
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    private InputPort<EditorTag> Tag;
 
     private EditorSkillEntryQuery Build()
     {
         var result = new EditorSkillEntryQuery
         {
-            EntryName = entryName.Value,
-            WuXing = wuXing.Value,
-            BaseJingJieBound = baseJingJieBound.Value,
-            Tag = tag.Value
+            EntryName = EntryName.Value,
+            WuXing = WuXing.Value,
+            LowBaseJingJie = LowBaseJingJie.Value,
+            HighBaseJingJie = HighBaseJingJie.Value,
+            Tag = Tag.Value
         };
         return result;
     }

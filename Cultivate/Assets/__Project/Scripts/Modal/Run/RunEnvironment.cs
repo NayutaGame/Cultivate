@@ -797,7 +797,13 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         StageResult result = StageResult.FromConfig(StageConfig.ForCombatOnlyResult(Home, _away, _config));
         RunManager.Instance.Environment.ReceiveSignalProcedure(new SkipCombatSignal(result.Flag == 1));
     }
-    
+
+    public void GainMingYuanProcedure(int value)
+    {
+        if (value <= 0) return;
+        SetDMingYuanProcedure(value);
+    }
+
     public void SetDMingYuanProcedure(int value)
         => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
     
@@ -821,6 +827,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         // register this as a defeat check
         if (GetMingYuan().Curr <= 0)
             CommitRunProcedure(RunResult.RunOutcome.Defeated);
+    }
+
+    public void GainGoldProcedure(int value)
+    {
+        if (value <= 0) return;
+        SetDGoldProcedure(value);
     }
 
     public void SetDGoldProcedure(int value)

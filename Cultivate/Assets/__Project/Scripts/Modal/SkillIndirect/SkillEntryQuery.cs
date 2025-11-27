@@ -56,11 +56,33 @@ public sealed class SkillEntryQuery
         => new(entry: skillGhost.GetEntry());
 
     public static SkillEntryQuery FromEditorQuery(EditorSkillEntryQuery editorQuery)
-        => new(
-            entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
+    {
+        JingJie lowBase = JingJie.FromEditor(editorQuery.LowBaseJingJie) ?? JingJie.LianQi;
+        JingJie highBase = JingJie.FromEditor(editorQuery.HighBaseJingJie) ?? JingJie.HuaShen;
+        Bound baseJingjieBound = new(lowBase, highBase);
+        return new SkillEntryQuery(
+            entry: string.IsNullOrEmpty(editorQuery.EntryName)
+                ? null
+                : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
             wuXing: WuXing.FromEditor(editorQuery.WuXing),
-            baseJingJieBound: editorQuery.BaseJingJieBound,
+            baseJingJieBound: baseJingjieBound,
             tagComposite: TagComposite.FromEditor(editorQuery.Tag));
+    }
+
+    public static List<SkillEntryQuery> FromEditorQueries(List<EditorSkillEntryQuery> editorQueries, JingJie preferredJingJie)
+    {
+        if (editorQueries == null || editorQueries.Count <= 0)
+            return FromBaseJingJieBound(new(JingJie.LianQi, preferredJingJie)).Stack(3);
+        
+        List<SkillEntryQuery> toRet = new List<SkillEntryQuery>(editorQueries.Count);
+        for (int i = 0; i < editorQueries.Count; i++)
+        {
+            var eq = editorQueries[i];
+            if (eq == null) continue;
+            toRet.Add(FromEditorQuery(eq));
+        }
+        return toRet;
+    }
 
     public SkillEntryQuery Clone()
         => new(_predicates, _entry, _wuXing, _baseJingJieBound, _tagComposite);

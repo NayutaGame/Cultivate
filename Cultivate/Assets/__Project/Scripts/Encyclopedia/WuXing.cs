@@ -120,7 +120,7 @@ public class WuXing : Entry
 
     public static WuXing FromEditor(EditorWuXing editorWuXing)
     {
-        if (editorWuXing == EditorWuXing.无)
+        if (editorWuXing == EditorWuXing.任意)
             return null;
         return Encyclopedia.WuXingCategory[(int)editorWuXing];
     }

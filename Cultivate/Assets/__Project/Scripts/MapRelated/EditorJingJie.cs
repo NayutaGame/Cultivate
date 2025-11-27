@@ -1,6 +1,7 @@
 
 public enum EditorJingJie
 {
+    任意,
     练气,
     筑基,
     金丹,

@@ -17,7 +17,7 @@ public class GachaCellNode : CellNode
     private InputPort<List<EditorSkillEntryQuery>> DrawStrategies = new();
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<EditorJingJie> PreferredJingJie = new(EditorJingJie.练气);
+    private InputPort<EditorJingJie> PreferredJingJie = new(EditorJingJie.任意);
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> _next = new(self => self as ILogicNode);

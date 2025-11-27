@@ -15,7 +15,7 @@ public class DialogCellNode : CellNode
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> Title;
     
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    [Multiline(5), PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> DetailedText;
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
@@ -30,16 +30,20 @@ public class DialogCellNode : CellNode
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> Option4String;
     
-    [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
+    [SpaceLine(-4)]
+    [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Option1 = new(self => self as ILogicNode);
     
-    [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
+    [SpaceLine(-3)]
+    [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Option2 = new(self => self as ILogicNode);
     
-    [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
+    [SpaceLine(-2)]
+    [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Option3 = new(self => self as ILogicNode);
     
-    [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
+    [SpaceLine(-1)]
+    [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Option4 = new(self => self as ILogicNode);
     
     private int selectedOptionIndex = -1;

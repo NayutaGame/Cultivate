@@ -6,8 +6,7 @@ using UnityEngine;
 
 public abstract class ProcedureNode : Node, ILogicNode, ILogicConnector
 {
-    [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)]
-    [SerializeField]
+    [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
     private InputPort<ILogicNode> prevs;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
@@ -22,7 +21,8 @@ public abstract class ProcedureNode : Node, ILogicNode, ILogicConnector
         get
         {
             var node = NextPort.Connection?.Node as ILogicNode;
-            Procedure();
+            if (Application.isPlaying)
+                Procedure();
             while (node != null && node is ILogicConnector)
                 node = node.Next;
             return node;

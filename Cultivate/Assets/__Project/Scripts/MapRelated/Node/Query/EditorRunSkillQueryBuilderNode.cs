@@ -7,25 +7,28 @@ using CLLibrary;
 public class EditorRunSkillQueryBuilderNode : Node
 {
 	[PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
-	private OutputPort<EditorRunSkillQuery> value = new(self => (self as EditorRunSkillQueryBuilderNode).Build());
+	private OutputPort<EditorRunSkillQuery> Value = new(self => (self as EditorRunSkillQueryBuilderNode).Build());
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-	private InputPort<string> entryName;
+	private InputPort<string> EntryName;
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-	private InputPort<EditorWuXing> wuXing;
+	private InputPort<EditorWuXing> WuXing;
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-	private InputPort<EditorJingJie> jingJie;
+	private InputPort<EditorJingJie> JingJie;
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-	private InputPort<Bound> baseJingJieBound;
+	private InputPort<EditorJingJie> LowBaseJingJie;
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-	private InputPort<EditorTag> tag;
+	private InputPort<EditorJingJie> HighBaseJingJie;
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-	private InputPort<string> description;
+	private InputPort<EditorTag> Tag;
+
+	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+	private InputPort<string> Description;
 
 	private EditorRunSkillQuery Build()
 	{
@@ -34,12 +37,13 @@ public class EditorRunSkillQueryBuilderNode : Node
 
 		var result = new EditorRunSkillQuery
 		{
-			EntryName = entryName.Value,
-			WuXing = wuXing.Value,
-			JingJie = jingJie.Value,
-			BaseJingJieBound = baseJingJieBound.Value,
-			Tag = tag.Value,
-			Description = description.Value
+			EntryName = EntryName.Value,
+			WuXing = WuXing.Value,
+			JingJie = JingJie.Value,
+			LowBaseJingJie = LowBaseJingJie.Value,
+			HighBaseJingJie = HighBaseJingJie.Value,
+			Tag = Tag.Value,
+			Description = Description.Value
 		};
 		return result;
 	}
