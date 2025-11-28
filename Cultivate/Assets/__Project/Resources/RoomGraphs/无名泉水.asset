@@ -1,0 +1,1570 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7649668390331279491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd49d848ee712af4baf0abbeb9f78941, type: 3}
+  m_Name: Get Max Ming Yuan
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -584, y: 1128}
+  Value:
+    ownerNode: {fileID: -7649668390331279491}
+    guid: 925793b7-6113-420b-801d-9e9e17a07b00
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -5469445119584378452}
+      guid: 6ff72b09-6cce-4656-a8a4-7001769bca1e
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -466
+      y: 1163.5
+      width: 16
+      height: 16
+    defaultValue: 0
+    hasFunc: 1
+--- !u!114 &-7484958001135734663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6eb25d795a3b4a97473d8dbf1f3f5, type: 3}
+  m_Name: Dialog Cell
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 488, y: 744}
+  prevs:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 4979877786381920231}
+      guid: dbc4627f-c7be-489b-b718-74df000bae98
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 779.5
+      width: 16
+      height: 16
+  Title:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 6a693d98-8a17-4441-a5f2-e1dbe93459ff
+    fieldName: Title
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 799.5
+      width: 16
+      height: 16
+    defaultValue: "\u65E0\u540D\u6CC9\u6C34"
+  DetailedText:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: c16abc47-3b8d-4d78-8c91-0b5cac5af901
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 819.5
+      width: 16
+      height: 16
+    defaultValue: "\u201C\u7B97\u4E86\uFF0C\u770B\u5728\u4F60\u8FD9\u4E48\u4E0D\u77E5\u6B7B\u6D3B\u7684\u4EFD\u4E0A\u3002\u6211\u5E2E\u4F60\u6FC0\u53D1\u4E00\u4E0B\u6F5C\u529B\uFF0C\u5BF9\u8EAB\u4F53\u9020\u6210\u7684\u5C0F\u5C0F\u8D1F\u62C5\uFF0C\u4F60\u53EF\u8981\u627F\u53D7\u4F4F\u4E86\u3002\u201D\n\u4F60\u611F\u53D7\u5230\uFF0C\u521A\u521A\u56DE\u590D\u7684\u547D\u5143\uFF0C\u6B63\u5728\u4E00\u70B9\u4E00\u70B9\u7684\u4ECE\u4F53\u5185\u6D41\u5931\u3002"
+  Option1String:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 85ec077a-0ef4-43df-ade1-6453d2c0b2f2
+    fieldName: Option1String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 947.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option2String:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 7a6002f8-c835-4254-b764-8c2600d670d4
+    fieldName: Option2String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 967.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option3String:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 4f625410-0620-4d14-9164-3e16291fafb4
+    fieldName: Option3String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 987.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option4String:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 26ee452a-8eba-4b97-ab65-97bba4183edd
+    fieldName: Option4String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 486.1
+      y: 1007.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option1:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: dbc4627f-c7be-489b-b718-74df000bae98
+    fieldName: Option1
+    elementName: 
+    connections:
+    - node: {fileID: 8691086700893137083}
+      guid: c4b6b9c3-d168-4ee2-b21f-03948f8f8e88
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 774
+      y: 947.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option2:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
+    fieldName: Option2
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 774
+      y: 969.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option3:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: 7a87086b-3c65-4c86-941a-d84b117d2f07
+    fieldName: Option3
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 774
+      y: 991.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option4:
+    ownerNode: {fileID: -7484958001135734663}
+    guid: f7fcef94-0753-47ec-8b91-4864e4c1fc61
+    fieldName: Option4
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 774
+      y: 1013.5
+      width: 16
+      height: 16
+    hasFunc: 1
+--- !u!114 &-7119658407035246834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894669f7d1b50324288b91d94d689f70, type: 3}
+  m_Name: Get Ming Yuan
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 504, y: 1080}
+  Value:
+    ownerNode: {fileID: -7119658407035246834}
+    guid: a4f91c10-0f25-4e82-ac26-8216c4639d07
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 8809577183911763979}
+      guid: 6ff72b09-6cce-4656-a8a4-7001769bca1e
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 590
+      y: 1115.5
+      width: 16
+      height: 16
+    defaultValue: 0
+    hasFunc: 1
+--- !u!114 &-5469445119584378452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07baaa3f41ed9cd47adcde56e834cab7, type: 3}
+  m_Name: Sub Int
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -392, y: 1096}
+  N1:
+    ownerNode: {fileID: -5469445119584378452}
+    guid: 6ff72b09-6cce-4656-a8a4-7001769bca1e
+    fieldName: N1
+    elementName: 
+    connections:
+    - node: {fileID: -7649668390331279491}
+      guid: 925793b7-6113-420b-801d-9e9e17a07b00
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -393.9
+      y: 1131.5
+      width: 16
+      height: 16
+    defaultValue: 0
+  N2:
+    ownerNode: {fileID: -5469445119584378452}
+    guid: d0300466-7f4d-41bd-b2b2-3bce25fb8174
+    fieldName: N2
+    elementName: 
+    connections:
+    - node: {fileID: 1970970186063163042}
+      guid: a4f91c10-0f25-4e82-ac26-8216c4639d07
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -393.9
+      y: 1151.5
+      width: 16
+      height: 16
+    defaultValue: 0
+  Value:
+    ownerNode: {fileID: -5469445119584378452}
+    guid: 190fbe73-339e-4a37-9eeb-81dfd9a8a5f6
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 3903139635342595657}
+      guid: 7031a2ef-07cd-4892-ad0b-a70456b660ef
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -274
+      y: 1151.5
+      width: 16
+      height: 16
+    defaultValue: 0
+    hasFunc: 1
+--- !u!114 &-4577483290025603469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b49788ed2ef930645b26b29c396490db, type: 3}
+  m_Name: Gain Health Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1928, y: 904}
+  prevs:
+    ownerNode: {fileID: -4577483290025603469}
+    guid: f3190d02-9071-41a9-a8a5-4b60f273c635
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 3847113761288410711}
+      guid: dbc4627f-c7be-489b-b718-74df000bae98
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1926.1
+      y: 939.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: -4577483290025603469}
+    guid: 41d8c559-7e6a-4322-9a7d-be51ea5d93dd
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 2920019206370151627}
+      guid: db5bdc4e-e7e7-4eea-8779-94e3fa78581c
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2214
+      y: 939.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Value:
+    ownerNode: {fileID: -4577483290025603469}
+    guid: 1085e22f-57f3-4562-b588-9a89a31511fa
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 2164185435155204257}
+      guid: 94865541-7a26-4a8c-a99c-0fdbc4959c9e
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1926.1
+      y: 961.5
+      width: 16
+      height: 16
+    defaultValue: 0
+--- !u!114 &-4283908573059397760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6eb25d795a3b4a97473d8dbf1f3f5, type: 3}
+  m_Name: Dialog Cell
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -568, y: 760}
+  prevs:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 8404964342545946824}
+      guid: 95723977-1d43-4437-b194-d1e08b5731a5
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 795.5
+      width: 16
+      height: 16
+  Title:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 6a693d98-8a17-4441-a5f2-e1dbe93459ff
+    fieldName: Title
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 815.5
+      width: 16
+      height: 16
+    defaultValue: "\u65E0\u540D\u6CC9\u6C34"
+  DetailedText:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: c16abc47-3b8d-4d78-8c91-0b5cac5af901
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 835.5
+      width: 16
+      height: 16
+    defaultValue: "\u4F60\u8D70\u5230\u4E00\u5904\u6CC9\u6C34\u65C1\u8FB9\uFF0C\u4F60\u67E5\u89C9\u6CC9\u6C34\u7075\u529B\u5145\u6C9B\uFF0C\u6B63\u597D\u53EF\u4EE5\u6CBB\u6108\u81EA\u5DF1\u4E00\u8EAB\u7684\u4F24\u75DB\u3002\n\u81EA\u5DF1\u662F\u600E\u4E48\u53D7\u4F24\u7684\uFF1F\u4F60\u6B63\u5728\u601D\u7D22\u7740\uFF0C\u7136\u540E\u770B\u5230\u524D\u65B9\u6709\u4E2A\u7A7F\u7740\u5947\u5F02\u7684\u5C0F\u5B69\u770B\u7740\u81EA\u5DF1\u3002\n\u547D\u5143\u4F24\u5BB3\u5B8C\u5168\u6CBB\u6108"
+  Option1String:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 85ec077a-0ef4-43df-ade1-6453d2c0b2f2
+    fieldName: Option1String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 963.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option2String:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 7a6002f8-c835-4254-b764-8c2600d670d4
+    fieldName: Option2String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 983.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option3String:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 4f625410-0620-4d14-9164-3e16291fafb4
+    fieldName: Option3String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 1003.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option4String:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 26ee452a-8eba-4b97-ab65-97bba4183edd
+    fieldName: Option4String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -569.9
+      y: 1023.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option1:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: dbc4627f-c7be-489b-b718-74df000bae98
+    fieldName: Option1
+    elementName: 
+    connections:
+    - node: {fileID: 3903139635342595657}
+      guid: 88003d31-2d02-4d3a-bf73-def0d6f25cf5
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -282
+      y: 963.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option2:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
+    fieldName: Option2
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -282
+      y: 985.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option3:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: 7a87086b-3c65-4c86-941a-d84b117d2f07
+    fieldName: Option3
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -282
+      y: 1007.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option4:
+    ownerNode: {fileID: -4283908573059397760}
+    guid: f7fcef94-0753-47ec-8b91-4864e4c1fc61
+    fieldName: Option4
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -282
+      y: 1029.5
+      width: 16
+      height: 16
+    hasFunc: 1
+--- !u!114 &-3248079608969731645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2931d007c1ed2cf4581e76802671a496, type: 3}
+  m_Name: Lose Ming Yuan Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1288, y: 920}
+  prevs:
+    ownerNode: {fileID: -3248079608969731645}
+    guid: bd7ae9fe-b732-4937-be6f-edc8d3f2c04b
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 8691086700893137083}
+      guid: d907eca7-dd26-4f63-bcf4-106c4b8c755b
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1286.1
+      y: 955.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: -3248079608969731645}
+    guid: 221e02ce-307d-43ba-9f68-cc34a2a24593
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 3847113761288410711}
+      guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1474
+      y: 955.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Value:
+    ownerNode: {fileID: -3248079608969731645}
+    guid: 9e203259-bc2c-4893-b54c-4e3046cd32ba
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 8809577183911763979}
+      guid: 190fbe73-339e-4a37-9eeb-81dfd9a8a5f6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1286.1
+      y: 977.5
+      width: 16
+      height: 16
+    defaultValue: 0
+--- !u!114 &-33057307864957764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20f45632592f9344afffe4ed454dc64, type: 3}
+  m_Name: String List
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 808, y: 1080}
+  String:
+    ownerNode: {fileID: -33057307864957764}
+    guid: 880e851f-a9f2-4fb6-b018-c4efe567acc0
+    fieldName: String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 806.1
+      y: 1115.5
+      width: 16
+      height: 16
+    defaultValue: "\u547D\u77F3"
+  Stack:
+    ownerNode: {fileID: -33057307864957764}
+    guid: 86dd5593-a3f9-4913-b59f-44c4c8e23c94
+    fieldName: Stack
+    elementName: 
+    connections:
+    - node: {fileID: 8809577183911763979}
+      guid: 190fbe73-339e-4a37-9eeb-81dfd9a8a5f6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 806.1
+      y: 1135.5
+      width: 16
+      height: 16
+    defaultValue: 0
+  Value:
+    ownerNode: {fileID: -33057307864957764}
+    guid: db777b46-28be-49ea-a8bd-5ed0964e79a8
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 8691086700893137083}
+      guid: a40b22e1-eb04-44a6-bca7-ad268673af4f
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 994
+      y: 1155.5
+      width: 16
+      height: 16
+    defaultValue: []
+    hasFunc: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d822f208d68c0fd4c94018d3b4c97691, type: 3}
+  m_Name: "\u65E0\u540D\u6CC9\u6C34"
+  m_EditorClassIdentifier: 
+  blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
+  panOffset: {x: -423.0453, y: -1208.1492}
+  zoom: 2
+  nodes:
+  - {fileID: 8404964342545946824}
+  - {fileID: 5254414691165939901}
+  - {fileID: -4283908573059397760}
+  - {fileID: 4979877786381920231}
+  - {fileID: -7484958001135734663}
+  - {fileID: 3847113761288410711}
+  - {fileID: 5653311205761732117}
+  - {fileID: -5469445119584378452}
+  - {fileID: 3903139635342595657}
+  - {fileID: 1970970186063163042}
+  - {fileID: -7649668390331279491}
+  - {fileID: 8809577183911763979}
+  - {fileID: -7119658407035246834}
+  - {fileID: -33057307864957764}
+  - {fileID: 8691086700893137083}
+  - {fileID: -3248079608969731645}
+  - {fileID: 2164185435155204257}
+  - {fileID: -4577483290025603469}
+  - {fileID: 2920019206370151627}
+  parent: {fileID: 0}
+  children: []
+  inPoints:
+  - {fileID: 0}
+  - {fileID: 8404964342545946824}
+  outPoints:
+  - {fileID: 0}
+  - {fileID: 5254414691165939901}
+--- !u!114 &1970970186063163042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894669f7d1b50324288b91d94d689f70, type: 3}
+  m_Name: Get Ming Yuan
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -552, y: 1192}
+  Value:
+    ownerNode: {fileID: 1970970186063163042}
+    guid: a4f91c10-0f25-4e82-ac26-8216c4639d07
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -5469445119584378452}
+      guid: d0300466-7f4d-41bd-b2b2-3bce25fb8174
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -466
+      y: 1227.5
+      width: 16
+      height: 16
+    defaultValue: 0
+    hasFunc: 1
+--- !u!114 &2164185435155204257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9676c5f3c6737842ade9dbab702cee9, type: 3}
+  m_Name: Get Gold
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1720, y: 1064}
+  Value:
+    ownerNode: {fileID: 2164185435155204257}
+    guid: 94865541-7a26-4a8c-a99c-0fdbc4959c9e
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -4577483290025603469}
+      guid: 1085e22f-57f3-4562-b588-9a89a31511fa
+      reroutes: []
+    - node: {fileID: 2920019206370151627}
+      guid: b479ac55-3f23-4aed-bdc9-ba178b31317a
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1838
+      y: 1099.5
+      width: 16
+      height: 16
+    defaultValue: 0
+    hasFunc: 1
+--- !u!114 &2920019206370151627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e058fba038b01349b88bdc0caff4b01, type: 3}
+  m_Name: Lose Gold Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 2280, y: 904}
+  prevs:
+    ownerNode: {fileID: 2920019206370151627}
+    guid: db5bdc4e-e7e7-4eea-8779-94e3fa78581c
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: -4577483290025603469}
+      guid: 41d8c559-7e6a-4322-9a7d-be51ea5d93dd
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2278.1
+      y: 939.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 2920019206370151627}
+    guid: daa0bb67-842e-426b-8e56-4c01140843f4
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 5653311205761732117}
+      guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2466
+      y: 939.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Value:
+    ownerNode: {fileID: 2920019206370151627}
+    guid: b479ac55-3f23-4aed-bdc9-ba178b31317a
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 2164185435155204257}
+      guid: 94865541-7a26-4a8c-a99c-0fdbc4959c9e
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2278.1
+      y: 961.5
+      width: 16
+      height: 16
+    defaultValue: 0
+--- !u!114 &3847113761288410711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6eb25d795a3b4a97473d8dbf1f3f5, type: 3}
+  m_Name: Dialog Cell
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1560, y: 728}
+  prevs:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: -3248079608969731645}
+      guid: 221e02ce-307d-43ba-9f68-cc34a2a24593
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 763.5
+      width: 16
+      height: 16
+  Title:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 6a693d98-8a17-4441-a5f2-e1dbe93459ff
+    fieldName: Title
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 783.5
+      width: 16
+      height: 16
+    defaultValue: "\u65E0\u540D\u6CC9\u6C34"
+  DetailedText:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: c16abc47-3b8d-4d78-8c91-0b5cac5af901
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 803.5
+      width: 16
+      height: 16
+    defaultValue: "\u201C\u4E0D\u7528\u8C22\u6211\u3002\u8FD9\u4E9B\u8EAB\u5916\u4E4B\u7269\u4F60\u6682\u65F6\u4E5F\u7528\u4E0D\u5230\u4E86\uFF0C\u6211\u66FF\u4F60\u6536\u597D\u4E86\u3002\u201D\n\u7ED9\u4F60\u70B9\u4EC0\u4E48\u5462\uFF1F\u518D\u5E2E\u4F60\u5F3A\u5316\u4E00\u4E0B\u8EAB\u4F53\u597D\u4E86\u3002"
+  Option1String:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 85ec077a-0ef4-43df-ade1-6453d2c0b2f2
+    fieldName: Option1String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 931.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option2String:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 7a6002f8-c835-4254-b764-8c2600d670d4
+    fieldName: Option2String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 951.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option3String:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 4f625410-0620-4d14-9164-3e16291fafb4
+    fieldName: Option3String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 971.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option4String:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 26ee452a-8eba-4b97-ab65-97bba4183edd
+    fieldName: Option4String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1558.1
+      y: 991.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option1:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: dbc4627f-c7be-489b-b718-74df000bae98
+    fieldName: Option1
+    elementName: 
+    connections:
+    - node: {fileID: -4577483290025603469}
+      guid: f3190d02-9071-41a9-a8a5-4b60f273c635
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1846
+      y: 931.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option2:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
+    fieldName: Option2
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1846
+      y: 953.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option3:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: 7a87086b-3c65-4c86-941a-d84b117d2f07
+    fieldName: Option3
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1846
+      y: 975.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option4:
+    ownerNode: {fileID: 3847113761288410711}
+    guid: f7fcef94-0753-47ec-8b91-4864e4c1fc61
+    fieldName: Option4
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1846
+      y: 997.5
+      width: 16
+      height: 16
+    hasFunc: 1
+--- !u!114 &3903139635342595657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb713b8968107b542b31d7956a09b774, type: 3}
+  m_Name: Gain Ming Yuan Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -184, y: 936}
+  prevs:
+    ownerNode: {fileID: 3903139635342595657}
+    guid: 88003d31-2d02-4d3a-bf73-def0d6f25cf5
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: -4283908573059397760}
+      guid: dbc4627f-c7be-489b-b718-74df000bae98
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -185.9
+      y: 971.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 3903139635342595657}
+    guid: b0bd6c99-d7a5-43ca-adb2-74c8fb07dbe3
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 4979877786381920231}
+      guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2
+      y: 971.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Value:
+    ownerNode: {fileID: 3903139635342595657}
+    guid: 7031a2ef-07cd-4892-ad0b-a70456b660ef
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -5469445119584378452}
+      guid: 190fbe73-339e-4a37-9eeb-81dfd9a8a5f6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -185.9
+      y: 993.5
+      width: 16
+      height: 16
+    defaultValue: 0
+--- !u!114 &4979877786381920231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6eb25d795a3b4a97473d8dbf1f3f5, type: 3}
+  m_Name: Dialog Cell
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 104, y: 744}
+  prevs:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 3903139635342595657}
+      guid: b0bd6c99-d7a5-43ca-adb2-74c8fb07dbe3
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 779.5
+      width: 16
+      height: 16
+  Title:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 6a693d98-8a17-4441-a5f2-e1dbe93459ff
+    fieldName: Title
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 799.5
+      width: 16
+      height: 16
+    defaultValue: "\u65E0\u540D\u6CC9\u6C34"
+  DetailedText:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: c16abc47-3b8d-4d78-8c91-0b5cac5af901
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 819.5
+      width: 16
+      height: 16
+    defaultValue: "\u201C\u4F60\u4E0D\u8BE5\u5728\u8FD9\u91CC\u7684\u3002\u201D\n\u201C\u5984\u56FE\u4EE5\u533A\u533A\u51E1\u4EBA\u4E4B\u8EAF\uFF0C\u5411\u4ED9\u4EBA\u7684\u9886\u57DF\u53D1\u8D77\u6311\u6218\uFF0C\u771F\u662F\u50B2\u6162\u554A\u3002\u201D"
+  Option1String:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 85ec077a-0ef4-43df-ade1-6453d2c0b2f2
+    fieldName: Option1String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 947.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option2String:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 7a6002f8-c835-4254-b764-8c2600d670d4
+    fieldName: Option2String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 967.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option3String:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 4f625410-0620-4d14-9164-3e16291fafb4
+    fieldName: Option3String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 987.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option4String:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 26ee452a-8eba-4b97-ab65-97bba4183edd
+    fieldName: Option4String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 102.1
+      y: 1007.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option1:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: dbc4627f-c7be-489b-b718-74df000bae98
+    fieldName: Option1
+    elementName: 
+    connections:
+    - node: {fileID: -7484958001135734663}
+      guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 390
+      y: 947.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option2:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
+    fieldName: Option2
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 390
+      y: 969.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option3:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: 7a87086b-3c65-4c86-941a-d84b117d2f07
+    fieldName: Option3
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 390
+      y: 991.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option4:
+    ownerNode: {fileID: 4979877786381920231}
+    guid: f7fcef94-0753-47ec-8b91-4864e4c1fc61
+    fieldName: Option4
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 390
+      y: 1013.5
+      width: 16
+      height: 16
+    hasFunc: 1
+--- !u!114 &5254414691165939901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79da0066f9d25ab49850a1bd50ea1246, type: 3}
+  m_Name: Exit Point
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 3048, y: 904}
+  exit:
+    ownerNode: {fileID: 5254414691165939901}
+    guid: 415163a9-2067-4d77-b32b-efa4791a32e0
+    fieldName: exit
+    elementName: 
+    connections:
+    - node: {fileID: 5653311205761732117}
+      guid: dbc4627f-c7be-489b-b718-74df000bae98
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 3046.1
+      y: 939.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 5254414691165939901}
+    guid: a40c3ce1-3987-44c3-aed3-9b893e1e9e46
+    fieldName: next
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    hasFunc: 1
+--- !u!114 &5653311205761732117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6eb25d795a3b4a97473d8dbf1f3f5, type: 3}
+  m_Name: Dialog Cell
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 2648, y: 712}
+  prevs:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 2920019206370151627}
+      guid: daa0bb67-842e-426b-8e56-4c01140843f4
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 747.5
+      width: 16
+      height: 16
+  Title:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 6a693d98-8a17-4441-a5f2-e1dbe93459ff
+    fieldName: Title
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 767.5
+      width: 16
+      height: 16
+    defaultValue: "\u65E0\u540D\u6CC9\u6C34"
+  DetailedText:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: c16abc47-3b8d-4d78-8c91-0b5cac5af901
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 787.5
+      width: 16
+      height: 16
+    defaultValue: "\u4F60\u770B\u5230\u4E00\u9635\u8840\u96FE\u5411\u81EA\u5DF1\u98DE\u6765\uFF0C\u7136\u540E\u9010\u6E10\u88AB\u81EA\u5DF1\u6240\u5438\u6536\u3002\u611F\u89C9\u7ECF\u8109\u786E\u5B9E\u662F\u5F3A\u58EE\u4E86\u4E00\u4E9B\u3002"
+  Option1String:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 85ec077a-0ef4-43df-ade1-6453d2c0b2f2
+    fieldName: Option1String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 915.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option2String:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 7a6002f8-c835-4254-b764-8c2600d670d4
+    fieldName: Option2String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 935.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option3String:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 4f625410-0620-4d14-9164-3e16291fafb4
+    fieldName: Option3String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 955.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option4String:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 26ee452a-8eba-4b97-ab65-97bba4183edd
+    fieldName: Option4String
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2646.1
+      y: 975.5
+      width: 16
+      height: 16
+    defaultValue: 
+  Option1:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: dbc4627f-c7be-489b-b718-74df000bae98
+    fieldName: Option1
+    elementName: 
+    connections:
+    - node: {fileID: 5254414691165939901}
+      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2934
+      y: 915.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option2:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
+    fieldName: Option2
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2934
+      y: 937.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option3:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: 7a87086b-3c65-4c86-941a-d84b117d2f07
+    fieldName: Option3
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2934
+      y: 959.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Option4:
+    ownerNode: {fileID: 5653311205761732117}
+    guid: f7fcef94-0753-47ec-8b91-4864e4c1fc61
+    fieldName: Option4
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2934
+      y: 981.5
+      width: 16
+      height: 16
+    hasFunc: 1
+--- !u!114 &8404964342545946824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27457f01fa249384381df318b1acaec6, type: 3}
+  m_Name: Entry Point
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -920, y: 760}
+  prevs:
+    ownerNode: {fileID: 8404964342545946824}
+    guid: 37f23e5b-030a-4adf-8ebf-bc3f603ef0f6
+    fieldName: prevs
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  enter:
+    ownerNode: {fileID: 8404964342545946824}
+    guid: 95723977-1d43-4437-b194-d1e08b5731a5
+    fieldName: enter
+    elementName: 
+    connections:
+    - node: {fileID: -4283908573059397760}
+      guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -802
+      y: 795.5
+      width: 16
+      height: 16
+    hasFunc: 1
+--- !u!114 &8691086700893137083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36512665e4b1beb4190d8f4eb37ead83, type: 3}
+  m_Name: Pick Skills Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1064, y: 920}
+  prevs:
+    ownerNode: {fileID: 8691086700893137083}
+    guid: c4b6b9c3-d168-4ee2-b21f-03948f8f8e88
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: -7484958001135734663}
+      guid: dbc4627f-c7be-489b-b718-74df000bae98
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1062.1
+      y: 955.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 8691086700893137083}
+    guid: d907eca7-dd26-4f63-bcf4-106c4b8c755b
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: -3248079608969731645}
+      guid: bd7ae9fe-b732-4937-be6f-edc8d3f2c04b
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1250
+      y: 955.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  SkillNames:
+    ownerNode: {fileID: 8691086700893137083}
+    guid: a40b22e1-eb04-44a6-bca7-ad268673af4f
+    fieldName: SkillNames
+    elementName: 
+    connections:
+    - node: {fileID: -33057307864957764}
+      guid: db777b46-28be-49ea-a8bd-5ed0964e79a8
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1062.1
+      y: 977.5
+      width: 16
+      height: 16
+    defaultValue: []
+  PreferredJingJie:
+    ownerNode: {fileID: 8691086700893137083}
+    guid: 9c728c2f-de27-4f7b-bb51-c8fc6a32b6fc
+    fieldName: PreferredJingJie
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1062.1
+      y: 997.5
+      width: 16
+      height: 16
+    defaultValue: 4
+--- !u!114 &8809577183911763979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07baaa3f41ed9cd47adcde56e834cab7, type: 3}
+  m_Name: Sub Int
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 632, y: 1080}
+  N1:
+    ownerNode: {fileID: 8809577183911763979}
+    guid: 6ff72b09-6cce-4656-a8a4-7001769bca1e
+    fieldName: N1
+    elementName: 
+    connections:
+    - node: {fileID: -7119658407035246834}
+      guid: a4f91c10-0f25-4e82-ac26-8216c4639d07
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 630.1
+      y: 1115.5
+      width: 16
+      height: 16
+    defaultValue: 0
+  N2:
+    ownerNode: {fileID: 8809577183911763979}
+    guid: d0300466-7f4d-41bd-b2b2-3bce25fb8174
+    fieldName: N2
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 630.1
+      y: 1135.5
+      width: 16
+      height: 16
+    defaultValue: 1
+  Value:
+    ownerNode: {fileID: 8809577183911763979}
+    guid: 190fbe73-339e-4a37-9eeb-81dfd9a8a5f6
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -33057307864957764}
+      guid: 86dd5593-a3f9-4913-b59f-44c4c8e23c94
+      reroutes: []
+    - node: {fileID: -3248079608969731645}
+      guid: 9e203259-bc2c-4893-b54c-4e3046cd32ba
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 750
+      y: 1135.5
+      width: 16
+      height: 16
+    defaultValue: 0
+    hasFunc: 1

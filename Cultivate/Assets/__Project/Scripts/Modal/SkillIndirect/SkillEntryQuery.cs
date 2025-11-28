@@ -7,20 +7,20 @@ public sealed class SkillEntryQuery
 {
     private List<Predicate<SkillEntry>> _predicates;
     private SkillEntry _entry;
-    private WuXing _wuXing;
+    private WuXingPred _wuXingPred;
     private Bound _baseJingJieBound;
     private TagComposite _tagComposite;
 
     private SkillEntryQuery(
         List<Predicate<SkillEntry>> predicates = null,
         SkillEntry entry = null,
-        WuXing wuXing = null,
+        WuXingPred wuXingPred = WuXingPred.任意,
         Bound? baseJingJieBound = null,
         TagComposite tagComposite = null)
     {
         _predicates = predicates ?? new List<Predicate<SkillEntry>>();
         _entry = entry;
-        _wuXing = wuXing;
+        _wuXingPred = wuXingPred;
         _baseJingJieBound = baseJingJieBound ?? new(0, 4);
         _tagComposite = tagComposite;
     }
@@ -47,24 +47,22 @@ public sealed class SkillEntryQuery
         => new(predicates, baseJingJieBound: baseJingJieBound);
 
     public static SkillEntryQuery FromWuXingBaseJingJieBound(WuXing wuXing, Bound baseJingJieBound)
-        => new(wuXing: wuXing, baseJingJieBound: baseJingJieBound);
+        => new(wuXingPred: WuXing.ToPred(wuXing), baseJingJieBound: baseJingJieBound);
 
     public static SkillEntryQuery FromPredWuXingBaseJingJieBound(Predicate<SkillEntry> predicate, WuXing wuXing, Bound baseJingJieBound)
-        => new(new() { predicate }, wuXing: wuXing, baseJingJieBound: baseJingJieBound);
+        => new(new() { predicate }, wuXingPred: WuXing.ToPred(wuXing), baseJingJieBound: baseJingJieBound);
 
     public static SkillEntryQuery FromSkillGhost(SkillGhost skillGhost)
         => new(entry: skillGhost.GetEntry());
 
     public static SkillEntryQuery FromEditorQuery(EditorSkillEntryQuery editorQuery)
     {
-        JingJie lowBase = JingJie.FromEditor(editorQuery.LowBaseJingJie) ?? JingJie.LianQi;
-        JingJie highBase = JingJie.FromEditor(editorQuery.HighBaseJingJie) ?? JingJie.HuaShen;
+        JingJie lowBase = JingJie.FromIndirect(editorQuery.LowBaseJingJie);
+        JingJie highBase = JingJie.FromIndirect(editorQuery.HighBaseJingJie);
         Bound baseJingjieBound = new(lowBase, highBase);
         return new SkillEntryQuery(
-            entry: string.IsNullOrEmpty(editorQuery.EntryName)
-                ? null
-                : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
-            wuXing: WuXing.FromEditor(editorQuery.WuXing),
+            entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
+            wuXingPred: editorQuery.WuXingPred,
             baseJingJieBound: baseJingjieBound,
             tagComposite: TagComposite.FromEditor(editorQuery.Tag));
     }
@@ -85,7 +83,7 @@ public sealed class SkillEntryQuery
     }
 
     public SkillEntryQuery Clone()
-        => new(_predicates, _entry, _wuXing, _baseJingJieBound, _tagComposite);
+        => new(_predicates, _entry, _wuXingPred, _baseJingJieBound, _tagComposite);
 
     public List<SkillEntryQuery> Stack(int count)
     {
@@ -103,7 +101,7 @@ public sealed class SkillEntryQuery
         if (!_predicates.AllMatch(pred => pred(skillEntry)))
             return false;
 
-        if (_wuXing != null && skillEntry.WuXing != _wuXing)
+        if (!WuXing.PredIsMatch(_wuXingPred, skillEntry.WuXing))
             return false;
 
         if (!_baseJingJieBound.Contains(skillEntry.LowestJingJie))
@@ -123,7 +121,7 @@ public sealed class SkillEntryQuery
         if (!_predicates.AllMatch(pred => pred(skill.GetEntry())))
             return false;
 
-        if (_wuXing != null && skill.GetEntry().WuXing != _wuXing)
+        if (!WuXing.PredIsMatch(_wuXingPred, skill.GetEntry().WuXing))
             return false;
 
         if (!_baseJingJieBound.Contains(skill.GetEntry().LowestJingJie))

@@ -115,15 +115,54 @@ public class WuXing : Entry
     public static WuXing Tu => Encyclopedia.WuXingCategory[4];
     public static WuXing Wu => Encyclopedia.WuXingCategory[5];
 
+    public static bool PredIsMatch(WuXingPred pred, WuXing wuXing)
+    {
+        if (pred == WuXingPred.任意)
+            return true;
+        
+        if (wuXing == null)
+            return pred == WuXingPred.无五行;
+        
+        switch (pred)
+        {
+            case WuXingPred.金:
+                return wuXing.GetIndex() == 0;
+            case WuXingPred.水:
+                return wuXing.GetIndex() == 1;
+            case WuXingPred.木:
+                return wuXing.GetIndex() == 2;
+            case WuXingPred.火:
+                return wuXing.GetIndex() == 3;
+            case WuXingPred.土:
+                return wuXing.GetIndex() == 4;
+            case WuXingPred.有五行:
+                return wuXing.IsBasic();
+            case WuXingPred.无五行:
+                return !wuXing.IsBasic();
+            default:
+                return false;
+        }
+    }
+    
+    public static WuXingPred ToPred(WuXing wuXing)
+    {
+        if (wuXing == null)
+            return WuXingPred.无五行;
+        
+        int index = wuXing.GetIndex();
+        return index switch
+        {
+            0 => WuXingPred.金,
+            1 => WuXingPred.水,
+            2 => WuXingPred.木,
+            3 => WuXingPred.火,
+            4 => WuXingPred.土,
+            _ => WuXingPred.无五行
+        };
+    }
+
     public static WuXing FromIndex(int index)
         => Encyclopedia.WuXingCategory[index];
-
-    public static WuXing FromEditor(EditorWuXing editorWuXing)
-    {
-        if (editorWuXing == EditorWuXing.任意)
-            return null;
-        return Encyclopedia.WuXingCategory[(int)editorWuXing];
-    }
 
     public static bool XiangSheng(WuXing lhs, WuXing rhs)
         => lhs != null && rhs != null && (lhs.Next == rhs || lhs.Prev == rhs);

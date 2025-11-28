@@ -96,13 +96,88 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
     
     public static implicit operator int(JingJie jingJie) => jingJie._index;
     public static implicit operator JingJie(int index) => Encyclopedia.JingJieCategory[index];
-
-    public static JingJie FromEditor(EditorJingJie editorJingJie)
+    
+    public static JingJiePred ToPred(JingJie jingJie)
     {
-        if (editorJingJie == EditorJingJie.任意)
-            return null;
-        if (editorJingJie == EditorJingJie.当前)
-            return RunManager.Instance.Environment.JingJie;
-        return (int)editorJingJie;
+        if (jingJie == null)
+            return JingJiePred.任意;
+        
+        int index = jingJie.GetIndex();
+        return index switch
+        {
+            0 => JingJiePred.练气,
+            1 => JingJiePred.筑基,
+            2 => JingJiePred.金丹,
+            3 => JingJiePred.元婴,
+            4 => JingJiePred.化神,
+            5 => JingJiePred.返虚,
+            _ => JingJiePred.任意
+        };
+    }
+
+    public static JingJie FromIndirect(JingJieIndirect jingJieIndirect)
+    {
+        return jingJieIndirect switch
+        {
+            JingJieIndirect.练气 => LianQi,
+            JingJieIndirect.筑基 => ZhuJi,
+            JingJieIndirect.金丹 => JinDan,
+            JingJieIndirect.元婴 => YuanYing,
+            JingJieIndirect.化神 => HuaShen,
+            JingJieIndirect.返虚 => FanXu,
+            JingJieIndirect.当前 => RunManager.Instance.Environment.JingJie,
+            JingJieIndirect.下一境界 => Mathf.Min(RunManager.Instance.Environment.JingJie + 1, HuaShen),
+            _ => null
+        };
+    }
+
+    public static JingJieIndirect ToIndirect(JingJie jingJie)
+    {
+        if (jingJie == null)
+            return JingJieIndirect.练气;
+        
+        int index = jingJie.GetIndex();
+        return index switch
+        {
+            0 => JingJieIndirect.练气,
+            1 => JingJieIndirect.筑基,
+            2 => JingJieIndirect.金丹,
+            3 => JingJieIndirect.元婴,
+            4 => JingJieIndirect.化神,
+            5 => JingJieIndirect.返虚,
+            _ => JingJieIndirect.练气
+        };
+    }
+
+    public static bool PredIsMatch(JingJiePred pred, JingJie jingJie)
+    {
+        if (pred == JingJiePred.任意)
+            return true;
+        
+        if (jingJie == null)
+            return false;
+        
+        switch (pred)
+        {
+            case JingJiePred.练气:
+                return jingJie.GetIndex() == 0;
+            case JingJiePred.筑基:
+                return jingJie.GetIndex() == 1;
+            case JingJiePred.金丹:
+                return jingJie.GetIndex() == 2;
+            case JingJiePred.元婴:
+                return jingJie.GetIndex() == 3;
+            case JingJiePred.化神:
+                return jingJie.GetIndex() == 4;
+            case JingJiePred.返虚:
+                return jingJie.GetIndex() == 5;
+            case JingJiePred.当前:
+                return jingJie == RunManager.Instance.Environment.JingJie;
+            case JingJiePred.下一境界:
+                JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, HuaShen);
+                return jingJie == nextJingJie;
+            default:
+                return false;
+        }
     }
 }

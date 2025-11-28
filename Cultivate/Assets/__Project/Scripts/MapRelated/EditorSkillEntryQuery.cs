@@ -7,8 +7,8 @@ using UnityEngine;
 public class EditorSkillEntryQuery
 {
     [SerializeField] public string EntryName;
-    [SerializeField] public EditorWuXing WuXing;
-    [SerializeField] public EditorJingJie LowBaseJingJie;
-    [SerializeField] public EditorJingJie HighBaseJingJie;
+    [SerializeField] public WuXingPred WuXingPred = WuXingPred.任意;
+    [SerializeField] public JingJieIndirect LowBaseJingJie = JingJieIndirect.练气;
+    [SerializeField] public JingJieIndirect HighBaseJingJie = JingJieIndirect.返虚;
     [SerializeField] public EditorTag Tag;
 }

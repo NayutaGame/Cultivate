@@ -1,115 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7223303880786033655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14272774c85686642a8170c8839c1e8d, type: 3}
-  m_Name: Bound
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: -104, y: 1208}
-  value:
-    ownerNode: {fileID: -7223303880786033655}
-    guid: 16f21180-a1d6-4b18-9cd9-da1cbcfe1b40
-    fieldName: value
-    elementName: 
-    connections:
-    - node: {fileID: -692124346570477203}
-      guid: f952c014-f0e6-46ae-bfd1-a68007d34369
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 62
-      y: 1243.5
-      width: 16
-      height: 16
-    defaultValue:
-      Start: 0
-      End: 0
-    hasFunc: 1
-  start:
-    ownerNode: {fileID: -7223303880786033655}
-    guid: 2efba03d-5554-4159-acbf-3c88ac3b93e1
-    fieldName: start
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: -105.9
-      y: 1263.5
-      width: 16
-      height: 16
-    defaultValue: 0
-  end:
-    ownerNode: {fileID: -7223303880786033655}
-    guid: 3c83dd4a-c4ae-4246-9836-34a899868b57
-    fieldName: end
-    elementName: 
-    connections:
-    - node: {fileID: -6551601672908708455}
-      guid: b2265a6f-961d-45e6-8a65-109817d59289
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: -105.9
-      y: 1283.5
-      width: 16
-      height: 16
-    defaultValue: 0
---- !u!114 &-6551601672908708455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277439a49695e2942950eb60e270a8c4, type: 3}
-  m_Name: Get Curr Jing Jie
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: -312, y: 1288}
-  Value:
-    ownerNode: {fileID: -6551601672908708455}
-    guid: b2265a6f-961d-45e6-8a65-109817d59289
-    fieldName: Value
-    elementName: 
-    connections:
-    - node: {fileID: -7223303880786033655}
-      guid: 3c83dd4a-c4ae-4246-9836-34a899868b57
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: -194
-      y: 1323.5
-      width: 16
-      height: 16
-    defaultValue: 0
-    hasFunc: 1
-  JingJie:
-    ownerNode: {fileID: -6551601672908708455}
-    guid: 640af7c8-5f6c-4196-a72b-0f0e8f889c69
-    fieldName: JingJie
-    elementName: 
-    connections:
-    - node: {fileID: -3596657817757276646}
-      guid: 8e3cfc0a-50a1-425b-8b96-e08af9be36d9
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: -194
-      y: 1343.5
-      width: 16
-      height: 16
-    defaultValue: 0
-    hasFunc: 1
 --- !u!114 &-6547016994142471661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,7 +544,7 @@ MonoBehaviour:
     elementName: 
     connections:
     - node: {fileID: -692124346570477203}
-      guid: 7ad7f0d8-39ba-45f4-b004-751d7c552768
+      guid: fd6109e3-e94d-4ef8-9032-df0d3c3237cc
       reroutes: []
     rect:
       serializedVersion: 2
@@ -664,27 +554,23 @@ MonoBehaviour:
       height: 16
     defaultValue:
       EntryName: 
-      WuXing: 6
-      BaseJingJieBound:
-        Start: 0
-        End: 4
+      WuXingPred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 0
       Tag: 0
   PreferredJingJie:
     ownerNode: {fileID: -3596657817757276646}
     guid: 8e3cfc0a-50a1-425b-8b96-e08af9be36d9
     fieldName: PreferredJingJie
     elementName: 
-    connections:
-    - node: {fileID: -6551601672908708455}
-      guid: 640af7c8-5f6c-4196-a72b-0f0e8f889c69
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: 646.1
       y: 1319.5
       width: 16
       height: 16
-    defaultValue: 0
+    defaultValue: 7
 --- !u!114 &-692124346570477203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,11 +584,11 @@ MonoBehaviour:
   m_Name: Editor Skill Entry Query Builder
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 120, y: 1144}
-  value:
+  nodePosition: {x: 152, y: 1272}
+  Value:
     ownerNode: {fileID: -692124346570477203}
-    guid: 7ad7f0d8-39ba-45f4-b004-751d7c552768
-    fieldName: value
+    guid: fd6109e3-e94d-4ef8-9032-df0d3c3237cc
+    fieldName: Value
     elementName: 
     connections:
     - node: {fileID: -3596657817757276646}
@@ -710,72 +596,79 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 506
-      y: 1179.5
+      x: 538
+      y: 1307.5
       width: 16
       height: 16
     defaultValue:
       EntryName: 
-      WuXing: 6
-      BaseJingJieBound:
-        Start: 0
-        End: 4
+      WuXingPred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 0
       Tag: 0
     hasFunc: 1
-  entryName:
+  EntryName:
     ownerNode: {fileID: -692124346570477203}
-    guid: e72ed14b-78f9-4de5-80c6-25ad585fba13
-    fieldName: entryName
+    guid: 143b9d3d-800b-4807-a5e4-d0fb70c679f6
+    fieldName: EntryName
     elementName: 
     connections: []
     rect:
       serializedVersion: 2
-      x: 118.1
-      y: 1199.5
+      x: 150.1
+      y: 1327.5
       width: 16
       height: 16
     defaultValue: 
-  wuXing:
+  WuXingPred:
     ownerNode: {fileID: -692124346570477203}
-    guid: 9d0a4314-03a3-48c1-b5d7-302a89a641ce
-    fieldName: wuXing
+    guid: 98fde269-9e05-441c-af30-22548ee403d4
+    fieldName: WuXingPred
     elementName: 
     connections: []
     rect:
       serializedVersion: 2
-      x: 118.1
-      y: 1219.5
+      x: 150.1
+      y: 1347.5
       width: 16
       height: 16
-    defaultValue: 6
-  baseJingJieBound:
+    defaultValue: 0
+  LowBaseJingJie:
     ownerNode: {fileID: -692124346570477203}
-    guid: f952c014-f0e6-46ae-bfd1-a68007d34369
-    fieldName: baseJingJieBound
-    elementName: 
-    connections:
-    - node: {fileID: -7223303880786033655}
-      guid: 16f21180-a1d6-4b18-9cd9-da1cbcfe1b40
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 118.1
-      y: 1239.5
-      width: 16
-      height: 16
-    defaultValue:
-      Start: 0
-      End: 0
-  tag:
-    ownerNode: {fileID: -692124346570477203}
-    guid: 744943b9-7edc-4058-8667-63e5c1f2cf44
-    fieldName: tag
+    guid: 98f178bf-a751-4245-b645-bee5fe964166
+    fieldName: LowBaseJingJie
     elementName: 
     connections: []
     rect:
       serializedVersion: 2
-      x: 118.1
-      y: 1259.5
+      x: 150.1
+      y: 1367.5
+      width: 16
+      height: 16
+    defaultValue: 0
+  HighBaseJingJie:
+    ownerNode: {fileID: -692124346570477203}
+    guid: 92d8c5b0-c5da-4ba3-9325-d2d4903c70c8
+    fieldName: HighBaseJingJie
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 150.1
+      y: 1387.5
+      width: 16
+      height: 16
+    defaultValue: 7
+  Tag:
+    ownerNode: {fileID: -692124346570477203}
+    guid: 88f3e05f-a2a3-4b15-9996-9bd88bde9048
+    fieldName: Tag
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 150.1
+      y: 1407.5
       width: 16
       height: 16
     defaultValue: 0
@@ -863,8 +756,8 @@ MonoBehaviour:
   m_Name: "\u7434\u4ED9"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -259.97147, y: -1090.9559}
-  zoom: 1.2453508
+  panOffset: {x: -771.1132, y: -1098.4407}
+  zoom: 1.0087342
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -876,8 +769,6 @@ MonoBehaviour:
   - {fileID: -5615455889499333848}
   - {fileID: -3596657817757276646}
   - {fileID: -692124346570477203}
-  - {fileID: -6551601672908708455}
-  - {fileID: -7223303880786033655}
   parent: {fileID: 0}
   children: []
   inPoints:

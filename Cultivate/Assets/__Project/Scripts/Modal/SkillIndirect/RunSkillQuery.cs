@@ -7,8 +7,8 @@ public sealed class RunSkillQuery : AnnotatableLine
 {
     private Predicate<RunSkill> _pred;
     private SkillEntry _entry;
-    private WuXing _wuXing;
-    private JingJie _jingJie;
+    private WuXingPred _wuXingPred;
+    private JingJiePred _jingJiePred;
     private Bound? _baseJingJieBound;
     private TagComposite _tagComposite;
     private Description _description;
@@ -21,16 +21,16 @@ public sealed class RunSkillQuery : AnnotatableLine
     private RunSkillQuery(
         Predicate<RunSkill> pred = null,
         SkillEntry entry = null,
-        WuXing wuXing = null,
-        JingJie jingJie = null,
+        WuXingPred wuXingPred = WuXingPred.任意,
+        JingJiePred jingJiePred = JingJiePred.任意,
         Bound? baseJingJieBound = null,
         TagComposite tagComposite = null,
         Description description = null)
     {
         _pred = pred;
         _entry = entry;
-        _wuXing = wuXing;
-        _jingJie = jingJie;
+        _wuXingPred = wuXingPred;
+        _jingJiePred = jingJiePred;
         _baseJingJieBound = baseJingJieBound;
         _tagComposite = tagComposite;
         _description = description ?? new("未设定的描述");
@@ -46,48 +46,41 @@ public sealed class RunSkillQuery : AnnotatableLine
         => new(entry: Encyclopedia.SkillCategory.FromId(id), description: new($"需要提交{Encyclopedia.SkillCategory.FromId(id).GetName()}卡牌"));
 
     public static RunSkillQuery FromEntryJingJie(SkillEntry entry, JingJie jingJie)
-        => new(entry: entry, jingJie: jingJie, description: new($"需要提交{entry.GetName()}卡牌"));
+        => new(entry: entry, jingJiePred: JingJie.ToPred(jingJie), description: new($"需要提交{entry.GetName()}卡牌"));
 
     public static RunSkillQuery FromNameJingJie(string name, JingJie jingJie)
-        => new(entry: Encyclopedia.SkillCategory.FromName(name), jingJie: jingJie, description: new($"需要提交{name}卡牌"));
+        => new(entry: Encyclopedia.SkillCategory.FromName(name), jingJiePred: JingJie.ToPred(jingJie), description: new($"需要提交{name}卡牌"));
 
     public static RunSkillQuery FromWuXing(WuXing wuXing)
-        => new(wuXing: wuXing, description: new($"请提交一张五行为{wuXing.GetName()}的牌"));
+        => new(wuXingPred: WuXing.ToPred(wuXing), description: new($"请提交一张五行为{wuXing.GetName()}的牌"));
 
     public static RunSkillQuery FromSkillGhost(SkillGhost skillGhost)
-        => new(entry: skillGhost.GetEntry(), jingJie: skillGhost.GetJingJie());
+        => new(entry: skillGhost.GetEntry(), jingJiePred: JingJie.ToPred(skillGhost.GetJingJie()));
 
     public static RunSkillQuery FromJingJieBound(int low, int high)
         => new(baseJingJieBound: new(low, high),
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)high).GetName()}之间的牌"));
 
     public static RunSkillQuery FromJingJieBoundAndHasWuXing(int low, int high)
-        => new(baseJingJieBound: new(low, high), pred: s => s.GetWuXing() != WuXing.Wu,
+        => new(baseJingJieBound: new(low, high), wuXingPred: WuXingPred.有五行,
             description: new($"请提交一张境界在{((JingJie)low).GetName()}到{((JingJie)high).GetName()}之间，具有五行的牌"));
-
-    public static RunSkillQuery FromTagComposite(TagComposite tagComposite)
-        => new(tagComposite: tagComposite, description: new($"请提交一张包含{tagComposite.GetTagListString()}的牌"));
-
-    public static RunSkillQuery FromWuXingJingJieTagComposite(WuXing wuXing, JingJie jingJie, TagComposite tagComposite)
-        => new(wuXing: wuXing, baseJingJieBound: new((int)jingJie, (int)jingJie), tagComposite: tagComposite, 
-            description: new($"请提交一张五行为{wuXing.GetName()}，境界为{jingJie.GetName()}，包含{tagComposite.GetTagListString()}的牌"));
 
     public static RunSkillQuery FromEditorQuery(EditorRunSkillQuery editorQuery)
     {
-        JingJie lowBase = JingJie.FromEditor(editorQuery.LowBaseJingJie) ?? JingJie.LianQi;
-        JingJie highBase = JingJie.FromEditor(editorQuery.HighBaseJingJie) ?? JingJie.HuaShen;
+        JingJie lowBase = JingJie.FromIndirect(editorQuery.LowBaseJingJie);
+        JingJie highBase = JingJie.FromIndirect(editorQuery.HighBaseJingJie);
         Bound baseJingjieBound = new(lowBase, highBase);
         return new(
             entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
-            wuXing: WuXing.FromEditor(editorQuery.WuXing),
-            jingJie: JingJie.FromEditor(editorQuery.JingJie),
+            wuXingPred: editorQuery.WuXingPred,
+            jingJiePred: editorQuery.JingJiePred,
             baseJingJieBound: baseJingjieBound,
             tagComposite: TagComposite.FromEditor(editorQuery.Tag),
             description: editorQuery.Description);
     }
 
     public RunSkillQuery Clone()
-        => new(_pred, _entry, _wuXing, _jingJie, _baseJingJieBound, _tagComposite, _description);
+        => new(_pred, _entry, _wuXingPred, _jingJiePred, _baseJingJieBound, _tagComposite, _description);
     
     public List<RunSkillQuery> Stack(int stack)
     {
@@ -105,10 +98,10 @@ public sealed class RunSkillQuery : AnnotatableLine
         if (_entry != null && runSkill.GetEntry() != _entry)
             return false;
 
-        if (_wuXing != null && runSkill.GetWuXing() != _wuXing)
+        if (!WuXing.PredIsMatch(_wuXingPred, runSkill.GetWuXing()))
             return false;
 
-        if (_jingJie != null && runSkill.GetJingJie() != _jingJie)
+        if (!JingJie.PredIsMatch(_jingJiePred, runSkill.GetJingJie()))
             return false;
 
         if (_baseJingJieBound != null && !_baseJingJieBound.Value.Contains(runSkill.GetJingJie()))

@@ -268,7 +268,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public TimeSpan GetPassedTime() => _loadedTime + (DateTime.Now - _startTime);
     public RunReport GetRunReport() => _runReport;
     public BoundedInt GetGold() => _gold;
+    public int GetCurrGold() => _gold.Curr;
     public MingYuan GetMingYuan() => Home.GetMingYuan();
+    public int GetCurrMingYuan() => Home.GetMingYuan().Curr;
+    public int GetMaxMingYuan() => Home.GetMingYuan().UpperBound;
     
     public bool IsPlayerInitiate() => !_config.DifficultyProfile.GetEntry().EnemyInitiate;
 
@@ -804,6 +807,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetDMingYuanProcedure(value);
     }
 
+    public void LoseMingYuanProcedure(int value)
+    {
+        if (value <= 0) return;
+        SetDMingYuanProcedure(-value);
+    }
+
     public void SetDMingYuanProcedure(int value)
         => SetDMingYuanProcedure(new SetDMingYuanDetails(value));
     
@@ -833,6 +842,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         if (value <= 0) return;
         SetDGoldProcedure(value);
+    }
+
+    public void LoseGoldProcedure(int value)
+    {
+        if (value <= 0) return;
+        SetDGoldProcedure(-value);
     }
 
     public void SetDGoldProcedure(int value)
@@ -1237,6 +1252,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         b.Execute();
         b.Invoke();
     }
+
+    public void PickSkillsProcedure(List<SkillGhost> skillGhosts)
+    {
+        GainSkillBuilder b = new();
+        foreach (SkillGhost skillGhost in skillGhosts)
+            b.Pick(skillGhost);
+        b.Execute();
+        b.Invoke();
+    }
     
     public void DrawSkillProcedure(SkillEntryQuery drawStrategy, JingJie jingJie, DeckIndex? preferredDeckIndex = null)
     {
@@ -1353,6 +1377,19 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }
 
         ReplaceSkillNeuron.Invoke(d);
+    }
+
+    public void UpgradeAllSkillsToHuaShenProcedure()
+    {
+        TraversalDeckIndices().Do(deckIndex =>
+        {
+            RunSkill skill = SkillFromDeckIndex(deckIndex);
+            if (skill == null)
+                return;
+
+            JingJie toJingJie = ((int)(skill.GetEntry().HighestJingJie)).ClampUpper(JingJie.HuaShen);
+            RunManager.Instance.Environment.SkillSetJingJieProcedure(toJingJie, deckIndex);
+        });
     }
 
     #endregion

@@ -1902,199 +1902,190 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
             //         return A;
             //     }),
 
-            new(id:                                 "Room0033",
-                name:                               "天界树",
-                description:                        "天界树",
-                ladderBound:                        LadderIsJinDanToHuaShen,
-                difficultyBound:                    DifficultyIsNotEasy,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new("天界树",
-                        "你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
-                        "尝试感悟五行相生的规律");
-                    
-                    DialogCell B = new("天界树",
-                        "你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
-                                       "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，仿佛手中的卡牌已经产生了某种变化，要继续感悟么？",
-                        "继续感悟");
-                    
-                    DialogCell D = new("天界树", "金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
-                                       "到最后，你已经不知道你是树，还是树是你了。" +
-                                       "感悟了五行相生，所有五行牌都被相生的元素替换了。");
-                    
-                    RequireCell C = RequireCell.FromTianJieShu(room.Ladder, D);
-            
-                    A[0].SetSelect(option => B);
-                    B[0].SetSelect(option => C);
-            
-                    return A;
-                }),
+            // new(id:                                 "Room0033",
+            //     name:                               "天界树",
+            //     description:                        "天界树",
+            //     ladderBound:                        LadderIsJinDanToHuaShen,
+            //     difficultyBound:                    DifficultyIsNotEasy,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new("天界树",
+            //             "你知道自己在梦境里，天界树将你拉入了他的梦境，梦境中的东西都非常真实。",
+            //             "尝试感悟五行相生的规律");
+            //         
+            //         DialogCell B = new("天界树",
+            //             "你感受到了天界树的记忆。活，死，活，活，死，死，活，活，死死死死死死死。。。。。。活？" +
+            //                            "所有的生命都逐渐凋零，所有的死者彷佛又有了生命。你感觉如果继续感悟下去，仿佛手中的卡牌已经产生了某种变化，要继续感悟么？",
+            //             "继续感悟");
+            //         
+            //         DialogCell D = new("天界树", "金属遇寒，湿气冷凝成水，滴下来滋养了树苗，随即长成大树，燃烧起来，烧成了灰烬，归于尘土。" +
+            //                            "到最后，你已经不知道你是树，还是树是你了。" +
+            //                            "感悟了五行相生，所有五行牌都被相生的元素替换了。");
+            //         
+            //         RequireCell C = RequireCell.FromTianJieShu(room.Ladder, D);
+            //
+            //         A[0].SetSelect(option => B);
+            //         B[0].SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
 
-            new(id:                                 "Room0033",
-                name:                               "连抽五张",
-                description:                        "连抽五张",
-                ladderBound:                        LadderIsJinDan,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "急躁",
-                        detailedText: "你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
-                        "欲速则不达", "大力出奇迹（消耗30气血上限）");
+            // new(id:                                 "Room0033",
+            //     name:                               "连抽五张",
+            //     description:                        "连抽五张",
+            //     ladderBound:                        LadderIsJinDan,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "急躁",
+            //             detailedText: "你近日练功，隐约感到一个瓶颈，心里略有不快。想着，如果全力一博，说不定就多一分机会窥见大道的真貌。",
+            //             "欲速则不达", "大力出奇迹（消耗30气血上限）");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "急躁",
+            //                 detailedText: "哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
+            //             .SetReward(new DrawSkillReward("获得一个技能",
+            //                 SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(1),
+            //                 RunManager.Instance.Environment.JingJie));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "急躁",
+            //                 detailedText: "随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
+            //             .SetReward(new DrawSkillReward("获得五个技能",
+            //                 SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(5),
+            //                 RunManager.Instance.Environment.JingJie));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetCost(new RunCostDetails(health: 30))
+            //             .SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
 
-                    DialogCell B = new DialogCell(
-                            titleText: "急躁",
-                            detailedText: "哪怕大道难行，进一寸有一寸的欢喜。虽然进度不是很快，也并非没有收获。\n\n得到一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能",
-                            SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(1),
-                            RunManager.Instance.Environment.JingJie));
-                    DialogCell C = new DialogCell(
-                            titleText: "急躁",
-                            detailedText: "随着喷出一大口鲜血，你回过神来，原来自己还活着，感谢大道没把自己留在那边。\n\n得到五张牌")
-                        .SetReward(new DrawSkillReward("获得五个技能",
-                            SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(5),
-                            RunManager.Instance.Environment.JingJie));
+            // new(id:                                 "Room0034",
+            //     name:                               "我已膨胀",
+            //     description:                        "我已膨胀",
+            //     ladderBound:                        LadderIsHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "膨胀",
+            //             detailedText: "你打坐着，元神又来到了名为太虚的空间，传说达到了这个境界就会遭到天道的追杀，引来雷劫。",
+            //             "我已膨胀（高风险）", "浅尝则止");
+            //
+            //         DialogCell B = new DialogCell(
+            //             titleText: "膨胀",
+            //             detailedText: "你在太虚之中呆了良久，感受到了天道已经在注视自己的，然后大喊了一声，你过来啊。" +
+            //                           "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。气血上限减少100。" +
+            //                           "万幸，太虚境中确实对修炼的提升很大。所有牌境界提升至最高。");
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "膨胀",
+            //                 detailedText: "在太虚的边缘进行修炼确实大有好处，你感觉自己的体魄变得更加坚韧了")
+            //             .SetReward(Reward.FromHealth(16));
+            //
+            //         A[0].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.LoseHealthProcedure(100);
+            //             RunManager.Instance.Environment.UpgradeAllSkillsToHuaShenProcedure();
+            //             return B;
+            //         });
+            //         A[1].SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
 
-                    A[0].SetSelect(option => B);
-                    A[1].SetCost(new RunCostDetails(health: 30))
-                        .SetSelect(option => C);
+            // new(id:                                 "Room0035",
+            //     name:                               "曹操三笑",
+            //     description:                        "曹操三笑",
+            //     ladderBound:                        LadderIsZhuJi,
+            //     difficultyBound:                    DifficultyIsNotEasy,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         int normalGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
+            //         int successGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder + 3);
+            //         
+            //         DialogCell A = new(
+            //             titleText: "护送",
+            //             detailedText: "有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
+            //                           "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
+            //             "询问他何故突然大笑？（高风险）", "赶紧捂住他的嘴。");
+            //
+            //         DialogCell B = new(
+            //             titleText: "护送",
+            //             detailedText: "于是他解释道：”我看此等山贼都是少智无谋之辈，如果在此伏击我等，定然能让我们元气大伤。哈哈哈哈哈哈哈哈。。。“" +
+            //                           "\n只见他正在笑着，然后一伙山贼就出现了。",
+            //             options: "和山贼战斗");
+            //         DialogCell C = new DialogCell(
+            //             titleText: "护送",
+            //             detailedText: $"他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n获得{normalGoldReward}金")
+            //             .SetReward(Reward.FromGold(normalGoldReward));
+            //
+            //         BattleCell B1 = BattleCell.FromQuery(EntityQuery.FromLadder(room.Ladder + 3));
+            //         DialogCell B1win = new DialogCell(
+            //                 titleText: "护送",
+            //                 detailedText: $"你打过了山贼，商人对你十分感激。\n\n获得{successGoldReward}金")
+            //             .SetReward(Reward.FromGold(successGoldReward));
+            //         DialogCell B1lose = new(
+            //             titleText: "护送",
+            //             detailedText: "你没打过山贼，货物被抢走了。所幸没有人受伤。");
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         B[0].SetSelect(option => B1);
+            //         B1.SetWinOperation(() => B1win);
+            //         B1.SetLoseOperation(() => B1lose);
+            //
+            //         return A;
+            //     }),
 
-                    return A;
-                }),
-
-            new(id:                                 "Room0034",
-                name:                               "我已膨胀",
-                description:                        "我已膨胀",
-                ladderBound:                        LadderIsHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "膨胀",
-                        detailedText: "你打坐着，元神又来到了名为太虚的空间，传说达到了这个境界就会遭到天道的追杀，引来雷劫。",
-                        "我已膨胀（高风险）", "浅尝则止");
-
-                    DialogCell B = new DialogCell(
-                        titleText: "膨胀",
-                        detailedText: "你在太虚之中呆了良久，感受到了天道已经在注视自己的，然后大喊了一声，你过来啊。" +
-                                      "轰！！你觉得自己元神归窍的速度已经很快了，不知怎么的，肉体还是受到了极大损伤。气血上限减少100。" +
-                                      "万幸，太虚境中确实对修炼的提升很大。所有牌境界提升至最高。");
-                    DialogCell C = new DialogCell(
-                            titleText: "膨胀",
-                            detailedText: "在太虚的边缘进行修炼确实大有好处，你感觉自己的体魄变得更加坚韧了")
-                        .SetReward(Reward.FromHealth(16));
-
-                    A[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.LoseHealthProcedure(150);
-                        RunManager.Instance.Environment.TraversalDeckIndices().Do(deckIndex =>
-                        {
-                            RunSkill skill = RunManager.Instance.Environment.SkillFromDeckIndex(deckIndex);
-                            if (skill == null)
-                                return;
-
-                            JingJie toJingJie = ((int)(skill.GetEntry().HighestJingJie)).ClampUpper(JingJie.HuaShen);
-                            RunManager.Instance.Environment.SkillSetJingJieProcedure(toJingJie, deckIndex);
-                        });
-
-                        return B;
-                    });
-                    A[1].SetSelect(option => C);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0035",
-                name:                               "曹操三笑",
-                description:                        "曹操三笑",
-                ladderBound:                        LadderIsZhuJi,
-                difficultyBound:                    DifficultyIsNotEasy,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    int normalGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
-                    int successGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder + 3);
-                    
-                    DialogCell A = new(
-                        titleText: "护送",
-                        detailedText: "有个商人要去其他国家，听闻中间有一个险道，常常有山贼出没，托你保护他和一些货物的安全。一路上没有什么障碍，赶了几天的路之后，终于快要到目的地了。" +
-                                      "面前是一处山谷。这时候，他突然大笑起来：“哈哈哈哈哈哈哈哈。。。”",
-                        "询问他何故突然大笑？（高风险）", "赶紧捂住他的嘴。");
-
-                    DialogCell B = new(
-                        titleText: "护送",
-                        detailedText: "于是他解释道：”我看此等山贼都是少智无谋之辈，如果在此伏击我等，定然能让我们元气大伤。哈哈哈哈哈哈哈哈。。。“" +
-                                      "\n只见他正在笑着，然后一伙山贼就出现了。",
-                        options: "和山贼战斗");
-                    DialogCell C = new DialogCell(
-                        titleText: "护送",
-                        detailedText: $"他有些不悦，但也没说什么。你们平安的走完了剩下的路程。\n\n获得{normalGoldReward}金")
-                        .SetReward(Reward.FromGold(normalGoldReward));
-
-                    BattleCell B1 = BattleCell.FromQuery(EntityQuery.FromLadder(room.Ladder + 3));
-                    DialogCell B1win = new DialogCell(
-                            titleText: "护送",
-                            detailedText: $"你打过了山贼，商人对你十分感激。\n\n获得{successGoldReward}金")
-                        .SetReward(Reward.FromGold(successGoldReward));
-                    DialogCell B1lose = new(
-                        titleText: "护送",
-                        detailedText: "你没打过山贼，货物被抢走了。所幸没有人受伤。");
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    B[0].SetSelect(option => B1);
-                    B1.SetWinOperation(() => B1win);
-                    B1.SetLoseOperation(() => B1lose);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0036",
-                name:                               "神灯精灵",
-                description:                        "神灯精灵",
-                ladderBound:                        LadderIsYuanYing,
-                difficultyBound:                    DifficultyIsNotEasy,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "许愿",
-                        detailedText: "你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
-                        "健康的体魄", "钱币的富裕", "这个愿望不被实现（高风险）");
-
-                    DialogCell B = new DialogCell(
-                            titleText: "许愿",
-                            detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n气血上限+8")
-                        .SetReward(Reward.FromHealth(8));
-                    DialogCell C = new DialogCell(
-                            titleText: "许愿",
-                            detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+8")
-                        .SetReward(Reward.FromGold(8));
-                    DialogCell D = new(
-                        titleText: "许愿",
-                        detailedText: "实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
-
-                    BattleCell E = BattleCell.FromQuery(EntityQuery.FromLadder(room.Ladder + 3));
-                    DialogCell EWin = new DialogCell(
-                            titleText: "许愿",
-                            detailedText: "哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n气血上限+8，金+8")
-                        .SetReward(new ResourceReward(gold: 8, health: 8));
-                    DialogCell ELose = new(
-                        titleText: "许愿",
-                        detailedText: "哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-                    D[0].SetSelect(option => E);
-                    E.SetWinOperation(() => EWin);
-                    E.SetLoseOperation(() => ELose);
-
-                    return A;
-                }),
+            // new(id:                                 "Room0036",
+            //     name:                               "神灯精灵",
+            //     description:                        "神灯精灵",
+            //     ladderBound:                        LadderIsYuanYing,
+            //     difficultyBound:                    DifficultyIsNotEasy,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "许愿",
+            //             detailedText: "你捡到了一盏神灯里面跳出来了一个精灵，说可以实现你一个愿望",
+            //             "健康的体魄", "钱币的富裕", "这个愿望不被实现（高风险）");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "许愿",
+            //                 detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你感觉身强体壮\n\n气血上限+8")
+            //             .SetReward(Reward.FromHealth(8));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "许愿",
+            //                 detailedText: "实现了，精灵留下了这句话带着神灯飞走了。你包里突然出来了很多金币\n\n金+8")
+            //             .SetReward(Reward.FromGold(8));
+            //         DialogCell D = new(
+            //             titleText: "许愿",
+            //             detailedText: "实现了。。额，实现不了。。哦，实现了。。。啊，实现不了。精灵说你比许愿再来十个愿望的人还会捣乱，召唤出来一个怪物，要来和你打一架。");
+            //
+            //         BattleCell E = BattleCell.FromQuery(EntityQuery.FromLadder(room.Ladder + 3));
+            //         DialogCell EWin = new DialogCell(
+            //                 titleText: "许愿",
+            //                 detailedText: "哎，不就是都想要么？拿去拿去，好好说话我也不会不给的啊。\n\n气血上限+8，金+8")
+            //             .SetReward(new ResourceReward(gold: 8, health: 8));
+            //         DialogCell ELose = new(
+            //             titleText: "许愿",
+            //             detailedText: "哼，现在神灯精灵不好做了，就是因为经常碰见你这种人。下次别再让我遇见了。");
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[2].SetSelect(option => D);
+            //         D[0].SetSelect(option => E);
+            //         E.SetWinOperation(() => EWin);
+            //         E.SetLoseOperation(() => ELose);
+            //
+            //         return A;
+            //     }),
 
             new(id:                                 "Room0037",
                 name:                               "山木",
@@ -2385,228 +2376,226 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
             //         return A;
             //     }),
 
-            new(id:                                 "Room0041",
-                name:                               "守株待兔",
-                description:                        "守株待兔",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
-                    DialogCell A = new(
-                        titleText: "守株待兔",
-                        detailedText: "你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",
-                        "和他一起等待兔子", "买一只兔子放在树桩前，然后告诉他兔子来了");
+            // new(id:                                 "Room0041",
+            //     name:                               "守株待兔",
+            //     description:                        "守株待兔",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         int baseGoldReward = RoomDefinition.GetGoldRewardFromLadder(room.Ladder);
+            //         DialogCell A = new(
+            //             titleText: "守株待兔",
+            //             detailedText: "你见到一个人坐在树桩旁，问他在干什么，他说有兔子会撞上这个树桩，自己在等兔子撞死。",
+            //             "和他一起等待兔子", "买一只兔子放在树桩前，然后告诉他兔子来了");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "守株待兔",
+            //                 detailedText: $"你睡了过去，醒来时，那人说真的来了只兔子，要和你一起享用。休息好吃好后，你感觉自己状态变好了。气血+{baseGoldReward}")
+            //             .SetReward(Reward.FromHealth(baseGoldReward));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "守株待兔",
+            //                 detailedText: "你叫醒了那人，那人惊叹道：原来算命的说的是真的！你解释到是你们的运气好。" +
+            //                               "\n\n他激动地说道，之前有一个算命的人和他说，这里从来没有兔子也等不来兔子，但会有贵人经过，贵人会安排好兔子后，假装兔子是撞死的。" +
+            //                               "\n\n他当时还不信，原来真的可以等来兔子，哦不，贵人。" +
+            //                               $"\n\n然后邀请你到府上做客，向你问了一些问题。还赠送了你一些钱。金+{baseGoldReward}")
+            //             .SetReward(Reward.FromGold(baseGoldReward));
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
 
-                    DialogCell B = new DialogCell(
-                            titleText: "守株待兔",
-                            detailedText: $"你睡了过去，醒来时，那人说真的来了只兔子，要和你一起享用。休息好吃好后，你感觉自己状态变好了。气血+{baseGoldReward}")
-                        .SetReward(Reward.FromHealth(baseGoldReward));
-                    DialogCell C = new DialogCell(
-                            titleText: "守株待兔",
-                            detailedText: "你叫醒了那人，那人惊叹道：原来算命的说的是真的！你解释到是你们的运气好。" +
-                                          "\n\n他激动地说道，之前有一个算命的人和他说，这里从来没有兔子也等不来兔子，但会有贵人经过，贵人会安排好兔子后，假装兔子是撞死的。" +
-                                          "\n\n他当时还不信，原来真的可以等来兔子，哦不，贵人。" +
-                                          $"\n\n然后邀请你到府上做客，向你问了一些问题。还赠送了你一些钱。金+{baseGoldReward}")
-                        .SetReward(Reward.FromGold(baseGoldReward));
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0042",
-                name:                               "鸡肉面",
-                description:                        "鸡肉面",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         true,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "餐馆",
-                        detailedText: "你到了餐馆，叫了碗面。只见厨师拿了一副鸡的画卷，剪开下了锅。你正疑惑他在干什么的时候，他从锅里盛出了一碗鸡肉面给你。",
-                        "认为这是真的鸡肉面，吃下去", "拆穿他，说这碗面不过是幻术");
-
-                    DialogCell B = new DialogCell(
-                            titleText: "餐馆",
-                            detailedText: "一开始还有些怀疑，然后发现就是真的面。于是美美的吃了一顿。命元+2")
-                        .SetReward(Reward.FromMingYuan(2));
-                    DialogCell C = new DialogCell(
-                            titleText: "餐馆",
-                            detailedText: "一阵烟雾过后。你面前掉落了一幅画，上面赫然画着刚才的餐馆。你对之前的招式又有了新的感悟。获得一张牌")
-                        .SetReward(new DrawSkillReward("获得一个技能",
-                            SkillEntryQuery
-                                .FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie))
-                                .Stack(1),
-                            RunManager.Instance.Environment.JingJie));
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-
-                    return A;
-                }),
+            // new(id:                                 "Room0042",
+            //     name:                               "鸡肉面",
+            //     description:                        "鸡肉面",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         true,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "餐馆",
+            //             detailedText: "你到了餐馆，叫了碗面。只见厨师拿了一副鸡的画卷，剪开下了锅。你正疑惑他在干什么的时候，他从锅里盛出了一碗鸡肉面给你。",
+            //             "认为这是真的鸡肉面，吃下去", "拆穿他，说这碗面不过是幻术");
+            //
+            //         DialogCell B = new DialogCell(
+            //                 titleText: "餐馆",
+            //                 detailedText: "一开始还有些怀疑，然后发现就是真的面。于是美美的吃了一顿。命元+2")
+            //             .SetReward(Reward.FromMingYuan(2));
+            //         DialogCell C = new DialogCell(
+            //                 titleText: "餐馆",
+            //                 detailedText: "一阵烟雾过后。你面前掉落了一幅画，上面赫然画着刚才的餐馆。你对之前的招式又有了新的感悟。获得一张牌")
+            //             .SetReward(new DrawSkillReward("获得一个技能",
+            //                 SkillEntryQuery
+            //                     .FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie))
+            //                     .Stack(1),
+            //                 RunManager.Instance.Environment.JingJie));
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
             
             #endregion
 
             #region 05_FanXu
             
-            new(id:                                 "Room05_001",
-                name:                               "斩断尘缘",
-                description:                        "斩断尘缘",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new("斩断尘缘",
-                        "和最终的首领战斗过于激烈，你的元神到达了一个未知的空间。在你还没想到要怎么回到现实世界时。" +
-                        "\n一颗无比熟悉的树吸引了你的注意。你越发感觉如果继续看下去，就难以返回现实了。",
-                        "继续看下去");
-                    
-                    DialogCell B = new("斩断尘缘",
-                        "你隐约察觉这棵树在告诉你，他可能帮助你斩断和卡牌的因果，让你再也无法回忆起技能使用时的细节。" +
-                        "\n你有想要忘却的过去么？",
-                        "回忆开始变得模糊");
-                    
-                    DialogCell D = new("斩断尘缘", "事情发生得太快，一瞬间，你已经不记得自己用了什么和眼前的树做了交易，甚至连交易本身是否存在都已经不确定了。" +
-                                               "\n你趁着自己还清醒着，检查了新的技能，然后悻悻离去。");
-                    
-                    RequireCell C = RequireCell.FromZhanDuanChenYuan(room.Ladder, D);
+            // new(id:                                 "Room05_001",
+            //     name:                               "斩断尘缘",
+            //     description:                        "斩断尘缘",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new("斩断尘缘",
+            //             "和最终的首领战斗过于激烈，你的元神到达了一个未知的空间。在你还没想到要怎么回到现实世界时。" +
+            //             "\n一颗无比熟悉的树吸引了你的注意。你越发感觉如果继续看下去，就难以返回现实了。",
+            //             "继续看下去");
+            //         
+            //         DialogCell B = new("斩断尘缘",
+            //             "你隐约察觉这棵树在告诉你，他可能帮助你斩断和卡牌的因果，让你再也无法回忆起技能使用时的细节。" +
+            //             "\n你有想要忘却的过去么？",
+            //             "回忆开始变得模糊");
+            //         
+            //         DialogCell D = new("斩断尘缘", "事情发生得太快，一瞬间，你已经不记得自己用了什么和眼前的树做了交易，甚至连交易本身是否存在都已经不确定了。" +
+            //                                    "\n你趁着自己还清醒着，检查了新的技能，然后悻悻离去。");
+            //         
+            //         RequireCell C = RequireCell.FromZhanDuanChenYuan(room.Ladder, D);
+            //
+            //         A[0].SetSelect(option => B);
+            //         B[0].SetSelect(option => C);
+            //
+            //         return A;
+            //     }),
             
-                    A[0].SetSelect(option => B);
-                    B[0].SetSelect(option => C);
+            // new(id:                                 "Room05_002",
+            //     name:                               "无名泉水",
+            //     description:                        "无名泉水",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new("无名泉水",
+            //             "你走到一处泉水旁边，你查觉泉水灵力充沛，正好可以治愈自己一身的伤痛。" +
+            //             "\n自己是怎么受伤的？你正在思索着，然后看到前方有个穿着奇异的小孩看着自己。");
+            //         
+            //         DialogCell B = new("无名泉水",
+            //             "“你不该在这里的。”" +
+            //             "\n“妄图以区区凡人之躯，向仙人的领域发起挑战，真是傲慢啊。”");
+            //         
+            //         DialogCell C = new("无名泉水",
+            //             "“算了，看在你这么不知死活的份上。我帮你激发一下潜力，对身体造成的小小负担，你可要承受住了。”" +
+            //             "你感受到，刚刚回复的命元，正在一点一点的从体内流失。");
+            //         
+            //         DialogCell D = new("无名泉水",
+            //             "“不用谢我。这些身外之物你暂时也用不到了，我替你收好了。”" +
+            //             "给你点什么呢？再帮你强化一下身体好了。");
+            //         
+            //         DialogCell E = new("无名泉水",
+            //             "你看到一阵血雾向自己飞来，然后逐渐被自己所吸收。感觉经脉确实是强壮了一些。");
+            //
+            //         A[0].SetSelect(option =>
+            //         {
+            //             int gap = RunManager.Instance.Environment.GetMaxMingYuan() -
+            //                       RunManager.Instance.Environment.GetCurrMingYuan();
+            //             RunManager.Instance.Environment.GainMingYuanProcedure(gap);
+            //             return B;
+            //         });
+            //
+            //         B[0].SetSelect(option => C);
+            //
+            //         C[0].SetSelect(option =>
+            //         {
+            //             int gap = RunManager.Instance.Environment.GetCurrMingYuan() - 1;
+            //             RunManager.Instance.Environment.LoseMingYuanProcedure(gap);
+            //
+            //             SkillEntry skillEntry = Encyclopedia.SkillCategory.FromName("命石");
+            //             List<SkillGhost> skillGhosts = new();
+            //             for(int i = 0; i < gap; i++)
+            //                 skillGhosts.Add(SkillGhost.FromEntryJingJie(skillEntry, JingJie.HuaShen));
+            //             
+            //             RunManager.Instance.Environment.PickSkillsProcedure(skillGhosts);
+            //             
+            //             return D;
+            //         });
+            //
+            //         D[0].SetSelect(option =>
+            //         {
+            //             int value = RunManager.Instance.Environment.GetCurrGold();
+            //             RunManager.Instance.Environment.LoseGoldProcedure(value);
+            //             RunManager.Instance.Environment.GainHealthProcedure(value);
+            //             return E;
+            //         });
+            //         
+            //         return A;
+            //     }),
             
-                    return A;
-                }),
+            // new(id:                                 "Room05_003",
+            //     name:                               "气血商店",
+            //     description:                        "气血商店",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new("气血商店",
+            //             "你看到一个商店，正懊恼着刚才的小孩将自己的金钱取走了。可惜了这么多商品。" +
+            //             "\n结果你看到商品没有标价，带着奇怪的马脸面具的店家说这里只收气血。",
+            //             "怪不得感到一阵阴风");
+            //
+            //         ShopCell B = ShopCell.FromFanXuHealthShop(room.Ladder);
+            //         
+            //         DialogCell C = new("气血商店",
+            //             "你想到自己气血是多么的宝贵，此时再有了这些技能对自己又有什么帮助呢。不禁一阵唏嘘。");
+            //
+            //         A[0].SetSelect(option => B);
+            //
+            //         B._receiveSignal = signal =>
+            //         {
+            //             if (signal is ExitShopSignal)
+            //                 return C;
+            //             return B;
+            //         };
+            //         
+            //         return A;
+            //     }),
             
-            new(id:                                 "Room05_002",
-                name:                               "无名泉水",
-                description:                        "无名泉水",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new("无名泉水",
-                        "你走到一处泉水旁边，你查觉泉水灵力充沛，正好可以治愈自己一身的伤痛。" +
-                        "\n自己是怎么受伤的？你正在思索着，然后看到前方有个穿着奇异的小孩看着自己。");
-                    
-                    DialogCell B = new("无名泉水",
-                        "“你不该在这里的。”" +
-                        "\n“妄图以区区凡人之躯，向仙人的领域发起挑战，真是傲慢啊。”");
-                    
-                    DialogCell C = new("无名泉水",
-                        "“算了，看在你这么不知死活的份上。我帮你激发一下潜力，对身体造成的小小负担，你可要承受住了。”" +
-                        "你感受到，刚刚回复的命元，正在一点一点的从体内流失。");
-                    
-                    DialogCell D = new("无名泉水",
-                        "“不用谢我。这些身外之物你暂时也用不到了，我替你收好了。”" +
-                        "给你点什么呢？再帮你强化一下身体好了。");
-                    
-                    DialogCell E = new("无名泉水",
-                        "你看到一阵血雾向自己飞来，然后逐渐被自己所吸收。感觉经脉确实是强壮了一些。");
-
-                    A[0].SetSelect(option =>
-                    {
-                        MingYuan mingYuan = RunManager.Instance.Environment.GetMingYuan();
-                        int gap = mingYuan.UpperBound - mingYuan.Curr;
-                        RunManager.Instance.Environment.SetDMingYuanProcedure(gap);
-                        return B;
-                    });
-
-                    B[0].SetSelect(option => C);
-
-                    C[0].SetSelect(option =>
-                    {
-                        MingYuan mingYuan = RunManager.Instance.Environment.GetMingYuan();
-                        int space = Mathf.Max(mingYuan.Curr - 1, 0);
-                        RunManager.Instance.Environment.SetDMingYuanProcedure(-space);
-                        
-                        GainSkillBuilder b = new();
-                        for (int i = 0; i < space; i++)
-                        {
-                            b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("命石"), JingJie.HuaShen));
-                        }
-                        b.Execute();
-                        b.Invoke();
-                        
-                        return D;
-                    });
-
-                    D[0].SetSelect(option =>
-                    {
-                        int value = RunManager.Instance.Environment.GetGold().Curr;
-                        RunManager.Instance.Environment.SetDGoldProcedure(-value);
-                        RunManager.Instance.Environment.GainHealthProcedure(value);
-                        return E;
-                    });
-                    
-                    return A;
-                }),
-            
-            new(id:                                 "Room05_003",
-                name:                               "气血商店",
-                description:                        "气血商店",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new("气血商店",
-                        "你看到一个商店，正懊恼着刚才的小孩将自己的金钱取走了。可惜了这么多商品。" +
-                        "\n结果你看到商品没有标价，带着奇怪的马脸面具的店家说这里只收气血。",
-                        "怪不得感到一阵阴风");
-
-                    ShopCell B = ShopCell.FromFanXuHealthShop(room.Ladder);
-                    
-                    DialogCell C = new("气血商店",
-                        "你想到自己气血是多么的宝贵，此时再有了这些技能对自己又有什么帮助呢。不禁一阵唏嘘。");
-
-                    A[0].SetSelect(option => B);
-
-                    B._receiveSignal = signal =>
-                    {
-                        if (signal is ExitShopSignal)
-                            return C;
-                        return B;
-                    };
-                    
-                    return A;
-                }),
-            
-            new(id:                                 "Room05_004",
-                name:                               "命元商店",
-                description:                        "命元商店",
-                ladderBound:                        AllLadder,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new("命元商店",
-                        "又路过一个商店，你在奇怪，这家商店会不会正常一些。" +
-                        "\n看到阴森的街道，你感到了一丝不安。" +
-                        "\n带着牛脸面具的人向你招呼道，再往前走，命石以对你无用，何不来我这里消费消费？",
-                        "你虽然脚还再往前走，但是商品还是吸引到了你的注意");
-
-                    BarterCell B = BarterCell.FromFanXuMingYuanShop();
-
-                    DialogCell C = new("命元商店",
-                        "你回想起了修仙路上的人，包括曾经的自己，曾经竟为了一时的胜负而大打出手，真是可笑。");
-                        
-                    A[0].SetSelect(option => B);
-
-                    B._receiveSignal = signal =>
-                    {
-                        if (signal is ExitShopSignal)
-                            return C;
-                        return B;
-                    };
-                    
-                    return A;
-                }),
+            // new(id:                                 "Room05_004",
+            //     name:                               "命元商店",
+            //     description:                        "命元商店",
+            //     ladderBound:                        AllLadder,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new("命元商店",
+            //             "又路过一个商店，你在奇怪，这家商店会不会正常一些。" +
+            //             "\n看到阴森的街道，你感到了一丝不安。" +
+            //             "\n带着牛脸面具的人向你招呼道，再往前走，命石以对你无用，何不来我这里消费消费？",
+            //             "你虽然脚还再往前走，但是商品还是吸引到了你的注意");
+            //
+            //         BarterCell B = BarterCell.FromFanXuMingYuanShop();
+            //
+            //         DialogCell C = new("命元商店",
+            //             "你回想起了修仙路上的人，包括曾经的自己，曾经竟为了一时的胜负而大打出手，真是可笑。");
+            //             
+            //         A[0].SetSelect(option => B);
+            //
+            //         B._receiveSignal = signal =>
+            //         {
+            //             if (signal is ExitShopSignal)
+            //                 return C;
+            //             return B;
+            //         };
+            //         
+            //         return A;
+            //     }),
             
             new(id:                                 "Room05_005",
                 name:                               "镜中世界",
