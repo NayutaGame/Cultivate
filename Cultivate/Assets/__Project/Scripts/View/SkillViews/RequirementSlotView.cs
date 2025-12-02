@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RequirementSlotView : SlotView
+public class RequirementSlotView : ScaleSlotView
 {
     [SerializeField] private XView AnnotationProvider;
     [SerializeField] private Image InvalidSign1;

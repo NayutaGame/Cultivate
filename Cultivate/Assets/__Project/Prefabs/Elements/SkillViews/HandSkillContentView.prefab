@@ -422,6 +422,7 @@ GameObject:
   - component: {fileID: 5628706196012469953}
   - component: {fileID: 7613878159742721782}
   - component: {fileID: 6097260163849669695}
+  - component: {fileID: 7979711474493060079}
   m_Layer: 5
   m_Name: HandSkillContentView
   m_TagString: Untagged
@@ -507,8 +508,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
   OpenDetails: 3
-  FirstCounter: 0.5
-  SecondCounter: 2
   AnnotationViewType: 1
   UseRectAlignment: 1
 --- !u!114 &7613878159742721782
@@ -540,6 +539,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionImage: {fileID: 2769774251780608165}
+--- !u!114 &7979711474493060079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6697213150715054979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56105b2d3cce19f4d83077e5b7a2ec1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7615751828447367193
 GameObject:
   m_ObjectHideFlags: 0

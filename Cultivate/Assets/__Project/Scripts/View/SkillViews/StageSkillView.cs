@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageSkillView : SlotView
+public class StageSkillView : ScaleSlotView
 {
     [SerializeField] private Image CounterImage;
     [SerializeField] public RectTransform TimelineScale;

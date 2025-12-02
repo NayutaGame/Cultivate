@@ -69,6 +69,55 @@ public struct GoToConfigurationAnimation : IAnimation
     }
 }
 
+public struct ShakeAnimation : IAnimation
+{
+    private RectTransform Parent;
+    private RectTransform Subject;
+
+    private Vector3 StartPosition;
+    private Quaternion StartRotation;
+    private Vector3 StartScale;
+
+    private Vector3 RotationAxis;
+
+    public ShakeAnimation(RectTransform parent, RectTransform subject)
+    {
+        Subject = subject;
+        Parent = parent;
+        
+        StartPosition = subject.position;
+        StartRotation = subject.rotation;
+        StartScale = subject.localScale;
+        
+        RotationAxis = subject.TransformDirection(new Vector3(1, 1, 8).normalized);
+    }
+
+    public Tween GetHandle()
+    {
+        return DOTween.To(SetProgress, 0, 360, 0.2f).SetEase(Ease.Linear);
+    }
+
+    public void SetProgress(float angle)
+    {
+        // 1. 计算法线 n(t)：绕旋转轴旋转angle度
+        Vector3 initialNormal = StartRotation * Vector3.forward;
+        Quaternion axisRotation = Quaternion.AngleAxis(angle, RotationAxis);
+        Vector3 currentNormal = axisRotation * initialNormal;
+        
+        // 2. 计算θ(t)：绕法线的旋转角（相对于法线坐标系）
+        float theta = -angle;
+        
+        // 3. 组合旋转：
+        //    先绕轴旋转得到新的法线方向
+        //    再绕新法线旋转θ，补偿翻滚
+        Quaternion normalRotation = Quaternion.AngleAxis(theta, currentNormal);
+        Quaternion finalRotation = normalRotation * axisRotation * StartRotation;
+        
+        // 4. 应用旋转（保持位置不变）
+        Subject.rotation = finalRotation;
+    }
+}
+
 public struct GuideAnimation : IAnimation
 {
     private RectTransform Start;

@@ -43,7 +43,7 @@ public class BattleRoomDefinition : RoomDefinition, ISerializationCallbackReceiv
     public override LegacyRoomEntry Draw(Map map, Room room)
     {
         EntityQuery query = EntityQuery.FromLadder(Ladder);
-        map.EntityPool.TryDrawEntity(out RunEntity entity, query);
+        RunManager.Instance.Environment.EntityPool.TryDrawEntity(out RunEntity entity, query);
         room.SetPredrewRunEntity(entity);
         return Encyclopedia.LegacyRoomCategory.FromName("战斗");
     }

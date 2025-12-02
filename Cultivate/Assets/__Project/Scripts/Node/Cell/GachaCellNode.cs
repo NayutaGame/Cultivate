@@ -3,8 +3,8 @@ using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
-[NodeWidth(400)]
-[CreateNodeMenu("Cell/Gacha Cell", -6, true)]
+[NodeWidth(200)]
+[CreateNodeMenu("Cell/Gacha Cell", -10, true)]
 public class GachaCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

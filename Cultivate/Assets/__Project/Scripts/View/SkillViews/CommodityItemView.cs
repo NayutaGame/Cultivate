@@ -7,12 +7,17 @@ public class CommodityItemView : XView
 {
     public SkillView SkillView;
     public GameObject DiscountSign;
-    public TMP_Text DiscountText;
 
-    public BuyButton PayWithGoldButton;
-    public TMP_Text GoldPriceText;
-    public BuyButton PayWithHealthButton;
-    public TMP_Text HealthPriceText;
+    public Button4StateSeperateContent PayWithGoldButton;
+    public TMP_Text IdleGoldPriceText;
+    public TMP_Text HoverGoldPriceText;
+    public TMP_Text PressedGoldPriceText;
+    public TMP_Text InactiveGoldPriceText;
+    public Button4StateSeperateContent PayWithHealthButton;
+    public TMP_Text IdleHealthPriceText;
+    public TMP_Text HoverHealthPriceText;
+    public TMP_Text PressedHealthPriceText;
+    public TMP_Text InactiveHealthPriceText;
 
     public override void SetAddress(Address address)
     {
@@ -36,15 +41,7 @@ public class CommodityItemView : XView
     private void ConfigureDiscountSign(Commodity commodity)
     {
         float discount = 1 - commodity.Discount;
-        if (discount == 0)
-        {
-            DiscountSign.SetActive(false);
-        }
-        else
-        {
-            DiscountText.text = $"{discount * 10}折";
-            DiscountSign.SetActive(true);
-        }
+        DiscountSign.SetActive(discount != 0);
     }
 
     private void ConfigureGoldButton(Commodity commodity)
@@ -54,7 +51,11 @@ public class CommodityItemView : XView
         if (!acceptGold)
             return;
         
-        GoldPriceText.text = commodity.GetGoldPrice();
+        string priceText = commodity.GetGoldPrice();
+        IdleGoldPriceText.text = priceText;
+        HoverGoldPriceText.text = priceText;
+        PressedGoldPriceText.text = priceText;
+        InactiveGoldPriceText.text = priceText;
         PayWithGoldButton.SetStateToInactiveFrom(!commodity.GoldAffordable());
     }
 
@@ -65,7 +66,11 @@ public class CommodityItemView : XView
         if (!acceptHealth)
             return;
 
-        HealthPriceText.text = commodity.GetHealthPrice();
+        string priceText = commodity.GetHealthPrice();
+        IdleHealthPriceText.text = priceText;
+        HoverHealthPriceText.text = priceText;
+        PressedHealthPriceText.text = priceText;
+        InactiveHealthPriceText.text = priceText;
         PayWithHealthButton.SetStateToInactiveFrom(!commodity.HealthAffordable());
     }
 

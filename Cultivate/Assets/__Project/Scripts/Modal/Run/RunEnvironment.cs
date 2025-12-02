@@ -142,12 +142,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private RunCharacter _character;
     private Dictionary<CharacterEntry, RunNPC> _npcDict;
     
-    [SerializeReference] private SkillPool _skillPool;
-    [NonSerialized] private MutatorPool _mutatorPool;
     [SerializeReference] private SkillInventory _hand;
     [SerializeField] private BoundedInt _gold;
     [SerializeReference] private EntityEntry _huaShenBossEntity;
     [SerializeField] private RunResult _result;
+    
+    [SerializeReference] private SkillPool _skillPool;
+    [NonSerialized] private MutatorPool _mutatorPool;
+    [SerializeReference] public EntityPool EntityPool;
+    [SerializeReference] public RoomPool RoomPool;
 
     [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
     // [Obsolete] [SerializeReference] private RunEntity _home;
@@ -542,25 +545,28 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region Procedures
 
+    private int _availableStepCount;
+    private int _totalStepCount;
+
     public void StartRunProcedure(StartRunDetails d)
     {
         InitSkillPool();
+        InitEntityPool();
+        InitRoomPool();
 
         MapEntry mapEntry = Map.GetEntry();
-        
         SetJingJieProcedure(mapEntry._envJingJie);
+        Home.SetHealth(RunEntity.HealthFromJingJie[mapEntry._envJingJie]);
         Home.SetSlotCount(mapEntry._slotCount);
-        SetDGoldProcedure(mapEntry._gold);
-
-        DrawSkillsProcedure(
-            SkillEntryQuery.FromBaseJingJieBound(
-                    new(JingJie.LianQi, mapEntry._skillJingJie))
-                .Stack(mapEntry._skillCount), mapEntry._skillJingJie);
-        
-        mapEntry.OnStartRun(this);
+        GainGoldProcedure(mapEntry._gold);
 
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        
+        _runState = RunState.MapSelecting;
         Map.Init(profile, this);
+
+        AdjustStepCountFromJingJie(mapEntry._envJingJie);
+        
         InitPanelFromCreation();
         
         SendEvent(RunClosureDict.START_RUN, d);
@@ -576,6 +582,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         InitPanelFromLoad();
     }
 
+    public void AdjustStepCountFromJingJie(JingJie jingJie)
+    {
+        _availableStepCount = 3;
+        _totalStepCount = 5;
+    }
+
     private void InitSkillPool()
     {
         6.Do(_ => _config.PacksToStartWith.Do(pack =>
@@ -584,6 +596,23 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         }));
         
         SkillPool.Shuffle();
+    }
+
+    private void InitEntityPool()
+    {
+        EntityPool = new();
+        int difficulty = GetRunConfig().GetDifficulty();
+        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.FilterObj(
+            e => e.IsInPool() && e.GetAllowedDifficulty().Contains(difficulty)));
+        EntityPool.Shuffle();
+    }
+
+    private void InitRoomPool()
+    {
+        RoomPool = new();
+        int difficulty = GetRunConfig().GetDifficulty();
+        RoomPool.Populate(Encyclopedia.LegacyRoomCategory.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
+        RoomPool.Shuffle();
     }
 
     public void DepleteProcedure()
@@ -612,14 +641,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         SendEvent(RunClosureDict.DID_DEPLETE, d);
     }
-
-    public void NextJingJieProcedure()
-        => SetJingJieProcedure(JingJie + 1);
     
     public void SetJingJieProcedure(JingJie toJingJie)
         => SetJingJieProcedure(new JingJieChangedDetails(JingJie, toJingJie));
     
-    private void SetJingJieProcedure(JingJieChangedDetails d)
+    public void SetJingJieProcedure(JingJieChangedDetails d)
     {
         SendEvent(RunClosureDict.WIL_JINGJIE_CHANGE, d);
         if (d.Cancel)
@@ -627,16 +653,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         _jingJie = d.ToJingJie;
         
-        // move to ascension procedure
-        SetHealthDetails setHealthDetails = SetHealthDetails.FromJingJieChange(d.FromJingJie, d.ToJingJie);
-        SetHealthProcedure(setHealthDetails);
-        
         Home.SetJingJie(d.ToJingJie);
-        AudioManager.Play(d.ToJingJie.GetAudio());
 
         SendEvent(RunClosureDict.DID_JINGJIE_CHANGE, d);
-        
         JingJieChangedNeuron.Invoke(d);
+        
+        AudioManager.Play(d.ToJingJie.GetAudio());
     }
 
     private StageResult Simulate()
@@ -888,7 +910,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetHealthProcedure(SetHealthDetails.FromDirect(value));
     }
 
-    private void SetHealthProcedure(SetHealthDetails d)
+    public void SetHealthProcedure(SetHealthDetails d)
     {
         if (d.Value == Home.GetHealth())
             return;
@@ -1399,15 +1421,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private RoomEnvironment _roomEnvironment;
     [NonSerialized] private ICellAdapter _cell;
 
-    public enum RunState
-    {
-        MapSelecting,
-        InRoom,
-        Committed,
-        Uncommon,
-    }
-
-    private RunState _runState = RunState.MapSelecting;
+    private RunState _runState;
 
     public ICellAdapter Cell
     {

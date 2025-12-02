@@ -34,7 +34,7 @@ public class BattleCell : Cell
         
         if (query.LimitToPool)
         {
-            if (!RunManager.Instance.Environment.Map.EntityPool.TryDrawEntity(out template, query))
+            if (!RunManager.Instance.Environment.EntityPool.TryDrawEntity(out template, query))
             {
                 template = RunEntity.Default();
             }

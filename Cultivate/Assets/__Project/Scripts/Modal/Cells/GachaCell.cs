@@ -10,9 +10,9 @@ public class GachaCell : Cell
     private List<SkillEntryQuery> _drawStrategies;
     private JingJie _preferredJingJie;
 
-    private ListModel<SkillGhost> _items;
-    public ListModel<SkillGhost> GetItems() => _items;
-    public void SetItems(ListModel<SkillGhost> items) => _items = items;
+    private ListModel<GachaItem> _items;
+    public ListModel<GachaItem> GetItems() => _items;
+    public void SetItems(ListModel<GachaItem> items) => _items = items;
 
     private int _price;
     public int GetPrice() => _price;
@@ -64,12 +64,12 @@ public class GachaCell : Cell
 
         GainSkillBuilder b = new();
         b.Draw(_drawStrategies, _preferredJingJie);
-        b.GainingSkills.Do(g => _items.Add(SkillGhost.FromGainingSkill(g)));
+        b.GainingSkills.Do(g => _items.Add(new(SkillGhost.FromGainingSkill(g))));
 
         _price = 0;
 
         foreach (var item in _items)
-            _price += (1 << item.GetJingJie());
+            _price += (1 << item.Skill.GetJingJie());
 
         _price = (int) (_price * _priceMultiplier / _items.Count());
     }
@@ -88,7 +88,7 @@ public class GachaCell : Cell
         RunManager.Instance.Environment.SetDGoldProcedure(-_price);
 
         int gachaIndex = RandomManager.Range(0, _items.Count());
-        SkillGhost skillGhost = _items.Get(gachaIndex) as SkillGhost;
+        SkillGhost skillGhost = _items[gachaIndex].Skill;
 
         GachaDetails details = new(skillGhost, gachaIndex);
         

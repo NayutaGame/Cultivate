@@ -571,7 +571,11 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         int index = combination[i];
                         dialogOptions[i] = DialogOption.FromTextAndSelect(descriptions[index], option =>
                         {
-                            env.NextJingJieProcedure();
+                            JingJie beforeJingJie = env.JingJie;
+                            JingJie afterJingJie = env.JingJie + 1;
+                            env.SetJingJieProcedure(afterJingJie);
+                            SetHealthDetails setHealthDetails = SetHealthDetails.FromJingJieChange(beforeJingJie, afterJingJie);
+                            env.SetHealthProcedure(setHealthDetails);
                             return panels[index];
                         });
                     });
@@ -3364,412 +3368,412 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
 
             #region 07_Series
 
-            new(id:                                 "Room0053",
-                name:                               "后羿1",
-                description:                        "后羿1",
-                ladderBound:                        LadderIsLianQiToZhuJi,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "后羿",
-                        detailedText: "你看到了一个少年在幸苦的练习射箭，但是进度缓慢。你发现是因为少年天生视力不好。",
-                        "给少年展示技术", "赠与少年一本秘籍", "告诉少年实话");
-                    Puzzle puzzle = new(
-                        description: "尝试帮助少年击中目标",
-                        condition: "目标受到伤害",
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
-                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-                        {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                        }),
-                        kernel: new StageKernel(async d =>
-                        {
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-
-                            if (d.Forced)
-                            {
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-                            else
-                            {
-                                if (d.Cancel)
-                                    return 0;
-
-                                if (d.Turn < 6)
-                                    return 0;
-
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-
-                            if (d.Flag == 0)
-                                return d.Flag;
-
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-                            
-                            d.Env.RecordResult(d.Flag);
-                            
-                            return d.Flag;
-                        })
-                    );
-        
-                    PuzzleCell B = new(puzzle);
-                    DialogCell BPass = new DialogCell(
-                        titleText: "后羿",
-                        detailedText: "少年将你的招式记在了心里，又开始了自顾自的练习。",
-                        options: "继续上路");
-                    
-                    RequireCell C = RequireCell.FromConstantDetailedText(
-                        titleText:          "后羿",
-                        detailedText:       "请提交一张牌",
-                        requirements:            RunSkillQuery.AnySkill().Stack(1));
-        
-                    DialogCell CWin = new(
-                        titleText: "后羿",
-                        detailedText: "少年感谢你赠与的秘籍，已经准备好开始练习了。",
-                        options: "继续上路");
-
-                    DialogCell D =
-                        new(
-                            titleText: "后羿",
-                            detailedText: "少年知道了自己永远也练不成一等一的弓术，哭着跑回家了。他父母不愿看着少年做无用功，却也狠不下来心打破少年的幻想。" +
-                                          "感谢你告诉了少年实话。将少年的弓赠与了你。" +
-                                          "\n你将弓卖掉换了些钱，继续上路了。",
-                            options: "获得2金");
-                    D.SetReward(Reward.FromGold(2));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[2].SetSelect(option => D);
-                    B.SetOperation(s =>
-                    {
-                        if (s.Flag == 1)
-                        {
-                            RunManager.Instance.Environment.Map.InsertRoom("后羿2");
-                            return BPass;
-                        }
-
-                        return A;
-                    });
-                    C.SetSubmitOperation(cardPickerCell =>
-                    {
-                        if (!cardPickerCell.AllFulfilled())
-                            return A;
-
-                        RunManager.Instance.Environment.Map.InsertRoom("后羿2");
-                        return CWin;
-                    });
-
-                    return A;
-                }),
-
-            new(id:                                 "Room0054",
-                name:                               "后羿2",
-                description:                        "后羿2",
-                ladderBound:                        LadderIsJinDanToYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "后羿",
-                        detailedText: "你之前见过的视力不好的少年，现在视力越来越弱了。甚至没能发现你的到来。",
-                        "给少年展示更厉害的技术", "安慰少年（需要4金）", "告诉少年实话");
-                    Puzzle puzzle = new(
-                        description: "尝试帮助少年击中目标",
-                        condition: "目标受到伤害",
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
-                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-                        {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                        }),
-                        kernel: new StageKernel(async d =>
-                        {
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-
-                            if (d.Forced)
-                            {
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-                            else
-                            {
-                                if (d.Cancel)
-                                    return 0;
-
-                                if (d.Turn < 6)
-                                    return 0;
-
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-
-                            if (d.Flag == 0)
-                                return d.Flag;
-
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-                            
-                            d.Env.RecordResult(d.Flag);
-                            
-                            return d.Flag;
-                        })
-                    );
-        
-                    PuzzleCell B = new(puzzle);
-                    DialogCell BPass = new DialogCell(
-                        titleText: "后羿",
-                        detailedText: "少年将你的招式记在了心里，又投入了奋不顾身的练习。",
-                        options: "继续上路");
-                    
-                    DialogCell C = new(
-                        titleText: "后羿",
-                        detailedText: "你和少年讲起了故事。传闻有和非人之物战斗的剑士，在对决的生死关头，领悟了可以看清周围一切的招式，打败了对手。");
-                    DialogCell C2 = new(
-                        titleText: "后羿",
-                        detailedText: "少年觉得你的故事逊爆了，如果去当说书人指定吃不上饭的那种。聊了过天后，表示自己要继续训练了。你看到少年过的清苦，于是留下了一些盘缠，失去4金。",
-                        options: "继续上路");
-
-                    DialogCell D = new(
-                        titleText: "后羿",
-                        detailedText: "你还在想怎么和少年开口时。少年突然开口道：表示自己其实知道大家一直在迁就自己，自己也应该承担起一些责任了。\n\n少年将多年的心得交给了你。获得1个技能。" +
-                                      "\n\n临走时，你注意到了不对劲，少年是怎么察觉了你的到来的。转头发现少年已经消失了。",
-                        options: "继续上路");
-                    D.SetReward(Reward.FromGold(50));
-
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option => C);
-                    A[1].SetCost(new RunCostDetails(gold: 4));
-                    A[2].SetSelect(option => D);
-                    B.SetOperation(s =>
-                    {
-                        if (s.Flag == 1)
-                        {
-                            RunManager.Instance.Environment.Map.InsertRoom("后羿3");
-                            return BPass;
-                        }
-
-                        return A;
-                    });
-                    C[0].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.Map.InsertRoom("后羿3");
-                        return C2;
-                    });
-
-                    return A;
-                }),
-            
-            new(id:                                 "Room0055",
-                name:                               "后羿3",
-                description:                        "后羿3",
-                ladderBound:                        LadderIsHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new DialogCell(
-                            titleText: "后羿",
-                            detailedText: "你来到了很久之前来过的竹林，当时的练箭少年已经不在，你发现了他留给你的一本秘籍。\n\n得到《射落金乌》。")
-                        .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("射落金乌"), JingJie.YuanYing)); // 射落金乌
-            
-                    return A;
-                }),
-
-            new(id:                                 "Room0056",
-                name:                               "神农氏1",
-                description:                        "神农氏1",
-                ladderBound:                        LadderIsLianQiToZhuJi,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "神农",
-                        detailedText: "你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
-                        "给他展示运气抵御毒素的法门", "一口抢过来蘑菇", "选择仙草");
-                    A[1].SetCost(new RunCostDetails(mingYuan: 1));
-            
-                    Puzzle puzzle = new(
-                        description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
-                        condition: "剩余血量 大于 0",
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
-                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-                        {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                        }),
-                        kernel: new StageKernel(async d =>
-                        {
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-            
-                            if (d.Forced)
-                            {
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-                            else
-                            {
-                                if (d.Cancel)
-                                    return 0;
-            
-                                if (d.Turn < 6)
-                                    return 0;
-            
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-            
-                            if (d.Flag == 0)
-                                return d.Flag;
-            
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-                            
-                            d.Env.RecordResult(d.Flag);
-                            
-                            return d.Flag;
-                        })
-                    );
-                    
-                    PuzzleCell B = new(puzzle);
-                    DialogCell BPass = new DialogCell(
-                            titleText: "神农",
-                            detailedText: "少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    DialogCell C = new(
-                        titleText: "神农",
-                        detailedText: "你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
-                    DialogCell D = new DialogCell(
-                            titleText: "神农",
-                            detailedText: "你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    
-                    B.SetOperation(s =>
-                    {
-                        if (s.Flag == 1)
-                        {
-                            RunManager.Instance.Environment.Map.InsertRoom("神农氏2");
-                            return BPass;
-                        }
-                        return A;
-                    });
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.Map.InsertRoom("神农氏2");
-                        return C;
-                    });
-                    A[2].SetSelect(option => D);
-                    return A;
-                }),
-            
-            new(id:                                 "Room0057",
-                name:                               "神农氏2",
-                description:                        "神农氏2",
-                ladderBound:                        LadderIsJinDanToYuanYing,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    DialogCell A = new(
-                        titleText: "神农",
-                        detailedText: "你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个容光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
-                        "给他展示运气抵御毒素的法门", "你个外行，学别人采什么药，离这个蘑菇远一点", "这次我就选择仙草吧");
-                    A[1].SetCost(new RunCostDetails(mingYuan: 1));
-            
-                    Puzzle puzzle = new(
-                        description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
-                        condition: "剩余血量 大于 0",
-                        home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
-                        away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
-                        {
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                            RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
-                        }),
-                        kernel: new StageKernel(async d =>
-                        {
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
-            
-                            if (d.Forced)
-                            {
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-                            else
-                            {
-                                if (d.Cancel)
-                                    return 0;
-            
-                                if (d.Turn < 6)
-                                    return 0;
-            
-                                d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
-                            }
-            
-                            if (d.Flag == 0)
-                                return d.Flag;
-            
-                            await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
-                            
-                            d.Env.RecordResult(d.Flag);
-                            
-                            return d.Flag;
-                        })
-                    );
-                    
-                    PuzzleCell B = new(puzzle);
-                    DialogCell BPass = new DialogCell(
-                            titleText: "神农",
-                            detailedText: "少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    DialogCell C = new(
-                        titleText: "神农",
-                        detailedText: "你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-1");
-                    DialogCell D = new DialogCell(
-                            titleText: "神农",
-                            detailedText: "你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+1")
-                        .SetReward(Reward.FromMingYuan(1));
-                    
-                    B.SetOperation(s =>
-                    {
-                        if (s.Flag == 1)
-                        {
-                            RunManager.Instance.Environment.Map.InsertRoom("神农氏3");
-                            return BPass;
-                        }
-                        return A;
-                    });
-                    
-                    A[0].SetSelect(option => B);
-                    A[1].SetSelect(option =>
-                    {
-                        RunManager.Instance.Environment.Map.InsertRoom("神农氏3");
-                        return C;
-                    });
-                    A[2].SetSelect(option => D);
-                    return A;
-                }),
-            
-            new(id:                                 "Room0058",
-                name:                               "神农氏3",
-                description:                        "神农氏3",
-                ladderBound:                        LadderIsHuaShen,
-                difficultyBound:                    AllDifficulty,
-                withInPool:                         false,
-                create:                             (map, room) =>
-                {
-                    // DialogPanelDescriptor A = new DialogPanelDescriptor(
-                    //         titleText: "神农",
-                    //         detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
-                    //     .SetReward(new AddSkillReward(SkillEntry.FromNameOrId("百草集"), JingJie.YuanYing));
-                    DialogCell A = new DialogCell(
-                            titleText: "神农",
-                            detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。(未实现)");
-            
-                    return A;
-                }),
+            // new(id:                                 "Room0053",
+            //     name:                               "后羿1",
+            //     description:                        "后羿1",
+            //     ladderBound:                        LadderIsLianQiToZhuJi,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "后羿",
+            //             detailedText: "你看到了一个少年在幸苦的练习射箭，但是进度缓慢。你发现是因为少年天生视力不好。",
+            //             "给少年展示技术", "赠与少年一本秘籍", "告诉少年实话");
+            //         Puzzle puzzle = new(
+            //             description: "尝试帮助少年击中目标",
+            //             condition: "目标受到伤害",
+            //             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            //             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //             {
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //             }),
+            //             kernel: new StageKernel(async d =>
+            //             {
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
+            //
+            //                 if (d.Forced)
+            //                 {
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //                 else
+            //                 {
+            //                     if (d.Cancel)
+            //                         return 0;
+            //
+            //                     if (d.Turn < 6)
+            //                         return 0;
+            //
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //
+            //                 if (d.Flag == 0)
+            //                     return d.Flag;
+            //
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+            //                 
+            //                 d.Env.RecordResult(d.Flag);
+            //                 
+            //                 return d.Flag;
+            //             })
+            //         );
+            //
+            //         PuzzleCell B = new(puzzle);
+            //         DialogCell BPass = new DialogCell(
+            //             titleText: "后羿",
+            //             detailedText: "少年将你的招式记在了心里，又开始了自顾自的练习。",
+            //             options: "继续上路");
+            //         
+            //         RequireCell C = RequireCell.FromConstantDetailedText(
+            //             titleText:          "后羿",
+            //             detailedText:       "请提交一张牌",
+            //             requirements:            RunSkillQuery.AnySkill().Stack(1));
+            //
+            //         DialogCell CWin = new(
+            //             titleText: "后羿",
+            //             detailedText: "少年感谢你赠与的秘籍，已经准备好开始练习了。",
+            //             options: "继续上路");
+            //
+            //         DialogCell D =
+            //             new(
+            //                 titleText: "后羿",
+            //                 detailedText: "少年知道了自己永远也练不成一等一的弓术，哭着跑回家了。他父母不愿看着少年做无用功，却也狠不下来心打破少年的幻想。" +
+            //                               "感谢你告诉了少年实话。将少年的弓赠与了你。" +
+            //                               "\n你将弓卖掉换了些钱，继续上路了。",
+            //                 options: "获得2金");
+            //         D.SetReward(Reward.FromGold(2));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[2].SetSelect(option => D);
+            //         B.SetOperation(s =>
+            //         {
+            //             if (s.Flag == 1)
+            //             {
+            //                 RunManager.Instance.Environment.Map.InsertRoom("后羿2");
+            //                 return BPass;
+            //             }
+            //
+            //             return A;
+            //         });
+            //         C.SetSubmitOperation(cardPickerCell =>
+            //         {
+            //             if (!cardPickerCell.AllFulfilled())
+            //                 return A;
+            //
+            //             RunManager.Instance.Environment.Map.InsertRoom("后羿2");
+            //             return CWin;
+            //         });
+            //
+            //         return A;
+            //     }),
+            //
+            // new(id:                                 "Room0054",
+            //     name:                               "后羿2",
+            //     description:                        "后羿2",
+            //     ladderBound:                        LadderIsJinDanToYuanYing,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "后羿",
+            //             detailedText: "你之前见过的视力不好的少年，现在视力越来越弱了。甚至没能发现你的到来。",
+            //             "给少年展示更厉害的技术", "安慰少年（需要4金）", "告诉少年实话");
+            //         Puzzle puzzle = new(
+            //             description: "尝试帮助少年击中目标",
+            //             condition: "目标受到伤害",
+            //             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            //             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //             {
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //             }),
+            //             kernel: new StageKernel(async d =>
+            //             {
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
+            //
+            //                 if (d.Forced)
+            //                 {
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //                 else
+            //                 {
+            //                     if (d.Cancel)
+            //                         return 0;
+            //
+            //                     if (d.Turn < 6)
+            //                         return 0;
+            //
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //
+            //                 if (d.Flag == 0)
+            //                     return d.Flag;
+            //
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+            //                 
+            //                 d.Env.RecordResult(d.Flag);
+            //                 
+            //                 return d.Flag;
+            //             })
+            //         );
+            //
+            //         PuzzleCell B = new(puzzle);
+            //         DialogCell BPass = new DialogCell(
+            //             titleText: "后羿",
+            //             detailedText: "少年将你的招式记在了心里，又投入了奋不顾身的练习。",
+            //             options: "继续上路");
+            //         
+            //         DialogCell C = new(
+            //             titleText: "后羿",
+            //             detailedText: "你和少年讲起了故事。传闻有和非人之物战斗的剑士，在对决的生死关头，领悟了可以看清周围一切的招式，打败了对手。");
+            //         DialogCell C2 = new(
+            //             titleText: "后羿",
+            //             detailedText: "少年觉得你的故事逊爆了，如果去当说书人指定吃不上饭的那种。聊了过天后，表示自己要继续训练了。你看到少年过的清苦，于是留下了一些盘缠，失去4金。",
+            //             options: "继续上路");
+            //
+            //         DialogCell D = new(
+            //             titleText: "后羿",
+            //             detailedText: "你还在想怎么和少年开口时。少年突然开口道：表示自己其实知道大家一直在迁就自己，自己也应该承担起一些责任了。\n\n少年将多年的心得交给了你。获得1个技能。" +
+            //                           "\n\n临走时，你注意到了不对劲，少年是怎么察觉了你的到来的。转头发现少年已经消失了。",
+            //             options: "继续上路");
+            //         D.SetReward(Reward.FromGold(50));
+            //
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option => C);
+            //         A[1].SetCost(new RunCostDetails(gold: 4));
+            //         A[2].SetSelect(option => D);
+            //         B.SetOperation(s =>
+            //         {
+            //             if (s.Flag == 1)
+            //             {
+            //                 RunManager.Instance.Environment.Map.InsertRoom("后羿3");
+            //                 return BPass;
+            //             }
+            //
+            //             return A;
+            //         });
+            //         C[0].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.Map.InsertRoom("后羿3");
+            //             return C2;
+            //         });
+            //
+            //         return A;
+            //     }),
+            //
+            // new(id:                                 "Room0055",
+            //     name:                               "后羿3",
+            //     description:                        "后羿3",
+            //     ladderBound:                        LadderIsHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new DialogCell(
+            //                 titleText: "后羿",
+            //                 detailedText: "你来到了很久之前来过的竹林，当时的练箭少年已经不在，你发现了他留给你的一本秘籍。\n\n得到《射落金乌》。")
+            //             .SetReward(new AddSkillReward(Encyclopedia.SkillCategory.FromName("射落金乌"), JingJie.YuanYing)); // 射落金乌
+            //
+            //         return A;
+            //     }),
+            //
+            // new(id:                                 "Room0056",
+            //     name:                               "神农氏1",
+            //     description:                        "神农氏1",
+            //     ladderBound:                        LadderIsLianQiToZhuJi,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "神农",
+            //             detailedText: "你看见一个少年向你走来，一手拿着一个神采奕奕的仙草，另一手拿着一个可疑的蘑菇，向你说道，挑一个吃了吧。",
+            //             "给他展示运气抵御毒素的法门", "一口抢过来蘑菇", "选择仙草");
+            //         A[1].SetCost(new RunCostDetails(mingYuan: 1));
+            //
+            //         Puzzle puzzle = new(
+            //             description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
+            //             condition: "剩余血量 大于 0",
+            //             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            //             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //             {
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //             }),
+            //             kernel: new StageKernel(async d =>
+            //             {
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
+            //
+            //                 if (d.Forced)
+            //                 {
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //                 else
+            //                 {
+            //                     if (d.Cancel)
+            //                         return 0;
+            //
+            //                     if (d.Turn < 6)
+            //                         return 0;
+            //
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //
+            //                 if (d.Flag == 0)
+            //                     return d.Flag;
+            //
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+            //                 
+            //                 d.Env.RecordResult(d.Flag);
+            //                 
+            //                 return d.Flag;
+            //             })
+            //         );
+            //         
+            //         PuzzleCell B = new(puzzle);
+            //         DialogCell BPass = new DialogCell(
+            //                 titleText: "神农",
+            //                 detailedText: "少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         DialogCell C = new(
+            //             titleText: "神农",
+            //             detailedText: "你吃了可疑的蘑菇，感觉头痛欲裂\n\n命元-1");
+            //         DialogCell D = new DialogCell(
+            //                 titleText: "神农",
+            //                 detailedText: "你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         
+            //         B.SetOperation(s =>
+            //         {
+            //             if (s.Flag == 1)
+            //             {
+            //                 RunManager.Instance.Environment.Map.InsertRoom("神农氏2");
+            //                 return BPass;
+            //             }
+            //             return A;
+            //         });
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.Map.InsertRoom("神农氏2");
+            //             return C;
+            //         });
+            //         A[2].SetSelect(option => D);
+            //         return A;
+            //     }),
+            //
+            // new(id:                                 "Room0057",
+            //     name:                               "神农氏2",
+            //     description:                        "神农氏2",
+            //     ladderBound:                        LadderIsJinDanToYuanYing,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         DialogCell A = new(
+            //             titleText: "神农",
+            //             detailedText: "你又见到了那个少年，他又笑嘻嘻的向你走来，又是一手拿着一个容光满面的仙草，另一手拿着一个可疑的蘑菇，向你说道，这次你想吃哪个？",
+            //             "给他展示运气抵御毒素的法门", "你个外行，学别人采什么药，离这个蘑菇远一点", "这次我就选择仙草吧");
+            //         A[1].SetCost(new RunCostDetails(mingYuan: 1));
+            //
+            //         Puzzle puzzle = new(
+            //             description: "只要用法术治疗，就可以抵抗毒素产生的内伤，尝试帮助少年撑过6回合",
+            //             condition: "剩余血量 大于 0",
+            //             home: RunEntity.FromHardCoded(JingJie.LianQi, 14, 3),
+            //             away: RunEntity.FromHardCoded(JingJie.LianQi, 1000000, 3, new[]
+            //             {
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //                 RunSkill.FromEntry(Encyclopedia.SkillCategory.FromName("毒性")),
+            //             }),
+            //             kernel: new StageKernel(async d =>
+            //             {
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.WIL_COMMIT, d);
+            //
+            //                 if (d.Forced)
+            //                 {
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //                 else
+            //                 {
+            //                     if (d.Cancel)
+            //                         return 0;
+            //
+            //                     if (d.Turn < 6)
+            //                         return 0;
+            //
+            //                     d.Flag = d.Env.Home.Hp > 0 ? 1 : 2;
+            //                 }
+            //
+            //                 if (d.Flag == 0)
+            //                     return d.Flag;
+            //
+            //                 await d.Env.ClosureDict.SendEvent(StageClosureDict.DID_COMMIT, d);
+            //                 
+            //                 d.Env.RecordResult(d.Flag);
+            //                 
+            //                 return d.Flag;
+            //             })
+            //         );
+            //         
+            //         PuzzleCell B = new(puzzle);
+            //         DialogCell BPass = new DialogCell(
+            //                 titleText: "神农",
+            //                 detailedText: "少年吃了可疑的蘑菇，幸好可以依靠你的功法抵挡毒性。\n\n于是你吃了仙草感觉身上的伤势轻了一些。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         DialogCell C = new(
+            //             titleText: "神农",
+            //             detailedText: "你又一次吃下了可疑的蘑菇，感觉五脏俱焚\n\n命元-1");
+            //         DialogCell D = new DialogCell(
+            //                 titleText: "神农",
+            //                 detailedText: "你吃了仙草感觉治愈了你多年的旧伤，继续上路了。\n\n命元+1")
+            //             .SetReward(Reward.FromMingYuan(1));
+            //         
+            //         B.SetOperation(s =>
+            //         {
+            //             if (s.Flag == 1)
+            //             {
+            //                 RunManager.Instance.Environment.Map.InsertRoom("神农氏3");
+            //                 return BPass;
+            //             }
+            //             return A;
+            //         });
+            //         
+            //         A[0].SetSelect(option => B);
+            //         A[1].SetSelect(option =>
+            //         {
+            //             RunManager.Instance.Environment.Map.InsertRoom("神农氏3");
+            //             return C;
+            //         });
+            //         A[2].SetSelect(option => D);
+            //         return A;
+            //     }),
+            //
+            // new(id:                                 "Room0058",
+            //     name:                               "神农氏3",
+            //     description:                        "神农氏3",
+            //     ladderBound:                        LadderIsHuaShen,
+            //     difficultyBound:                    AllDifficulty,
+            //     withInPool:                         false,
+            //     create:                             (map, room) =>
+            //     {
+            //         // DialogPanelDescriptor A = new DialogPanelDescriptor(
+            //         //         titleText: "神农",
+            //         //         detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。")
+            //         //     .SetReward(new AddSkillReward(SkillEntry.FromNameOrId("百草集"), JingJie.YuanYing));
+            //         DialogCell A = new DialogCell(
+            //                 titleText: "神农",
+            //                 detailedText: "故地重游，故人已经不在，你来到了他的墓前面，上面写着：神农氏之墓，他的后人说他给你留下来了一些东西。\n\n得到《百草集》。(未实现)");
+            //
+            //         return A;
+            //     }),
             
             #endregion
 

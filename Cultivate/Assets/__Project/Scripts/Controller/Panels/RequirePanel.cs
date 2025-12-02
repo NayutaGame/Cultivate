@@ -49,9 +49,6 @@ public class RequirePanel : Panel
         RunManager.Instance.Environment.RequirementSwapNeuron.Add(RequirementSwapStaging);
         
         RunManager.Instance.Environment.SkillMovedNeuron.Add(RefreshContentText);
-        
-        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Add(HighlightQualifiers);
-        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Add(UnhighlightQualifiers);
     }
 
     private void OnDisable()
@@ -64,9 +61,6 @@ public class RequirePanel : Panel
         RunManager.Instance.Environment.RequirementSwapNeuron.Remove(RequirementSwapStaging);
         
         RunManager.Instance.Environment.SkillMovedNeuron.Remove(RefreshContentText);
-        
-        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Remove(HighlightQualifiers);
-        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Remove(UnhighlightQualifiers);
     }
 
     private void RefreshContentText(SkillMovedDetails d)
@@ -90,32 +84,6 @@ public class RequirePanel : Panel
     private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ConfirmDeckSelectionsProcedure();
-    }
-    
-    private void HighlightQualifiers(Predicate<RunSkill> pred)
-    {
-        Requirements.TraversalActive().Do(Highlight);
-
-        void Highlight(SlotView view)
-        {
-            RequirementSlot slot = view.Get<RequirementSlot>();
-            if (slot == null || slot.Skill == null || !pred(slot.Skill))
-                return;
-            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
-        }
-    }
-
-    private void UnhighlightQualifiers()
-    {
-        Requirements.TraversalActive().Do(Unhighlight);
-
-        void Unhighlight(SlotView view)
-        {
-            RequirementSlot slot = view.Get<RequirementSlot>();
-            if (slot == null)
-                return;
-            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
-        }
     }
 
     #region MoveSkillRelated

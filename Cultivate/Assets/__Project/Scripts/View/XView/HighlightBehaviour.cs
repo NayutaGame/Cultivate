@@ -8,8 +8,9 @@ public class HighlightBehaviour : XBehaviour
 {
     [SerializeField] private Image EffectImage;
     private Material _outlineMaterial;
-    private Tween _highlightHandle;
     private static readonly int OuterOutlineFade = Shader.PropertyToID("_OuterOutlineFade");
+    
+    private Tween _handle;
     
     private bool _highlight;
     public bool IsHighlighted => _highlight;
@@ -31,9 +32,9 @@ public class HighlightBehaviour : XBehaviour
         if (_highlight == highlight) return;
         _highlight = highlight;
         
-        _highlightHandle?.Kill();
-        _highlightHandle = DOTween.To(GetOutlineFade, SetOutlineFade, _highlight ? 1 : 0, 0.3f).SetEase(Ease.InOutQuad);
-        _highlightHandle.SetAutoKill().Restart();
+        _handle?.Kill();
+        _handle = DOTween.To(GetOutlineFade, SetOutlineFade, _highlight ? 1 : 0, 0.3f).SetEase(Ease.InOutQuad);
+        _handle.SetAutoKill().Restart();
     }
 
     private float GetOutlineFade() => _outlineMaterial.GetFloat(OuterOutlineFade);
@@ -41,7 +42,7 @@ public class HighlightBehaviour : XBehaviour
 
     private void OnDestroy()
     {
-        _highlightHandle?.Kill();
+        _handle?.Kill();
         if (_outlineMaterial != null)
         {
             Destroy(_outlineMaterial);

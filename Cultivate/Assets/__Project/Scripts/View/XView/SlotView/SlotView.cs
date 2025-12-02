@@ -2,9 +2,8 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 
-public class SlotView : XView
+public abstract class SlotView : XView
 {
     public static readonly int ANY = -1;
     public static readonly int FREE = 0;
@@ -16,8 +15,10 @@ public class SlotView : XView
     private ListView _parentListView;
     
     [SerializeField] private bool _useGrabber = true;
+    
     [SerializeField] public Configuration IdleConfiguration = new(localScale: Vector3.one);
     [SerializeField] public Configuration HoverConfiguration = new(localScale: 1.2f * Vector3.one);
+    
     private bool _allowHover;
     private bool _allowDrag;
     
@@ -132,46 +133,6 @@ public class SlotView : XView
             }
         }
     }
-
-    private Tween EnterIdle()
-        => DOTween.Sequence()
-            .Append(GoToConfiguration(IdleConfiguration));
-
-    private Tween EnterHover()
-        => DOTween.Sequence()
-            .Append(GoToConfiguration(HoverConfiguration));
-
-    private Tween EnterFollow()
-        => DOTween.Sequence()
-            .Append(new FollowAnimation(GetContentView().GetRect(), GetRect()).GetHandle());
-
-    private Tween EnterIdleUseGrabber()
-        => DOTween.Sequence()
-            .AppendCallback(GrabberRelease)
-            .Append(GoToConfiguration(IdleConfiguration));
-
-    private Tween EnterHoverUseGrabber()
-        => DOTween.Sequence()
-            .AppendCallback(GrabberSetHover)
-            .Append(GoToConfiguration(HoverConfiguration));
-
-    private Tween EnterFollowUseGrabber()
-        => DOTween.Sequence()
-            .AppendCallback(GrabberSetDrag)
-            .Append(new FollowAnimation(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
-
-    private Tween EnterFree()
-        => DOTween.Sequence()
-            .AppendCallback(() => GetInteractBehaviour().SetInteractable(false));
-
-    private Tween ExitFree()
-        => DOTween.Sequence()
-            .AppendCallback(() => GetInteractBehaviour().SetInteractable(true));
-
-    private Tween GoToConfiguration(Configuration configuration)
-    {
-        return new GoToConfigurationAnimation(GetRect(), GetContentView().GetRect(), configuration).GetHandle();
-    }
     
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)
     {
@@ -226,5 +187,45 @@ public class SlotView : XView
     private void OnDisable()
     {
         GrabberRelease();
+    }
+
+    protected virtual Tween EnterIdle()
+        => DOTween.Sequence()
+            .Append(GoToConfiguration(IdleConfiguration));
+
+    protected virtual Tween EnterHover()
+        => DOTween.Sequence()
+            .Append(GoToConfiguration(HoverConfiguration));
+
+    protected virtual Tween EnterFollow()
+        => DOTween.Sequence()
+            .Append(new FollowAnimation(GetContentView().GetRect(), GetRect()).GetHandle());
+
+    protected virtual Tween EnterIdleUseGrabber()
+        => DOTween.Sequence()
+            .AppendCallback(GrabberRelease)
+            .Append(GoToConfiguration(IdleConfiguration));
+
+    protected virtual Tween EnterHoverUseGrabber()
+        => DOTween.Sequence()
+            .AppendCallback(GrabberSetHover)
+            .Append(GoToConfiguration(HoverConfiguration));
+
+    protected virtual Tween EnterFollowUseGrabber()
+        => DOTween.Sequence()
+            .AppendCallback(GrabberSetDrag)
+            .Append(new FollowAnimation(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
+
+    protected virtual Tween EnterFree()
+        => DOTween.Sequence()
+            .AppendCallback(() => GetInteractBehaviour().SetInteractable(false));
+
+    protected virtual Tween ExitFree()
+        => DOTween.Sequence()
+            .AppendCallback(() => GetInteractBehaviour().SetInteractable(true));
+
+    protected virtual Tween GoToConfiguration(Configuration configuration)
+    {
+        return new GoToConfigurationAnimation(GetRect(), GetContentView().GetRect(), configuration).GetHandle();
     }
 }

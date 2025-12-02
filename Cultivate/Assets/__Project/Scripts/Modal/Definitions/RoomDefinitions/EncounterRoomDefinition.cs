@@ -6,7 +6,7 @@ public class EncounterRoomDefinition : RoomDefinition
 {
     public override LegacyRoomEntry Draw(Map map, Room room)
     {
-        map.RoomPool.TryPopItem(out LegacyRoomEntry entry, pred: e => e.CanCreate(map, room));
+        RunManager.Instance.Environment.RoomPool.TryPopItem(out LegacyRoomEntry entry, pred: e => e.CanCreate(map, room));
         return entry;
     }
 

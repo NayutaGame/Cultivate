@@ -9,21 +9,6 @@ public class BuyButton : Button4State
     [SerializeField] private Image IdleIcon;
     [SerializeField] private Image HoverIcon;
     [SerializeField] private TMP_Text PriceText;
-    
-    protected override void AwakeFunction()
-    {
-        base.AwakeFunction();
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
 
     protected override void JoinHoverTween(Sequence seq)
     {

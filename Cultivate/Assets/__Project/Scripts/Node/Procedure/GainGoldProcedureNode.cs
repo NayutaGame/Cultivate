@@ -2,7 +2,7 @@
 using PuppyDragon.uNody;
 using UnityEngine;
 
-[NodeWidth(300)]
+[NodeWidth(200)]
 [CreateNodeMenu("Procedure/Gain Gold", -10, true)]
 public class GainGoldProcedureNode : ProcedureNode
 {

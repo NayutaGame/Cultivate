@@ -132,18 +132,12 @@ public class DeckPanel : Panel
     {
         RunManager.Instance.Environment.ResimulateNeuron.Add(PlayerEntity.OnFieldChange);
         
-        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Add(HighlightQualifiers);
-        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Add(UnhighlightQualifiers);
-        
         CharacterIconView.Refresh();
     }
 
     private void OnDisable()
     {
         RunManager.Instance.Environment.ResimulateNeuron.Remove(PlayerEntity.OnFieldChange);
-        
-        CanvasManager.Instance.RunCanvas.HighlightQualifiersNeuron.Remove(HighlightQualifiers);
-        CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Remove(UnhighlightQualifiers);
     }
 
     // extra views
@@ -170,50 +164,6 @@ public class DeckPanel : Panel
     private void InvokeUnhighlightQualifiers(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.RunCanvas.UnhighlightQualifiersNeuron.Invoke();
-    }
-
-    private void HighlightQualifiers(Predicate<RunSkill> pred)
-    {
-        PlayerEntity.FieldView.TraversalActive().Do(HighlightSlot);
-        HandView.TraversalActive().Do(HighlightSkill);
-        
-        void HighlightSkill(SlotView view)
-        {
-            RunSkill runSkill = view.Get<RunSkill>();
-            if (runSkill == null || !pred(runSkill))
-                return;
-            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
-        }
-        
-        void HighlightSlot(SlotView view)
-        {
-            SkillSlot skillSlot = view.Get<SkillSlot>();
-            if (skillSlot == null || skillSlot.Skill == null || !pred(skillSlot.Skill))
-                return;
-            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(true);
-        }
-    }
-
-    private void UnhighlightQualifiers()
-    {
-        PlayerEntity.FieldView.TraversalActive().Do(UnhighlightSlot);
-        HandView.TraversalActive().Do(UnhighlightSkill);
-        
-        void UnhighlightSkill(SlotView view)
-        {
-            RunSkill runSkill = view.Get<RunSkill>();
-            if (runSkill == null)
-                return;
-            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
-        }
-        
-        void UnhighlightSlot(SlotView view)
-        {
-            SkillSlot skillSlot = view.Get<SkillSlot>();
-            if (skillSlot == null)
-                return;
-            view.GetContentView().GetBehaviour<HighlightBehaviour>().SetHighlight(false);
-        }
     }
 
     private void RemoveMergePreresult(InteractBehaviour from, PointerEventData d)

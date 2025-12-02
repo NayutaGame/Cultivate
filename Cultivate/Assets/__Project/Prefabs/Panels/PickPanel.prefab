@@ -520,7 +520,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (1)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -622,7 +622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (8)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -724,7 +724,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (2)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -826,7 +826,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (3)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -928,7 +928,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (7)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -1030,7 +1030,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (5)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -1132,7 +1132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (9)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -1234,7 +1234,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -1453,7 +1453,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (6)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x
@@ -1555,7 +1555,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6697213150715054979, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Name
-      value: ArbitraryPickerSkillView (4)
+      value: PickSkillView
       objectReference: {fileID: 0}
     - target: {fileID: 6765552398234588295, guid: 771483816cec4e34f917e88fcdc6dd71, type: 3}
       propertyPath: m_Pivot.x

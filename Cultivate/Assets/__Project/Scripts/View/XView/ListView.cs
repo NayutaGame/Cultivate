@@ -400,7 +400,7 @@ public class ListView : XView
         return 0;
     }
 
-    public void RecoverDelegatingView(SlotView slotView)
+    public void RecoverSlotView(SlotView slotView)
     {
         slotView.GetContentView().GetRect().SetParent(_viewContainer);
         int? index = IndexFromView(slotView);

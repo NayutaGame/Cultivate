@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EmphasizableSlotView : SlotView
+public class EmphasizableSlotView : ScaleSlotView
 {
     [Header("Emphasis Animation")]
     [SerializeField] private float _emphasizedScale = 1.5f;

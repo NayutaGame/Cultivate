@@ -13,9 +13,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
     [SerializeReference] private Level[] _levels;
     [SerializeField] private int _levelIndex;
     [SerializeField] private int _stepIndex;
-    [SerializeReference] public EntityPool EntityPool;
-    [SerializeReference] public RoomPool RoomPool;
-    [SerializeReference] public RoomPool InsertedRoomPool;
 
     #region Core
     
@@ -33,10 +30,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     public void Init(Profile profile, RunEnvironment env)
     {
-        InitEntityPool();
-        InitAdventurePool(env);
-        InsertedRoomPool = new();
-
         CompileLevels(_entry.Levels, profile, env);
 
         _stepIndex = 0;
@@ -55,23 +48,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
             .ToArray();
     }
 
-    private void InitEntityPool()
-    {
-        EntityPool = new();
-        int difficulty = RunManager.Instance.Environment.GetRunConfig().GetDifficulty();
-        EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.FilterObj(
-            e => e.IsInPool() && e.GetAllowedDifficulty().Contains(difficulty)));
-        EntityPool.Shuffle();
-    }
-
-    private void InitAdventurePool(RunEnvironment env)
-    {
-        RoomPool = new();
-        int difficulty = env.GetRunConfig().GetDifficulty();
-        RoomPool.Populate(Encyclopedia.LegacyRoomCategory.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
-        RoomPool.Shuffle();
-    }
-
     public void NextLevel()
     {
         GetCurrRoom().SetState(Room.RoomState.Past);
@@ -85,14 +61,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
         GetCurrRoom().SetState(Room.RoomState.Past);
         
         _stepIndex++;
-    }
-
-    public void InsertRoom(string roomName)
-        => InsertRoom(Encyclopedia.LegacyRoomCategory.FromName(roomName));
-    public void InsertRoom(LegacyRoomEntry roomEntry)
-    {
-        InsertedRoomPool.Populate(roomEntry);
-        InsertedRoomPool.Shuffle();
     }
 
     public ICellAdapter CreateCellFromCurrRoom()

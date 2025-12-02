@@ -9,11 +9,7 @@ public class AdventureRoomDefinition : RoomDefinition
         Predicate<LegacyRoomEntry> pred = e => e.CanCreate(map, room);
         LegacyRoomEntry entry;
         
-        if (map.InsertedRoomPool.TryPopItem(out entry, pred: pred))
-        {
-            
-        }
-        else if (map.RoomPool.TryPopItem(out entry, pred: pred))
+        if (RunManager.Instance.Environment.RoomPool.TryPopItem(out entry, pred: pred))
         {
             
         }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3fd28a86a4c535a42bc010b79cb91866
+guid: dbaf6e1f2eab18f4889a8979c164bb15
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,7 +93,7 @@ ScriptedImporter:
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: Frame
+  - name: "\u53C2\u8003"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -103,8 +103,8 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 1920
-      height: 866
-    spriteID: 2906dde575b40a2449987b27ea4db598
+      height: 1080
+    spriteID: 36b795670793dee45bebfb25dea37526
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -114,8 +114,8 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 4, y: 4}
-    spritePosition: {x: 0, y: 98}
-  - name: ListViewRef
+    spritePosition: {x: 0, y: 0}
+  - name: "\u62AB\u98CE"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -123,10 +123,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 878
-      width: 1119
-      height: 832
-    spriteID: 55f0a83b2b38516458747665a8722a5e
+      y: 1092
+      width: 1588
+      height: 1080
+    spriteID: 3cc86c3f60ca7fe46a8f9c596881e273
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -135,20 +135,20 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 4, y: 878}
-    spritePosition: {x: 136, y: 125}
-  - name: IllustrationPlaceholder
+    uvTransform: {x: 4, y: 1092}
+    spritePosition: {x: 332, y: 0}
+  - name: "\u573A\u666F"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 1131
-      y: 878
-      width: 438
-      height: 232
-    spriteID: 3cc7112f7a89f0d45be0f04f7483fb22
+      x: 4
+      y: 2180
+      width: 1154
+      height: 1080
+    spriteID: e52c4fc61aa661e46ad59f00eb2e3fb9
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -157,74 +157,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 1131, y: 878}
-    spritePosition: {x: 1373, y: 700}
-  - name: TitleTextRef
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 1865
-      y: 878
-      width: 70
-      height: 151
-    spriteID: b120b1b38e3eb4c479881303b670057e
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 1865, y: 878}
-    spritePosition: {x: 1807, y: 446}
-  - name: ContentTextRef
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 1577
-      y: 878
-      width: 280
-      height: 172
-    spriteID: ecb7a85e6823f584db98152d52678f81
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 1577, y: 878}
-    spritePosition: {x: 1418, y: 435}
-  - name: ButtonRef
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 1131
-      y: 1118
-      width: 376
-      height: 54
-    spriteID: df30e3e3b68ec5f448796f61842515e6
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 1131, y: 1118}
-    spritePosition: {x: 1408, y: 199}
+    uvTransform: {x: 4, y: 2180}
+    spritePosition: {x: 1, y: 0}
   characterData:
     bones: []
     parts: []
@@ -272,17 +206,6 @@ ScriptedImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
-  - name: WebGL
-    overridden: 0
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    androidETC2FallbackOverride: 0
   mosaicLayers: 1
   characterMode: 1
   documentPivot: {x: 0, y: 0}
@@ -299,63 +222,33 @@ ScriptedImporter:
   resliceFromLayer: 0
   mosaicPSDLayers: []
   rigPSDLayers:
-  - name: Frame
-    spriteName: Frame
+  - name: "\u53C2\u8003"
+    spriteName: "\u53C2\u8003"
     isGroup: 0
     parentIndex: -1
-    spriteID: 2906dde575b40a2449987b27ea4db598
-    layerID: 425
+    spriteID: 36b795670793dee45bebfb25dea37526
+    layerID: 253
     mosaicPosition: {x: 4, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: ListViewRef
-    spriteName: ListViewRef
+  - name: "\u62AB\u98CE"
+    spriteName: "\u62AB\u98CE"
     isGroup: 0
     parentIndex: -1
-    spriteID: 55f0a83b2b38516458747665a8722a5e
-    layerID: 638
-    mosaicPosition: {x: 4, y: 878}
+    spriteID: 3cc86c3f60ca7fe46a8f9c596881e273
+    layerID: 1290
+    mosaicPosition: {x: 4, y: 1092}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: IllustrationPlaceholder
-    spriteName: IllustrationPlaceholder
+  - name: "\u573A\u666F"
+    spriteName: "\u573A\u666F"
     isGroup: 0
     parentIndex: -1
-    spriteID: 3cc7112f7a89f0d45be0f04f7483fb22
-    layerID: 1610
-    mosaicPosition: {x: 1131, y: 878}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: TitleTextRef
-    spriteName: TitleTextRef
-    isGroup: 0
-    parentIndex: -1
-    spriteID: b120b1b38e3eb4c479881303b670057e
-    layerID: 248
-    mosaicPosition: {x: 1865, y: 878}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: ContentTextRef
-    spriteName: ContentTextRef
-    isGroup: 0
-    parentIndex: -1
-    spriteID: ecb7a85e6823f584db98152d52678f81
-    layerID: 249
-    mosaicPosition: {x: 1577, y: 878}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: ButtonRef
-    spriteName: ButtonRef
-    isGroup: 0
-    parentIndex: -1
-    spriteID: df30e3e3b68ec5f448796f61842515e6
-    layerID: 253
-    mosaicPosition: {x: 1131, y: 1118}
+    spriteID: e52c4fc61aa661e46ad59f00eb2e3fb9
+    layerID: 2238
+    mosaicPosition: {x: 4, y: 2180}
     flatten: 0
     isImported: 1
     isVisible: 1

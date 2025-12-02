@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 7613878159742721782}
   - component: {fileID: 5856972531030295910}
   m_Layer: 5
-  m_Name: ArbitraryCardPickerSkillView
+  m_Name: PickSkillView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

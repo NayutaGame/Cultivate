@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
-    public TMP_Text TitleText;
-    public TMP_Text ContentText;
     public ListView ListView;
-    public Image Illustration;
     public Button4State ExitButton;
 
     private Address _address;
@@ -41,9 +38,6 @@ public class ShopPanel : Panel
     {
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
         ShopCell pd = cellAdapter.AsCell() as ShopCell;
-        TitleText.text = pd.GetTitle();
-        ContentText.text = pd.GetContentText();
-        Illustration.sprite = pd.GetSprite().Sprite;
 
         ListView.Sync();
     }
