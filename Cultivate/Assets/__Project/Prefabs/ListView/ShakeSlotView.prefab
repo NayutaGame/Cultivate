@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 6359906681201007939}
   - component: {fileID: 6359906681201007942}
   - component: {fileID: 6359906681201007941}
-  - component: {fileID: 6359906681201007943}
+  - component: {fileID: 8072405642295666031}
   - component: {fileID: 6359906681201007944}
   m_Layer: 5
-  m_Name: SlotView100
+  m_Name: ShakeSlotView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6359906681201007943
+--- !u!114 &8072405642295666031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,18 +87,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6359906681201007938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7de7a48b043363843ae08717a04584cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 089836b3e1b726e4c904653d25c94951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 6359906681201007944}
   _contentView: {fileID: 0}
-  _useGrabber: 1
-  IdleConfiguration:
-    LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1, y: 1, z: 1}
-  HoverConfiguration:
-    LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1, y: 1, z: 1}
+  _useGrabber: 0
 --- !u!114 &6359906681201007944
 MonoBehaviour:
   m_ObjectHideFlags: 0

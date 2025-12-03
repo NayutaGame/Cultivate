@@ -17,6 +17,8 @@ public class GachaCell : Cell
     private int _price;
     public int GetPrice() => _price;
 
+    private bool _picking;
+
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Guide",                      thisObject => ((GachaCell)thisObject).GetGuideDescriptor() },
@@ -31,6 +33,7 @@ public class GachaCell : Cell
         _priceMultiplier = priceMultiplier;
         _drawStrategies = drawStrategies ?? DefaultDrawStrategies();
         _preferredJingJie = preferredJingJie ?? JingJie.LianQi;
+        _picking = false;
     }
 
     public static GachaCell FromPriceMultiplier(float priceMultiplier)
@@ -64,7 +67,7 @@ public class GachaCell : Cell
 
         GainSkillBuilder b = new();
         b.Draw(_drawStrategies, _preferredJingJie);
-        b.GainingSkills.Do(g => _items.Add(new(SkillGhost.FromGainingSkill(g))));
+        b.GainingSkills.Do(g => _items.Add(new(SkillGhost.FromGainingSkill(g), GachaProcedure)));
 
         _price = 0;
 
@@ -75,19 +78,30 @@ public class GachaCell : Cell
     }
 
     public bool IsAffordable()
-        => RunManager.Instance.Environment.GetGold().Curr < _price;
+        => RunManager.Instance.Environment.GetGold().Curr >= _price;
 
-    public void GachaProcedure()
+    public void Shuffle()
     {
-        if (_items.Count() <= 0)
+        _items.Shuffle();
+    }
+
+    public bool CanCall()
+    {
+        return !ItemsIsEmpty && IsAffordable() && !_picking;
+    }
+
+    public void CallProcedure()
+    {
+        if (!CanCall())
             return;
+        _picking = true;
+        RunManager.Instance.Environment.LoseGoldProcedure(_price);
+    }
 
-        if (IsAffordable())
-            return;
-
-        RunManager.Instance.Environment.SetDGoldProcedure(-_price);
-
-        int gachaIndex = RandomManager.Range(0, _items.Count());
+    private void GachaProcedure(GachaItem gachaItem)
+    {
+        _picking = false;
+        int gachaIndex = _items.IndexOf(gachaItem);
         SkillGhost skillGhost = _items[gachaIndex].Skill;
 
         GachaDetails details = new(skillGhost, gachaIndex);

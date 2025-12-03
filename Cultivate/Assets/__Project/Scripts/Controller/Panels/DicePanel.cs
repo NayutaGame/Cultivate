@@ -43,8 +43,8 @@ public class DicePanel : Panel
         bool hasAtLeastOneGainRow = cell.HasAtLeastOneGainRow();
         
         // 按钮状态
-        RollButton.SetStateToInactiveFrom(isRolled);
-        ForwardButton.SetStateToInactiveFrom(!isRolled);
+        RollButton.SetStateToActiveIf(!isRolled);
+        ForwardButton.SetStateToActiveIf(isRolled);
 
         DiceDescription.text = cell.DiceDescription;
         

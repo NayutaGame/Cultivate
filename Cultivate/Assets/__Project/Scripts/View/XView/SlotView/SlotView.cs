@@ -16,11 +16,8 @@ public abstract class SlotView : XView
     
     [SerializeField] private bool _useGrabber = true;
     
-    [SerializeField] public Configuration IdleConfiguration = new(localScale: Vector3.one);
-    [SerializeField] public Configuration HoverConfiguration = new(localScale: 1.2f * Vector3.one);
-    
-    private bool _allowHover;
-    private bool _allowDrag;
+    [SerializeField] private bool _allowHover;
+    [SerializeField] private bool _allowDrag;
     
     public XView GetContentView() => _contentView;
     public void SetContentView(XView contentView)
@@ -189,43 +186,19 @@ public abstract class SlotView : XView
         GrabberRelease();
     }
 
-    protected virtual Tween EnterIdle()
-        => DOTween.Sequence()
-            .Append(GoToConfiguration(IdleConfiguration));
+    protected abstract Tween EnterIdle();
 
-    protected virtual Tween EnterHover()
-        => DOTween.Sequence()
-            .Append(GoToConfiguration(HoverConfiguration));
+    protected abstract Tween EnterHover();
 
-    protected virtual Tween EnterFollow()
-        => DOTween.Sequence()
-            .Append(new FollowAnimation(GetContentView().GetRect(), GetRect()).GetHandle());
+    protected abstract Tween EnterFollow();
 
-    protected virtual Tween EnterIdleUseGrabber()
-        => DOTween.Sequence()
-            .AppendCallback(GrabberRelease)
-            .Append(GoToConfiguration(IdleConfiguration));
+    protected abstract Tween EnterIdleUseGrabber();
 
-    protected virtual Tween EnterHoverUseGrabber()
-        => DOTween.Sequence()
-            .AppendCallback(GrabberSetHover)
-            .Append(GoToConfiguration(HoverConfiguration));
+    protected abstract Tween EnterHoverUseGrabber();
 
-    protected virtual Tween EnterFollowUseGrabber()
-        => DOTween.Sequence()
-            .AppendCallback(GrabberSetDrag)
-            .Append(new FollowAnimation(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
+    protected abstract Tween EnterFollowUseGrabber();
 
-    protected virtual Tween EnterFree()
-        => DOTween.Sequence()
-            .AppendCallback(() => GetInteractBehaviour().SetInteractable(false));
+    protected abstract Tween EnterFree();
 
-    protected virtual Tween ExitFree()
-        => DOTween.Sequence()
-            .AppendCallback(() => GetInteractBehaviour().SetInteractable(true));
-
-    protected virtual Tween GoToConfiguration(Configuration configuration)
-    {
-        return new GoToConfigurationAnimation(GetRect(), GetContentView().GetRect(), configuration).GetHandle();
-    }
+    protected abstract Tween ExitFree();
 }

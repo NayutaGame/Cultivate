@@ -147,5 +147,16 @@ namespace CLLibrary
         {
             foreach (T e in enumerable) yield return func(e);
         }
+
+        public static void Shuffle<T>(this List<T> list)
+        {
+            for (int i = list.Count; i > 0; i--)
+            {
+                int r = RandomManager.Range(0, i);
+                T item = list[r];
+                list.RemoveAt(r);
+                list.Add(item);
+            }
+        }
     }
 }

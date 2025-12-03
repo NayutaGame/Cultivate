@@ -106,7 +106,6 @@ public class DeckPanel : Panel
 
     private void RefreshLayoutSpacing()
     {
-        HorizontalLayoutGroup horizontalLayoutGroup = HandView.GetLayoutGroup() as HorizontalLayoutGroup;
         float L = HandView.GetRect().rect.width;
         float l = 150;
         int n = HandView.GetCount();
@@ -115,7 +114,7 @@ public class DeckPanel : Panel
             s = 0;
         else
             s = -(n * l - L) / (n - 1);
-        horizontalLayoutGroup.spacing = s;
+        HandViewLayout.spacing = s;
     }
 
     protected override Animator InitAnimator()
@@ -229,8 +228,7 @@ public class DeckPanel : Panel
         _animationHandle = DOTween.Sequence()
             .AppendCallback(() =>
             {
-                (HandView.GetLayoutGroup() as HorizontalLayoutGroup).spacing = -170;
-                // HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 0);
+                HandViewLayout.spacing = -170;
                 HandView.RefreshPivotsAsync();
             })
             .AppendInterval(0.2f)
@@ -239,7 +237,6 @@ public class DeckPanel : Panel
                 HandView.Get<SkillInventory>().SortByComparisonId(0);
                 HandView.Refresh();
                 RefreshLayoutSpacing();
-                // HandViewPivotTransform.SetSizeWithCurrentAnchors(0, 1134);
                 HandView.RefreshPivotsAsync();
             });
         

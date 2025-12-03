@@ -1,8 +1,12 @@
 
 using DG.Tweening;
+using UnityEngine;
 
 public class ScaleSlotView : SlotView
 {
+    [SerializeField] public Configuration IdleConfiguration = new(localScale: Vector3.one);
+    [SerializeField] public Configuration HoverConfiguration = new(localScale: 1.2f * Vector3.one);
+    
     protected override Tween EnterIdle()
         => DOTween.Sequence()
             .Append(GoToConfiguration(IdleConfiguration));

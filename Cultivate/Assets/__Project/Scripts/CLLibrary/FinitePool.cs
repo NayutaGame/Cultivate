@@ -37,13 +37,7 @@ namespace CLLibrary
 
         public void Shuffle()
         {
-            for (int i = _list.Count; i > 0; i--)
-            {
-                int r = RandomManager.Range(0, i);
-                T item = _list[r];
-                _list.RemoveAt(r);
-                _list.Add(item);
-            }
+            _list.Shuffle();
         }
 
         public bool TryPeekItem(out T item, Predicate<T> pred = null)

@@ -185,7 +185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4029930709706735648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -261,7 +261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4556489312145476262
 RectTransform:
   m_ObjectHideFlags: 0
@@ -472,7 +472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6523534633939669282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -548,7 +548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5478348696222768498
 RectTransform:
   m_ObjectHideFlags: 0
@@ -745,6 +745,7 @@ MonoBehaviour:
   BuyButton: {fileID: 5477462644908297573}
   ExitButton: {fileID: 275476632247214746}
   ListView: {fileID: 676187879957044586}
+  HLayout: {fileID: 706954706198381757}
 --- !u!1001 &409264250929305617
 PrefabInstance:
   m_ObjectHideFlags: 0

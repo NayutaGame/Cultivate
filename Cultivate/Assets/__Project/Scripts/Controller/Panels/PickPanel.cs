@@ -46,7 +46,7 @@ public class PickPanel : Panel
                             $"\n可选择{cell.PickCardCountRange.Start}~{cell.PickCardCountRange.End}张" +
                             $"\n已选择 {_selections.Count} 张";
         
-        ConfirmButton.SetStateToInactiveFrom(!cell.PickCardCountRange.Contains(_selections.Count));
+        ConfirmButton.SetStateToActiveIf(cell.PickCardCountRange.Contains(_selections.Count));
         
         SkillListView.Sync();
     }

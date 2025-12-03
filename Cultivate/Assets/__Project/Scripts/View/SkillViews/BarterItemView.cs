@@ -37,7 +37,7 @@ public class BarterItemView : XView
         LeftSkillView.Refresh();
         RightSkillView.Refresh();
 
-        ExchangeButton.SetStateToInactiveFrom(!barterItem.Affordable());
+        ExchangeButton.SetStateToActiveIf(barterItem.Affordable());
     }
 
     private void Exchange(InteractBehaviour ib, PointerEventData d)

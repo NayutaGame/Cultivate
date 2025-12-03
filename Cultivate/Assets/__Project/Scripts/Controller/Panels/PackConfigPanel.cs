@@ -154,7 +154,7 @@ public class PackConfigPanel : PopupPanel
 
     private void RefreshConfirmButton()
     {
-        ConfirmButton.SetStateToInactiveFrom(!AppManager.Instance.ConfigManager.IsConfigurationValid());
+        ConfirmButton.SetStateToActiveIf(AppManager.Instance.ConfigManager.IsConfigurationValid());
     }
 
     private void Confirm(InteractBehaviour ib, PointerEventData d)

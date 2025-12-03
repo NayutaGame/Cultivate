@@ -72,8 +72,8 @@ public class Button4State : XView
         UpdateInteractable();
     }
 
-    public void SetStateToInactiveFrom(bool shouldInactive)
-        => SetState(shouldInactive ? ButtonState.Inactive : ButtonState.Idle);
+    public void SetStateToActiveIf(bool active)
+        => SetState(active ? ButtonState.Idle : ButtonState.Inactive);
 
     private void SetStateToIdle(InteractBehaviour ib, PointerEventData d)
         => SetState(ButtonState.Idle);

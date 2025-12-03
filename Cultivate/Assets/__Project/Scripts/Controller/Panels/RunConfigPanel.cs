@@ -159,6 +159,6 @@ public class RunConfigPanel : Panel
                             !DifficultyPickerView.GetSelection().IsDemoLocked() &&
                             DifficultyPickerView.GetSelection().IsUnlocked();
         
-        StartRunButton.SetStateToInactiveFrom(!interactable);
+        StartRunButton.SetStateToActiveIf(interactable);
     }
 }

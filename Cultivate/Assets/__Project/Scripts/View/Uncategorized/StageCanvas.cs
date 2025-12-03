@@ -53,7 +53,7 @@ public class StageCanvas : MonoBehaviour
         SkipButton.CheckAwake();
         SkipButton.LeftClickNeuron.Join(Skip);
 
-        SkipButton.SetStateToInactiveFrom(!AppManager.Instance.ProfileManager.GetCurrProfile().DifficultyIsUnlocked("1"));
+        SkipButton.SetStateToActiveIf(AppManager.Instance.ProfileManager.GetCurrProfile().DifficultyIsUnlocked("1"));
 
         HomeStageEntityView.SetAddress(_address.Append(".Environment.Home"));
         AwayStageEntityView.SetAddress(_address.Append(".Environment.Away"));

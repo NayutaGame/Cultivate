@@ -71,7 +71,7 @@ public class GachaCellNode : CellNode
     public override bool ReceiveSignal(Signal signal)
     {
         ExitShopSignal exitShopSignal = signal as ExitShopSignal;
-        if (exitShopSignal == null)
+        if (exitShopSignal != null)
             return true;
         return false;
     }

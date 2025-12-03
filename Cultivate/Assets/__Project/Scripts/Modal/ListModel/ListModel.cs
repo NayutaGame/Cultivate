@@ -89,6 +89,15 @@ public class ListModel<T> : IListModel, IEnumerable<T>
             ModifiedEvent(index).GetAwaiter().GetResult();
     }
 
+    public void Shuffle()
+    {
+        _list.Shuffle();
+        // if (ModifiedEvent != null)
+        // {
+        //     Count().Do(i => ModifiedEvent(i).GetAwaiter().GetResult());
+        // }
+    }
+
     public void Sort(Comparison<T> comparison)
         => _list.Sort(comparison);
 

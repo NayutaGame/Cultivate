@@ -58,8 +58,8 @@ public class Commodity : Addressable
         => RunManager.Instance.Environment.Home.GetHealth() >= FinalPrice;
 
     public void PayWithGold()
-        => PayWithGoldFunc.Invoke(this);
+        => PayWithGoldFunc(this);
 
     public void PayWithHealth()
-        => PayWithHealthFunc.Invoke(this);
+        => PayWithHealthFunc(this);
 }

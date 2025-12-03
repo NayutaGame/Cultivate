@@ -58,7 +58,7 @@ public class BarterPanel : Panel
         
         RefreshItemsButton.gameObject.SetActive(true);
         RefreshItemsText.text = barterCell.GetRefreshItemsDescription();
-        RefreshItemsButton.SetStateToInactiveFrom(!barterCell.RefreshItemsIsAffordable());
+        RefreshItemsButton.SetStateToActiveIf(barterCell.RefreshItemsIsAffordable());
     }
 
     private void RefreshItems(InteractBehaviour ib, PointerEventData d)

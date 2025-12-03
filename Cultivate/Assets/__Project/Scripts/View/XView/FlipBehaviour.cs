@@ -6,7 +6,9 @@ using UnityEngine;
 public class FlipBehaviour : XBehaviour
 {
     [SerializeField] private GameObject FrontContent;
+    [SerializeField] private SlotView FrontSlot;
     [SerializeField] private GameObject BackContent;
+    [SerializeField] private SlotView BackSlot;
     
     private Tween _handle;
 
@@ -23,6 +25,7 @@ public class FlipBehaviour : XBehaviour
         {
             // 正面 -> 反面
             _handle = DOTween.Sequence()
+                .AppendCallback(() => FrontSlot.GrabberRelease())
                 .Append(GetView().GetRect().DOLocalRotate(new Vector3(0, 90f, 0), 0.15f).SetEase(Ease.InQuad))
                 .AppendCallback(() =>
                 {
@@ -36,6 +39,7 @@ public class FlipBehaviour : XBehaviour
         {
             // 反面 -> 正面
             _handle = DOTween.Sequence()
+                .AppendCallback(() => BackSlot.GrabberRelease())
                 .Append(GetView().GetRect().DOLocalRotate(new Vector3(0, -90f, 0), 0.15f).SetEase(Ease.InQuad))
                 .AppendCallback(() =>
                 {
