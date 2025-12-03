@@ -101,7 +101,7 @@ RectTransform:
   m_GameObject: {fileID: 2112688767174266619}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.533, y: 0.533, z: 0.533}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7238250946088634835}
@@ -448,7 +448,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 180, y: 288}
+  m_SizeDelta: {x: 160, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &4781718082366732402
 CanvasGroup:
@@ -507,8 +507,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
   OpenDetails: 3
-  FirstCounter: 0.5
-  SecondCounter: 2
   AnnotationViewType: 1
   UseRectAlignment: 1
 --- !u!114 &7613878159742721782
