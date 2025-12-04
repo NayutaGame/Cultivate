@@ -25,6 +25,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         WithdrawToHandNeuron = new();
         WithdrawToFieldNeuron = new();
         RequirementSwapNeuron = new();
+        FromHandToBarterNeuron = new();
+        FromFieldToBarterNeuron = new();
+        FromBarterToHandNeuron = new();
+        FromBarterToFieldNeuron = new();
 
         DragBeginRunSkill = new();
         DragEndRunSkill = new();
@@ -33,7 +37,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         PickDiscoveredSkillNeuron = new();
         RemoveSkillNeuron = new();
         SkillSetJingJieNeuron = new();
-        ReplaceSkillNeuron = new();
+        SetSkillNeuron = new();
         BuySkillNeuron = new();
         ExchangeSkillNeuron = new();
         GachaNeuron = new();
@@ -73,6 +77,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<WithdrawToHandDetails> WithdrawToHandNeuron;
     public Neuron<WithdrawToFieldDetails> WithdrawToFieldNeuron;
     public Neuron<RequirementSwapDetails> RequirementSwapNeuron;
+    public Neuron<FromHandToBarterDetails> FromHandToBarterNeuron;
+    public Neuron<FromFieldToBarterDetails> FromFieldToBarterNeuron;
+    public Neuron<FromBarterToHandDetails> FromBarterToHandNeuron;
+    public Neuron<FromBarterToFieldDetails> FromBarterToFieldNeuron;
 
     public Neuron<RunSkill> DragBeginRunSkill;
     public Neuron DragEndRunSkill;
@@ -81,7 +89,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
     public Neuron<RemoveSkillDetails> RemoveSkillNeuron;
     public Neuron<SkillSetJingJieDetails> SkillSetJingJieNeuron;
-    public Neuron<ReplaceSkillDetails> ReplaceSkillNeuron;
+    public Neuron<SetSkillDetails> SetSkillNeuron;
     public Neuron<BuySkillDetails> BuySkillNeuron;
     public Neuron<ExchangeSkillDetails> ExchangeSkillNeuron;
     public Neuron<GachaDetails> GachaNeuron;
@@ -373,6 +381,15 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 {
                     throw new NotImplementedException();
                 }
+            case SkillRegion.Barter:
+                if (Cell?.AsCell() is BarterCell barterCell)
+                {
+                    return barterCell.LeftBucketItems[deckIndex.Index];
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
         }
 
         return null;
@@ -387,6 +404,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             case SkillRegion.Field:
                 return Home.GetSlot(deckIndex.Index);
             case SkillRegion.Requirement:
+                return null;
+            case SkillRegion.Barter:
                 return null;
         }
 
@@ -410,6 +429,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 {
                     throw new NotImplementedException();
                 }
+            case SkillRegion.Barter:
+                return null;
         }
 
         return null;
@@ -424,12 +445,20 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         int? slotIndex = Home.TraversalCurrentSlots().FirstIdx(slot => slot.Skill == runSkill);
         if (slotIndex.HasValue)
             return DeckIndex.FromField(slotIndex.Value);
-        
-        if (Cell?.AsCell() is RequireCell cardPickerCell)
+
+        Cell cell = Cell?.AsCell();
+        if (cell is RequireCell cardPickerCell)
         {
             int? requirementIndex = cardPickerCell.RequirementSlotList.FirstIdx(slot => slot.Skill == runSkill);
             if (requirementIndex.HasValue)
                 return DeckIndex.FromRequirement(requirementIndex.Value);
+        }
+
+        if (cell is BarterCell barterCell)
+        {
+            int? barterIndex = barterCell.LeftBucketItems.FirstIdx(skill => skill == runSkill);
+            if (barterIndex.HasValue)
+                return DeckIndex.FromBarter(barterIndex.Value);
         }
         
         return null;
@@ -1001,17 +1030,24 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (d.FromIndex == d.ToIndex)
             return;
 
-        int branch = ((int)d.FromIndex.Region * 3) + (int)d.ToIndex.Region;
+        int branch = ((int)d.FromIndex.Region * 4) + (int)d.ToIndex.Region;
         Action<SkillMovedDetails>[] branches = {
             FromHandToHand,
             FromHandToField,
             FromHandToRequirement,
+            FromHandToBarter,
             FromFieldToHand,
             FromFieldToField,
             FromFieldToRequirement,
+            FromFieldToBarter,
             FromRequirementToHand,
             FromRequirementToField,
             FromRequirementToRequirement,
+            FromRequirementToBarter,
+            FromBarterToHand,
+            FromBarterToField,
+            FromBarterToRequirement,
+            FromBarterToBarter,
         };
 
         branches[branch](d);
@@ -1110,6 +1146,28 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
     }
 
+    private void FromHandToBarter(SkillMovedDetails d)
+    {
+        FromHandToBarterProcedure(FromHandToBarterDetails.FromHandIndex(d.FromIndex));
+    }
+
+    public void FromHandToBarterProcedure(FromHandToBarterDetails d)
+    {
+        if (d.FromSkill == null)
+            return;
+
+        BarterCell barterCell = Cell?.AsCell() as BarterCell;
+        Assert.IsTrue(barterCell != null);
+
+        Hand.Remove(d.FromSkill);
+
+        DeckIndex toDeckIndex = new NextBarterDeckIndexDefinition().Reify();
+        barterCell.LeftBucketItems.Add(d.FromSkill);
+
+        FromHandToBarterNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromIndex, toDeckIndex));
+    }
+
     private void FromFieldToHand(SkillMovedDetails d)
     {
         SkillSlot slot = SkillSlotFromDeckIndex(d.FromIndex);
@@ -1137,9 +1195,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private void FromFieldToField(SkillMovedDetails d)
     {
         SkillSlot fromSlot = SkillSlotFromDeckIndex(d.FromIndex);
-        SkillSlot toSlot = SkillSlotFromDeckIndex(d.ToIndex);
         if (fromSlot.Skill == null)
             return;
+        
+        SkillSlot toSlot = SkillSlotFromDeckIndex(d.ToIndex);
         
         SwapProcedure(new(fromSlot, toSlot));
     }
@@ -1157,10 +1216,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private void FromFieldToRequirement(SkillMovedDetails d)
     {
         SkillSlot skillSlot = SkillSlotFromDeckIndex(d.FromIndex);
-        RequirementSlot requirementSlot = RequirementSlotFromDeckIndex(d.ToIndex);
         if (skillSlot.Skill == null)
             return;
         
+        RequirementSlot requirementSlot = RequirementSlotFromDeckIndex(d.ToIndex);
         if (!requirementSlot.GetQuery().Matches(skillSlot.Skill))
             return;
         
@@ -1175,6 +1234,33 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         SubmitFromFieldNeuron.Invoke(d);
         SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    private void FromFieldToBarter(SkillMovedDetails d)
+    {
+        SkillSlot skillSlot = SkillSlotFromDeckIndex(d.FromIndex);
+        if (skillSlot.Skill == null)
+            return;
+        
+        FromFieldToBarterProcedure(new FromFieldToBarterDetails(skillSlot, d.FromIndex));
+    }
+
+    public void FromFieldToBarterProcedure(FromFieldToBarterDetails d)
+    {
+        if (d.FromSlot == null || d.FromSlot.Skill == null)
+            return;
+
+        BarterCell barterCell = Cell?.AsCell() as BarterCell;
+        Assert.IsTrue(barterCell != null);
+
+        RunSkill skill = d.FromSlot.Skill;
+        d.FromSlot.Skill = null;
+
+        DeckIndex toDeckIndex = new NextBarterDeckIndexDefinition().Reify();
+        barterCell.LeftBucketItems.Add(skill);
+
+        FromFieldToBarterNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromIndex, toDeckIndex));
     }
 
     private void FromRequirementToHand(SkillMovedDetails d)
@@ -1204,9 +1290,10 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private void FromRequirementToField(SkillMovedDetails d)
     {
         RequirementSlot requirementSlot = RequirementSlotFromDeckIndex(d.FromIndex);
-        SkillSlot skillSlot = SkillSlotFromDeckIndex(d.ToIndex);
         if (requirementSlot.Skill == null)
             return;
+        
+        SkillSlot skillSlot = SkillSlotFromDeckIndex(d.ToIndex);
 
         if (skillSlot.IsOccupied())
         {
@@ -1261,6 +1348,72 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         
         RequirementSwapNeuron.Invoke(d);
         SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+    
+    private void FromRequirementToBarter(SkillMovedDetails d)
+    {
+        throw new NotImplementedException("Unexpected pathway");
+    }
+    
+    private void FromBarterToHand(SkillMovedDetails d)
+    {
+        RunSkill fromSkill = SkillFromDeckIndex(d.FromIndex);
+        FromBarterToHandProcedure(new FromBarterToHandDetails(fromSkill, d.FromIndex));
+    }
+
+    public void FromBarterToHandProcedure(FromBarterToHandDetails d)
+    {
+        if (d.FromSkill == null)
+            return;
+
+        BarterCell barterCell = Cell?.AsCell() as BarterCell;
+        Assert.IsTrue(barterCell != null);
+
+        DeckIndex toDeckIndex = new NextHandDeckIndexDefinition().Reify();
+
+        barterCell.LeftBucketItems.RemoveAt(d.FromIndex.Index);
+        Hand.Add(d.FromSkill);
+
+        FromBarterToHandNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromIndex, toDeckIndex));
+    }
+    
+    private void FromBarterToField(SkillMovedDetails d)
+    {
+        RunSkill fromSkill = SkillFromDeckIndex(d.FromIndex);
+        SkillSlot toSlot = SkillSlotFromDeckIndex(d.ToIndex);
+
+        if (toSlot.IsOccupied())
+        {
+            UnequipProcedure(UnequipDetails.FromSlot(toSlot));
+        }
+        
+        FromBarterToFieldProcedure(new FromBarterToFieldDetails(fromSkill, d.FromIndex, toSlot, d.ToIndex));
+    }
+
+    public void FromBarterToFieldProcedure(FromBarterToFieldDetails d)
+    {
+        if (d.FromSkill == null || d.ToSlot == null)
+            return;
+
+        BarterCell barterCell = Cell?.AsCell() as BarterCell;
+        Assert.IsTrue(barterCell != null);
+
+        barterCell.LeftBucketItems.RemoveAt(d.FromIndex.Index);
+        d.ToSlot.Skill = d.FromSkill;
+
+        FromBarterToFieldNeuron.Invoke(d);
+        SkillMovedNeuron.Invoke(new(d.FromIndex, d.ToIndex));
+    }
+    
+    private void FromBarterToRequirement(SkillMovedDetails d)
+    {
+        throw new NotImplementedException("Unexpected pathway");
+    }
+
+    private void FromBarterToBarter(SkillMovedDetails d)
+    {
+        return;
     }
 
     #endregion
@@ -1361,15 +1514,28 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         RemoveSkillDetails d = new(deckIndex);
         
-        if (deckIndex.Region == SkillRegion.Field)
-            Home.GetSlot(deckIndex.Index).Skill = null;
-        else if (deckIndex.Region == SkillRegion.Hand)
-            Hand.RemoveAt(deckIndex.Index);
-        else if (deckIndex.Region == SkillRegion.Requirement)
+        switch (deckIndex.Region)
         {
-            RequireCell requireCell = Cell?.AsCell() as RequireCell;
-            Assert.IsTrue(requireCell != null);
-            requireCell.RequirementSlotList[deckIndex.Index].Skill = null;
+            case SkillRegion.Field:
+                Home.GetSlot(deckIndex.Index).Skill = null;
+                break;
+            case SkillRegion.Hand:
+                Hand.RemoveAt(deckIndex.Index);
+                break;
+            case SkillRegion.Requirement:
+            {
+                RequireCell requireCell = Cell?.AsCell() as RequireCell;
+                Assert.IsTrue(requireCell != null);
+                requireCell.RequirementSlotList[deckIndex.Index].Skill = null;
+                break;
+            }
+            case SkillRegion.Barter:
+            {
+                BarterCell barterCell = Cell?.AsCell() as BarterCell;
+                Assert.IsTrue(barterCell != null);
+                barterCell.LeftBucketItems.RemoveAt(deckIndex.Index);
+                break;
+            }
         }
 
         RemoveSkillNeuron.Invoke(d);
@@ -1379,26 +1545,39 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         SkillSetJingJieDetails d = new(jingJie, deckIndex);
         RunSkill template = SkillFromDeckIndex(deckIndex);
-        ReplaceSkillProcedure(RunSkill.FromChangeJingJie(template, jingJie), deckIndex);
+        SetSkillProcedure(RunSkill.FromChangeJingJie(template, jingJie), deckIndex);
         SkillSetJingJieNeuron.Invoke(d);
     }
 
-    public void ReplaceSkillProcedure(RunSkill template, DeckIndex deckIndex)
+    public void SetSkillProcedure(RunSkill template, DeckIndex deckIndex)
     {
-        ReplaceSkillDetails d = new(template, deckIndex);
+        SetSkillDetails d = new(template, deckIndex);
         
-        if (deckIndex.Region == SkillRegion.Field)
-            Home.GetSlot(deckIndex.Index).Skill = template.Clone();
-        else if (deckIndex.Region == SkillRegion.Hand)
-            Hand.Replace(deckIndex.Index, template.Clone());
-        else if (deckIndex.Region == SkillRegion.Requirement)
+        switch (deckIndex.Region)
         {
-            RequireCell requireCell = Cell?.AsCell() as RequireCell;
-            Assert.IsTrue(requireCell != null);
-            requireCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
+            case SkillRegion.Field:
+                Home.GetSlot(deckIndex.Index).Skill = template.Clone();
+                break;
+            case SkillRegion.Hand:
+                Hand.Replace(deckIndex.Index, template.Clone());
+                break;
+            case SkillRegion.Requirement:
+            {
+                RequireCell requireCell = Cell?.AsCell() as RequireCell;
+                Assert.IsTrue(requireCell != null);
+                requireCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
+                break;
+            }
+            case SkillRegion.Barter:
+            {
+                BarterCell barterCell = Cell?.AsCell() as BarterCell;
+                Assert.IsTrue(barterCell != null);
+                barterCell.LeftBucketItems[deckIndex.Index] = template.Clone();
+                break;
+            }
         }
 
-        ReplaceSkillNeuron.Invoke(d);
+        SetSkillNeuron.Invoke(d);
     }
 
     public void UpgradeAllSkillsToHuaShenProcedure()

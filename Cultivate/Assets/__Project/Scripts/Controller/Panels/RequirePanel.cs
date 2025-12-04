@@ -90,8 +90,8 @@ public class RequirePanel : Panel
 
     private void MoveSkill(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
     {
-        IDeckIndex fromIndex = GetDeckIndex(from);
-        IDeckIndex toIndex = GetDeckIndex(to);
+        IDeckIndex fromIndex = CanvasManager.Instance.RunCanvas.GetDeckIndex(from);
+        IDeckIndex toIndex = CanvasManager.Instance.RunCanvas.GetDeckIndex(to);
         if (fromIndex == null || toIndex == null)
             return;
 
@@ -228,21 +228,6 @@ public class RequirePanel : Panel
         }
         
         AudioManager.Play("CardPlacement");
-    }
-
-    private IDeckIndex GetDeckIndex(InteractBehaviour ib)
-    {
-        object obj = ib.Get<object>();
-        if (obj is RunSkill runSkill)
-            return runSkill.ToDeckIndex();
-        
-        if (obj is SkillSlot skillSlot)
-            return skillSlot.ToDeckIndex();
-        
-        if (obj is RequirementSlot requirementSlot)
-            return requirementSlot.ToDeckIndex();
-
-        return null;
     }
     
     private SlotView SkillItemFromDeckIndex(DeckIndex deckIndex)

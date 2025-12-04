@@ -1,10 +1,10 @@
 
-public class ReplaceSkillDetails : RunClosureDetails
+public class SetSkillDetails : RunClosureDetails
 {
     public RunSkill Template;
     public DeckIndex DeckIndex;
     
-    public ReplaceSkillDetails(RunSkill template, DeckIndex deckIndex)
+    public SetSkillDetails(RunSkill template, DeckIndex deckIndex)
     {
         Template = template;
         DeckIndex = deckIndex;

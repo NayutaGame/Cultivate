@@ -2670,7 +2670,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         foreach (int index in indices)
                         {
                             RequirementSlot slot = cardPickerCell.RequirementSlotList[index];
-                            RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, slot.ToDeckIndex());
+                            RunManager.Instance.Environment.SetSkillProcedure(copyingSkill, slot.ToDeckIndex());
                         }
                         
                         cardPickerCell.WithdrawAll();

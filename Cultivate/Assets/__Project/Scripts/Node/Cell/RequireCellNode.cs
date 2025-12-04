@@ -253,7 +253,7 @@ public class RequireCellNode : CellNode
                 
                 requireCell.RequirementSlotList.Do(requirementSlot =>
                 {
-                    RunManager.Instance.Environment.ReplaceSkillProcedure(copyingSkill, requirementSlot.ToDeckIndex());
+                    RunManager.Instance.Environment.SetSkillProcedure(copyingSkill, requirementSlot.ToDeckIndex());
                 });
                 
                 requireCell.WithdrawAll();

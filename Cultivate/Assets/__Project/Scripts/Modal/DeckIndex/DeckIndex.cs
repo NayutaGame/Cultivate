@@ -41,11 +41,14 @@ public struct DeckIndex : IDeckIndex, IEquatable<DeckIndex>
     public static DeckIndex FromField(int index)
         => new(SkillRegion.Field, index);
     
-    public static DeckIndex FromHand(int index = 0)
+    public static DeckIndex FromHand(int index)
         => new(SkillRegion.Hand, index);
 
     public static DeckIndex FromRequirement(int index)
         => new(SkillRegion.Requirement, index);
+
+    public static DeckIndex FromBarter(int index)
+        => new(SkillRegion.Barter, index);
 
     public DeckIndex Reify()
         => this;

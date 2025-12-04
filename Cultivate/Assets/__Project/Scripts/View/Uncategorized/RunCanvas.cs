@@ -83,7 +83,7 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.GainSkillNeuron.Add(GainSkillStaging);
         RunManager.Instance.Environment.RemoveSkillNeuron.Add(RemoveSkillStaging);
         RunManager.Instance.Environment.SkillSetJingJieNeuron.Add(SkillSetJingJieStaging);
-        RunManager.Instance.Environment.ReplaceSkillNeuron.Add(ReplaceSkillStaging);
+        RunManager.Instance.Environment.SetSkillNeuron.Add(SetSkillStaging);
         
         RunManager.Instance.Environment.EquipNeuron.Add(EquipStaging);
         RunManager.Instance.Environment.SwapNeuron.Add(SwapStaging);
@@ -113,7 +113,7 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.GainSkillNeuron.Remove(GainSkillStaging);
         RunManager.Instance.Environment.RemoveSkillNeuron.Remove(RemoveSkillStaging);
         RunManager.Instance.Environment.SkillSetJingJieNeuron.Remove(SkillSetJingJieStaging);
-        RunManager.Instance.Environment.ReplaceSkillNeuron.Remove(ReplaceSkillStaging);
+        RunManager.Instance.Environment.SetSkillNeuron.Remove(SetSkillStaging);
         
         RunManager.Instance.Environment.EquipNeuron.Remove(EquipStaging);
         RunManager.Instance.Environment.SwapNeuron.Remove(SwapStaging);
@@ -309,33 +309,39 @@ public class RunCanvas : Panel
 
     private void SkillSetJingJieStaging(SkillSetJingJieDetails d)
     {
-        if (d.DeckIndex.Region == SkillRegion.Field)
+        switch (d.DeckIndex.Region)
         {
-            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
-        }
-        else if (d.DeckIndex.Region == SkillRegion.Hand)
-        {
-            DeckPanel.HandView.Modified(d.DeckIndex.Index);
-        }
-        else if (d.DeckIndex.Region == SkillRegion.Requirement)
-        {
-            RequirePanel.Requirements.Modified(d.DeckIndex.Index);
+            case SkillRegion.Field:
+                DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+                break;
+            case SkillRegion.Hand:
+                DeckPanel.HandView.Modified(d.DeckIndex.Index);
+                break;
+            case SkillRegion.Requirement:
+                RequirePanel.Requirements.Modified(d.DeckIndex.Index);
+                break;
+            case SkillRegion.Barter:
+                BarterPanel.LeftBucket.Modified(d.DeckIndex.Index);
+                break;
         }
     }
 
-    private void ReplaceSkillStaging(ReplaceSkillDetails d)
+    private void SetSkillStaging(SetSkillDetails d)
     {
-        if (d.DeckIndex.Region == SkillRegion.Field)
+        switch (d.DeckIndex.Region)
         {
-            DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
-        }
-        else if (d.DeckIndex.Region == SkillRegion.Hand)
-        {
-            DeckPanel.HandView.Modified(d.DeckIndex.Index);
-        }
-        else if (d.DeckIndex.Region == SkillRegion.Requirement)
-        {
-            RequirePanel.Requirements.Modified(d.DeckIndex.Index);
+            case SkillRegion.Field:
+                DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+                break;
+            case SkillRegion.Hand:
+                DeckPanel.HandView.Modified(d.DeckIndex.Index);
+                break;
+            case SkillRegion.Requirement:
+                RequirePanel.Requirements.Modified(d.DeckIndex.Index);
+                break;
+            case SkillRegion.Barter:
+                BarterPanel.LeftBucket.Modified(d.DeckIndex.Index);
+                break;
         }
     }
 
@@ -456,36 +462,36 @@ public class RunCanvas : Panel
         SetIdle(view);
     }
 
-    public void ExchangeSkillStaging(ExchangeSkillDetails d)
-    {
-        // void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
-        // {
-        //     view.GetAnimator().SetState(SlotView.FREE);
-        //     view.GetContentView().GetRect().position = position;
-        //     view.GetContentView().GetRect().localScale = localScale;
-        // }
-        //
-        // void SetIdle(SlotView view)
-        // {
-        //     view.GetAnimator().SetStateAsync(1);
-        // }
-        //
-        // // AudioManager.Play("CardPlacement");
-        // // AudioManager.Instance.Play("钱币");
-        //
-        // SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
-        // SlotView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as SlotView;
-        //
-        // if (d.DeckIndex.Region == SkillRegion.Hand)
-        //     DeckPanel.HandView.Modified(d.DeckIndex.Index);
-        // else if (d.DeckIndex.Region == SkillRegion.Field)
-        //     DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
-        // BarterPanel.ListView.RemoveItemAt(d.BarterItemIndex);
-        // BarterPanel.ListView.Sync();
-        //
-        // SetPosition(view, barterItemView.GetRect().position, barterItemView.GetRect().localScale);
-        // SetIdle(view);
-    }
+    // public void ExchangeSkillStaging(ExchangeSkillDetails d)
+    // {
+    //     void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
+    //     {
+    //         view.GetAnimator().SetState(SlotView.FREE);
+    //         view.GetContentView().GetRect().position = position;
+    //         view.GetContentView().GetRect().localScale = localScale;
+    //     }
+    //     
+    //     void SetIdle(SlotView view)
+    //     {
+    //         view.GetAnimator().SetStateAsync(1);
+    //     }
+    //     
+    //     // AudioManager.Play("CardPlacement");
+    //     // AudioManager.Instance.Play("钱币");
+    //     
+    //     SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
+    //     SlotView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as SlotView;
+    //     
+    //     if (d.DeckIndex.Region == SkillRegion.Hand)
+    //         DeckPanel.HandView.Modified(d.DeckIndex.Index);
+    //     else if (d.DeckIndex.Region == SkillRegion.Field)
+    //         DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
+    //     BarterPanel.ListView.RemoveItemAt(d.BarterItemIndex);
+    //     BarterPanel.ListView.Sync();
+    //     
+    //     SetPosition(view, barterItemView.GetRect().position, barterItemView.GetRect().localScale);
+    //     SetIdle(view);
+    // }
 
     public void GachaStaging(GachaDetails d)
     {
@@ -522,4 +528,19 @@ public class RunCanvas : Panel
     }
 
     #endregion
+    
+    public IDeckIndex GetDeckIndex(InteractBehaviour ib)
+    {
+        object obj = ib.Get<object>();
+        if (obj is RunSkill runSkill)
+            return runSkill.ToDeckIndex();
+        
+        if (obj is SkillSlot skillSlot)
+            return skillSlot.ToDeckIndex();
+        
+        if (obj is RequirementSlot requirementSlot)
+            return requirementSlot.ToDeckIndex();
+
+        return null;
+    }
 }

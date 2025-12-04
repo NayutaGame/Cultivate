@@ -12,16 +12,16 @@ public class BarterCell : Cell
     private SkillEntryQuery _toQuery;
     private RunCostDefinition _refreshCost;
 
-    private ListModel<RunSkill> _leftBucketItems;
-    private ListModel<SkillGhost> _rightBucketItems;
-    private ListModel<SkillGhost> _boardItems;
+    public ListModel<RunSkill> LeftBucketItems;
+    public ListModel<SkillGhost> RightBucketItems;
+    public ListModel<SkillGhost> BoardItems;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Guide",                      thisObject => ((BarterCell)thisObject).GetGuideDescriptor() },
-        { "LeftBucketItems",            thisObject => ((BarterCell)thisObject)._leftBucketItems },
-        { "RightBucketItems",           thisObject => ((BarterCell)thisObject)._rightBucketItems },
-        { "BoardItems",                 thisObject => ((BarterCell)thisObject)._boardItems },
+        { "LeftBucketItems",            thisObject => ((BarterCell)thisObject).LeftBucketItems },
+        { "RightBucketItems",           thisObject => ((BarterCell)thisObject).RightBucketItems },
+        { "BoardItems",                 thisObject => ((BarterCell)thisObject).BoardItems },
     };
     public override object Get(string s) => Accessor[s](this);
     private BarterCell(
@@ -35,9 +35,9 @@ public class BarterCell : Cell
         _toQuery = toQuery;
         _refreshCost = refreshCost;
 
-        _leftBucketItems = new();
-        _rightBucketItems = new();
-        _boardItems = new();
+        LeftBucketItems = new();
+        RightBucketItems = new();
+        BoardItems = new();
     }
 
     public static BarterCell FromCount(int targetItemCount = 2)
@@ -72,20 +72,20 @@ public class BarterCell : Cell
             {
                 b.DrawMutator(JingJie.HuaShen);
             }
-            _boardItems.Add(SkillGhost.FromGainingSkill(b.GainingSkills[0]));
+            BoardItems.Add(SkillGhost.FromGainingSkill(b.GainingSkills[0]));
         }
     }
 
     public int GetValueDiff()
     {
         int leftValue = 0;
-        foreach (RunSkill skill in _leftBucketItems)
+        foreach (RunSkill skill in LeftBucketItems)
         {
             leftValue += RoomDefinition.GetCardBasePriceFromJingJie(skill.GetJingJie());
         }
 
         int rightValue = 0;
-        foreach (SkillGhost ghost in _rightBucketItems)
+        foreach (SkillGhost ghost in RightBucketItems)
         {
             rightValue += RoomDefinition.GetCardBasePriceFromJingJie(ghost.GetJingJie());
         }
@@ -126,16 +126,16 @@ public class BarterCell : Cell
         GainSkillBuilder b = new();
         if (!_targetIsMutator)
         {
-            for (int i = 0; i < _rightBucketItems.Count(); i++)
+            for (int i = 0; i < RightBucketItems.Count(); i++)
             {
-                b.Draw(SkillEntryQuery.FromSkillGhost(_rightBucketItems[i]), _rightBucketItems[i].GetJingJie());
+                b.Draw(SkillEntryQuery.FromSkillGhost(RightBucketItems[i]), RightBucketItems[i].GetJingJie());
             }
         }
         else
         {
-            for (int i = 0; i < _rightBucketItems.Count(); i++)
+            for (int i = 0; i < RightBucketItems.Count(); i++)
             {
-                b.Pick(_rightBucketItems[i].Clone());
+                b.Pick(RightBucketItems[i].Clone());
             }
         }
         b.Execute();
@@ -157,4 +157,33 @@ public class BarterCell : Cell
 
         return this;
     }
+
+    #region MoveSkillGhostRelated
+
+    public void FromBoardToRightBucketProcedure(int fromIndex, int toIndex)
+    {
+        // SkillGhost fromSkill = BoardItems[fromIndex];
+        // RunSkill toSkill = d.SkillSlot.Skill;
+        //
+        // if (toSkill == null)
+        // {
+        //     Hand.Remove(fromSkill);
+        //     d.SkillSlot.Skill = fromSkill;
+        // }
+        // else
+        // {
+        //     Hand.Replace(fromSkill, toSkill);
+        //     d.SkillSlot.Skill = fromSkill;
+        // }
+        //
+        // EquipNeuron.Invoke(d);
+        // SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+    }
+
+    public void FromRightBucketToBoardProcedure(int fromIndex, int toIndex)
+    {
+        
+    }
+
+    #endregion
 }
