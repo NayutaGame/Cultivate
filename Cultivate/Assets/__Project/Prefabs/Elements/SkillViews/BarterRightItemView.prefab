@@ -220,11 +220,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1252485361950958551}
-  - component: {fileID: 1070090352609840930}
   - component: {fileID: 3635341427418532394}
   - component: {fileID: 424989123653863335}
   m_Layer: 5
-  m_Name: SkillView
+  m_Name: BarterRightItemView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,20 +248,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 480}
+  m_SizeDelta: {x: 160, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &1070090352609840930
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1185833340277898451}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!114 &3635341427418532394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,8 +683,8 @@ RectTransform:
   m_GameObject: {fileID: 8254797347000144242}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.53333, y: 0.53333, z: 0.53333}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2951762255153839747}
   - {fileID: 789610268535007835}

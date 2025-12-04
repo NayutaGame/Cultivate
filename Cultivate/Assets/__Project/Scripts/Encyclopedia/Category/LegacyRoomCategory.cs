@@ -686,7 +686,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                          "\n右边的10是对手最终血量" +
                                          "\n现在对手会以10血打败徐福"),
                         new EquipGuide("将卡牌置入战斗区",
-                            RunSkillQuery.FromName("劈砍"), new DeckIndex(SkillRegion.Field, 0)),
+                            RunSkillQuery.FromName("劈砍"), DeckIndex.FromField(0)),
                         new ConfirmGuide("将劈砍置入后，左边血量大于右边。" +
                                          "\n表示战斗的最终结果是徐福以4血战胜对手"),
                         new ClickBattleGuide("徐福胜利后，便可以点击对决按钮，进入战斗界面" +

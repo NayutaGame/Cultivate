@@ -1,12 +1,21 @@
 
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BarterPanel : Panel
 {
-    public ListView ListView;
+    public PropagateDrop LeftBucketDropZone;
+    public PropagateDrop RightBucketDropZone;
 
-    public TMP_Text RefreshItemsText;
+    public RectTransform LeftBucketRect;
+    public RectTransform RightBucketRect;
+    
+    public ListView LeftBucket;
+    public ListView RightBucket;
+    public ListView Board;
+
+    public TMP_Text RefreshCostText;
     public Button4State RefreshItemsButton;
     public Button4State ExitButton;
 
@@ -17,7 +26,7 @@ public class BarterPanel : Panel
         base.AwakeFunction();
 
         _address = new Address("Run.Environment.ActivePanel");
-        ListView.SetAddress(_address.Append(".Inventory"));
+        // ListView.SetAddress(_address.Append(".Inventory"));
     }
 
     private void OnEnable()
@@ -42,7 +51,7 @@ public class BarterPanel : Panel
 
     public override void Refresh()
     {
-        ListView.Refresh();
+        // ListView.Refresh();
         RefreshRefreshItemsButton();
     }
 
@@ -57,7 +66,7 @@ public class BarterPanel : Panel
         }
         
         RefreshItemsButton.gameObject.SetActive(true);
-        RefreshItemsText.text = barterCell.GetRefreshItemsDescription();
+        RefreshCostText.text = barterCell.GetRefreshItemsDescription();
         RefreshItemsButton.SetStateToActiveIf(barterCell.RefreshItemsIsAffordable());
     }
 
@@ -65,15 +74,16 @@ public class BarterPanel : Panel
     {
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
         BarterCell barterCell = cellAdapter.AsCell() as BarterCell;
-        barterCell.RefreshItems();
+        barterCell.RefreshItemsProcedure();
         
-        ListView.Sync();
+        // ListView.Sync();
         RefreshRefreshItemsButton();
     }
 
     public XView BarterItemFromIndex(int commodityIndex)
     {
-        return ListView.ViewFromIndex(commodityIndex);
+        // return ListView.ViewFromIndex(commodityIndex);
+        return null;
     }
 
     private void ExitShop(InteractBehaviour ib, PointerEventData d)

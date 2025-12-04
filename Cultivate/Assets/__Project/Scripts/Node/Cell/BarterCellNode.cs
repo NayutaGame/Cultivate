@@ -18,9 +18,6 @@ public class BarterCellNode : CellNode
     private InputPort<bool> TargetIsMutator = new(false);
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<EditorRunSkillQuery> FromQuery;
-
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<EditorSkillEntryQuery> ToQuery;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
@@ -50,14 +47,12 @@ public class BarterCellNode : CellNode
     {
         int targetItemCount = TargetItemCount.Value;
         bool targetIsMutator = TargetIsMutator.Value;
-        RunSkillQuery fromQuery = RunSkillQuery.FromEditorQuery(FromQuery.Value);
         SkillEntryQuery toQuery = SkillEntryQuery.FromEditorQuery(ToQuery.Value);
         RunCostDefinition refreshCost = null; // Can be extended later if needed
         
         return BarterCell.FromEverything(
             targetItemCount: targetItemCount,
             targetIsMutator: targetIsMutator,
-            fromQuery: fromQuery,
             toQuery: toQuery,
             refreshCost: refreshCost
         );

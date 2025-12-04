@@ -97,29 +97,6 @@ public class RequirePanel : Panel
 
         RunManager.Instance.Environment.MoveSkillProcedure(fromIndex, toIndex);
     }
-
-    private IDeckIndex GetDeckIndex(InteractBehaviour ib)
-    {
-        object obj = ib.Get<object>();
-        if (obj is RunSkill runSkill)
-            return runSkill.ToDeckIndex();
-        
-        if (obj is SkillSlot skillSlot)
-            return skillSlot.ToDeckIndex();
-        
-        if (obj is RequirementSlot requirementSlot)
-            return requirementSlot.ToDeckIndex();
-
-        return null;
-    }
-    
-    public SlotView SkillItemFromDeckIndex(DeckIndex deckIndex)
-    {
-        if (deckIndex.Region == SkillRegion.Requirement)
-            return Requirements.ViewFromIndex(deckIndex.Index);
-
-        throw new NotImplementedException();
-    }
     
     private void SubmitFromHandStaging(SubmitFromHandDetails d)
     {
@@ -251,6 +228,29 @@ public class RequirePanel : Panel
         }
         
         AudioManager.Play("CardPlacement");
+    }
+
+    private IDeckIndex GetDeckIndex(InteractBehaviour ib)
+    {
+        object obj = ib.Get<object>();
+        if (obj is RunSkill runSkill)
+            return runSkill.ToDeckIndex();
+        
+        if (obj is SkillSlot skillSlot)
+            return skillSlot.ToDeckIndex();
+        
+        if (obj is RequirementSlot requirementSlot)
+            return requirementSlot.ToDeckIndex();
+
+        return null;
+    }
+    
+    private SlotView SkillItemFromDeckIndex(DeckIndex deckIndex)
+    {
+        if (deckIndex.Region == SkillRegion.Requirement)
+            return Requirements.ViewFromIndex(deckIndex.Index);
+
+        throw new NotImplementedException();
     }
 
     #endregion

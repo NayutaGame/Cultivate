@@ -9,43 +9,45 @@ public class BarterCell : Cell
 {
     private int _targetItemCount;
     private bool _targetIsMutator;
-    private RunSkillQuery _fromQuery;
     private SkillEntryQuery _toQuery;
     private RunCostDefinition _refreshCost;
-    
-    private BarterInventory _inventory;
+
+    private ListModel<RunSkill> _leftBucketItems;
+    private ListModel<SkillGhost> _rightBucketItems;
+    private ListModel<SkillGhost> _boardItems;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         { "Guide",                      thisObject => ((BarterCell)thisObject).GetGuideDescriptor() },
-        { "Inventory",                  thisObject => ((BarterCell)thisObject)._inventory },
+        { "LeftBucketItems",            thisObject => ((BarterCell)thisObject)._leftBucketItems },
+        { "RightBucketItems",           thisObject => ((BarterCell)thisObject)._rightBucketItems },
+        { "BoardItems",                 thisObject => ((BarterCell)thisObject)._boardItems },
     };
     public override object Get(string s) => Accessor[s](this);
     private BarterCell(
         int targetItemCount,
         bool targetIsMutator,
-        RunSkillQuery fromQuery,
         SkillEntryQuery toQuery,
         RunCostDefinition refreshCost)
     {
         _targetItemCount = targetItemCount;
         _targetIsMutator = targetIsMutator;
-        _fromQuery = fromQuery;
         _toQuery = toQuery;
         _refreshCost = refreshCost;
-        
-        _inventory = new();
+
+        _leftBucketItems = new();
+        _rightBucketItems = new();
+        _boardItems = new();
     }
 
     public static BarterCell FromCount(int targetItemCount = 2)
-        => new(targetItemCount, false, null, null, null);
+        => new(targetItemCount, false, null, null);
 
     public static BarterCell FromFanXuMingYuanShop()
     {
         return new(
-            targetItemCount: 6,
+            targetItemCount: 4,
             targetIsMutator: true,
-            fromQuery: RunSkillQuery.FromName("命石"), 
             toQuery: null,
             refreshCost: new SkillCostDefinition(RunSkillQuery.FromName("命石"), "需要1命石"));
     }
@@ -53,62 +55,42 @@ public class BarterCell : Cell
     public static BarterCell FromEverything(
         int targetItemCount,
         bool targetIsMutator,
-        RunSkillQuery fromQuery,
         SkillEntryQuery toQuery,
         RunCostDefinition refreshCost)
-        => new(targetItemCount, targetIsMutator, fromQuery, toQuery, refreshCost);
+        => new(targetItemCount, targetIsMutator, toQuery, refreshCost);
 
-    private void PopulateInventory()
+    private void RefreshItems()
     {
-        RunEnvironment env = RunManager.Instance.Environment;
-
-        FinitePool<SkillGhost> pool = new FinitePool<SkillGhost>();
-        pool.Populate(env.TraversalDeckIndices()
-            .Map(env.SkillFromDeckIndex)
-            .FilterObj(skill => skill != null)
-            .FilterObj(skill => _fromQuery == null || _fromQuery.Matches(skill))
-            .Map(SkillGhost.FromRunSkill));
-        pool.Shuffle();
-
-        int count = Mathf.Min(pool.Count(), _targetItemCount);
-
-        SkillGhost[] fromSkills = new SkillGhost[count];
-        for (int i = 0; i < fromSkills.Length; i++)
+        for (int i = 0; i < _targetItemCount; i++)
         {
-            pool.TryPopItem(out fromSkills[i]);
-        }
-
-        SkillGhost[] toSkills = new SkillGhost[count];
-
-        Predicate<SkillEntry> differsFromFromSkills = skillEntry =>
-        {
-            foreach (var s in fromSkills)
-                if (skillEntry == s.GetEntry())
-                    return false;
-            return true;
-        };
-        for (int i = 0; i < toSkills.Length; i++)
-        {
-            List<Predicate<SkillEntry>> predicates = new();
-            predicates.Add(differsFromFromSkills);
-            if (_toQuery != null)
-                predicates.Add(_toQuery.Matches);
-            SkillEntryQuery drawStrategy = SkillEntryQuery.FromPredicatesBaseJingJieBound(predicates, new(JingJie.LianQi, fromSkills[i].GetJingJie()));
             GainSkillBuilder b = new();
             if (!_targetIsMutator)
             {
-                b.Draw(drawStrategy, fromSkills[i].GetJingJie(), consume: false);
+                b.Draw(_toQuery, RunManager.Instance.Environment.JingJie, consume: false);
             }
             else
             {
                 b.DrawMutator(JingJie.HuaShen);
             }
-            toSkills[i] = SkillGhost.FromGainingSkill(b.GainingSkills[0]);
+            _boardItems.Add(SkillGhost.FromGainingSkill(b.GainingSkills[0]));
         }
-        
-        _inventory.Clear();
-        for (int i = 0; i < fromSkills.Length; i++)
-            _inventory.Add(new BarterItem(fromSkills[i], toSkills[i], Exchange));
+    }
+
+    public int GetValueDiff()
+    {
+        int leftValue = 0;
+        foreach (RunSkill skill in _leftBucketItems)
+        {
+            leftValue += RoomDefinition.GetCardBasePriceFromJingJie(skill.GetJingJie());
+        }
+
+        int rightValue = 0;
+        foreach (SkillGhost ghost in _rightBucketItems)
+        {
+            rightValue += RoomDefinition.GetCardBasePriceFromJingJie(ghost.GetJingJie());
+        }
+
+        return leftValue - rightValue;
     }
 
     public bool RefreshItemsIsAllowed()
@@ -120,54 +102,56 @@ public class BarterCell : Cell
     public string GetRefreshItemsDescription()
         => $"刷新 {_refreshCost.GetDescription()}";
 
-    public void RefreshItems()
+    public void RefreshItemsProcedure()
     {
         if (!RefreshItemsIsAffordable())
             return;
 
         _refreshCost.Consume();
-        PopulateInventory();
+        RefreshItems();
     }
 
     public override void DefaultEnter(Cell cell)
     {
         base.DefaultEnter(cell);
         
-        PopulateInventory();
+        RefreshItems();
     }
     
-    private void Exchange(BarterItem barterItem)
+    private void ExchangeProcedure()
     {
-        ExchangeSkillDetails details = new(barterItem);
-        if (!_inventory.Contains(barterItem))
-            return;
-        
-        bool success = RunManager.Instance.Environment.DeckIndexFromQuery(out DeckIndex deckIndex, RunSkillQuery.FromSkillGhost(barterItem.FromSkill));
-        if (!success)
+        if (GetValueDiff() < 0)
             return;
 
         GainSkillBuilder b = new();
         if (!_targetIsMutator)
         {
-            b.Draw(SkillEntryQuery.FromSkillGhost(barterItem.ToSkill), barterItem.ToSkill.GetJingJie(), deckIndex);
+            for (int i = 0; i < _rightBucketItems.Count(); i++)
+            {
+                b.Draw(SkillEntryQuery.FromSkillGhost(_rightBucketItems[i]), _rightBucketItems[i].GetJingJie());
+            }
         }
         else
         {
-            b.Pick(barterItem.ToSkill.Clone(), deckIndex);
+            for (int i = 0; i < _rightBucketItems.Count(); i++)
+            {
+                b.Pick(_rightBucketItems[i].Clone());
+            }
         }
         b.Execute();
+        
+        // remove left items
+        // staging
 
-        details.BarterItemIndex = _inventory.IndexOf(barterItem);
-        _inventory.Remove(barterItem);
-
-        details.DeckIndex = deckIndex;
-        RunManager.Instance.Environment.ExchangeSkillProcedure(details);
+        // ExchangeSkillDetails details = new ExchangeSkillDetails();
+        // RunManager.Instance.Environment.ExchangeSkillProcedure(details);
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ExitShopSignal)
         {
+            // withdraw left items
             return null;
         }
 
