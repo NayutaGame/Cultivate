@@ -62,8 +62,11 @@ public class BarterCellNode : CellNode
     {
         ExitShopSignal exitShopSignal = signal as ExitShopSignal;
         if (exitShopSignal == null)
+        {
             return false;
+        }
         
+        (AsCell() as BarterCell).BarterWithdrawLeftItemsProcedure();
         return true;
     }
 }

@@ -58,7 +58,7 @@ public class AppManager : Singleton<AppManager>, Addressable
     public StageManager StageManager;
 
     [NonSerialized] public FormationInventory FormationInventory;
-    [NonSerialized] public SkillInventory SkillInventory;
+    [NonSerialized] public RunSkillListModel SkillInventory;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {

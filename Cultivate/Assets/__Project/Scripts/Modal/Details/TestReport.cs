@@ -27,7 +27,7 @@ public class TestReport : ISerializationCallbackReceiver
     public JingJie JingJie;
 
     [SerializeReference]
-    public SkillInventory Hand;
+    public RunSkillListModel Hand;
 
     [SerializeReference]
     public int Gold;

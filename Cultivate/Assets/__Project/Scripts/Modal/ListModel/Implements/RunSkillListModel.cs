@@ -2,7 +2,7 @@
 using System;
 
 [Serializable]
-public class SkillInventory : ListModel<RunSkill>
+public class RunSkillListModel : ListModel<RunSkill>
 {
     public override void Add(RunSkill item)
     {
@@ -67,9 +67,9 @@ public class SkillInventory : ListModel<RunSkill>
         Sort(Comparisons[i]);
     }
 
-    public SkillInventory Clone()
+    public RunSkillListModel Clone()
     {
-        SkillInventory cloned = new();
+        RunSkillListModel cloned = new();
         cloned.AddRange(this);
         return cloned;
     }

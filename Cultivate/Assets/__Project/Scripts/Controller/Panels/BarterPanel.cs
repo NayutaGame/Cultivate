@@ -1,25 +1,34 @@
 
+using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BarterPanel : Panel
 {
     public XView LeftBucketDropZone;
-    public XView RightBucketDropZone;
-
-    public RectTransform LeftBucketRect;
-    public RectTransform RightBucketRect;
-    
+    public RectTransform LeftBucketOffset;
     public ListView LeftBucket;
+    public HorizontalLayoutGroup LeftLayout;
+    
+    public XView RightBucketDropZone;
+    public RectTransform RightBucketOffset;
     public ListView RightBucket;
+    public HorizontalLayoutGroup RightLayout;
+    
     public ListView Board;
 
     public TMP_Text RefreshCostText;
     public Button4State RefreshItemsButton;
     public Button4State ExitButton;
 
+    public Button4State ExchangeButton;
+
     private Address _address;
+
+    private Tween _weightHandle;
 
     public override void AwakeFunction()
     {
@@ -30,7 +39,18 @@ public class BarterPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         LeftBucket.SetAddress(_address.Append(".LeftBucketItems"));
         LeftBucket.DropNeuron.Join(LeftBucketDrop);
+        LeftBucket.ItemCountChanged.Join(LeftBucketRefreshLayoutSpacing);
         LeftBucketDropZone.GetInteractBehaviour().DropNeuron.Join(LeftBucketDrop);
+        
+        RightBucket.SetAddress(_address.Append(".RightBucketItems"));
+        RightBucket.DropNeuron.Join(RightBucketDrop);
+        RightBucket.ItemCountChanged.Join(RightBucketRefreshLayoutSpacing);
+        RightBucketDropZone.GetInteractBehaviour().DropNeuron.Join(RightBucketDrop);
+        
+        Board.SetAddress(_address.Append(".BoardItems"));
+        Board.DropNeuron.Join(BoardDrop);
+        
+        ExchangeButton.LeftClickNeuron.Join(Exchange);
     }
 
     private void OnEnable()
@@ -41,7 +61,12 @@ public class BarterPanel : Panel
         RunManager.Instance.Environment.FromFieldToBarterNeuron.Add(FromFieldToBarterStaging);
         RunManager.Instance.Environment.FromBarterToHandNeuron.Add(FromBarterToHandStaging);
         RunManager.Instance.Environment.FromBarterToFieldNeuron.Add(FromBarterToFieldStaging);
-        RefreshRefreshItemsButton();
+        RunManager.Instance.Environment.FromBoardToRightBucketNeuron.Add(FromBoardToRightBucketStaging);
+        RunManager.Instance.Environment.FromRightBucketToBoardNeuron.Add(FromRightBucketToBoardStaging);
+        RunManager.Instance.Environment.BarterClearRightBucketItemsNeuron.Add(ClearRightBucketStaging);
+        RunManager.Instance.Environment.ExchangeSkillNeuron.Add(ExchangeStaging);
+        RunManager.Instance.Environment.BarterWeightIsUpdatedNeuron.Add(WeightIsChanged);
+        SmallRefresh();
     }
 
     private void OnDisable()
@@ -52,18 +77,93 @@ public class BarterPanel : Panel
         RunManager.Instance.Environment.FromFieldToBarterNeuron.Remove(FromFieldToBarterStaging);
         RunManager.Instance.Environment.FromBarterToHandNeuron.Remove(FromBarterToHandStaging);
         RunManager.Instance.Environment.FromBarterToFieldNeuron.Remove(FromBarterToFieldStaging);
+        RunManager.Instance.Environment.FromBoardToRightBucketNeuron.Remove(FromBoardToRightBucketStaging);
+        RunManager.Instance.Environment.FromRightBucketToBoardNeuron.Remove(FromRightBucketToBoardStaging);
+        RunManager.Instance.Environment.BarterClearRightBucketItemsNeuron.Remove(ClearRightBucketStaging);
+        RunManager.Instance.Environment.ExchangeSkillNeuron.Remove(ExchangeStaging);
+        RunManager.Instance.Environment.BarterWeightIsUpdatedNeuron.Remove(WeightIsChanged);
     }
 
     public override void Refresh()
     {
-        LeftBucket.Refresh();
+        LeftBucket.Sync();
+        RightBucket.Sync();
+        Board.Sync();
+        SmallRefresh();
+    }
+
+    private void LeftBucketRefreshLayoutSpacing()
+    {
+        float L = LeftBucket.GetRect().rect.width;
+        float l = 160;
+        int n = LeftBucket.GetCount();
+        float s;
+        if (n < L / l)
+            s = 0;
+        else
+            s = -(n * l - L) / (n - 1);
+        LeftLayout.spacing = s;
+    }
+
+    private void RightBucketRefreshLayoutSpacing()
+    {
+        float L = RightBucket.GetRect().rect.width;
+        float l = 160;
+        int n = RightBucket.GetCount();
+        float s;
+        if (n < L / l)
+            s = 0;
+        else
+            s = -(n * l - L) / (n - 1);
+        RightLayout.spacing = s;
+    }
+
+    private void WeightIsChanged(int weight)
+    {
+        SmallRefresh();
+    }
+
+    private void SmallRefresh()
+    {
+        RefreshWeight();
+        RefreshExchangeButton();
         RefreshRefreshItemsButton();
+    }
+
+    private void RefreshWeight()
+    {
+        BarterCell barterCell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
+        
+        float y = MapWeightToY(barterCell.Weight);
+
+        _weightHandle?.Kill();
+        
+        _weightHandle = DOTween.Sequence()
+            .Append(LeftBucketOffset.DOAnchorPosY(y, 2f).SetEase(Ease.OutElastic))
+            .Join(RightBucketOffset.DOAnchorPosY(-y, 2f).SetEase(Ease.OutElastic));
+
+        _weightHandle.SetAutoKill(true);
+        _weightHandle.Restart();
+    }
+
+    private float MapWeightToY(int weight)
+    {
+        const float WEIGHT_SCALE = 5f;
+        const float MAX_Y = 33f;
+        
+        float normalizedWeight = (float)Math.Tanh(weight / WEIGHT_SCALE);
+        return normalizedWeight * MAX_Y;
+    }
+
+    private void RefreshExchangeButton()
+    {
+        BarterCell barterCell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
+        ExchangeButton.SetStateToActiveIf(barterCell.CanExchange());
     }
 
     private void RefreshRefreshItemsButton()
     {
-        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
-        BarterCell barterCell = cellAdapter.AsCell() as BarterCell;
+        BarterCell barterCell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
         if (!barterCell.RefreshItemsIsAllowed())
         {
             RefreshItemsButton.gameObject.SetActive(false);
@@ -77,12 +177,17 @@ public class BarterPanel : Panel
 
     private void RefreshItems(InteractBehaviour ib, PointerEventData d)
     {
-        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
-        BarterCell barterCell = cellAdapter.AsCell() as BarterCell;
+        BarterCell barterCell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
         barterCell.RefreshItemsProcedure();
         
         LeftBucket.Sync();
-        RefreshRefreshItemsButton();
+        SmallRefresh();
+    }
+
+    private void Exchange(InteractBehaviour ib, PointerEventData d)
+    {
+        BarterCell cell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
+        cell.ExchangeProcedure();
     }
 
     private void ExitShop(InteractBehaviour ib, PointerEventData d)
@@ -97,6 +202,107 @@ public class BarterPanel : Panel
             return;
         
         RunManager.Instance.Environment.MoveSkillProcedure(fromIndex, new NextBarterDeckIndexDefinition());
+    }
+
+    private void RightBucketDrop(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        // from is from board
+        // to is from right
+        BarterCell cell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
+
+        BarterBoardSlot fromSlot = from.Get<BarterBoardSlot>();
+        if (fromSlot == null)
+            return;
+
+        if (!cell.BoardItems.Contains(fromSlot))
+            return;
+        
+        int fromIndex = cell.BoardItems.IndexOf(fromSlot);
+        cell.FromBoardToRightBucketProcedure(fromIndex);
+    }
+
+    private void BoardDrop(InteractBehaviour from, InteractBehaviour to, PointerEventData d)
+    {
+        // from is from right bucket
+        // to is from board
+        BarterCell cell = _address.Get<ICellAdapter>().AsCell() as BarterCell;
+
+        SkillGhost fromSkill = from.Get<SkillGhost>();
+        if (fromSkill == null || !cell.RightBucketItems.Contains(fromSkill))
+            return;
+
+        BarterBoardSlot toSlot = to.Get<BarterBoardSlot>();
+        if (toSlot == null || !cell.BoardItems.Contains(toSlot))
+            return;
+        
+        int fromIndex = cell.RightBucketItems.IndexOf(fromSkill);
+        int toIndex = cell.BoardItems.IndexOf(toSlot);
+        cell.FromRightBucketToBoardProcedure(fromIndex, toIndex);
+    }
+
+    private void ClearRightBucketStaging()
+    {
+        int rightBucketItemCount = RightBucket.GetCount();
+        for (int i = 0; i < rightBucketItemCount; i++)
+        {
+            RightBucket.RemoveItemAt(0);
+        }
+    }
+
+    private void FromBoardToRightBucketStaging(FromBoardToRightBucketDetails d)
+    {
+        RightBucket.AddItem();
+
+        SlotView from = Board.ViewFromIndex(d.FromIndex);
+        SlotView to = RightBucket.LastView();
+        
+        to.Refresh();
+        to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+        
+        Board.Modified(d.FromIndex);
+        
+        AudioManager.Play("CardPlacement");
+    }
+
+    private void FromRightBucketToBoardStaging(FromRightBucketToBoardDetails d)
+    {
+        SlotView from = RightBucket.ViewFromIndex(d.FromIndex);
+        SlotView to = Board.ViewFromIndex(d.ToIndex);
+        to.Refresh();
+        to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+        
+        RightBucket.RemoveItemAt(d.FromIndex);
+        Board.Modified(d.ToIndex);
+        
+        AudioManager.Play("CardPlacement");
+    }
+
+    private void ExchangeStaging(ExchangeSkillDetails d)
+    {
+        DeckPanel deckPanel = CanvasManager.Instance.RunCanvas.DeckPanel;
+        
+        int leftBucketItemCount = LeftBucket.GetCount();
+        for (int i = 0; i < leftBucketItemCount; i++)
+            LeftBucket.RemoveItemAt(0);
+
+        // Tween seq = DOTween.Sequence();
+        
+        int rightBucketItemCount = RightBucket.GetCount();
+        for (int i = 0; i < rightBucketItemCount; i++)
+        {
+            deckPanel.HandView.AddItem();
+            
+            SlotView from = RightBucket.ViewFromIndex(0);
+            SlotView to = deckPanel.HandView.LastView();
+            to.Refresh();
+            to.SetMoveFromRectToIdle(from.GetContentView().GetRect());
+        
+            RightBucket.RemoveItemAt(0);
+        }
+        
+        AudioManager.Play("CardPlacement");
+        
+        // CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(seq);
     }
 
     #region MoveSkillRelated

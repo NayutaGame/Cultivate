@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CLLibrary;
 
 public sealed class SkillEntryQuery
@@ -50,7 +51,7 @@ public sealed class SkillEntryQuery
         => new(wuXingPred: WuXing.ToPred(wuXing), baseJingJieBound: baseJingJieBound);
 
     public static SkillEntryQuery FromPredWuXingBaseJingJieBound(Predicate<SkillEntry> predicate, WuXing wuXing, Bound baseJingJieBound)
-        => new(new() { predicate }, wuXingPred: WuXing.ToPred(wuXing), baseJingJieBound: baseJingJieBound);
+        => new(predicate != null ? new() { predicate } : null, wuXingPred: WuXing.ToPred(wuXing), baseJingJieBound: baseJingJieBound);
 
     public static SkillEntryQuery FromSkillGhost(SkillGhost skillGhost)
         => new(entry: skillGhost.GetEntry());

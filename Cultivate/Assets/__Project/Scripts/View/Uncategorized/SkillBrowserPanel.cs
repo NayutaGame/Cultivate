@@ -37,7 +37,7 @@ public class SkillBrowserPanel : Panel
 
     private void SortByComparisonId(int i)
     {
-        SkillInventory inventory = _address.Get<SkillInventory>();
+        RunSkillListModel inventory = _address.Get<RunSkillListModel>();
         inventory.SortByComparisonId(i);
         SkillInventoryView.Refresh();
     }

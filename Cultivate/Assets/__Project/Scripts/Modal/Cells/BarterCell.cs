@@ -7,6 +7,8 @@ using UnityEngine.Assertions;
 
 public class BarterCell : Cell
 {
+    public static readonly int MAX_BOARD_ITEMS = 4;
+    
     private int _targetItemCount;
     private bool _targetIsMutator;
     private SkillEntryQuery _toQuery;
@@ -14,7 +16,9 @@ public class BarterCell : Cell
 
     public ListModel<RunSkill> LeftBucketItems;
     public ListModel<SkillGhost> RightBucketItems;
-    public ListModel<SkillGhost> BoardItems;
+    public ListModel<BarterBoardSlot> BoardItems;
+
+    public int Weight { get; private set; }
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -30,7 +34,7 @@ public class BarterCell : Cell
         SkillEntryQuery toQuery,
         RunCostDefinition refreshCost)
     {
-        _targetItemCount = targetItemCount;
+        _targetItemCount = targetItemCount.ClampUpper(MAX_BOARD_ITEMS);
         _targetIsMutator = targetIsMutator;
         _toQuery = toQuery;
         _refreshCost = refreshCost;
@@ -38,6 +42,26 @@ public class BarterCell : Cell
         LeftBucketItems = new();
         RightBucketItems = new();
         BoardItems = new();
+        MAX_BOARD_ITEMS.Do(i => BoardItems.Add(new()));
+        
+        RunManager.Instance.Environment.FromHandToBarterNeuron.Add(UpdateWeight);
+        RunManager.Instance.Environment.FromFieldToBarterNeuron.Add(UpdateWeight);
+        RunManager.Instance.Environment.FromBarterToHandNeuron.Add(UpdateWeight);
+        RunManager.Instance.Environment.FromBarterToFieldNeuron.Add(UpdateWeight);
+        RunManager.Instance.Environment.FromBoardToRightBucketNeuron.Add(UpdateWeight);
+        RunManager.Instance.Environment.FromRightBucketToBoardNeuron.Add(UpdateWeight);
+
+        UpdateWeight();
+    }
+
+    ~BarterCell()
+    {
+        RunManager.Instance.Environment.FromHandToBarterNeuron.Remove(UpdateWeight);
+        RunManager.Instance.Environment.FromFieldToBarterNeuron.Remove(UpdateWeight);
+        RunManager.Instance.Environment.FromBarterToHandNeuron.Remove(UpdateWeight);
+        RunManager.Instance.Environment.FromBarterToFieldNeuron.Remove(UpdateWeight);
+        RunManager.Instance.Environment.FromBoardToRightBucketNeuron.Remove(UpdateWeight);
+        RunManager.Instance.Environment.FromRightBucketToBoardNeuron.Remove(UpdateWeight);
     }
 
     public static BarterCell FromCount(int targetItemCount = 2)
@@ -61,6 +85,10 @@ public class BarterCell : Cell
 
     private void RefreshItems()
     {
+        MAX_BOARD_ITEMS.Do(i => BoardItems[i].SkillGhost = null);
+
+        ClearRightBucketItemsProcedure();
+        
         for (int i = 0; i < _targetItemCount; i++)
         {
             GainSkillBuilder b = new();
@@ -72,11 +100,21 @@ public class BarterCell : Cell
             {
                 b.DrawMutator(JingJie.HuaShen);
             }
-            BoardItems.Add(SkillGhost.FromGainingSkill(b.GainingSkills[0]));
+
+            BoardItems[i].SkillGhost = SkillGhost.FromGainingSkill(b.GainingSkills[0]);
         }
+        
+        UpdateWeight();
     }
 
-    public int GetValueDiff()
+    private void UpdateWeight(FromHandToBarterDetails d) => UpdateWeight();
+    private void UpdateWeight(FromFieldToBarterDetails d) => UpdateWeight();
+    private void UpdateWeight(FromBarterToHandDetails d) => UpdateWeight();
+    private void UpdateWeight(FromBarterToFieldDetails d) => UpdateWeight();
+    private void UpdateWeight(FromBoardToRightBucketDetails d) => UpdateWeight();
+    private void UpdateWeight(FromRightBucketToBoardDetails d) => UpdateWeight();
+
+    private void UpdateWeight()
     {
         int leftValue = 0;
         foreach (RunSkill skill in LeftBucketItems)
@@ -90,8 +128,13 @@ public class BarterCell : Cell
             rightValue += RoomDefinition.GetCardBasePriceFromJingJie(ghost.GetJingJie());
         }
 
-        return leftValue - rightValue;
+        Weight = leftValue - rightValue;
+
+        RunManager.Instance.Environment.BarterWeightIsUpdatedNeuron.Invoke(Weight);
     }
+
+    public bool CanExchange()
+        => Weight >= 0 && LeftBucketItems.Count() > 0 && RightBucketItems.Count() > 0;
 
     public bool RefreshItemsIsAllowed()
         => _refreshCost != null;
@@ -117,41 +160,53 @@ public class BarterCell : Cell
         
         RefreshItems();
     }
-    
-    private void ExchangeProcedure()
+
+    private void ClearRightBucketItemsProcedure()
     {
-        if (GetValueDiff() < 0)
+        int count = RightBucketItems.Count();
+        for (int i = 0; i < count; i++)
+            RightBucketItems.RemoveAt(0);
+
+        RunManager.Instance.Environment.BarterClearRightBucketItemsNeuron.Invoke();
+    }
+    
+    public void ExchangeProcedure()
+    {
+        if (!CanExchange())
             return;
 
         GainSkillBuilder b = new();
-        if (!_targetIsMutator)
+        for (int i = 0; i < RightBucketItems.Count(); i++)
         {
-            for (int i = 0; i < RightBucketItems.Count(); i++)
-            {
-                b.Draw(SkillEntryQuery.FromSkillGhost(RightBucketItems[i]), RightBucketItems[i].GetJingJie());
-            }
-        }
-        else
-        {
-            for (int i = 0; i < RightBucketItems.Count(); i++)
-            {
-                b.Pick(RightBucketItems[i].Clone());
-            }
+            b.Pick(RightBucketItems[i].Clone());
         }
         b.Execute();
         
-        // remove left items
-        // staging
+        LeftBucketItems.Clear();
+        RightBucketItems.Clear();
+        
+        UpdateWeight();
 
-        // ExchangeSkillDetails details = new ExchangeSkillDetails();
-        // RunManager.Instance.Environment.ExchangeSkillProcedure(details);
+        RunManager.Instance.Environment.ExchangeSkillProcedure(new ExchangeSkillDetails());
+    }
+
+    public void BarterWithdrawLeftItemsProcedure()
+    {
+        int leftItemsCount = LeftBucketItems.Count();
+        for (int i = 0; i < leftItemsCount; i++)
+        {
+            IDeckIndex from = DeckIndex.FromBarter(0);
+            IDeckIndex to = new NextHandDeckIndexDefinition();
+            
+            RunManager.Instance.Environment.MoveSkillProcedure(from, to);
+        }
     }
 
     public override Cell DefaultReceiveSignal(Signal signal)
     {
         if (signal is ExitShopSignal)
         {
-            // withdraw left items
+            BarterWithdrawLeftItemsProcedure();
             return null;
         }
 
@@ -160,29 +215,35 @@ public class BarterCell : Cell
 
     #region MoveSkillGhostRelated
 
-    public void FromBoardToRightBucketProcedure(int fromIndex, int toIndex)
+    public void FromBoardToRightBucketProcedure(int fromIndex)
     {
-        // SkillGhost fromSkill = BoardItems[fromIndex];
-        // RunSkill toSkill = d.SkillSlot.Skill;
-        //
-        // if (toSkill == null)
-        // {
-        //     Hand.Remove(fromSkill);
-        //     d.SkillSlot.Skill = fromSkill;
-        // }
-        // else
-        // {
-        //     Hand.Replace(fromSkill, toSkill);
-        //     d.SkillSlot.Skill = fromSkill;
-        // }
-        //
-        // EquipNeuron.Invoke(d);
-        // SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
+        BarterBoardSlot slot = BoardItems[fromIndex];
+        SkillGhost fromSkill = slot.SkillGhost;
+        if (fromSkill == null)
+            return;
+
+        int toIndex = RightBucketItems.Count();
+        
+        RightBucketItems.Add(fromSkill);
+        slot.SkillGhost = null;
+
+        UpdateWeight();
+        RunManager.Instance.Environment.FromBoardToRightBucketNeuron.Invoke(new(fromIndex, toIndex));
     }
 
     public void FromRightBucketToBoardProcedure(int fromIndex, int toIndex)
     {
+        SkillGhost fromSkill = RightBucketItems[fromIndex];
+        BarterBoardSlot toSlot = BoardItems[toIndex];
+
+        if (toSlot.SkillGhost != null)
+            return;
         
+        RightBucketItems.Remove(fromSkill);
+        toSlot.SkillGhost = fromSkill;
+
+        UpdateWeight();
+        RunManager.Instance.Environment.FromRightBucketToBoardNeuron.Invoke(new(fromIndex, toIndex));
     }
 
     #endregion

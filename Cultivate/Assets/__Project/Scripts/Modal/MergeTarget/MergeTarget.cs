@@ -75,7 +75,7 @@ public abstract class MergeTarget
         return mutators;
     }
 
-    public virtual void Execute(MergeDetails d, SkillInventory hand)
+    public virtual void Execute(MergeDetails d, RunSkillListModel hand)
     {
         
     }

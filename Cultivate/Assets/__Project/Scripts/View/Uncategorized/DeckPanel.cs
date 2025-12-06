@@ -234,7 +234,7 @@ public class DeckPanel : Panel
             .AppendInterval(0.2f)
             .AppendCallback(() =>
             {
-                HandView.Get<SkillInventory>().SortByComparisonId(0);
+                HandView.Get<RunSkillListModel>().SortByComparisonId(0);
                 HandView.Refresh();
                 RefreshLayoutSpacing();
                 HandView.RefreshPivotsAsync();

@@ -30,6 +30,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         FromBarterToHandNeuron = new();
         FromBarterToFieldNeuron = new();
 
+        FromBoardToRightBucketNeuron = new();
+        FromRightBucketToBoardNeuron = new();
+        BarterClearRightBucketItemsNeuron = new();
+        BarterWeightIsUpdatedNeuron = new();
+
         DragBeginRunSkill = new();
         DragEndRunSkill = new();
         
@@ -81,6 +86,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<FromFieldToBarterDetails> FromFieldToBarterNeuron;
     public Neuron<FromBarterToHandDetails> FromBarterToHandNeuron;
     public Neuron<FromBarterToFieldDetails> FromBarterToFieldNeuron;
+    
+    public Neuron<FromBoardToRightBucketDetails> FromBoardToRightBucketNeuron;
+    public Neuron<FromRightBucketToBoardDetails> FromRightBucketToBoardNeuron;
+    public Neuron BarterClearRightBucketItemsNeuron;
+    public Neuron<int> BarterWeightIsUpdatedNeuron;
 
     public Neuron<RunSkill> DragBeginRunSkill;
     public Neuron DragEndRunSkill;
@@ -150,7 +160,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     private RunCharacter _character;
     private Dictionary<CharacterEntry, RunNPC> _npcDict;
     
-    [SerializeReference] private SkillInventory _hand;
+    [SerializeReference] private RunSkillListModel _hand;
     [SerializeField] private BoundedInt _gold;
     [SerializeReference] private EntityEntry _huaShenBossEntity;
     [SerializeField] private RunResult _result;
@@ -270,7 +280,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public JingJie JingJie => _jingJie;
     public SkillPool SkillPool => _skillPool;
     public MutatorPool MutatorPool => _mutatorPool;
-    public SkillInventory Hand => _hand;
+    public RunSkillListModel Hand => _hand;
     public void SendEvent(int eventId, RunClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
     public RunResult GetResult() => _result;

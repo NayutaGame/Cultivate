@@ -8,7 +8,7 @@ public class DrawMergeTarget : MergeTarget
     {
     }
 
-    public override void Execute(MergeDetails d, SkillInventory hand)
+    public override void Execute(MergeDetails d, RunSkillListModel hand)
     {
         SkillEntryQuery drawStrategy = SkillEntryQuery.FromPredWuXingBaseJingJieBound(
             predicate: d.MergeTarget.Pred,

@@ -19,7 +19,7 @@ public class FilteredListModel<T> : IListModel
     public bool Contains(T item)
         => _filteredList.Contains(item);
 
-    private ListModel<T> _list;
+    private ListModel<T> _source;
     private Predicate<T> _filter;
 
     private List<T> _filteredList;
@@ -32,13 +32,13 @@ public class FilteredListModel<T> : IListModel
 
     public void Refresh()
     {
-        _filteredList = _list.Filter(_filter);
+        _filteredList = _source.Filter(_filter);
         ResyncEvent?.Invoke();
     }
 
-    public FilteredListModel(ListModel<T> list, Predicate<T> filter = null)
+    public FilteredListModel(ListModel<T> source, Predicate<T> filter = null)
     {
-        _list = list;
+        _source = source;
         SetFilter(filter ?? NullFilter);
     }
 

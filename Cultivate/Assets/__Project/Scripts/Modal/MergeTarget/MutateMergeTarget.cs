@@ -14,7 +14,7 @@ public class MutateMergeTarget : MergeTarget
     {
     }
 
-    public override void Execute(MergeDetails d, SkillInventory hand)
+    public override void Execute(MergeDetails d, RunSkillListModel hand)
     {
         RunSkill result = RunSkill.FromMutation(d.MergeTarget.ResultEntry, d.MergeTarget.ResultJingJie, d.MergeTarget.ResultMutators);
         hand.Replace(d.Rhs.ToDeckIndex().Index, result);
