@@ -395,6 +395,83 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
+--- !u!114 &-7159040822457169158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c0874519fe3fd4bb91fe2f1dc6ba04, type: 3}
+  m_Name: Battle Cell Node From Ladder
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: -744, y: 88}
+  prevs:
+    ownerNode: {fileID: -7159040822457169158}
+    guid: 56023d4a-e895-4e92-975b-777127c72d28
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: -7159040822457169158}
+      guid: f5a983aa-f21b-49a3-95e6-85de4773d846
+      reroutes: []
+    - node: {fileID: -7159040822457169158}
+      guid: acc8025f-e128-4e28-83e4-aaf94e2591d2
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -745.9
+      y: 123.5
+      width: 16
+      height: 16
+  Ladder:
+    ownerNode: {fileID: -7159040822457169158}
+    guid: a2543210-0054-4c7d-8610-b0fc33194366
+    fieldName: Ladder
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: -745.9
+      y: 143.5
+      width: 16
+      height: 16
+    defaultValue: 0
+  WinNext:
+    ownerNode: {fileID: -7159040822457169158}
+    guid: f5a983aa-f21b-49a3-95e6-85de4773d846
+    fieldName: WinNext
+    elementName: 
+    connections:
+    - node: {fileID: -7159040822457169158}
+      guid: 56023d4a-e895-4e92-975b-777127c72d28
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -358
+      y: 163.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  LoseNext:
+    ownerNode: {fileID: -7159040822457169158}
+    guid: acc8025f-e128-4e28-83e4-aaf94e2591d2
+    fieldName: LoseNext
+    elementName: 
+    connections:
+    - node: {fileID: -7159040822457169158}
+      guid: 56023d4a-e895-4e92-975b-777127c72d28
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: -358
+      y: 183.5
+      width: 16
+      height: 16
+    hasFunc: 1
 --- !u!114 &-734702434188578223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,7 +749,7 @@ MonoBehaviour:
   m_Name: A
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: 143.5347, y: -563.3429}
+  panOffset: {x: 153.83032, y: -691.4662}
   zoom: 1.1439573
   nodes:
   - {fileID: 8404964342545946824}
@@ -686,6 +763,7 @@ MonoBehaviour:
   - {fileID: 4184091118637384286}
   - {fileID: 9183847595847319689}
   - {fileID: 2497084314479306452}
+  - {fileID: -7159040822457169158}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -1181,11 +1259,11 @@ MonoBehaviour:
     fieldName: prevs
     elementName: 
     connections:
-    - node: {fileID: 8404964342545946824}
-      guid: 95723977-1d43-4437-b194-d1e08b5731a5
-      reroutes: []
     - node: {fileID: 2497084314479306452}
       guid: 83dd25da-aae5-4e8d-905d-8c82f6635ebe
+      reroutes: []
+    - node: {fileID: 8404964342545946824}
+      guid: 95723977-1d43-4437-b194-d1e08b5731a5
       reroutes: []
     rect:
       serializedVersion: 2

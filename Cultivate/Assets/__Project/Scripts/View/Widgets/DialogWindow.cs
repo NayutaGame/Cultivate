@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class DialogWindow : MonoBehaviour
 {
     [SerializeField] private TMP_Text Description;
-    [SerializeField] private Button4State Confirm;
+    [SerializeField] private CLButtonPatternA Confirm;
 
     private Action _onConfirm;
 

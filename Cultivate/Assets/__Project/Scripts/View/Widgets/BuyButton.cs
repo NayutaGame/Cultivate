@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuyButton : Button4State
+public class BuyButton : CLButtonPatternA
 {
     [SerializeField] private Image IdleIcon;
     [SerializeField] private Image HoverIcon;

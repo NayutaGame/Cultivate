@@ -1,23 +1,22 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsSwitch : LegacySimpleView
+public class SettingsSwitch : XView
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private TMP_Text ContentText;
-    [SerializeField] private Button PrevButton;
-    [SerializeField] private Button NextButton;
+    [SerializeField] private CLButtonPatternA PrevButton;
+    [SerializeField] private CLButtonPatternA NextButton;
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
-
-        PrevButton.onClick.RemoveAllListeners();
-        PrevButton.onClick.AddListener(Prev);
-        NextButton.onClick.RemoveAllListeners();
-        NextButton.onClick.AddListener(Next);
+        
+        PrevButton.LeftClickNeuron.Join(Prev);
+        NextButton.LeftClickNeuron.Join(Next);
     }
 
     public override void Refresh()
@@ -31,12 +30,18 @@ public class SettingsSwitch : LegacySimpleView
         ContentText.text = model.GetContentText();
     }
 
+    private void Prev(InteractBehaviour ib, PointerEventData d)
+        => Prev();
+
     private void Prev()
     {
         SwitchModel model = Get<SwitchModel>();
         model.Prev();
         ContentText.text = model.GetContentText();
     }
+
+    private void Next(InteractBehaviour ib, PointerEventData d)
+        => Next();
 
     private void Next()
     {

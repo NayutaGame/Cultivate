@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ShopPanel : Panel
 {
     public ListView ListView;
-    public Button4State ExitButton;
+    public CLButtonPatternA ExitButton;
 
     private Address _address;
 

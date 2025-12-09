@@ -9,6 +9,9 @@ public class Settings : Addressable
 {
     private SettingsTabListModel _tabs;
     private SettingsTab _selectedTab;
+    private SettingsData _settingsData;
+
+    public Neuron<SettingsTabChangedDetails> SettingsTabChangedNeuron;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -18,6 +21,8 @@ public class Settings : Addressable
     public object Get(string s) => Accessor[s](this);
     public Settings()
     {
+        SettingsTabChangedNeuron = new();
+        
         _tabs = new();
         _tabs.AddRange(new SettingsTab[]
         {
@@ -57,16 +62,19 @@ public class Settings : Addressable
             })),
         });
         
+        Assert.IsTrue(_tabs.Count() > 0);
+        
         LoadOrDefault();
         ApplySettingsData();
-        
-        ResetSelectedTab();
-    }
 
-    private SettingsData _settingsData;
+        ResetTabProcedure();
+    }
 
     public SettingsData GetData()
         => _settingsData;
+    
+    public SettingsTab GetSelectedTab()
+        => _selectedTab;
     
     private void LoadOrDefault()
     {
@@ -116,12 +124,22 @@ public class Settings : Addressable
         _settingsData = FileUtility.ReadPersistentFile<SettingsData>(SettingsData.Filename);
         // case存档损坏
     }
+    
+    public void ResetTabProcedure()
+    {
+        SelectTabProcedure(_tabs[0]);
+    }
 
-    public SettingsTab GetSelectedTab() => _selectedTab;
-    public void SetSelectedTab(SettingsTab settingsTab) => _selectedTab = settingsTab;
-    public void ResetSelectedTab() => _selectedTab = _tabs.Count() > 0 ? _tabs[0] : null;
-    public bool IsSelectedTab(SettingsTab settingsTab) => settingsTab == _selectedTab;
-    public int FindIndexOfTab(SettingsTab settingsTab) => _tabs.IndexOf(settingsTab);
+    public void SelectTabProcedure(SettingsTab tab)
+    {
+        if (tab == _selectedTab)
+            return;
+        
+        int fromIndex = _tabs.IndexOf(_selectedTab);
+        _selectedTab = tab;
+        int toIndex = _tabs.IndexOf(_selectedTab);
+        SettingsTabChangedNeuron.Invoke(new(fromIndex, toIndex));
+    }
 
     #region Implementations
 

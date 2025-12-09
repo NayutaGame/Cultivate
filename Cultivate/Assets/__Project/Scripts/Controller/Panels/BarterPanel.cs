@@ -21,10 +21,10 @@ public class BarterPanel : Panel
     public ListView Board;
 
     public TMP_Text RefreshCostText;
-    public Button4State RefreshItemsButton;
-    public Button4State ExitButton;
+    public CLButtonPatternA RefreshItemsButton;
+    public CLButtonPatternA ExitButton;
 
-    public Button4State ExchangeButton;
+    public CLButtonPatternA ExchangeButton;
 
     private Address _address;
 

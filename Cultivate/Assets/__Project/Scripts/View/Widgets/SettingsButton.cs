@@ -1,19 +1,19 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsButton : LegacySimpleView
+public class SettingsButton : XView
 {
     [SerializeField] private TMP_Text LabelText;
-    [SerializeField] private Button Button;
+    [SerializeField] private CLButton Button;
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
         
-        Button.onClick.RemoveAllListeners();
-        Button.onClick.AddListener(Click);
+        Button.LeftClickNeuron.Join(Click);
     }
 
     public override void SetAddress(Address address)
@@ -23,7 +23,7 @@ public class SettingsButton : LegacySimpleView
         LabelText.text = model.Name;
     }
 
-    public void Click()
+    private void Click(InteractBehaviour ib, PointerEventData d)
     {
         ButtonModel model = Get<ButtonModel>();
         model.Click();

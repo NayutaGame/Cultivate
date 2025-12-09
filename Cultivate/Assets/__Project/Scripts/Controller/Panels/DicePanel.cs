@@ -14,8 +14,8 @@ public class DicePanel : Panel
     
     [SerializeField] private ListView ResultList;
     
-    [SerializeField] private Button4State RollButton;
-    [SerializeField] private Button4State ForwardButton;
+    [SerializeField] private CLButtonPatternA RollButton;
+    [SerializeField] private CLButtonPatternA ForwardButton;
 
     private Address _address;
 

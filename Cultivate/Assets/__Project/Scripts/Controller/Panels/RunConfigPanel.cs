@@ -13,10 +13,10 @@ public class RunConfigPanel : Panel
     [SerializeField] private DetailedCharacterProfileView DetailedCharacterProfileView;
     
     [SerializeField] private DifficultyPickerView DifficultyPickerView;
-    [SerializeField] private Button4State ReturnButton;
-    [SerializeField] private Button4State StartRunButton;
+    [SerializeField] private CLButtonPatternA ReturnButton;
+    [SerializeField] private CLButtonPatternA StartRunButton;
 
-    [SerializeField] private Button4State PackConfigButton;
+    [SerializeField] private CLButtonPatternA PackConfigButton;
 
     [SerializeField] private PackConfigPanel PackConfigPanel;
 

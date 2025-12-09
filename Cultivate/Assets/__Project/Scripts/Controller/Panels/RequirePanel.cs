@@ -13,7 +13,7 @@ public class RequirePanel : Panel
     [SerializeField] public ListView Requirements;
     [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text ContentText;
-    [SerializeField] private Button4State SubmitButton;
+    [SerializeField] private CLButtonPatternA SubmitButton;
     
     private Address _address;
 

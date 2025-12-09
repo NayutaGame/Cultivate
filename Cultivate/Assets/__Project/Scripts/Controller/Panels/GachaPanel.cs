@@ -9,8 +9,8 @@ using UnityEngine.UI;
 public class GachaPanel : Panel
 {
     [SerializeField] private TMP_Text PriceTag;
-    [SerializeField] private Button4State BuyButton;
-    [SerializeField] private Button4State ExitButton;
+    [SerializeField] private CLButtonPatternA BuyButton;
+    [SerializeField] private CLButtonPatternA ExitButton;
     [SerializeField] public ListView ListView;
     [SerializeField] private HorizontalLayoutGroup HLayout;
 

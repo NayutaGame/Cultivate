@@ -3,13 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsSlider : LegacySimpleView
+public class SettingsSlider : XView
 {
     [SerializeField] private TMP_Text LabelText;
     [SerializeField] private TMP_Text NumberText;
     [SerializeField] private Slider Slider;
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
         

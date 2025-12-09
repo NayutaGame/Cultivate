@@ -1,20 +1,16 @@
 
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class SettingsPanel : PopupPanel
 {
-    [SerializeField] private LegacyListView WidgetListView;
-    [SerializeField] public Transform WidgetsTransform;
-    [SerializeField] public CanvasGroup WidgetsCanvasGroup;
+    [SerializeField] public ListView TabListView;
+    
+    [SerializeField] private ListView WidgetListView;
 
-    [SerializeField] private LegacyListView TabListView;
-
-    [SerializeField] private Button4State ToTitleButton;
-    [SerializeField] private Button4State ToDesktopButton;
-    [SerializeField] private Button4State ResumeButton;
+    [SerializeField] private CLButton ToTitleButton;
+    [SerializeField] private CLButton ToDesktopButton;
+    [SerializeField] private CLButton ResumeButton;
 
     public void ShowExitButtons()
     {
@@ -28,38 +24,13 @@ public class SettingsPanel : PopupPanel
         ToDesktopButton.gameObject.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        ToTitleButton.LeftClickNeuron.Add(ToTitle);
-        ToDesktopButton.LeftClickNeuron.Add(ToDesktop);
-        ResumeButton.LeftClickNeuron.Add(Return);
-        
-        AudioManager.PlayEnterSettings();
-        
-        AppManager.Instance.PushEscFunc(Return);
-    }
-
-    private void OnDisable()
-    {
-        ToTitleButton.LeftClickNeuron.Remove(ToTitle);
-        ToDesktopButton.LeftClickNeuron.Remove(ToDesktop);
-        ResumeButton.LeftClickNeuron.Remove(Return);
-        
-        AudioManager.PlayExitSettings();
-        
-        AppManager.Instance.PopEscFunc();
-    }
-
     private Address _address;
     public override void AwakeFunction()
     {
         base.AwakeFunction();
         _address = new Address("Settings");
-        Settings settings = _address.Get<Settings>();
-        settings.ResetSelectedTab();
         
         TabListView.SetAddress(_address.Append(".Tabs"));
-        TabListView.LeftClickNeuron.Join(ClickedTab);
 
         WidgetListView.SetPrefabProvider(model =>
         {
@@ -84,11 +55,40 @@ public class SettingsPanel : PopupPanel
         WidgetListView.Refresh();
     }
 
-    private void Return(InteractBehaviour ib, PointerEventData d)
+    private void OnEnable()
+    {
+        AppManager.Instance.Settings.SettingsTabChangedNeuron.Add(TabChanged);
+        
+        ToTitleButton.LeftClickNeuron.Add(ToTitle);
+        ToDesktopButton.LeftClickNeuron.Add(ToDesktop);
+        ResumeButton.LeftClickNeuron.Add(Return);
+        
+        AudioManager.PlayEnterSettings();
+        
+        AppManager.Instance.PushEscFunc(Return);
+    }
+
+    private void OnDisable()
+    {
+        AppManager.Instance.Settings.SettingsTabChangedNeuron.Remove(TabChanged);
+        
+        ToTitleButton.LeftClickNeuron.Remove(ToTitle);
+        ToDesktopButton.LeftClickNeuron.Remove(ToDesktop);
+        ResumeButton.LeftClickNeuron.Remove(Return);
+        
+        AudioManager.PlayExitSettings();
+        
+        AppManager.Instance.PopEscFunc();
+    }
+    
+    public override void Return()
     {
         AppManager.Instance.Settings.SaveProcedure();
         AppManager.Instance.Pop();
     }
+
+    private void Return(InteractBehaviour ib, PointerEventData d)
+        => Return();
 
     private void ToTitle(InteractBehaviour ib, PointerEventData d)
     {
@@ -102,39 +102,16 @@ public class SettingsPanel : PopupPanel
         AppManager.ExitGame();
     }
 
-    private Tween _handle;
-
-    private void ClickedTab(LegacyInteractBehaviour toIb, PointerEventData d)
+    private void TabChanged(SettingsTabChangedDetails d)
     {
-        SettingsTab fromTab = AppManager.Instance.Settings.GetSelectedTab();
-        SettingsTab toTab = toIb.GetSimpleView().Get<SettingsTab>();
-
-        if (fromTab == toTab)
-            return;
+        SlotView fromSlot = TabListView.ViewFromIndex(d.FromIndex);
+        SettingsTabView fromView = fromSlot.GetContentView() as SettingsTabView;
+        fromView.ToggleButton.IsDown = false;
         
-        AppManager.Instance.Settings.SetSelectedTab(toTab);
+        SlotView toSlot = TabListView.ViewFromIndex(d.ToIndex);
+        SettingsTabView toView = toSlot.GetContentView() as SettingsTabView;
+        toView.ToggleButton.IsDown = true;
         
-        // Staging
-        SettingsTabView fromTabView = TabListView.ActivePool[AppManager.Instance.Settings.FindIndexOfTab(fromTab)]
-            .GetInteractBehaviour().GetCLView() as SettingsTabView;
-        SettingsTabView toTabView = toIb.GetCLView() as SettingsTabView;
-        
-        _handle?.Kill();
-        _handle = TabChangedAnimation(fromTabView, toTabView);
-        _handle.SetAutoKill().Restart();
-        
-        fromTabView.Unselect();
-        toTabView.Select();
-    }
-
-    public Tween TabChangedAnimation(SettingsTabView fromTabView, SettingsTabView toTabView)
-    {
-        return DOTween.Sequence()
-            .Join(DOTween.Sequence()
-                .Append(WidgetsCanvasGroup.DOFade(0.4f, 0.075f).SetEase(Ease.OutQuad))
-                .Join(WidgetsTransform.DOScale(0.9f, 0.075f))
-                .AppendCallback(() => WidgetListView.Sync())
-                .Append(WidgetsTransform.DOScale(1f, 0.075f))
-                .Join(WidgetsCanvasGroup.DOFade(1, 0.075f)).SetEase(Ease.InQuad));
+        WidgetListView.Sync();
     }
 }

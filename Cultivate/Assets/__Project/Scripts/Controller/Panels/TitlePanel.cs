@@ -8,19 +8,19 @@ using UnityEngine.Events;
 
 public class TitlePanel : Panel
 {
-    public XButton ContinueButton;
-    public XButton StartRunButton;
-    public XButton StartPrologueButton;
-    public XButton SettingsButton;
-    public XButton ExitButton;
+    public ButtonWithPointerEnter ContinueButton;
+    public ButtonWithPointerEnter StartRunButton;
+    public ButtonWithPointerEnter StartPrologueButton;
+    public ButtonWithPointerEnter SettingsButton;
+    public ButtonWithPointerEnter ExitButton;
     
-    public XButton EntityEditorButton;
-    public XButton SkillBrowserButton;
-    public XButton BuffBrowserButton;
-    public XButton AchievementBrowserButton;
-    public XButton UnlockNextDifficultyButton;
-    public XButton DeleteProfileButton;
-    public XButton UnlockEverythingButton;
+    public ButtonWithPointerEnter EntityEditorButton;
+    public ButtonWithPointerEnter SkillBrowserButton;
+    public ButtonWithPointerEnter BuffBrowserButton;
+    public ButtonWithPointerEnter AchievementBrowserButton;
+    public ButtonWithPointerEnter UnlockNextDifficultyButton;
+    public ButtonWithPointerEnter DeleteProfileButton;
+    public ButtonWithPointerEnter UnlockEverythingButton;
 
     public GameObject TitleModel;
 
@@ -37,7 +37,7 @@ public class TitlePanel : Panel
     {
         base.AwakeFunction();
 
-        List<XButton> ButtonList = new List<XButton>
+        List<ButtonWithPointerEnter> ButtonList = new List<ButtonWithPointerEnter>
         {
             ContinueButton,
             StartRunButton,

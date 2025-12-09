@@ -1,0 +1,1134 @@
+fileFormatVersion: 2
+guid: 0393ac10f027bf74b875045f0b624b3f
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMasterTextureLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 1
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  mosaicSpriteImportData: []
+  rigSpriteImportData:
+  - name: SliderText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 974
+      y: 52
+      width: 27
+      height: 18
+    spriteID: 4553dc0d3913dc34eb0d7093fc1e8fd6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 974, y: 52}
+    spritePosition: {x: 587, y: 41}
+  - name: SliderHover
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 363
+      width: 44
+      height: 35
+    spriteID: 6d4f5087958fcef419a5bd07da67887c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 363}
+    spritePosition: {x: 679, y: 36}
+  - name: SliderPress
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 56
+      y: 363
+      width: 44
+      height: 35
+    spriteID: 10974c48458271e4fa9fc2b69052a782
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 56, y: 363}
+    spritePosition: {x: 679, y: 36}
+  - name: SliderHandle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 974
+      y: 4
+      width: 44
+      height: 40
+    spriteID: ed99f78d34a11534aa589c231b4c957c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 974, y: 4}
+    spritePosition: {x: 679, y: 31}
+  - name: Slider
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 352
+      y: 300
+      width: 308
+      height: 8
+    spriteID: 20dcdd9efd736f9499908c6b5e95a076
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 352, y: 300}
+    spritePosition: {x: 621, y: 46}
+  - name: SwitchText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 669
+      y: 292
+      width: 133
+      height: 18
+    spriteID: 00645263364a9c8488478d5e88bf15a4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 669, y: 292}
+    spritePosition: {x: 709, y: 42}
+  - name: SwitchLeftHover
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 197
+      y: 322
+      width: 25
+      height: 27
+    spriteID: 708c7eceef790ff4fa96e0bcc96f7ec3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 197, y: 322}
+    spritePosition: {x: 621, y: 36}
+  - name: SwitchLeftPress
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 296
+      y: 322
+      width: 24
+      height: 27
+    spriteID: 3ccc7bcc74bcfd94bb72a4bd22b22444
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 296, y: 322}
+    spritePosition: {x: 622, y: 36}
+  - name: SwitchLeftArrow
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 985
+      y: 248
+      width: 26
+      height: 29
+    spriteID: 6015f3a9dede94845999d541c6a6dea8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 985, y: 248}
+    spritePosition: {x: 620, y: 34}
+  - name: SwitchRightHover
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 230
+      y: 322
+      width: 25
+      height: 27
+    spriteID: ff2c727302bfc2848a823c31143efa54
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 230, y: 322}
+    spritePosition: {x: 904, y: 36}
+  - name: SwitchRightPress
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 263
+      y: 322
+      width: 25
+      height: 27
+    spriteID: 2097ff52912c3e2419db18dea9ca73e9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 263, y: 322}
+    spritePosition: {x: 904, y: 36}
+  - name: SwitchRightArrow
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 163
+      y: 322
+      width: 26
+      height: 29
+    spriteID: 92267d7d398a6a0439ece69592c9a657
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 163, y: 322}
+    spritePosition: {x: 904, y: 34}
+  - name: ToggleHover
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 724
+      y: 85
+      width: 151
+      height: 33
+    spriteID: cf49fc2f2471746458f50add192e757d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 724, y: 85}
+    spritePosition: {x: 626, y: 32}
+  - name: TogglePress
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 724
+      y: 126
+      width: 151
+      height: 33
+    spriteID: f18a7076498b8d34d956ed98e593aea3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 724, y: 126}
+    spritePosition: {x: 626, y: 32}
+  - name: ToggleHandle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 322
+      width: 151
+      height: 33
+    spriteID: 652b81f567f866f46b0af54221ca7a14
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 322}
+    spritePosition: {x: 626, y: 32}
+  - name: ToggleOffText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 912
+      y: 292
+      width: 19
+      height: 19
+    spriteID: cf695b6913b90e84aa03d512c3203304
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 912, y: 292}
+    spritePosition: {x: 692, y: 41}
+  - name: ToggleOnText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 939
+      y: 292
+      width: 20
+      height: 18
+    spriteID: dc527992a5f6a864ca7cbbe118fdbea1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 939, y: 292}
+    spritePosition: {x: 840, y: 40}
+  - name: Background
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 669
+      y: 248
+      width: 308
+      height: 36
+    spriteID: cbbcbb232262ab34a8d0a58437c6e170
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 669, y: 248}
+    spritePosition: {x: 622, y: 31}
+  - name: ButtonInactiveEffect
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 174
+      width: 340
+      height: 66
+    spriteID: a1e95c22b7b345549927d5dbc1129c98
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 174}
+    spritePosition: {x: 608, y: 18}
+  - name: ButtonIdleText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 883
+      y: 126
+      width: 113
+      height: 23
+    spriteID: fded3b7b9f0c2dc4b8535c3505bf3e2e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 883, y: 126}
+    spritePosition: {x: 722, y: 40}
+  - name: ButtonHoverText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 883
+      y: 85
+      width: 136
+      height: 23
+    spriteID: f9c7834293f724b4c8ddbf013347efe4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 883, y: 85}
+    spritePosition: {x: 715, y: 40}
+  - name: ButtonHoverEffect
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 352
+      y: 248
+      width: 309
+      height: 44
+    spriteID: 18a511851f40be245accfeb201dd763f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 352, y: 248}
+    spritePosition: {x: 625, y: 28}
+  - name: ButtonInnerBase
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 700
+      y: 174
+      width: 314
+      height: 53
+    spriteID: 84eba176f81765e40ac3a7c11147bd7b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 700, y: 174}
+    spritePosition: {x: 622, y: 26}
+  - name: ButtonHoverEffect
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 352
+      y: 174
+      width: 340
+      height: 66
+    spriteID: 1cb23d4c3628a2749bf5b7eb0426bd26
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 352, y: 174}
+    spritePosition: {x: 608, y: 18}
+  - name: ButtonOuterBase
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 248
+      width: 340
+      height: 66
+    spriteID: 35d0907ccf155e549aaa7f861b8c5441
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 248}
+    spritePosition: {x: 608, y: 18}
+  - name: ButtonPressEffect
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 85
+      width: 359
+      height: 81
+    spriteID: 309c90e218b7fb24e9408004f970d361
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 85}
+    spritePosition: {x: 600, y: 8}
+  - name: ButtonShadow
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 371
+      y: 85
+      width: 345
+      height: 71
+    spriteID: 2afb646abeb3df54f973489a01233ee0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 371, y: 85}
+    spritePosition: {x: 600, y: 8}
+  - name: RowText
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 810
+      y: 292
+      width: 94
+      height: 19
+    spriteID: 0cafb7b76131787418a830e94d0d7a20
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 810, y: 292}
+    spritePosition: {x: 91, y: 40}
+  - name: RowBase
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 962
+      height: 73
+    spriteID: 8ff884b14f669664988b0a55520d03b2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 0, y: 8}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 0
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  skeletonAssetReferenceID: 
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: Slider
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: dcc9b6a7415811a4a94458b8d8b52aaa
+    layerID: 35
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: SliderText
+    spriteName: SliderText
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 4553dc0d3913dc34eb0d7093fc1e8fd6
+    layerID: 34
+    mosaicPosition: {x: 974, y: 52}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SliderHover
+    spriteName: SliderHover
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 6d4f5087958fcef419a5bd07da67887c
+    layerID: 32
+    mosaicPosition: {x: 4, y: 363}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SliderPress
+    spriteName: SliderPress
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 10974c48458271e4fa9fc2b69052a782
+    layerID: 31
+    mosaicPosition: {x: 56, y: 363}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SliderHandle
+    spriteName: SliderHandle
+    isGroup: 0
+    parentIndex: 0
+    spriteID: ed99f78d34a11534aa589c231b4c957c
+    layerID: 30
+    mosaicPosition: {x: 974, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Slider
+    spriteName: Slider
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 20dcdd9efd736f9499908c6b5e95a076
+    layerID: 29
+    mosaicPosition: {x: 352, y: 300}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Switch
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 7214377fad6d7a143b4e2a84e43bbf1c
+    layerID: 27
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: SwitchText
+    spriteName: SwitchText
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 00645263364a9c8488478d5e88bf15a4
+    layerID: 26
+    mosaicPosition: {x: 669, y: 292}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SwitchLeftHover
+    spriteName: SwitchLeftHover
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 708c7eceef790ff4fa96e0bcc96f7ec3
+    layerID: 24
+    mosaicPosition: {x: 197, y: 322}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SwitchLeftPress
+    spriteName: SwitchLeftPress
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 3ccc7bcc74bcfd94bb72a4bd22b22444
+    layerID: 23
+    mosaicPosition: {x: 296, y: 322}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SwitchLeftArrow
+    spriteName: SwitchLeftArrow
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 6015f3a9dede94845999d541c6a6dea8
+    layerID: 22
+    mosaicPosition: {x: 985, y: 248}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SwitchRightHover
+    spriteName: SwitchRightHover
+    isGroup: 0
+    parentIndex: 6
+    spriteID: ff2c727302bfc2848a823c31143efa54
+    layerID: 21
+    mosaicPosition: {x: 230, y: 322}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SwitchRightPress
+    spriteName: SwitchRightPress
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 2097ff52912c3e2419db18dea9ca73e9
+    layerID: 20
+    mosaicPosition: {x: 263, y: 322}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: SwitchRightArrow
+    spriteName: SwitchRightArrow
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 92267d7d398a6a0439ece69592c9a657
+    layerID: 19
+    mosaicPosition: {x: 163, y: 322}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Toggle
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: f23c8c922387d70488070bbb4f503ee6
+    layerID: 17
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: ToggleHover
+    spriteName: ToggleHover
+    isGroup: 0
+    parentIndex: 14
+    spriteID: cf49fc2f2471746458f50add192e757d
+    layerID: 16
+    mosaicPosition: {x: 724, y: 85}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: TogglePress
+    spriteName: TogglePress
+    isGroup: 0
+    parentIndex: 14
+    spriteID: f18a7076498b8d34d956ed98e593aea3
+    layerID: 15
+    mosaicPosition: {x: 724, y: 126}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ToggleHandle
+    spriteName: ToggleHandle
+    isGroup: 0
+    parentIndex: 14
+    spriteID: 652b81f567f866f46b0af54221ca7a14
+    layerID: 14
+    mosaicPosition: {x: 4, y: 322}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ToggleOffText
+    spriteName: ToggleOffText
+    isGroup: 0
+    parentIndex: 14
+    spriteID: cf695b6913b90e84aa03d512c3203304
+    layerID: 13
+    mosaicPosition: {x: 912, y: 292}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ToggleOnText
+    spriteName: ToggleOnText
+    isGroup: 0
+    parentIndex: 14
+    spriteID: dc527992a5f6a864ca7cbbe118fdbea1
+    layerID: 11
+    mosaicPosition: {x: 939, y: 292}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Background
+    spriteName: Background
+    isGroup: 0
+    parentIndex: 14
+    spriteID: cbbcbb232262ab34a8d0a58437c6e170
+    layerID: 9
+    mosaicPosition: {x: 669, y: 248}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Button
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 1d0f16c23a5f38f4b96d4131d52147ef
+    layerID: 51
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: ButtonInactiveEffect
+    spriteName: ButtonInactiveEffect
+    isGroup: 0
+    parentIndex: 21
+    spriteID: a1e95c22b7b345549927d5dbc1129c98
+    layerID: 50
+    mosaicPosition: {x: 4, y: 174}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonIdleText
+    spriteName: ButtonIdleText
+    isGroup: 0
+    parentIndex: 21
+    spriteID: fded3b7b9f0c2dc4b8535c3505bf3e2e
+    layerID: 49
+    mosaicPosition: {x: 883, y: 126}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonHoverText
+    spriteName: ButtonHoverText
+    isGroup: 0
+    parentIndex: 21
+    spriteID: f9c7834293f724b4c8ddbf013347efe4
+    layerID: 48
+    mosaicPosition: {x: 883, y: 85}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonHoverEffect
+    spriteName: ButtonHoverEffect
+    isGroup: 0
+    parentIndex: 21
+    spriteID: 18a511851f40be245accfeb201dd763f
+    layerID: 47
+    mosaicPosition: {x: 352, y: 248}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonInnerBase
+    spriteName: ButtonInnerBase
+    isGroup: 0
+    parentIndex: 21
+    spriteID: 84eba176f81765e40ac3a7c11147bd7b
+    layerID: 46
+    mosaicPosition: {x: 700, y: 174}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonHoverEffect
+    spriteName: ButtonHoverEffect
+    isGroup: 0
+    parentIndex: 21
+    spriteID: 1cb23d4c3628a2749bf5b7eb0426bd26
+    layerID: 45
+    mosaicPosition: {x: 352, y: 174}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonOuterBase
+    spriteName: ButtonOuterBase
+    isGroup: 0
+    parentIndex: 21
+    spriteID: 35d0907ccf155e549aaa7f861b8c5441
+    layerID: 44
+    mosaicPosition: {x: 4, y: 248}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonPressEffect
+    spriteName: ButtonPressEffect
+    isGroup: 0
+    parentIndex: 21
+    spriteID: 309c90e218b7fb24e9408004f970d361
+    layerID: 43
+    mosaicPosition: {x: 4, y: 85}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: ButtonShadow
+    spriteName: ButtonShadow
+    isGroup: 0
+    parentIndex: 21
+    spriteID: 2afb646abeb3df54f973489a01233ee0
+    layerID: 42
+    mosaicPosition: {x: 371, y: 85}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: RowText
+    spriteName: RowText
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 0cafb7b76131787418a830e94d0d7a20
+    layerID: 5
+    mosaicPosition: {x: 810, y: 292}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: RowBase
+    spriteName: RowBase
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 8ff884b14f669664988b0a55520d03b2
+    layerID: 3
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

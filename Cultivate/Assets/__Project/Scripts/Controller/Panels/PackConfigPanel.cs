@@ -12,7 +12,7 @@ public class PackConfigPanel : PopupPanel
     
     [SerializeField] private ListView ConstraintListView;
     [SerializeField] private ListView SelectionListView;
-    [SerializeField] private Button4State ConfirmButton;
+    [SerializeField] private CLButtonPatternA ConfirmButton;
     [SerializeField] private Button CancelButton;
 
     private PackPreset _unmodifiedPackPreset;

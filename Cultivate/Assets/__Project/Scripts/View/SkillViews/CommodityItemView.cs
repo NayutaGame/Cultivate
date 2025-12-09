@@ -8,12 +8,12 @@ public class CommodityItemView : XView
     public SkillView SkillView;
     public GameObject DiscountSign;
 
-    public Button4StateSeperateContent PayWithGoldButton;
+    public CLButtonPatternB PayWithGoldButton;
     public TMP_Text IdleGoldPriceText;
     public TMP_Text HoverGoldPriceText;
     public TMP_Text PressedGoldPriceText;
     public TMP_Text InactiveGoldPriceText;
-    public Button4StateSeperateContent PayWithHealthButton;
+    public CLButtonPatternB PayWithHealthButton;
     public TMP_Text IdleHealthPriceText;
     public TMP_Text HoverHealthPriceText;
     public TMP_Text PressedHealthPriceText;
@@ -56,7 +56,7 @@ public class CommodityItemView : XView
         HoverGoldPriceText.text = priceText;
         PressedGoldPriceText.text = priceText;
         InactiveGoldPriceText.text = priceText;
-        PayWithGoldButton.SetStateToInactiveFrom(!commodity.GoldAffordable());
+        PayWithGoldButton.SetStateToActiveIf(commodity.GoldAffordable());
     }
 
     private void ConfigureHealthButton(Commodity commodity)
@@ -71,7 +71,7 @@ public class CommodityItemView : XView
         HoverHealthPriceText.text = priceText;
         PressedHealthPriceText.text = priceText;
         InactiveHealthPriceText.text = priceText;
-        PayWithHealthButton.SetStateToInactiveFrom(!commodity.HealthAffordable());
+        PayWithHealthButton.SetStateToActiveIf(commodity.HealthAffordable());
     }
 
     private void PayWithGold(InteractBehaviour ib, PointerEventData d)

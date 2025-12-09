@@ -6,7 +6,7 @@ public class BarterItemView : XView
 {
     public SkillView LeftSkillView;
     public SkillView RightSkillView;
-    public Button4State ExchangeButton;
+    public CLButtonPatternA ExchangeButton;
 
     protected override void AwakeFunction()
     {

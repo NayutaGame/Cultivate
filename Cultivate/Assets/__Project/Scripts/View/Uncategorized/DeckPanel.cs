@@ -27,7 +27,7 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityOtherHalfShowPivot;
     [SerializeField] private RectTransform PlayerEntityOtherHalfHidePivot;
     
-    public XButton SortButton;
+    public ButtonWithPointerEnter SortButton;
     [SerializeField] private RectTransform SortButtonTransform;
     [SerializeField] private RectTransform SortButtonShowPivot;
     [SerializeField] private RectTransform SortButtonHidePivot;

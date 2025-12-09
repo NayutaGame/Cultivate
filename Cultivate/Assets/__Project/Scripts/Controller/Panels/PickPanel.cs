@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class PickPanel : Panel
 {
     public TMP_Text DetailedText;
-    public Button4State ConfirmButton;
+    public CLButtonPatternA ConfirmButton;
     public ListView SkillListView;
 
     private List<SelectBehaviour> _selections;

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class CommitPanel : Panel
 {
-    [SerializeField] private Button4State ReturnButton;
+    [SerializeField] private CLButtonPatternA ReturnButton;
     [SerializeField] private TMP_Text OutcomeText;
     [SerializeField] private Image ResultIllustration;
     

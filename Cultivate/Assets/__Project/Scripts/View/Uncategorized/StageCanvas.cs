@@ -9,7 +9,7 @@ public class StageCanvas : MonoBehaviour
     [SerializeField] private TMP_Text TurnCountText;
     
     [SerializeField] private StagePanelSpeedButton SpeedButton;
-    [SerializeField] private Button4State SkipButton;
+    [SerializeField] private CLButtonPatternA SkipButton;
 
     [SerializeField] private StageEntityView HomeStageEntityView;
     [SerializeField] private StageEntityView AwayStageEntityView;

@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class StagePanelSpeedButton : Button4State
+public class StagePanelSpeedButton : CLButtonPatternA
 {
     [SerializeField] public TMP_Text Text;
 }

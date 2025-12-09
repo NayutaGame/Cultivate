@@ -2,23 +2,23 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsToggle : LegacySimpleView
+public class SettingsToggle : XView
 {
     [SerializeField] private TMP_Text LabelText;
-    [SerializeField] private Button FillRect;
+    [SerializeField] private CLButtonPatternA Handle;
 
-    [SerializeField] private Transform FillRectTransform;
-    [SerializeField] private Transform OnTransform;
-    [SerializeField] private Transform OffTransform;
+    [SerializeField] private RectTransform HandleRect;
+    [SerializeField] private RectTransform OnPivot;
+    [SerializeField] private RectTransform OffPivot;
 
-    public override void AwakeFunction()
+    protected override void AwakeFunction()
     {
         base.AwakeFunction();
         
-        FillRect.onClick.RemoveAllListeners();
-        FillRect.onClick.AddListener(Toggle);
+        Handle.LeftClickNeuron.Join(Toggle);
     }
 
     public override void SetAddress(Address address)
@@ -30,11 +30,14 @@ public class SettingsToggle : LegacySimpleView
         LabelText.text = model.Name;
 
         bool on = model.IsOn;
-        FillRectTransform.position = on ? OnTransform.position : OffTransform.position;
+        HandleRect.anchoredPosition = on ? OnPivot.anchoredPosition : OffPivot.anchoredPosition;
     }
 
     private Tween _handle;
 
+    private void Toggle(InteractBehaviour ib, PointerEventData d)
+        => Toggle();
+    
     private void Toggle()
     {
         ToggleModel model = Get<ToggleModel>();
@@ -43,7 +46,7 @@ public class SettingsToggle : LegacySimpleView
         bool on = model.IsOn;
 
         _handle?.Kill();
-        _handle = FillRectTransform.DOMove(on ? OnTransform.position : OffTransform.position, 0.15f).SetEase(Ease.InOutQuad);
+        _handle = HandleRect.DOAnchorPos(on ? OnPivot.anchoredPosition : OffPivot.anchoredPosition, 0.15f).SetEase(Ease.InOutQuad);
         _handle.SetAutoKill().Restart();
     }
 }
