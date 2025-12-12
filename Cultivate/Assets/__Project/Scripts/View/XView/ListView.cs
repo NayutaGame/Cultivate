@@ -127,6 +127,8 @@ public class ListView : XView
     private void OnEnable()
     {
         Sync();
+        ForceLayoutRebuild();
+        RefreshPivots();
     }
 
     public override void Refresh()
@@ -156,7 +158,7 @@ public class ListView : XView
         slotView.gameObject.SetActive(false);
         slotView.CheckAwake();
         BindItemBehaviour(slotView);
-        
+        BindContentBehaviour(slotView, contentView);
         BindSlotAndContent(slotView, contentView);
     }
 
@@ -167,7 +169,7 @@ public class ListView : XView
         
         SlotView slotView = AllocSlotView();
         BindItemBehaviour(slotView);
-        
+        BindContentBehaviour(slotView, contentView);
         BindSlotAndContent(slotView, contentView);
     }
 
@@ -177,7 +179,7 @@ public class ListView : XView
         
         SlotView slotView = AllocSlotView();
         BindItemBehaviour(slotView, prefabIndex);
-        
+        BindContentBehaviour(slotView, contentView);
         BindSlotAndContent(slotView, contentView);
     }
     
@@ -278,6 +280,12 @@ public class ListView : XView
         ItemBehaviour itemBehaviour = slotView.GetOrAddComponent<ItemBehaviour>();
         itemBehaviour.PrefabIndex = prefabIndex ?? 0;
         slotView.JoinBehaviour(itemBehaviour);
+    }
+
+    private void BindContentBehaviour(SlotView slotView, XView contentView)
+    {
+        ContentBehaviour contentBehaviour = contentView.GetOrAddComponent<ContentBehaviour>();
+        contentView.JoinBehaviour(contentBehaviour);
     }
 
     private void BindSlotAndContent(SlotView slotView, XView contentView)
@@ -413,13 +421,13 @@ public class ListView : XView
     public virtual void RefreshPivotsAsync()
         => _activePool.Do(view =>
         {
-            view.GetAnimator().SetStateAsync(1);
+            view.GetAnimator().SetStateAsync(SlotView.IDLE);
         });
     
     public virtual void RefreshPivots()
         => _activePool.Do(view =>
         {
-            view.GetAnimator().SetState(1);
+            view.GetAnimator().SetState(SlotView.IDLE);
         });
 
     #endregion

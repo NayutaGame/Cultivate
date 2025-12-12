@@ -2,7 +2,6 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -10,9 +9,9 @@ public class GachaPanel : Panel
 {
     [SerializeField] private TMP_Text PriceTag;
     [SerializeField] private CLButtonPatternA BuyButton;
-    [SerializeField] private CLButtonPatternA ExitButton;
+    [SerializeField] public CLButtonPatternA ExitButton;
     [SerializeField] public ListView ListView;
-    [SerializeField] private HorizontalLayoutGroup HLayout;
+    [SerializeField] public HorizontalLayoutGroup HLayout;
 
     private Address _address;
 
@@ -76,16 +75,6 @@ public class GachaPanel : Panel
         BuyButton.SetStateToActiveIf(cell.CanCall());
     }
 
-    private void GoToPicking(InteractBehaviour ib, PointerEventData d)
-    {
-        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
-        GachaCell cell = cellAdapter.AsCell() as GachaCell;
-        if (!cell.CanCall())
-            return;
-        cell.CallProcedure();
-        GetAnimator().SetStateAsync(PICKING);
-    }
-
     private void ExitShop(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ExitShopProcedure();
@@ -96,19 +85,23 @@ public class GachaPanel : Panel
         return ListView.ViewFromIndex(gachaIndex);
     }
 
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
-        => AudioManager.Play("CardHover");
-
-    public override Tween EnterIdle()
-        => DOTween.Sequence()
-            .AppendCallback(() => gameObject.SetActive(true))
-            .AppendCallback(RefreshBuyButton)
-            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE));
-
-    public void SetListViewInteractable(bool interactable)
+    public void SetAllPicking(bool picking)
     {
-        foreach (SlotView view in ListView.TraversalActive())
-            (view.GetContentView() as GachaItemView).SetInteractable(interactable);
+        foreach (SlotView slotView in ListView.TraversalActive())
+        {
+            GachaSkillView item = slotView.GetContentView() as GachaSkillView;
+            item.SetPicking(picking);
+        }
+    }
+
+    private void GoToPicking(InteractBehaviour ib, PointerEventData d)
+    {
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        GachaCell cell = cellAdapter.AsCell() as GachaCell;
+        if (!cell.CanCall())
+            return;
+        cell.CallProcedure();
+        GetAnimator().SetStateAsync(PICKING);
     }
     
     // 两个button锁住无法交互
@@ -117,15 +110,26 @@ public class GachaPanel : Panel
     // ListView 洗牌
     // Model中随机化牌序
     // ListView 排列
+
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .AppendCallback(RefreshBuyButton)
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE));
+    
     public Tween Idle2Picking()
         => DOTween.Sequence()
             .AppendCallback(RefreshBuyButton)
             .AppendCallback(() => ExitButton.SetStateToActiveIf(false))
-            .AppendCallback(() => SetListViewInteractable(false))
+            .AppendCallback(() => SetAllPicking(false))
             .AppendCallback(() =>
             {
-                foreach (SlotView view in ListView.TraversalActive())
-                    (view.GetContentView() as GachaItemView).GetBehaviour<FlipBehaviour>().SetFlipped(true);
+                foreach (SlotView slotView in ListView.TraversalActive())
+                {
+                    ShakeSlotView shakeSlotView = slotView as ShakeSlotView;
+                    shakeSlotView.SetFlipped(true);
+                    shakeSlotView.GetAnimator().SetStateAsync(IDLE);
+                }
             })
             .AppendInterval(0.3f)
             .AppendCallback(() =>
@@ -156,42 +160,10 @@ public class GachaPanel : Panel
                 ListView.RefreshPivotsAsync();
             })
             .AppendInterval(0.3f)
-            .AppendCallback(() => SetListViewInteractable(true));
+            .AppendCallback(() => SetAllPicking(true));
 
-    // 被抽到的牌获得Staging
-    // ListView 排列
-    // ListView 翻回正面
-    // 两个Button允许交互
     public Tween Picking2Idle()
-    {
-        Sequence seq = DOTween.Sequence();
-        
-        // 1. 被抽到的牌获得Staging (这个在 GachaStaging 中已经处理)
-        // 这里只需要等待 Staging 完成
-        seq.AppendCallback(() => SetListViewInteractable(false))
-            .AppendInterval(0.2f)
-            .AppendCallback(() => // 3. ListView 翻回正面
-            {
-                foreach (SlotView view in ListView.TraversalActive())
-                    (view.GetContentView() as GachaItemView).GetBehaviour<FlipBehaviour>().SetFlipped(false);
-            })
-            .AppendCallback(() =>
-            {
-                ListView.RefreshPivotsAsync();
-            })
-            .AppendInterval(0.3f)
-            .AppendCallback(() => // 4. 两个Button允许交互
-            {
-                RefreshBuyButton();
-                ExitButton.SetStateToActiveIf(true);
-                HLayout.spacing = 20;
-                ListView.RefreshPivotsAsync();
-            })
-            .AppendInterval(0.3f)
-            .AppendCallback(() => SetListViewInteractable(true));
-        
-        return seq;
-    }
+        => DOTween.Sequence();
 
     public override Tween EnterHide()
         => DOTween.Sequence().AppendCallback(() => gameObject.SetActive(false));

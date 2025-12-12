@@ -86,6 +86,9 @@ public class AnnotationBehaviour : XBehaviour
         AnnotationAlignmentDetails alignmentDetails = UseRectAlignment
             ? new ImageAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()))
             : new MouseAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()).rect);
+
+        if (!FacePlayer())
+            return;
         
         AnnotationDetails annotationDetails = new AnnotationDetails(
             AnnotationViewType,
@@ -105,6 +108,9 @@ public class AnnotationBehaviour : XBehaviour
             : new MouseAnnotationAlignmentDetails(GetAlignRectTransform(ib.GetView()).rect);
         
         var (firstCounter, secondCounter) = GetCounterValues();
+
+        if (!FacePlayer())
+            return;
         
         AnnotationDetails annotationDetails = new AnnotationDetails(
             AnnotationViewType,
@@ -122,5 +128,11 @@ public class AnnotationBehaviour : XBehaviour
         if (view is SlotView slotView)
             return slotView.GetContentView().GetRect();
         return view.GetRect();
+    }
+
+    private bool FacePlayer()
+    {
+        RectTransform rect = _ib.GetView().GetRect();
+        return Vector3.Dot(rect.forward, Vector3.forward) > 0f;
     }
 }

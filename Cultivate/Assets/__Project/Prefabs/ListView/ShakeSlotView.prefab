@@ -92,7 +92,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 6359906681201007944}
   _contentView: {fileID: 0}
-  _useGrabber: 0
+  _useGrabber: 1
+  _allowHover: 0
+  _allowDrag: 0
 --- !u!114 &6359906681201007944
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,9 +10,6 @@ public class InteractBehaviour : MonoBehaviour
     private XView _view;
     public XView GetView() => _view;
     public void SetView(XView view) => _view = view;
-    
-    private Image Image;
-    private CanvasGroup CanvasGroup;
 
     private bool _isAwoken;
 
@@ -27,8 +24,6 @@ public class InteractBehaviour : MonoBehaviour
     
     public void AwakeFunction()
     {
-        Image ??= GetComponent<Image>();
-        CanvasGroup ??= GetComponent<CanvasGroup>();
         // AppendDebugLog();
     }
     
@@ -52,12 +47,6 @@ public class InteractBehaviour : MonoBehaviour
         DraggingMoveNeuron.Active = value;
         PointerDownNeuron.Active = value;
         PointerUpNeuron.Active = value;
-        
-        // if (Image != null)
-        //     Image.raycastTarget = value;
-        //
-        // if (CanvasGroup != null)
-        //     CanvasGroup.interactable = value;
     }
 
     private void AppendDebugLog()

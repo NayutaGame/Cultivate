@@ -1,7 +1,9 @@
 
 using DG.Tweening;
+using Spine;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Sequence = DG.Tweening.Sequence;
 
 public abstract class SlotView : XView
 {
@@ -24,6 +26,9 @@ public abstract class SlotView : XView
     {
         _contentView = contentView;
         _contentView.SetInteractBehaviour(_interactBehaviour);
+        
+        ContentBehaviour contentBehaviour = contentView.GetBehaviour<ContentBehaviour>();
+        contentBehaviour.SlotView = this;
     }
 
     public ListView GetParentListView() => _parentListView;
@@ -40,12 +45,26 @@ public abstract class SlotView : XView
         if (_contentView != null)
             _contentView.CheckAwake();
     }
+    
+    private void OnDisable()
+    {
+        GrabberRelease();
+    }
 
     public void SetMoveFromRectToIdle(RectTransform rect)
     {
         GetContentView().GetRect().position = rect.position;
         GetContentView().GetRect().localScale = rect.localScale;
         GetAnimator().SetStateAsync(IDLE);
+    }
+
+    public void AppendAnimateTo(Sequence seq, SlotOffset slotOffset, float duration)
+    {
+        RectTransform slot = GetRect();
+        RectTransform content = GetContentView().GetRect();
+        seq.Join(content.DOMove(slot.position + slotOffset.Position, duration))
+            .Join(content.DORotateQuaternion(slotOffset.Rotation, duration))
+            .Join(content.DOScale(slotOffset.Scale, duration));
     }
 
     public void Align()
@@ -179,11 +198,6 @@ public abstract class SlotView : XView
     public void GrabberRelease()
     {
         CanvasManager.Instance.GetGrabber().Release(this);
-    }
-    
-    private void OnDisable()
-    {
-        GrabberRelease();
     }
 
     protected abstract Tween EnterIdle();

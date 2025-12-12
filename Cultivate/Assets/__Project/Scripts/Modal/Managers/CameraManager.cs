@@ -43,14 +43,14 @@ public class CameraManager : Singleton<CameraManager>
         return Instance.Camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10));
     }
 
+    public static Vector3 UI2World(Vector2 screenPosition, float height)
+    {
+        return Instance.Camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, height + 10));
+    }
+
     public static Vector3 World2UI(Vector3 worldPosition)
     {
         return Instance.Camera.WorldToScreenPoint(worldPosition);
-    }
-
-    public static Vector3 ScreenCenterInWorld()
-    {
-        return Instance.Camera.ScreenToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
     }
     
     public Camera GetCamera()

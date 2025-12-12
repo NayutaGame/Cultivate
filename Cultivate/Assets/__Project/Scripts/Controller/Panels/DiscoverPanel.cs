@@ -7,12 +7,6 @@ using UnityEngine.EventSystems;
 
 public class DiscoverPanel : Panel
 {
-    [SerializeField] private RectTransform TitleTransform;
-    [SerializeField] private RectTransform TitleIdlePivot;
-    [SerializeField] private TMP_Text TitleText;
-    [SerializeField] private RectTransform DetailedTextTransform;
-    [SerializeField] private RectTransform DetailedTextIdlePivot;
-    [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] public ListView ListView;
 
     private Address _address;
@@ -30,8 +24,8 @@ public class DiscoverPanel : Panel
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
         DiscoverCell d = cellAdapter.AsCell() as DiscoverCell;
 
-        TitleText.text = d.GetTitleText();
-        DescriptionText.text = d.GetDescriptionText();
+        // TitleText.text = d.GetTitleText();
+        // DescriptionText.text = d.GetDescriptionText();
     }
 
     private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();
@@ -82,15 +76,15 @@ public class DiscoverPanel : Panel
     public override Tween EnterHide()
         => DOTween.Sequence()
             .AppendCallback(TraversalSetHide)
-            .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+            // .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+            // .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
             .AppendCallback(() => gameObject.SetActive(false));
 
     public override Tween EnterIdle()
         => DOTween.Sequence()
             // .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
-            .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
+            // .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
+            // .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
             .Append(EnterIdlePrepare())
             .AppendCallback(ListView.EnableAutoUpdateLayout);
 

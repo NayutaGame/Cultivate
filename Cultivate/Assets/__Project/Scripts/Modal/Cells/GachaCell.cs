@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
-using Unity.VisualScripting;
 
 public class GachaCell : Cell
 {

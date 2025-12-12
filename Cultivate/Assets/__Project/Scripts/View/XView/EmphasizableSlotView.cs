@@ -90,7 +90,7 @@ public class EmphasizableSlotView : ScaleSlotView
     private Tween EnterFollow()
         => DOTween.Sequence()
             .AppendCallback(GrabberSetDrag)
-            .Append(new FollowAnimation(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
+            .Append(RigidAnimation.FromFollow(CanvasManager.Instance.GetGrabber().GetRect(), GetContentView().GetRect()).GetHandle());
 
     private Tween EnterFree()
         => DOTween.Sequence()

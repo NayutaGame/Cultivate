@@ -462,62 +462,68 @@ public class RunCanvas : Panel
         SetIdle(view);
     }
 
-    // public void ExchangeSkillStaging(ExchangeSkillDetails d)
-    // {
-    //     void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
-    //     {
-    //         view.GetAnimator().SetState(SlotView.FREE);
-    //         view.GetContentView().GetRect().position = position;
-    //         view.GetContentView().GetRect().localScale = localScale;
-    //     }
-    //     
-    //     void SetIdle(SlotView view)
-    //     {
-    //         view.GetAnimator().SetStateAsync(1);
-    //     }
-    //     
-    //     // AudioManager.Play("CardPlacement");
-    //     // AudioManager.Instance.Play("钱币");
-    //     
-    //     SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
-    //     SlotView barterItemView = BarterPanel.BarterItemFromIndex(d.BarterItemIndex) as SlotView;
-    //     
-    //     if (d.DeckIndex.Region == SkillRegion.Hand)
-    //         DeckPanel.HandView.Modified(d.DeckIndex.Index);
-    //     else if (d.DeckIndex.Region == SkillRegion.Field)
-    //         DeckPanel.PlayerEntity.FieldView.Modified(d.DeckIndex.Index);
-    //     BarterPanel.ListView.RemoveItemAt(d.BarterItemIndex);
-    //     BarterPanel.ListView.Sync();
-    //     
-    //     SetPosition(view, barterItemView.GetRect().position, barterItemView.GetRect().localScale);
-    //     SetIdle(view);
-    // }
-
     public void GachaStaging(GachaDetails d)
     {
-        void SetPosition(SlotView view, Vector3 position, Vector3 localScale)
-        {
-            view.GetAnimator().SetState(SlotView.FREE);
-            view.GetContentView().GetRect().position = position;
-            view.GetContentView().GetRect().localScale = localScale;
-        }
-        
-        void SetIdle(SlotView view)
-        {
-            view.GetAnimator().SetStateAsync(1);
-        }
-        
-        // AudioManager.Instance.Play("钱币");
+        // 卡牌翻面
+        // 强调
+        // 飞向手中
+        // 等待
+        // 其他卡牌翻面
+        // 修改状态
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.AppendCallback(() => GachaPanel.SetAllPicking(false));
         
         DeckPanel.HandView.AddItem();
         
         SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
-        SlotView gachaItemView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as SlotView;
+        SlotView gachaSlotView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as SlotView;
+
+        ShakeSlotView shakeSlotView = gachaSlotView as ShakeSlotView;
+        shakeSlotView.SetFlipped(false);
+        shakeSlotView.GetAnimator().SetStateAsync(SlotView.FREE);
+
+        IAnimation pullAnimation = RigidAnimation.FromPosition(
+            gachaSlotView.GetRect(),
+            gachaSlotView.GetContentView().GetRect(),
+            new Vector3(0, 0, -0.2f),
+            duration: 0.3f);
+        seq.Append(pullAnimation.GetHandle());
+        seq.AppendInterval(0.2f);
+
+        IAnimation shakePingAnimation = new ShakePingAnimation(
+            gachaSlotView.GetRect(),
+            gachaSlotView.GetContentView().GetRect(),
+            Vector3.one * 1.5f,
+            0.12f);
+        seq.Append(shakePingAnimation.GetHandle());
+        //
+        // GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
+        //
+        // view.SetMoveFromRectToIdle(shakeSlotView.GetRect());
+        //
+        // seq.AppendInterval(0.2f)
+        //     .AppendCallback(() =>
+        //     {
+        //         foreach (SlotView slotView in GachaPanel.ListView.TraversalActive())
+        //         {
+        //             ShakeSlotView shakeSlotView = slotView as ShakeSlotView;
+        //             shakeSlotView.SetFlipped(false);
+        //             shakeSlotView.GetAnimator().SetStateAsync(SlotView.IDLE);
+        //         }
+        //     })
+        //     .AppendInterval(0.2f)
+        //     .AppendCallback(() =>
+        //     {
+        //         GachaPanel.RefreshBuyButton();
+        //         GachaPanel.ExitButton.SetStateToActiveIf(true);
+        //         GachaPanel.HLayout.spacing = 20;
+        //         GachaPanel.ListView.RefreshPivotsAsync();
+        //         GachaPanel.GetAnimator().SetStateAsync(Panel.IDLE);
+        //     });
         
-        GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
-        
-        SetPosition(view, gachaItemView.GetRect().position, gachaItemView.GetRect().localScale);
-        SetIdle(view);
+        _animationQueue.QueueAnimation(seq);
     }
 
     public void MingYuanDamageStaging(int value)

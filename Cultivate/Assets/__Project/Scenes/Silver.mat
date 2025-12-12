@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3665964421291930652
+--- !u!114 &-8669530591541041092
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21,12 +21,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Silver
-  m_Shader: {fileID: 4800000, guid: 5e4bf3b9c0504574189d87c35b2cd3f6, type: 3}
+  m_Shader: {fileID: 4800000, guid: bb134d7d4389e3a45a6c49e898a344a4, type: 3}
   m_ValidKeywords:
   - _ENABLEMETAL_ON
-  - _ENABLESHINE_ON
-  - _OUTEROUTLINEDISTORTIONTOGGLE_ON
-  - _OUTEROUTLINEOUTLINEONLYTOGGLE_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
   m_InvalidKeywords: []
@@ -271,7 +268,7 @@ Material:
     - _EnableSharpen: 0
     - _EnableShiftHue: 0
     - _EnableShifting: 0
-    - _EnableShine: 1
+    - _EnableShine: 0
     - _EnableSineGlow: 0
     - _EnableSineMove: 0
     - _EnableSineRotate: 0
@@ -316,11 +313,11 @@ Material:
     - _FrozenHighlightDensity: 1
     - _FrozenSnowContrast: 1
     - _FrozenSnowDensity: 0.25
-    - _FullAlphaDissolveFade: 1
+    - _FullAlphaDissolveFade: 0.5
     - _FullAlphaDissolveWidth: 0.5
     - _FullDistortionFade: 1
-    - _FullGlowDissolveFade: 0
-    - _FullGlowDissolveWidth: 0.2
+    - _FullGlowDissolveFade: 0.5
+    - _FullGlowDissolveWidth: 0.5
     - _GaussianBlurFade: 1
     - _GaussianBlurOffset: 0.5
     - _GlitchBrightness: 4
@@ -360,16 +357,16 @@ Material:
     - _MetalContrast: 2
     - _MetalFade: 1
     - _MetalHighlightContrast: 2
-    - _MetalHighlightDensity: 0.35
+    - _MetalHighlightDensity: 1
     - _MetalMaskToggle: 0
     - _Metallic: 0
     - _NegativeFade: 1
     - _OcclusionStrength: 1
-    - _OuterOutlineDistortionToggle: 1
+    - _OuterOutlineDistortionToggle: 0
     - _OuterOutlineFade: 1
-    - _OuterOutlineOutlineOnlyToggle: 1
+    - _OuterOutlineOutlineOnlyToggle: 0
     - _OuterOutlineTextureToggle: 0
-    - _OuterOutlineWidth: 0.02
+    - _OuterOutlineWidth: 0.04
     - _Parallax: 0.005
     - _PingPongGlowContrast: 1
     - _PingPongGlowFade: 1
@@ -425,10 +422,10 @@ Material:
     - _ShineFade: 1
     - _ShineFrequency: 0.3
     - _ShineMaskToggle: 0
-    - _ShineRotation: 105
+    - _ShineRotation: 30
     - _ShineSaturation: 0.5
     - _ShineSpeed: 5
-    - _ShineWidth: 0.35
+    - _ShineWidth: 0.1
     - _SineGlowContrast: 1
     - _SineGlowFade: 1
     - _SineGlowFrequency: 4
@@ -575,7 +572,7 @@ Material:
     - _FullDistortionDistortion: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _FullDistortionNoiseScale: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _FullGlowDissolveEdgeColor: {r: 11.98431, g: 0.627451, b: 0.627451, a: 0}
-    - _FullGlowDissolveNoiseScale: {r: 0.05, g: 0.05, b: 0, a: 0}
+    - _FullGlowDissolveNoiseScale: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _GlitchDistortion: {r: 0.1, g: 0, b: 0, a: 0}
     - _GlitchDistortionScale: {r: 0, g: 3, b: 0, a: 0}
     - _GlitchDistortionSpeed: {r: 0, g: 1, b: 0, a: 0}
@@ -593,17 +590,17 @@ Material:
     - _InnerOutlineNoiseScale: {r: 4, g: 4, b: 0, a: 0}
     - _InnerOutlineNoiseSpeed: {r: 0, g: 0.1, b: 0, a: 0}
     - _InnerOutlineTextureSpeed: {r: 0.5, g: 0, b: 0, a: 0}
-    - _MetalColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MetalHighlightColor: {r: 2.9960785, g: 2.9960785, b: 2.9960785, a: 1}
+    - _MetalColor: {r: 0.115686275, g: 0.115686275, b: 0.115686275, a: 1}
+    - _MetalHighlightColor: {r: 0.32941172, g: 1.8097248, b: 2.9960785, a: 1}
     - _MetalNoiseDistortion: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _MetalNoiseDistortionScale: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _MetalNoiseDistortionSpeed: {r: -0.05, g: -0.05, b: 0, a: 0}
-    - _MetalNoiseScale: {r: 0.05, g: 0.05, b: 0, a: 0}
-    - _MetalNoiseSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
-    - _OuterOutlineColor: {r: 1.6941177, g: 11.984314, b: 9.976471, a: 1}
+    - _MetalNoiseScale: {r: 0.02, g: 0.02, b: 0, a: 0}
+    - _MetalNoiseSpeed: {r: 0.6, g: 0.6, b: 0, a: 0}
+    - _OuterOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _OuterOutlineDistortionIntensity: {r: 0.01, g: 0.01, b: 0, a: 0}
-    - _OuterOutlineNoiseScale: {r: 1, g: 1, b: 0, a: 0}
-    - _OuterOutlineNoiseSpeed: {r: 0.04, g: 0.04, b: 0, a: 0}
+    - _OuterOutlineNoiseScale: {r: 4, g: 4, b: 0, a: 0}
+    - _OuterOutlineNoiseSpeed: {r: 0, g: 0.1, b: 0, a: 0}
     - _OuterOutlineTextureSpeed: {r: 0.5, g: 0, b: 0, a: 0}
     - _PingPongGlowFrom: {r: 5.992157, g: 0.1882353, b: 0.1882353, a: 0}
     - _PingPongGlowTo: {r: 0.1882353, g: 0.1882353, b: 5.992157, a: 0}
@@ -629,7 +626,7 @@ Material:
     - _ShadowOffset: {r: 0.05, g: -0.05, b: 0, a: 0}
     - _ShiftingColorA: {r: 1.498039, g: 0, b: 0, a: 0}
     - _ShiftingColorB: {r: 1.498039, g: 0.7490196, b: 0, a: 0}
-    - _ShineColor: {r: 1.498039, g: 1.498039, b: 1.498039, a: 0}
+    - _ShineColor: {r: 11.98431, g: 11.98431, b: 11.98431, a: 0}
     - _SineGlowColor: {r: 0, g: 2.007843, b: 2.996078, a: 0}
     - _SineMoveFrequency: {r: 1, g: 1, b: 0, a: 0}
     - _SineMoveOffset: {r: 0, g: 0.5, b: 0, a: 0}
