@@ -32,7 +32,7 @@ public class Grabber : MonoBehaviour
         
         _state = GrabState.Hover;
         _slotView = slotView;
-        _slotView.GetContentView().GetRect().SetParent(GetRect());
+        _slotView.GetContentView().GetRect().SetParent(GetRect(), true);
     }
 
     public void SetDrag(SlotView slotView)
@@ -49,7 +49,7 @@ public class Grabber : MonoBehaviour
         
         _state = GrabState.Drag;
         _slotView = slotView;
-        _slotView.GetContentView().GetRect().SetParent(GetRect());
+        _slotView.GetContentView().GetRect().SetParent(GetRect(), true);
     }
 
     public void Release(SlotView slotView)
@@ -65,7 +65,7 @@ public class Grabber : MonoBehaviour
         }
         else
         {
-            _slotView.GetContentView().GetRect().SetParent(_slotView.GetRect());
+            _slotView.GetContentView().GetRect().SetParent(_slotView.GetRect(), true);
         }
         
         _slotView = null;

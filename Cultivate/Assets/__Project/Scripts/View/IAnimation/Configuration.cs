@@ -1,16 +1,31 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public struct Configuration
 {
-    public Vector3 LocalPosition;
-    public Vector3 LocalScale;
+    [FormerlySerializedAs("LocalPosition")] public Vector3 Position;
+    public Quaternion Rotation;
+    [FormerlySerializedAs("LocalScale")] public Vector3 Scale;
 
-    public Configuration(Vector3? localPosition = null, Vector3? localScale = null)
+    private Configuration(Vector3 position, Quaternion rotation, Vector3 scale)
     {
-        LocalPosition = localPosition ?? Vector3.zero;
-        LocalScale = localScale ?? Vector3.one;
+        Position = position;
+        Rotation = rotation;
+        Scale = scale;
     }
+
+    public static Configuration Default()
+        => new(Vector3.zero, Quaternion.identity, Vector3.one);
+
+    public static Configuration FromPosition(Vector3 position)
+        => new(position, Quaternion.identity, Vector3.one);
+
+    public static Configuration FromScale(Vector3 scale)
+        => new(Vector3.zero, Quaternion.identity, scale);
+
+    public static Configuration FromRect(RectTransform rect)
+        => new(rect.position, rect.rotation, rect.localScale);
 }

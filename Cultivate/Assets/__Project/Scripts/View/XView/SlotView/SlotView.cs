@@ -58,15 +58,6 @@ public abstract class SlotView : XView
         GetAnimator().SetStateAsync(IDLE);
     }
 
-    public void AppendAnimateTo(Sequence seq, SlotOffset slotOffset, float duration)
-    {
-        RectTransform slot = GetRect();
-        RectTransform content = GetContentView().GetRect();
-        seq.Join(content.DOMove(slot.position + slotOffset.Position, duration))
-            .Join(content.DORotateQuaternion(slotOffset.Rotation, duration))
-            .Join(content.DOScale(slotOffset.Scale, duration));
-    }
-
     public void Align()
     {
         GetContentView().GetRect().position = GetRect().position;

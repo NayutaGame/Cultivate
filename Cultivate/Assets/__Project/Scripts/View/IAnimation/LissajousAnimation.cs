@@ -2,25 +2,30 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class LissajousAnimation : IAnimation
+public class LissajousAnimation : CLAnimation
 {
     private RectTransform Slot;
     private RectTransform Content;
-    
-    // private Vector3 StartPosition;
     
     private float XAmplitude;
     private float YAmplitude;
     private int XFrequency;
     private int YFrequency;
 
-    // private float AttractTime;
     private float Duration;
+    
+    // private float AttractTime;
 
-    public LissajousAnimation(RectTransform slot, RectTransform content, float xAmplitude, float yAmplitude, int xFrequency, int yFrequency, float duration)
+    public LissajousAnimation(
+        RectTransform content,
+        RectTransform slot,
+        float xAmplitude,
+        float yAmplitude,
+        int xFrequency,
+        int yFrequency,
+        float duration) : base(content)
     {
         Slot = slot;
-        Content = content;
         
         XAmplitude = xAmplitude;
         YAmplitude = yAmplitude;
@@ -29,17 +34,12 @@ public class LissajousAnimation : IAnimation
         Duration = duration;
     }
 
-    public Tween GetHandle()
+    public override Tween GetHandle()
     {
         return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease.Linear);
     }
 
-    public void AppendHandle(Sequence seq)
-    {
-        seq.Append(GetHandle());
-    }
-
-    public void SetProgress(float t)
+    protected override void SetProgress(float t)
     {
         // 使用互质频率创建利萨茹曲线
         // t 从 0 到 1 完成一个完整周期，t=0 和 t=1 会回到同一个点

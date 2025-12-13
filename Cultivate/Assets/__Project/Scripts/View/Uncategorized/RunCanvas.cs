@@ -484,17 +484,17 @@ public class RunCanvas : Panel
         shakeSlotView.SetFlipped(false);
         shakeSlotView.GetAnimator().SetStateAsync(SlotView.FREE);
 
-        IAnimation pullAnimation = RigidAnimation.FromPosition(
-            gachaSlotView.GetRect(),
+        CLAnimation pullAnimation = GoToAnimation.FromPosition(
             gachaSlotView.GetContentView().GetRect(),
+            gachaSlotView.GetRect(),
             new Vector3(0, 0, -0.2f),
             duration: 0.3f);
         seq.Append(pullAnimation.GetHandle());
         seq.AppendInterval(0.2f);
 
-        IAnimation shakePingAnimation = new ShakePingAnimation(
-            gachaSlotView.GetRect(),
+        CLAnimation shakePingAnimation = new ShakePingAnimation(
             gachaSlotView.GetContentView().GetRect(),
+            gachaSlotView.GetRect(),
             Vector3.one * 1.5f,
             0.12f);
         seq.Append(shakePingAnimation.GetHandle());

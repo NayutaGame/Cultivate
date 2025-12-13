@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class ShakeSlotView : SlotView
 {
-    [NonSerialized] public SlotOffset SlotOffset = SlotOffset.Default();
+    [NonSerialized] public Configuration Configuration = Configuration.Default();
     
     public void SetFlipped(bool flipped)
-        => SlotOffset.Rotation = !flipped ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+        => Configuration.Rotation = !flipped ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
 
     protected override Tween EnterIdle()
         => GoToIdleTween();
@@ -17,7 +17,7 @@ public class ShakeSlotView : SlotView
         => GetShakeTween();
 
     protected override Tween EnterFollow()
-        => RigidAnimation.FromFollow(GetRect(), GetContentView().GetRect()).GetHandle();
+        => GoToAnimation.FromDefault(GetContentView().GetRect(), GetRect()).GetHandle();
 
     protected override Tween EnterIdleUseGrabber()
         => DOTween.Sequence()
@@ -32,7 +32,7 @@ public class ShakeSlotView : SlotView
     protected override Tween EnterFollowUseGrabber()
         => DOTween.Sequence()
             .AppendCallback(GrabberSetDrag)
-            .Append(RigidAnimation.FromFollow(CanvasManager.Instance.GetGrabber().GetRect(), GetContentView().GetRect()).GetHandle());
+            .Append(GoToAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
 
     protected override Tween EnterFree()
         => DOTween.Sequence()
@@ -45,18 +45,18 @@ public class ShakeSlotView : SlotView
     private Tween GoToIdleTween()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(RigidAnimation.FromSlotOffset(GetRect(), GetContentView().GetRect(), SlotOffset).GetHandle());
+        seq.Append(GoToAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), Configuration).GetHandle());
         // blend
         // randomize phase
         int yFrequency = UnityEngine.Random.Range(3, 7);
         int duration = UnityEngine.Random.Range(30, 45);
-        seq.Append(new LissajousAnimation(GetRect(), GetContentView().GetRect(), 0.04f, 0.1f, 2, yFrequency, duration).GetHandle()
+        seq.Append(new LissajousAnimation(GetContentView().GetRect(), GetRect(), 0.04f, 0.1f, 2, yFrequency, duration).GetHandle()
             .SetLoops(99999));
         return seq;
     }
 
     private Tween GetShakeTween()
     {
-        return new ShakeAnimation(GetRect(), GetContentView().GetRect()).GetHandle();
+        return new ShakeAnimation(GetContentView().GetRect(), GetRect()).GetHandle();
     }
 }
