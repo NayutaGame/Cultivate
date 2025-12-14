@@ -2,12 +2,12 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class GuideAnimation : CLAnimation
+public class FromToAnimation : CLAnimation
 {
     private RectTransform Start;
     private RectTransform End;
 
-    public GuideAnimation(RectTransform content, RectTransform start, RectTransform end) : base(content)
+    public FromToAnimation(RectTransform content, RectTransform start, RectTransform end) : base(content)
     {
         Start = start;
         End = end;

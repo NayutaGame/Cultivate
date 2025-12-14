@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class LissajousAnimation : CLAnimation
+public class LissajousAnimation : FromCurrentAnimation
 {
     private RectTransform Slot;
     
@@ -55,12 +55,13 @@ public class LissajousAnimation : CLAnimation
 
     public override Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease.Linear).OnPlay(RecordConfiguration)
-            .OnStepComplete(RecordConfiguration);
+        return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease.Linear);
     }
 
     protected override void SetProgress(float t)
     {
+        TryRecordConfiguration();
+        
         float blend = Mathf.Clamp01(t * 3);
         
         // 使用互质频率创建利萨茹曲线
@@ -70,8 +71,6 @@ public class LissajousAnimation : CLAnimation
         
         float x = XAmplitude * Mathf.Sin(XFrequency * angleX);
         float y = YAmplitude * Mathf.Cos(YFrequency * angleY);
-        
-        // Content.position = Slot.position + new Vector3(x, y, 0);
         
         Vector3 lissajousPosition = Slot.position + new Vector3(x, y, 0);
         

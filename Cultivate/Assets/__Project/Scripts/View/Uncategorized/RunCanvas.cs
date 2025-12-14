@@ -496,43 +496,40 @@ public class RunCanvas : Panel
             initial.Scale);
         
         Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() => GachaPanel.DisableInteraction());
         seq.AppendCallback(() => GachaPanel.SetAllPicking(false));
-        seq.AppendCallback(() =>
-        {
-            handSlot.GoToConfiguration(initial, false);
-        });
         seq.Append(RigidAnimation.FromAbsolute(
             handSlot.GetContentView().GetRect(),
             showFront,
-            duration: 0.3f).GetHandle());
+            duration: 0.3f).RecordConfiguration(initial).GetHandle());
         seq.AppendInterval(0.2f);
-        // seq.Append(new ShakePingAnimation(
-        //     handSlot.GetContentView().GetRect(),
-        //     gachaSlot.GetRect(),
-        //     Vector3.one * 1.5f,
-        //     0.12f).GetHandle());
-        
-        // handSlot.SetMoveFromRectToIdle(gachaSlot.GetRect());
-        //
-        // seq.AppendInterval(0.2f)
-        //     .AppendCallback(() =>
-        //     {
-        //         foreach (SlotView slotView in GachaPanel.ListView.TraversalActive())
-        //         {
-        //             ShakeSlotView shakeSlotView = slotView as ShakeSlotView;
-        //             shakeSlotView.SetFlipped(false);
-        //             shakeSlotView.GetAnimator().SetStateAsync(SlotView.IDLE);
-        //         }
-        //     })
-        //     .AppendInterval(0.2f)
-        //     .AppendCallback(() =>
-        //     {
-        //         GachaPanel.RefreshBuyButton();
-        //         GachaPanel.ExitButton.SetStateToActiveIf(true);
-        //         GachaPanel.HLayout.spacing = 20;
-        //         GachaPanel.ListView.RefreshPivotsAsync();
-        //         GachaPanel.GetAnimator().SetStateAsync(Panel.IDLE);
-        //     });
+        seq.Append(new ShakePingAnimation(
+            handSlot.GetContentView().GetRect(),
+            -0.3f,
+            Vector3.one * 1.5f,
+            0.2f).GetHandle());
+        seq.AppendInterval(0.3f);
+        seq.AppendCallback(() => handSlot.GetAnimator().SetStateAsync(SlotView.IDLE));
+        seq.AppendInterval(0.2f)
+            .AppendCallback(() =>
+            {
+                foreach (SlotView slotView in GachaPanel.ListView.TraversalActive())
+                {
+                    ShakeSlotView shakeSlotView = slotView as ShakeSlotView;
+                    shakeSlotView.SetFlipped(false);
+                    shakeSlotView.GetAnimator().SetStateAsync(SlotView.IDLE);
+                }
+            })
+            .AppendInterval(0.2f)
+            .AppendCallback(() =>
+            {
+                GachaPanel.RefreshBuyButton();
+                GachaPanel.ExitButton.SetStateToActiveIf(true);
+                GachaPanel.HLayout.spacing = 20;
+                GachaPanel.ListView.RefreshPivotsAsync();
+                GachaPanel.GetAnimator().SetStateAsync(Panel.IDLE);
+                GachaPanel.EnableInteraction();
+            });
         
         _animationQueue.QueueAnimation(seq);
     }

@@ -15,9 +15,16 @@ public class GachaSkillView : SkillView
 
     public void SetPicking(bool picking)
     {
+        InteractBehaviour ib = GetBehaviour<ContentBehaviour>().SlotView.GetInteractBehaviour();
         if (picking)
-            GetBehaviour<ContentBehaviour>().SlotView.GetInteractBehaviour().LeftClickNeuron.Join(Gacha);
+        {
+            ib.LeftClickNeuron.Join(Gacha);
+            GetBehaviour<AnnotationBehaviour>().SetInteractBehaviour(null);
+        }
         else
-            GetBehaviour<ContentBehaviour>().SlotView.GetInteractBehaviour().LeftClickNeuron.Remove(Gacha);
+        {
+            ib.LeftClickNeuron.Remove(Gacha);
+            GetBehaviour<AnnotationBehaviour>().SetInteractBehaviour(ib);
+        }
     }
 }

@@ -1,5 +1,6 @@
 
 using System;
+using CLLibrary;
 using DG.Tweening;
 using UnityEngine;
 
@@ -43,12 +44,9 @@ public class ShakeSlotView : SlotView
             .AppendCallback(() => GetInteractBehaviour().SetInteractable(true));
 
     private Tween GoToIdleTween()
-    {
-        Sequence seq = DOTween.Sequence();
-        seq.Append(FollowAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), Configuration).GetHandle());
-        seq.Append(LissajousAnimation.FromBreathPattern(GetContentView().GetRect(), GetRect()).GetHandle().SetLoops(99999));
-        return seq;
-    }
+        => DOTween.Sequence()
+            .Append(FollowAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), Configuration).GetHandle())
+            .Append(LissajousAnimation.FromBreathPattern(GetContentView().GetRect(), GetRect()).GetHandle().SetLoops(99999));
 
     private Tween GetShakeTween()
     {

@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class RigidAnimation : CLAnimation
+public class RigidAnimation : FromCurrentAnimation
 {
     private Configuration Configuration;
     private bool IsRelative;
@@ -46,20 +46,20 @@ public class RigidAnimation : CLAnimation
 
     public override Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease).OnPlay(RecordConfiguration);
+        return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease);
     }
 
     protected override void SetProgress(float t)
     {
+        TryRecordConfiguration();
+        
         Content.position = Vector3.Lerp(StartConfiguration.Position, TargetConfiguration.Position, t);
         Content.rotation = Quaternion.Slerp(StartConfiguration.Rotation, TargetConfiguration.Rotation, t);
         Content.localScale = Vector3.Lerp(StartConfiguration.Scale, TargetConfiguration.Scale, t);
     }
 
-    public override void RecordConfiguration()
+    protected override void ConfigurationIsSet()
     {
-        base.RecordConfiguration();
-
         if (IsRelative)
         {
             TargetConfiguration = Configuration * StartConfiguration;

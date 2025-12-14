@@ -2,20 +2,18 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ShakePingAnimation : CLAnimation
+public class ShakePingAnimation : FromCurrentAnimation
 {
-    private Configuration Configuration;
-    
     private Vector3 RotationAxis;
+    private float ZChange;
     private Vector3 TargetScale;
     private Vector3 EndScale;
     private float Duration;
 
-    public ShakePingAnimation(RectTransform content, Configuration configuration, Vector3 targetScale, float duration) : base(content)
+    public ShakePingAnimation(RectTransform content, float zChange, Vector3 targetScale, float duration) : base(content)
     {
-        Configuration = configuration;
-        
         RotationAxis = content.TransformDirection(new Vector3(1, 1, 8).normalized);
+        ZChange = zChange;
         TargetScale = targetScale;
         EndScale = Vector3.one;
         Duration = duration;
@@ -28,6 +26,8 @@ public class ShakePingAnimation : CLAnimation
 
     protected override void SetProgress(float t)
     {
+        TryRecordConfiguration();
+        
         float blend = Mathf.Clamp01(t * 3);
         
         // Shake 部分：旋转动画
@@ -36,7 +36,7 @@ public class ShakePingAnimation : CLAnimation
         Quaternion axisRotation = Quaternion.AngleAxis(angle, RotationAxis);
         Vector3 currentNormal = axisRotation * initialNormal;
         
-        float theta = angle;
+        float theta = -angle;
         Quaternion normalRotation = Quaternion.AngleAxis(theta, currentNormal);
         Quaternion finalRotation = normalRotation * axisRotation * StartConfiguration.Rotation;
         
@@ -55,9 +55,9 @@ public class ShakePingAnimation : CLAnimation
             finalScale = Vector3.Lerp(TargetScale, EndScale, EaseInQuad(phaseT));
         }
         
-        // Content.position = Vector3.Lerp(StartConfiguration.Position, Slot.position + new Vector3(0, 0, -0.5f), blend);
-        // Content.rotation = Quaternion.Slerp(StartConfiguration.Rotation, finalRotation, blend);
-        // Content.localScale = finalScale;
+        Content.position = Vector3.Lerp(StartConfiguration.Position, StartConfiguration.Position + new Vector3(0, 0, ZChange), blend);
+        Content.rotation = Quaternion.Slerp(StartConfiguration.Rotation, finalRotation, blend);
+        Content.localScale = finalScale;
     }
 
     private static float EaseOutQuad(float t)

@@ -85,6 +85,18 @@ public class GachaPanel : Panel
         return ListView.ViewFromIndex(gachaIndex);
     }
 
+    public void DisableInteraction()
+    {
+        foreach (SlotView slotView in ListView.TraversalActive())
+            slotView.GetInteractBehaviour().SetInteractable(false);
+    }
+
+    public void EnableInteraction()
+    {
+        foreach (SlotView slotView in ListView.TraversalActive())
+            slotView.GetInteractBehaviour().SetInteractable(true);
+    }
+
     public void SetAllPicking(bool picking)
     {
         foreach (SlotView slotView in ListView.TraversalActive())

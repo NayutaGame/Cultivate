@@ -79,7 +79,7 @@ public class GuideView : MonoBehaviour
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
             
-            GuideAnimation anim = new GuideAnimation(_dragCursor,
+            FromToAnimation anim = new FromToAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[0])?.GetContentView().GetRect(),
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[1])?.GetContentView().GetRect());
             _handle = DOTween.Sequence()
@@ -105,7 +105,7 @@ public class GuideView : MonoBehaviour
             
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
-            GuideAnimation anim = new GuideAnimation(_dragCursor,
+            FromToAnimation anim = new FromToAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(from)?.GetContentView().GetRect(),
                 CanvasManager.Instance.RunCanvas.DeckPanel.DropRectTransform);
             _handle = DOTween.Sequence()
@@ -131,7 +131,7 @@ public class GuideView : MonoBehaviour
             
             _handle?.Kill();
             _dragCursor.localScale = Vector3.one;
-            GuideAnimation anim = new GuideAnimation(_dragCursor,
+            FromToAnimation anim = new FromToAnimation(_dragCursor,
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[0])?.GetContentView().GetRect(),
                 CanvasManager.Instance.RunCanvas.DeckPanel.SkillItemFromDeckIndex(result[1])?.GetContentView().GetRect());
             _handle = DOTween.Sequence()

@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class FollowAnimation : CLAnimation
+public class FollowAnimation : FromCurrentAnimation
 {
     private RectTransform Slot;
 
@@ -23,8 +23,6 @@ public class FollowAnimation : CLAnimation
         
         Ease = ease;
         Duration = duration;
-        
-        RecordConfiguration();
     }
 
     public static FollowAnimation FromDefault(RectTransform content, RectTransform slot)
@@ -55,6 +53,8 @@ public class FollowAnimation : CLAnimation
 
     protected override void SetProgress(float t)
     {
+        TryRecordConfiguration();
+        
         Content.position = Vector3.Lerp(StartConfiguration.Position, Slot.position + Configuration.Position, t);
         Content.rotation = Quaternion.Slerp(StartConfiguration.Rotation, Configuration.Rotation, t);
         Content.localScale = Vector3.Lerp(StartConfiguration.Scale, Configuration.Scale, t);

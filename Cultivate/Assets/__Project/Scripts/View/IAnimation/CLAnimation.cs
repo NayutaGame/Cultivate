@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class CLAnimation
 {
     protected RectTransform Content;
-    protected Configuration StartConfiguration;
     
     public CLAnimation(RectTransform content)
     {
@@ -20,9 +19,4 @@ public abstract class CLAnimation
     }
     
     protected abstract void SetProgress(float t);
-
-    public virtual void RecordConfiguration()
-    {
-        StartConfiguration = Configuration.FromRect(Content);
-    }
 }

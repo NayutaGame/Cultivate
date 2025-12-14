@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ShakeAnimation : CLAnimation
+public class ShakeAnimation : FromCurrentAnimation
 {
     private RectTransform Slot;
 
@@ -11,8 +11,6 @@ public class ShakeAnimation : CLAnimation
     {
         Slot = slot;
         
-        RecordConfiguration();
-        
         RotationAxis = content.TransformDirection(new Vector3(1, 1, 8).normalized);
     }
 
@@ -20,9 +18,11 @@ public class ShakeAnimation : CLAnimation
     {
         return DOTween.To(SetProgress, 0, 1, 0.2f).SetEase(Ease.Linear);
     }
-
+    
     protected override void SetProgress(float t)
     {
+        TryRecordConfiguration();
+        
         float blend = Mathf.Clamp01(t * 3);
         
         float angle = t * 360;
