@@ -21,7 +21,7 @@ public abstract class CLAnimation
     
     protected abstract void SetProgress(float t);
 
-    public void RecordConfiguration()
+    public virtual void RecordConfiguration()
     {
         StartConfiguration = Configuration.FromRect(Content);
     }

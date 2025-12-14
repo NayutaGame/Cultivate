@@ -17,7 +17,7 @@ public class ShakeSlotView : SlotView
         => GetShakeTween();
 
     protected override Tween EnterFollow()
-        => GoToAnimation.FromDefault(GetContentView().GetRect(), GetRect()).GetHandle();
+        => FollowAnimation.FromDefault(GetContentView().GetRect(), GetRect()).GetHandle();
 
     protected override Tween EnterIdleUseGrabber()
         => DOTween.Sequence()
@@ -32,7 +32,7 @@ public class ShakeSlotView : SlotView
     protected override Tween EnterFollowUseGrabber()
         => DOTween.Sequence()
             .AppendCallback(GrabberSetDrag)
-            .Append(GoToAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
+            .Append(FollowAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
 
     protected override Tween EnterFree()
         => DOTween.Sequence()
@@ -45,13 +45,8 @@ public class ShakeSlotView : SlotView
     private Tween GoToIdleTween()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(GoToAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), Configuration).GetHandle());
-        // blend
-        // randomize phase
-        int yFrequency = UnityEngine.Random.Range(3, 7);
-        int duration = UnityEngine.Random.Range(30, 45);
-        seq.Append(new LissajousAnimation(GetContentView().GetRect(), GetRect(), 0.04f, 0.1f, 2, yFrequency, duration).GetHandle()
-            .SetLoops(99999));
+        seq.Append(FollowAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), Configuration).GetHandle());
+        seq.Append(LissajousAnimation.FromBreathPattern(GetContentView().GetRect(), GetRect()).GetHandle().SetLoops(99999));
         return seq;
     }
 

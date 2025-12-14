@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class GoToAnimation : CLAnimation
+public class FollowAnimation : CLAnimation
 {
     private RectTransform Slot;
 
@@ -11,26 +11,25 @@ public class GoToAnimation : CLAnimation
     private Ease Ease;
     private float Duration;
 
-    private GoToAnimation(
+    private FollowAnimation(
         RectTransform content,
         RectTransform slot,
         Configuration configuration,
-        Ease ease = Ease.OutQuad,
-        float duration = 0.15f) : base(content)
+        Ease ease,
+        float duration) : base(content)
     {
         Slot = slot;
-        
-        RecordConfiguration();
-
         Configuration = configuration;
         
         Ease = ease;
         Duration = duration;
+        
+        RecordConfiguration();
     }
 
-    public static GoToAnimation FromDefault(RectTransform content, RectTransform slot)
+    public static FollowAnimation FromDefault(RectTransform content, RectTransform slot)
     {
-        return new GoToAnimation(
+        return new FollowAnimation(
             content,
             slot,
             Configuration.Default(),
@@ -38,24 +37,15 @@ public class GoToAnimation : CLAnimation
             0.15f);
     }
 
-    public static GoToAnimation FromConfiguration(RectTransform content, RectTransform slot, Configuration configuration)
+    public static FollowAnimation FromConfiguration(RectTransform content, RectTransform slot,
+        Configuration configuration)
     {
-        return new GoToAnimation(
+        return new FollowAnimation(
             content,
             slot,
             configuration,
             Ease.OutQuad,
             0.15f);
-    }
-
-    public static GoToAnimation FromPosition(RectTransform content, RectTransform slot, Vector3 position, Ease ease = Ease.OutQuad, float duration = 0.15f)
-    {
-        return new GoToAnimation(
-            content,
-            slot,
-            Configuration.FromPosition(position),
-            ease,
-            duration);
     }
 
     public override Tween GetHandle()

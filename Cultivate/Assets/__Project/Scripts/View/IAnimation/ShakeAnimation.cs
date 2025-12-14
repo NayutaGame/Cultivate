@@ -23,6 +23,8 @@ public class ShakeAnimation : CLAnimation
 
     protected override void SetProgress(float t)
     {
+        float blend = Mathf.Clamp01(t * 3);
+        
         float angle = t * 360;
         // 1. 计算法线 n(t)：绕旋转轴旋转angle度
         Vector3 initialNormal = StartConfiguration.Rotation * Vector3.forward;
@@ -37,9 +39,8 @@ public class ShakeAnimation : CLAnimation
         //    再绕新法线旋转θ，补偿翻滚
         Quaternion normalRotation = Quaternion.AngleAxis(theta, currentNormal);
         Quaternion finalRotation = normalRotation * axisRotation * StartConfiguration.Rotation;
-        
-        // 4. 应用旋转（保持位置不变）
-        Content.rotation = finalRotation;
-        Content.position = StartConfiguration.Position + new Vector3(0, 0, -0.5f);
+    
+        Content.position = Vector3.Lerp(StartConfiguration.Position, Slot.position + new Vector3(0, 0, -0.5f), blend);
+        Content.rotation = Quaternion.Slerp(StartConfiguration.Rotation, finalRotation, blend);
     }
 }

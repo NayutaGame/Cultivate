@@ -58,6 +58,24 @@ public abstract class SlotView : XView
         GetAnimator().SetStateAsync(IDLE);
     }
 
+    public void GoToConfiguration(Configuration configuration, bool isRelative)
+    {
+        if (isRelative)
+        {
+            RectTransform content = GetContentView().GetRect();
+            content.position += configuration.Position;
+            content.rotation *= configuration.Rotation;
+            content.localScale = Vector3.Scale(content.localScale, configuration.Scale);
+        }
+        else
+        {
+            RectTransform content = GetContentView().GetRect();
+            content.position = configuration.Position;
+            content.rotation = configuration.Rotation;
+            content.localScale = configuration.Scale;
+        }
+    }
+
     public void Align()
     {
         GetContentView().GetRect().position = GetRect().position;

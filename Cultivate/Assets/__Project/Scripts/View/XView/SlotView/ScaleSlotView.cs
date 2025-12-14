@@ -17,7 +17,7 @@ public class ScaleSlotView : SlotView
 
     protected override Tween EnterFollow()
         => DOTween.Sequence()
-            .Append(GoToAnimation.FromDefault(GetContentView().GetRect(), GetRect()).GetHandle());
+            .Append(FollowAnimation.FromDefault(GetContentView().GetRect(), GetRect()).GetHandle());
 
     protected override Tween EnterIdleUseGrabber()
         => DOTween.Sequence()
@@ -32,7 +32,7 @@ public class ScaleSlotView : SlotView
     protected override Tween EnterFollowUseGrabber()
         => DOTween.Sequence()
             .AppendCallback(GrabberSetDrag)
-            .Append(GoToAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
+            .Append(FollowAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
 
     protected override Tween EnterFree()
         => DOTween.Sequence()
@@ -44,6 +44,6 @@ public class ScaleSlotView : SlotView
 
     private Tween GoToConfiguration(Configuration configuration)
     {
-        return GoToAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), configuration).GetHandle();
+        return FollowAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), configuration).GetHandle();
     }
 }

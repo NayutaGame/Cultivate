@@ -90,7 +90,7 @@ public class EmphasizableSlotView : ScaleSlotView
     private Tween EnterFollow()
         => DOTween.Sequence()
             .AppendCallback(GrabberSetDrag)
-            .Append(GoToAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
+            .Append(FollowAnimation.FromDefault(GetContentView().GetRect(), CanvasManager.Instance.GetGrabber().GetRect()).GetHandle());
 
     private Tween EnterFree()
         => DOTween.Sequence()
@@ -102,7 +102,7 @@ public class EmphasizableSlotView : ScaleSlotView
 
     private Tween GoToConfiguration(Configuration configuration)
     {
-        return GoToAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), configuration).GetHandle();
+        return FollowAnimation.FromConfiguration(GetContentView().GetRect(), GetRect(), configuration).GetHandle();
     }
     
     private void PointerEnter(InteractBehaviour ib, PointerEventData d)

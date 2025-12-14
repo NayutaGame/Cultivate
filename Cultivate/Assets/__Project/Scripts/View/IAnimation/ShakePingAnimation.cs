@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ShakePingAnimation : CLAnimation
 {
-    private RectTransform Slot;
+    private Configuration Configuration;
     
     private Vector3 RotationAxis;
     private Vector3 TargetScale;
     private Vector3 EndScale;
     private float Duration;
 
-    public ShakePingAnimation(RectTransform content, RectTransform slot, Vector3 targetScale, float duration) : base(content)
+    public ShakePingAnimation(RectTransform content, Configuration configuration, Vector3 targetScale, float duration) : base(content)
     {
-        Slot = slot;
+        Configuration = configuration;
         
         RotationAxis = content.TransformDirection(new Vector3(1, 1, 8).normalized);
         TargetScale = targetScale;
@@ -23,11 +23,13 @@ public class ShakePingAnimation : CLAnimation
 
     public override Tween GetHandle()
     {
-        return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease.Linear).OnPlay(RecordConfiguration);
+        return DOTween.To(SetProgress, 0, 1, Duration).SetEase(Ease.Linear);
     }
 
     protected override void SetProgress(float t)
     {
+        float blend = Mathf.Clamp01(t * 3);
+        
         // Shake 部分：旋转动画
         float angle = t * 360;
         Vector3 initialNormal = StartConfiguration.Rotation * Vector3.forward;
@@ -38,22 +40,24 @@ public class ShakePingAnimation : CLAnimation
         Quaternion normalRotation = Quaternion.AngleAxis(theta, currentNormal);
         Quaternion finalRotation = normalRotation * axisRotation * StartConfiguration.Rotation;
         
-        Content.rotation = finalRotation;
-        Content.position = StartConfiguration.Position + new Vector3(0, 0, -0.5f);
-        
         // Ping 部分：缩放动画
+        Vector3 finalScale;
         if (t <= 0.5f)
         {
             // 第一阶段：从 StartScale 到 TargetScale
             float phaseT = t * 2f;
-            Content.localScale = Vector3.Lerp(StartConfiguration.Scale, TargetScale, EaseOutQuad(phaseT));
+            finalScale = Vector3.Lerp(StartConfiguration.Scale, TargetScale, EaseOutQuad(phaseT));
         }
         else
         {
             // 第二阶段：从 TargetScale 回到 EndScale
             float phaseT = (t - 0.5f) * 2f;
-            Content.localScale = Vector3.Lerp(TargetScale, EndScale, EaseInQuad(phaseT));
+            finalScale = Vector3.Lerp(TargetScale, EndScale, EaseInQuad(phaseT));
         }
+        
+        // Content.position = Vector3.Lerp(StartConfiguration.Position, Slot.position + new Vector3(0, 0, -0.5f), blend);
+        // Content.rotation = Quaternion.Slerp(StartConfiguration.Rotation, finalRotation, blend);
+        // Content.localScale = finalScale;
     }
 
     private static float EaseOutQuad(float t)

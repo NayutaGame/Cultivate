@@ -470,38 +470,49 @@ public class RunCanvas : Panel
         // 等待
         // 其他卡牌翻面
         // 修改状态
-
-        Sequence seq = DOTween.Sequence();
-
-        seq.AppendCallback(() => GachaPanel.SetAllPicking(false));
         
         DeckPanel.HandView.AddItem();
         
-        SlotView view = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
-        SlotView gachaSlotView = GachaPanel.GachaItemFromIndex(d.GachaIndex) as SlotView;
+        SlotView handSlot = DeckPanel.SkillItemFromDeckIndex(d.DeckIndex);
+        SlotView gachaSlot = GachaPanel.GachaItemFromIndex(d.GachaIndex) as SlotView;
 
-        ShakeSlotView shakeSlotView = gachaSlotView as ShakeSlotView;
+        ShakeSlotView shakeSlotView = gachaSlot as ShakeSlotView;
         shakeSlotView.SetFlipped(false);
-        shakeSlotView.GetAnimator().SetStateAsync(SlotView.FREE);
-
-        CLAnimation pullAnimation = GoToAnimation.FromPosition(
-            gachaSlotView.GetContentView().GetRect(),
-            gachaSlotView.GetRect(),
-            new Vector3(0, 0, -0.2f),
-            duration: 0.3f);
-        seq.Append(pullAnimation.GetHandle());
+        
+        Configuration initial = Configuration.FromRect(gachaSlot.GetContentView().GetRect());
+        initial.Scale = new Vector3(
+            initial.Scale.x / 0.9375f / 0.95f,
+            initial.Scale.y / 0.9375f / 0.95f,
+            initial.Scale.z / 0.9375f / 0.95f);
+        
+        handSlot.GetAnimator().SetState(SlotView.FREE);
+        gachaSlot.GetAnimator().SetState(SlotView.IDLE);
+        
+        GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
+        
+        Configuration showFront = new Configuration(
+            new Vector3(initial.Position.x, initial.Position.y, -0.2f),
+            Quaternion.identity,
+            initial.Scale);
+        
+        Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() => GachaPanel.SetAllPicking(false));
+        seq.AppendCallback(() =>
+        {
+            handSlot.GoToConfiguration(initial, false);
+        });
+        seq.Append(RigidAnimation.FromAbsolute(
+            handSlot.GetContentView().GetRect(),
+            showFront,
+            duration: 0.3f).GetHandle());
         seq.AppendInterval(0.2f);
-
-        CLAnimation shakePingAnimation = new ShakePingAnimation(
-            gachaSlotView.GetContentView().GetRect(),
-            gachaSlotView.GetRect(),
-            Vector3.one * 1.5f,
-            0.12f);
-        seq.Append(shakePingAnimation.GetHandle());
-        //
-        // GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
-        //
-        // view.SetMoveFromRectToIdle(shakeSlotView.GetRect());
+        // seq.Append(new ShakePingAnimation(
+        //     handSlot.GetContentView().GetRect(),
+        //     gachaSlot.GetRect(),
+        //     Vector3.one * 1.5f,
+        //     0.12f).GetHandle());
+        
+        // handSlot.SetMoveFromRectToIdle(gachaSlot.GetRect());
         //
         // seq.AppendInterval(0.2f)
         //     .AppendCallback(() =>
