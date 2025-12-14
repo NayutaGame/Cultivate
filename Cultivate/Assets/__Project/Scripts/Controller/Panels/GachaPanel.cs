@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class GachaPanel : Panel
 {
+    public static readonly int PICKING = 2;
+    
     [SerializeField] private TMP_Text PriceTag;
     [SerializeField] private CLButtonPatternA BuyButton;
     [SerializeField] public CLButtonPatternA ExitButton;
@@ -21,8 +23,6 @@ public class GachaPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Items"));
     }
-
-    public static readonly int PICKING = 2;
 
     protected override Animator InitAnimator()
     {

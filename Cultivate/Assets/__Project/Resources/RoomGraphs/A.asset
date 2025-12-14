@@ -23,6 +23,9 @@ MonoBehaviour:
     - node: {fileID: -8529663709099428986}
       guid: 83dd25da-aae5-4e8d-905d-8c82f6635ebe
       reroutes: []
+    - node: {fileID: 8404964342545946824}
+      guid: 95723977-1d43-4437-b194-d1e08b5731a5
+      reroutes: []
     rect:
       serializedVersion: 2
       x: -793.9
@@ -404,9 +407,6 @@ MonoBehaviour:
     connections:
     - node: {fileID: 8504588040114232569}
       guid: 83dd25da-aae5-4e8d-905d-8c82f6635ebe
-      reroutes: []
-    - node: {fileID: 8404964342545946824}
-      guid: 95723977-1d43-4437-b194-d1e08b5731a5
       reroutes: []
     rect:
       serializedVersion: 2
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Name: A
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: 34.332474, y: -774.9081}
+  panOffset: {x: 214.6723, y: -28.538067}
   zoom: 1.3163491
   nodes:
   - {fileID: 8404964342545946824}
@@ -1227,8 +1227,8 @@ MonoBehaviour:
     fieldName: enter
     elementName: 
     connections:
-    - node: {fileID: -7694459446288694630}
-      guid: 52325452-bd96-42e6-8199-6a128a035d3f
+    - node: {fileID: -9178515734978455849}
+      guid: 6fc11a3a-dc34-45df-8a2c-93f1a35eeeb2
       reroutes: []
     rect:
       serializedVersion: 2

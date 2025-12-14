@@ -7,9 +7,12 @@ using UnityEngine.EventSystems;
 
 public class DiscoverPanel : Panel
 {
+    public static readonly int SELECTED = 2;
+    
     [SerializeField] public ListView ListView;
-
+    
     private Address _address;
+    private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();
 
     public override void AwakeFunction()
     {
@@ -18,146 +21,6 @@ public class DiscoverPanel : Panel
         ListView.LeftClickNeuron.Join(PickDiscoveredSkill);
         base.AwakeFunction();
     }
-
-    private void RefreshInfo()
-    {
-        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
-        DiscoverCell d = cellAdapter.AsCell() as DiscoverCell;
-
-        // TitleText.text = d.GetTitleText();
-        // DescriptionText.text = d.GetDescriptionText();
-    }
-
-    private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();
-    
-    private void OnEnable()
-    {
-        PickDiscoveredSkillEvent.Add(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
-        RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Add(PickDiscoveredSkillStaging);
-    }
-
-    private void OnDisable()
-    {
-        PickDiscoveredSkillEvent.Remove(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
-        RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Remove(PickDiscoveredSkillStaging);
-    }
-
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
-        => AudioManager.Play("CardHover");
-
-    private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
-    {
-        SkillGhost skillGhost = ib.Get<SkillGhost>();
-        int pickedIndex = ListView.IndexFromView(ib.GetView() as SlotView).Value;
-        PickDiscoveredSkillDetails details = new(skillGhost, pickedIndex);
-        PickDiscoveredSkillEvent.Invoke(details);
-        CanvasManager.Instance.AnnotationManager.StopShowAnnotation();
-    }
-    
-    public void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
-    {
-        // AudioManager.Play("CardPlacement");
-        ListView.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
-        CanvasManager.Instance.CloseAnnotation();
-        
-        int pickedIndex = d.PickedIndex;
-        SlotView slotView = ListView.ViewFromIndex(pickedIndex);
-        RectTransform rect = slotView.GetContentView().GetRect();
-
-        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();
-        SlotView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem();
-        view.SetMoveFromRectToIdle(rect);
-        
-        slotView.GetAnimator().SetState(0);
-
-        CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(2));
-    }
-
-    public override Tween EnterHide()
-        => DOTween.Sequence()
-            .AppendCallback(TraversalSetHide)
-            // .Append(TweenAnimation.Hide(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            // .Append(TweenAnimation.Hide(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-            .AppendCallback(() => gameObject.SetActive(false));
-
-    public override Tween EnterIdle()
-        => DOTween.Sequence()
-            // .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(0)) // move to pair with show curtain
-            // .Append(TweenAnimation.Show(TitleTransform, TitleIdlePivot.anchoredPosition, TitleText))
-            // .Append(TweenAnimation.Show(DetailedTextTransform, DetailedTextIdlePivot.anchoredPosition, DescriptionText))
-            .Append(EnterIdlePrepare())
-            .AppendCallback(ListView.EnableAutoUpdateLayout);
-
-    public Tween EnterIdlePrepare()
-    {
-        ListView.DisableAutoUpdateLayout();
-        ListView.Sync();
-        RefreshInfo();
-        gameObject.SetActive(true);
-        ListView.ForceLayoutRebuild();
-        TraversalSetHide();
-        Sequence seq = DOTween.Sequence();
-        ListView.TraversalActive().Do(item =>
-        {
-            seq.Append(item.GetAnimator().TweenFromSetState(SlotView.IDLE));
-            seq.AppendCallback(AudioManager.PlayShowDiscovered);
-            seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
-        });
-        return seq;
-    }
-
-    public Tween Idle2Selected()
-        // dissolve of skills
-        => DOTween.Sequence().Append(TraversalEnterHide());
-
-    public Tween Selected2Idle()
-        => DOTween.Sequence()
-            // .Append(TraversalEnterHide())
-            .Append(TraversalEnterIdle())
-            .AppendCallback(ListView.EnableAutoUpdateLayout);
-
-    public void TraversalSetHide()
-    {
-        ListView.TraversalActive().Do(slotView =>
-        {
-            slotView.GetAnimator().SetState(SlotView.FREE);
-            slotView.GetContentView().GetRect().localScale = Vector3.zero;
-        });
-    }
-
-    public Tween TraversalEnterIdle()
-    {
-        ListView.DisableAutoUpdateLayout();
-        ListView.Sync();
-        RefreshInfo();
-        Sequence seq = DOTween.Sequence();
-        ListView.TraversalActive().Do(item =>
-        {
-            seq.Append(item.GetAnimator().TweenFromSetState(SlotView.IDLE));
-            seq.AppendCallback(AudioManager.PlayShowDiscovered);
-            seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(true));
-        });
-        return seq;
-    }
-
-    public Tween TraversalEnterHide()
-    {
-        Sequence seq = DOTween.Sequence();
-        ListView.TraversalActive().Do(item =>
-        {
-            seq.AppendCallback(() => item.GetInteractBehaviour().SetInteractable(false));
-        });
-        ListView.TraversalActive().Do(item =>
-        {
-            seq.Join(item.GetAnimator().TweenFromSetState(0));
-        });
-        return seq;
-    }
-    
-    public new static readonly int ANY = -1;
-    public new static readonly int HIDE = 0;
-    public new static readonly int IDLE = 1;
-    public static readonly int SELECTED = 2;
     
     // atomic
     // hide -> idle             显示面板和技能
@@ -181,4 +44,65 @@ public class DiscoverPanel : Panel
         animator.SetState(HIDE);
         return animator;
     }
+
+    private void RefreshInfo()
+    {
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        DiscoverCell d = cellAdapter.AsCell() as DiscoverCell;
+
+        // TitleText.text = d.GetTitleText();
+        // DescriptionText.text = d.GetDescriptionText();
+    }
+    
+    private void OnEnable()
+    {
+        PickDiscoveredSkillEvent.Add(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
+        RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Add(PickDiscoveredSkillStaging);
+    }
+
+    private void OnDisable()
+    {
+        PickDiscoveredSkillEvent.Remove(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
+        RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Remove(PickDiscoveredSkillStaging);
+    }
+
+    private void PickDiscoveredSkill(InteractBehaviour ib, PointerEventData eventData)
+    {
+        SkillGhost skillGhost = ib.Get<SkillGhost>();
+        int pickedIndex = ListView.IndexFromView(ib.GetView() as SlotView).Value;
+        PickDiscoveredSkillDetails details = new(skillGhost, pickedIndex);
+        PickDiscoveredSkillEvent.Invoke(details);
+        CanvasManager.Instance.AnnotationManager.StopShowAnnotation();
+    }
+    
+    public void PickDiscoveredSkillStaging(PickDiscoveredSkillDetails d)
+    {
+        // ListView中都设置不可访问
+        // 卡牌强调
+        // 卡牌飞入手中
+        // 切换成为Hide状态
+        
+        // 关上幕布
+        // ListView设为正常
+        
+        ListView.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
+        
+        int pickedIndex = d.PickedIndex;
+        SlotView slotView = ListView.ViewFromIndex(pickedIndex);
+        RectTransform rect = slotView.GetContentView().GetRect();
+
+        CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();
+        SlotView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem();
+        view.SetMoveFromRectToIdle(rect);
+        
+        slotView.GetAnimator().SetState(0);
+
+        CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(SELECTED));
+    }
+
+    public Tween Idle2Selected()
+        => DOTween.Sequence();
+
+    public Tween Selected2Idle()
+        => DOTween.Sequence();
 }

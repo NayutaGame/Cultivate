@@ -6,6 +6,10 @@ using UnityEngine;
 
 public abstract class Panel : MonoBehaviour
 {
+    public static readonly int ANY = -1;
+    public static readonly int HIDE = 0;
+    public static readonly int IDLE = 1;
+    
     private RectTransform _rect;
     public RectTransform GetRect() => _rect;
 
@@ -32,10 +36,6 @@ public abstract class Panel : MonoBehaviour
         _rect ??= GetComponent<RectTransform>();
         _animator ??= InitAnimator();
     }
-    
-    public static readonly int ANY = -1;
-    public static readonly int HIDE = 0;
-    public static readonly int IDLE = 1;
 
     protected virtual Animator InitAnimator()
     {

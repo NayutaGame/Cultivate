@@ -172,12 +172,12 @@ public class RunCanvas : Panel
         if (oldState.Equals(newState))
         {
             if (PanelSM.GetCurrPanel() != null)
-                await PanelSM.GetCurrPanel().GetAnimator().SetStateAsync(1);
+                await PanelSM.GetCurrPanel().GetAnimator().SetStateAsync(Panel.IDLE);
             return;
         }
 
         if (PanelSM[oldState] != null)
-            await PanelSM[oldState].GetAnimator().SetStateAsync(0);
+            await PanelSM[oldState].GetAnimator().SetStateAsync(Panel.HIDE);
 
         PanelSM.SetState(newState);
 
@@ -185,7 +185,7 @@ public class RunCanvas : Panel
         {
             PanelSM[newState].CheckAwake();
             PanelSM[newState].Refresh();
-            await PanelSM[newState].GetAnimator().SetStateAsync(1);
+            await PanelSM[newState].GetAnimator().SetStateAsync(Panel.IDLE);
         }
 
         {
