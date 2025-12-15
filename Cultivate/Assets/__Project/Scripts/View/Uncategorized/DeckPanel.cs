@@ -80,12 +80,12 @@ public class DeckPanel : Panel
     private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
     {
         RunSkill skill = ib.Get<RunSkill>();
-        RunManager.Instance.Environment.DragBeginRunSkill.Invoke(skill);
+        CanvasManager.Instance.RunCanvas.DragBeginRunSkill.Invoke(skill);
     }
 
     private void DragEndRunSkill(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.DragEndRunSkill.Invoke();
+        CanvasManager.Instance.RunCanvas.DragEndRunSkill.Invoke();
     }
 
     private void DraggingEnter(InteractBehaviour from, InteractBehaviour to, PointerEventData d)

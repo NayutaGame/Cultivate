@@ -10,6 +10,13 @@ using UnityEngine.XR;
 
 public class RunCanvas : Panel
 {
+    public Neuron<RunSkill> DragBeginRunSkill = new();
+    public Neuron DragEndRunSkill = new();
+    
+    
+    
+    
+    
     public DeckPanel DeckPanel;
     public MapPanel MapPanel;
     public Button MapButton;
@@ -484,6 +491,8 @@ public class RunCanvas : Panel
         
         handSlot.GetAnimator().SetState(SlotView.FREE);
         gachaSlot.GetAnimator().SetState(SlotView.IDLE);
+        
+        GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
         
         Configuration showFront = new Configuration(
             new Vector3(initial.Position.x, initial.Position.y, -0.2f),

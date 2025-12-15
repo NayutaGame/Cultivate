@@ -29,14 +29,14 @@ public class RequirementSlotView : ScaleSlotView
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.DragBeginRunSkill.Add(MarkInvalidDrop);
-        RunManager.Instance.Environment.DragEndRunSkill.Add(UnmarkInvalidDrop);
+        CanvasManager.Instance.RunCanvas.DragBeginRunSkill.Add(MarkInvalidDrop);
+        CanvasManager.Instance.RunCanvas.DragEndRunSkill.Add(UnmarkInvalidDrop);
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.DragBeginRunSkill.Remove(MarkInvalidDrop);
-        RunManager.Instance.Environment.DragEndRunSkill.Remove(UnmarkInvalidDrop);
+        CanvasManager.Instance.RunCanvas.DragBeginRunSkill.Remove(MarkInvalidDrop);
+        CanvasManager.Instance.RunCanvas.DragEndRunSkill.Remove(UnmarkInvalidDrop);
     }
 
     private void InvokeShowAnnotation()

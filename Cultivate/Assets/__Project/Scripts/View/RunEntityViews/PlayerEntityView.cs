@@ -36,12 +36,14 @@ public class PlayerEntityView : XView
     private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
     {
         SkillSlot slot = ib.Get<SkillSlot>();
-        RunManager.Instance.Environment.DragBeginRunSkill.Invoke(slot.Skill);
+        if (!slot.IsOccupied())
+            return;
+        CanvasManager.Instance.RunCanvas.DragBeginRunSkill.Invoke(slot.Skill);
     }
 
     private void DragEndRunSkill(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.DragEndRunSkill.Invoke();
+        CanvasManager.Instance.RunCanvas.DragEndRunSkill.Invoke();
     }
 
     private void OnEnable()

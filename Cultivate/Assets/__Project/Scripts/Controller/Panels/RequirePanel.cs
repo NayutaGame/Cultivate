@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class RequirePanel : Panel
 {
     [SerializeField] public ListView Requirements;
-    [SerializeField] private TMP_Text TitleText;
     [SerializeField] private TMP_Text ContentText;
     [SerializeField] private CLButtonPatternA SubmitButton;
     
@@ -35,7 +34,6 @@ public class RequirePanel : Panel
         RequireCell cell = cellAdapter.AsCell() as RequireCell;
         
         Requirements.Sync();
-        TitleText.text = cell.GetTitleText();
         ContentText.text = cell.GetDetailedText();
     }
 
@@ -73,12 +71,14 @@ public class RequirePanel : Panel
     private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
     {
         RequirementSlot slot = ib.Get<RequirementSlot>();
-        RunManager.Instance.Environment.DragBeginRunSkill.Invoke(slot.Skill);
+        if (!slot.IsOccupied())
+            return;
+        CanvasManager.Instance.RunCanvas.DragBeginRunSkill.Invoke(slot.Skill);
     }
 
     private void DragEndRunSkill(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.DragEndRunSkill.Invoke();
+        CanvasManager.Instance.RunCanvas.DragEndRunSkill.Invoke();
     }
     
     private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)

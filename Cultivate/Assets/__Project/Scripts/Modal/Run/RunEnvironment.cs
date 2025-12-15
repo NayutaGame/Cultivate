@@ -34,9 +34,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         FromRightBucketToBoardNeuron = new();
         BarterClearRightBucketItemsNeuron = new();
         BarterWeightIsUpdatedNeuron = new();
-
-        DragBeginRunSkill = new();
-        DragEndRunSkill = new();
         
         GainSkillNeuron = new();
         PickDiscoveredSkillNeuron = new();
@@ -91,9 +88,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<FromRightBucketToBoardDetails> FromRightBucketToBoardNeuron;
     public Neuron BarterClearRightBucketItemsNeuron;
     public Neuron<int> BarterWeightIsUpdatedNeuron;
-
-    public Neuron<RunSkill> DragBeginRunSkill;
-    public Neuron DragEndRunSkill;
     
     public Neuron<GainSkillBuilder> GainSkillNeuron;
     public Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillNeuron;
