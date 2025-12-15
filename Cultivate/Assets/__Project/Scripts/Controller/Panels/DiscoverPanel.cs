@@ -12,7 +12,6 @@ public class DiscoverPanel : Panel
     [SerializeField] public ListView ListView;
     
     private Address _address;
-    private Neuron<PickDiscoveredSkillDetails> PickDiscoveredSkillEvent = new();
 
     public override void AwakeFunction()
     {
@@ -20,29 +19,6 @@ public class DiscoverPanel : Panel
         ListView.SetAddress(_address.Append(".Skills"));
         ListView.LeftClickNeuron.Join(PickDiscoveredSkill);
         base.AwakeFunction();
-    }
-    
-    // atomic
-    // hide -> idle             显示面板和技能
-    // idle -> selected         选择技能，其他技能消失
-    // selected -> hide         面板淡出
-    // selected -> idle         显示新技能
-    
-    // composed
-    // hide -> idle
-    // idle -> selected -> hide
-    // idle -> selected -> idle
-
-    protected override Animator InitAnimator()
-    {
-        // 0 for hide, 1 for idle, 2 for selected
-        Animator animator = new(3, "Discover Panel");
-        animator[ANY, HIDE] = EnterHide;
-        animator[HIDE, IDLE] = EnterIdle;
-        animator[IDLE, SELECTED] = Idle2Selected;
-        animator[SELECTED, IDLE] = Selected2Idle;
-        animator.SetState(HIDE);
-        return animator;
     }
 
     private void RefreshInfo()
@@ -56,13 +32,11 @@ public class DiscoverPanel : Panel
     
     private void OnEnable()
     {
-        PickDiscoveredSkillEvent.Add(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
         RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Add(PickDiscoveredSkillStaging);
     }
 
     private void OnDisable()
     {
-        PickDiscoveredSkillEvent.Remove(RunManager.Instance.Environment.PickDiscoveredSkillProcedure);
         RunManager.Instance.Environment.PickDiscoveredSkillNeuron.Remove(PickDiscoveredSkillStaging);
     }
 
@@ -71,7 +45,7 @@ public class DiscoverPanel : Panel
         SkillGhost skillGhost = ib.Get<SkillGhost>();
         int pickedIndex = ListView.IndexFromView(ib.GetView() as SlotView).Value;
         PickDiscoveredSkillDetails details = new(skillGhost, pickedIndex);
-        PickDiscoveredSkillEvent.Invoke(details);
+        RunManager.Instance.Environment.PickDiscoveredSkillProcedure(details);
         CanvasManager.Instance.AnnotationManager.StopShowAnnotation();
     }
     
@@ -85,24 +59,33 @@ public class DiscoverPanel : Panel
         // 关上幕布
         // ListView设为正常
         
-        ListView.TraversalActive().Do(v => v.GetInteractBehaviour().SetInteractable(false));
+        SlotView discoverSlot = ListView.ViewFromIndex(d.PickedIndex);
         
-        int pickedIndex = d.PickedIndex;
-        SlotView slotView = ListView.ViewFromIndex(pickedIndex);
-        RectTransform rect = slotView.GetContentView().GetRect();
+        Configuration initial = Configuration.FromRect(discoverSlot.GetContentView().GetRect());
+        initial.Scale *= 1f / 0.9375f / 0.95f;
 
         CanvasManager.Instance.RunCanvas.DeckPanel.HandView.AddItem();
-        SlotView view = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem();
-        view.SetMoveFromRectToIdle(rect);
-        
-        slotView.GetAnimator().SetState(0);
+        SlotView handSlot = CanvasManager.Instance.RunCanvas.DeckPanel.LatestSkillItem();
 
-        CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(GetAnimator().TweenFromSetState(SELECTED));
+        handSlot.GetAnimator().SetState(SlotView.FREE);
+        
+        ListView.RemoveItemAt(d.PickedIndex);
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() => ListView.TraversalActive().Do(slotView => slotView.GetAnimator().SetState(SlotView.FREE)));
+        seq.AppendCallback(() => handSlot.GoToConfiguration(initial, false));
+        seq.AppendCallback(() => handSlot.GetAnimator().SetStateAsync(SlotView.IDLE));
+        seq.AppendInterval(0.5f);
+        CanvasManager.Instance.RunCanvas.GetAnimationQueue().QueueAnimation(seq);
     }
 
-    public Tween Idle2Selected()
-        => DOTween.Sequence();
+    public override Tween EnterIdle()
+        => DOTween.Sequence()
+            .AppendCallback(() => gameObject.SetActive(true))
+            .Append(CanvasManager.Instance.Curtain.GetAnimator().TweenFromSetState(HIDE));
 
-    public Tween Selected2Idle()
-        => DOTween.Sequence();
+    public override Tween EnterHide()
+        => DOTween.Sequence()
+            .AppendCallback(() => ListView.TraversalActive().Do(slotView => slotView.GetAnimator().SetState(SlotView.IDLE)))
+            .AppendCallback(() => gameObject.SetActive(false));
 }

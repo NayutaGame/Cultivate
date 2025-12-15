@@ -480,15 +480,10 @@ public class RunCanvas : Panel
         shakeSlotView.SetFlipped(false);
         
         Configuration initial = Configuration.FromRect(gachaSlot.GetContentView().GetRect());
-        initial.Scale = new Vector3(
-            initial.Scale.x / 0.9375f / 0.95f,
-            initial.Scale.y / 0.9375f / 0.95f,
-            initial.Scale.z / 0.9375f / 0.95f);
+        initial.Scale *= 1f / 0.9375f / 0.95f;
         
         handSlot.GetAnimator().SetState(SlotView.FREE);
         gachaSlot.GetAnimator().SetState(SlotView.IDLE);
-        
-        GachaPanel.ListView.RemoveItemAt(d.GachaIndex);
         
         Configuration showFront = new Configuration(
             new Vector3(initial.Position.x, initial.Position.y, -0.2f),
