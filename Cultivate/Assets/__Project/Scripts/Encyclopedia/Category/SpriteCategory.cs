@@ -36,6 +36,22 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0079", "修炼", "Images/NodeIcons/XiuLian"),
             new("Sprite0080", "以物易物", "Images/NodeIcons/YiWuYiWu"),
             
+            // RunConfigTabCharacters
+            new("Sprite06_001", "RunConfigTab缺失", "Images/RunConfigTabs/缺失"),
+            new("Sprite06_002", "RunConfigTab徐福", "Images/RunConfigTabs/徐福"),
+            new("Sprite06_003", "RunConfigTab子非鱼", "Images/RunConfigTabs/子非鱼"),
+            new("Sprite06_004", "RunConfigTab子非燕", "Images/RunConfigTabs/子非燕"),
+            new("Sprite06_005", "RunConfigTab彼此卿", "Images/RunConfigTabs/彼此卿"),
+            new("Sprite06_006", "RunConfigTab风雨晴", "Images/RunConfigTabs/风雨晴"),
+            
+            // RunConfigIconCharacters
+            new("Sprite07_001", "RunConfigIcon缺失", "Images/RunConfigIcons/缺失"),
+            new("Sprite07_002", "RunConfigIcon徐福", "Images/RunConfigIcons/徐福"),
+            new("Sprite07_003", "RunConfigIcon子非鱼", "Images/RunConfigIcons/子非鱼"),
+            new("Sprite07_004", "RunConfigIcon子非燕", "Images/RunConfigIcons/子非燕"),
+            new("Sprite07_005", "RunConfigIcon彼此卿", "Images/RunConfigIcons/彼此卿"),
+            new("Sprite07_006", "RunConfigIcon风雨晴", "Images/RunConfigIcons/风雨晴"),
+            
             // CharacterIcons
             new("Sprite0085", $"CharacterIcon缺失", "Images/CharacterIcons/风雨晴"),
             new("Sprite0086", $"CharacterIconSelect缺失", "Images/CharacterIcons/风雨晴Select"),

@@ -71,6 +71,8 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     
     public Sprite GetCharacterIconSprite() => EntityEntry.CharacterIconSprite.Sprite;
     public Sprite GetCharacterIconSelectSprite() => EntityEntry.CharacterIconSelectSprite.Sprite;
+    public Sprite GetRunConfigTab() => EntityEntry.RunConfigTab.Sprite;
+    public Sprite GetRunConfigIcon() => EntityEntry.RunConfigIcon.Sprite;
     public PrefabEntry GetConfigPrefabEntry() => EntityEntry.ConfigModel;
     public PrefabEntry GetStagePrefabEntry() => EntityEntry.StageModel;
     public PrefabEntry GetScribblePrefabEntry() => EntityEntry.ScribbleModel;

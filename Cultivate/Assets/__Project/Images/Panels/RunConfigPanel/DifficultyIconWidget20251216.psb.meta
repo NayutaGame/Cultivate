@@ -1,0 +1,550 @@
+fileFormatVersion: 2
+guid: 8d35811810986884ba69b1068e5686e9
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMasterTextureLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 1
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  mosaicSpriteImportData: []
+  rigSpriteImportData:
+  - name: Gradient
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 552
+      width: 234
+      height: 253
+    spriteID: c13304c82d20e9d4aa075221056ed451
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 552}
+    spritePosition: {x: 0, y: 0}
+  - name: Base
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 234
+      height: 266
+    spriteID: 50f54f21d4cceeb418cc95f57d11e148
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 0, y: 0}
+  - name: IdleTextRef
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 410
+      y: 406
+      width: 43
+      height: 33
+    spriteID: 6a38b20bd7256e14db1518bc6558ce19
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 410, y: 406}
+    spritePosition: {x: 101, y: 115}
+  - name: PressedTextRef
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 410
+      y: 447
+      width: 43
+      height: 33
+    spriteID: 09ba10e83da0d6245ade1ae944e533d4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 410, y: 447}
+    spritePosition: {x: 101, y: 115}
+  - name: InactiveDark
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 813
+      width: 168
+      height: 168
+    spriteID: 7285a63857ab74f4ea3d40ab3c7b3625
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 813}
+    spritePosition: {x: 37, y: 48}
+  - name: HoverColor
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 246
+      y: 878
+      width: 118
+      height: 118
+    spriteID: e02becf4fe89a4b4da85d1681efe4821
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 246, y: 878}
+    spritePosition: {x: 62, y: 72}
+  - name: Inner
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 246
+      y: 734
+      width: 136
+      height: 136
+    spriteID: b34c0123c76f03948aabf66ebfe2e25e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 246, y: 734}
+    spritePosition: {x: 53, y: 65}
+  - name: Silver
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 246
+      y: 406
+      width: 156
+      height: 156
+    spriteID: 7e063e9bb9947d34497e46421f909a3f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 246, y: 406}
+    spritePosition: {x: 43, y: 54}
+  - name: Base
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 246
+      y: 570
+      width: 156
+      height: 156
+    spriteID: dbc62cab638b4c845aa1cd32eb284848
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 246, y: 570}
+    spritePosition: {x: 43, y: 54}
+  - name: HoverOutline
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 246
+      y: 230
+      width: 168
+      height: 168
+    spriteID: ce9b0be5f3fad1f4bb63092c831196ff
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 246, y: 230}
+    spritePosition: {x: 37, y: 48}
+  - name: PressedSparks
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 278
+      width: 234
+      height: 266
+    spriteID: ac87247128e5f3848929dc59967ca519
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 278}
+    spritePosition: {x: 0, y: 0}
+  - name: PressedGlow
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 246
+      y: 4
+      width: 216
+      height: 218
+    spriteID: 9b74a68ca2a6bb740b1b6ace876e9b84
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 246, y: 4}
+    spritePosition: {x: 13, y: 23}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 0
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  skeletonAssetReferenceID: 
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: Gradient
+    spriteName: Gradient
+    isGroup: 0
+    parentIndex: -1
+    spriteID: c13304c82d20e9d4aa075221056ed451
+    layerID: 41
+    mosaicPosition: {x: 4, y: 552}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Base
+    spriteName: Base
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 50f54f21d4cceeb418cc95f57d11e148
+    layerID: 57
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: IdleTextRef
+    spriteName: IdleTextRef
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 6a38b20bd7256e14db1518bc6558ce19
+    layerID: 35
+    mosaicPosition: {x: 410, y: 406}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: PressedTextRef
+    spriteName: PressedTextRef
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 09ba10e83da0d6245ade1ae944e533d4
+    layerID: 28
+    mosaicPosition: {x: 410, y: 447}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: InactiveDark
+    spriteName: InactiveDark
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 7285a63857ab74f4ea3d40ab3c7b3625
+    layerID: 9
+    mosaicPosition: {x: 4, y: 813}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: HoverColor
+    spriteName: HoverColor
+    isGroup: 0
+    parentIndex: -1
+    spriteID: e02becf4fe89a4b4da85d1681efe4821
+    layerID: 26
+    mosaicPosition: {x: 246, y: 878}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Inner
+    spriteName: Inner
+    isGroup: 0
+    parentIndex: -1
+    spriteID: b34c0123c76f03948aabf66ebfe2e25e
+    layerID: 25
+    mosaicPosition: {x: 246, y: 734}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Silver
+    spriteName: Silver
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 7e063e9bb9947d34497e46421f909a3f
+    layerID: 24
+    mosaicPosition: {x: 246, y: 406}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Base
+    spriteName: Base
+    isGroup: 0
+    parentIndex: -1
+    spriteID: dbc62cab638b4c845aa1cd32eb284848
+    layerID: 23
+    mosaicPosition: {x: 246, y: 570}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: HoverOutline
+    spriteName: HoverOutline
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ce9b0be5f3fad1f4bb63092c831196ff
+    layerID: 31
+    mosaicPosition: {x: 246, y: 230}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: PressedSparks
+    spriteName: PressedSparks
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ac87247128e5f3848929dc59967ca519
+    layerID: 13
+    mosaicPosition: {x: 4, y: 278}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: PressedGlow
+    spriteName: PressedGlow
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 9b74a68ca2a6bb740b1b6ace876e9b84
+    layerID: 22
+    mosaicPosition: {x: 246, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

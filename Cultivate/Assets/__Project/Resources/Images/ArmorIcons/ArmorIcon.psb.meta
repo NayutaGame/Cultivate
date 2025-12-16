@@ -92,7 +92,95 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
-  rigSpriteImportData: []
+  rigSpriteImportData:
+  - name: FragileNumber
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 91
+      y: 4
+      width: 32
+      height: 24
+    spriteID: da8d954232cbaeb49bb6ef8c4ff404e4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 91, y: 4}
+    spritePosition: {x: 16, y: 22}
+  - name: FragileIcon
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 4
+      width: 35
+      height: 49
+    spriteID: 7f429ccf20501c74cb1ed6671e0015d8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 48, y: 4}
+    spritePosition: {x: 14, y: 6}
+  - name: ArmorNumber
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 91
+      y: 36
+      width: 32
+      height: 24
+    spriteID: 787b4775c7c71bf41be6b66ed20417f3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 91, y: 36}
+    spritePosition: {x: 16, y: 22}
+  - name: ArmorIcon
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 36
+      height: 48
+    spriteID: b1b24d8804055c345b1d96226e220e8b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 14, y: 8}
   characterData:
     bones: []
     parts: []
@@ -124,45 +212,45 @@ ScriptedImporter:
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: FragileNumber
-    spriteName: 
+    spriteName: FragileNumber
     isGroup: 0
     parentIndex: -1
     spriteID: da8d954232cbaeb49bb6ef8c4ff404e4
     layerID: 6
-    mosaicPosition: {x: 0, y: 0}
+    mosaicPosition: {x: 91, y: 4}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   - name: FragileIcon
-    spriteName: 
+    spriteName: FragileIcon
     isGroup: 0
     parentIndex: -1
     spriteID: 7f429ccf20501c74cb1ed6671e0015d8
     layerID: 2
-    mosaicPosition: {x: 0, y: 0}
+    mosaicPosition: {x: 48, y: 4}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   - name: ArmorNumber
-    spriteName: 
+    spriteName: ArmorNumber
     isGroup: 0
     parentIndex: -1
     spriteID: 787b4775c7c71bf41be6b66ed20417f3
     layerID: 5
-    mosaicPosition: {x: 0, y: 0}
+    mosaicPosition: {x: 91, y: 36}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   - name: ArmorIcon
-    spriteName: 
+    spriteName: ArmorIcon
     isGroup: 0
     parentIndex: -1
     spriteID: b1b24d8804055c345b1d96226e220e8b
     layerID: 4
-    mosaicPosition: {x: 0, y: 0}
+    mosaicPosition: {x: 4, y: 4}
     flatten: 0
-    isImported: 0
-    isVisible: 0
+    isImported: 1
+    isVisible: 1
   sharedRigPSDLayers: []
   pSDLayerImportSetting: []
   generateGOHierarchy: 0

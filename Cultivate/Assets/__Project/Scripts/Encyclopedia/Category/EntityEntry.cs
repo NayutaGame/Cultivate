@@ -8,6 +8,10 @@ public class EntityEntry : Entry
     [NonSerialized] private string _modelName;
     [NonSerialized] public SpriteEntry CharacterIconSprite;
     [NonSerialized] public SpriteEntry CharacterIconSelectSprite;
+
+    [NonSerialized] public SpriteEntry RunConfigTab;
+    [NonSerialized] public SpriteEntry RunConfigIcon;
+    
     [NonSerialized] public PrefabEntry ConfigModel;
     [NonSerialized] public PrefabEntry StageModel;
     [NonSerialized] public PrefabEntry RunModel;
@@ -23,7 +27,13 @@ public class EntityEntry : Entry
         CharacterIconSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIcon{_modelName}")
                               ?? Encyclopedia.SpriteCategory.FromName($"CharacterIcon缺失");
         CharacterIconSelectSprite = Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect{_modelName}")
-                                    ?? Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect缺失");;
+                                    ?? Encyclopedia.SpriteCategory.FromName($"CharacterIconSelect缺失");
+        
+        RunConfigTab = Encyclopedia.SpriteCategory.FromName($"RunConfigTab{_modelName}")
+                       ?? Encyclopedia.SpriteCategory.FromName($"RunConfigTab缺失");
+        RunConfigIcon = Encyclopedia.SpriteCategory.FromName($"RunConfigIcon{_modelName}")
+                        ?? Encyclopedia.SpriteCategory.FromName($"RunConfigIcon缺失");
+        
         ConfigModel = Encyclopedia.PrefabCategory.FromName($"ConfigModel{_modelName}")
                       ?? Encyclopedia.PrefabCategory.MissingConfigModel();
         StageModel = Encyclopedia.PrefabCategory.FromName($"StageModel{_modelName}")
