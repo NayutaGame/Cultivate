@@ -10,14 +10,17 @@ public class ToggleButton : XView
 {
     private bool _isHover;
     private bool _isDown;
+    private bool _isInteractable;
     
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
 
     private Sequence _hoverHandle;
     private Sequence _downHandle;
+    private Sequence _interactableHandle;
 
     [SerializeField] private Image[] HoverImages;
     [SerializeField] private Image[] DownImages;
+    [SerializeField] private Image[] InteractableImage;
 
     [SerializeField] private TMP_Text Text;
 
@@ -70,6 +73,7 @@ public class ToggleButton : XView
             UpdateHoverAnimation();
         }
     }
+    
     public bool IsDown
     {
         get => _isDown;
@@ -81,11 +85,25 @@ public class ToggleButton : XView
             UpdateDownAnimation();
         }
     }
+    
+    public bool IsInteractable
+    {
+        get => _isInteractable;
+        set
+        {
+            if (_isInteractable == value)
+                return;
+            _isInteractable = value;
+            _interactBehaviour.SetInteractable(_isInteractable);
+            UpdateInteractableAnimation();
+        }
+    }
 
     private void UpdateState()
     {
         UpdateHoverAnimation();
         UpdateDownAnimation();
+        UpdateInteractableAnimation();
     }
 
     private void UpdateHoverAnimation()
@@ -111,8 +129,26 @@ public class ToggleButton : XView
         foreach (Image image in DownImages)
             _downHandle.Join(image.DOFade(value, 0.15f));
 
-        _downHandle.Join(Text.DOColor(color, 0.15f));
+        if (Text != null)
+            _downHandle.Join(Text.DOColor(color, 0.15f));
 
         _downHandle.SetAutoKill().Restart();
+    }
+
+    private void UpdateInteractableAnimation()
+    {
+        _interactableHandle?.Kill();
+        _interactableHandle = DOTween.Sequence();
+
+        int value = _isInteractable ? 1 : 0;
+        Color color = _isInteractable ? UpColor : DownColor;
+        
+        foreach (Image image in InteractableImage)
+            _interactableHandle.Join(image.DOFade(value, 0.15f));
+
+        if (Text != null)
+            _interactableHandle.Join(Text.DOColor(color, 0.15f));
+
+        _interactableHandle.SetAutoKill().Restart();
     }
 }

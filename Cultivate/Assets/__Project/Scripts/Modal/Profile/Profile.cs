@@ -168,9 +168,9 @@ public class Profile : Addressable, ISerializationCallbackReceiver
     public bool IsFirstRunFinished()
         => _finishedFirstRun;
 
-    public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
+    public DifficultyProfile GetHighestUnlockedDifficulty()
     {
-        return DifficultyProfileList.GetCurrentHighestUnlockedDifficulty();
+        return DifficultyProfileList.GetHighestUnlockedDifficulty();
     }
 
     public bool DifficultyIsUnlocked(string difficultyName)
@@ -390,7 +390,7 @@ public class Profile : Addressable, ISerializationCallbackReceiver
 
     public void TryUnlockNextDifficulty()
     {
-        DifficultyEntry curr = GetCurrentHighestUnlockedDifficulty();
+        DifficultyEntry curr = GetHighestUnlockedDifficulty().GetEntry();
         DifficultyEntry next = Encyclopedia.DifficultyCategory.GetNext(curr);
 
         if (next == null)

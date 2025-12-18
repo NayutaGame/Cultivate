@@ -1,10 +1,14 @@
 
 public class CharacterSelectDetails
 {
-    public CharacterProfile Character;
+    public CharacterProfile FromCharacter;
+    public CharacterProfile ToCharacter;
 
-    public CharacterSelectDetails(CharacterProfile character)
+    public int FromIndex;
+    public int ToIndex;
+
+    public CharacterSelectDetails(CharacterProfile toCharacter)
     {
-        Character = character;
+        ToCharacter = toCharacter;
     }
 }

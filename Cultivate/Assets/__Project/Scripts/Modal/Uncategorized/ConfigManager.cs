@@ -8,23 +8,83 @@ using UnityEngine.Assertions;
 
 public class ConfigManager : Addressable
 {
-    private CharacterProfile _character;
-
+    public Neuron<RunConfigTabChangedDetails> TabChangedNeuron = new();
+    
+    private ListModel<RunConfigTabControl> _tabs;
+    private RunConfigTabControl _selectedTab;
+    
+    public Neuron<PackEquipDetails> EquipPackNeuron = new();
+    public Neuron<PackUnequipDetails> UnequipPackNeuron = new();
+    
     private ListModel<PackConstraint> _packConstraints;
     private ListModel<ConfigPack> _packSelections;
     public ListModel<ConfigPack> PackSelections => _packSelections;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
+        { "RunConfigTabControls",       thisObject => ((ConfigManager)thisObject)._tabs },
+        { "CharacterTabControl",        thisObject => ((ConfigManager)thisObject).CharacterTabControl },
+        { "DifficultyTabControl",       thisObject => ((ConfigManager)thisObject).DifficultyTabControl },
+        { "PackTabControl",             thisObject => ((ConfigManager)thisObject).PackTabControl },
+        
         { "PackConstraints",            thisObject => ((ConfigManager)thisObject)._packConstraints },
         { "PackSelections",             thisObject => ((ConfigManager)thisObject)._packSelections },
     };
     public object Get(string s) => Accessor[s](this);
     public ConfigManager()
     {
+        _tabs = new ListModel<RunConfigTabControl>();
+        _tabs.Add(new CharacterRunConfigTabControl());
+        _tabs.Add(new DifficultyRunConfigTabControl());
+        _tabs.Add(new PackRunConfigTabControl());
+        ResetProcedure();
+        
         InitPack();
-        SelectFirstCharacter();
     }
+
+    public RunConfigTabControl GetSelectedTab()
+        => _selectedTab;
+    
+    public int GetSelectedIndex()
+        => _tabs.IndexOf(_selectedTab);
+
+    public CharacterRunConfigTabControl CharacterTabControl
+        => _tabs[0] as CharacterRunConfigTabControl;
+    
+    public DifficultyRunConfigTabControl DifficultyTabControl
+        => _tabs[1] as DifficultyRunConfigTabControl;
+    
+    public PackRunConfigTabControl PackTabControl
+        => _tabs[2] as PackRunConfigTabControl;
+    
+    #region Tab
+    
+    public void ResetProcedure()
+    {
+        SelectTabProcedure(_tabs[0]);
+        
+        CharacterTabControl.SelectFirstCharacter();
+        DifficultyTabControl.SelectHighestUnlockedDifficulty();
+        
+        // SelectLastPickedCharacter / FirstAvailableCharacter(XuFu)
+        // SelectLastPickedDifficulty / HardestDifficulty
+        // SelectLastPickedPackConfig / DefaultPackPresetFromCharacter
+    }
+
+    public void SelectTabProcedure(RunConfigTabControl tab)
+    {
+        if (tab == _selectedTab)
+            return;
+        
+        int fromIndex = _tabs.IndexOf(_selectedTab);
+        _selectedTab = tab;
+        int toIndex = _tabs.IndexOf(_selectedTab);
+        TabChangedNeuron.Invoke(new(fromIndex, toIndex));
+    }
+    
+    #endregion
+    
+    #region 卡包配置
 
     private void InitPack()
     {
@@ -40,59 +100,6 @@ public class ConfigManager : Addressable
         _packSelections = new();
         Encyclopedia.PackCategory.Do(pack => _packSelections.Add(new ConfigPack(pack)));
     }
-
-    #region 角色配置
-
-    public Neuron<CharacterSelectDetails> CharacterSelectNeuron = new();
-
-    public CharacterProfile SelectedCharacter => _character;
-
-    public void SelectFirstCharacter()
-    {
-        SelectCharacterProcedure(new CharacterSelectDetails(AppManager.Instance.ProfileManager.GetCurrProfile().FirstCharacterProfile()));
-    }
-
-    public void SelectCharacterProcedure(CharacterSelectDetails d)
-    {
-        _character = d.Character;
-
-        LoadPackPresetFromCharacter(_character);
-    }
-
-    private void LoadPackPresetFromCharacter(CharacterProfile character)
-    {
-        PackPreset preset = character.GetEntry().PackPreset;
-        LoadPackPreset(preset);
-    }
-
-    public PackPreset WriteCurrentIntoPackPreset()
-    {
-        List<PackEntry> packEntries = new();
-        _packConstraints.Do(c => packEntries.Add(c.Pack.Entry));
-        return new PackPreset(packEntries);
-    }
-
-    public void LoadPackPreset(PackPreset preset)
-    {
-        _packConstraints.Do(c => c.Pack = null);
-        _packSelections.Do(p => p.IsEquipped = false);
-
-        for(int i = 0; i < preset.PackEntries.Count; i++)
-        {
-            PackEntry pack = preset.PackEntries[i];
-            ConfigPack configPack = _packSelections.First(p => p.Entry == pack);
-            configPack.IsEquipped = true;
-
-            _packConstraints[i].Pack = configPack;
-        }
-    }
-
-    #endregion
-
-    #region 卡包配置
-
-    public Neuron<PackEquipDetails> EquipPackNeuron = new();
-    public Neuron<PackUnequipDetails> UnequipPackNeuron = new();
 
     public void PackSelectionClickedProcedure(PackSelectionClickedDetails d)
     {
@@ -225,29 +232,34 @@ public class ConfigManager : Addressable
 
     public bool IsCompatible(ConfigPack pack, PackConstraint constraint)
     {
-        var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
-        return constraint.Descriptor.Contains(pack.Entry) && 
-               profile.PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry, constraint.SlotIndex);
+        return true;
+        // var profile = AppManager.Instance.ProfileManager.GetCurrProfile();
+        // return constraint.Descriptor.Contains(pack.Entry) && 
+        //        profile.PackIsGenerallyUnlocked(_character.GetEntry(), pack.Entry, constraint.SlotIndex);
     }
 
     public bool PackIsGenerallyUnlocked(PackEntry pack)
     {
-        return AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack);
+        return true;
+        // return AppManager.Instance.ProfileManager.GetCurrProfile().PackIsGenerallyUnlocked(_character.GetEntry(), pack);
     }
 
     public Description GetPackUnlockCondition(PackEntry pack)
     {
-        return AppManager.Instance.ProfileManager.GetCurrProfile().GetPackUnlockCondition(_character.GetEntry(), pack);
+        return new();
+        // return AppManager.Instance.ProfileManager.GetCurrProfile().GetPackUnlockCondition(_character.GetEntry(), pack);
     }
 
     public bool ConstraintIsUnlocked(PackConstraint constraint)
     {
-        return AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
+        return true;
+        // return AppManager.Instance.ProfileManager.GetCurrProfile().SlotIsUnlocked(_character.GetEntry(), constraint.SlotIndex);
     }
 
     public Description GetConstraintUnlockCondition(PackConstraint constraint)
     {
-        return AppManager.Instance.ProfileManager.GetCurrProfile().GetConstraintUnlockCondition(_character.GetEntry(), constraint.SlotIndex);
+        return new();
+        // return AppManager.Instance.ProfileManager.GetCurrProfile().GetConstraintUnlockCondition(_character.GetEntry(), constraint.SlotIndex);
     }
 
     public List<PackEntry> GetEquippedPacks()
@@ -260,14 +272,6 @@ public class ConfigManager : Addressable
     {
         PackConstraint firstInvalid = _packConstraints.First(constraint => constraint.IsEmpty || !constraint.Descriptor.Contains(constraint.Pack.Entry));
         return firstInvalid == null;
-    }
-
-    #endregion
-
-    #region MyRegion
-
-    public void Notify()
-    {
     }
 
     #endregion

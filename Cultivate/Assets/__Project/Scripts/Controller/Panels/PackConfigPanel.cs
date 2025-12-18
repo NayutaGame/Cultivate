@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using CLLibrary;
 using DG.Tweening;
@@ -166,10 +167,11 @@ public class PackConfigPanel : PopupPanel
     
     private async void Cancel()
     {
+        throw new NotImplementedException();
         // 取消选择
-        AppManager.Instance.ConfigManager.LoadPackPreset(_unmodifiedPackPreset);
-        _unmodifiedPackPreset = null;
-        await GetAnimator().SetStateAsync(0);
+        // AppManager.Instance.ConfigManager.LoadPackPreset(_unmodifiedPackPreset);
+        // _unmodifiedPackPreset = null;
+        // await GetAnimator().SetStateAsync(0);
     }
     
     // public override void Refresh()

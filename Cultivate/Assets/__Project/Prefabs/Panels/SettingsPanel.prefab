@@ -1117,7 +1117,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 61895877875942461, guid: dfb76f8d098b7034c91d36a0e529b125, type: 3}
       propertyPath: m_Name
-      value: SettingsTab (2)
+      value: SettingsTabView
       objectReference: {fileID: 0}
     - target: {fileID: 2412552773507144210, guid: dfb76f8d098b7034c91d36a0e529b125, type: 3}
       propertyPath: m_Pivot.x
@@ -1219,7 +1219,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 61895877875942461, guid: dfb76f8d098b7034c91d36a0e529b125, type: 3}
       propertyPath: m_Name
-      value: SettingsTab
+      value: SettingsTabView
       objectReference: {fileID: 0}
     - target: {fileID: 2412552773507144210, guid: dfb76f8d098b7034c91d36a0e529b125, type: 3}
       propertyPath: m_Pivot.x
@@ -1555,7 +1555,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 61895877875942461, guid: dfb76f8d098b7034c91d36a0e529b125, type: 3}
       propertyPath: m_Name
-      value: SettingsTab (1)
+      value: SettingsTabView
       objectReference: {fileID: 0}
     - target: {fileID: 2412552773507144210, guid: dfb76f8d098b7034c91d36a0e529b125, type: 3}
       propertyPath: m_Pivot.x

@@ -39,14 +39,14 @@ public class DifficultyProfileList : ListModel<DifficultyProfile>, ISerializatio
         Find(difficultyEntry).SetUnlocked(true);
     }
 
-    public DifficultyEntry GetCurrentHighestUnlockedDifficulty()
+    public DifficultyProfile GetHighestUnlockedDifficulty()
     {
-        DifficultyEntry highestUnlocked = this[0].GetEntry();
+        DifficultyProfile highestUnlocked = this[0];
         foreach (DifficultyProfile difficultyProfile in this)
         {
             if (!difficultyProfile.IsUnlocked())
                 return highestUnlocked;
-            highestUnlocked = difficultyProfile.GetEntry();
+            highestUnlocked = difficultyProfile;
         }
 
         return highestUnlocked;
