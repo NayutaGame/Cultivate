@@ -8,12 +8,13 @@ public class CharacterRunConfigTabControl : RunConfigTabControl
     public Neuron<CharacterSelectDetails> CharacterSelectNeuron = new();
 
     private CharacterProfile _character;
+    private CharacterProfile _recordedCharacter;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         // { "Character",                      thisObject => ((CharacterRunConfigTabControl)thisObject)._filteredSlots },
     };
-    public object Get(string s) => Accessor[s](this);
+    public override object Get(string s) => Accessor[s](this);
     public CharacterRunConfigTabControl()
     {
     }
@@ -44,35 +45,23 @@ public class CharacterRunConfigTabControl : RunConfigTabControl
         d.ToIndex = characterProfileList.IndexOf(_character);
         
         CharacterSelectNeuron.Invoke(d);
-
-        // LoadPackPresetFromCharacter(_character);
+        
+        AppManager.Instance.ConfigManager.PackTabControl.SelectDefaultPackPresetFromCharacter(_character);
     }
 
-    // private void LoadPackPresetFromCharacter(CharacterProfile character)
-    // {
-    //     PackPreset preset = character.GetEntry().PackPreset;
-    //     LoadPackPreset(preset);
-    // }
-    //
-    // public PackPreset WriteCurrentIntoPackPreset()
-    // {
-    //     List<PackEntry> packEntries = new();
-    //     _packConstraints.Do(c => packEntries.Add(c.Pack.Entry));
-    //     return new PackPreset(packEntries);
-    // }
-    //
-    // public void LoadPackPreset(PackPreset preset)
-    // {
-    //     _packConstraints.Do(c => c.Pack = null);
-    //     _packSelections.Do(p => p.IsEquipped = false);
-    //
-    //     for(int i = 0; i < preset.PackEntries.Count; i++)
-    //     {
-    //         PackEntry pack = preset.PackEntries[i];
-    //         ConfigPack configPack = _packSelections.First(p => p.Entry == pack);
-    //         configPack.IsEquipped = true;
-    //
-    //         _packConstraints[i].Pack = configPack;
-    //     }
-    // }
+    public override void WriteRecord()
+    {
+        _recordedCharacter = _character;
+    }
+
+    public override void ReadRecord()
+    {
+        _character = _recordedCharacter;
+    }
+
+    public override bool IsValid()
+    {
+        // 检查character是否已解锁
+        return true;
+    }
 }

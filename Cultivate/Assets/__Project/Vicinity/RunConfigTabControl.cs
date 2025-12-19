@@ -8,8 +8,12 @@ public abstract class RunConfigTabControl : Addressable
     {
         // { "Slots",                      thisObject => ((RunConfigTabControl)thisObject)._filteredSlots },
     };
-    public object Get(string s) => Accessor[s](this);
+    public abstract object Get(string s);
     public RunConfigTabControl()
     {
     }
+
+    public abstract void WriteRecord();
+    public abstract void ReadRecord();
+    public abstract bool IsValid();
 }

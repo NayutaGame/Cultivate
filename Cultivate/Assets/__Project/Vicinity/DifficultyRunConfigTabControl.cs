@@ -8,12 +8,13 @@ public class DifficultyRunConfigTabControl : RunConfigTabControl
     public Neuron<DifficultySelectDetails> DifficultySelectNeuron = new();
 
     private DifficultyProfile _difficulty;
+    private DifficultyProfile _recordedDifficulty;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
         // { "Slots",                      thisObject => ((RunConfigTabControl)thisObject)._filteredSlots },
     };
-    public object Get(string s) => Accessor[s](this);
+    public override object Get(string s) => Accessor[s](this);
     public DifficultyRunConfigTabControl()
     {
     }
@@ -45,5 +46,21 @@ public class DifficultyRunConfigTabControl : RunConfigTabControl
         d.ToIndex = difficultyProfileList.IndexOf(_difficulty);
         
         DifficultySelectNeuron.Invoke(d);
+    }
+
+    public override void WriteRecord()
+    {
+        _recordedDifficulty = _difficulty;
+    }
+
+    public override void ReadRecord()
+    {
+        _difficulty = _recordedDifficulty;
+    }
+
+    public override bool IsValid()
+    {
+        // 检查difficulty是否已解锁
+        return true;
     }
 }

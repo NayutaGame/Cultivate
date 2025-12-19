@@ -1,7 +1,14 @@
 
-using System;
-
 public class ContentBehaviour : XBehaviour
 {
-    [NonSerialized] public SlotView SlotView;
+    private SlotView _slotView;
+
+    public SlotView Slot
+    {
+        get => _slotView;
+        set
+        {
+            _slotView = value;
+        }
+    }
 }

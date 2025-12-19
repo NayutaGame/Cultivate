@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class PackView : XView
 {
-    [SerializeField] private bool ParentedByConstraint;
-    
-    [SerializeField] private TMP_Text NameText;
-    [SerializeField] private Image Image;
-    [SerializeField] private GameObject EquippedGameObject;
+    [SerializeField] private Image PackImage;
+    [SerializeField] private Image EquippedImage;
     [SerializeField] private GameObject LockGameObject;
     [SerializeField] private TMP_Text UnlockConditionText;
+
+    private void SetEquipped(bool equipped)
+    {
+        
+    }
 
     public override void Refresh()
     {
@@ -25,11 +27,11 @@ public class PackView : XView
 
     public void RefreshFromParentedConstraint(PackConstraint constraint)
     {
-        EquippedGameObject.SetActive(false);
+        SetEquipped(false);
         bool locked = !constraint.IsUnlocked();
         LockGameObject.SetActive(locked);
         if (locked)
-            UnlockConditionText.text = constraint.GetUnlockCondition().GetHighlightedString();
+            UnlockConditionText.text = $"<rotate=90>{constraint.GetUnlockCondition().GetHighlightedString()}</rotate>";
     }
 
     private bool InterpretAsConfigPack(object obj)
@@ -38,17 +40,16 @@ public class PackView : XView
         if (pack == null)
             return false;
         
-        NameText.text = pack.GetName();
-        Image.sprite = pack.GetSprite();
+        PackImage.sprite = pack.GetSprite();
 
-        if (!ParentedByConstraint)
-        {
-            EquippedGameObject.SetActive(pack.Equipped());
-            bool locked = !pack.IsUnlocked();
-            LockGameObject.SetActive(locked);
-            if (locked)
-                UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
-        }
+        // if (!ParentedByConstraint)
+        // {
+        //     EquippedGameObject.SetActive(pack.Equipped());
+        //     bool locked = !pack.IsUnlocked();
+        //     LockGameObject.SetActive(locked);
+        //     if (locked)
+        //         UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
+        // }
 
         return true;
     }
@@ -59,17 +60,16 @@ public class PackView : XView
         if (pack == null)
             return false;
         
-        NameText.text = pack.GetName();
-        Image.sprite = pack.GetSprite();
+        PackImage.sprite = pack.GetSprite();
 
-        if (!ParentedByConstraint)
-        {
-            EquippedGameObject.SetActive(false);
-            bool locked = !pack.IsUnlocked();
-            LockGameObject.SetActive(locked);
-            if (locked)
-                UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
-        }
+        // if (!ParentedByConstraint)
+        // {
+        //     EquippedGameObject.SetActive(false);
+        //     bool locked = !pack.IsUnlocked();
+        //     LockGameObject.SetActive(locked);
+        //     if (locked)
+        //         UnlockConditionText.text = pack.GetUnlockCondition().GetHighlightedString();
+        // }
 
         return true;
     }
@@ -80,10 +80,9 @@ public class PackView : XView
         if (pack == null)
             return false;
 
-        NameText.text = pack.GetName();
-        Image.sprite = pack.GetSprite();
-        
-        EquippedGameObject.SetActive(false);
+        PackImage.sprite = pack.GetSprite();
+
+        SetEquipped(false);
         LockGameObject.SetActive(false);
 
         return true;

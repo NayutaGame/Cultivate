@@ -9,10 +9,10 @@ public class CurvedListView : ListView
     [SerializeField] private PropagateDrag _propagateDrag;
     private ArcDefinition _arcDefinition;
 
-    [SerializeField] [Range(2, 20)] private float WindowSize = 2;
+    [SerializeField] [Range(3, 20)] private float WindowSize = 3;
     [SerializeField] private bool Cyclic;
     [SerializeField] [Range(-0.9f, 10f)] private float CurveIntensity;
-    [SerializeField] [Range(0.1f, 50)] private float CursorSensitivity = 1f;
+    [SerializeField] [Range(1f, 100)] private float CursorSensitivity = 1f;
 
     [SerializeField] private float _cursor;
 
@@ -37,23 +37,31 @@ public class CurvedListView : ListView
         base.RefreshPivots();
     }
 
-    private float MapIToT(int itemIndex, float cursor, float windowSize, bool cyclic)
+    private float MapIToT(int itemIndex, int itemCount, float cursor, float windowSize, bool cyclic)
     {
         float offset = itemIndex - cursor;
-        float t = 0.5f + offset / windowSize;
-        
-        if (!cyclic)
+        if (cyclic)
         {
-            return Mathf.Clamp01(t);
+            // offset = offset - itemCount = offset + itemCount = offset + n * itemCount
+            // offset mod-itemCount space
+            // pick closer to 0
+            float mod = offset % itemCount;
+            if (mod < 0f)
+                mod += itemCount;
+
+            if (mod > itemCount / 2f)
+                mod -= itemCount;
+            offset = mod;
         }
-        
-        return t;
+        float t = offset / windowSize;
+        return Mathf.Clamp(t, -0.5f, 0.5f);
     }
 
     private float MapTToNonuniformT(float t, float intensity)
     {
-        float ti = Mathf.Floor(t);
-        float tf = t - ti;
+        // t 的范围是 [-0.5, 0.5]
+        // 将 t 映射到 [0, 1) 范围用于对称 power 映射
+        float tf = t + 0.5f; // [-0.5, 0.5] -> [0, 1]
         
         float power = 1.0f + intensity;
         
@@ -67,27 +75,15 @@ public class CurvedListView : ListView
             tfMapped = 1.0f - 0.5f * Mathf.Pow(2.0f * (1.0f - tf), power);
         }
         
-        return ti + tfMapped;
+        // 将结果映射回 [-0.5, 0.5] 范围
+        return tfMapped - 0.5f;
     }
 
     private void SetRectFromUniformT(SlotView slotView, float nonuniformT, bool cyclic)
     {
-        float tForArc;
-        if (cyclic)
-        {
-            tForArc = nonuniformT % 1.0f;
-            if (tForArc < 0f)
-            {
-                tForArc += 1.0f;
-            }
-        }
-        else
-        {
-            tForArc = Mathf.Clamp01(nonuniformT);
-        }
-        
-        Vector2 position = _arcDefinition.EvaluatePoint(tForArc);
-        float rotation = _arcDefinition.EvaluateAngle(tForArc);
+        float t = nonuniformT + 0.5f;
+        Vector2 position = _arcDefinition.EvaluatePoint(t);
+        float rotation = _arcDefinition.EvaluateAngle(t);
         
         slotView.GetRect().anchoredPosition = position;
         slotView.GetRect().rotation = Quaternion.Euler(0, 0, rotation);
@@ -101,7 +97,7 @@ public class CurvedListView : ListView
         for (int i = 0; i < count; i++)
         {
             SlotView slotView = _activePool[i];
-            float uniformT = MapIToT(i, _cursor, WindowSize, Cyclic);
+            float uniformT = MapIToT(i, count, _cursor, WindowSize, Cyclic);
             float nonuniformT = MapTToNonuniformT(uniformT, CurveIntensity);
             SetRectFromUniformT(slotView, nonuniformT, Cyclic);
         }
@@ -109,7 +105,7 @@ public class CurvedListView : ListView
 
     public void OnSliderValueChanged(PointerEventData eventData)
     {
-        float dCursor = -eventData.delta.x / CursorSensitivity;
+        float dCursor = -eventData.delta.x * CursorSensitivity / 1000;
         SetCursorAsync(_cursor + dCursor);
     }
 
@@ -120,16 +116,7 @@ public class CurvedListView : ListView
         if (_activePool == null || _activePool.Count == 0)
             return;
 
-        int itemCount = _activePool.Count;
-        
-        if (Cyclic)
-        {
-            _cursor = cursor;
-        }
-        else
-        {
-            _cursor = Mathf.Clamp(cursor, 0f, itemCount - 1);
-        }
+        _cursor = cursor;
 
         RefreshPivots();
     }

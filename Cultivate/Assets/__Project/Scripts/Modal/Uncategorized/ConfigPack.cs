@@ -42,10 +42,10 @@ public class ConfigPack : AnnotatablePack
         => IsEquipped;
 
     public bool IsUnlocked()
-        => AppManager.Instance.ConfigManager.PackIsGenerallyUnlocked(Entry);
+        => AppManager.Instance.ConfigManager.PackTabControl.PackIsGenerallyUnlocked(Entry);
 
     public Description GetUnlockCondition()
-        => AppManager.Instance.ConfigManager.GetPackUnlockCondition(Entry);
+        => AppManager.Instance.ConfigManager.PackTabControl.GetPackUnlockCondition(Entry);
 
     public bool CanShowAnnotation()
         => true;

@@ -103,6 +103,17 @@ public class ListView : XView
     protected override void AwakeFunction()
     {
         base.AwakeFunction();
+
+        if (SlotPrefab != null)
+            SlotPrefab.SetActive(false);
+        if (Prefabs != null)
+        {
+            foreach (GameObject prefab in Prefabs)
+            {
+                if (prefab != null)
+                    prefab.SetActive(false);
+            }
+        }
         
         _activePool = new List<SlotView>();
         _inactivePools = new List<SlotView>[Prefabs.Length.ClampLower(1)];

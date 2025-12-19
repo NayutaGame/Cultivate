@@ -1,9 +1,7 @@
 
 using DG.Tweening;
-using Spine;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Sequence = DG.Tweening.Sequence;
 
 public abstract class SlotView : XView
 {
@@ -28,7 +26,7 @@ public abstract class SlotView : XView
         _contentView.SetInteractBehaviour(_interactBehaviour);
         
         ContentBehaviour contentBehaviour = contentView.GetBehaviour<ContentBehaviour>();
-        contentBehaviour.SlotView = this;
+        contentBehaviour.Slot = this;
     }
 
     public ListView GetParentListView() => _parentListView;

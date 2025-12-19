@@ -26,6 +26,7 @@ public class DifficultyPickerPanel : Panel
     {
         AppManager.Instance.ConfigManager.DifficultyTabControl.DifficultySelectNeuron.Join(DifficultyChanged);
 
+        DifficultyListView.Sync();
         RefreshCursor();
         Refresh();
     }

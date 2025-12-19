@@ -224,14 +224,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0230", "UnlockIcon渐入佳境", "Images/UnlockIcons/渐入佳境"),
             new("Sprite0231", "UnlockIcon出神入化", "Images/UnlockIcons/出神入化"),
             
-            // PackConstraints
-            new("Sprite0232", "PackConstraints金", "Images/PackConstraintIllustrations/Jin"),
-            new("Sprite0233", "PackConstraints水", "Images/PackConstraintIllustrations/Shui"),
-            new("Sprite0234", "PackConstraints木", "Images/PackConstraintIllustrations/Mu"),
-            new("Sprite0235", "PackConstraints火", "Images/PackConstraintIllustrations/Huo"),
-            new("Sprite0236", "PackConstraints土", "Images/PackConstraintIllustrations/Tu"),
-            new("Sprite0237", "PackConstraints任意", "Images/PackConstraintIllustrations/Any"),
-            
             // RunResultIllustrations
             new("Sprite0238", "RunResultIllustrationWin", "Images/RunResultIllustrations/Win"),
             new("Sprite0239", "RunResultIllustrationLose", "Images/RunResultIllustrations/Lose"),

@@ -12,6 +12,9 @@ public class RunCanvas : Panel
 {
     public Neuron<RunSkill> DragBeginRunSkill = new();
     public Neuron DragEndRunSkill = new();
+
+    public Neuron<Predicate<RunSkill>> HighlightQualifiersNeuron = new();
+    public Neuron UnhighlightQualifiersNeuron = new();
     
     
     
@@ -223,9 +226,6 @@ public class RunCanvas : Panel
         PanelSM.SetState(newState);
         GetAnimator().SetState(0);
     }
-
-    public Neuron<Predicate<RunSkill>> HighlightQualifiersNeuron = new();
-    public Neuron UnhighlightQualifiersNeuron = new();
 
     #region Staging
 

@@ -14,11 +14,9 @@ public class RunConfigPanel : Panel
 
     [SerializeField] private CharacterPickerPanel CharacterPickerPanel;
     [SerializeField] private DifficultyPickerPanel DifficultyPickerPanel;
-    // [SerializeField] private PackPickerPanel PackPickerPanel;
+    [SerializeField] public PackPickerPanel PackPickerPanel;
     
     // [SerializeField] private GameObject DemoLockedSign;
-    // [SerializeField] private CLButtonPatternA PackConfigButton;
-    // [SerializeField] private PackConfigPanel PackConfigPanel;
 
     public override void AwakeFunction()
     {
@@ -38,10 +36,7 @@ public class RunConfigPanel : Panel
         
         CharacterPickerPanel.CheckAwake();
         DifficultyPickerPanel.CheckAwake();
-
-        // PackConfigPanel.CheckAwake();
-        //
-        // DifficultyPickerView.Configure();
+        PackPickerPanel.CheckAwake();
     }
     
     public override void Refresh()
@@ -51,7 +46,6 @@ public class RunConfigPanel : Panel
             PickerPanels[index].SetActive(true);
 
         // DemoLockedSign.SetActive(AppManager.Instance.PackageIsDemo() || AppManager.Instance.PackageIsForStream());
-        // RefreshAllSelection();
     }
     
     private void OnEnable()
@@ -64,9 +58,6 @@ public class RunConfigPanel : Panel
         // StartRunButton.LeftClickNeuron.Add(StartRun);
         // StartRunButton.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
         // StartRunButton.GetInteractBehaviour().PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
-        // PackConfigButton.LeftClickNeuron.Add(EnterPackConfig);
-        // PackConfigButton.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
-        // PackConfigButton.GetInteractBehaviour().PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
         
         Refresh();
         AppManager.Instance.PushEscFunc(Return);
@@ -82,9 +73,6 @@ public class RunConfigPanel : Panel
         // StartRunButton.LeftClickNeuron.Remove(StartRun);
         // StartRunButton.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
         // StartRunButton.GetInteractBehaviour().PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-        // PackConfigButton.LeftClickNeuron.Remove(EnterPackConfig);
-        // PackConfigButton.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
-        // PackConfigButton.GetInteractBehaviour().PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
         
         AppManager.Instance.PopEscFunc();
     }
@@ -118,36 +106,6 @@ public class RunConfigPanel : Panel
             PickerPanels[d.ToIndex].SetActive(true);
     }
     
-    // private void EnterPackConfig(InteractBehaviour ib, PointerEventData d)
-    // {
-    //     PackConfigPanel.SetUnmodifiedPackPreset(AppManager.Instance.ConfigManager.WriteCurrentIntoPackPreset());
-    //     PackConfigPanel.GetAnimator().SetStateAsync(1);
-    // }
-    //
-    //
-    // private void StartRun(InteractBehaviour ib, PointerEventData d)
-    // {
-    //     CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
-    //     List<PackEntry> packEntries = AppManager.Instance.ConfigManager.GetEquippedPacks();
-    //     RunConfig runConfig = new(characterProfile, DifficultyPickerView.GetSelection(), packEntries);
-    //     AppManager.Instance.Push(AppStateMachine.RUN, runConfig);
-    // }
-    //
-    // private void RefreshAllSelection()
-    // {
-    //     SelectBehaviour currentCharacterSelectBehaviour = GetCurrentCharacterSelectBehaviour();
-    //     foreach (var slotView in CharacterListView.Traversal())
-    //     {
-    //         SelectBehaviour s = slotView.GetContentView().GetBehaviour<SelectBehaviour>();
-    //         s.SetSelect(s == currentCharacterSelectBehaviour);
-    //     }
-    //
-    //     DetailedCharacterProfileView.SetAddress(currentCharacterSelectBehaviour.GetAddress());
-    //     DetailedCharacterProfileView.Refresh();
-    //
-    //     RefreshStartRunButton();
-    // }
-    //
     // public void RefreshStartRunButton()
     // {
     //     CharacterProfile characterProfile = AppManager.Instance.ConfigManager.SelectedCharacter;
@@ -159,5 +117,6 @@ public class RunConfigPanel : Panel
     //                         DifficultyPickerView.GetSelection().IsUnlocked();
     //     
     //     StartRunButton.SetStateToActiveIf(interactable);
+    //     ConfirmButton.SetStateToActiveIf(AppManager.Instance.ConfigManager.IsConfigurationValid());
     // }
 }

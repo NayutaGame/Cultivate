@@ -99,7 +99,11 @@ MonoBehaviour:
   AutoUpdateLayout: 1
   ArcProvider: {fileID: 7717255826705812560}
   _propagateDrag: {fileID: 0}
-  _itemSpacing: 300
+  WindowSize: 3
+  Cyclic: 0
+  CurveIntensity: 0
+  CursorSensitivity: 1
+  _cursor: 0
 --- !u!222 &2193834045752216703
 CanvasRenderer:
   m_ObjectHideFlags: 0

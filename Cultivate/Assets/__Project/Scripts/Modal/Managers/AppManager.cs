@@ -99,6 +99,7 @@ public class AppManager : Singleton<AppManager>, Addressable
         EditorManager.gameObject.SetActive(true);
         ProfileManager = new();
         ConfigManager = new();
+        ConfigManager.ResetProcedure();
 
         FormationInventory = new();
         Encyclopedia.FormationCategory.Do(e => FormationInventory.Add(e));

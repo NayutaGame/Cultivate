@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4730531974322507744
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1709,6 +1709,10 @@ PrefabInstance:
     - target: {fileID: 6193414529329671437, guid: 8b8f37982fe852a4fa869bbfa834a48b, type: 3}
       propertyPath: m_Name
       value: FormationIconView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6193414529329671437, guid: 8b8f37982fe852a4fa869bbfa834a48b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 59570076066090995, guid: 8b8f37982fe852a4fa869bbfa834a48b, type: 3}

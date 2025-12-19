@@ -6,7 +6,6 @@ using UnityEngine;
 public class PackConstraint : AnnotatablePack
 {
     public PackDescriptor Descriptor;
-    public SpriteEntry SpriteEntry;
     public ConfigPack Pack;
     public int SlotIndex;
 
@@ -18,22 +17,18 @@ public class PackConstraint : AnnotatablePack
         { "Skills",                     thisObject => ((AnnotatablePack)thisObject).GetSkills() },
     };
     public object Get(string s) => Accessor[s](this);
-    public PackConstraint(PackDescriptor descriptor, SpriteEntry spriteEntry, int slotIndex)
+    public PackConstraint(PackDescriptor descriptor, int slotIndex)
     {
         Descriptor = descriptor;
-        SpriteEntry = spriteEntry;
         Pack = null;
         SlotIndex = slotIndex;
     }
 
-    public Sprite GetConstraintSprite()
-        => SpriteEntry.Sprite;
-
     public bool IsUnlocked()
-        => AppManager.Instance.ConfigManager.ConstraintIsUnlocked(this);
+        => AppManager.Instance.ConfigManager.PackTabControl.ConstraintIsUnlocked(this);
 
     public Description GetUnlockCondition()
-        => AppManager.Instance.ConfigManager.GetConstraintUnlockCondition(this);
+        => AppManager.Instance.ConfigManager.PackTabControl.GetConstraintUnlockCondition(this);
 
     public bool CanShowAnnotation()
         => Pack != null;

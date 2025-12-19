@@ -1138,8 +1138,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 6469462956952432829}
   OpenDetails: 1
-  FirstCounter: 0
-  SecondCounter: 0
   AnnotationViewType: 8
   UseRectAlignment: 0
 --- !u!1 &6613488373725718453
@@ -1158,7 +1156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2278980885381287105
 RectTransform:
   m_ObjectHideFlags: 0

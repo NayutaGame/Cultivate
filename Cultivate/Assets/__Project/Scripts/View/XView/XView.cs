@@ -82,6 +82,8 @@ public class XView : MonoBehaviour
         CheckAwake();
     }
 
+    public bool HasAwoken => _hasAwoken;
+
     public virtual void Refresh()
     {
     }
