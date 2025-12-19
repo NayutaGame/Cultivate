@@ -1,7 +1,6 @@
 
 public class DifficultyRunConfigTabView : RunConfigTabView
 {
-
     public override void Refresh()
     {
         base.Refresh();

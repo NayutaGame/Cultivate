@@ -1,14 +1,24 @@
 
 using System;
+using DG.Tweening;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SelectionPackView : PackView
 {
+    [SerializeField] private Image HoverImage;
+    
     private void OnEnable()
     {
-        _interactBehaviour.LeftClickNeuron.Join(PackSelectionClicked);
-        _interactBehaviour.PointerEnterNeuron.Join(HoverSelection);
-        _interactBehaviour.PointerExitNeuron.Join(UnhoverSelection);
+        if (GetBehaviour<ContentBehaviour>().Slot is CarrierSlotView carrier)
+        {
+            carrier.EnterIdleFunc = EnterIdleFunc;
+            carrier.EnterHoverFunc = EnterHoverFunc;
+        }
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Join(PackSelectionClicked);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Join(HoverSelection);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Join(UnhoverSelection);
         
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.HighlightPacksNeuron.Join(Highlight);
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.UnhighlightPacksNeuron.Join(Unhighlight);
@@ -16,13 +26,28 @@ public class SelectionPackView : PackView
 
     private void OnDisable()
     {
-        _interactBehaviour.LeftClickNeuron.Remove(PackSelectionClicked);
-        _interactBehaviour.PointerEnterNeuron.Remove(HoverSelection);
-        _interactBehaviour.PointerExitNeuron.Remove(UnhoverSelection);
+        if (GetBehaviour<ContentBehaviour>().Slot is CarrierSlotView carrier)
+        {
+            carrier.EnterIdleFunc = null;
+            carrier.EnterHoverFunc = null;
+        }
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Remove(PackSelectionClicked);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(HoverSelection);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Remove(UnhoverSelection);
         
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.HighlightPacksNeuron.Remove(Highlight);
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.UnhighlightPacksNeuron.Remove(Unhighlight);
     }
+
+    private Tween EnterIdleFunc()
+        => DOTween.Sequence()
+            .Append(HoverImage.DOFade(0, 0.15f).SetEase(Ease.OutQuad))
+            .Join(FollowAnimation.FromDefault(GetRect(), GetBehaviour<ContentBehaviour>().Slot.GetRect(), useSlotRotation: true).GetHandle());
+
+    private Tween EnterHoverFunc()
+        => DOTween.Sequence()
+            .Append(HoverImage.DOFade(1, 0.15f).SetEase(Ease.OutQuad))
+            .Join(FollowAnimation.FromDefault(GetRect(), GetBehaviour<ContentBehaviour>().Slot.GetRect(), useSlotRotation: true).GetHandle());
 
     private void PackSelectionClicked(InteractBehaviour ib, PointerEventData data)
     {

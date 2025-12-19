@@ -1,9 +1,6 @@
 
-using CLLibrary;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 public class InteractBehaviour : MonoBehaviour
 {
@@ -12,6 +9,8 @@ public class InteractBehaviour : MonoBehaviour
     public void SetView(XView view) => _view = view;
 
     private bool _isAwoken;
+
+    public InteractNeuronBundle NeuronBundle = new();
 
     public void CheckAwake()
     {
@@ -32,40 +31,40 @@ public class InteractBehaviour : MonoBehaviour
     
     public void SetInteractable(bool value)
     {
-        PointerEnterNeuron.Active = value;
-        PointerExitNeuron.Active = value;
-        PointerMoveNeuron.Active = value;
-        BeginDragNeuron.Active = value;
-        EndDragNeuron.Active = value;
-        DragNeuron.Active = value;
-        LeftClickNeuron.Active = value;
-        RightClickNeuron.Active = value;
-        DroppingNeuron.Active = value;
-        DropNeuron.Active = value;
-        DraggingEnterNeuron.Active = value;
-        DraggingExitNeuron.Active = value;
-        DraggingMoveNeuron.Active = value;
-        PointerDownNeuron.Active = value;
-        PointerUpNeuron.Active = value;
+        NeuronBundle.PointerEnterNeuron.Active = value;
+        NeuronBundle.PointerExitNeuron.Active = value;
+        NeuronBundle.PointerMoveNeuron.Active = value;
+        NeuronBundle.BeginDragNeuron.Active = value;
+        NeuronBundle.EndDragNeuron.Active = value;
+        NeuronBundle.DragNeuron.Active = value;
+        NeuronBundle.LeftClickNeuron.Active = value;
+        NeuronBundle.RightClickNeuron.Active = value;
+        NeuronBundle.DroppingNeuron.Active = value;
+        NeuronBundle.DropNeuron.Active = value;
+        NeuronBundle.DraggingEnterNeuron.Active = value;
+        NeuronBundle.DraggingExitNeuron.Active = value;
+        NeuronBundle.DraggingMoveNeuron.Active = value;
+        NeuronBundle.PointerDownNeuron.Active = value;
+        NeuronBundle.PointerUpNeuron.Active = value;
     }
 
     private void AppendDebugLog()
     {
-        PointerEnterNeuron.Join(PointerEnterLog);
-        PointerExitNeuron.Join(PointerExitLog);
-        // PointerMoveNeuron.Join(PointerMoveLog);
-        BeginDragNeuron.Join(BeginDragLog);
-        EndDragNeuron.Join(EndDragLog);
-        // DragNeuron.Join(DragLog);
-        LeftClickNeuron.Join(LeftClickLog);
-        RightClickNeuron.Join(RightClickLog);
-        DroppingNeuron.Join(DroppingLog);
-        DropNeuron.Join(DropLog);
-        DraggingEnterNeuron.Join(DraggingEnterLog);
-        DraggingExitNeuron.Join(DraggingExitLog);
-        // DraggingMoveNeuron.Join(DraggingMoveLog);
-        PointerDownNeuron.Join(PointerDownLog);
-        PointerUpNeuron.Join(PointerUpLog);
+        NeuronBundle.PointerEnterNeuron.Join(PointerEnterLog);
+        NeuronBundle.PointerExitNeuron.Join(PointerExitLog);
+        // NeuronBundle.PointerMoveNeuron.Join(PointerMoveLog);
+        NeuronBundle.BeginDragNeuron.Join(BeginDragLog);
+        NeuronBundle.EndDragNeuron.Join(EndDragLog);
+        // NeuronBundle.DragNeuron.Join(DragLog);
+        NeuronBundle.LeftClickNeuron.Join(LeftClickLog);
+        NeuronBundle.RightClickNeuron.Join(RightClickLog);
+        NeuronBundle.DroppingNeuron.Join(DroppingLog);
+        NeuronBundle.DropNeuron.Join(DropLog);
+        NeuronBundle.DraggingEnterNeuron.Join(DraggingEnterLog);
+        NeuronBundle.DraggingExitNeuron.Join(DraggingExitLog);
+        // NeuronBundle.DraggingMoveNeuron.Join(DraggingMoveLog);
+        NeuronBundle.PointerDownNeuron.Join(PointerDownLog);
+        NeuronBundle.PointerUpNeuron.Join(PointerUpLog);
     }
     
     private void PointerEnterLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetView().name} PointerEnter");
@@ -83,29 +82,12 @@ public class InteractBehaviour : MonoBehaviour
     private void DraggingMoveLog(InteractBehaviour from, InteractBehaviour to, PointerEventData d) => Debug.Log($"{GetView().name} DraggingMove");
     private void PointerDownLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetView().name} PointerDown");
     private void PointerUpLog(InteractBehaviour ib, PointerEventData d) => Debug.Log($"{GetView().name} PointerUp");
-    
-
-    public Neuron<InteractBehaviour, PointerEventData> PointerEnterNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerExitNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerMoveNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> BeginDragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> EndDragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> DragNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> RightClickNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> DroppingNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DropNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingEnterNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingExitNeuron = new();
-    public Neuron<InteractBehaviour, InteractBehaviour, PointerEventData> DraggingMoveNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerDownNeuron = new();
-    public Neuron<InteractBehaviour, PointerEventData> PointerUpNeuron = new();
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (!eventData.dragging)
         {
-            PointerEnterNeuron.Invoke(this, eventData);
+            NeuronBundle.PointerEnterNeuron.Invoke(this, eventData);
             return;
         }
         
@@ -116,14 +98,14 @@ public class InteractBehaviour : MonoBehaviour
         if (dragging == null)
             return;
 
-        DraggingEnterNeuron.Invoke(dragging, this, eventData);
+        NeuronBundle.DraggingEnterNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnPointerExit (PointerEventData eventData)
     {
         if (!eventData.dragging)
         {
-            PointerExitNeuron.Invoke(this, eventData);
+            NeuronBundle.PointerExitNeuron.Invoke(this, eventData);
             return;
         }
 
@@ -134,14 +116,14 @@ public class InteractBehaviour : MonoBehaviour
         if (dragging == null)
             return;
 
-        DraggingExitNeuron.Invoke(dragging, this, eventData);
+        NeuronBundle.DraggingExitNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnPointerMove (PointerEventData eventData)
     {
         if (!eventData.dragging)
         {
-            PointerMoveNeuron.Invoke(this, eventData);
+            NeuronBundle.PointerMoveNeuron.Invoke(this, eventData);
             return;
         }
         
@@ -152,12 +134,12 @@ public class InteractBehaviour : MonoBehaviour
         if (dragging == null)
             return;
 
-        DraggingMoveNeuron.Invoke(dragging, this, eventData);
+        NeuronBundle.DraggingMoveNeuron.Invoke(dragging, this, eventData);
     }
 
-    public virtual void OnBeginDrag   (PointerEventData eventData) => BeginDragNeuron   .Invoke(this, eventData);
-    public virtual void OnEndDrag     (PointerEventData eventData) => EndDragNeuron     .Invoke(this, eventData);
-    public virtual void OnDrag        (PointerEventData eventData) => DragNeuron        .Invoke(this, eventData);
+    public virtual void OnBeginDrag   (PointerEventData eventData) => NeuronBundle.BeginDragNeuron   .Invoke(this, eventData);
+    public virtual void OnEndDrag     (PointerEventData eventData) => NeuronBundle.EndDragNeuron     .Invoke(this, eventData);
+    public virtual void OnDrag        (PointerEventData eventData) => NeuronBundle.DragNeuron        .Invoke(this, eventData);
     public virtual void OnDrop        (PointerEventData eventData)
     {
         if (eventData.pointerDrag == gameObject)
@@ -167,29 +149,29 @@ public class InteractBehaviour : MonoBehaviour
         if (dragging == null)
             return;
 
-        dragging.DroppingNeuron.Invoke(dragging, eventData);
-        DropNeuron.Invoke(dragging, this, eventData);
+        dragging.NeuronBundle.DroppingNeuron.Invoke(dragging, eventData);
+        NeuronBundle.DropNeuron.Invoke(dragging, this, eventData);
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            LeftClickNeuron.Invoke(this, eventData);
+            NeuronBundle.LeftClickNeuron.Invoke(this, eventData);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            RightClickNeuron.Invoke(this, eventData);
+            NeuronBundle.RightClickNeuron.Invoke(this, eventData);
         }
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        PointerDownNeuron.Invoke(this, eventData);
+        NeuronBundle.PointerDownNeuron.Invoke(this, eventData);
     }
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
-        PointerUpNeuron.Invoke(this, eventData);
+        NeuronBundle.PointerUpNeuron.Invoke(this, eventData);
     }
 }

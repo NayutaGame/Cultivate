@@ -17,7 +17,7 @@ public class DiscoverPanel : Panel
     {
         _address = new Address("Run.Environment.ActivePanel");
         ListView.SetAddress(_address.Append(".Skills"));
-        ListView.LeftClickNeuron.Join(PickDiscoveredSkill);
+        ListView.NeuronBundle.LeftClickNeuron.Join(PickDiscoveredSkill);
         base.AwakeFunction();
     }
 

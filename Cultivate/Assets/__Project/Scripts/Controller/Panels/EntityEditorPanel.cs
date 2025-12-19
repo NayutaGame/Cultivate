@@ -34,15 +34,15 @@ public class EntityEditorPanel : Panel
         base.AwakeFunction();
 
         EntityBrowser.SetAddress(new Address("Editor.EntityEditableList"));
-        EntityBrowser.LeftClickNeuron.Join(SelectEntity);
-        EntityBrowser.RightClickNeuron.Join(DeselectEntity);
+        EntityBrowser.NeuronBundle.LeftClickNeuron.Join(SelectEntity);
+        EntityBrowser.NeuronBundle.RightClickNeuron.Join(DeselectEntity);
 
         SearchBar.onEndEdit.RemoveAllListeners();
         SearchBar.onEndEdit.AddListener(OnSearchBarValueChanged);
 
         SkillBrowser.SetAddress(new Address("Editor.FilteredSkillInventory"));
-        SkillBrowser.BeginDragNeuron.Join(CanvasManager.Instance.CloseAnnotation);
-        SkillBrowser.DropNeuron.Join(Clear);
+        SkillBrowser.NeuronBundle.BeginDragNeuron.Join(CanvasManager.Instance.CloseAnnotation);
+        SkillBrowser.NeuronBundle.DropNeuron.Join(Clear);
 
         AwayEntityView.CheckAwake();
         AwayEntityView.SetAddress(null);

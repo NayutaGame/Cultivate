@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
+  HoverImage: {fileID: 4772624733553016954}
   PackView: {fileID: 5338216371095591445}
 --- !u!114 &7592765313559340430
 MonoBehaviour:
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad34762e5e9af345b72489ba531dd24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EffectImage: {fileID: 6430098397566277357}
+  EffectImage: {fileID: 4594075792534916137}
 --- !u!1 &1880623778668140068
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,6 +680,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c81e8f11fd50a945aebc29110b7b447, type: 3}
+--- !u!114 &4772624733553016954 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8335969791992874886, guid: 8c81e8f11fd50a945aebc29110b7b447, type: 3}
+  m_PrefabInstance: {fileID: 3572643907503425532}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5338216371095591445 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8899591379461037545, guid: 8c81e8f11fd50a945aebc29110b7b447, type: 3}
@@ -695,14 +707,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7379725429805364584, guid: 8c81e8f11fd50a945aebc29110b7b447, type: 3}
   m_PrefabInstance: {fileID: 3572643907503425532}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6430098397566277357 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7541515999028941073, guid: 8c81e8f11fd50a945aebc29110b7b447, type: 3}
-  m_PrefabInstance: {fileID: 3572643907503425532}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

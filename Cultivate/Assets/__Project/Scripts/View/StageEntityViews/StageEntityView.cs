@@ -43,10 +43,10 @@ public class StageEntityView : XView
 
     private void OnEnable()
     {
-        Formations.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
-        Formations.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
-        Buffs.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
-        Buffs.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
+        Formations.NeuronBundle.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
+        Formations.NeuronBundle.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
+        Buffs.NeuronBundle.PointerEnterNeuron.Join(StageManager.SetHoverToTrue);
+        Buffs.NeuronBundle.PointerExitNeuron.Join(StageManager.SetHoverToFalse);
     }
 
     private void OnDisable()
@@ -57,10 +57,10 @@ public class StageEntityView : XView
             e1.ArmorChangedNeuron.Remove(ArmorChanged);
         }
         
-        Formations.PointerEnterNeuron.Remove(StageManager.SetHoverToTrue);
-        Formations.PointerExitNeuron.Remove(StageManager.SetHoverToFalse);
-        Buffs.PointerEnterNeuron.Remove(StageManager.SetHoverToTrue);
-        Buffs.PointerExitNeuron.Remove(StageManager.SetHoverToFalse);
+        Formations.NeuronBundle.PointerEnterNeuron.Remove(StageManager.SetHoverToTrue);
+        Formations.NeuronBundle.PointerExitNeuron.Remove(StageManager.SetHoverToFalse);
+        Buffs.NeuronBundle.PointerEnterNeuron.Remove(StageManager.SetHoverToTrue);
+        Buffs.NeuronBundle.PointerExitNeuron.Remove(StageManager.SetHoverToFalse);
     }
 
     public override void Refresh()

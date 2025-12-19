@@ -33,22 +33,22 @@ public class SoundBehaviour : XBehaviour
         if (_ib != null)
         {
             if (_hoverAudioEntry != null)
-                _ib.PointerEnterNeuron.Remove(Hover);
+                _ib.NeuronBundle.PointerEnterNeuron.Remove(Hover);
             if (_leftClickAudioEntry != null)
-                _ib.LeftClickNeuron.Remove(LeftClick);
+                _ib.NeuronBundle.LeftClickNeuron.Remove(LeftClick);
             if (_rightClickAudioEntry != null)
-                _ib.RightClickNeuron.Remove(RightClick);
+                _ib.NeuronBundle.RightClickNeuron.Remove(RightClick);
         }
 
         _ib = ib;
         if (_ib != null)
         {
             if (_hoverAudioEntry != null)
-                _ib.PointerEnterNeuron.Join(Hover);
+                _ib.NeuronBundle.PointerEnterNeuron.Join(Hover);
             if (_leftClickAudioEntry != null)
-                _ib.LeftClickNeuron.Join(LeftClick);
+                _ib.NeuronBundle.LeftClickNeuron.Join(LeftClick);
             if (_rightClickAudioEntry != null)
-                _ib.RightClickNeuron.Join(RightClick);
+                _ib.NeuronBundle.RightClickNeuron.Join(RightClick);
         }
     }
     

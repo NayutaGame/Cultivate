@@ -119,8 +119,7 @@ public class ArcDefinition
     public float EvaluateAngle(float t)
     {
         // 获取圆弧上点的切线角度（度），与 EvaluatePoint 保持一致
-        float angle = Mathf.LerpUnclamped(StartAngle, StartAngle + ArcAngle, t);
-        return angle * Mathf.Rad2Deg + 90f;
+        return Mathf.LerpUnclamped(StartAngle, StartAngle + ArcAngle, t) * Mathf.Rad2Deg;
     }
 
     private float GetArcLength()

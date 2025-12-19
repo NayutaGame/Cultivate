@@ -39,21 +39,21 @@ public class AnnotationBehaviour : XBehaviour
             switch (OpenDetails)
             {
                 case AnnotationOpenDetails.Instant:
-                    _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+                    _ib.NeuronBundle.PointerEnterNeuron.Remove(TryShowAnnotation);
                     break;
                 case AnnotationOpenDetails.VeryShortInterval:
-                    _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+                    _ib.NeuronBundle.PointerEnterNeuron.Remove(TryShowAnnotation);
                     break;
                 case AnnotationOpenDetails.LongInterval:
-                    _ib.PointerEnterNeuron.Remove(TryShowAnnotation);
+                    _ib.NeuronBundle.PointerEnterNeuron.Remove(TryShowAnnotation);
                     break;
                 case AnnotationOpenDetails.RightClick:
-                    _ib.RightClickNeuron.Remove(ShowAnnotation);
+                    _ib.NeuronBundle.RightClickNeuron.Remove(ShowAnnotation);
                     break;
             }
             
-            _ib.PointerExitNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
-            _ib.BeginDragNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
+            _ib.NeuronBundle.PointerExitNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
+            _ib.NeuronBundle.BeginDragNeuron.Remove(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
         }
 
         _ib = ib;
@@ -63,21 +63,21 @@ public class AnnotationBehaviour : XBehaviour
             switch (OpenDetails)
             {
                 case AnnotationOpenDetails.Instant:
-                    _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+                    _ib.NeuronBundle.PointerEnterNeuron.Join(TryShowAnnotation);
                     break;
                 case AnnotationOpenDetails.VeryShortInterval:
-                    _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+                    _ib.NeuronBundle.PointerEnterNeuron.Join(TryShowAnnotation);
                     break;
                 case AnnotationOpenDetails.LongInterval:
-                    _ib.PointerEnterNeuron.Join(TryShowAnnotation);
+                    _ib.NeuronBundle.PointerEnterNeuron.Join(TryShowAnnotation);
                     break;
                 case AnnotationOpenDetails.RightClick:
-                    _ib.RightClickNeuron.Join(ShowAnnotation);
+                    _ib.NeuronBundle.RightClickNeuron.Join(ShowAnnotation);
                     break;
             }
             
-            _ib.PointerExitNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
-            _ib.BeginDragNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
+            _ib.NeuronBundle.PointerExitNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
+            _ib.NeuronBundle.BeginDragNeuron.Join(CanvasManager.Instance.AnnotationManager.StopShowAnnotation);
         }
     }
 

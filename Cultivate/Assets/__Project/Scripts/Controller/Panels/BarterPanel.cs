@@ -38,17 +38,17 @@ public class BarterPanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         LeftBucket.SetAddress(_address.Append(".LeftBucketItems"));
-        LeftBucket.DropNeuron.Join(LeftBucketDrop);
+        LeftBucket.NeuronBundle.DropNeuron.Join(LeftBucketDrop);
         LeftBucket.ItemCountChanged.Join(LeftBucketRefreshLayoutSpacing);
-        LeftBucketDropZone.GetInteractBehaviour().DropNeuron.Join(LeftBucketDrop);
+        LeftBucketDropZone.GetInteractBehaviour().NeuronBundle.DropNeuron.Join(LeftBucketDrop);
         
         RightBucket.SetAddress(_address.Append(".RightBucketItems"));
-        RightBucket.DropNeuron.Join(RightBucketDrop);
+        RightBucket.NeuronBundle.DropNeuron.Join(RightBucketDrop);
         RightBucket.ItemCountChanged.Join(RightBucketRefreshLayoutSpacing);
-        RightBucketDropZone.GetInteractBehaviour().DropNeuron.Join(RightBucketDrop);
+        RightBucketDropZone.GetInteractBehaviour().NeuronBundle.DropNeuron.Join(RightBucketDrop);
         
         Board.SetAddress(_address.Append(".BoardItems"));
-        Board.DropNeuron.Join(BoardDrop);
+        Board.NeuronBundle.DropNeuron.Join(BoardDrop);
         
         ExchangeButton.LeftClickNeuron.Join(Exchange);
     }

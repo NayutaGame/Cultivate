@@ -1,10 +1,13 @@
 
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ConstraintSlotView : XView
 {
+    [SerializeField] private Image HoverImage;
     [SerializeField] public PackView PackView;
 
     protected override void AwakeFunction()
@@ -16,7 +19,7 @@ public class ConstraintSlotView : XView
     public override void SetAddress(Address address)
     {
         base.SetAddress(address);
-        PackView.SetAddress(GetAddress().Append(".Pack"));
+        PackView.SetAddress(GetAddress());
     }
 
     public override void Refresh()
@@ -31,14 +34,18 @@ public class ConstraintSlotView : XView
             return;
         
         PackView.Refresh();
-        PackView.RefreshFromParentedConstraint(constraint);
     }
 
     private void OnEnable()
     {
-        _interactBehaviour.LeftClickNeuron.Join(PackConstraintClicked);
-        _interactBehaviour.PointerEnterNeuron.Join(HoverConstraint);
-        _interactBehaviour.PointerExitNeuron.Join(UnhoverConstraint);
+        if (GetBehaviour<ContentBehaviour>().Slot is CarrierSlotView carrier)
+        {
+            carrier.EnterIdleFunc = EnterIdleFunc;
+            carrier.EnterHoverFunc = EnterHoverFunc;
+        }
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Join(PackConstraintClicked);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Join(HoverConstraint);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Join(UnhoverConstraint);
         
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.HighlightConstraintsNeuron.Join(Highlight);
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.UnhighlightConstraintsNeuron.Join(Unhighlight);
@@ -46,13 +53,28 @@ public class ConstraintSlotView : XView
 
     private void OnDisable()
     {
-        _interactBehaviour.LeftClickNeuron.Remove(PackConstraintClicked);
-        _interactBehaviour.PointerEnterNeuron.Remove(HoverConstraint);
-        _interactBehaviour.PointerExitNeuron.Remove(UnhoverConstraint);
+        if (GetBehaviour<ContentBehaviour>().Slot is CarrierSlotView carrier)
+        {
+            carrier.EnterIdleFunc = null;
+            carrier.EnterHoverFunc = null;
+        }
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Remove(PackConstraintClicked);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(HoverConstraint);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Remove(UnhoverConstraint);
         
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.HighlightConstraintsNeuron.Remove(Highlight);
         CanvasManager.Instance.AppCanvas.RunConfigPanel.PackPickerPanel.UnhighlightConstraintsNeuron.Remove(Unhighlight);
     }
+
+    private Tween EnterIdleFunc()
+        => DOTween.Sequence()
+            .Append(HoverImage.DOFade(0, 0.15f).SetEase(Ease.OutQuad))
+            .Join(FollowAnimation.FromDefault(GetRect(), GetBehaviour<ContentBehaviour>().Slot.GetRect(), useSlotRotation: true).GetHandle());
+
+    private Tween EnterHoverFunc()
+        => DOTween.Sequence()
+            .Append(HoverImage.DOFade(1, 0.15f).SetEase(Ease.OutQuad))
+            .Join(FollowAnimation.FromDefault(GetRect(), GetBehaviour<ContentBehaviour>().Slot.GetRect(), useSlotRotation: true).GetHandle());
 
     private void PackConstraintClicked(InteractBehaviour ib, PointerEventData data)
     {

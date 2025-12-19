@@ -12,11 +12,6 @@ public abstract class CLAnimation
     }
     
     public abstract Tween GetHandle();
-
-    public void AppendHandle(Sequence seq)
-    {
-        seq.Append(GetHandle());
-    }
     
     protected abstract void SetProgress(float t);
 }

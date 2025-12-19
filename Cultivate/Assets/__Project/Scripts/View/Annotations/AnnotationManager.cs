@@ -197,13 +197,13 @@ public class AnnotationManager : XView, Addressable
         {
             AnnotationView v = Annotations.ViewFromIndex(Annotations.GetCount() - 2).GetContentView() as AnnotationView;
             v.Cover.raycastTarget = true;
-            v.CoverIb.PointerEnterNeuron.Join(PointerEnter);
+            v.CoverIb.NeuronBundle.PointerEnterNeuron.Join(PointerEnter);
         }
         else
         {
             Background.gameObject.SetActive(true);
             InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
-            backgroundIb.PointerEnterNeuron.Join(PointerEnter);
+            backgroundIb.NeuronBundle.PointerEnterNeuron.Join(PointerEnter);
         }
     }
 
@@ -214,13 +214,13 @@ public class AnnotationManager : XView, Addressable
         {
             AnnotationView v = Annotations.ViewFromIndex(Annotations.GetCount() - 2).GetContentView() as AnnotationView;
             v.Cover.raycastTarget = false;
-            v.CoverIb.PointerEnterNeuron.Remove(PointerEnter);
+            v.CoverIb.NeuronBundle.PointerEnterNeuron.Remove(PointerEnter);
         }
         else
         {
             Background.gameObject.SetActive(false);
             InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
-            backgroundIb.PointerEnterNeuron.Remove(PointerEnter);
+            backgroundIb.NeuronBundle.PointerEnterNeuron.Remove(PointerEnter);
         }
     }
 

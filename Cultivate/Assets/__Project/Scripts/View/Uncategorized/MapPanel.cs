@@ -25,7 +25,7 @@ public class MapPanel : Panel
         MapNodeListView.SetAddress(new("Run.Environment.MapNodes"));
         
         // MapNodeListView.LeftClickNeuron.Join(SelectedMapNode);
-        MapNodeListView.LeftClickNeuron.Join(CreateMenu);
+        MapNodeListView.NeuronBundle.LeftClickNeuron.Join(CreateMenu);
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;

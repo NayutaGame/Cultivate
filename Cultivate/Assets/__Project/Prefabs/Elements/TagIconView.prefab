@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &486124041247695378
 RectTransform:
   m_ObjectHideFlags: 0
@@ -67,8 +67,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 0}
   OpenDetails: 1
-  FirstCounter: 0
-  SecondCounter: 0
   AnnotationViewType: 12
   UseRectAlignment: 1
 --- !u!1 &3680658655861235788

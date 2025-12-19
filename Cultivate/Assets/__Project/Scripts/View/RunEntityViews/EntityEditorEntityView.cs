@@ -103,8 +103,8 @@ public class EntityEditorEntityView : XView
         if (FieldView != null)
         {
             FieldView.SetAddress(GetAddress().Append(".Slots"));
-            FieldView.RightClickNeuron.Join(RightClickSlotNeuron);
-            FieldView.DropNeuron.Join(DropSlotNeuron);
+            FieldView.NeuronBundle.RightClickNeuron.Join(RightClickSlotNeuron);
+            FieldView.NeuronBundle.DropNeuron.Join(DropSlotNeuron);
         }
 
         if (FormationListView != null)

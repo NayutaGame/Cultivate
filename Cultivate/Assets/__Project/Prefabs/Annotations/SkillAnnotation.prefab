@@ -1787,6 +1787,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TagIconView (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 486124041247695379, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4755896941216442695, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1892,6 +1896,10 @@ PrefabInstance:
     - target: {fileID: 486124041247695379, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
       propertyPath: m_Name
       value: TagIconView (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 486124041247695379, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4755896941216442695, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
       propertyPath: m_Sprite
@@ -2253,6 +2261,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TagIconView (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 486124041247695379, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4755896941216442695, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2358,6 +2370,10 @@ PrefabInstance:
     - target: {fileID: 486124041247695379, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
       propertyPath: m_Name
       value: TagIconView
+      objectReference: {fileID: 0}
+    - target: {fileID: 486124041247695379, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4755896941216442695, guid: 3bac63f2ca45f1243b835655c797a1a3, type: 3}
       propertyPath: m_Sprite

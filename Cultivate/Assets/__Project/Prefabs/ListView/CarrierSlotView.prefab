@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a0bafa74044e24b8517ac5594a3e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactBehaviour: {fileID: 0}
+  _interactBehaviour: {fileID: 6359906681201007944}
   _contentView: {fileID: 0}
   _useGrabber: 1
   _allowHover: 0

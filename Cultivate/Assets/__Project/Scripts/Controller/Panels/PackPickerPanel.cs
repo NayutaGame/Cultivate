@@ -9,10 +9,12 @@ public class PackPickerPanel : Panel
     public Neuron UnhighlightPacksNeuron = new();
     public Neuron<Predicate<PackConstraint>> HighlightConstraintsNeuron = new();
     public Neuron UnhighlightConstraintsNeuron = new();
-    
+
+    [SerializeField] private GameObject OtherHalf;
+
     [SerializeField] private ListView ConstraintListView;
-    [SerializeField] private ListView SelectionListView;
-    
+    [SerializeField] private CurvedListView SelectionListView;
+
     public override void AwakeFunction()
     {
         base.AwakeFunction();
@@ -22,7 +24,7 @@ public class PackPickerPanel : Panel
             PackConstraint packConstraint = model as PackConstraint;
             return packConstraint.SlotIndex <= 5 ? packConstraint.SlotIndex : 5;
         });
-        
+
         SelectionListView.SetAddress(new Address("Config.PackTabControl.PackSelections"));
     }
 
@@ -34,20 +36,36 @@ public class PackPickerPanel : Panel
 
     private void OnEnable()
     {
+        OtherHalf.gameObject.SetActive(true);
         AppManager.Instance.ConfigManager.PackTabControl.EquipPackNeuron.Add(EquipPackStaging);
+        AppManager.Instance.ConfigManager.PackTabControl.EquipPackNeuron.Add(SetCursorToEquip);
         AppManager.Instance.ConfigManager.PackTabControl.UnequipPackNeuron.Add(UnequipPackStaging);
+        AppManager.Instance.ConfigManager.PackTabControl.UnequipPackNeuron.Add(SetCursorToUnequip);
         Refresh();
-        
+
         ConstraintListView.ForceLayoutRebuild();
         ConstraintListView.RefreshPivots();
-        
+
         SelectionListView.RefreshPivots();
     }
 
     private void OnDisable()
     {
+        OtherHalf.gameObject.SetActive(false);
         AppManager.Instance.ConfigManager.PackTabControl.EquipPackNeuron.Remove(EquipPackStaging);
+        AppManager.Instance.ConfigManager.PackTabControl.EquipPackNeuron.Remove(SetCursorToEquip);
         AppManager.Instance.ConfigManager.PackTabControl.UnequipPackNeuron.Remove(UnequipPackStaging);
+        AppManager.Instance.ConfigManager.PackTabControl.UnequipPackNeuron.Remove(SetCursorToUnequip);
+    }
+
+    private void SetCursorToEquip(PackEquipDetails d)
+    {
+        SelectionListView.SetCursorAsync(d.SelectionIndex);
+    }
+
+    private void SetCursorToUnequip(PackUnequipDetails d)
+    {
+        SelectionListView.SetCursorAsync(d.SelectionIndex);
     }
     
     private void EquipPackStaging(PackEquipDetails d)

@@ -28,20 +28,20 @@ public class ColorButton : XView
     {
         base.AwakeFunction();
         
-        _interactBehaviour.LeftClickNeuron.Join(LeftClickNeuron);
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Join(LeftClickNeuron);
     }
 
     protected virtual void OnEnable()
     {
-        _interactBehaviour.PointerEnterNeuron.Add(SetStateToHover);
-        _interactBehaviour.PointerExitNeuron.Add(SetStateToIdle);
-        _interactBehaviour.PointerDownNeuron.Add(SetStateToPress);
-        _interactBehaviour.PointerUpNeuron.Add(SetStateToIdle);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(SetStateToHover);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Add(SetStateToIdle);
+        _interactBehaviour.NeuronBundle.PointerDownNeuron.Add(SetStateToPress);
+        _interactBehaviour.NeuronBundle.PointerUpNeuron.Add(SetStateToIdle);
         if (AudioManager.Instance != null)
         {
-            _interactBehaviour.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
-            _interactBehaviour.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
-            _interactBehaviour.RightClickNeuron.Add(AudioManager.PlayButtonPress);
+            _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
+            _interactBehaviour.NeuronBundle.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
+            _interactBehaviour.NeuronBundle.RightClickNeuron.Add(AudioManager.PlayButtonPress);
         }
         
         UpdateAnimation();
@@ -50,14 +50,14 @@ public class ColorButton : XView
 
     protected virtual void OnDisable()
     {
-        _interactBehaviour.PointerEnterNeuron.Remove(SetStateToHover);
-        _interactBehaviour.PointerExitNeuron.Remove(SetStateToIdle);
-        _interactBehaviour.PointerDownNeuron.Remove(SetStateToPress);
-        _interactBehaviour.PointerUpNeuron.Remove(SetStateToIdle);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(SetStateToHover);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Remove(SetStateToIdle);
+        _interactBehaviour.NeuronBundle.PointerDownNeuron.Remove(SetStateToPress);
+        _interactBehaviour.NeuronBundle.PointerUpNeuron.Remove(SetStateToIdle);
         
-        _interactBehaviour.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-        _interactBehaviour.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
-        _interactBehaviour.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+        _interactBehaviour.NeuronBundle.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
     }
 
     public State GetState()

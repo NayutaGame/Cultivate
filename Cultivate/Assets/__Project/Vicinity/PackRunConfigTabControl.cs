@@ -86,6 +86,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         int selectionIndex = _packSelections.IndexOf(pack);
         int constraintIndex = _packConstraints.IndexOf(firstMatch);
         EquipPackNeuron.Invoke(new PackEquipDetails(pack, firstMatch, selectionIndex, constraintIndex));
+        AppManager.Instance.ConfigManager.TryWriteRecord();
     }
 
     public void UnequipPack(PackSelectionClickedDetails d)
@@ -128,6 +129,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         int constraintIndex = _packConstraints.IndexOf(constraint);
         int selectionIndex = _packSelections.IndexOf(pack);
         UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, pack, constraintIndex, selectionIndex));
+        AppManager.Instance.ConfigManager.TryWriteRecord();
     }
 
     public void UnequipPack(PackConstraintClickedDetails d)
@@ -164,6 +166,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         int constraintIndex = _packConstraints.IndexOf(constraint);
         int selectionIndex = _packSelections.IndexOf(pack);
         UnequipPackNeuron.Invoke(new PackUnequipDetails(constraint, pack, constraintIndex, selectionIndex));
+        AppManager.Instance.ConfigManager.TryWriteRecord();
     }
 
     public PackConstraint GetFirstValidUnlockedSlot(ConfigPack pack)

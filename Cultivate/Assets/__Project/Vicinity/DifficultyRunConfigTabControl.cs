@@ -28,10 +28,10 @@ public class DifficultyRunConfigTabControl : RunConfigTabControl
     public void SelectHighestUnlockedDifficulty()
     {
         DifficultyProfile difficultyProfile = AppManager.Instance.ProfileManager.GetCurrProfile().GetHighestUnlockedDifficulty();
-        SelectDifficultyProcedure(new DifficultySelectDetails(difficultyProfile));
+        SelectDifficultyProcedureWithoutWrite(new DifficultySelectDetails(difficultyProfile));
     }
 
-    public void SelectDifficultyProcedure(DifficultySelectDetails d)
+    public void SelectDifficultyProcedureWithoutWrite(DifficultySelectDetails d)
     {
         if (d.ToDifficulty == _difficulty)
             return;
@@ -48,6 +48,15 @@ public class DifficultyRunConfigTabControl : RunConfigTabControl
         DifficultySelectNeuron.Invoke(d);
     }
 
+    public void SelectDifficultyProcedure(DifficultySelectDetails d)
+    {
+        if (d.ToDifficulty == _difficulty)
+            return;
+        
+        SelectDifficultyProcedureWithoutWrite(d);
+        AppManager.Instance.ConfigManager.TryWriteRecord();
+    }
+
     public override void WriteRecord()
     {
         _recordedDifficulty = _difficulty;
@@ -60,7 +69,6 @@ public class DifficultyRunConfigTabControl : RunConfigTabControl
 
     public override bool IsValid()
     {
-        // 检查difficulty是否已解锁
-        return true;
+        return _difficulty.IsUnlocked();
     }
 }

@@ -25,7 +25,7 @@ public class MenuManager : XView, Addressable
         base.AwakeFunction();
         
         InteractBehaviour backgroundIb = Background.GetInteractBehaviour();
-        backgroundIb.LeftClickNeuron.Join(HideMenuWithBackgroundClick);
+        backgroundIb.NeuronBundle.LeftClickNeuron.Join(HideMenuWithBackgroundClick);
         MenuView.CheckAwake();
     }
 

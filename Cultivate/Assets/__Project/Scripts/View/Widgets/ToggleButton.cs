@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class ToggleButton : XView
 {
-    private bool _isHover;
-    private bool _isDown;
-    private bool _isInteractable;
+    private bool _isHover = false;
+    private bool _isDown = false;
+    private bool _isInteractable = true;
     
     public Neuron<InteractBehaviour, PointerEventData> LeftClickNeuron = new();
 
@@ -31,25 +31,25 @@ public class ToggleButton : XView
     {
         base.AwakeFunction();
         
-        GetInteractBehaviour().LeftClickNeuron.Add(LeftClickNeuron);
+        GetInteractBehaviour().NeuronBundle.LeftClickNeuron.Add(LeftClickNeuron);
     }
 
     protected virtual void OnEnable()
     {
-        _interactBehaviour.PointerEnterNeuron.Add(SetHover);
-        _interactBehaviour.PointerExitNeuron.Add(SetUnhover);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(SetHover);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Add(SetUnhover);
         
-        _interactBehaviour.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
-        _interactBehaviour.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
     }
 
     protected virtual void OnDisable()
     {
-        _interactBehaviour.PointerEnterNeuron.Remove(SetHover);
-        _interactBehaviour.PointerExitNeuron.Remove(SetUnhover);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(SetHover);
+        _interactBehaviour.NeuronBundle.PointerExitNeuron.Remove(SetUnhover);
         
-        _interactBehaviour.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-        _interactBehaviour.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
+        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
+        _interactBehaviour.NeuronBundle.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
     }
 
     private void SetHover(InteractBehaviour ib, PointerEventData d)
@@ -140,7 +140,7 @@ public class ToggleButton : XView
         _interactableHandle?.Kill();
         _interactableHandle = DOTween.Sequence();
 
-        int value = _isInteractable ? 1 : 0;
+        int value = _isInteractable ? 0 : 1;
         Color color = _isInteractable ? UpColor : DownColor;
         
         foreach (Image image in InteractableImage)

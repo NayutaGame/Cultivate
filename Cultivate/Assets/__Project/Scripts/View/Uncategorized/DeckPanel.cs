@@ -51,19 +51,19 @@ public class DeckPanel : Panel
         CharacterIconView.SetAddress("Run.Environment.Config.CharacterProfile");
         
         PlayerEntity.SetAddress("Run.Environment.Home");
-        PlayerEntity.FormationList.PointerEnterNeuron.Join(InvokeHighlightQualifiers);
-        PlayerEntity.FormationList.PointerExitNeuron.Join(InvokeUnhighlightQualifiers);
+        PlayerEntity.FormationList.NeuronBundle.PointerEnterNeuron.Join(InvokeHighlightQualifiers);
+        PlayerEntity.FormationList.NeuronBundle.PointerExitNeuron.Join(InvokeUnhighlightQualifiers);
 
         HandView.SetAddress("Run.Environment.Hand");
-        HandView.DropNeuron.Join(MoveSkill);
+        HandView.NeuronBundle.DropNeuron.Join(MoveSkill);
         
-        HandView.DroppingNeuron.Join(RemoveMergePreresult);
-        HandView.EndDragNeuron.Join(RemoveMergePreresult);
-        HandView.DraggingEnterNeuron.Join(DraggingEnter);
-        HandView.DraggingExitNeuron.Join(DraggingExit);
-        HandView.BeginDragNeuron.Join(DragBeginRunSkill);
-        HandView.EndDragNeuron.Join(DragEndRunSkill);
-        HandView.DroppingNeuron.Join(DragEndRunSkill);
+        HandView.NeuronBundle.DroppingNeuron.Join(RemoveMergePreresult);
+        HandView.NeuronBundle.EndDragNeuron.Join(RemoveMergePreresult);
+        HandView.NeuronBundle.DraggingEnterNeuron.Join(DraggingEnter);
+        HandView.NeuronBundle.DraggingExitNeuron.Join(DraggingExit);
+        HandView.NeuronBundle.BeginDragNeuron.Join(DragBeginRunSkill);
+        HandView.NeuronBundle.EndDragNeuron.Join(DragEndRunSkill);
+        HandView.NeuronBundle.DroppingNeuron.Join(DragEndRunSkill);
         
         HandView.ItemCountChanged.Join(RefreshLayoutSpacing);
         

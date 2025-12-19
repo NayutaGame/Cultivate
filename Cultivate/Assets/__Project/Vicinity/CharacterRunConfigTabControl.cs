@@ -27,14 +27,11 @@ public class CharacterRunConfigTabControl : RunConfigTabControl
 
     public void SelectFirstCharacter()
     {
-        SelectCharacterProcedure(new CharacterSelectDetails(AppManager.Instance.ProfileManager.GetCurrProfile().FirstCharacterProfile()));
+        SelectCharacterProcedureWithoutWrite(new CharacterSelectDetails(AppManager.Instance.ProfileManager.GetCurrProfile().FirstCharacterProfile()));
     }
 
-    public void SelectCharacterProcedure(CharacterSelectDetails d)
+    public void SelectCharacterProcedureWithoutWrite(CharacterSelectDetails d)
     {
-        if (d.ToCharacter == _character)
-            return;
-
         CharacterProfileList characterProfileList = AppManager.Instance.ProfileManager.GetCurrProfile().CharacterProfileList;
         
         d.FromIndex = characterProfileList.IndexOf(_character);
@@ -49,6 +46,15 @@ public class CharacterRunConfigTabControl : RunConfigTabControl
         AppManager.Instance.ConfigManager.PackTabControl.SelectDefaultPackPresetFromCharacter(_character);
     }
 
+    public void SelectCharacterProcedure(CharacterSelectDetails d)
+    {
+        if (d.ToCharacter == _character)
+            return;
+
+        SelectCharacterProcedureWithoutWrite(d);
+        AppManager.Instance.ConfigManager.TryWriteRecord();
+    }
+
     public override void WriteRecord()
     {
         _recordedCharacter = _character;
@@ -61,7 +67,6 @@ public class CharacterRunConfigTabControl : RunConfigTabControl
 
     public override bool IsValid()
     {
-        // 检查character是否已解锁
-        return true;
+        return AppManager.Instance.ProfileManager.GetCurrProfile().CharacterIsUnlocked(_character.GetEntry());
     }
 }

@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6359906681201007939
 RectTransform:
   m_ObjectHideFlags: 0
@@ -53,12 +53,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 2068298915665275187}
+  _contentView: {fileID: 0}
+  _useGrabber: 1
+  _allowHover: 0
+  _allowDrag: 0
   IdleConfiguration:
-    LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1, y: 1, z: 1}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
   HoverConfiguration:
-    LocalPosition: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1.5, y: 1.5, z: 1.5}
 --- !u!222 &6359906681201007942
 CanvasRenderer:
   m_ObjectHideFlags: 0

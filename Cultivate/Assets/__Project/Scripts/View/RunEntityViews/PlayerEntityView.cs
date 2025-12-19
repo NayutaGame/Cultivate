@@ -11,10 +11,10 @@ public class PlayerEntityView : XView
         base.SetAddress(address);
         
         FieldView.SetAddress(GetAddress().Append(".Slots"));
-        FieldView.DropNeuron.Join(MoveSkill);
-        FieldView.BeginDragNeuron.Join(DragBeginRunSkill);
-        FieldView.EndDragNeuron.Join(DragEndRunSkill);
-        FieldView.DroppingNeuron.Join(DragEndRunSkill);
+        FieldView.NeuronBundle.DropNeuron.Join(MoveSkill);
+        FieldView.NeuronBundle.BeginDragNeuron.Join(DragBeginRunSkill);
+        FieldView.NeuronBundle.EndDragNeuron.Join(DragEndRunSkill);
+        FieldView.NeuronBundle.DroppingNeuron.Join(DragEndRunSkill);
         
         FormationList.SetAddress(GetAddress().Append(".ShowingFormations"));
     }

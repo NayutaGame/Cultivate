@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEngine;
 
 public class ConfigManager : Addressable
 {
@@ -45,16 +46,9 @@ public class ConfigManager : Addressable
     {
         SelectTabProcedure(_tabs[0]);
         
-        // ReadRecord
-        // {
-        //     ReadRecord();
-        // }
-        
-        // SelectDefault
-        {
-            CharacterTabControl.SelectFirstCharacter();
-            DifficultyTabControl.SelectHighestUnlockedDifficulty();
-        }
+        CharacterTabControl.SelectFirstCharacter();
+        DifficultyTabControl.SelectHighestUnlockedDifficulty();
+        TryWriteRecord();
     }
 
     public void SelectTabProcedure(RunConfigTabControl tab)
@@ -67,6 +61,22 @@ public class ConfigManager : Addressable
         int toIndex = _tabs.IndexOf(_selectedTab);
         TabChangedNeuron.Invoke(new(fromIndex, toIndex));
     }
+
+    public void ProcessProcedure()
+    {
+        if (!IsValid())
+            return;
+
+        int currentTabIndex = GetSelectedIndex();
+        if (currentTabIndex < _tabs.Count() - 1)
+        {
+            SelectTabProcedure(_tabs[currentTabIndex + 1]);
+        }
+        else
+        {
+            StartRunProcedure();
+        }
+    }
     
     private void StartRunProcedure()
     {
@@ -77,12 +87,13 @@ public class ConfigManager : Addressable
         AppManager.Instance.Push(AppStateMachine.RUN, runConfig);
     }
 
-    private void WriteRecord()
+    public void TryWriteRecord()
     {
-        _tabs.Do(tab => tab.WriteRecord());
+        if (IsValid())
+            _tabs.Do(tab => tab.WriteRecord());
     }
 
-    private void ReadRecord()
+    public void ReadRecord()
     {
         _tabs.Do(tab => tab.ReadRecord());
     }

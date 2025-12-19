@@ -42,10 +42,10 @@ public class FaceCanvas : XView
         _lastHit = new();
 
         InteractBehaviour ib = GetInteractBehaviour();
-        ib.PointerDownNeuron.Add(PointerDown);
-        ib.PointerUpNeuron.Add(PointerUp);
+        ib.NeuronBundle.PointerDownNeuron.Add(PointerDown);
+        ib.NeuronBundle.PointerUpNeuron.Add(PointerUp);
         
-        ib.PointerMoveNeuron.Add(PointerMove);
+        ib.NeuronBundle.PointerMoveNeuron.Add(PointerMove);
     }
 
     public void SetPrefabEntry(PrefabEntry prefabEntry)

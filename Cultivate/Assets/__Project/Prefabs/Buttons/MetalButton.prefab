@@ -499,6 +499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6854705593353275625}
   - component: {fileID: 6854705593353275622}
+  - component: {fileID: 4281706155435435662}
   m_Layer: 0
   m_Name: MetalButton
   m_TagString: Untagged
@@ -550,6 +551,22 @@ MonoBehaviour:
   HideWhenInactive: {fileID: 0}
   ShowWhenHover:
   - {fileID: 1863701464236078036}
+--- !u!114 &4281706155435435662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6854705593353275624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 3917662925886340393}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &7944824993876256580
 GameObject:
   m_ObjectHideFlags: 0

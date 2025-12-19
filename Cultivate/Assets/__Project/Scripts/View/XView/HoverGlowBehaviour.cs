@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class HoverGlowBehaviour : XBehaviour
 {
     [SerializeField] private InteractBehaviour _ib;
-
+    
     [SerializeField] private Image HoverImage;
+    
+    private Tween _handle;
 
     public override void AwakeFunction()
     {
@@ -20,20 +22,18 @@ public class HoverGlowBehaviour : XBehaviour
     {
         if (_ib != null)
         {
-            _ib.PointerEnterNeuron.Remove(Hover);
-            _ib.PointerExitNeuron.Remove(UnHover);
+            _ib.NeuronBundle.PointerEnterNeuron.Remove(Hover);
+            _ib.NeuronBundle.PointerExitNeuron.Remove(UnHover);
         }
 
         _ib = ib;
 
         if (_ib != null)
         {
-            _ib.PointerEnterNeuron.Join(Hover);
-            _ib.PointerExitNeuron.Join(UnHover);
+            _ib.NeuronBundle.PointerEnterNeuron.Join(Hover);
+            _ib.NeuronBundle.PointerExitNeuron.Join(UnHover);
         }
     }
-
-    private Tween _handle;
     
     private void Hover(InteractBehaviour ib, PointerEventData d)
     {

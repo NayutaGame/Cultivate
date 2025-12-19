@@ -64,16 +64,16 @@ public class EmphasizableSlotView : ScaleSlotView
     {
         if (_interactBehaviour != null)
         {
-            ib.PointerEnterNeuron.Remove(PointerEnter);
-            ib.PointerExitNeuron.Remove(PointerExit);
-            ib.DraggingExitNeuron.Remove(DraggingExit);
+            ib.NeuronBundle.PointerEnterNeuron.Remove(PointerEnter);
+            ib.NeuronBundle.PointerExitNeuron.Remove(PointerExit);
+            ib.NeuronBundle.DraggingExitNeuron.Remove(DraggingExit);
         }
         base.SetInteractBehaviour(ib);
         if (_interactBehaviour != null)
         {
-            ib.PointerEnterNeuron.Join(PointerEnter);
-            ib.PointerExitNeuron.Join(PointerExit);
-            ib.DraggingExitNeuron.Join(DraggingExit);
+            ib.NeuronBundle.PointerEnterNeuron.Join(PointerEnter);
+            ib.NeuronBundle.PointerExitNeuron.Join(PointerExit);
+            ib.NeuronBundle.DraggingExitNeuron.Join(DraggingExit);
         }
     }
 

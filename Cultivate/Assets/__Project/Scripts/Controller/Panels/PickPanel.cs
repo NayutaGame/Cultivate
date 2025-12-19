@@ -20,8 +20,8 @@ public class PickPanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         _selections = new();
         SkillListView.SetAddress(_address.Append(".Inventory"));
-        SkillListView.PointerEnterNeuron.Join(PlayCardHoverSFX);
-        SkillListView.LeftClickNeuron.Join(ToggleSkill);
+        SkillListView.NeuronBundle.PointerEnterNeuron.Join(PlayCardHoverSFX);
+        SkillListView.NeuronBundle.LeftClickNeuron.Join(ToggleSkill);
     }
 
     private void OnEnable()

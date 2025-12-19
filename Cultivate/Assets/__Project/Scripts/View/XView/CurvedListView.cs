@@ -13,6 +13,7 @@ public class CurvedListView : ListView
     [SerializeField] private bool Cyclic;
     [SerializeField] [Range(-0.9f, 10f)] private float CurveIntensity;
     [SerializeField] [Range(1f, 100)] private float CursorSensitivity = 1f;
+    [SerializeField] [Range(-180, 180)] private float RotationOffset;
 
     [SerializeField] private float _cursor;
 
@@ -79,14 +80,14 @@ public class CurvedListView : ListView
         return tfMapped - 0.5f;
     }
 
-    private void SetRectFromUniformT(SlotView slotView, float nonuniformT, bool cyclic)
+    private void SetRectFromUniformT(SlotView slotView, float nonuniformT)
     {
         float t = nonuniformT + 0.5f;
         Vector2 position = _arcDefinition.EvaluatePoint(t);
         float rotation = _arcDefinition.EvaluateAngle(t);
         
         slotView.GetRect().anchoredPosition = position;
-        slotView.GetRect().rotation = Quaternion.Euler(0, 0, rotation);
+        slotView.GetRect().rotation = Quaternion.Euler(0, 0, rotation + RotationOffset);
     }
 
     private void CalculateCurvedPositions()
@@ -99,7 +100,7 @@ public class CurvedListView : ListView
             SlotView slotView = _activePool[i];
             float uniformT = MapIToT(i, count, _cursor, WindowSize, Cyclic);
             float nonuniformT = MapTToNonuniformT(uniformT, CurveIntensity);
-            SetRectFromUniformT(slotView, nonuniformT, Cyclic);
+            SetRectFromUniformT(slotView, nonuniformT);
         }
     }
 
@@ -123,10 +124,17 @@ public class CurvedListView : ListView
 
     public void SetCursorAsync(float cursor)
     {
-        float mapped = MapCursorToCloser(_cursor, cursor, _activePool.Count);
-        
+        float newCursor;
+        if (Cyclic)
+        {
+            newCursor = MapCursorToCloser(_cursor, cursor, _activePool.Count);
+        }
+        else
+        {
+            newCursor = Mathf.Clamp(cursor, 0, _activePool.Count - 1);
+        }
         _handle?.Kill();
-        _handle = DOTween.To(SetCursor, _cursor, mapped, 0.15f);
+        _handle = DOTween.To(SetCursor, _cursor, newCursor, 0.15f);
         _handle.SetAutoKill().Restart();
     }
 

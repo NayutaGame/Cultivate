@@ -8,10 +8,10 @@ public class CarrierSlotView : SlotView
     public Func<Tween> EnterHoverFunc;
 
     protected override Tween EnterIdle()
-        => EnterIdleFunc();
+        => EnterIdleFunc?.Invoke();
 
     protected override Tween EnterHover()
-        => EnterHoverFunc();
+        => EnterHoverFunc?.Invoke();
 
     protected override Tween EnterFollow()
         => DOTween.Sequence()
@@ -20,12 +20,12 @@ public class CarrierSlotView : SlotView
     protected override Tween EnterIdleUseGrabber()
         => DOTween.Sequence()
             .AppendCallback(GrabberRelease)
-            .Append(EnterIdleFunc());
+            .Append(EnterIdleFunc?.Invoke());
 
     protected override Tween EnterHoverUseGrabber()
         => DOTween.Sequence()
             .AppendCallback(GrabberRelease)
-            .Append(EnterHoverFunc());
+            .Append(EnterHoverFunc?.Invoke());
 
     protected override Tween EnterFollowUseGrabber()
         => DOTween.Sequence()

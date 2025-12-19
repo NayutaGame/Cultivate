@@ -5,7 +5,7 @@ public class GachaSkillView : SkillView
 {
     private void OnDisable()
     {
-        GetBehaviour<ContentBehaviour>().Slot.GetInteractBehaviour().LeftClickNeuron.Remove(Gacha);
+        GetBehaviour<ContentBehaviour>().Slot.GetInteractBehaviour().NeuronBundle.LeftClickNeuron.Remove(Gacha);
     }
 
     private void Gacha(InteractBehaviour ib, PointerEventData d)
@@ -18,12 +18,12 @@ public class GachaSkillView : SkillView
         InteractBehaviour ib = GetBehaviour<ContentBehaviour>().Slot.GetInteractBehaviour();
         if (picking)
         {
-            ib.LeftClickNeuron.Join(Gacha);
+            ib.NeuronBundle.LeftClickNeuron.Join(Gacha);
             GetBehaviour<AnnotationBehaviour>().SetInteractBehaviour(null);
         }
         else
         {
-            ib.LeftClickNeuron.Remove(Gacha);
+            ib.NeuronBundle.LeftClickNeuron.Remove(Gacha);
             GetBehaviour<AnnotationBehaviour>().SetInteractBehaviour(ib);
         }
     }

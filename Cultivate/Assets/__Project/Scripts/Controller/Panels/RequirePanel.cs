@@ -22,10 +22,10 @@ public class RequirePanel : Panel
 
         _address = new Address("Run.Environment.ActivePanel");
         Requirements.SetAddress(_address.Append(".Requirements"));
-        Requirements.DropNeuron.Join(MoveSkill);
-        Requirements.BeginDragNeuron.Join(DragBeginRunSkill);
-        Requirements.EndDragNeuron.Join(DragEndRunSkill);
-        Requirements.DroppingNeuron.Join(DragEndRunSkill);
+        Requirements.NeuronBundle.DropNeuron.Join(MoveSkill);
+        Requirements.NeuronBundle.BeginDragNeuron.Join(DragBeginRunSkill);
+        Requirements.NeuronBundle.EndDragNeuron.Join(DragEndRunSkill);
+        Requirements.NeuronBundle.DroppingNeuron.Join(DragEndRunSkill);
     }
 
     public override void Refresh()
