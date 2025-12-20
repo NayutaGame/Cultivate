@@ -39,11 +39,25 @@ public class CalculatedGainRow : GainRow
         };
     }
 
-    public override Description GetDescription()
+    public override Description GetDescriptionText()
     {
-        Description description = new Description();
-        description.Join(_pointDescription);
-        description.Join($"\t当前{_currentCount.Value} → +{CalculateGain()}");
-        return description;
+        return _pointDescription;
+    }
+
+    public override string GetScoreText()
+    {
+        int gain = CalculateGain();
+        if (gain > 0)
+        {
+            return $"+{gain}";
+        }
+        else if (gain < 0)
+        {
+            return $"{gain}";
+        }
+        else
+        {
+            return "0";
+        }
     }
 }

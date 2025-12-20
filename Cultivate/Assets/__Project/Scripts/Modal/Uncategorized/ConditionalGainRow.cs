@@ -40,11 +40,25 @@ public class ConditionalGainRow : GainRow
             : GainStyle.Inactive;
     }
 
-    public override Description GetDescription()
+    public override Description GetDescriptionText()
     {
-        Description description = new Description();
-        description.Join(_condDescription);
-        description.Join($"\t\t当前{_currentValue.Value}\t→ +{CalculateGain()}");
-        return description;
+        return _condDescription;
+    }
+
+    public override string GetScoreText()
+    {
+        int gain = CalculateGain();
+        if (gain > 0)
+        {
+            return $"+{gain}";
+        }
+        else if (gain < 0)
+        {
+            return $"{gain}";
+        }
+        else
+        {
+            return "0";
+        }
     }
 }

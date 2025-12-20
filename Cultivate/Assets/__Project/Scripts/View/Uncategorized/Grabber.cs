@@ -22,17 +22,38 @@ public class Grabber : MonoBehaviour
     private GrabState _state;
     private SlotView _slotView;
 
+    private SlotView SlotView
+    {
+        set
+        {
+            if (_slotView != null)
+            {
+                IListView parent = _slotView.GetParentListView();
+                if (parent != null)
+                {
+                    parent.RecoverSlotView(_slotView);
+                }
+                else
+                {
+                    _slotView.GetContentView().GetRect().SetParent(_slotView.GetRect(), true);
+                }
+            }
+
+            _slotView = value;
+            if (_slotView != null)
+            {
+                _slotView.GetContentView().GetRect().SetParent(GetRect(), true);
+            }
+        }
+    }
+
     public void SetHover(SlotView slotView)
     {
         if (_state == GrabState.Drag)
             return;
         
-        if (_state == GrabState.Hover)
-            Release(_slotView);
-        
         _state = GrabState.Hover;
-        _slotView = slotView;
-        _slotView.GetContentView().GetRect().SetParent(GetRect(), true);
+        SlotView = slotView;
     }
 
     public void SetDrag(SlotView slotView)
@@ -44,31 +65,19 @@ public class Grabber : MonoBehaviour
         {
             if (_slotView != slotView)
                 _slotView.GetAnimator().SetStateAsync(1);
-            Release(_slotView);
         }
         
         _state = GrabState.Drag;
-        _slotView = slotView;
-        _slotView.GetContentView().GetRect().SetParent(GetRect(), true);
+        SlotView = slotView;
     }
 
     public void Release(SlotView slotView)
     {
-        _state = GrabState.Empty;
-        if (_slotView == null || slotView != _slotView)
+        if (slotView != _slotView)
             return;
         
-        ListView parent = _slotView.GetParentListView();
-        if (parent != null)
-        {
-            parent.RecoverSlotView(_slotView);
-        }
-        else
-        {
-            _slotView.GetContentView().GetRect().SetParent(_slotView.GetRect(), true);
-        }
-        
-        _slotView = null;
+        _state = GrabState.Empty;
+        SlotView = null;
     }
 
     public void SetPosition(PointerEventData eventData)

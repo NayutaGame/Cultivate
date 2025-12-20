@@ -121,7 +121,7 @@ public class StageCanvas : MonoBehaviour
         entityView.Buffs.ForceLayoutRebuild();
 
         int i = 0;
-        entityView.Buffs.Traversal().Do(slotView =>
+        entityView.Buffs.TraversalEverything().Do(slotView =>
         {
             if (i >= buffIndex)
                 slotView.Align();

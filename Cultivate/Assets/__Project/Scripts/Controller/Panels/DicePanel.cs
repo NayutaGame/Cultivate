@@ -1,21 +1,22 @@
 
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DicePanel : Panel
 {
-    [SerializeField] private ListView GainList;
+    [SerializeField] private FixedListView GainList;
 
-    [SerializeField] private TMP_Text DiceDescription;
-    [SerializeField] private TMP_Text DiceEquation;
-    [SerializeField] private TMP_Text FinalScoreText;
+    [SerializeField] private TMP_Text DialogText;
+    [SerializeField] private TMP_Text RolledPointsText;
+    [SerializeField] private TMP_Text GainedPointsText;
     [SerializeField] private TMP_Text DiceRangeText;
     
-    [SerializeField] private ListView ResultList;
+    [SerializeField] private FixedListView OutcomeList;
     
-    [SerializeField] private CLButtonPatternA RollButton;
     [SerializeField] private CLButtonPatternA ForwardButton;
+    [SerializeField] private TMP_Text ForwardButtonText;
 
     private Address _address;
 
@@ -26,8 +27,7 @@ public class DicePanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
         
         GainList.SetAddress(_address.Append(".GainTable"));
-        ResultList.SetAddress(_address.Append(".ResultTable"));
-        RollButton.LeftClickNeuron.Add(Roll);
+        OutcomeList.SetAddress(_address.Append(".ResultTable"));
         ForwardButton.LeftClickNeuron.Add(Forward);
     }
 
@@ -42,62 +42,53 @@ public class DicePanel : Panel
         int totalGain = cell.GetTotalGain();
         bool hasAtLeastOneGainRow = cell.HasAtLeastOneGainRow();
         
-        // 按钮状态
-        RollButton.SetStateToActiveIf(!isRolled);
-        ForwardButton.SetStateToActiveIf(isRolled);
+        DialogText.text = cell.DiceDescription;
 
-        DiceDescription.text = cell.DiceDescription;
-        
-        // 方程式文本（只有在有加分选项时才显示）
-        DiceEquation.gameObject.SetActive(hasAtLeastOneGainRow);
-        if (hasAtLeastOneGainRow)
+        if (!isRolled)
         {
-            if (isRolled)
-            {
-                // Rolled 状态：显示实际值 "15 + 3"
-                int diceValue = cell.GetDiceValue();
-                DiceEquation.text = totalGain != 0 
-                    ? $"{diceValue} + [{totalGain}]" 
-                    : diceValue.ToString();
-            }
-            else
-            {
-                // Unrolled 状态：显示 "? + 3" 或 "?"
-                DiceEquation.text = totalGain != 0 
-                    ? $"? + [{totalGain}]" 
-                    : "?";
-            }
-        }
-        
-        // 最终值文本
-        if (isRolled)
-        {
-            // Rolled 状态：显示最终值 "18"
-            FinalScoreText.text = cell.GetFinalDiceValue().ToString();
+            ForwardButtonText.text = "投掷";
+            RolledPointsText.text = "";
+            GainedPointsText.text = "";
         }
         else
         {
-            // Unrolled 状态：显示 "?" 或显示可能的范围
-            FinalScoreText.text = "?";
+            ForwardButtonText.text = "结算";
+            RolledPointsText.text = cell.GetDiceValue().ToString();
+            GainedPointsText.text = totalGain != 0 ? $"+{totalGain}点" : "";
         }
         
         // 范围文本（始终显示）
         DiceRangeText.text = $"骰子范围 ~ [1, {cell.DiceRange}]";
         
         GainList.Refresh();
-        ResultList.Refresh();
+        OutcomeList.Refresh();
     }
 
-    private void Roll(InteractBehaviour ib, PointerEventData d)
+    private void OnEnable()
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new RollSignal());
-        
-        // staging
-        Refresh();
+        RunManager.Instance.Environment.DiceGainedPointsChangedNeuron.Join(Refresh);
+    }
+
+    private void OnDisable()
+    {
+        RunManager.Instance.Environment.DiceGainedPointsChangedNeuron.Remove(Refresh);
     }
 
     private void Forward(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitDiceSignal());
+        ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
+        DiceCell cell = cellAdapter.AsCell() as DiceCell;
+
+        bool isRolled = cell.State == DiceCell.DiceCellState.Rolled;
+        if (!isRolled)
+        {
+            RunManager.Instance.Environment.ReceiveSignalProcedure(new RollSignal());
+            // staging
+            Refresh();
+        }
+        else
+        {
+            RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitDiceSignal());
+        }
     }
 }

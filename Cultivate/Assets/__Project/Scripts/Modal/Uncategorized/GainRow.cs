@@ -15,5 +15,6 @@ public abstract class GainRow
     public abstract void InvalidateCache();
     public abstract int CalculateGain();
     public abstract GainStyle GetGainStyle();
-    public abstract Description GetDescription();
+    public abstract Description GetDescriptionText();
+    public abstract string GetScoreText();
 }

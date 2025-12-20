@@ -84,7 +84,7 @@ public class CommitPanel : Panel
         InitMilestoneList();
         Sequence seq = DOTween.Sequence();
 
-        MilestoneList.Traversal().Do(slotView => {
+        MilestoneList.TraversalEverything().Do(slotView => {
             // AudioManager.PlayCardPlacement();
             seq.Append(slotView.GetContentView().GetRect().DOMove(slotView.GetRect().position, 0.15f))
                 .Join((slotView.GetContentView() as MilestoneView).CanvasGroup.DOFade(1, 0.15f))
@@ -111,7 +111,7 @@ public class CommitPanel : Panel
         MilestoneList.Sync();
         MilestoneList.ForceLayoutRebuild();
 
-        MilestoneList.Traversal().Do(slotView =>
+        MilestoneList.TraversalEverything().Do(slotView =>
         {
             SetInitialState(slotView, slotView.GetRect().position + Vector3.right * 0.5f);
         });
@@ -122,7 +122,7 @@ public class CommitPanel : Panel
         InitUnlockList();
         Sequence seq = DOTween.Sequence();
 
-        UnlockList.Traversal().Do(slotView => {
+        UnlockList.TraversalEverything().Do(slotView => {
             // AudioManager.PlayCardPlacement();
             seq.Append(slotView.GetContentView().GetRect().DOMove(slotView.GetRect().position, 0.15f))
                 .Join((slotView.GetContentView() as UnlockIcon).CanvasGroup.DOFade(1, 0.15f))
@@ -147,7 +147,7 @@ public class CommitPanel : Panel
         UnlockList.Sync();
         UnlockList.ForceLayoutRebuild();
 
-        UnlockList.Traversal().Do(slotView =>
+        UnlockList.TraversalEverything().Do(slotView =>
         {
             SetInitialState(slotView, slotView.GetRect().position + Vector3.up * 0.25f);
         });

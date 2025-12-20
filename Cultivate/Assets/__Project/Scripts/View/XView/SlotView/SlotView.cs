@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,12 +13,11 @@ public abstract class SlotView : XView
     public static readonly int FOLLOW = 3;
     
     [SerializeField] private XView _contentView;
-    private ListView _parentListView;
-    
     [SerializeField] private bool _useGrabber = true;
-    
     [SerializeField] private bool _allowHover;
     [SerializeField] private bool _allowDrag;
+    
+    private IListView _parentListView;
     
     public XView GetContentView() => _contentView;
     public void SetContentView(XView contentView)
@@ -28,9 +28,6 @@ public abstract class SlotView : XView
         ContentBehaviour contentBehaviour = contentView.GetBehaviour<ContentBehaviour>();
         contentBehaviour.Slot = this;
     }
-
-    public ListView GetParentListView() => _parentListView;
-    public void SetParentListView(ListView parentListView) => _parentListView = parentListView;
 
     public override Address GetAddress() => _contentView.GetAddress();
     public override T Get<T>() => _contentView.Get<T>();
@@ -48,6 +45,9 @@ public abstract class SlotView : XView
     {
         GrabberRelease();
     }
+
+    public IListView GetParentListView() => _parentListView;
+    public void SetParentListView(IListView parentListView) => _parentListView = parentListView;
 
     public void SetMoveFromRectToIdle(RectTransform rect)
     {
@@ -108,7 +108,6 @@ public abstract class SlotView : XView
             SetInteractBehaviour(_interactBehaviour);
         }
     }
-    
 
     public bool AllowDrag
     {

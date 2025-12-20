@@ -38,6 +38,19 @@ public class DiceCell : Cell
         State = DiceCellState.Unrolled;
         DiceValue = -1;
         ResultIndex = new Dirty<int>(CalcResultIndex);
+        
+        RunManager.Instance.Environment.EquipNeuron.Join(CalcGainedPoints);
+        RunManager.Instance.Environment.SwapNeuron.Join(CalcGainedPoints);
+        RunManager.Instance.Environment.UnequipNeuron.Join(CalcGainedPoints);
+        RunManager.Instance.Environment.MergeNeuron.Join(CalcGainedPoints);
+    }
+
+    ~DiceCell()
+    {
+        RunManager.Instance.Environment.EquipNeuron.Remove(CalcGainedPoints);
+        RunManager.Instance.Environment.SwapNeuron.Remove(CalcGainedPoints);
+        RunManager.Instance.Environment.UnequipNeuron.Remove(CalcGainedPoints);
+        RunManager.Instance.Environment.MergeNeuron.Remove(CalcGainedPoints);
     }
 
     public bool HasAtLeastOneGainRow()
@@ -72,6 +85,7 @@ public class DiceCell : Cell
         DiceValue = UnityEngine.Random.Range(1, DiceRange + 1);
         State = DiceCellState.Rolled;
         InvalidateCache();
+        ResultIndex.Guarantee();
     }
 
     private int CalcResultIndex()
@@ -145,5 +159,18 @@ public class DiceCell : Cell
         }
 
         return this;
+    }
+    
+    private void CalcGainedPoints(EquipDetails d) => CalcGainedPoints();
+    private void CalcGainedPoints(UnequipDetails d) => CalcGainedPoints();
+    private void CalcGainedPoints(SwapDetails d) => CalcGainedPoints();
+    private void CalcGainedPoints(MergeDetails d) => CalcGainedPoints();
+
+    private void CalcGainedPoints()
+    {
+        InvalidateCache();
+        ResultIndex.Guarantee();
+
+        RunManager.Instance.Environment.DiceGainedPointsChangedNeuron.Invoke();
     }
 }
