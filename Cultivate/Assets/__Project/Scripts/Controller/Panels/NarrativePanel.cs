@@ -1,5 +1,7 @@
 
+using System;
 using DG.Tweening;
+using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +14,10 @@ public class NarrativePanel : Panel
     [SerializeField] private TMP_Text NarrativeText;
 
     [SerializeField] private PropagateClick ClickReceiver;
+
+    [SerializeField] private RectTransform Anchor;
+    [NonSerialized] private PrefabEntry PrefabEntry;
+    [NonSerialized] private GameObject Model;
 
     private Address _address;
     
@@ -109,6 +115,25 @@ public class NarrativePanel : Panel
         else
         {
             QueueProcessNarrativeSignal();
+        }
+    }
+
+    private void SetPrefabEntry(PrefabEntry prefabEntry)
+    {
+        if (PrefabEntry == prefabEntry)
+            return;
+        
+        if (Model != null)
+            Destroy(Model);
+
+        PrefabEntry = prefabEntry;
+        Model = Instantiate(prefabEntry.Prefab, Anchor);
+
+        SkeletonGraphic skeletonGraphic = Model.GetComponentInChildren<SkeletonGraphic>();
+        if (skeletonGraphic != null)
+        {
+            skeletonGraphic.AnimationState.SetAnimation(1, "win", false);
+            skeletonGraphic.AnimationState.AddAnimation(1, "idle", true, 0);
         }
     }
 }

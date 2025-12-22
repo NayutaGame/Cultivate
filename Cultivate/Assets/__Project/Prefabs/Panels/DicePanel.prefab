@@ -1530,7 +1530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   SlotPrefab: {fileID: 6359906681201007938, guid: 52b32c8512fdca3438184610fb5214ec, type: 3}
-  AllowHover: 1
+  AllowHover: 0
   AllowDrag: 0
 --- !u!1 &2595235582559488933
 GameObject:
@@ -1875,7 +1875,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   FocusImage:
-  - {fileID: 2022520114161086201}
   - {fileID: 8527658445499056076}
   ScoreText: {fileID: 5731079391969630138}
   OutcomeText: {fileID: 4357558985743932730}
@@ -3200,7 +3199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   FocusImage:
-  - {fileID: 4086058760050688627}
   - {fileID: 4278880370879503143}
   ScoreText: {fileID: 6697456926551661762}
   OutcomeText: {fileID: 2121626058992460120}
@@ -4121,7 +4119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   FocusImage:
-  - {fileID: 3441877383543450203}
   - {fileID: 8975773395573483732}
   ScoreText: {fileID: 2296536621508508974}
   OutcomeText: {fileID: 1729657249898883573}
@@ -4330,7 +4327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   SlotPrefab: {fileID: 6359906681201007938, guid: 52b32c8512fdca3438184610fb5214ec, type: 3}
-  AllowHover: 1
+  AllowHover: 0
   AllowDrag: 0
 --- !u!1 &7125483892309820064
 GameObject:
@@ -5975,7 +5972,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   FocusImage:
-  - {fileID: 3963520589661965055}
   - {fileID: 4669749735018303937}
   ScoreText: {fileID: 2825481843030662599}
   OutcomeText: {fileID: 1545036738169799316}

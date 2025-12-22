@@ -7,7 +7,6 @@ public class DifficultyPickerPanel : Panel
 {
     [SerializeField] private CurvedListView DifficultyListView;
 
-    [SerializeField] private TMP_Text NameText;
     [SerializeField] private TMP_Text DescriptionText;
     [SerializeField] private TMP_Text LockText;
 
@@ -62,7 +61,6 @@ public class DifficultyPickerPanel : Panel
         DifficultyRunConfigTabControl control = _address.Get<DifficultyRunConfigTabControl>();
         DifficultyProfile difficultyProfile = control.GetSelectedDifficultyProfile();
 
-        NameText.text = difficultyProfile.GetEntry().GetName();
         DescriptionText.text = difficultyProfile.GetEntry().Description;
         LockText.gameObject.SetActive(!difficultyProfile.IsUnlocked());
         LockText.text = "通关前一个难度之后解锁";
