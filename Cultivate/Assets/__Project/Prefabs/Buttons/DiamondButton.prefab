@@ -413,6 +413,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4260364855408610441}
   - component: {fileID: 4260364855408610486}
+  - component: {fileID: 2375964603366891407}
   m_Layer: 0
   m_Name: DiamondButton
   m_TagString: Untagged
@@ -464,6 +465,22 @@ MonoBehaviour:
   ShowWhenHover:
   - {fileID: 2460490333479699428}
   - {fileID: 2292236822860629801}
+--- !u!114 &2375964603366891407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4260364855408610440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 8189824542437367892}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &4422825099994713486
 GameObject:
   m_ObjectHideFlags: 0

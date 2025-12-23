@@ -465,8 +465,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 8294711995312187638}
   OpenDetails: 1
-  FirstCounter: 0
-  SecondCounter: 0
   AnnotationViewType: 5
   UseRectAlignment: 0
 --- !u!1 &172499909538855786
@@ -1607,8 +1605,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ib: {fileID: 7587718519836617415}
   OpenDetails: 1
-  FirstCounter: 0
-  SecondCounter: 0
   AnnotationViewType: 5
   UseRectAlignment: 0
 --- !u!1 &4375530236943948980
@@ -4904,6 +4900,22 @@ MonoBehaviour:
   - {fileID: 1709784461689524835}
   - {fileID: 3049108722439034542}
   Text: {fileID: 468608490075303637}
+--- !u!114 &6136475447027292576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045097105634090255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 4915449208597311955}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!114 &1709784461689524835 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2460490333479699428, guid: 9dc14e903aa46b549b7d3148b186687e, type: 3}

@@ -487,6 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2974195594875515350}
   - component: {fileID: 7203221303288264703}
+  - component: {fileID: 7306602658563609726}
   m_Layer: 0
   m_Name: BarButton
   m_TagString: Untagged
@@ -536,6 +537,22 @@ MonoBehaviour:
   HideWhenInactive: {fileID: 7291973516448445044}
   ShowWhenHover:
   - {fileID: 6660846452948344388}
+--- !u!114 &7306602658563609726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233361100220417523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 2317899382671509423}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &8650534509930257062
 GameObject:
   m_ObjectHideFlags: 0

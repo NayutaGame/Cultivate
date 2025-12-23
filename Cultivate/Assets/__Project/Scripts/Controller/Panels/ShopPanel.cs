@@ -1,11 +1,9 @@
 
-using TMPro;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class ShopPanel : Panel
 {
-    public ListView ListView;
+    public FixedListView ListView;
     public CLButtonPatternA ExitButton;
 
     private Address _address;
@@ -57,7 +55,4 @@ public class ShopPanel : Panel
     {
         return ListView.ViewFromIndex(commodityIndex);
     }
-
-    private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData eventData)
-        => AudioManager.Play("CardHover");
 }

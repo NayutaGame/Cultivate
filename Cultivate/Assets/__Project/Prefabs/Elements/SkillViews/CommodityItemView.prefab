@@ -572,6 +572,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1472873586451013789}
   - component: {fileID: 307198265425129559}
+  - component: {fileID: 4428612637325089757}
   m_Layer: 0
   m_Name: IronPlate
   m_TagString: Untagged
@@ -621,6 +622,22 @@ MonoBehaviour:
   HoverContent: {fileID: 6593684139280298918}
   PressedContent: {fileID: 8402188991465233756}
   InactiveContent: {fileID: 5743061889778718271}
+--- !u!114 &4428612637325089757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103262521259414947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 3279172143702010434}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &3118446153587933293
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +994,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7003537225358803614}
   - component: {fileID: 2371823096180318052}
+  - component: {fileID: 2901879414227616645}
   m_Layer: 0
   m_Name: WoodenPlate
   m_TagString: Untagged
@@ -1026,6 +1044,22 @@ MonoBehaviour:
   HoverContent: {fileID: 3745905860618462012}
   PressedContent: {fileID: 7178534104924021324}
   InactiveContent: {fileID: 8122590782872746419}
+--- !u!114 &2901879414227616645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4130405137711616434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 8486185434852838141}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &4346345133279296566
 GameObject:
   m_ObjectHideFlags: 0

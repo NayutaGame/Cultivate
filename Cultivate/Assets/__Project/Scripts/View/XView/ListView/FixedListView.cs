@@ -156,7 +156,7 @@ public class FixedListView : XView, IListView
         int itemCount = _model.Count();
         int slotCount = _slotList.Count;
         
-        Assert.IsTrue(itemCount < slotCount);
+        Assert.IsTrue(itemCount <= slotCount);
         for (int i = 0; i < itemCount; i++)
             AlignEnabledState(i);
 
@@ -168,6 +168,11 @@ public class FixedListView : XView, IListView
     public void Modified(int index)
     {
         _slotList[index].Refresh();
+    }
+
+    public void RemoveItemAt(int index)
+    {
+        DisableItem(index);
     }
 
     #endregion

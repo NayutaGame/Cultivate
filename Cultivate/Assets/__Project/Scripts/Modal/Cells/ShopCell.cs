@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class ShopCell : Cell
 {
+    public static readonly int MAX_COMMODITY_COUNT = 10;
+    
     private string _title;
     private string _contentText;
     private SpriteEntry _spriteEntry;
@@ -54,12 +57,16 @@ public class ShopCell : Cell
         base.DefaultEnter(cell);
 
         _commodities = new CommodityListModel();
+        for (int i = 0; i < MAX_COMMODITY_COUNT; i++)
+            _commodities.Add(null);
         
         GainSkillBuilder b = new();
         b.Draw(_drawStrategies, _preferredJingJie, distinct: true, consume: false);
-        
-        foreach (GainingSkill g in b.GainingSkills)
+
+        for (int i = 0; i < b.GainingSkills.Count; i++)
         {
+            GainingSkill g = b.GainingSkills[i];
+            
             int basePrice = RoomDefinition.GetCardBasePriceFromJingJie(g.GetJingJie());
             int price = Mathf.RoundToInt(basePrice * _priceMultiplier * RandomManager.Range(0.8f, 1.2f));
             price = price.ClampLower(1);
@@ -71,13 +78,14 @@ public class ShopCell : Cell
                 discount: RandomManager.value < 0.2f ? 0.5f : 1f,
                 acceptGold: _acceptGold,
                 acceptHealth: _acceptHealth);
-            _commodities.Add(commodity);
+            _commodities[i] = commodity;
         }
     }
 
     private void PayWithGold(Commodity commodity)
     {
-        BuySkillDetails details = new(commodity, _commodities.IndexOf(commodity));
+        int index = _commodities.IndexOf(commodity);
+        BuySkillDetails details = new(commodity, index);
         if (!_commodities.Contains(commodity))
             return;
 
@@ -85,14 +93,15 @@ public class ShopCell : Cell
             return;
 
         RunManager.Instance.Environment.SetDGoldProcedure(-commodity.FinalPrice);
-        _commodities.Remove(commodity);
+        _commodities[index] = null;
 
         RunManager.Instance.Environment.BuySkillProcedure(details);
     }
 
     private void PayWithHealth(Commodity commodity)
     {
-        BuySkillDetails details = new(commodity, _commodities.IndexOf(commodity));
+        int index = _commodities.IndexOf(commodity);
+        BuySkillDetails details = new(commodity, index);
         if (!_commodities.Contains(commodity))
             return;
 
@@ -100,7 +109,7 @@ public class ShopCell : Cell
             return;
 
         RunManager.Instance.Environment.LoseHealthProcedure(commodity.FinalPrice);
-        _commodities.Remove(commodity);
+        _commodities[index] = null;
 
         RunManager.Instance.Environment.BuySkillProcedure(details);
     }
@@ -127,8 +136,7 @@ public class ShopCell : Cell
             drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder))).Stack(8),
             preferredJingJie: RoomDefinition.GetJingJieFromLadder(ladder),
             acceptGold: true,
-            acceptHealth: false
-            );
+            acceptHealth: false);
 
     public static RequireCell FromYiBaoZhai(int ladder)
     {
@@ -145,8 +153,7 @@ public class ShopCell : Cell
             drawStrategies: SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RoomDefinition.GetJingJieFromLadder(ladder))).Stack(8),
             preferredJingJie: RoomDefinition.GetJingJieFromLadder(ladder),
             acceptGold: true,
-            acceptHealth: false
-            );
+            acceptHealth: false);
 
         requireCell.SetSubmitOperation(SellCard);
 

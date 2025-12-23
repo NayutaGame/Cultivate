@@ -667,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2491507085165734373}
   - component: {fileID: 241650993247492894}
+  - component: {fileID: 446563725797039269}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -727,6 +728,22 @@ MonoBehaviour:
   - {fileID: 2407001005223288563}
   InactiveImages:
   - {fileID: 1832548212960713650}
+--- !u!114 &446563725797039269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567322683965061376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 4302601437221459992}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &9037275041524244015
 GameObject:
   m_ObjectHideFlags: 0

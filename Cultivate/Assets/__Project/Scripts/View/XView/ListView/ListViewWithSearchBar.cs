@@ -5,7 +5,7 @@ using UnityEngine;
 public class ListViewWithSearchBar : XView
 {
     [SerializeField] private TMP_InputField SearchBar;
-    [SerializeField] private ListView Browser;
+    [SerializeField] public ListView Browser;
 
     protected override void AwakeFunction()
     {

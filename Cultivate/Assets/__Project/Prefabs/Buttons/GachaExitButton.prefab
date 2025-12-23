@@ -238,6 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5025439541779629565}
   - component: {fileID: 5025439541779629564}
+  - component: {fileID: 8901240402252379964}
   m_Layer: 5
   m_Name: GachaExitButton
   m_TagString: Untagged
@@ -288,6 +289,22 @@ MonoBehaviour:
   ShowWhenHover:
   - {fileID: 312975464711876875}
   - {fileID: 4448541442946583829}
+--- !u!114 &8901240402252379964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025439541779629562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 8317516284670819474}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &5534632120781460468
 GameObject:
   m_ObjectHideFlags: 0

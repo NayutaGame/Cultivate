@@ -729,6 +729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6409496108968891737}
   - component: {fileID: 6627059903913906923}
+  - component: {fileID: 3637445956126100267}
   m_Layer: 0
   m_Name: ToggleButton
   m_TagString: Untagged
@@ -788,6 +789,22 @@ MonoBehaviour:
   Text: {fileID: 7561956196597488913}
   UpColor: {r: 0.78039217, g: 0.74509805, b: 0.8, a: 1}
   DownColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &3637445956126100267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6665174131440879001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 1751602877201943617}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &6964330600692224600
 GameObject:
   m_ObjectHideFlags: 0

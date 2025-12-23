@@ -6,6 +6,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Tween = DG.Tweening.Tween;
 
@@ -32,7 +33,6 @@ public class ConsolePanel : Panel, Addressable
     [TabGroup("Left")] public ListViewWithSearchBar SkillBrowser;
 
     [TabGroup("Mid")] public TMP_InputField LadderInputField;
-    [TabGroup("Mid")] public Button EnterRoomButton;
     [TabGroup("Mid")] public Button ExitRoomButton;
 
     private ListModelWithSearchBar<RoomEntry> RoomListModel;
@@ -206,7 +206,7 @@ public class ConsolePanel : Panel, Addressable
         PickSkillButton.onClick.AddListener(PickSkill);
         RemoveSkillButton.onClick.AddListener(RemoveSkill);
         
-        EnterRoomButton.onClick.AddListener(EnterRoom);
+        RoomBrowser.Browser.NeuronBundle.LeftClickNeuron.Add(EnterRoom);
         ExitRoomButton.onClick.AddListener(ExitRoom);
     }
 
@@ -231,7 +231,7 @@ public class ConsolePanel : Panel, Addressable
         PickSkillButton.onClick.RemoveAllListeners();
         RemoveSkillButton.onClick.RemoveAllListeners();
         
-        EnterRoomButton.onClick.RemoveAllListeners();
+        RoomBrowser.Browser.NeuronBundle.LeftClickNeuron.Remove(EnterRoom);
         ExitRoomButton.onClick.RemoveAllListeners();
     }
 
@@ -325,16 +325,11 @@ public class ConsolePanel : Panel, Addressable
         RunManager.Instance.Environment.RemoveSkillProcedure(lastSkillInHand);
     }
 
-    private void EnterRoom()
+    private void EnterRoom(InteractBehaviour ib, PointerEventData d)
     {
+        RoomEntry roomEntry = ib.Get<RoomEntry>();
         int ladder = int.TryParse(LadderInputField.text, out int result) ? result : 0;
-        
-        if (RoomListModel.Count() <= 0)
-            return;
-        RoomEntry firstRoomEntry = RoomListModel.Get(0) as RoomEntry;
-        if (firstRoomEntry == null)
-            return;
-        RunManager.Instance.Environment.EnterRoomProcedure(null, firstRoomEntry, ladder);
+        RunManager.Instance.Environment.EnterRoomProcedure(null, roomEntry, ladder);
     }
 
     private void ExitRoom()

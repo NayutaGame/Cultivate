@@ -33,12 +33,6 @@ public abstract class CLButton : XView
         _interactBehaviour.NeuronBundle.PointerExitNeuron.Add(SetStateToIdle);
         _interactBehaviour.NeuronBundle.PointerDownNeuron.Add(SetStateToPress);
         _interactBehaviour.NeuronBundle.PointerUpNeuron.Add(SetStateToIdle);
-        if (AudioManager.Instance != null)
-        {
-            _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
-            _interactBehaviour.NeuronBundle.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
-            _interactBehaviour.NeuronBundle.RightClickNeuron.Add(AudioManager.PlayButtonPress);
-        }
         
         UpdateAnimation();
         UpdateInteractable();
@@ -50,10 +44,6 @@ public abstract class CLButton : XView
         _interactBehaviour.NeuronBundle.PointerExitNeuron.Remove(SetStateToIdle);
         _interactBehaviour.NeuronBundle.PointerDownNeuron.Remove(SetStateToPress);
         _interactBehaviour.NeuronBundle.PointerUpNeuron.Remove(SetStateToIdle);
-        
-        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-        _interactBehaviour.NeuronBundle.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
-        _interactBehaviour.NeuronBundle.RightClickNeuron.Remove(AudioManager.PlayButtonPress);
     }
 
     public ButtonState GetState()

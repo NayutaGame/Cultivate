@@ -86,6 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4554538111064838250}
   - component: {fileID: 3588679443324022560}
+  - component: {fileID: 3210922202998870551}
   m_Layer: 0
   m_Name: BarterExitButton
   m_TagString: Untagged
@@ -132,6 +133,22 @@ MonoBehaviour:
   HideWhenInactive: {fileID: 0}
   ShowWhenHover:
   - {fileID: 3190229939013268116}
+--- !u!114 &3210922202998870551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4769409128094743051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 3493962789742753280}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &5601754555402594044
 GameObject:
   m_ObjectHideFlags: 0

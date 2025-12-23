@@ -327,6 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6953175590947950833}
   - component: {fileID: 7948444374908816603}
+  - component: {fileID: 944112735273614171}
   m_Layer: 0
   m_Name: NextButton
   m_TagString: Untagged
@@ -374,6 +375,22 @@ MonoBehaviour:
   HideWhenInactive: {fileID: 0}
   ShowWhenHover:
   - {fileID: 3193656129016412746}
+--- !u!114 &944112735273614171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3409450579222399563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 5669275123224905619}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &4893684709537195379
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +836,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4285931566178774054}
   - component: {fileID: 3529916309506768288}
+  - component: {fileID: 64128905545568364}
   m_Layer: 0
   m_Name: PrevButton
   m_TagString: Untagged
@@ -866,6 +884,22 @@ MonoBehaviour:
   HideWhenInactive: {fileID: 0}
   ShowWhenHover:
   - {fileID: 5584956779830239686}
+--- !u!114 &64128905545568364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772583607408735839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41496891f7db9114da1d197d0b053d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ib: {fileID: 978990954104739741}
+  HoverAudioId: ButtonHover
+  LeftClickAudioId: ButtonPress
+  RightClickAudioId: 
 --- !u!1 &8476864253778069315
 GameObject:
   m_ObjectHideFlags: 0

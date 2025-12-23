@@ -109,20 +109,11 @@ public class AudioManager : Singleton<AudioManager>
     public static void PlayButtonHover(InteractBehaviour ib, PointerEventData d)
         => Play("ButtonHover");
 
-    public static void PlayCardHover(InteractBehaviour ib, PointerEventData d)
-        => Play("CardHover");
-
     public static void PlayCardPlacement()
         => Play("CardPlacement");
 
     public static void PlayFinishGuide(Guide guide)
         => Play("FinishGuide");
-
-    public static void PlayItemHover(PointerEventData d)
-        => Play("ItemHover");
-
-    public static void PlayItemHover()
-        => Play("ItemHover");
 
     public static void PlayEnterSettings()
         => Play("EnterSettings");

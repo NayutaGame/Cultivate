@@ -38,18 +38,12 @@ public class ToggleButton : XView
     {
         _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(SetHover);
         _interactBehaviour.NeuronBundle.PointerExitNeuron.Add(SetUnhover);
-        
-        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Add(AudioManager.PlayButtonHover);
-        _interactBehaviour.NeuronBundle.LeftClickNeuron.Add(AudioManager.PlayButtonPress);
     }
 
     protected virtual void OnDisable()
     {
         _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(SetHover);
         _interactBehaviour.NeuronBundle.PointerExitNeuron.Remove(SetUnhover);
-        
-        _interactBehaviour.NeuronBundle.PointerEnterNeuron.Remove(AudioManager.PlayButtonHover);
-        _interactBehaviour.NeuronBundle.LeftClickNeuron.Remove(AudioManager.PlayButtonPress);
     }
 
     private void SetHover(InteractBehaviour ib, PointerEventData d)
