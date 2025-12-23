@@ -1,9 +1,8 @@
-
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class VFX : MonoBehaviour
+public class UIVFX : MonoBehaviour
 {
     private VisualEffect _ve;
     private ParticleSystem _ps;
@@ -26,16 +25,32 @@ public class VFX : MonoBehaviour
 
     public void Play()
     {
+        gameObject.SetActive(true);
         // _audio.Play();
         if (_ve != null)
         {
             _ve.Play();
-            Destroy(gameObject, 5);
+            StartCoroutine(SetInactiveAfterDelay(5));
         }
         if (_ps != null)
         {
             _ps.Play();
-            Destroy(gameObject, _ps.main.duration);
+            StartCoroutine(SetInactiveAfterDelay(_ps.main.duration));
         }
+    }
+    
+    private System.Collections.IEnumerator SetInactiveAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(false);
+    }
+    
+    [Button("Play")]
+    private void EditorPlay()
+    {
+        if (!Application.isPlaying)
+            return;
+        
+        Play();
     }
 }
