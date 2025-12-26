@@ -39,7 +39,7 @@ sysinfo.txt
 Cultivate/.idea/
 Cultivate/.vsconfig
 Cultivate/Logs/
-# Cultivate/Assets/Plugins/FMOD/Cache/*
+Cultivate/Assets/Plugins/FMOD/Cache/*
 
 # Never ignore DLLs in the FMOD subfolder.
 !/[Aa]ssets/Plugins/FMOD/**/lib/*
