@@ -31,8 +31,6 @@ public class FaceCanvas : XView
     
     private bool _painting;
     private SpineAttachmentRaycaster.HitResult _lastHit;
-
-    [SerializeField] private RawImage RTViewer;
     
     protected override void AwakeFunction()
     {
@@ -67,8 +65,6 @@ public class FaceCanvas : XView
         SkeletonMat = skeletonGraphic.material;
         SetSkeletonDataAsset(skeletonGraphic.skeletonDataAsset);
         SkeletonMat.SetTexture(SCRIBBLE_TEX, _scribbleTex);
-        
-        RTViewer.texture = _scribbleTex;
         
         skeletonGraphic.AnimationState.AddAnimation(1, "idle", true, 0);
     }
