@@ -64,7 +64,7 @@ MonoBehaviour:
   HoverConfiguration:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Scale: {x: 0.8, y: 0.8, z: 0.8}
+    Scale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!222 &6359906681201007942
 CanvasRenderer:
   m_ObjectHideFlags: 0
