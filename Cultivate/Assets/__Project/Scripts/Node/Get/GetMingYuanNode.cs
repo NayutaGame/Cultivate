@@ -2,7 +2,7 @@
 using PuppyDragon.uNody;
 using UnityEngine;
 
-[NodeWidth(NodeSize.Mini)]
+[NodeWidth(200)]
 [CreateNodeMenu("Get/Get MingYuan", -10, true)]
 public class GetMingYuanNode : Node
 {

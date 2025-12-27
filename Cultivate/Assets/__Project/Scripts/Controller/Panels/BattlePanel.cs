@@ -10,6 +10,16 @@ using UnityEngine.EventSystems;
 
 public class BattlePanel : Panel
 {
+    private static readonly float WinBaseScale = 1f;
+    private static readonly float LoseBaseScale = 0.6f;
+
+    [SerializeField] public TMP_FontAsset HomeWinFontAsset;
+    [SerializeField] public TMP_FontAsset HomeLoseFontAsset;
+    [SerializeField] public Color HomeWinColor;
+    [SerializeField] public Color HomeLoseColor;
+    [SerializeField] public Color AwayWinColor;
+    [SerializeField] public Color AwayLoseColor;
+    
     [SerializeField] private BattleEntityView EnemyView;
     
     [SerializeField] private TMP_Text HomeHealth;
@@ -17,17 +27,12 @@ public class BattlePanel : Panel
     [SerializeField] private TMP_Text AwayHealth;
     [SerializeField] private XView AwayHealthAnnotationProvider;
 
-    [SerializeField] public CombatGlow CombatGlow;
     [SerializeField] public CombatButton CombatButton;
-    [SerializeField] private GameObject VictoryStamp;
-
-    private static readonly float WinBaseScale = 1f;
-    private static readonly float LoseBaseScale = 0.6f;
-
-    [SerializeField] public Color WinColor;
-    [SerializeField] public Color LoseColor;
+    private Action[] CombatActions = new Action[] { CombatNormal, CombatOnlyAnimation, CombatOnlyResult, };
 
     private Address _address;
+    private bool _isVictory;
+    private int _combatActionIndex;
 
     public override void AwakeFunction()
     {
@@ -36,20 +41,14 @@ public class BattlePanel : Panel
         _address = new Address("Run.Environment.ActivePanel");
 
         EnemyView.SetAddress(_address.Append(".Enemy"));
-
-        _index = 0;
-        CombatButton.Configure(_index);
-        CombatButton.LeftClickNeuron.Join(Combat);
-        CombatButton.RightClickNeuron.Join(NextCombatAction);
+        
+        CombatButton.Button.LeftClickNeuron.Join(Combat);
+        CombatButton.Button.RightClickNeuron.Join(NextCombatAction);
+        ResetCombatAction();
         
         HomeHealthAnnotationProvider.SetAddress(new("Run.Environment.Home.HealthDescription"));
         AwayHealthAnnotationProvider.SetAddress(new("Run.Environment.Away.HealthDescription"));
     }
-    
-    public static readonly int DEFAULT = -1;
-    public new static readonly int HIDE = 0;
-    public new static readonly int IDLE = 1;
-    public static readonly int HOVER = 2;
 
     protected override Animator InitAnimator()
     {
@@ -57,7 +56,7 @@ public class BattlePanel : Panel
         Animator animator = new(2, "Battle Panel");
         animator[HIDE, IDLE] = EnterIdle;
         animator[IDLE, IDLE] = SelfTransitionTween;
-        animator[DEFAULT, HIDE] = EnterHide;
+        animator[ANY, HIDE] = EnterHide;
         
         animator.SetState(HIDE);
         return animator;
@@ -106,23 +105,34 @@ public class BattlePanel : Panel
         RunManager.Instance.Environment.ResimulateNeuron.Remove(RefreshEnemy);
         RunManager.Instance.Environment.ResimulateNeuron.Remove(RefreshOperationPanel);
     }
+    
+    private void SetVictory(bool victory)
+    {
+        HomeHealth.font = victory ? HomeWinFontAsset : HomeLoseFontAsset;
+        HomeHealth.color = victory ? HomeWinColor : HomeLoseColor;
+        AwayHealth.color = victory ? AwayLoseColor : AwayWinColor;
+        // CombatButton.SetAttractive(victory);
+    }
 
-    private Action[] CombatActions = new Action[] { CombatNormal, CombatOnlyAnimation, CombatOnlyResult, };
-    private int _index;
-
-    private void Combat(PointerEventData eventData)
+    private void Combat(InteractBehaviour ib, PointerEventData d)
     {
         RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
         CanvasManager.Instance.RefreshGuide();
-        CombatActions[_index]();
+        CombatActions[_combatActionIndex]();
     }
 
-    private void NextCombatAction(PointerEventData d)
+    private void ResetCombatAction()
     {
-        _index++;
-        if (_index >= CombatActions.Length)
-            _index = 0;
-        CombatButton.IconPlaceHolder.sprite = CombatButton.Icons[_index];
+        _combatActionIndex = 0;
+        CombatButton.IconPlaceHolder.sprite = CombatButton.Icons[_combatActionIndex];
+    }
+    
+    private void NextCombatAction(InteractBehaviour ib, PointerEventData d)
+    {
+        _combatActionIndex++;
+        if (_combatActionIndex >= CombatActions.Length)
+            _combatActionIndex = 0;
+        CombatButton.IconPlaceHolder.sprite = CombatButton.Icons[_combatActionIndex];
     }
 
     private static void CombatNormal()
@@ -139,13 +149,6 @@ public class BattlePanel : Panel
     {
         RunManager.Instance.Environment.CombatOnlyResult();
         CanvasManager.Instance.RefreshGuide();
-    }
-
-    private void SetVictory(bool victory)
-    {
-        VictoryStamp.SetActive(victory);
-        HomeHealth.color = victory ? WinColor : LoseColor;
-        CombatButton.SetAttractive(victory);
     }
 
     private void PlayBattleBGM()

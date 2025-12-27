@@ -1,13 +1,10 @@
 
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 public class BattleEntityView : XView
 {
-    public TMP_Text NameText;
     public ListView FieldView;
     public ListView FormationList;
     
@@ -15,10 +12,6 @@ public class BattleEntityView : XView
     [SerializeField] private RectTransform FieldViewShowPivot;
     [SerializeField] private RectTransform FieldViewHidePivot;
     [SerializeField] private CanvasGroup FieldViewCanvasGroup;
-
-    [SerializeField] private Transform Anchor;
-    private PrefabEntry CurrPrefabEntry;
-    private GameObject Model;
 
     public override void SetAddress(Address address)
     {
@@ -37,24 +30,12 @@ public class BattleEntityView : XView
         if (entity == null)
             return;
 
-        NameText.text = $"{entity.GetModel().GetName()}";
+        // NameText.text = $"{entity.GetModel().GetName()}";
         
-        SetModel(entity.GetModel().RunModel);
+        // SetModel(entity.GetModel().RunModel);
 
         FieldView.Sync();
         FormationList.Sync();
-    }
-
-    private void SetModel(PrefabEntry targetPrefabEntry)
-    {
-        if (CurrPrefabEntry == targetPrefabEntry)
-            return;
-        
-        if (Model != null)
-            Destroy(Model);
-
-        CurrPrefabEntry = targetPrefabEntry;
-        Model = Instantiate(CurrPrefabEntry.Prefab, Anchor);
     }
 
     public Tween ShowTween()

@@ -1,10 +1,11 @@
+
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
 using System.Collections.Generic;
 
-[NodeWidth(400)]
-[CreateNodeMenu("Cell/Battle Cell From Name", -5, true)]
+[NodeWidth(200)]
+[CreateNodeMenu("Cell/Battle Cell From Name", -10, true)]
 public class BattleCellNodeFromName : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

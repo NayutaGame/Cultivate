@@ -27,7 +27,7 @@ public class DeckPanel : Panel
     [SerializeField] private RectTransform PlayerEntityOtherHalfShowPivot;
     [SerializeField] private RectTransform PlayerEntityOtherHalfHidePivot;
     
-    public ButtonWithPointerEnter SortButton;
+    public CLButton SortButton;
     [SerializeField] private RectTransform SortButtonTransform;
     [SerializeField] private RectTransform SortButtonShowPivot;
     [SerializeField] private RectTransform SortButtonHidePivot;
@@ -68,13 +68,8 @@ public class DeckPanel : Panel
         HandView.ItemCountChanged.Join(RefreshLayoutSpacing);
         
         UnequipZone._onDrop = Unequip;
-
-        SortButton._button.onClick.RemoveAllListeners();
-        SortButton._button.onClick.AddListener(Sort);
-        SortButton._button.onClick.AddListener(AudioManager.PlayButtonPress);
-        SortButton._button.onClick.AddListener(AudioManager.PlaySort);
-
-        SortButton._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
+        
+        SortButton.LeftClickNeuron.Join(Sort);
     }
 
     private void DragBeginRunSkill(InteractBehaviour ib, PointerEventData d)
@@ -221,7 +216,7 @@ public class DeckPanel : Panel
 
     private Tween _animationHandle;
 
-    private void Sort()
+    private void Sort(InteractBehaviour ib, PointerEventData d)
     {
         _animationHandle?.Kill();
         

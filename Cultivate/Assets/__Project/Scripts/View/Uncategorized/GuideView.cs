@@ -52,7 +52,6 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(false);
-            CanvasManager.Instance.RunCanvas.BattlePanel.CombatGlow.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(true);
             _clickCursor.position = ConfirmAnchor.position;
             SetCanClick(true);
@@ -65,7 +64,6 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(true);
-            CanvasManager.Instance.RunCanvas.BattlePanel.CombatGlow.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
 
@@ -92,7 +90,6 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(true);
-            CanvasManager.Instance.RunCanvas.BattlePanel.CombatGlow.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
             
@@ -118,7 +115,6 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(true);
-            CanvasManager.Instance.RunCanvas.BattlePanel.CombatGlow.gameObject.SetActive(false);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
 
@@ -144,7 +140,6 @@ public class GuideView : MonoBehaviour
         {
             _comment.text = guide.GetComment();
             _dragCursor.gameObject.SetActive(false);
-            CanvasManager.Instance.RunCanvas.BattlePanel.CombatGlow.gameObject.SetActive(true);
             _clickCursor.gameObject.SetActive(false);
             SetCanClick(false);
             

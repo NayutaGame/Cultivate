@@ -2,7 +2,7 @@
 using PuppyDragon.uNody;
 using UnityEngine;
 
-[NodeWidth(NodeSize.Small)]
+[NodeWidth(200)]
 [CreateNodeMenu("Get/Get Gold", -10, true)]
 public class GetGoldNode : Node
 {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d2f9bf03c25e56c4ba74f8a543a0b831
+guid: a72d0fb260874874a89dff7a19014cc1
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,18 +93,18 @@ ScriptedImporter:
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: PlaceHolder
+  - name: IconPlaceholder
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 370
-      y: 4
-      width: 52
-      height: 43
-    spriteID: 884711955940665479efd1b804856812
+      x: 4
+      y: 327
+      width: 34
+      height: 34
+    spriteID: 8c3ffd62584d32f46b493fa7ce46d6ec
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -113,9 +113,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 370, y: 4}
-    spritePosition: {x: 256, y: 88}
-  - name: Text
+    uvTransform: {x: 4, y: 327}
+    spritePosition: {x: 160, y: 17}
+  - name: CombatButtonHover
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -123,10 +123,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 364
-      width: 244
-      height: 256
-    spriteID: c16b379430d333842a470945a80924b1
+      y: 177
+      width: 235
+      height: 142
+    spriteID: 8f0473ffa829ba0418a54ad2ad65e740
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -135,9 +135,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 4, y: 364}
-    spritePosition: {x: 62, y: 88}
-  - name: Background
+    uvTransform: {x: 4, y: 177}
+    spritePosition: {x: 5, y: 12}
+  - name: CombatButtonIdle
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -146,9 +146,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 358
-      height: 352
-    spriteID: 05b1f7c596f0942439f8b6373fc11e24
+      width: 242
+      height: 165
+    spriteID: 0304dfb5c0bb05e4bb8da856f74e88a3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -158,7 +158,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 4, y: 4}
-    spritePosition: {x: 21, y: 19}
+    spritePosition: {x: 0, y: 0}
   characterData:
     bones: []
     parts: []
@@ -222,46 +222,36 @@ ScriptedImporter:
   resliceFromLayer: 0
   mosaicPSDLayers: []
   rigPSDLayers:
-  - name: PlaceHolder
-    spriteName: PlaceHolder
+  - name: IconPlaceholder
+    spriteName: IconPlaceholder
     isGroup: 0
     parentIndex: -1
-    spriteID: 884711955940665479efd1b804856812
-    layerID: 271
-    mosaicPosition: {x: 370, y: 4}
+    spriteID: 8c3ffd62584d32f46b493fa7ce46d6ec
+    layerID: 8
+    mosaicPosition: {x: 4, y: 327}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Text
-    spriteName: Text
+  - name: CombatButtonHover
+    spriteName: CombatButtonHover
     isGroup: 0
     parentIndex: -1
-    spriteID: c16b379430d333842a470945a80924b1
-    layerID: 174
-    mosaicPosition: {x: 4, y: 364}
+    spriteID: 8f0473ffa829ba0418a54ad2ad65e740
+    layerID: 3
+    mosaicPosition: {x: 4, y: 177}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Background
-    spriteName: Background
+  - name: CombatButtonIdle
+    spriteName: CombatButtonIdle
     isGroup: 0
     parentIndex: -1
-    spriteID: 05b1f7c596f0942439f8b6373fc11e24
-    layerID: 171
+    spriteID: 0304dfb5c0bb05e4bb8da856f74e88a3
+    layerID: 2
     mosaicPosition: {x: 4, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: "\u56FE\u5C42 1"
-    spriteName: 
-    isGroup: 0
-    parentIndex: -1
-    spriteID: 69bd599e94973ee45858228ff49a56cd
-    layerID: 268
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 0
   sharedRigPSDLayers: []
   pSDLayerImportSetting: []
   generateGOHierarchy: 0
