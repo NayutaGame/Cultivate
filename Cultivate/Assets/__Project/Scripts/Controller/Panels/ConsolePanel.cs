@@ -26,7 +26,6 @@ public class ConsolePanel : Panel, Addressable
 
     [TabGroup("Left")] public TMP_Dropdown JingJieDropdown;
     [TabGroup("Left")] public Button DrawSkillButton;
-    [TabGroup("Left")] public Button PickSkillButton;
     [TabGroup("Left")] public Button RemoveSkillButton;
 
     private ListModelWithSearchBar<SkillEntry> SkillListModel;
@@ -203,7 +202,7 @@ public class ConsolePanel : Panel, Addressable
         ReduceHealthButton.onClick.AddListener(ReduceHealth);
 
         DrawSkillButton.onClick.AddListener(DrawSkill);
-        PickSkillButton.onClick.AddListener(PickSkill);
+        SkillBrowser.Browser.NeuronBundle.LeftClickNeuron.Add(PickSkill);
         RemoveSkillButton.onClick.AddListener(RemoveSkill);
         
         RoomBrowser.Browser.NeuronBundle.LeftClickNeuron.Add(EnterRoom);
@@ -228,7 +227,7 @@ public class ConsolePanel : Panel, Addressable
         ReduceHealthButton.onClick.RemoveAllListeners();
 
         DrawSkillButton.onClick.RemoveAllListeners();
-        PickSkillButton.onClick.RemoveAllListeners();
+        SkillBrowser.Browser.NeuronBundle.LeftClickNeuron.Remove(PickSkill);
         RemoveSkillButton.onClick.RemoveAllListeners();
         
         RoomBrowser.Browser.NeuronBundle.LeftClickNeuron.Remove(EnterRoom);
@@ -305,15 +304,11 @@ public class ConsolePanel : Panel, Addressable
         RunManager.Instance.Environment.DrawSkillProcedure(query, currJingJie);
     }
 
-    private void PickSkill()
+    private void PickSkill(InteractBehaviour ib, PointerEventData d)
     {
-        if (SkillListModel.Count() <= 0)
-            return;
-        SkillEntry firstSkillEntry = SkillListModel.Get(0) as SkillEntry;
-        if (firstSkillEntry == null)
-            return;
-        JingJie jingJie = firstSkillEntry.LowestJingJie;
-        RunManager.Instance.Environment.PickSkillProcedure(firstSkillEntry, jingJie);
+        SkillEntry skillEntry = ib.Get<SkillEntry>();
+        JingJie jingJie = skillEntry.LowestJingJie;
+        RunManager.Instance.Environment.PickSkillProcedure(skillEntry, jingJie);
     }
 
     private void RemoveSkill()
