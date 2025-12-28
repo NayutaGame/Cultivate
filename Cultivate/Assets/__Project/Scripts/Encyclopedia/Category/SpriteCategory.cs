@@ -224,10 +224,6 @@ public class SpriteCategory : Category<SpriteEntry>
             new("Sprite0230", "UnlockIcon渐入佳境", "Images/UnlockIcons/渐入佳境"),
             new("Sprite0231", "UnlockIcon出神入化", "Images/UnlockIcons/出神入化"),
             
-            // RunResultIllustrations
-            new("Sprite0238", "RunResultIllustrationWin", "Images/RunResultIllustrations/Win"),
-            new("Sprite0239", "RunResultIllustrationLose", "Images/RunResultIllustrations/Lose"),
-            
             // Event
             new("Sprite0240", "Event缺失插画", "Images/EventIllustrations/缺失插画"),
             new("Sprite0241", "Event不存在的事件", "Images/EventIllustrations/不存在的事件"),

@@ -70,7 +70,7 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
 
     public void RefreshGuide()
     {
-        GuideView.Refresh();
+        // GuideView.Refresh();
     }
 
     public void CloseAnnotation(InteractBehaviour ib, PointerEventData d)

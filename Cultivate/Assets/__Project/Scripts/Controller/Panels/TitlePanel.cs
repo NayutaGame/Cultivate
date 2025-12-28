@@ -1,26 +1,33 @@
 
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class TitlePanel : Panel
 {
-    public ButtonWithPointerEnter ContinueButton;
-    public ButtonWithPointerEnter StartRunButton;
-    public ButtonWithPointerEnter StartPrologueButton;
-    public ButtonWithPointerEnter SettingsButton;
-    public ButtonWithPointerEnter ExitButton;
+    public CLButton ContinueButton;
+    public CLButton StartRunButton;
+    public CLButton StartPrologueButton;
+    public CLButton SettingsButton;
+    public CLButton ExitButton;
     
-    public ButtonWithPointerEnter EntityEditorButton;
-    public ButtonWithPointerEnter SkillBrowserButton;
-    public ButtonWithPointerEnter BuffBrowserButton;
-    public ButtonWithPointerEnter AchievementBrowserButton;
-    public ButtonWithPointerEnter UnlockNextDifficultyButton;
-    public ButtonWithPointerEnter DeleteProfileButton;
-    public ButtonWithPointerEnter UnlockEverythingButton;
+    public CLButton EntityEditorButton;
+    public CLButton SkillBrowserButton;
+    public CLButton BuffBrowserButton;
+    public CLButton AchievementBrowserButton;
+    public CLButton UnlockNextDifficultyButton;
+    public CLButton DeleteProfileButton;
+    public CLButton UnlockEverythingButton;
+
+    public CLButton QQButton;
+    public CLButton SteamButton;
+    public CLButton FeedbackButton;
+    public CLButton DiscordButton;
 
     public GameObject TitleModel;
 
@@ -37,7 +44,7 @@ public class TitlePanel : Panel
     {
         base.AwakeFunction();
 
-        List<ButtonWithPointerEnter> ButtonList = new List<ButtonWithPointerEnter>
+        List<CLButton> ButtonList = new List<CLButton>
         {
             ContinueButton,
             StartRunButton,
@@ -51,9 +58,13 @@ public class TitlePanel : Panel
             UnlockNextDifficultyButton,
             DeleteProfileButton,
             UnlockEverythingButton,
+            QQButton,
+            SteamButton,
+            FeedbackButton,
+            DiscordButton,
         };
 
-        List<UnityAction> ActionList = new List<UnityAction>
+        List<Action<InteractBehaviour, PointerEventData>> ActionList = new List<Action<InteractBehaviour, PointerEventData>>
         {
             Continue,
             StartRun,
@@ -67,15 +78,14 @@ public class TitlePanel : Panel
             TryUnlockNextDifficulty,
             DeleteProfile,
             UnlockEverything,
+            OpenQQ,
+            OpenSteam,
+            OpenFeedback,
+            OpenDiscord,
         };
 
         for (int i = 0; i < ButtonList.Count; i++)
-        {
-            ButtonList[i]._button.onClick.RemoveAllListeners();
-            ButtonList[i]._button.onClick.AddListener(ActionList[i]);
-            ButtonList[i]._button.onClick.AddListener(AudioManager.PlayButtonPress);
-            ButtonList[i]._propagatePointerEnter._onPointerEnter = AudioManager.PlayButtonHover;
-        }
+            ButtonList[i].LeftClickNeuron.Join(ActionList[i]);
     }
 
     public override void Refresh()
@@ -130,7 +140,7 @@ public class TitlePanel : Panel
         AppManager.Instance.Push(AppStateMachine.RUN, RunConfig.FirstRun());
     }
 
-    private void Continue()
+    private void Continue(InteractBehaviour ib, PointerEventData d)
     {
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         RunEnvironment environment = profile.Environment;
@@ -138,12 +148,12 @@ public class TitlePanel : Panel
         AppManager.Instance.Push(AppStateMachine.RUN, environment);
     }
 
-    private void StartRun()
+    private void StartRun(InteractBehaviour ib, PointerEventData d)
     {
         OpenRunConfigPanel();
     }
 
-    private void StartPrologue()
+    private void StartPrologue(InteractBehaviour ib, PointerEventData d)
     {
         FirstRun();
     }
@@ -154,7 +164,7 @@ public class TitlePanel : Panel
         await CanvasManager.Instance.AppCanvas.RunConfigPanel.GetAnimator().SetStateAsync(1);
     }
 
-    private void OpenMenu()
+    private void OpenMenu(InteractBehaviour ib, PointerEventData d)
     {
         AppManager.Instance.Push(AppStateMachine.MENU);
     }
@@ -164,27 +174,32 @@ public class TitlePanel : Panel
         AppManager.ExitGame();
     }
 
-    private void OpenEntityEditorPanel()
+    private void ExitGame(InteractBehaviour ib, PointerEventData d)
+    {
+        AppManager.ExitGame();
+    }
+
+    private void OpenEntityEditorPanel(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.AppCanvas.EntityEditorPanel.Show();
     }
 
-    private void OpenSkillBrowserPanel()
+    private void OpenSkillBrowserPanel(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.AppCanvas.SkillBrowserPanel.Show();
     }
 
-    private void OpenBuffBrowserPanel()
+    private void OpenBuffBrowserPanel(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.AppCanvas.BuffBrowserPanel.Show();
     }
 
-    private void OpenAchievementBrowserPanel()
+    private void OpenAchievementBrowserPanel(InteractBehaviour ib, PointerEventData d)
     {
         CanvasManager.Instance.AppCanvas.AchievementBrowserPanel.Show();
     }
 
-    private void TryUnlockNextDifficulty()
+    private void TryUnlockNextDifficulty(InteractBehaviour ib, PointerEventData d)
     {
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         profile.SetFirstRunFinished(true);
@@ -192,16 +207,40 @@ public class TitlePanel : Panel
         Refresh();
     }
 
-    private void DeleteProfile()
+    private void DeleteProfile(InteractBehaviour ib, PointerEventData d)
     {
         AppManager.Instance.ProfileManager.DeleteProfile();
         Refresh();
     }
 
-    private void UnlockEverything()
+    private void UnlockEverything(InteractBehaviour ib, PointerEventData d)
     {
         AppManager.Instance.ProfileManager.GetCurrProfile().UnlockEverything();
         Refresh();
+    }
+
+    private void OpenQQ(InteractBehaviour ib, PointerEventData d)
+    {
+        string url = "https://qm.qq.com/cgi-bin/qm/qr?k=E0AbYkxHbJo5LAmTkhiTAweJr94I0pp1&jump_from=webapi&authKey=KXCcV8e7xxCfspWV0u2PbPP8IuJcovoyi7EFIGvDgoBD3JTjC9DPXQi2IGDnp9Du";
+        Application.OpenURL(url);
+    }
+
+    private void OpenSteam(InteractBehaviour ib, PointerEventData d)
+    {
+        string url = "https://store.steampowered.com/app/2125490/_/";
+        Application.OpenURL(url);
+    }
+
+    private void OpenFeedback(InteractBehaviour ib, PointerEventData d)
+    {
+        string url = "https://docs.qq.com/form/page/DTUtwSG9Vd2tpaWdT";
+        Application.OpenURL(url);
+    }
+
+    private void OpenDiscord(InteractBehaviour ib, PointerEventData d)
+    {
+        string url = "https://discord.gg/RPtJgjhX";
+        Application.OpenURL(url);
     }
 
     public override Tween EnterIdle()

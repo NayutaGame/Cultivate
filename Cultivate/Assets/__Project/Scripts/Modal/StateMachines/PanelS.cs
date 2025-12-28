@@ -38,7 +38,7 @@ public struct PanelS : IEquatable<PanelS>
         { typeof(PickCell),                  9 },
         { typeof(ImageCell),                10 },
         { typeof(ComicCell),                11 },
-        { typeof(CommitCell),               12 },
+        { typeof(RunResultCell),            12 },
         { typeof(NarrativeCell),            13 },
         { typeof(ChoiceCell),               14 },
         { typeof(DiceCell),                 15 },

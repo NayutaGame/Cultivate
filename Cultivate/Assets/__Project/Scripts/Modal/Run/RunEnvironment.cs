@@ -1749,7 +1749,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         SendEvent(RunClosureDict.DID_COMMIT_RUN, new RunCommitDetails(this));
         
-        CommitCell resultPanel = new CommitCell(this);
+        RunResultCell resultPanel = new RunResultCell(this);
         Cell = resultPanel;
     }
 

@@ -38,7 +38,7 @@ public class RunCanvas : Panel
     public PickPanel PickPanel;
     public ImagePanel ImagePanel;
     public ComicPanel ComicPanel;
-    public CommitPanel CommitPanel;
+    public RunResultPanel RunResultPanel;
     public NarrativePanel NarrativePanel;
     public ChoicePanel ChoicePanel;
     public DicePanel DicePanel;
@@ -69,7 +69,7 @@ public class RunCanvas : Panel
             PickPanel,
             ImagePanel,
             ComicPanel,
-            CommitPanel,
+            RunResultPanel,
             NarrativePanel,
             ChoicePanel,
             DicePanel,

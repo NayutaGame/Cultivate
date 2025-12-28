@@ -236,7 +236,7 @@ MonoBehaviour:
   PickPanel: {fileID: 8007929248342873170}
   ImagePanel: {fileID: 8944306026166633940}
   ComicPanel: {fileID: 2191784851205083077}
-  CommitPanel: {fileID: 5283630882216051854}
+  RunResultPanel: {fileID: 5283630882216051854}
   NarrativePanel: {fileID: 2997984302757663443}
   ChoicePanel: {fileID: 8384761352418674416}
   DicePanel: {fileID: 1417625981459202954}
@@ -4628,7 +4628,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5687688757737173340, guid: d2864c5046b751a48b2275e4b7b57cc6, type: 3}
       propertyPath: m_Name
-      value: CommitPanel
+      value: RunResultPanel
       objectReference: {fileID: 0}
     - target: {fileID: 5687688757737173340, guid: d2864c5046b751a48b2275e4b7b57cc6, type: 3}
       propertyPath: m_IsActive
