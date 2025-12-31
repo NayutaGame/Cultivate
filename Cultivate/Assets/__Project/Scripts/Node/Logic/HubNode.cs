@@ -1,33 +1,30 @@
+
+using System;
 using System.Collections.Generic;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
-[NodeWidth(NodeSize.Small)]
-[CreateNodeMenu("Logic/Switch", -8, true)]
-public class SwitchNode : Node, ILogicNode, ILogicConnector
+[NodeWidth(200)]
+[CreateNodeMenu("Logic/Hub", -10, true)]
+public class HubNode : Node, ILogicNode, ILogicConnector
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
-    private InputPort<ILogicNode> prevs;
-    
-    [PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
-    private InputPort<int> pathIndex;
+    private InputPort<ILogicNode>[] PrevCells;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
-    private OutputPort<ILogicNode>[] Paths;
+    private OutputPort<ILogicNode> NextCell;
 
-    public NodePort PrevPort => prevs;
-    public NodePort NextPort 
+    public NodePort PrevPort => PrevCells[0];
+    public NodePort NextPort
     {
         get
         {
-            if (pathIndex.Value < 0 || pathIndex.Value >= Paths.Length)
-                return null;
-            return Paths[pathIndex.Value];
+            return NextCell;
         }
     }
 
-    public IEnumerable<ILogicNode> Prevs => prevs.Values;
+    public IEnumerable<ILogicNode> Prevs => PrevCells[0].Values;
     public ILogicNode Next
     {
         get

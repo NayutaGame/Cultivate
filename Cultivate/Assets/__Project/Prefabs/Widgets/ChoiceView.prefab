@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2809836033311262795
 RectTransform:
   m_ObjectHideFlags: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 0}
   Text: {fileID: 1957125995970919496}
+  Button: {fileID: 8176144308420550200}
 --- !u!1001 &6177030910736863911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59,10 +60,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2809836033311262795}
     m_Modifications:
-    - target: {fileID: 2652135361369148575, guid: ebd0e08080e68dc49a3e9f0320e57f1a, type: 3}
-      propertyPath: Text
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5086394407319155796, guid: ebd0e08080e68dc49a3e9f0320e57f1a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -167,5 +164,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8176144308420550200 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2652135361369148575, guid: ebd0e08080e68dc49a3e9f0320e57f1a, type: 3}
+  m_PrefabInstance: {fileID: 6177030910736863911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df4b71c9955cdd4a8ef7c5049f3e26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

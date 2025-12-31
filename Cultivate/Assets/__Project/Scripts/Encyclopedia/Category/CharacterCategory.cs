@@ -58,8 +58,7 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         GainSkillBuilder b = new();
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("幻化")));
-                        b.Execute();
-                        b.Invoke();
+                        RunManager.Instance.Environment.GainSkillProcedure(b);
                     }),
 
                     new(RunClosureDict.WIL_PLACEMENT, 0, (listener, closure, eventDetails) =>

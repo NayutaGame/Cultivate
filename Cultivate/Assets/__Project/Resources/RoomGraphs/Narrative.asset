@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: String
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: -408, y: 584}
+  nodePosition: {x: -392, y: 104}
   value:
     ownerNode: {fileID: -5107495778688126947}
     guid: 252df995-bd80-46d4-801d-2fc54530f5cf
@@ -25,8 +25,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: -290
-      y: 619.5
+      x: -274
+      y: 139.5
       width: 16
       height: 16
     defaultValue: "\u51CC\u4E91\u5CF0"
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: Dialog Cell
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: -205.54257, y: 492.36667}
+  nodePosition: {x: -184, y: 8}
   prevs:
     ownerNode: {fileID: -4283908573059397760}
     guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
@@ -56,8 +56,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 527.8667
+      x: -185.9
+      y: 43.5
       width: 16
       height: 16
   Title:
@@ -71,8 +71,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 547.8667
+      x: -185.9
+      y: 63.5
       width: 16
       height: 16
     defaultValue: 
@@ -84,8 +84,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 567.8667
+      x: -185.9
+      y: 83.5
       width: 16
       height: 16
     defaultValue: 
@@ -97,8 +97,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 587.8667
+      x: -185.9
+      y: 211.5
       width: 16
       height: 16
     defaultValue: "\u7EE7\u7EED"
@@ -110,8 +110,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 607.8667
+      x: -185.9
+      y: 231.5
       width: 16
       height: 16
     defaultValue: 
@@ -123,8 +123,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 627.8667
+      x: -185.9
+      y: 251.5
       width: 16
       height: 16
     defaultValue: 
@@ -136,8 +136,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: -207.44257
-      y: 647.8667
+      x: -185.9
+      y: 271.5
       width: 16
       height: 16
     defaultValue: 
@@ -152,8 +152,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 80.45743
-      y: 667.8667
+      x: 102
+      y: 211.5
       width: 16
       height: 16
     hasFunc: 1
@@ -165,8 +165,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 80.45743
-      y: 687.8667
+      x: 102
+      y: 233.5
       width: 16
       height: 16
     hasFunc: 1
@@ -178,8 +178,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 80.45743
-      y: 707.8667
+      x: 102
+      y: 255.5
       width: 16
       height: 16
     hasFunc: 1
@@ -191,8 +191,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 80.45743
-      y: 727.8667
+      x: 102
+      y: 277.5
       width: 16
       height: 16
     hasFunc: 1
@@ -206,11 +206,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d822f208d68c0fd4c94018d3b4c97691, type: 3}
-  m_Name: "Void\u957F\u660E\u6BBF"
+  m_Name: Narrative
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -651.5696, y: -611.24316}
-  zoom: 1.2772523
+  panOffset: {x: -679.84814, y: -594.01154}
+  zoom: 1.251835
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -248,6 +248,9 @@ MonoBehaviour:
     connections:
     - node: {fileID: -4283908573059397760}
       guid: dbc4627f-c7be-489b-b718-74df000bae98
+      reroutes: []
+    - node: {fileID: 5462274145962453595}
+      guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
       reroutes: []
     rect:
       serializedVersion: 2
@@ -320,7 +323,7 @@ MonoBehaviour:
   m_Name: Exit Point
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 1160, y: 360}
+  nodePosition: {x: 1224, y: 1016}
   exit:
     ownerNode: {fileID: 5254414691165939901}
     guid: 415163a9-2067-4d77-b32b-efa4791a32e0
@@ -332,8 +335,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 1158.1
-      y: 395.5
+      x: 1222.1
+      y: 1051.5
       width: 16
       height: 16
   next:
@@ -362,7 +365,7 @@ MonoBehaviour:
   m_Name: Dialog Cell
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 808, y: 328}
+  nodePosition: {x: 776, y: 760}
   prevs:
     ownerNode: {fileID: 5462274145962453595}
     guid: a7f5abe2-a5c6-4d6c-b2c7-e9af6909d4d6
@@ -374,8 +377,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 363.5
+      x: 774.1
+      y: 795.5
       width: 16
       height: 16
   Title:
@@ -386,8 +389,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 383.5
+      x: 774.1
+      y: 815.5
       width: 16
       height: 16
     defaultValue: 
@@ -399,8 +402,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 403.5
+      x: 774.1
+      y: 835.5
       width: 16
       height: 16
     defaultValue: 
@@ -412,8 +415,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 423.5
+      x: 774.1
+      y: 963.5
       width: 16
       height: 16
     defaultValue: "\u7EE7\u7EED"
@@ -425,11 +428,11 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 443.5
+      x: 774.1
+      y: 983.5
       width: 16
       height: 16
-    defaultValue: 
+    defaultValue: "\u518D\u6765\u4E00\u904D"
   Option3String:
     ownerNode: {fileID: 5462274145962453595}
     guid: 4f625410-0620-4d14-9164-3e16291fafb4
@@ -438,8 +441,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 463.5
+      x: 774.1
+      y: 1003.5
       width: 16
       height: 16
     defaultValue: 
@@ -451,8 +454,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 806.1
-      y: 483.5
+      x: 774.1
+      y: 1023.5
       width: 16
       height: 16
     defaultValue: 
@@ -467,8 +470,8 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 1094
-      y: 503.5
+      x: 1062
+      y: 963.5
       width: 16
       height: 16
     hasFunc: 1
@@ -477,11 +480,14 @@ MonoBehaviour:
     guid: 01fccdfe-fc60-45ba-91cd-f1dd6343e5bf
     fieldName: Option2
     elementName: 
-    connections: []
+    connections:
+    - node: {fileID: 17423644801457869}
+      guid: 117f35c0-73b7-4e97-901b-10e2f46a3e57
+      reroutes: []
     rect:
       serializedVersion: 2
-      x: 1094
-      y: 523.5
+      x: 1062
+      y: 985.5
       width: 16
       height: 16
     hasFunc: 1
@@ -493,8 +499,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 1094
-      y: 543.5
+      x: 1062
+      y: 1007.5
       width: 16
       height: 16
     hasFunc: 1
@@ -506,8 +512,8 @@ MonoBehaviour:
     connections: []
     rect:
       serializedVersion: 2
-      x: 1094
-      y: 563.5
+      x: 1062
+      y: 1029.5
       width: 16
       height: 16
     hasFunc: 1
@@ -524,7 +530,7 @@ MonoBehaviour:
   m_Name: Entry Point
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: -392, y: -8}
+  nodePosition: {x: -392, y: 8}
   prevs:
     ownerNode: {fileID: 8404964342545946824}
     guid: 37f23e5b-030a-4adf-8ebf-bc3f603ef0f6
@@ -549,7 +555,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: -274
-      y: 27.5
+      y: 43.5
       width: 16
       height: 16
     hasFunc: 1

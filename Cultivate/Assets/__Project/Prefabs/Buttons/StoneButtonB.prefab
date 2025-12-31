@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactBehaviour: {fileID: 8635447886784823039}
-  Text: {fileID: 0}
+  Text: {fileID: 5661063607695404783}
   IdleColor: {r: 1, g: 1, b: 1, a: 1}
   HoverColor: {r: 0.654902, g: 0.68235296, b: 0.7607843, a: 1}
   PressedColor: {r: 0.654902, g: 0.68235296, b: 0.7607843, a: 1}

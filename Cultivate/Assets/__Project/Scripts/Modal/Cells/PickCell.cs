@@ -77,8 +77,7 @@ public class PickCell : Cell
             return null;
         GainSkillBuilder b = new();
         skills.Do(item => b.Pick(item));
-        b.Execute();
-        b.Invoke();
+        RunManager.Instance.Environment.GainSkillProcedure(b);
         return null;
     }
 

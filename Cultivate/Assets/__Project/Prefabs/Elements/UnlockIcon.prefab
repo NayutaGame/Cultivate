@@ -170,7 +170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2105431917552590292
 RectTransform:
   m_ObjectHideFlags: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
   _interactBehaviour: {fileID: 0}
   CanvasGroup: {fileID: 2893177524455415213}
   ContentImage: {fileID: 6321024393097878601}
-  LockIcon: {fileID: 0}
+  LockIcon: {fileID: 302799678594301902}
 --- !u!114 &4689950051673941034
 MonoBehaviour:
   m_ObjectHideFlags: 0

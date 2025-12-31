@@ -132,7 +132,7 @@ public class RequireCellNode : CellNode
 
                 return success;
             }},
-            { RequireCellBehaviorType.移除, requireCell =>
+            { RequireCellBehaviorType.封印, requireCell =>
             {
                 bool success = requireCell.AnyFulfilled();
                 

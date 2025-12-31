@@ -6,7 +6,6 @@ public class MapEntry : Entry
 {
     [NonSerialized] public JingJie _envJingJie;
     [NonSerialized] public int _slotCount;
-    [NonSerialized] public int _gold;
     [NonSerialized] private RoomDefinition[][] _levels;
 
     public MapEntry(
@@ -14,12 +13,10 @@ public class MapEntry : Entry
         string name,
         JingJie envJingJie,
         int slotCount,
-        int gold,
         RoomDefinition[][] levels) : base(id, name)
     {
         _envJingJie = envJingJie;
         _slotCount = slotCount;
-        _gold = gold;
         _levels = levels;
     }
     

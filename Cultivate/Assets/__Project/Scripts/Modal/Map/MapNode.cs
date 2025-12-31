@@ -18,12 +18,20 @@ public class MapNode
     public List<RoomOption> GetRoomOptions()
     {
         List<RoomOption> roomOptions = new();
-        
-        // RoomOptionFromCausality
-        AddFromCharacter(roomOptions);
-        AddFromVisitor(roomOptions);
-        AddFromLocation(roomOptions);
-        AddFromVoid(roomOptions);
+
+        bool isFirstStep = false;
+        if (isFirstStep)
+        {
+            AddFromFirstStep(roomOptions);
+        }
+        else
+        {
+            // RoomOptionFromCausality
+            AddFromCharacter(roomOptions);
+            AddFromVisitor(roomOptions);
+            AddFromLocation(roomOptions);
+            AddFromVoid(roomOptions);
+        }
 
         return roomOptions;
     }
@@ -58,5 +66,10 @@ public class MapNode
     private void AddFromVoid(List<RoomOption> roomOptions)
     {
         roomOptions.Add(new(Entry.RoomEntryFromVoid, "正常进入"));
+    }
+
+    private void AddFromFirstStep(List<RoomOption> roomOptions)
+    {
+        roomOptions.Add(new(Entry.RoomEntryFromVoid, "以这里开始修行之旅"));
     }
 }

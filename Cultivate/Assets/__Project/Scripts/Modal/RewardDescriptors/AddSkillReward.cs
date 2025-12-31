@@ -18,8 +18,7 @@ public class AddSkillReward : Reward
     {
         GainSkillBuilder b = new();
         b.Pick(SkillGhost.FromEntryJingJie(_entry, _jingJie));
-        b.Execute();
-        b.Invoke();
+        RunManager.Instance.Environment.GainSkillProcedure(b);
     }
 
     public override string GetDescription() => _description;

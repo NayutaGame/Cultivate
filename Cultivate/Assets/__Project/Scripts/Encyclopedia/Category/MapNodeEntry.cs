@@ -5,6 +5,7 @@ using PuppyDragon.uNody.Logic;
 public class MapNodeEntry : Entry
 {
     [NonSerialized] private RoomEntry _roomFromVoid;
+    [NonSerialized] private RoomEntry _roomFromFirstStep;
     [NonSerialized] private RoomEntry[] _roomsFromLocation;
     
     public MapNodeEntry(string id, string name) : base(id, name)
@@ -16,6 +17,7 @@ public class MapNodeEntry : Entry
         base.Init();
 
         _roomFromVoid = Encyclopedia.RoomCategory.FromName($"Void{GetName()}");
+        _roomFromFirstStep = Encyclopedia.RoomCategory.FromName($"FirstStep{GetName()}");
         _roomsFromLocation = new RoomEntry[]
         {
             Encyclopedia.RoomCategory.FromName($"Location{GetName()}1"),
@@ -25,5 +27,6 @@ public class MapNodeEntry : Entry
     }
 
     public RoomEntry RoomEntryFromVoid => _roomFromVoid;
+    public RoomEntry RoomEntryFromFirstStep => _roomFromFirstStep;
     public RoomEntry[] RoomEntriesFromLocation => _roomsFromLocation;
 }

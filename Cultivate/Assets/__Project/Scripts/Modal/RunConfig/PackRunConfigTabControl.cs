@@ -69,14 +69,14 @@ public class PackRunConfigTabControl : RunConfigTabControl
         ConfigPack pack = d.Pack;
         if (pack.IsEquipped)
         {
-            Debug.Log($"卡包 {pack.Entry.GetName()} 已经被装备");
+            // Debug.Log($"卡包 {pack.Entry.GetName()} 已经被装备");
             return;
         }
         
         PackConstraint firstMatch = GetFirstValidUnlockedSlot(pack);
         if (firstMatch == null)
         {
-            Debug.Log("没有合适的空槽位");
+            // Debug.Log("没有合适的空槽位");
             return;
         }
 
@@ -95,7 +95,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         // 检查卡包是否已装备
         if (!pack.IsEquipped)
         {
-            Debug.Log($"卡包 {pack.Entry.GetName()} 未被装备");
+            // Debug.Log($"卡包 {pack.Entry.GetName()} 未被装备");
             return;
         }
 
@@ -103,7 +103,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         bool packIsUnlocked = PackIsGenerallyUnlocked(pack.Entry);
         if (!packIsUnlocked)
         {
-            Debug.Log($"卡包 {pack.Entry.GetName()} 未解锁");
+            // Debug.Log($"卡包 {pack.Entry.GetName()} 未解锁");
             return;
         }
         
@@ -111,7 +111,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         PackConstraint constraint = _packConstraints.First(c => c.Pack == pack);
         if (constraint == null)
         {
-            Debug.Log("未找到装备该卡包的槽位");
+            // Debug.Log("未找到装备该卡包的槽位");
             return;
         }
 
@@ -119,7 +119,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         bool slotIsUnlocked = ConstraintIsUnlocked(constraint);
         if (!slotIsUnlocked)
         {
-            Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
+            // Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
             return;
         }
 
@@ -138,7 +138,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         // 检查槽位是否有装备
         if (constraint.IsEmpty)
         {
-            Debug.Log("此槽位没有装备卡包");
+            // Debug.Log("此槽位没有装备卡包");
             return;
         }
 
@@ -146,7 +146,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         bool packIsUnlocked = PackIsGenerallyUnlocked(constraint.Pack.Entry);
         if (!packIsUnlocked)
         {
-            Debug.Log($"卡包 {constraint.Pack.Entry.GetName()} 未解锁");
+            // Debug.Log($"卡包 {constraint.Pack.Entry.GetName()} 未解锁");
             return;
         }
 
@@ -154,7 +154,7 @@ public class PackRunConfigTabControl : RunConfigTabControl
         bool slotIsUnlocked = ConstraintIsUnlocked(constraint);
         if (!slotIsUnlocked)
         {
-            Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
+            // Debug.Log($"槽位 {constraint.SlotIndex} 未解锁");
             return;
         }
 

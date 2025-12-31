@@ -161,6 +161,25 @@ public class WuXing : Entry
         };
     }
 
+    public static WuXing FromEditor(EditorWuXing editorWuXing)
+    {
+        switch (editorWuXing)
+        {
+            case EditorWuXing.金:
+                return Jin;
+            case EditorWuXing.水:
+                return Shui;
+            case EditorWuXing.木:
+                return Mu;
+            case EditorWuXing.火:
+                return Huo;
+            case EditorWuXing.土:
+                return Tu;
+        }
+
+        throw new Exception("CL:unexpected pathway");
+    }
+
     public static WuXing FromIndex(int index)
         => Encyclopedia.WuXingCategory[index];
 

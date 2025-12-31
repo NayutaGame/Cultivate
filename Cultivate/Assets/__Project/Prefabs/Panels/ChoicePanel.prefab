@@ -184,7 +184,7 @@ MonoBehaviour:
   SlotPrefab: {fileID: 6359906681201007938, guid: 52b32c8512fdca3438184610fb5214ec, type: 3}
   Prefabs:
   - {fileID: 4585215156409062315, guid: 5556fa0b3657ec445af42ca17d9f98eb, type: 3}
-  AllowHover: 1
+  AllowHover: 0
   AllowDrag: 0
   AutoUpdateItem: 1
   AutoUpdateLayout: 1

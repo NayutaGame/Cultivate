@@ -99,9 +99,4 @@ public class GainSkillBuilder
             _env.Hand.Add(RunSkill.FromGainingSkill(gainingSkill));
         }
     }
-
-    public void Invoke()
-    {
-        _env.GainSkillNeuron.Invoke(this);
-    }
 }

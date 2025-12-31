@@ -152,8 +152,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -167,8 +166,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -182,8 +180,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -197,8 +194,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -212,8 +208,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -227,8 +222,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -242,8 +236,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -257,8 +250,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -272,8 +264,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -287,8 +278,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -338,8 +328,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -353,8 +342,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -368,8 +356,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -383,8 +370,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -398,8 +384,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -413,8 +398,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -428,8 +412,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -443,8 +426,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -458,8 +440,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -473,8 +454,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                                     GainSkillBuilder b = new();
                                     packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
                                     b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
-                                    b.Execute();
-                                    b.Invoke();
+                                    RunManager.Instance.Environment.GainSkillProcedure(b);
                                     return null;
                                 })
                         },
@@ -753,8 +733,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetLoseOperation(() =>
                     {
@@ -762,8 +741,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         GainSkillBuilder b = new();
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("吐纳")));
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冰弹")), DeckIndex.FromField(1));
-                        b.Execute();
-                        b.Invoke();
+                        RunManager.Instance.Environment.GainSkillProcedure(b);
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -813,8 +791,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetLoseOperation(() =>
                     {
@@ -822,8 +799,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         GainSkillBuilder b = new();
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")), DeckIndex.FromField(0));
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
-                        b.Execute();
-                        b.Invoke();
+                        RunManager.Instance.Environment.GainSkillProcedure(b);
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -891,8 +867,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetLoseOperation(() =>
                     {
@@ -901,8 +876,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("冲撞")));
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")), DeckIndex.FromField(1));
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("恋花")));
-                        b.Execute();
-                        b.Invoke();
+                        RunManager.Instance.Environment.GainSkillProcedure(b);
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -971,8 +945,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.ZhuJi));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -1017,8 +990,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.LianQi));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {
@@ -1093,8 +1065,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
                     b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetLoseOperation(() =>
                     {
@@ -1104,8 +1075,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("寻猎")));
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("空幻")));
                         b.Pick(SkillGhost.FromEntry(Encyclopedia.SkillCategory.FromName("激流")), DeckIndex.FromField(1));
-                        b.Execute();
-                        b.Invoke();
+                        RunManager.Instance.Environment.GainSkillProcedure(b);
                         A.ResetGuideIndex();
                         return R;
                     });
@@ -1138,8 +1108,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     GainSkillBuilder b = new();
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("云袖"), JingJie.LianQi));
                     b.Pick(SkillGhost.FromEntryJingJie(Encyclopedia.SkillCategory.FromName("恋花"), JingJie.ZhuJi));
-                    b.Execute();
-                    b.Invoke();
+                    RunManager.Instance.Environment.GainSkillProcedure(b);
                     
                     A.SetGuideDescriptors(new Guide[]
                     {

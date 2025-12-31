@@ -11,7 +11,6 @@ public class MapCategory : Category<MapEntry>
                 name: "测试",
                 envJingJie: JingJie.JinDan,
                 slotCount: 8,
-                gold: 23,
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
@@ -27,7 +26,6 @@ public class MapCategory : Category<MapEntry>
                 name: "标准",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
-                gold: 3,
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
@@ -152,7 +150,6 @@ public class MapCategory : Category<MapEntry>
                 name: "序章",
                 envJingJie: JingJie.LianQi,
                 slotCount: 3,
-                gold: 3,
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
@@ -241,7 +238,6 @@ public class MapCategory : Category<MapEntry>
                 name: "教学10",
                 envJingJie: JingJie.YuanYing,
                 slotCount: 8,
-                gold: 53,
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]
@@ -257,7 +253,6 @@ public class MapCategory : Category<MapEntry>
                 name: "返虚测试",
                 envJingJie: JingJie.HuaShen,
                 slotCount: 12,
-                gold: 289,
                 levels: new RoomDefinition[][]
                 {
                     new RoomDefinition[]

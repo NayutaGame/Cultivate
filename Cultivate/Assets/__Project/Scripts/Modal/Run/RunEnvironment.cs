@@ -595,7 +595,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SetJingJieProcedure(mapEntry._envJingJie);
         Home.SetHealth(RunEntity.HealthFromJingJie[mapEntry._envJingJie]);
         Home.SetSlotCount(mapEntry._slotCount);
-        GainGoldProcedure(mapEntry._gold);
 
         Profile profile = AppManager.Instance.ProfileManager.GetCurrProfile();
         
@@ -820,8 +819,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             }
         });
         
-        b.Execute();
-        b.Invoke();
+        RunManager.Instance.Environment.GainSkillProcedure(b);
     }
 
     public void ClearDeckProcedure()
@@ -1432,8 +1430,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         GainSkillBuilder b = new();
         b.Pick(SkillGhost.FromEntryJingJie(skillEntry, preferredJingJie), preferredDeckIndex);
-        b.Execute();
-        b.Invoke();
+        GainSkillProcedure(b);
     }
 
     public void PickSkillsProcedure(List<SkillGhost> skillGhosts)
@@ -1441,24 +1438,37 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GainSkillBuilder b = new();
         foreach (SkillGhost skillGhost in skillGhosts)
             b.Pick(skillGhost);
-        b.Execute();
-        b.Invoke();
+        GainSkillProcedure(b);
     }
     
     public void DrawSkillProcedure(SkillEntryQuery drawStrategy, JingJie jingJie, DeckIndex? preferredDeckIndex = null)
     {
         GainSkillBuilder b = new();
         b.Draw(drawStrategy, jingJie, preferredDeckIndex);
-        b.Execute();
-        b.Invoke();
+        GainSkillProcedure(b);
     }
 
     public void DrawSkillsProcedure(List<SkillEntryQuery> drawStrategies, JingJie jingJie)
     {
         GainSkillBuilder b = new();
         b.Draw(drawStrategies, jingJie);
+        GainSkillProcedure(b);
+    }
+
+    public void GainSkillFromFirstStepAndWuXingProcedure(WuXing wuXing)
+    {
+        PackEntry packEntry = GetRunConfig().PacksToStartWith[wuXing.GetIndex()];
+        
+        GainSkillBuilder b = new();
+        packEntry.StartCards.Do(skillEntry => b.Pick(SkillGhost.FromEntry(skillEntry)));
+        b.Draw(SkillEntryQuery.FromBaseJingJieBound(JingJie.LianQiOnly).Stack(2), JingJie.LianQi);
+        RunManager.Instance.Environment.GainSkillProcedure(b);
+    }
+
+    public void GainSkillProcedure(GainSkillBuilder b)
+    {
         b.Execute();
-        b.Invoke();
+        GainSkillNeuron.Invoke(b);
     }
     
     public void PickDiscoveredSkillProcedure(PickDiscoveredSkillDetails d)
@@ -1648,6 +1658,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (_runState == RunState.InRoom)
         {
             _roomEnvironment.ReceiveSignal(signal);
+
+            if (_runState == RunState.Committed)
+            {
+                return;
+            }
             
             if (_roomEnvironment.IsFinished())
             {
