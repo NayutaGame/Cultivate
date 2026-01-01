@@ -1472,6 +1472,64 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 5
+--- !u!114 &-385787214713618768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2931d007c1ed2cf4581e76802671a496, type: 3}
+  m_Name: Lose Ming Yuan Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 56, y: -472}
+  prevs:
+    ownerNode: {fileID: -385787214713618768}
+    guid: 60a5d50f-0ffd-4922-a22a-3a4a527d2755
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 783069586246684746}
+      guid: 77428910-859c-4350-bd0e-13c7020b9ce5
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 54.1
+      y: -436.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: -385787214713618768}
+    guid: 0302df38-ddbf-4106-b7e2-af4a38122712
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 4011120841919641480}
+      guid: c9ba935d-bd01-487b-a321-9f1f144522e1
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 242
+      y: -436.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  Value:
+    ownerNode: {fileID: -385787214713618768}
+    guid: 167fcebd-0224-4b31-ac71-6d294b14c48b
+    fieldName: Value
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 54.1
+      y: -414.5
+      width: 16
+      height: 16
+    defaultValue: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,8 +1543,8 @@ MonoBehaviour:
   m_Name: "\u6293\u5468\u5BB4"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -486.6386, y: -214.82259}
-  zoom: 1.3122
+  panOffset: {x: -513.01587, y: 460.17227}
+  zoom: 0.95659375
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
@@ -1501,8 +1559,6 @@ MonoBehaviour:
   - {fileID: -1402530971501748003}
   - {fileID: -2462737879976668694}
   - {fileID: 5221566670760147237}
-  - {fileID: 8049063147365903641}
-  - {fileID: 1317341849643158939}
   - {fileID: 8835673071976503940}
   - {fileID: 4011120841919641480}
   - {fileID: -5300315021569967951}
@@ -1521,6 +1577,8 @@ MonoBehaviour:
   - {fileID: -3566335656436454097}
   - {fileID: -7191940150434948353}
   - {fileID: 3861427276649340773}
+  - {fileID: -385787214713618768}
+  - {fileID: 8840310868412877357}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -1642,8 +1700,8 @@ MonoBehaviour:
     fieldName: Option1
     elementName: 
     connections:
-    - node: {fileID: 1317341849643158939}
-      guid: 784c222b-794a-4396-9cf4-b69c8c224eda
+    - node: {fileID: 8840310868412877357}
+      guid: 4ca40931-1564-4ecb-b5ee-4e6eb1b1f817
       reroutes: []
     rect:
       serializedVersion: 2
@@ -1674,8 +1732,8 @@ MonoBehaviour:
     fieldName: Option3
     elementName: 
     connections:
-    - node: {fileID: 8049063147365903641}
-      guid: b0c78f0c-61cf-4fef-ac64-d4fc44a01b83
+    - node: {fileID: -385787214713618768}
+      guid: 60a5d50f-0ffd-4922-a22a-3a4a527d2755
       reroutes: []
     rect:
       serializedVersion: 2
@@ -2039,64 +2097,6 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
---- !u!114 &1317341849643158939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72a6d3214d9a8d247a65f53e9bd5c91b, type: 3}
-  m_Name: Gain Gold Procedure
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 24, y: -760}
-  prevs:
-    ownerNode: {fileID: 1317341849643158939}
-    guid: 784c222b-794a-4396-9cf4-b69c8c224eda
-    fieldName: prevs
-    elementName: 
-    connections:
-    - node: {fileID: 783069586246684746}
-      guid: 31ff09ec-b049-405d-b1c7-77d5f8e01bbb
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 22.1
-      y: -724.5
-      width: 16
-      height: 16
-  next:
-    ownerNode: {fileID: 1317341849643158939}
-    guid: 49c7d095-8060-430f-9eb2-4e2180766a98
-    fieldName: next
-    elementName: 
-    connections:
-    - node: {fileID: 4011120841919641480}
-      guid: c9ba935d-bd01-487b-a321-9f1f144522e1
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 210
-      y: -724.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  Value:
-    ownerNode: {fileID: 1317341849643158939}
-    guid: 7ebf1516-540a-4e8b-8744-9930aef1531e
-    fieldName: Value
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 22.1
-      y: -702.5
-      width: 16
-      height: 16
-    defaultValue: 5
 --- !u!114 &3229294121765437110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2447,11 +2447,11 @@ MonoBehaviour:
     - node: {fileID: 8835673071976503940}
       guid: c3aea93d-f82a-4359-abef-3e46d03181ac
       reroutes: []
-    - node: {fileID: 1317341849643158939}
-      guid: 49c7d095-8060-430f-9eb2-4e2180766a98
+    - node: {fileID: -385787214713618768}
+      guid: 0302df38-ddbf-4106-b7e2-af4a38122712
       reroutes: []
-    - node: {fileID: 8049063147365903641}
-      guid: 63c2fd8b-c0d6-4994-8d85-f65a27eb9253
+    - node: {fileID: 8840310868412877357}
+      guid: 09d3387d-d368-432e-aba3-3e3320a6e03b
       reroutes: []
     rect:
       serializedVersion: 2
@@ -3314,64 +3314,6 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
---- !u!114 &8049063147365903641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb713b8968107b542b31d7956a09b774, type: 3}
-  m_Name: Gain Ming Yuan Procedure
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 24, y: -472}
-  prevs:
-    ownerNode: {fileID: 8049063147365903641}
-    guid: b0c78f0c-61cf-4fef-ac64-d4fc44a01b83
-    fieldName: prevs
-    elementName: 
-    connections:
-    - node: {fileID: 783069586246684746}
-      guid: 77428910-859c-4350-bd0e-13c7020b9ce5
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 22.1
-      y: -436.5
-      width: 16
-      height: 16
-  next:
-    ownerNode: {fileID: 8049063147365903641}
-    guid: 63c2fd8b-c0d6-4994-8d85-f65a27eb9253
-    fieldName: next
-    elementName: 
-    connections:
-    - node: {fileID: 4011120841919641480}
-      guid: c9ba935d-bd01-487b-a321-9f1f144522e1
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 210
-      y: -436.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  Value:
-    ownerNode: {fileID: 8049063147365903641}
-    guid: 02da1d66-2f70-4eb4-9054-e986ff1e2909
-    fieldName: Value
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 22.1
-      y: -414.5
-      width: 16
-      height: 16
-    defaultValue: 1
 --- !u!114 &8216504640736121919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3667,3 +3609,61 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
+--- !u!114 &8840310868412877357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e058fba038b01349b88bdc0caff4b01, type: 3}
+  m_Name: Lose Gold Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 36.153862, y: -884.2622}
+  prevs:
+    ownerNode: {fileID: 8840310868412877357}
+    guid: 4ca40931-1564-4ecb-b5ee-4e6eb1b1f817
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 783069586246684746}
+      guid: 31ff09ec-b049-405d-b1c7-77d5f8e01bbb
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 34.25386
+      y: -848.7622
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 8840310868412877357}
+    guid: 09d3387d-d368-432e-aba3-3e3320a6e03b
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 4011120841919641480}
+      guid: c9ba935d-bd01-487b-a321-9f1f144522e1
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 222.15387
+      y: -848.7622
+      width: 16
+      height: 16
+    hasFunc: 1
+  Value:
+    ownerNode: {fileID: 8840310868412877357}
+    guid: cebd0f8e-3bad-440e-8e88-dca38b326b80
+    fieldName: Value
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 34.25386
+      y: -826.7622
+      width: 16
+      height: 16
+    defaultValue: 5
