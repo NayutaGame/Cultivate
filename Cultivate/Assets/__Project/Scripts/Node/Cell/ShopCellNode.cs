@@ -67,7 +67,7 @@ public class ShopCellNode : CellNode
         bool acceptGold = AcceptGold.Value;
         bool acceptHealth = AcceptHealth.Value;
 
-        var spriteEntry = global::Encyclopedia.SpriteCategory.FromName(spriteName);
+        var spriteEntry = Encyclopedia.SpriteCategory.FromName(spriteName);
 
         // 转换抽卡策略
         List<SkillEntryQuery> drawStrategies = null;

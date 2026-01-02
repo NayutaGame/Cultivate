@@ -240,10 +240,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             PanelChangedNeuron.Add(AppendPickDiscoveredSkillReport);
         }
         
-        if (AllowMutate())
-        {
-            _mutatorPool = new();
-        }
+        _mutatorPool = new();
     }
 
     private void Deinit()

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using CLLibrary;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class ShopCell : Cell

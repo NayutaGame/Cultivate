@@ -27,13 +27,22 @@ public class GainSkillBuilder
 
     public void Draw(SkillEntryQuery drawStrategy, JingJie jingJie, IDeckIndex deckIndex = null, bool consume = true)
     {
-        _skillPool.TryPopItem(out SkillEntry skillEntry, drawStrategy.Matches);
-        _skillPool.Shuffle();
-        skillEntry ??= Encyclopedia.SkillCategory.Default();
-        _gainingSkills.Add(new(skillEntry, jingJie, deckIndex));
+        if (drawStrategy.IsMutator())
+        {
+            _mutatorPool.Draw(out SkillEntry item, jingJie);
+            item ??= Encyclopedia.SkillCategory.Default();
+            _gainingSkills.Add(new(item, jingJie, deckIndex));
+        }
+        else
+        {
+            _skillPool.TryPopItem(out SkillEntry item, drawStrategy.Matches);
+            _skillPool.Shuffle();
+            item ??= Encyclopedia.SkillCategory.Default();
+            _gainingSkills.Add(new(item, jingJie, deckIndex));
         
-        if (!consume && skillEntry != Encyclopedia.SkillCategory.Default())
-            _skillPool.Populate(skillEntry);
+            if (!consume && item != Encyclopedia.SkillCategory.Default())
+                _skillPool.Populate(item);
+        }
     }
 
     public void Draw(List<SkillEntryQuery> drawStrategies, JingJie jingJie, bool filterEmpty = true, bool distinct = true, bool consume = true)
@@ -43,27 +52,37 @@ public class GainSkillBuilder
         for (int i = 0; i < drawStrategies.Count; i++)
         {
             SkillEntryQuery drawStrategy = drawStrategies[i];
-            
-            _skillPool.TryPopItem(out SkillEntry item, s =>
+
+            if (drawStrategy.IsMutator())
             {
-                if (!drawStrategy.Matches(s))
-                    return false;
+                _mutatorPool.Draw(out SkillEntry item, jingJie);
+                
+                if (!filterEmpty || item != null)
+                    toRet.Add(item ?? Encyclopedia.SkillCategory.Default());
+            }
+            else
+            {
+                _skillPool.TryPopItem(out SkillEntry item, s =>
+                {
+                    if (!drawStrategy.Matches(s))
+                        return false;
 
-                if (distinct && toRet.Contains(s))
-                    return false;
+                    if (distinct && toRet.Contains(s))
+                        return false;
 
-                return true;
-            });
-
-            if (!filterEmpty || item != null)
-                toRet.Add(item ?? Encyclopedia.SkillCategory.Default());
+                    return true;
+                });
+                
+                if (!filterEmpty || item != null)
+                    toRet.Add(item ?? Encyclopedia.SkillCategory.Default());
+            }
         }
 
         foreach (SkillEntry skillEntry in toRet)
             _gainingSkills.Add(new(skillEntry, jingJie, new NextHandDeckIndexDefinition()));
 
         if (!consume)
-            _skillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.Default()));
+            _skillPool.Populate(toRet.FilterObj(s => s != Encyclopedia.SkillCategory.Default() && !s.IsMutator));
 
         _skillPool.Shuffle();
     }

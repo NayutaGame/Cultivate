@@ -11,19 +11,24 @@ public sealed class SkillEntryQuery
     private WuXingPred _wuXingPred;
     private Bound _baseJingJieBound;
     private TagComposite _tagComposite;
+    private bool _isMutator;
+    
+    #region Constructors
 
     private SkillEntryQuery(
         List<Predicate<SkillEntry>> predicates = null,
         SkillEntry entry = null,
         WuXingPred wuXingPred = WuXingPred.任意,
         Bound? baseJingJieBound = null,
-        TagComposite tagComposite = null)
+        TagComposite tagComposite = null,
+        bool isMutator = false)
     {
         _predicates = predicates ?? new List<Predicate<SkillEntry>>();
         _entry = entry;
         _wuXingPred = wuXingPred;
         _baseJingJieBound = baseJingJieBound ?? new(0, 4);
         _tagComposite = tagComposite;
+        _isMutator = isMutator;
     }
 
     public static SkillEntryQuery AnySkill()
@@ -65,7 +70,8 @@ public sealed class SkillEntryQuery
             entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
             wuXingPred: editorQuery.WuXingPred,
             baseJingJieBound: baseJingjieBound,
-            tagComposite: TagComposite.FromEditor(editorQuery.Tag));
+            tagComposite: TagComposite.FromEditor(editorQuery.Tag),
+            isMutator: editorQuery.IsMutator);
     }
 
     public static List<SkillEntryQuery> FromEditorQueries(List<EditorSkillEntryQuery> editorQueries, JingJie preferredJingJie)
@@ -85,6 +91,15 @@ public sealed class SkillEntryQuery
 
     public SkillEntryQuery Clone()
         => new(_predicates, _entry, _wuXingPred, _baseJingJieBound, _tagComposite);
+    
+    #endregion
+
+    #region Accessors
+
+    public bool IsMutator()
+        => _isMutator;
+
+    #endregion
 
     public List<SkillEntryQuery> Stack(int count)
     {
