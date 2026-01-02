@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections.Generic;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
@@ -9,11 +8,11 @@ using UnityEngine;
 [CreateNodeMenu("Logic/Hub", -10, true)]
 public class HubNode : Node, ILogicNode, ILogicConnector
 {
-    [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
-    private InputPort<ILogicNode>[] PrevCells;
-    
-    [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
+    [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> NextCell;
+    
+    [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
+    private InputPort<ILogicNode>[] PrevCells;
 
     public NodePort PrevPort => PrevCells[0];
     public NodePort NextPort

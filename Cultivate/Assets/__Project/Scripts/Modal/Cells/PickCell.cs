@@ -52,45 +52,6 @@ public class PickCell : Cell
         _inventory = new ListModel<SkillGhost>();
     }
 
-    public void PopulateInventory(SkillGhost skill)
-    {
-        _inventory.Add(skill);
-    }
-
-    public void PopulateInventory(List<SkillGhost> skills)
-    {
-        foreach(SkillGhost skill in skills)
-            _inventory.Add(skill);
-    }
-
-    public override void DefaultEnter(Cell cell)
-    {
-        GainSkillBuilder b = new();
-        b.Draw(_drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
-        b.GainingSkills.Do(g => PopulateInventory(SkillGhost.FromGainingSkill(g)));
-    }
-
-    public Cell DefaultConfirmOperation(ConfirmSkillsSignal confirmSkillsSignal)
-    {
-        List<SkillGhost> skills = confirmSkillsSignal.Selected;
-        if (skills.Count <= 0)
-            return null;
-        GainSkillBuilder b = new();
-        skills.Do(item => b.Pick(item));
-        RunManager.Instance.Environment.GainSkillProcedure(b);
-        return null;
-    }
-
-    public override Cell DefaultReceiveSignal(Signal signal)
-    {
-        if (signal is ConfirmSkillsSignal selectedSkillsSignal && _confirmOperation != null)
-        {
-            return _confirmOperation(selectedSkillsSignal);
-        }
-
-        return this;
-    }
-
     public static PickCell FromJianChi(int ladder)
     {
         JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
@@ -162,5 +123,61 @@ public class PickCell : Cell
         
         
         return cell;
+    }
+
+    public void PopulateInventory(SkillGhost skill)
+    {
+        _inventory.Add(skill);
+    }
+
+    public void PopulateInventory(List<SkillGhost> skills)
+    {
+        foreach(SkillGhost skill in skills)
+            _inventory.Add(skill);
+    }
+
+    public override void DefaultEnter(Cell cell)
+    {
+        GainSkillBuilder b = new();
+        b.Draw(_drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+        b.GainingSkills.Do(g => PopulateInventory(SkillGhost.FromGainingSkill(g)));
+    }
+
+    public Cell DefaultConfirmOperation(ConfirmSkillsSignal confirmSkillsSignal)
+    {
+        List<SkillGhost> skills = GetPickedSkillsFromPickedIndices(confirmSkillsSignal.PickedIndices);
+        if (skills.Count <= 0)
+            return null;
+        RunManager.Instance.Environment.PickSkillsProcedure(skills);
+        return null;
+    }
+
+    public override Cell DefaultReceiveSignal(Signal signal)
+    {
+        if (signal is ConfirmSkillsSignal selectedSkillsSignal && _confirmOperation != null)
+        {
+            return _confirmOperation(selectedSkillsSignal);
+        }
+
+        return this;
+    }
+
+    public List<SkillGhost> GetPickedSkillsFromPickedIndices(List<int> pickedIndices)
+    {
+        return pickedIndices.Map(index => _inventory[index]).ToList();
+    }
+
+    public List<SkillGhost> GetAbandonedSkillsFromPickedIndices(List<int> pickedIndices)
+    {
+        HashSet<int> pickedSet = new HashSet<int>(pickedIndices);
+        List<SkillGhost> abandoned = new List<SkillGhost>();
+        for (int i = 0; i < _inventory.Count(); i++)
+        {
+            if (!pickedSet.Contains(i))
+            {
+                abandoned.Add(_inventory[i]);
+            }
+        }
+        return abandoned;
     }
 }

@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
@@ -17,6 +18,9 @@ public class PickCellNode : CellNode
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> DetailedText = new(new("请选择卡"));
+    
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+    private InputPort<PickCellBehaviorType> BehaviorType = new(PickCellBehaviorType.获得);
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<Bound> PickCardCountRange = new(new(1, 1));
@@ -81,12 +85,38 @@ public class PickCellNode : CellNode
 
     public override bool ReceiveSignal(Signal signal)
     {
-        if (signal is ConfirmSkillsSignal selectedSkillsSignal)
-        {
-            (AsCell() as PickCell)?.DefaultConfirmOperation(selectedSkillsSignal);
-            return true;
-        }
+        // (AsCell() as PickCell)?.DefaultConfirmOperation(selectedSkillsSignal);
+        
+        ConfirmSkillsSignal confirmSkillsSignal = signal as ConfirmSkillsSignal;
+        if (confirmSkillsSignal == null)
+            return false;
+        
+        // int ladder = Ladder.Value;
+        // JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+        // JingJie nextJingJie = Mathf.Clamp(currJingJie + 1, 0, 4);
+        PickCell pickCell = AsCell() as PickCell;
+        
+        List<SkillGhost> pickedSkills = pickCell.GetPickedSkillsFromPickedIndices(confirmSkillsSignal.PickedIndices);
+        List<SkillGhost> abandonedSkills = pickCell.GetAbandonedSkillsFromPickedIndices(confirmSkillsSignal.PickedIndices);
 
-        return false;
+        Dictionary<PickCellBehaviorType, Action<PickCell, List<SkillGhost>, List<SkillGhost>>> behaviorHandlers = new()
+        {
+            { PickCellBehaviorType.获得, (cell, picked, abandoned) =>
+            {
+                if (picked.Count > 0)
+                    RunManager.Instance.Environment.PickSkillsProcedure(picked);
+            }},
+            { PickCellBehaviorType.获得和封印剩下, (cell, picked, abandoned) =>
+            {
+                if (picked.Count > 0)
+                    RunManager.Instance.Environment.PickSkillsProcedure(picked);
+
+                if (abandoned.Count > 0)
+                    RunManager.Instance.Environment.SealProcedure(abandoned);
+            }},
+        };
+        
+        behaviorHandlers[BehaviorType.Value](pickCell, pickedSkills, abandonedSkills);
+        return true;
     }
 }

@@ -184,7 +184,7 @@ MonoBehaviour:
       y: 51.5
       width: 16
       height: 16
-    defaultValue: "\u4F60\u611F\u53D7\u5230\u4E86\u67D0\u79CD\u4E0D\u77E5\u540D\u7684\u5438\u5F15\u529B\n\u4E0D\u77E5\u4E0D\u89C9\u8D70\u5230\u4E86\u4E00\u4E2A\u5EFA\u7B51\u524D"
+    defaultValue: "\u4F60\u611F\u53D7\u5230\u4E86\u67D0\u79CD\u4E0D\u77E5\u540D\u7684\u5438\u5F15\u529B\n\u4E0D\u77E5\u4E0D\u89C9\u8D70\u5230\u4E86\u4E00\u4E2A\u5EFA\u7B51\u524D\n\u83B7\u5F978\u91D1"
   Option1String:
     ownerNode: {fileID: 7152706289609844853}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb

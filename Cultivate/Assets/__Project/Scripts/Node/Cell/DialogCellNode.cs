@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
-using PuppyDragon.uNody.Logic.BlackboardVariable;
 using UnityEngine;
 
 [NodeWidth(300)]

@@ -9,4 +9,5 @@ public enum JingJieIndirect
     返虚,
     当前,
     下一境界,
+    上一境界,
 }

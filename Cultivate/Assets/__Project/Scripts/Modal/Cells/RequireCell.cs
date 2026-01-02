@@ -219,12 +219,11 @@ public class RequireCell : Cell
 
     public override Cell DefaultReceiveSignal(Signal signal)
     {
-        if (signal is ConfirmDeckSignal confirmDeckSignal)
-        {
-            return _submitOperation(this);
-        }
+        ConfirmDeckSignal confirmDeckSignal = signal as ConfirmDeckSignal;
+        if (confirmDeckSignal == null)
+            return this;
 
-        return this;
+        return _submitOperation(this);
     }
 
     public override void DefaultExit(Cell cell)

@@ -1,11 +1,15 @@
 
+using System;
+using UnityEngine;
+
+[Serializable]
 public class ResultRow
 {
-    private int _minValue;
-    private int _maxValue;
-    private string _rewardDescription;
+    [SerializeField] private int _minValue;
+    [SerializeField] private int _maxValue;
+    [SerializeField] private string _rewardDescription;
 
-    public bool IsActive;
+    [NonSerialized] public bool IsActive;
 
     public ResultRow(int minValue, int maxValue, string rewardDescription)
     {
@@ -14,6 +18,11 @@ public class ResultRow
         _rewardDescription = rewardDescription;
 
         IsActive = false;
+    }
+
+    public ResultRow() : this(0, 20, default)
+    {
+        
     }
 
     public bool IsInRange(int value)

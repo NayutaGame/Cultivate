@@ -127,6 +127,7 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
             JingJieIndirect.返虚 => FanXu,
             JingJieIndirect.当前 => RunManager.Instance.Environment.JingJie,
             JingJieIndirect.下一境界 => Mathf.Min(RunManager.Instance.Environment.JingJie + 1, HuaShen),
+            JingJieIndirect.上一境界 => Mathf.Max(RunManager.Instance.Environment.JingJie - 1, LianQi),
             _ => null
         };
     }

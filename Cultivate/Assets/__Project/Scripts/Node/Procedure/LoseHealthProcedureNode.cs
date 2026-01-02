@@ -2,7 +2,7 @@
 using PuppyDragon.uNody;
 using UnityEngine;
 
-[NodeWidth(300)]
+[NodeWidth(200)]
 [CreateNodeMenu("Procedure/Lose Health", -10, true)]
 public class LoseHealthProcedureNode : ProcedureNode
 {

@@ -1,5 +1,120 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3082038956285856414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b382b5a3eb37a1543b4d7440098b4301, type: 3}
+  m_Name: Pick Cell
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 863.9312, y: 152.26491}
+  prevs:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: 2962cbc7-34ce-4e62-8136-c381cea04af3
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 7152706289609844853}
+      guid: 26ae867c-007f-4e24-bdff-2ed6f31442d1
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 862.0312
+      y: 187.76491
+      width: 16
+      height: 16
+  Title:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: 0021aa9e-485a-4a99-9401-1273330cc49d
+    fieldName: Title
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 862.0312
+      y: 207.76491
+      width: 16
+      height: 16
+    defaultValue: "\u9009\u724C"
+  DetailedText:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: 9cab9850-535d-423d-b386-7ebf32a36e96
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 862.0312
+      y: 227.76491
+      width: 16
+      height: 16
+    defaultValue: "\u8BF7\u9009\u62E94\u5F20\u724C\uFF0C\u5C01\u5370\u5269\u4E0B\u76841\u5F20"
+  BehaviorType:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: 1f558805-dc41-4626-9747-829518e2e837
+    fieldName: BehaviorType
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 862.0312
+      y: 247.76491
+      width: 16
+      height: 16
+    defaultValue: 1
+  PickCardCountRange:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: b14d931a-fb45-468c-9a73-439262cc25e7
+    fieldName: PickCardCountRange
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 862.0312
+      y: 267.7649
+      width: 16
+      height: 16
+    defaultValue:
+      Start: 4
+      End: 4
+  DrawStrategies:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: ca1fa587-9a20-4cc1-a04d-d6c68e2f43b9
+    fieldName: DrawStrategies
+    elementName: 
+    connections:
+    - node: {fileID: 5448846939301769922}
+      guid: ec1d445b-acb7-4bc8-b2e4-b7d6bd9c3253
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 862.0312
+      y: 327.7649
+      width: 16
+      height: 16
+    defaultValue: []
+  ConfirmNext:
+    ownerNode: {fileID: -3082038956285856414}
+    guid: e848206d-18a4-4727-8a1a-872feb1f50ba
+    fieldName: ConfirmNext
+    elementName: 
+    connections:
+    - node: {fileID: 5254414691165939901}
+      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1149.9312
+      y: 347.7649
+      width: 16
+      height: 16
+    hasFunc: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,13 +128,14 @@ MonoBehaviour:
   m_Name: "FirstStep\u660E\u5FC3\u5E90"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -637.62897, y: -213.5472}
-  zoom: 0.7581316
+  panOffset: {x: -784.389, y: -369.40527}
+  zoom: 0.7356143
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
   - {fileID: 7152706289609844853}
-  - {fileID: 7349004458583437062}
+  - {fileID: -3082038956285856414}
+  - {fileID: 5448846939301769922}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -48,8 +164,8 @@ MonoBehaviour:
     fieldName: exit
     elementName: 
     connections:
-    - node: {fileID: 7349004458583437062}
-      guid: 212b0ec3-3a67-40fa-a618-ada301543d5a
+    - node: {fileID: -3082038956285856414}
+      guid: e848206d-18a4-4727-8a1a-872feb1f50ba
       reroutes: []
     rect:
       serializedVersion: 2
@@ -69,6 +185,68 @@ MonoBehaviour:
       y: 0
       width: 0
       height: 0
+    hasFunc: 1
+--- !u!114 &5448846939301769922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 711d2f252e44a65409609bf9afe9b1db, type: 3}
+  m_Name: Editor Skill Entry Query List Node From Stack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 444.9029, y: 428.37708}
+  Item:
+    ownerNode: {fileID: 5448846939301769922}
+    guid: 82db4ad9-6a15-45f4-82cb-eb72ee503334
+    fieldName: Item
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 443.0029
+      y: 463.87708
+      width: 16
+      height: 16
+    defaultValue:
+      EntryName: 
+      WuXingPred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 0
+      Tag: 0
+  Stack:
+    ownerNode: {fileID: 5448846939301769922}
+    guid: 817a779c-b33f-4056-bd9e-92de92f11b89
+    fieldName: Stack
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 443.0029
+      y: 583.8771
+      width: 16
+      height: 16
+    defaultValue: 5
+  Value:
+    ownerNode: {fileID: 5448846939301769922}
+    guid: ec1d445b-acb7-4bc8-b2e4-b7d6bd9c3253
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -3082038956285856414}
+      guid: ca1fa587-9a20-4cc1-a04d-d6c68e2f43b9
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 630.9029
+      y: 603.8771
+      width: 16
+      height: 16
+    defaultValue: []
     hasFunc: 1
 --- !u!114 &7152706289609844853
 MonoBehaviour:
@@ -124,7 +302,7 @@ MonoBehaviour:
       y: 51.5
       width: 16
       height: 16
-    defaultValue: "\u4F60\u56DE\u60F3\u8D77\u4E86\u4E00\u4E9B\u66FE\u7ECF\u4FEE\u70BC\u8FC7\u7684\u5361\u724C\n\u83B7\u5F973\u5F20\u91D1\u7CFB\u521D\u59CB\u5361\u724C+2\u5F20\u968F\u673A\u5361\u724C"
+    defaultValue: "\u4FEE\u884C\u8BB2\u7A76\u5FF5\u5934\u901A\u8FBE\n\u5F97\u5230\u8BE5\u5F97\u5230\u7684\uFF0C\u540C\u65F6\u4E5F\u820D\u5F03\u8BE5\u820D\u5F03\u7684\n\u8BF7\u9009\u62E94\u5F20\u724C\uFF0C\u5269\u4E0B\u76841\u5F20\u5C06\u4ECE\u724C\u5C71\u4E2D\u79FB\u9664"
   Option1String:
     ownerNode: {fileID: 7152706289609844853}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb
@@ -183,8 +361,8 @@ MonoBehaviour:
     fieldName: Option1
     elementName: 
     connections:
-    - node: {fileID: 7349004458583437062}
-      guid: 0aa540f4-c0e4-44e9-9a36-ca419d06b3e3
+    - node: {fileID: -3082038956285856414}
+      guid: 2962cbc7-34ce-4e62-8136-c381cea04af3
       reroutes: []
     rect:
       serializedVersion: 2
@@ -232,64 +410,6 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
---- !u!114 &7349004458583437062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e7eae876980d64aac1f6c8d9727357, type: 3}
-  m_Name: Gain Skill From First Step And Wu Xing Procedure
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 824, y: 136}
-  prevs:
-    ownerNode: {fileID: 7349004458583437062}
-    guid: 0aa540f4-c0e4-44e9-9a36-ca419d06b3e3
-    fieldName: prevs
-    elementName: 
-    connections:
-    - node: {fileID: 7152706289609844853}
-      guid: 26ae867c-007f-4e24-bdff-2ed6f31442d1
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 822.1
-      y: 171.5
-      width: 16
-      height: 16
-  next:
-    ownerNode: {fileID: 7349004458583437062}
-    guid: 212b0ec3-3a67-40fa-a618-ada301543d5a
-    fieldName: next
-    elementName: 
-    connections:
-    - node: {fileID: 5254414691165939901}
-      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1110
-      y: 171.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  EditorWuXing:
-    ownerNode: {fileID: 7349004458583437062}
-    guid: 6f17bdef-d401-4ae7-b2a5-087e766b0b05
-    fieldName: EditorWuXing
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 822.1
-      y: 193.5
-      width: 16
-      height: 16
-    defaultValue: 0
 --- !u!114 &8404964342545946824
 MonoBehaviour:
   m_ObjectHideFlags: 0

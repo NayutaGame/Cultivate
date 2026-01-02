@@ -1,4 +1,7 @@
 
+using System;
+
+[Serializable]
 public abstract class GainRow
 {
     public enum GainStyle
@@ -6,10 +9,6 @@ public abstract class GainRow
         Inactive,
         Positive,
         Negative,
-    }
-
-    protected GainRow()
-    {
     }
 
     public abstract void InvalidateCache();

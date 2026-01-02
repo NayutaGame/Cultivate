@@ -1,9 +1,10 @@
 
 using System.Collections.Generic;
 using PuppyDragon.uNody;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-[NodeWidth(300)]
+[NodeWidth(200)]
 [CreateNodeMenu("Procedure/Draw Skills", -10, true)]
 public class DrawSkillsProcedureNode : ProcedureNode
 {

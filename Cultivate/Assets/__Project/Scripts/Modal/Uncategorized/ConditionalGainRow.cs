@@ -1,13 +1,15 @@
 
 using System;
 using CLLibrary;
+using UnityEngine;
 
+[Serializable]
 public class ConditionalGainRow : GainRow
 {
-    private string _condDescription;
+    [SerializeField] private string _condDescription;
     private Dirty<int> _currentValue;
     private Dirty<bool> _cond;
-    private int _extraCredit;
+    [SerializeField] private int _extraCredit;
 
     public ConditionalGainRow(
         string condDescription,
@@ -19,6 +21,11 @@ public class ConditionalGainRow : GainRow
         _currentValue = new Dirty<int>(currentValueGetter ?? (() => 0));
         _cond = new Dirty<bool>(condGenerator ?? (() => false));
         _extraCredit = extraCredit;
+    }
+
+    public ConditionalGainRow() : this(default, default, default, default)
+    {
+        
     }
 
     public override void InvalidateCache()

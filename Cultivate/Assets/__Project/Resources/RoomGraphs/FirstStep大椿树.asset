@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: "FirstStep\u5927\u693F\u6811"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -637.62897, y: -213.5472}
-  zoom: 0.7581316
+  panOffset: {x: -973.3334, y: -146.7672}
+  zoom: 0.91733927
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
   - {fileID: 7152706289609844853}
-  - {fileID: 7349004458583437062}
+  - {fileID: 8702939423931556347}
+  - {fileID: 8934163557327645368}
+  - {fileID: 1009031241698764515}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -28,6 +30,68 @@ MonoBehaviour:
   outPoints:
   - {fileID: 0}
   - {fileID: 5254414691165939901}
+--- !u!114 &1009031241698764515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 711d2f252e44a65409609bf9afe9b1db, type: 3}
+  m_Name: Editor Skill Entry Query List Node From Stack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 440, y: 376}
+  Item:
+    ownerNode: {fileID: 1009031241698764515}
+    guid: acce5f1c-ea16-4911-a36c-02cfc3819fdc
+    fieldName: Item
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 438.1
+      y: 411.5
+      width: 16
+      height: 16
+    defaultValue:
+      EntryName: 
+      WuXingPred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 0
+      Tag: 0
+  Stack:
+    ownerNode: {fileID: 1009031241698764515}
+    guid: 7b9dc4dc-1d9e-49e2-840f-28f62b49e53b
+    fieldName: Stack
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 438.1
+      y: 531.5
+      width: 16
+      height: 16
+    defaultValue: 4
+  Value:
+    ownerNode: {fileID: 1009031241698764515}
+    guid: 774369ed-a38d-4df9-953b-23182ee9ecf9
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 8702939423931556347}
+      guid: bfdb6597-a84c-4e81-8d81-15be90410248
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 626
+      y: 551.5
+      width: 16
+      height: 16
+    defaultValue: []
+    hasFunc: 1
 --- !u!114 &5254414691165939901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,20 +105,20 @@ MonoBehaviour:
   m_Name: Exit Point
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 1272, y: 136}
+  nodePosition: {x: 1496, y: 152}
   exit:
     ownerNode: {fileID: 5254414691165939901}
     guid: 415163a9-2067-4d77-b32b-efa4791a32e0
     fieldName: exit
     elementName: 
     connections:
-    - node: {fileID: 7349004458583437062}
-      guid: 212b0ec3-3a67-40fa-a618-ada301543d5a
+    - node: {fileID: 8934163557327645368}
+      guid: 1d807526-1fa1-47cf-8fcc-11b8d67f3661
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 1270.1
-      y: 171.5
+      x: 1494.1
+      y: 187.5
       width: 16
       height: 16
   next:
@@ -124,7 +188,7 @@ MonoBehaviour:
       y: 51.5
       width: 16
       height: 16
-    defaultValue: "\u4F60\u56DE\u60F3\u8D77\u4E86\u4E00\u4E9B\u66FE\u7ECF\u4FEE\u70BC\u8FC7\u7684\u5361\u724C\n\u83B7\u5F973\u5F20\u91D1\u7CFB\u521D\u59CB\u5361\u724C+2\u5F20\u968F\u673A\u5361\u724C"
+    defaultValue: "\u4F60\u6765\u5230\u4E86\u4E00\u4E2A\u5DE8\u5927\u7684\u6811\u4E4B\u4E0B\n\u611F\u53D7\u5230\u4E86\u6210\u957F\u7684\u529B\u91CF\n\u83B7\u5F974\u5F20\u7EC3\u6C14\u724C\u4EE5\u53CA1\u5F20\u7B51\u57FA\u724C"
   Option1String:
     ownerNode: {fileID: 7152706289609844853}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb
@@ -183,8 +247,8 @@ MonoBehaviour:
     fieldName: Option1
     elementName: 
     connections:
-    - node: {fileID: 7349004458583437062}
-      guid: 0aa540f4-c0e4-44e9-9a36-ca419d06b3e3
+    - node: {fileID: 8702939423931556347}
+      guid: f5bc1973-87a1-4f08-a99d-3164634a15ca
       reroutes: []
     rect:
       serializedVersion: 2
@@ -232,64 +296,6 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
---- !u!114 &7349004458583437062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e7eae876980d64aac1f6c8d9727357, type: 3}
-  m_Name: Gain Skill From First Step And Wu Xing Procedure
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 824, y: 136}
-  prevs:
-    ownerNode: {fileID: 7349004458583437062}
-    guid: 0aa540f4-c0e4-44e9-9a36-ca419d06b3e3
-    fieldName: prevs
-    elementName: 
-    connections:
-    - node: {fileID: 7152706289609844853}
-      guid: 26ae867c-007f-4e24-bdff-2ed6f31442d1
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 822.1
-      y: 171.5
-      width: 16
-      height: 16
-  next:
-    ownerNode: {fileID: 7349004458583437062}
-    guid: 212b0ec3-3a67-40fa-a618-ada301543d5a
-    fieldName: next
-    elementName: 
-    connections:
-    - node: {fileID: 5254414691165939901}
-      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1110
-      y: 171.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  EditorWuXing:
-    ownerNode: {fileID: 7349004458583437062}
-    guid: 6f17bdef-d401-4ae7-b2a5-087e766b0b05
-    fieldName: EditorWuXing
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 822.1
-      y: 193.5
-      width: 16
-      height: 16
-    defaultValue: 0
 --- !u!114 &8404964342545946824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,3 +338,153 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
+--- !u!114 &8702939423931556347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79960114420d999449e25bb77a7e15f5, type: 3}
+  m_Name: Draw Skills Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 776, y: 152}
+  prevs:
+    ownerNode: {fileID: 8702939423931556347}
+    guid: f5bc1973-87a1-4f08-a99d-3164634a15ca
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 7152706289609844853}
+      guid: 26ae867c-007f-4e24-bdff-2ed6f31442d1
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 774.1
+      y: 187.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 8702939423931556347}
+    guid: cb1683d9-4d52-459a-a3c2-118535994d55
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 8934163557327645368}
+      guid: 57222bfb-0311-4956-ac85-2855dc01c304
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1062
+      y: 187.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  DrawStrategies:
+    ownerNode: {fileID: 8702939423931556347}
+    guid: bfdb6597-a84c-4e81-8d81-15be90410248
+    fieldName: DrawStrategies
+    elementName: 
+    connections:
+    - node: {fileID: 1009031241698764515}
+      guid: 774369ed-a38d-4df9-953b-23182ee9ecf9
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 774.1
+      y: 209.5
+      width: 16
+      height: 16
+    defaultValue: []
+  PreferredJingJie:
+    ownerNode: {fileID: 8702939423931556347}
+    guid: de833a9b-f407-41e2-8e2e-4c2a1d537b61
+    fieldName: PreferredJingJie
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 774.1
+      y: 229.5
+      width: 16
+      height: 16
+    defaultValue: 0
+--- !u!114 &8934163557327645368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31abbc1acaf50b84fbc97935a8327dcf, type: 3}
+  m_Name: Draw Skill Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1144, y: 152}
+  prevs:
+    ownerNode: {fileID: 8934163557327645368}
+    guid: 57222bfb-0311-4956-ac85-2855dc01c304
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 8702939423931556347}
+      guid: cb1683d9-4d52-459a-a3c2-118535994d55
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1142.1
+      y: 187.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 8934163557327645368}
+    guid: 1d807526-1fa1-47cf-8fcc-11b8d67f3661
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: 5254414691165939901}
+      guid: 415163a9-2067-4d77-b32b-efa4791a32e0
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1430
+      y: 187.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  DrawStrategy:
+    ownerNode: {fileID: 8934163557327645368}
+    guid: 96cc9bc6-b16b-457d-9f4e-686e9b468b51
+    fieldName: DrawStrategy
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1142.1
+      y: 209.5
+      width: 16
+      height: 16
+    defaultValue:
+      EntryName: 
+      WuXingPred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 1
+      Tag: 0
+  PreferredJingJie:
+    ownerNode: {fileID: 8934163557327645368}
+    guid: 8390d203-2994-4b37-a056-5835373061ce
+    fieldName: PreferredJingJie
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1142.1
+      y: 329.5
+      width: 16
+      height: 16
+    defaultValue: 1

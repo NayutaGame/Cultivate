@@ -4,8 +4,8 @@ using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
-[NodeWidth(400)]
-[CreateNodeMenu("Cell/Discover Cell From Ladder", -9, true)]
+[NodeWidth(300)]
+[CreateNodeMenu("Cell/Discover Cell From Ladder", -10, true)]
 public class DiscoverCellNodeFromLadder : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

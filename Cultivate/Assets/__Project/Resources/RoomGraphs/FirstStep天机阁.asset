@@ -124,7 +124,7 @@ MonoBehaviour:
       y: 51.5
       width: 16
       height: 16
-    defaultValue: "\u4F60\u56DE\u60F3\u8D77\u4E86\u4E00\u4E9B\u66FE\u7ECF\u4FEE\u70BC\u8FC7\u7684\u5361\u724C\n\u83B7\u5F973\u5F20\u91D1\u7CFB\u521D\u59CB\u5361\u724C+2\u5F20\u968F\u673A\u5361\u724C"
+    defaultValue: "\u4F60\u56DE\u60F3\u8D77\u4E86\u4E00\u4E9B\u66FE\u7ECF\u4FEE\u70BC\u8FC7\u7684\u6B66\u5B66\n\u83B7\u5F973\u5F20\u6728\u7CFB\u521D\u59CB\u724C\u4EE5\u53CA\u5176\u4ED62\u5F20\u724C"
   Option1String:
     ownerNode: {fileID: 7152706289609844853}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb
@@ -289,7 +289,7 @@ MonoBehaviour:
       y: 193.5
       width: 16
       height: 16
-    defaultValue: 0
+    defaultValue: 2
 --- !u!114 &8404964342545946824
 MonoBehaviour:
   m_ObjectHideFlags: 0

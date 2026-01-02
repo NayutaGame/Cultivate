@@ -5,7 +5,7 @@ using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Cell/Discover Cell", -9, true)]
+[CreateNodeMenu("Cell/Discover Cell", -10, true)]
 public class DiscoverCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

@@ -21,13 +21,13 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("General")] [SerializeField] private GraphicRaycaster Raycaster;
     [TabGroup("General")] [SerializeField] private ConsolePanel ConsolePanel;
     
-    [TabGroup("Others")]public Grabber Grabber;
-    [TabGroup("Others")]public MergePreresultView MergePreresultView;
-    [TabGroup("Others")]public GuideView GuideView;
-    [TabGroup("Others")]public Curtain Curtain;
-    [TabGroup("Others")]public TMP_FontAsset ArmorFontAsset;
-    [TabGroup("Others")]public TMP_FontAsset FragileFontAsset;
-    [TabGroup("Others")]public DialogWindow DialogWindow;
+    [TabGroup("Others")] public Grabber Grabber;
+    [TabGroup("Others")] public MergePreresultView MergePreresultView;
+    [TabGroup("Others")] public GuideView GuideView;
+    [TabGroup("Others")] public Curtain Curtain;
+    [TabGroup("Others")] public TMP_FontAsset ArmorFontAsset;
+    [TabGroup("Others")] public TMP_FontAsset FragileFontAsset;
+    [TabGroup("Others")] public DialogWindow DialogWindow;
     
     [TabGroup("List")] [ColorPalette("JingJie")] public Color[] JingJieColors;
     [TabGroup("List")] public Sprite[] JingJieSprites;
@@ -36,8 +36,6 @@ public class CanvasManager : Singleton<CanvasManager>, Addressable
     [TabGroup("List")] public Color[] CostColors;
     [TabGroup("List")] public Sprite[] CostIconSprites;
     [TabGroup("List")] public Sprite[] RatingBarSegmentSprites;
-    
-
 
     public Grabber GetGrabber()
         => Grabber;

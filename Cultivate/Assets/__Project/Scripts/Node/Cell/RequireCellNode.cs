@@ -33,8 +33,8 @@ using PuppyDragon.uNody.Logic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-[NodeWidth(400)]
-[CreateNodeMenu("Cell/Require Cell", -9, true)]
+[NodeWidth(300)]
+[CreateNodeMenu("Cell/Require Cell", -10, true)]
 public class RequireCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

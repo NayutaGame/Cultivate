@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 [NodeWidth(400)]
-[CreateNodeMenu("Cell/Dice Cell", -9, true)]
+[CreateNodeMenu("Cell/Dice Cell", -10, true)]
 public class DiceCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

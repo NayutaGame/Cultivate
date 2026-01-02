@@ -1506,9 +1506,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         GachaNeuron.Invoke(d);
     }
     
-    public void ConfirmSelectionsProcedure(List<SkillGhost> skillReferences)
+    public void ConfirmSelectionsProcedure(List<int> pickedIndices)
     {
-        ReceiveSignalProcedure(new ConfirmSkillsSignal(skillReferences));
+        ReceiveSignalProcedure(new ConfirmSkillsSignal(pickedIndices));
     }
 
     public void ConfirmDeckSelectionsProcedure()
@@ -1609,6 +1609,28 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             JingJie toJingJie = ((int)(skill.GetEntry().HighestJingJie)).ClampUpper(JingJie.HuaShen);
             RunManager.Instance.Environment.SkillSetJingJieProcedure(toJingJie, deckIndex);
         });
+    }
+
+    public void SealProcedure(List<SkillGhost> skills)
+    {
+        HashSet<SkillEntry> skillEntries = new HashSet<SkillEntry>(skills.Map(s => s.GetEntry()));
+        SkillPool.Depopulate(pred: e => skillEntries.Contains(e));
+    }
+
+    public void SealProcedure(SkillGhost skill)
+    {
+        SealProcedure(skill.GetEntry());
+    }
+
+    public void SealProcedure(List<SkillEntry> skills)
+    {
+        HashSet<SkillEntry> skillSet = new HashSet<SkillEntry>(skills);
+        SkillPool.Depopulate(pred: e => skillSet.Contains(e));
+    }
+
+    public void SealProcedure(SkillEntry skill)
+    {
+        SkillPool.Depopulate(pred: e => e == skill);
     }
 
     #endregion

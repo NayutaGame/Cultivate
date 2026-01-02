@@ -3,11 +3,12 @@ using System;
 using CLLibrary;
 using UnityEngine;
 
+[Serializable]
 public class CalculatedGainRow : GainRow
 {
-    private string _pointDescription;
+    [SerializeField] private string _pointDescription;
     private Dirty<int> _currentCount;
-    private int _extraCreditPerPoint;
+    [SerializeField] private int _extraCreditPerPoint;
 
     public CalculatedGainRow(
         string pointDescription,
@@ -17,6 +18,11 @@ public class CalculatedGainRow : GainRow
         _pointDescription = pointDescription;
         _currentCount = new Dirty<int>(currentCountGetter ?? (() => 0));
         _extraCreditPerPoint = extraCreditPerPoint;
+    }
+
+    public CalculatedGainRow() : this(default, default, default)
+    {
+        
     }
 
     public override void InvalidateCache()

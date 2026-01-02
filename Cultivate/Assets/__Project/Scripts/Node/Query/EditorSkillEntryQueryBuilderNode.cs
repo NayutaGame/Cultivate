@@ -2,7 +2,7 @@
 using PuppyDragon.uNody;
 using UnityEngine;
 
-[NodeWidth(400)]
+[NodeWidth(200)]
 [CreateNodeMenu("Query/EditorSkillEntryQueryBuilder", -10, true)]
 public class EditorSkillEntryQueryBuilderNode : Node
 {

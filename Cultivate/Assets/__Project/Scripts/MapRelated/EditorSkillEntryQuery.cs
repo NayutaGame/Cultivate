@@ -1,6 +1,7 @@
 
 using System;
 using CLLibrary;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [Serializable]
@@ -11,4 +12,5 @@ public class EditorSkillEntryQuery
     [SerializeField] public JingJieIndirect LowBaseJingJie = JingJieIndirect.练气;
     [SerializeField] public JingJieIndirect HighBaseJingJie = JingJieIndirect.返虚;
     [SerializeField] public EditorTag Tag;
+    [SerializeField] public bool IsMutator;
 }

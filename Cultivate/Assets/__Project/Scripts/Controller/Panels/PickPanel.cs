@@ -98,7 +98,16 @@ public class PickPanel : Panel
 
     private void ConfirmSelections(InteractBehaviour ib, PointerEventData d)
     {
-        List<SkillGhost> skillReferences = _selections.Map(v => v.Get<SkillGhost>()).ToList();
-        RunManager.Instance.Environment.ConfirmSelectionsProcedure(skillReferences);
+        List<int> pickedIndices = new List<int>();
+        for (int i = 0; i < SkillListView.GetCount(); i++)
+        {
+            SelectBehaviour selectBehaviour = SkillListView.ViewFromIndex(i).GetContentView().GetBehaviour<SelectBehaviour>();
+            if (_selections.Contains(selectBehaviour))
+            {
+                pickedIndices.Add(i);
+            }
+        }
+        
+        RunManager.Instance.Environment.ConfirmSelectionsProcedure(pickedIndices);
     }
 }

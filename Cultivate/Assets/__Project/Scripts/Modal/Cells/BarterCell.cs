@@ -98,7 +98,7 @@ public class BarterCell : Cell
             }
             else
             {
-                b.DrawMutator(JingJie.HuaShen);
+                b.DrawMutator(RunManager.Instance.Environment.JingJie);
             }
 
             BoardItems[i].SkillGhost = SkillGhost.FromGainingSkill(b.GainingSkills[0]);

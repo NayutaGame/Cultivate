@@ -40,7 +40,7 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 1110
+      x: 1010
       y: 171.5
       width: 16
       height: 16
@@ -51,8 +51,8 @@ MonoBehaviour:
     fieldName: DrawStrategies
     elementName: 
     connections:
-    - node: {fileID: -2612234200887632628}
-      guid: 5890f71c-b63c-4edc-903e-6427a7ad6e96
+    - node: {fileID: 3224505171501198741}
+      guid: dfa805b6-96d0-4109-86ac-4e5b3bf86991
       reroutes: []
     rect:
       serializedVersion: 2
@@ -74,68 +74,6 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 0
---- !u!114 &-2612234200887632628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 711d2f252e44a65409609bf9afe9b1db, type: 3}
-  m_Name: Editor Skill Entry Query List Node From Stack
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 504, y: 328}
-  Item:
-    ownerNode: {fileID: -2612234200887632628}
-    guid: 2dc7c70c-b6b5-4a42-8361-077a95e3b84d
-    fieldName: Item
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 502.1
-      y: 363.5
-      width: 16
-      height: 16
-    defaultValue:
-      EntryName: 
-      WuXingPred: 0
-      LowBaseJingJie: 0
-      HighBaseJingJie: 0
-      Tag: 1
-  Stack:
-    ownerNode: {fileID: -2612234200887632628}
-    guid: 822de90a-1879-433f-b154-58123e57e5b1
-    fieldName: Stack
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 502.1
-      y: 483.5
-      width: 16
-      height: 16
-    defaultValue: 4
-  Value:
-    ownerNode: {fileID: -2612234200887632628}
-    guid: 5890f71c-b63c-4edc-903e-6427a7ad6e96
-    fieldName: Value
-    elementName: 
-    connections:
-    - node: {fileID: -2656495821224910262}
-      guid: 0f9b56d9-9072-4cab-8f97-784a0bc3b640
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 690
-      y: 503.5
-      width: 16
-      height: 16
-    defaultValue: []
-    hasFunc: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,14 +87,14 @@ MonoBehaviour:
   m_Name: "FirstStep\u5251\u6C60"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -805.1761, y: -236.29115}
+  panOffset: {x: -698.2794, y: -485.71616}
   zoom: 0.7581316
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
   - {fileID: 7152706289609844853}
   - {fileID: -2656495821224910262}
-  - {fileID: -2612234200887632628}
+  - {fileID: 3224505171501198741}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -165,6 +103,68 @@ MonoBehaviour:
   outPoints:
   - {fileID: 0}
   - {fileID: 5254414691165939901}
+--- !u!114 &3224505171501198741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 711d2f252e44a65409609bf9afe9b1db, type: 3}
+  m_Name: Editor Skill Entry Query List Node From Stack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 440, y: 344}
+  Item:
+    ownerNode: {fileID: 3224505171501198741}
+    guid: d657691b-3294-48f2-bedf-5821a191d85d
+    fieldName: Item
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 438.1
+      y: 379.5
+      width: 16
+      height: 16
+    defaultValue:
+      EntryName: 
+      WuXingPred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 0
+      Tag: 1
+  Stack:
+    ownerNode: {fileID: 3224505171501198741}
+    guid: 88f4250f-88fd-4278-bde4-a22b5dc95c35
+    fieldName: Stack
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 438.1
+      y: 499.5
+      width: 16
+      height: 16
+    defaultValue: 4
+  Value:
+    ownerNode: {fileID: 3224505171501198741}
+    guid: dfa805b6-96d0-4109-86ac-4e5b3bf86991
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: -2656495821224910262}
+      guid: 0f9b56d9-9072-4cab-8f97-784a0bc3b640
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 626
+      y: 519.5
+      width: 16
+      height: 16
+    defaultValue: []
+    hasFunc: 1
 --- !u!114 &5254414691165939901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
       y: 51.5
       width: 16
       height: 16
-    defaultValue: "\u4F60\u6765\u5230\u4E86\u5251\u6C60\n\u4F60\u770B\u5230\u4E86\u5176\u4E2D\u51E0\u628A\u5251\u5728\u5411\u4F60\u53D1\u5149"
+    defaultValue: "\u4F60\u6765\u5230\u4E86\u5251\u6C60\uFF0C\u7136\u540E\u770B\u5230\u4E86\u5176\u4E2D\u51E0\u628A\u5251\u5728\u5411\u4F60\u53D1\u5149\n\u611F\u5230\u5FC3\u795E\u6F8E\u6E43\n\u83B7\u5F974\u5F20\u653B\u51FB\u724C"
   Option1String:
     ownerNode: {fileID: 7152706289609844853}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb
