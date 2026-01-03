@@ -12,4 +12,8 @@ public class EditorRunSkillQuery
 	[SerializeField] public JingJieIndirect HighBaseJingJie = JingJieIndirect.返虚;
 	[SerializeField] public EditorTag Tag;
 	[SerializeField] public string Description = "请提交卡牌";
+	[SerializeField] public int AttackRequirement;
+	[SerializeField] public int ArmorRequirement;
+	[SerializeField] public int ManaRequirement;
+	[SerializeField] public string BuffRequirement;
 }

@@ -20,7 +20,7 @@ public class ResultRow
         IsActive = false;
     }
 
-    public ResultRow() : this(0, 20, default)
+    public ResultRow() : this(1, 20, default)
     {
         
     }

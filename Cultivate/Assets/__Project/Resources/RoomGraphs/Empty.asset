@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5627440478662210802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79da0066f9d25ab49850a1bd50ea1246, type: 3}
+  m_Name: Exit Point
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 200, y: 0}
+  exit:
+    ownerNode: {fileID: -5627440478662210802}
+    guid: 2d894a48-1beb-4ae1-8160-3dc40256515c
+    fieldName: exit
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 198.1
+      y: 35.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: -5627440478662210802}
+    guid: 6adcb1b2-02a9-454d-9145-407ad7f70d30
+    fieldName: next
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    hasFunc: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d822f208d68c0fd4c94018d3b4c97691, type: 3}
+  m_Name: Empty
+  m_EditorClassIdentifier: 
+  blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
+  panOffset: {x: -84.27652, y: -145.21968}
+  zoom: 0.77484095
+  nodes:
+  - {fileID: 2496664909736741584}
+  - {fileID: -5627440478662210802}
+  parent: {fileID: 0}
+  children: []
+  inPoints:
+  - {fileID: 0}
+  - {fileID: 2496664909736741584}
+  outPoints:
+  - {fileID: 0}
+  - {fileID: -5627440478662210802}
+--- !u!114 &2496664909736741584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27457f01fa249384381df318b1acaec6, type: 3}
+  m_Name: Entry Point
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 0, y: 0}
+  prevs:
+    ownerNode: {fileID: 2496664909736741584}
+    guid: d8875751-9e59-4899-be7a-64f77d1b27ed
+    fieldName: prevs
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  enter:
+    ownerNode: {fileID: 2496664909736741584}
+    guid: b546160b-14d3-4310-8419-9f7e8d17401a
+    fieldName: enter
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 118
+      y: 35.5
+      width: 16
+      height: 16
+    hasFunc: 1

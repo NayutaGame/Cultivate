@@ -15,13 +15,7 @@ public class HubNode : Node, ILogicNode, ILogicConnector
     private InputPort<ILogicNode>[] PrevCells;
 
     public NodePort PrevPort => PrevCells[0];
-    public NodePort NextPort
-    {
-        get
-        {
-            return NextCell;
-        }
-    }
+    public NodePort NextPort => NextCell;
 
     public IEnumerable<ILogicNode> Prevs => PrevCells[0].Values;
     public ILogicNode Next

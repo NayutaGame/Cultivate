@@ -20,10 +20,11 @@ public class BattleCellNodeFromLadder : CellNode
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> LoseNext = new(self => self as ILogicNode);
     
-    private bool _isWin = false;
+    [PortSettings(ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
+    private OutputPort<bool> IsWin;
     
     public override NodePort PrevPort => prevs;
-    public override NodePort NextPort => _isWin ? WinNext : LoseNext;
+    public override NodePort NextPort => IsWin.Value ? WinNext : LoseNext;
 
     public override IEnumerable<ILogicNode> Prevs => prevs.Values;
     
@@ -54,13 +55,13 @@ public class BattleCellNodeFromLadder : CellNode
     {
         if (signal is BattleResultSignal battleResultSignal)
         {
-            _isWin = battleResultSignal.Win;
+            IsWin.Value = battleResultSignal.Win;
             RunManager.Instance.Environment.CommitBattleNeuron.Invoke(battleResultSignal.Win);
             return true;
         }
         else if (signal is SkipCombatSignal skipCombatSignal)
         {
-            _isWin = skipCombatSignal.Win;
+            IsWin.Value = skipCombatSignal.Win;
             RunManager.Instance.Environment.CommitBattleNeuron.Invoke(skipCombatSignal.Win);
             return true;
         }

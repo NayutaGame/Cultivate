@@ -18,8 +18,6 @@ public class GainRowView : XView
         GainRow gainRow = Get<GainRow>();
         DescriptionText.text = gainRow.GetDescriptionText().GetHighlightedString();
         ScoreText.text = gainRow.GetScoreText();
-        
-        ScoreText.text = gainRow.GetDescriptionText().GetHighlightedString();
         GainRow.GainStyle gainStyle = gainRow.GetGainStyle();
         switch (gainStyle)
         {

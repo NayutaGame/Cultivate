@@ -12,7 +12,7 @@ public class RandomSwitchNode : Node, ILogicNode, ILogicConnector
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
     private InputPort<ILogicNode> PrevCell;
     
-    [PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<int>[] Weights;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]

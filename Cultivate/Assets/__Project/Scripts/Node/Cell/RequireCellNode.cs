@@ -31,7 +31,6 @@ using CLLibrary;
 using PuppyDragon.uNody;
 using PuppyDragon.uNody.Logic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 [NodeWidth(300)]
 [CreateNodeMenu("Cell/Require Cell", -10, true)]

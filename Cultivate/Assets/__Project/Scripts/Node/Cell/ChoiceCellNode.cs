@@ -6,7 +6,7 @@ using PuppyDragon.uNody.Logic.BlackboardVariable;
 using UnityEngine;
 
 [NodeWidth(300)]
-[CreateNodeMenu("Cell/Choice Cell", -9, true)]
+[CreateNodeMenu("Cell/Choice Cell", -10, true)]
 public class ChoiceCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]

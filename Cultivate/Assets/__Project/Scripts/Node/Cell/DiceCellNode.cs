@@ -10,7 +10,7 @@ using UnityEngine.Assertions;
 public class DiceCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
-    private InputPort<ILogicNode> prevs;
+    private InputPort<ILogicNode> PrevCell;
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> DiceDescription = new("你现在的想法是......");
@@ -18,16 +18,20 @@ public class DiceCellNode : CellNode
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<int> DiceRange = new(20);
     
-    [SerializeField]
-    [PortSettings(false, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private InputPort<GainRow>[] GainTable;
     
-    [SerializeField]
-    [PortSettings(false, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Strict)]
+    [PortSettings(false, ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<ResultRow>[] ResultTable;
     
     [ArrowPort, PortSettings(ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode>[] Paths;
+
+    [PortSettings(false, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Strict)] [SerializeField]
+    private OutputPort<int> FinalIndex;
+
+    [PortSettings(false, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Strict)] [SerializeField]
+    private OutputPort<int> FinalScore;
 
     private int pathIndex = -1;
     
@@ -35,7 +39,7 @@ public class DiceCellNode : CellNode
     {
     }
     
-    public override NodePort PrevPort => prevs;
+    public override NodePort PrevPort => PrevCell;
     public override NodePort NextPort 
     {
         get
@@ -47,7 +51,7 @@ public class DiceCellNode : CellNode
         }
     }
     
-    public override IEnumerable<ILogicNode> Prevs => prevs.Values;
+    public override IEnumerable<ILogicNode> Prevs => PrevCell.Values;
     
     public override ILogicNode Next
     {
@@ -112,6 +116,9 @@ public class DiceCellNode : CellNode
         if (signal is ExitDiceSignal exitDiceSignal)
         {
             pathIndex = diceCell.GetResultIndex();
+            FinalIndex.Value = diceCell.GetResultIndex();
+            FinalScore.Value = diceCell.GetFinalDiceValue();
+            
             Assert.IsTrue(0 <= pathIndex && pathIndex < Paths.Length, "ResultIndex is out of range");
             return true;
         }

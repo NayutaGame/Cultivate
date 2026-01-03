@@ -5,14 +5,11 @@ using PuppyDragon.uNody.Logic;
 using UnityEngine;
 
 [NodeWidth(300)]
-[CreateNodeMenu("Cell/Dialog Cell", -9, true)]
+[CreateNodeMenu("Cell/Dialog Cell", -10, true)]
 public class DialogCellNode : CellNode
 {
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
     private InputPort<ILogicNode> prevs;
-    
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<string> Title;
     
     [Multiline(5), PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> DetailedText;
@@ -96,7 +93,7 @@ public class DialogCellNode : CellNode
             options.Add(DialogOption.FromText("继续"));
         
         return new DialogCell(
-            Title.Value,
+            "",
             DetailedText.Value,
             options.ToArray()
         );

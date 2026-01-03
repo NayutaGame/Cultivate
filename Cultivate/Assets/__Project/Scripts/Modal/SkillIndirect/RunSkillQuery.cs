@@ -5,7 +5,7 @@ using CLLibrary;
 
 public sealed class RunSkillQuery : AnnotatableLine
 {
-    private Predicate<RunSkill> _pred;
+    private List<Predicate<RunSkill>> _predicates;
     private SkillEntry _entry;
     private WuXingPred _wuXingPred;
     private JingJiePred _jingJiePred;
@@ -19,7 +19,7 @@ public sealed class RunSkillQuery : AnnotatableLine
     };
     public object Get(string s) => Accessor[s](this);
     private RunSkillQuery(
-        Predicate<RunSkill> pred = null,
+        List<Predicate<RunSkill>> predicates = null,
         SkillEntry entry = null,
         WuXingPred wuXingPred = WuXingPred.任意,
         JingJiePred jingJiePred = JingJiePred.任意,
@@ -27,7 +27,7 @@ public sealed class RunSkillQuery : AnnotatableLine
         TagComposite tagComposite = null,
         Description description = null)
     {
-        _pred = pred;
+        _predicates = predicates ?? new List<Predicate<RunSkill>>();
         _entry = entry;
         _wuXingPred = wuXingPred;
         _jingJiePred = jingJiePred;
@@ -70,7 +70,24 @@ public sealed class RunSkillQuery : AnnotatableLine
         JingJie lowBase = JingJie.FromIndirect(editorQuery.LowBaseJingJie);
         JingJie highBase = JingJie.FromIndirect(editorQuery.HighBaseJingJie);
         Bound baseJingjieBound = new(lowBase, highBase);
+
+        List<Predicate<RunSkill>> predicates = new();
+        
+        if (editorQuery.AttackRequirement > 0)
+            predicates.Add(AttackRequirementPred(editorQuery.AttackRequirement));
+
+        if (editorQuery.ArmorRequirement > 0)
+            predicates.Add(ArmorRequirementPred(editorQuery.ArmorRequirement));
+        
+        if (editorQuery.ManaRequirement > 0)
+            predicates.Add(ManaRequirementPred(editorQuery.ManaRequirement));
+
+        BuffEntry buffEntry = Encyclopedia.BuffCategory.FromName(editorQuery.BuffRequirement);
+        if (buffEntry != null)
+            predicates.Add(BuffRequirementPred(buffEntry));
+        
         return new(
+            predicates: predicates,
             entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
             wuXingPred: editorQuery.WuXingPred,
             jingJiePred: editorQuery.JingJiePred,
@@ -80,8 +97,13 @@ public sealed class RunSkillQuery : AnnotatableLine
     }
 
     public RunSkillQuery Clone()
-        => new(_pred, _entry, _wuXingPred, _jingJiePred, _baseJingJieBound, _tagComposite, _description);
-    
+    {
+        List<Predicate<RunSkill>> newList = new();
+        foreach (Predicate<RunSkill> pred in _predicates)
+            newList.Add(pred);
+        return new RunSkillQuery(newList, _entry, _wuXingPred, _jingJiePred, _baseJingJieBound, _tagComposite, _description);
+    }
+
     public List<RunSkillQuery> Stack(int stack)
     {
         List<RunSkillQuery> toRet = new();
@@ -92,7 +114,7 @@ public sealed class RunSkillQuery : AnnotatableLine
     
     public bool Matches(RunSkill runSkill)
     {
-        if (_pred != null && !_pred(runSkill))
+        if (!_predicates.AllMatch(pred => pred(runSkill)))
             return false;
 
         if (_entry != null && runSkill.GetEntry() != _entry)
@@ -118,4 +140,28 @@ public sealed class RunSkillQuery : AnnotatableLine
 
     public Description GetDescription()
         => _description;
+
+    private static Predicate<RunSkill> AttackRequirementPred(int value)
+    {
+        return skill => skill.SkillDefinition.GetProcedureDefinitions()
+            .Any(pd => pd is AttackProcedureDefinition attackPd && attackPd.Value >= value);
+    }
+
+    private static Predicate<RunSkill> ArmorRequirementPred(int value)
+    {
+        return skill => skill.SkillDefinition.GetProcedureDefinitions()
+            .Any(pd => pd is GainArmorProcedureDefinition gainArmorPd && gainArmorPd.Value >= value);
+    }
+
+    private static Predicate<RunSkill> ManaRequirementPred(int value)
+    {
+        return skill => skill.SkillDefinition.GetProcedureDefinitions()
+            .Any(pd => pd is GainBuffProcedureDefinition gainBuffPd && gainBuffPd.BuffEntry.GetName() == "灵气" && gainBuffPd.Stack >= value);
+    }
+
+    private static Predicate<RunSkill> BuffRequirementPred(BuffEntry buffEntry)
+    {
+        return skill => skill.SkillDefinition.GetProcedureDefinitions()
+            .Any(pd => pd is GainBuffProcedureDefinition gainBuffPd && gainBuffPd.BuffEntry == buffEntry && gainBuffPd.Stack >= 1);
+    }
 }

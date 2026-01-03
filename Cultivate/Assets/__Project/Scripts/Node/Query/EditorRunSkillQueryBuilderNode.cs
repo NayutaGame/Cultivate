@@ -29,6 +29,12 @@ public class EditorRunSkillQueryBuilderNode : Node
 
 	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
 	private InputPort<string> Description;
+	
+	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+	public InputPort<int> AttackRequirement;
+	
+	[PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
+	public InputPort<int> ArmorRequirement;
 
 	private EditorRunSkillQuery Build()
 	{
@@ -43,7 +49,9 @@ public class EditorRunSkillQueryBuilderNode : Node
 			LowBaseJingJie = LowBaseJingJie.Value,
 			HighBaseJingJie = HighBaseJingJie.Value,
 			Tag = Tag.Value,
-			Description = Description.Value
+			Description = Description.Value,
+			AttackRequirement = AttackRequirement.Value,
+			ArmorRequirement = ArmorRequirement.Value
 		};
 		return result;
 	}

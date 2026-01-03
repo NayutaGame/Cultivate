@@ -532,6 +532,18 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
                 yield return _hand[i];
     }
 
+    public IEnumerable<RunSkill> TraversalMatchingSkills(RunSkillQuery query, bool excludingField = false, bool excludingHand = false)
+    {
+        if (!excludingField)
+            foreach (var slot in RunManager.Instance.Environment.Home.TraversalCurrentSlots())
+                if (slot.Skill != null && query.Matches(slot.Skill))
+                    yield return slot.Skill;
+        if (!excludingHand)
+            for (int i = 0; i < RunManager.Instance.Environment.Hand.Count(); i++)
+                if (query.Matches(_hand[i]))
+                    yield return _hand[i];
+    }
+
     public void SetGuideToFinish()
     {
         // TODO
@@ -986,8 +998,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         GainSkillBuilder b = new();
         b.Draw(d.DrawStrategies, d.PreferredJingJie, distinct: true, consume: true);
-        if (AllowMutate())
-            b.DrawMutator(JingJie);
 
         b.GainingSkills.Do(g => d.Skills.Add(SkillGhost.FromGainingSkill(g)));
 
