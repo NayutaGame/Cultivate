@@ -9,7 +9,6 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
     [SerializeReference] public CharacterProfile CharacterProfile;
     [SerializeReference] public DifficultyProfile DifficultyProfile;
     [SerializeReference] public List<PackEntry> PacksToStartWith;
-    [SerializeField] public MapEntry MapEntry;
 
     [NonSerialized] private MergeRule[] _defaultMergeRules;
     
@@ -27,28 +26,6 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
         DifficultyProfile = difficultyProfile;
         PacksToStartWith = packsToStartWith ?? GetCharacter().GetDefaultPacks();
 
-        if (!AppManager.Instance.AudienceIsDeveloper())
-        {
-            MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准");
-        }
-        else
-        {
-            MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("返虚测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("墨染测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准无教程");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("标准无教程");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("发现");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("动画测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("排局");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("多段测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("拖拽测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("结算测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("商店测试");
-            // MapEntry = mapEntry ?? Encyclopedia.MapCategory.FromName("教学10");
-        }
-
         _defaultMergeRules = DifficultyProfile.GetEntry().AllowFanXuMerge
             ? MergeRule.DefaultMergeRules
             : MergeRule.DefaultMergeRulesLockFanXu;
@@ -58,8 +35,6 @@ public class RunConfig : Addressable, ISerializationCallbackReceiver
 
     public void OnAfterDeserialize()
     {
-        MapEntry = string.IsNullOrEmpty(MapEntry.GetId()) ? null : Encyclopedia.MapCategory.FromId(MapEntry.GetId());
-
         for (int i = 0; i < PacksToStartWith.Count; i++)
         {
             PackEntry entry = PacksToStartWith[i];

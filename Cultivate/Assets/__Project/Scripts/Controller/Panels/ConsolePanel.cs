@@ -299,7 +299,7 @@ public class ConsolePanel : Panel, Addressable
 
     private void DrawSkill()
     {
-        JingJie currJingJie = RunManager.Instance.Environment.JingJie;
+        JingJie currJingJie = RunManager.Instance.Environment.Map.JingJie;
         SkillEntryQuery query = SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, currJingJie));
         RunManager.Instance.Environment.DrawSkillProcedure(query, currJingJie);
     }
@@ -324,12 +324,12 @@ public class ConsolePanel : Panel, Addressable
     {
         RoomEntry roomEntry = ib.Get<RoomEntry>();
         int ladder = int.TryParse(LadderInputField.text, out int result) ? result : 0;
-        RunManager.Instance.Environment.EnterRoomProcedure(null, roomEntry, ladder);
+        RunManager.Instance.Environment.Map.EnterRoomProcedure(null, roomEntry, ladder);
     }
 
     private void ExitRoom()
     {
-        RunManager.Instance.Environment.ExitRoomProcedure();
+        RunManager.Instance.Environment.Map.ExitRoomProcedure();
     }
 
     private void OnTesterNoteInputFieldEndEdit(string value)

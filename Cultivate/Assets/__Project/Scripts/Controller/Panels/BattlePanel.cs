@@ -1,11 +1,8 @@
 
 using System;
-using System.Collections.Generic;
-using CLLibrary;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
 public class BattlePanel : Panel
@@ -116,7 +113,7 @@ public class BattlePanel : Panel
 
     private void Combat(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickCombatSignal());
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new ClickCombatSignal());
         CanvasManager.Instance.RefreshGuide();
         CombatActions[_combatActionIndex]();
     }
@@ -162,7 +159,7 @@ public class BattlePanel : Panel
     {
         if (RunManager.Instance == null || RunManager.Instance.Environment == null)
             return;
-        AudioManager.Play(RunManager.Instance.Environment.JingJie.GetAudio());
+        AudioManager.Play(RunManager.Instance.Environment.Map.JingJie.GetAudio());
     }
 
     public override Tween EnterIdle()

@@ -82,13 +82,13 @@ public class DicePanel : Panel
         bool isRolled = cell.State == DiceCell.DiceCellState.Rolled;
         if (!isRolled)
         {
-            RunManager.Instance.Environment.ReceiveSignalProcedure(new RollSignal());
+            RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new RollSignal());
             // staging
             Refresh();
         }
         else
         {
-            RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitDiceSignal());
+            RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new ExitDiceSignal());
         }
     }
 }

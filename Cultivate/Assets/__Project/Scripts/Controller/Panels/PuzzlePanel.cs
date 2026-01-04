@@ -67,7 +67,7 @@ public class PuzzlePanel : Panel
     private void Callback()
     {
         PuzzleCell d = _address.Get<PuzzleCell>();
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new PuzzleResultSignal(d.GetResult().Flag));
     }
     
     // public override Tween ShowAnimation()

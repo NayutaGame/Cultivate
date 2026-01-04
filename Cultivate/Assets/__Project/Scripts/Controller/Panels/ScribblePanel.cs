@@ -31,6 +31,6 @@ public class ScribblePanel : Panel
 
     private void Exit(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ExitScribbleSignal());
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new ExitScribbleSignal());
     }
 }

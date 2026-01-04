@@ -94,11 +94,11 @@ public class BarterCell : Cell
             GainSkillBuilder b = new();
             if (!_targetIsMutator)
             {
-                b.Draw(_toQuery, RunManager.Instance.Environment.JingJie, consume: false);
+                b.Draw(_toQuery, RunManager.Instance.Environment.Map.JingJie, consume: false);
             }
             else
             {
-                b.DrawMutator(RunManager.Instance.Environment.JingJie);
+                b.DrawMutator(RunManager.Instance.Environment.Map.JingJie);
             }
 
             BoardItems[i].SkillGhost = SkillGhost.FromGainingSkill(b.GainingSkills[0]);

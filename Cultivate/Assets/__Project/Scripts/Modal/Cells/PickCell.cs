@@ -61,7 +61,7 @@ public class PickCell : Cell
             detailedText: $"检索1张{currJingJie.GetName()}攻击牌",
             pickCardCountRange: new(0, 1),
             drawStrategies: SkillEntryQuery.FromBaseJingJieBoundTag(
-                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.Map.JingJie),
                 tagComposite: TagCategory.Attack).Stack(10)
         );
         
@@ -77,7 +77,7 @@ public class PickCell : Cell
             detailedText: $"检索1张{currJingJie.GetName()}防御牌",
             pickCardCountRange: new(0, 1),
             drawStrategies: SkillEntryQuery.FromBaseJingJieBoundTag(
-                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.Map.JingJie),
                 tagComposite: TagCategory.Defend).Stack(10)
         );
         
@@ -93,7 +93,7 @@ public class PickCell : Cell
             detailedText: $"检索1张{currJingJie.GetName()}灵气牌",
             pickCardCountRange: new(0, 1),
             drawStrategies: SkillEntryQuery.FromBaseJingJieBoundTag(
-                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie),
+                baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.Map.JingJie),
                 tagComposite: TagCategory.Mana).Stack(10)
         );
         
@@ -139,7 +139,7 @@ public class PickCell : Cell
     public override void DefaultEnter(Cell cell)
     {
         GainSkillBuilder b = new();
-        b.Draw(_drawStrategies, RunManager.Instance.Environment.JingJie, filterEmpty: true, distinct: true, consume: false);
+        b.Draw(_drawStrategies, RunManager.Instance.Environment.Map.JingJie, filterEmpty: true, distinct: true, consume: false);
         b.GainingSkills.Do(g => PopulateInventory(SkillGhost.FromGainingSkill(g)));
     }
 

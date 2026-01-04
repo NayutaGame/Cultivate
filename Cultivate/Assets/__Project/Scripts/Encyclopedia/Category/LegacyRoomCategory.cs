@@ -72,26 +72,26 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
 
                     bool shouldUpdateSlotCount = roomDefinition.ShouldUpdateSlotCount;
                     
-                    bool isHuaShenFinalBoss = roomDefinition._isBoss && RunManager.Instance.Environment.JingJie == JingJie.HuaShen;
+                    bool isHuaShenFinalBoss = roomDefinition._isBoss && RunManager.Instance.Environment.Map.JingJie == JingJie.HuaShen;
                     if (isHuaShenFinalBoss)
                         RunManager.Instance.Environment.HuaShenBossEntity = enemy.GetModel();
 
                     bool allowFanXu = RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().AllowFanXuBoss;
 
                     bool willCommit = roomDefinition._isBoss &&
-                                      RunManager.Instance.Environment.IsFinalJingJie() &&
+                                      RunManager.Instance.Environment.Map.IsFinalJingJie() &&
                                       !(isHuaShenFinalBoss && allowFanXu);
                     if (willCommit)
                     {
                         A.SetWinOperation(() =>
                         {
-                            RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                            RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                             return null;
                         });
 
                         A.SetLoseOperation(() =>
                         {
-                            RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                            RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                             return null;
                         });
                     }
@@ -500,8 +500,8 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     // 11 -> 易宝斋，选择1张牌卖掉，之后访问一次商店
                     
                     RunEnvironment env = RunManager.Instance.Environment;
-                    JingJie currJingJie = env.JingJie;
-                    JingJie nextJingJie = (env.JingJie + 1).ClampUpper(JingJie.HuaShen);
+                    JingJie currJingJie = env.Map.JingJie;
+                    JingJie nextJingJie = (env.Map.JingJie + 1).ClampUpper(JingJie.HuaShen);
                     
                     string[] descriptions = new string[12]
                     {
@@ -551,9 +551,9 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         int index = combination[i];
                         dialogOptions[i] = DialogOption.FromTextAndSelect(descriptions[index], option =>
                         {
-                            JingJie beforeJingJie = env.JingJie;
-                            JingJie afterJingJie = env.JingJie + 1;
-                            env.SetJingJieProcedure(afterJingJie);
+                            JingJie beforeJingJie = env.Map.JingJie;
+                            JingJie afterJingJie = env.Map.JingJie + 1;
+                            env.Map.SetJingJieProcedure(afterJingJie);
                             SetHealthDetails setHealthDetails = SetHealthDetails.FromJingJieChange(beforeJingJie, afterJingJie);
                             env.SetHealthProcedure(setHealthDetails);
                             return panels[index];
@@ -581,8 +581,8 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                         detailedText: "最近有些空闲的时间，你决定要",
                         "加紧修炼", "去温泉", "喝点人参茶");
 
-                    JingJie currJingJie = RunManager.Instance.Environment.JingJie;
-                    JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, JingJie.HuaShen);
+                    JingJie currJingJie = RunManager.Instance.Environment.Map.JingJie;
+                    JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.Map.JingJie + 1, JingJie.HuaShen);
                     
                     RequireCell B = RequireCell.FromConstantDetailedText(
                         titleText:          "感悟",
@@ -636,7 +636,7 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
 
                     A[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
 
@@ -2741,13 +2741,13 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     battleCell1.SetWinOperation(() => encore ? firstWinWithEncore : firstWinNoEncore);
                     battleCell1.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                         return null;
                     });
                     
                     firstWinNoEncore[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
 
@@ -2756,13 +2756,13 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     battleCell2.SetWinOperation(() => secondWin);
                     battleCell2.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                         return null;
                     });
                     
                     secondWin[0].SetSelect(option =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
 
@@ -2806,12 +2806,12 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                     
                     battleCell3.SetWinOperation(() =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Victorious);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Victorious);
                         return null;
                     });
                     battleCell3.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.CommitRunProcedure(RunResult.RunOutcome.Defeated);
+                        RunManager.Instance.Environment.Map.CommitRunProcedure(RunResult.RunOutcome.Defeated);
                         return null;
                     });
 
@@ -3293,8 +3293,8 @@ public class LegacyRoomCategory : Category<LegacyRoomEntry>
                             RunManager.Instance.Environment.DrawSkillProcedure(
                                 SkillEntryQuery.FromWuXingBaseJingJieBound(
                                     wuXing: options[index],
-                                    baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)),
-                                RunManager.Instance.Environment.JingJie);
+                                    baseJingJieBound: new(JingJie.LianQi, RunManager.Instance.Environment.Map.JingJie)),
+                                RunManager.Instance.Environment.Map.JingJie);
                         }
                         return null;
                     };

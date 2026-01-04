@@ -51,6 +51,9 @@ public class RoomEnvironment
         _roomGraph.Step();
     }
 
+    public int GetLadder()
+        => _ladder;
+
     public void ReceiveSignal(Signal signal)
     {
         bool cellIsEnded = CurrentCell.ReceiveSignal(signal);

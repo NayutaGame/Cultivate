@@ -56,7 +56,7 @@ public class TestReport : ISerializationCallbackReceiver
         PhysicalTime = DateTime.Now;
         PassedTime = env.GetPassedTime();
         Home = env.Home.Clone();
-        JingJie = env.JingJie;
+        JingJie = env.Map.JingJie;
         Hand = env.Hand.Clone();
         Gold = env.GetGold().Curr;
     }

@@ -31,6 +31,6 @@ public class ChoiceOption : Addressable
 
     public void MakeChoice()
     {
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedChoiceSignal(Index));
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new SelectedChoiceSignal(Index));
     }
 }

@@ -144,7 +144,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 {
                     new(RunClosureDict.WIL_CHANGE_CELL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
-                        PanelChangedDetails d = (PanelChangedDetails)details;
+                        CellChangedDetails d = (CellChangedDetails)details;
 
 
                         if (p.IsUnlocked()) return;
@@ -334,7 +334,7 @@ public class AchievementCategory : Category<AchievementEntry>
 
                         if (p.IsUnlocked()) return;
                         if (d.Value >= 0) return;
-                        if (RunManager.Instance.Environment.JingJie >= JingJie.JinDan) return;
+                        if (RunManager.Instance.Environment.Map.JingJie >= JingJie.JinDan) return;
 
                         const string TAKEN_DAMAGE_THIS_RUN_KEY = "HasTakenDamageThisRun";
                         SerializableDictionary intMemory = RunManager.Instance.Environment.IntMemory;
@@ -449,7 +449,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 {
                     new(RunClosureDict.WIL_CHANGE_CELL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
-                        PanelChangedDetails d = (PanelChangedDetails)details;
+                        CellChangedDetails d = (CellChangedDetails)details;
 
                         if (p.IsUnlocked()) return;
 
@@ -660,7 +660,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         if (p.IsUnlocked()) return;
                         if (d.MimicIndex == null) return;
                         
-                        JingJie currentJingJie = RunManager.Instance.Environment.JingJie;
+                        JingJie currentJingJie = RunManager.Instance.Environment.Map.JingJie;
                         JingJie mimickedJingJie = d.Skills[d.MimicIndex.Value].GetJingJie();
                         if (mimickedJingJie <= currentJingJie) return;
                         p.Unlock();
@@ -821,7 +821,7 @@ public class AchievementCategory : Category<AchievementEntry>
                 {
                     new(RunClosureDict.WIL_CHANGE_CELL, 0, async (owner, closure, details) => {
                         AchievementProfile p = (AchievementProfile)owner;
-                        PanelChangedDetails d = (PanelChangedDetails)details;
+                        CellChangedDetails d = (CellChangedDetails)details;
 
                         if (p.IsUnlocked()) return;
 

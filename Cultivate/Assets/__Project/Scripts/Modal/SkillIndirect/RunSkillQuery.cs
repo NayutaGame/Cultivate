@@ -82,7 +82,7 @@ public sealed class RunSkillQuery : AnnotatableLine
         if (editorQuery.ManaRequirement > 0)
             predicates.Add(ManaRequirementPred(editorQuery.ManaRequirement));
 
-        BuffEntry buffEntry = Encyclopedia.BuffCategory.FromName(editorQuery.BuffRequirement);
+        BuffEntry buffEntry = Encyclopedia.BuffCategory.FromName(editorQuery.BuffRequirement ?? "");
         if (buffEntry != null)
             predicates.Add(BuffRequirementPred(buffEntry));
         

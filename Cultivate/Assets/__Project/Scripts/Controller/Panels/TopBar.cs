@@ -64,7 +64,7 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.GainHealthNeuron.Add(GainHealth);
         RunManager.Instance.Environment.LoseHealthNeuron.Add(LoseHealth);
         
-        RunManager.Instance.Environment.JingJieChangedNeuron.Add(RefreshJingJieText);
+        RunManager.Instance.Environment.Map.JingJieChangedNeuron.Add(RefreshJingJieText);
         
         Refresh();
     }
@@ -78,7 +78,7 @@ public class TopBar : MonoBehaviour
         RunManager.Instance.Environment.GainHealthNeuron.Remove(GainHealth);
         RunManager.Instance.Environment.LoseHealthNeuron.Remove(LoseHealth);
         
-        RunManager.Instance.Environment.JingJieChangedNeuron.Remove(RefreshJingJieText);
+        RunManager.Instance.Environment.Map.JingJieChangedNeuron.Remove(RefreshJingJieText);
     }
 
     private void GainMingYuan(int value)
@@ -123,7 +123,7 @@ public class TopBar : MonoBehaviour
         Health.Refresh();
         
         DifficultyText.text = $"难度{RunManager.Instance.Environment.GetRunConfig().GetDifficulty()}";
-        JingJieText.text = $"{RunManager.Instance.Environment.JingJie.GetName()}期";
+        JingJieText.text = $"{RunManager.Instance.Environment.Map.JingJie.GetName()}期";
     }
 
     public void OpenMenu()

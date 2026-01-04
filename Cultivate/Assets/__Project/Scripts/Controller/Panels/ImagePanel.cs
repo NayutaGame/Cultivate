@@ -43,6 +43,6 @@ public class ImagePanel : Panel
     private void ClickedSignal()
     {
         // ImageButton.onClick.RemoveAllListeners();
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new ClickedSignal());
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new ClickedSignal());
     }
 }

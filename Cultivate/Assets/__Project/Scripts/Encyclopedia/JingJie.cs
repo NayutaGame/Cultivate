@@ -125,9 +125,9 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
             JingJieIndirect.元婴 => YuanYing,
             JingJieIndirect.化神 => HuaShen,
             JingJieIndirect.返虚 => FanXu,
-            JingJieIndirect.当前 => RunManager.Instance.Environment.JingJie,
-            JingJieIndirect.下一境界 => Mathf.Min(RunManager.Instance.Environment.JingJie + 1, HuaShen),
-            JingJieIndirect.上一境界 => Mathf.Max(RunManager.Instance.Environment.JingJie - 1, LianQi),
+            JingJieIndirect.当前 => RunManager.Instance.Environment.Map.JingJie,
+            JingJieIndirect.下一境界 => Mathf.Min(RunManager.Instance.Environment.Map.JingJie + 1, HuaShen),
+            JingJieIndirect.上一境界 => Mathf.Max(RunManager.Instance.Environment.Map.JingJie - 1, LianQi),
             _ => null
         };
     }
@@ -173,9 +173,9 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
             case JingJiePred.返虚:
                 return jingJie.GetIndex() == 5;
             case JingJiePred.当前:
-                return jingJie == RunManager.Instance.Environment.JingJie;
+                return jingJie == RunManager.Instance.Environment.Map.JingJie;
             case JingJiePred.下一境界:
-                JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.JingJie + 1, HuaShen);
+                JingJie nextJingJie = Mathf.Min(RunManager.Instance.Environment.Map.JingJie + 1, HuaShen);
                 return jingJie == nextJingJie;
             default:
                 return false;

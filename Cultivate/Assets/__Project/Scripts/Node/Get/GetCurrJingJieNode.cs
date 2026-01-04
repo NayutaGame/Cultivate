@@ -15,13 +15,13 @@ public class GetCurrJingJieNode : Node
     {
         if (!Application.isPlaying)
             return JingJieIndirect.练气;
-        return JingJie.ToIndirect(RunManager.Instance.Environment.JingJie);
+        return JingJie.ToIndirect(RunManager.Instance.Environment.Map.JingJie);
     }
 
     private int GetOrdinal()
     {
         if (!Application.isPlaying)
             return 0;
-        return RunManager.Instance.Environment.JingJie.GetIndex();
+        return RunManager.Instance.Environment.Map.JingJie.GetIndex();
     }
 }

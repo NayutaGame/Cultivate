@@ -81,7 +81,7 @@ public class StageManager : Singleton<StageManager>, Addressable
 
     private void SetSceneFromConfig(StageConfig config)
     {
-        int jingJie = RunManager.Instance.Environment.JingJie;
+        int jingJie = RunManager.Instance.Environment.Map.JingJie;
         jingJie = jingJie.Clamp(0, 4);
         for (int i = 0; i < StageScenes.Length; i++)
         {
@@ -116,7 +116,7 @@ public class StageManager : Singleton<StageManager>, Addressable
 
         StageConfig config = _environment.GetConfig();
         StageResult result = StageResult.FromConfig(StageConfig.ForCombatOnlyResult(config.Home, config.Away, config.RunConfig));
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new BattleResultSignal(result.Flag == 1));
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new BattleResultSignal(result.Flag == 1));
         CanvasManager.Instance.Curtain.GetAnimator().SetState(1);
     }
 

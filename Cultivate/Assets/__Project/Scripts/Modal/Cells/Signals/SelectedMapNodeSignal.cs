@@ -14,7 +14,7 @@ public class SelectedMapNodeSignal : Signal
 
     public static SelectedMapNodeSignal FromMapNodeAndRoomEntry(MapNode mapNode, RoomEntry roomEntry)
     {
-        int mapNodeIndex = RunManager.Instance.Environment.GetIndexOfMapNode(mapNode);
+        int mapNodeIndex = RunManager.Instance.Environment.Map.GetIndexOfMapNode(mapNode);
         return new SelectedMapNodeSignal(mapNode, mapNodeIndex, roomEntry);
     }
 }

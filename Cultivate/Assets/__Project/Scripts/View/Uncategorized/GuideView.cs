@@ -175,6 +175,6 @@ public class GuideView : MonoBehaviour
     private void ButtonClick()
     {
         RunEnvironment env = RunManager.Instance.Environment;
-        env.GuideProcedure(new ConfirmGuideSignal());
+        env.Map.GuideProcedure(new ConfirmGuideSignal());
     }
 }

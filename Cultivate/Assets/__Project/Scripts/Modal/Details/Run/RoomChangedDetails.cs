@@ -1,12 +1,10 @@
 
 public class RoomChangedDetails : RunClosureDetails
 {
-    public Room FromRoom;
-    public Room ToRoom;
+    public RoomEnvironment ToRoom;
 
-    public RoomChangedDetails(Room fromRoom, Room toRoom)
+    public RoomChangedDetails(RoomEnvironment toRoom)
     {
-        FromRoom = fromRoom;
         ToRoom = toRoom;
     }
 }

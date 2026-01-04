@@ -4,6 +4,7 @@ using CLLibrary;
 
 public class MapNode
 {
+    private bool _accessible;
     private MapNodeEntry _entry;
     private RunNPC _visitor;
     
@@ -14,6 +15,12 @@ public class MapNode
     }
 
     public MapNodeEntry Entry => _entry;
+
+    public bool IsAccessible
+    {
+        get => _accessible;
+        set => _accessible = value;
+    }
 
     public List<RoomOption> GetRoomOptions()
     {

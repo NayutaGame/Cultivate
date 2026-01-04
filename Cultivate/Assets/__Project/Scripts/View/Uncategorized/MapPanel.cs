@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,6 +9,9 @@ public class MapPanel : Panel
     [SerializeField] private RectTransform BodyTransform;
     [SerializeField] private RectTransform BodyShowPivot;
     [SerializeField] private RectTransform BodyHidePivot;
+
+    [SerializeField] private TMP_Text StepText;
+    [SerializeField] private CLButton LastRoomButton;
     
     [SerializeField] private PropagatePointerEnter OpenZone;
     [SerializeField] private PropagatePointerEnter CloseZone;
@@ -19,10 +23,10 @@ public class MapPanel : Panel
         base.AwakeFunction();
 
         Address address = new Address("Run.Environment.Map");
-        MapNodeListView.SetAddress(new("Run.Environment.MapNodes"));
-        
-        // MapNodeListView.LeftClickNeuron.Join(SelectedMapNode);
+        MapNodeListView.SetAddress(new("Run.Environment.Map.MapNodes"));
         MapNodeListView.NeuronBundle.LeftClickNeuron.Join(CreateMenu);
+        
+        LastRoomButton.LeftClickNeuron.Join(EnterLastRoom);
 
         OpenZone._onPointerEnter = TryShow;
         CloseZone._onPointerEnter = TryHide;
@@ -40,23 +44,29 @@ public class MapPanel : Panel
 
     private void OnEnable()
     {
-        RunManager.Instance.Environment.RoomChangedNeuron.Add(RoomChanged);
-        RunManager.Instance.Environment.LevelChangedNeuron.Add(LevelChanged);
+        RunManager.Instance.Environment.Map.RoomChangedNeuron.Add(RoomChanged);
+        RunManager.Instance.Environment.Map.LevelChangedNeuron.Add(LevelChanged);
         MapNodeListView.Sync();
+        StepText.text = RunManager.Instance.Environment.Map.GetStepText();
+        LastRoomButton.SetStateToActiveIf(RunManager.Instance.Environment.Map.IsLastSelecting());
     }
 
     private void OnDisable()
     {
-        RunManager.Instance.Environment.RoomChangedNeuron.Remove(RoomChanged);
-        RunManager.Instance.Environment.LevelChangedNeuron.Remove(LevelChanged);
+        RunManager.Instance.Environment.Map.RoomChangedNeuron.Remove(RoomChanged);
+        RunManager.Instance.Environment.Map.LevelChangedNeuron.Remove(LevelChanged);
     }
 
     private void RoomChanged(RoomChangedDetails d)
     {
+        MapNodeListView.Refresh();
+        StepText.text = RunManager.Instance.Environment.Map.GetStepText();
+        LastRoomButton.SetStateToActiveIf(RunManager.Instance.Environment.Map.IsLastSelecting());
     }
 
     private void LevelChanged()
     {
+        MapNodeListView.Refresh();
     }
 
     private void TryShow(PointerEventData eventData) => GetAnimator().SetStateAsync(1);
@@ -83,7 +93,14 @@ public class MapPanel : Panel
     private void CreateMenu(InteractBehaviour ib, PointerEventData d)
     {
         MapNode mapNode = ib.Get<MapNode>();
-        MenuDetails menuDetails = RunManager.Instance.Environment.GetMenuDetailsFromMapNode(mapNode);
+        if (!mapNode.IsAccessible)
+            return;
+        MenuDetails menuDetails = RunManager.Instance.Environment.Map.GetMenuDetailsFromMapNode(mapNode);
         CanvasManager.Instance.MenuManager.CreateMenu(menuDetails);
+    }
+
+    private void EnterLastRoom(InteractBehaviour ib, PointerEventData d)
+    {
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new());
     }
 }

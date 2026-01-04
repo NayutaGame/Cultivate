@@ -11,7 +11,7 @@ public class CommitRunProcedureNode : ProcedureNode
     
     public override void Procedure()
     {
-        RunManager.Instance.Environment.CommitRunProcedure(IsWin.Value
+        RunManager.Instance.Environment.Map.CommitRunProcedure(IsWin.Value
             ? RunResult.RunOutcome.Victorious
             : RunResult.RunOutcome.Defeated);
     }

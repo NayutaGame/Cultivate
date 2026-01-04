@@ -8,7 +8,7 @@ public struct NextBarterDeckIndexDefinition : IDeckIndex
     {
         get
         {
-            BarterCell barterCell = RunManager.Instance.Environment.Cell.AsCell() as BarterCell;
+            BarterCell barterCell = RunManager.Instance.Environment.Map.Cell.AsCell() as BarterCell;
             Assert.IsTrue(barterCell != null);
             return barterCell.LeftBucketItems.Count();
         }

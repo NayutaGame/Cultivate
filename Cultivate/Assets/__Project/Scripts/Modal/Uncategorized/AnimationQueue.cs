@@ -110,7 +110,7 @@ public class AnimationQueue
     
     public void QueueSignal(Signal signal)
     {
-        Tween tween = DOTween.Sequence().AppendCallback(() => RunManager.Instance.Environment.ReceiveSignalProcedure(signal));
+        Tween tween = DOTween.Sequence().AppendCallback(() => RunManager.Instance.Environment.Map.ReceiveSignalProcedure(signal));
         QueueAnimation(tween);
     }
 

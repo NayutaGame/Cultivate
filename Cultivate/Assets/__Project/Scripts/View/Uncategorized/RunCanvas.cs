@@ -85,7 +85,7 @@ public class RunCanvas : Panel
 
     private void RefreshPanel()
     {
-        ChangePanel(RunManager.Instance.Environment.Cell);
+        ChangePanel(RunManager.Instance.Environment.Map.Cell);
     }
 
     private void OnEnable()
@@ -100,8 +100,8 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.UnequipNeuron.Add(UnequipStaging);
         RunManager.Instance.Environment.MergeNeuron.Add(MergeStaging);
         
-        RunManager.Instance.Environment.PanelChangedNeuron.Add(ChangePanel);
-        RunManager.Instance.Environment.PanelChangedNeuron.Add(EnterPanelSound);
+        RunManager.Instance.Environment.Map.CellChangedNeuron.Add(ChangePanel);
+        RunManager.Instance.Environment.Map.CellChangedNeuron.Add(EnterPanelSound);
         
         RunManager.Instance.Environment.GainMingYuanNeuron.Add(AudioManager.PlayGainMingYuan);
         
@@ -130,8 +130,8 @@ public class RunCanvas : Panel
         RunManager.Instance.Environment.UnequipNeuron.Remove(UnequipStaging);
         RunManager.Instance.Environment.MergeNeuron.Remove(MergeStaging);
         
-        RunManager.Instance.Environment.PanelChangedNeuron.Remove(ChangePanel);
-        RunManager.Instance.Environment.PanelChangedNeuron.Remove(EnterPanelSound);
+        RunManager.Instance.Environment.Map.CellChangedNeuron.Remove(ChangePanel);
+        RunManager.Instance.Environment.Map.CellChangedNeuron.Remove(EnterPanelSound);
         
         RunManager.Instance.Environment.GainMingYuanNeuron.Remove(AudioManager.PlayGainMingYuan);
         
@@ -152,25 +152,28 @@ public class RunCanvas : Panel
         { typeof(ShopCell), "EnterShop" }
     };
 
-    private void EnterPanelSound(PanelChangedDetails d)
+    private void EnterPanelSound(CellChangedDetails d)
     {
-        if (d.FromPanel == d.ToPanel)
+        if (d.FromCell == d.ToCell)
+            return;
+
+        if (d.ToCell == null)
             return;
         
-        if (_panelSoundMap.TryGetValue(d.ToPanel.GetType(), out string soundName))
+        if (_panelSoundMap.TryGetValue(d.ToCell.GetType(), out string soundName))
         {
             AudioManager.Play(soundName);
         }
     }
 
-    private void ChangePanel(PanelChangedDetails d)
+    private void ChangePanel(CellChangedDetails d)
         => ChangePanelAsync(d);
     
     private void ChangePanel(ICellAdapter toCell)
         => ChangePanelAsync(toCell);
 
-    private async UniTask ChangePanelAsync(PanelChangedDetails panelChangedDetails)
-        => await ChangePanelAsync(panelChangedDetails.ToPanel);
+    private async UniTask ChangePanelAsync(CellChangedDetails cellChangedDetails)
+        => await ChangePanelAsync(cellChangedDetails.ToCell);
     
     private async UniTask ChangePanelAsync(ICellAdapter toCell)
     {
@@ -202,7 +205,7 @@ public class RunCanvas : Panel
             // TODO： 这里报过一个很奇怪的错误
             // 环境是Run胜利，回到Title，再进入Run，BattlePanel中，打开卡牌Annotation，查看卡包
             // 然后过了一小段时间，不到一秒，报了错，下面这句为空，大概率是上一场对局的环境没有清理干净，还有一个线程再跑，然后下面访问Environment自然是空
-            Cell d = RunManager.Instance.Environment.Cell.AsCell();
+            Cell d = RunManager.Instance.Environment.Map.Cell?.AsCell();
             bool showDeck = d is BattleCell || d is RequireCell || d is PuzzleCell ||
                             d is DiscoverCell;
 

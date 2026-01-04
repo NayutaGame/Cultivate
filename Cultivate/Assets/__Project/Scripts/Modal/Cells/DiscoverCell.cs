@@ -40,8 +40,8 @@ public class DiscoverCell : Cell
         _titleText = titleText ?? "灵感";
         _descriptionText = descriptionText ?? "请选择一张卡作为奖励";
 
-        _drawStrategies = drawStrategies ?? SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.JingJie)).Stack(3);
-        _preferredJingJie = preferredJingJie ?? RunManager.Instance.Environment.JingJie;
+        _drawStrategies = drawStrategies ?? SkillEntryQuery.FromBaseJingJieBound(new(JingJie.LianQi, RunManager.Instance.Environment.Map.JingJie)).Stack(3);
+        _preferredJingJie = preferredJingJie ?? RunManager.Instance.Environment.Map.JingJie;
         
         _skills = new();
     }

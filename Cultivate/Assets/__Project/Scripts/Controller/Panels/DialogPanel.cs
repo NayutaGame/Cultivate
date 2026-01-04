@@ -75,8 +75,6 @@ public class DialogPanel : Panel
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
         DialogCell cell = cellAdapter.AsCell() as DialogCell;
 
-        Illustration.sprite = RunManager.Instance.Environment.GetCurrEventIllustration();
-
         TitleText.text = cell.GetTitleText();
 
         DetailedText.text = cell.GetDetailedText();
@@ -97,7 +95,7 @@ public class DialogPanel : Panel
     private void SelectOption(int selectedIndex)
     {
         SelectOptionStaging();
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new SelectedOptionSignal(selectedIndex));
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new SelectedOptionSignal(selectedIndex));
     }
 
     private void SelectOption0() => SelectOption(0);

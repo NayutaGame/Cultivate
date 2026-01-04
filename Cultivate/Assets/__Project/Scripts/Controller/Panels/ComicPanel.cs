@@ -49,7 +49,7 @@ public class ComicPanel : Panel
             return;
         
         ImageButton.onClick.RemoveAllListeners();
-        RunManager.Instance.Environment.ReceiveSignalProcedure(new FinishedComicSignal());
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new FinishedComicSignal());
     }
 
     private void SetPrefabEntry()
