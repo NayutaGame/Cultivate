@@ -170,6 +170,9 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
     // [Obsolete] [SerializeReference] private RunEntity _home;
+    
+    [SerializeField] private int _availableStepCount;
+    [SerializeField] private int _totalStepCount;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -591,9 +594,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region Procedures
 
-    private int _availableStepCount;
-    private int _totalStepCount;
-
     public void StartRunProcedure(StartRunDetails d)
     {
         InitSkillPool();
@@ -610,7 +610,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _runState = RunState.MapSelecting;
         Map.Init(profile, this);
 
-        AdjustStepCountFromJingJie(mapEntry._envJingJie);
+        ResetMapProgressFromJingJie(mapEntry._envJingJie);
         
         InitPanelFromCreation();
         
@@ -627,10 +627,17 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         InitPanelFromLoad();
     }
 
-    public void AdjustStepCountFromJingJie(JingJie jingJie)
+    public void ResetMapProgress(int totalStepCount, int availableStepCount)
     {
-        _availableStepCount = 3;
-        _totalStepCount = 5;
+        _totalStepCount = totalStepCount;
+        _availableStepCount = availableStepCount;
+    }
+    
+    public void ResetMapProgressFromJingJie(JingJie jingJie)
+    {
+        int totalStepCount = Map.GetTotalStepCountFromJingJie(jingJie);
+        int availableStepCount = Map.GetAvailableStepCountFromJingJie(jingJie);
+        ResetMapProgress(totalStepCount, availableStepCount);
     }
 
     private void InitSkillPool()

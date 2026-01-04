@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class MapPanel : Panel
 {
-    [SerializeField] private ListView RoomListView;
-    
     [SerializeField] private RectTransform BodyTransform;
     [SerializeField] private RectTransform BodyShowPivot;
     [SerializeField] private RectTransform BodyHidePivot;
@@ -21,7 +19,6 @@ public class MapPanel : Panel
         base.AwakeFunction();
 
         Address address = new Address("Run.Environment.Map");
-        RoomListView.SetAddress(address.Append(".CurrLevel.Rooms"));
         MapNodeListView.SetAddress(new("Run.Environment.MapNodes"));
         
         // MapNodeListView.LeftClickNeuron.Join(SelectedMapNode);
@@ -56,17 +53,11 @@ public class MapPanel : Panel
 
     private void RoomChanged(RoomChangedDetails d)
     {
-        RoomListView.Refresh();
     }
 
     private void LevelChanged()
     {
-        RoomListView.Sync();
-        RoomListView.Refresh();
     }
-
-    // private void PlayCardHoverSFX(InteractBehaviour ib, PointerEventData d)
-    //     => AudioManager.Play("CardHover");
 
     private void TryShow(PointerEventData eventData) => GetAnimator().SetStateAsync(1);
     private void TryHide(PointerEventData eventData) => GetAnimator().SetStateAsync(0);

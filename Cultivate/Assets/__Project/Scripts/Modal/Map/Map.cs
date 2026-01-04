@@ -8,6 +8,22 @@ using UnityEngine;
 [Serializable]
 public class Map : Addressable, ISerializationCallbackReceiver
 {
+    public static int[,] StepCount = new int[6, 2]
+    {
+        { 5, 3 },
+        { 7, 4 },
+        { 9, 5 },
+        { 11, 6 },
+        { 13, 7 },
+        { 13, 7 },
+    };
+
+    public static int GetTotalStepCountFromJingJie(JingJie jingJie)
+        => StepCount[jingJie.GetIndex(), 0];
+
+    public static int GetAvailableStepCountFromJingJie(JingJie jingJie)
+        => StepCount[jingJie.GetIndex(), 1];
+    
     [SerializeField] private MapEntry _entry;
     
     [SerializeReference] private Level[] _levels;
