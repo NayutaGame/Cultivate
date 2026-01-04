@@ -204,50 +204,6 @@ MonoBehaviour:
       height: 16
     defaultValue: 0
     hasFunc: 1
---- !u!114 &-6313838873487224665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab0fe5c268228d4e9eacbd8f74a3520, type: 3}
-  m_Name: Jing Jie Indirect As String
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 936, y: 344}
-  Input:
-    ownerNode: {fileID: -6313838873487224665}
-    guid: a8adf120-8465-4713-b8bb-b4e4726db55b
-    fieldName: Input
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 934.1
-      y: 379.5
-      width: 16
-      height: 16
-    defaultValue: 6
-  Output:
-    ownerNode: {fileID: -6313838873487224665}
-    guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-    fieldName: Output
-    elementName: 
-    connections:
-    - node: {fileID: -5736223809924241156}
-      guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1122
-      y: 379.5
-      width: 16
-      height: 16
-    defaultValue: 
-    hasFunc: 1
 --- !u!114 &-5989297250980847064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,65 +280,6 @@ MonoBehaviour:
       y: -1016.5
       width: 16
       height: 16
-    hasFunc: 1
---- !u!114 &-5736223809924241156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092c1586465c2b245be88c7d90437cd9, type: 3}
-  m_Name: String Builder
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 1256, y: 184}
-  Strings:
-  - ownerNode: {fileID: -5736223809924241156}
-    guid: 307f50e1-8793-43de-8ca2-19fceb2de931
-    fieldName: Strings
-    elementName: Strings.0
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 1249.84
-      y: 244.5
-      width: 16
-      height: 16
-    defaultValue: "\u4ECA\u5929\u5012\u662F\u7A00\u5947\uFF0C\u5996\u517D\u6CA1\u6709\u51FA\u73B0\n\u8D81\u8FD9\u4E2A\u673A\u4F1A\uFF0C\u4F60\u597D\u597D\u770B\u4E86\u770B\u8FD9\u4E2A\u53C2\u5929\u5927\u6811\n\u7A81\u7136\u5BF9\u4E4B\u524D\u67D0\u4E2A\u529F\u6CD5\u6709\u4E86\u65B0\u7684\u7406\u89E3\n\u9009\u62E9\u4E00\u5F20\u5361\u724C\u63D0\u5347\u81F3"
-  - ownerNode: {fileID: -5736223809924241156}
-    guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-    fieldName: Strings
-    elementName: Strings.1
-    connections:
-    - node: {fileID: -6313838873487224665}
-      guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1249.84
-      y: 376.5
-      width: 16
-      height: 16
-    defaultValue: 
-  Result:
-    ownerNode: {fileID: -5736223809924241156}
-    guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-    fieldName: Result
-    elementName: 
-    connections:
-    - node: {fileID: 8037775418175050822}
-      guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1642
-      y: 400.5
-      width: 16
-      height: 16
-    defaultValue: 
     hasFunc: 1
 --- !u!114 &-5724245413541565130
 MonoBehaviour:
@@ -473,11 +370,8 @@ MonoBehaviour:
     - node: {fileID: 1001835258375620276}
       guid: 79044bf3-78d5-4586-ba43-9a395cefdaf1
       reroutes: []
-    - node: {fileID: -4559303107399772606}
-      guid: 7b7e9c90-0a7c-4741-b4aa-968965fece7e
-      reroutes: []
-    - node: {fileID: -3381256678209193780}
-      guid: cb757147-749a-4410-b070-9232cdd2666d
+    - node: {fileID: -1496058393114824030}
+      guid: c68b6057-8e97-4164-8c45-491591f7ebfb
       reroutes: []
     rect:
       serializedVersion: 2
@@ -539,7 +433,7 @@ MonoBehaviour:
       y: -1040.5
       width: 16
       height: 16
-    defaultValue: "\u6B64\u5904\u4EBA\u8FF9\u7F55\u81F3\uFF0C\u5E38\u6709\u5996\u517D\u51FA\u6CA1\n\u8FD9\u4E0D\uFF0C\u5C31\u9047\u4E0A\u4E86"
+    defaultValue: "\u6B64\u5730\u6CA1\u6709\u98DE\u884C\u7981\u5236\uFF0C\u4F46\u662F\u805A\u96C6\u7740\u5927\u91CF\u5996\u517D\uFF0C\u5982\u679C\u98DE\u884C\u7ECF\u8FC7\u7684\u8BDD\uFF0C\u5BB9\u6613\u88AB\u5BDF\u89C9\n\u6CA1\u6709\u98DE\u884C\uFF0C\u4E5F\u6709\u53EF\u80FD\u88AB\u5996\u517D\u7F20\u4E0A\uFF0C\u6BD4\u5982\u8BF4\u73B0\u5728"
   Option1String:
     ownerNode: {fileID: -5076455734701076886}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb
@@ -738,6 +632,69 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 3
+--- !u!114 &-4620565436276947961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 711d2f252e44a65409609bf9afe9b1db, type: 3}
+  m_Name: Editor Skill Entry Query List Node From Stack
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1864, y: 760}
+  Item:
+    ownerNode: {fileID: -4620565436276947961}
+    guid: 194ef20a-9cd5-482c-9c95-b5fbee55c594
+    fieldName: Item
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1862.1
+      y: 795.5
+      width: 16
+      height: 16
+    defaultValue:
+      EntryName: 
+      WuXingPred: 0
+      LowBaseJingJie: 6
+      HighBaseJingJie: 6
+      Tag: 0
+      IsMutator: 0
+  Stack:
+    ownerNode: {fileID: -4620565436276947961}
+    guid: d0e1fda2-a0f2-4800-a356-b261a532bcf5
+    fieldName: Stack
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1862.1
+      y: 935.5
+      width: 16
+      height: 16
+    defaultValue: 3
+  Value:
+    ownerNode: {fileID: -4620565436276947961}
+    guid: 4310b9d1-bc39-4cc4-b7bd-6d9c523dbe28
+    fieldName: Value
+    elementName: 
+    connections:
+    - node: {fileID: 5908093477863449053}
+      guid: ebe234c8-633d-4e6e-b640-ca6566a30198
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2050
+      y: 955.5
+      width: 16
+      height: 16
+    defaultValue: []
+    hasFunc: 1
 --- !u!114 &-4579765454551257945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,67 +782,6 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 1
---- !u!114 &-4559303107399772606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00fabce181ee8e7458792fa0e65bb9a0, type: 3}
-  m_Name: Dialog Cell Node Quick
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 3096, y: 248}
-  prevs:
-    ownerNode: {fileID: -4559303107399772606}
-    guid: d9a71492-d605-4577-be0a-1d008ca1663c
-    fieldName: prevs
-    elementName: 
-    connections:
-    - node: {fileID: -997989737853917685}
-      guid: 5e783ba6-474d-46c3-b8bc-81da9debc64a
-      reroutes: []
-    - node: {fileID: 5419917033989741397}
-      guid: 5e783ba6-474d-46c3-b8bc-81da9debc64a
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 3094.1
-      y: 283.5
-      width: 16
-      height: 16
-  NextCell:
-    ownerNode: {fileID: -4559303107399772606}
-    guid: 7b7e9c90-0a7c-4741-b4aa-968965fece7e
-    fieldName: NextCell
-    elementName: 
-    connections:
-    - node: {fileID: -5627440478662210802}
-      guid: 2d894a48-1beb-4ae1-8160-3dc40256515c
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 3382
-      y: 283.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  DetailedText:
-    ownerNode: {fileID: -4559303107399772606}
-    guid: fa401018-d455-47e5-a8b6-3479a579b3fe
-    fieldName: DetailedText
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 3094.1
-      y: 305.5
-      width: 16
-      height: 16
-    defaultValue: "\u529F\u6CD5\u878D\u4F1A\u8D2F\u901A\uFF0C\u4F55\u5C1D\u4E0D\u662F\u4E00\u4EF6\u7F8E\u4E8B"
 --- !u!114 &-4311086723320600382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,67 +979,6 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 0
---- !u!114 &-3381256678209193780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00fabce181ee8e7458792fa0e65bb9a0, type: 3}
-  m_Name: Dialog Cell Node Quick
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 3096, y: 504}
-  prevs:
-    ownerNode: {fileID: -3381256678209193780}
-    guid: 341f78b5-ea38-42f2-8486-c58c17e08f6b
-    fieldName: prevs
-    elementName: 
-    connections:
-    - node: {fileID: -997989737853917685}
-      guid: 73c2605f-928b-43f2-be8b-62e04c20a72d
-      reroutes: []
-    - node: {fileID: 5419917033989741397}
-      guid: 73c2605f-928b-43f2-be8b-62e04c20a72d
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 3094.1
-      y: 539.5
-      width: 16
-      height: 16
-  NextCell:
-    ownerNode: {fileID: -3381256678209193780}
-    guid: cb757147-749a-4410-b070-9232cdd2666d
-    fieldName: NextCell
-    elementName: 
-    connections:
-    - node: {fileID: -5627440478662210802}
-      guid: 2d894a48-1beb-4ae1-8160-3dc40256515c
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 3382
-      y: 539.5
-      width: 16
-      height: 16
-    hasFunc: 1
-  DetailedText:
-    ownerNode: {fileID: -3381256678209193780}
-    guid: d5e29ecc-47c6-44cc-b43a-b876e7dd3705
-    fieldName: DetailedText
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 3094.1
-      y: 561.5
-      width: 16
-      height: 16
-    defaultValue: "\u4F60\u7A81\u7136\u60F3\u8D77\u524D\u5929\u7684\u5546\u8D29\u597D\u50CF\u627E\u94B1\u627E\u9519\u4E86\n\u77ED\u4E86\u4F602\u91D1\n\u81EA\u5DF1\u521A\u624D\u5728\u505A\u4EC0\u4E48\uFF0C\u601D\u7EEA\u5DF2\u7ECF\u5B8C\u5168\u65AD\u4E86\n\u79BB\u5F00\u6B64\u5904\u7EE7\u7EED\u8D76\u8DEF\u5427"
 --- !u!114 &-3279626751906790578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1394,7 +1229,7 @@ MonoBehaviour:
       height: 16
     defaultValue: []
     hasFunc: 1
---- !u!114 &-997989737853917685
+--- !u!114 &-1496058393114824030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1403,134 +1238,56 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fbabd5f513fc24bb39fc1c81db1d94, type: 3}
-  m_Name: Require Cell
+  m_Script: {fileID: 11500000, guid: 5a65c4b161bb6dc4abe46c723db003a6, type: 3}
+  m_Name: Hub
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 2360, y: 184}
-  prevs:
-    ownerNode: {fileID: -997989737853917685}
-    guid: a9ee40ae-17b0-49b1-a588-f325d7eb38dd
-    fieldName: prevs
+  nodePosition: {x: 3112, y: 264}
+  NextCell:
+    ownerNode: {fileID: -1496058393114824030}
+    guid: c68b6057-8e97-4164-8c45-491591f7ebfb
+    fieldName: NextCell
     elementName: 
     connections:
-    - node: {fileID: 8037775418175050822}
-      guid: c0abcb22-96bf-43e7-9d98-5cf7bb304e00
+    - node: {fileID: -5627440478662210802}
+      guid: 2d894a48-1beb-4ae1-8160-3dc40256515c
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 2358.1
-      y: 219.5
-      width: 16
-      height: 16
-  Title:
-    ownerNode: {fileID: -997989737853917685}
-    guid: ea7b296a-bff9-4395-9b64-99ed1e9bf1cb
-    fieldName: Title
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 239.5
-      width: 16
-      height: 16
-    defaultValue: "\u63D0\u4EA4"
-  DetailedText:
-    ownerNode: {fileID: -997989737853917685}
-    guid: a66fe461-b705-473c-a7d1-e885507c4603
-    fieldName: DetailedText
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 259.5
-      width: 16
-      height: 16
-    defaultValue: 
-  Ladder:
-    ownerNode: {fileID: -997989737853917685}
-    guid: 2c3449cd-237e-4dcc-8dac-8b57613d9e03
-    fieldName: Ladder
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 279.5
-      width: 16
-      height: 16
-    defaultValue: 0
-  BehaviorType:
-    ownerNode: {fileID: -997989737853917685}
-    guid: 5844ec25-85f6-4cf7-bf18-762f0f7fb17e
-    fieldName: BehaviorType
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
+      x: 3298
       y: 299.5
       width: 16
       height: 16
-    defaultValue: 2
-  Requirements:
-    ownerNode: {fileID: -997989737853917685}
-    guid: c7d4b9bb-d7a3-4d0a-9ff5-fb9140ddc5f8
-    fieldName: Requirements
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 319.5
-      width: 16
-      height: 16
-    defaultValue:
-    - EntryName: 
-      WuXingPred: 0
-      JingJiePred: 0
-      LowBaseJingJie: 0
-      HighBaseJingJie: 8
-      Tag: 0
-      Description: "\u4E0D\u9AD8\u4E8E\u4E0A\u4E00\u5883\u754C"
-      AttackRequirement: 0
-      ArmorRequirement: 0
-      ManaRequirement: 0
-      BuffRequirement: 
-  Success:
-    ownerNode: {fileID: -997989737853917685}
-    guid: 5e783ba6-474d-46c3-b8bc-81da9debc64a
-    fieldName: Success
-    elementName: 
+    hasFunc: 0
+  PrevCells:
+  - ownerNode: {fileID: -1496058393114824030}
+    guid: dbf1efeb-7ccb-4c25-a295-c36821cf4b74
+    fieldName: PrevCells
+    elementName: PrevCells.0
     connections:
-    - node: {fileID: -4559303107399772606}
-      guid: d9a71492-d605-4577-be0a-1d008ca1663c
+    - node: {fileID: 783123032131120005}
+      guid: 49984a99-4d6a-4a78-b7f1-f537535ed606
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 2646
-      y: 339.5
+      x: 3105.84
+      y: 344.5
       width: 16
       height: 16
-    hasFunc: 1
-  Failure:
-    ownerNode: {fileID: -997989737853917685}
-    guid: 73c2605f-928b-43f2-be8b-62e04c20a72d
-    fieldName: Failure
-    elementName: 
+  - ownerNode: {fileID: -1496058393114824030}
+    guid: 7fe0c1ea-83bf-48ba-a468-289154b9915b
+    fieldName: PrevCells
+    elementName: PrevCells.1
     connections:
-    - node: {fileID: -3381256678209193780}
-      guid: 341f78b5-ea38-42f2-8486-c58c17e08f6b
+    - node: {fileID: 5908093477863449053}
+      guid: 1e884f22-350f-48e7-b899-e00886e99f94
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 2646
-      y: 359.5
+      x: 3105.84
+      y: 369.5
       width: 16
       height: 16
-    hasFunc: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1544,8 +1301,8 @@ MonoBehaviour:
   m_Name: "Void\u5760\u661F\u6E56"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -3608.2134, y: -478.97046}
-  zoom: 1.6437784
+  panOffset: {x: -1728.9767, y: -592.6176}
+  zoom: 1.0988805
   nodes:
   - {fileID: 2496664909736741584}
   - {fileID: -5627440478662210802}
@@ -1562,11 +1319,6 @@ MonoBehaviour:
   - {fileID: -5724245413541565130}
   - {fileID: 5216141212720610721}
   - {fileID: 8037775418175050822}
-  - {fileID: -6313838873487224665}
-  - {fileID: -5736223809924241156}
-  - {fileID: -997989737853917685}
-  - {fileID: -4559303107399772606}
-  - {fileID: -3381256678209193780}
   - {fileID: 8152930399100365173}
   - {fileID: -4311086723320600382}
   - {fileID: -4673913056340881039}
@@ -1585,9 +1337,10 @@ MonoBehaviour:
   - {fileID: 136288558611287287}
   - {fileID: 7500093572690141476}
   - {fileID: 2352640574465240706}
-  - {fileID: 8369896462963216339}
-  - {fileID: 7721318055375929586}
-  - {fileID: 5419917033989741397}
+  - {fileID: 783123032131120005}
+  - {fileID: 5908093477863449053}
+  - {fileID: -4620565436276947961}
+  - {fileID: -1496058393114824030}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -1657,6 +1410,83 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 
+--- !u!114 &783123032131120005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31abbc1acaf50b84fbc97935a8327dcf, type: 3}
+  m_Name: Draw Skill Procedure
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 2312, y: 104}
+  prevs:
+    ownerNode: {fileID: 783123032131120005}
+    guid: d278ecc5-534f-42ba-a8f1-27a256470463
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 8037775418175050822}
+      guid: c0abcb22-96bf-43e7-9d98-5cf7bb304e00
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2310.1
+      y: 139.5
+      width: 16
+      height: 16
+  next:
+    ownerNode: {fileID: 783123032131120005}
+    guid: 49984a99-4d6a-4a78-b7f1-f537535ed606
+    fieldName: next
+    elementName: 
+    connections:
+    - node: {fileID: -1496058393114824030}
+      guid: dbf1efeb-7ccb-4c25-a295-c36821cf4b74
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 2598
+      y: 139.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  DrawStrategy:
+    ownerNode: {fileID: 783123032131120005}
+    guid: 8889d8b5-bdd9-4d16-a7f1-9809b07afae2
+    fieldName: DrawStrategy
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2310.1
+      y: 161.5
+      width: 16
+      height: 16
+    defaultValue:
+      EntryName: 
+      WuXingPred: 0
+      LowBaseJingJie: 6
+      HighBaseJingJie: 6
+      Tag: 0
+      IsMutator: 0
+  PreferredJingJie:
+    ownerNode: {fileID: 783123032131120005}
+    guid: 4d6af8eb-ccbd-4188-b09e-8a10e9e48bc6
+    fieldName: PreferredJingJie
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2310.1
+      y: 301.5
+      width: 16
+      height: 16
+    defaultValue: 6
 --- !u!114 &783819439525621400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1872,8 +1702,8 @@ MonoBehaviour:
     fieldName: NextCell
     elementName: 
     connections:
-    - node: {fileID: 5419917033989741397}
-      guid: a9ee40ae-17b0-49b1-a588-f325d7eb38dd
+    - node: {fileID: 5908093477863449053}
+      guid: 86bcb465-6ffb-4f52-8583-c078a1d62c12
       reroutes: []
     rect:
       serializedVersion: 2
@@ -1887,17 +1717,14 @@ MonoBehaviour:
     guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
     fieldName: DetailedText
     elementName: 
-    connections:
-    - node: {fileID: 7721318055375929586}
-      guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: 1734.1
       y: 561.5
       width: 16
       height: 16
-    defaultValue: 
+    defaultValue: "\u6E56\u9762\u672C\u8EAB\u5012\u662F\u5E73\u5E73\u65E0\u5947\uFF0C\u7075\u6C14\u5374\u5982\u6B64\u5145\u6C9B\n\u5982\u679C\u4E0D\u662F\u4F1A\u5438\u5F15\u8FD9\u4E48\u591A\u5996\u517D\uFF0C\u771F\u662F\u4E2A\u8BBE\u7ACB\u6D1E\u5E9C\u7684\u597D\u4F4D\u7F6E\n\u5728\u8FD9\u91CC\u4FEE\u884C\u4E8B\u534A\u529F\u500D\n\u53D1\u73B01\u5F20\u57FA\u7840\u5883\u754C\u662F\u5F53\u524D\u5883\u754C\u7684\u5361\u724C"
 --- !u!114 &2428640587336724855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2402,7 +2229,7 @@ MonoBehaviour:
       width: 16
       height: 16
     hasFunc: 1
---- !u!114 &5419917033989741397
+--- !u!114 &5908093477863449053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2411,14 +2238,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4fbabd5f513fc24bb39fc1c81db1d94, type: 3}
-  m_Name: Require Cell
+  m_Script: {fileID: 11500000, guid: 069b0fe868cf8a5419d4771eb5aca47b, type: 3}
+  m_Name: Discover Cell
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 2360, y: 456}
+  nodePosition: {x: 2331.1147, y: 495.37302}
   prevs:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: a9ee40ae-17b0-49b1-a588-f325d7eb38dd
+    ownerNode: {fileID: 5908093477863449053}
+    guid: 86bcb465-6ffb-4f52-8583-c078a1d62c12
     fieldName: prevs
     elementName: 
     connections:
@@ -2427,115 +2254,78 @@ MonoBehaviour:
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 2358.1
-      y: 491.5
+      x: 2329.2148
+      y: 530.87305
       width: 16
       height: 16
   Title:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: ea7b296a-bff9-4395-9b64-99ed1e9bf1cb
+    ownerNode: {fileID: 5908093477863449053}
+    guid: 1ca292b6-0033-491c-ab31-809ae4a4ac9c
     fieldName: Title
     elementName: 
     connections: []
     rect:
       serializedVersion: 2
-      x: 2358.1
-      y: 511.5
+      x: 2329.2148
+      y: 550.87305
       width: 16
       height: 16
-    defaultValue: "\u63D0\u4EA4"
-  DetailedText:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: a66fe461-b705-473c-a7d1-e885507c4603
-    fieldName: DetailedText
+    defaultValue: "\u7075\u611F"
+  Description:
+    ownerNode: {fileID: 5908093477863449053}
+    guid: a70e1425-50b7-4fdf-89db-6c8a18e822dc
+    fieldName: Description
     elementName: 
     connections: []
     rect:
       serializedVersion: 2
-      x: 2358.1
-      y: 531.5
+      x: 2329.2148
+      y: 570.87305
       width: 16
       height: 16
-    defaultValue: 
-  Ladder:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: 2c3449cd-237e-4dcc-8dac-8b57613d9e03
-    fieldName: Ladder
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 551.5
-      width: 16
-      height: 16
-    defaultValue: 0
-  BehaviorType:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: 5844ec25-85f6-4cf7-bf18-762f0f7fb17e
-    fieldName: BehaviorType
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 571.5
-      width: 16
-      height: 16
-    defaultValue: 3
-  Requirements:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: c7d4b9bb-d7a3-4d0a-9ff5-fb9140ddc5f8
-    fieldName: Requirements
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 591.5
-      width: 16
-      height: 16
-    defaultValue:
-    - EntryName: 
-      WuXingPred: 0
-      JingJiePred: 0
-      LowBaseJingJie: 0
-      HighBaseJingJie: 6
-      Tag: 0
-      Description: "\u4E0D\u9AD8\u4E8E\u5F53\u524D\u5883\u754C"
-      AttackRequirement: 0
-      ArmorRequirement: 0
-      ManaRequirement: 0
-      BuffRequirement: 
-  Success:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: 5e783ba6-474d-46c3-b8bc-81da9debc64a
-    fieldName: Success
+    defaultValue: "\u8BF7\u9009\u62E9\u4E00\u5F20\u5361\u4F5C\u4E3A\u5956\u52B1"
+  DrawStrategies:
+    ownerNode: {fileID: 5908093477863449053}
+    guid: ebe234c8-633d-4e6e-b640-ca6566a30198
+    fieldName: DrawStrategies
     elementName: 
     connections:
-    - node: {fileID: -4559303107399772606}
-      guid: d9a71492-d605-4577-be0a-1d008ca1663c
+    - node: {fileID: -4620565436276947961}
+      guid: 4310b9d1-bc39-4cc4-b7bd-6d9c523dbe28
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 2646
-      y: 611.5
+      x: 2329.2148
+      y: 590.87305
       width: 16
       height: 16
-    hasFunc: 1
-  Failure:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: 73c2605f-928b-43f2-be8b-62e04c20a72d
-    fieldName: Failure
+    defaultValue: []
+  PreferredJingJie:
+    ownerNode: {fileID: 5908093477863449053}
+    guid: 3cccb82c-751b-42f2-ad64-34929a57b102
+    fieldName: PreferredJingJie
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 2329.2148
+      y: 610.87305
+      width: 16
+      height: 16
+    defaultValue: 6
+  _next:
+    ownerNode: {fileID: 5908093477863449053}
+    guid: 1e884f22-350f-48e7-b899-e00886e99f94
+    fieldName: _next
     elementName: 
     connections:
-    - node: {fileID: -3381256678209193780}
-      guid: 341f78b5-ea38-42f2-8486-c58c17e08f6b
+    - node: {fileID: -1496058393114824030}
+      guid: 7fe0c1ea-83bf-48ba-a468-289154b9915b
       reroutes: []
     rect:
       serializedVersion: 2
-      x: 2646
-      y: 631.5
+      x: 2717.1147
+      y: 630.87305
       width: 16
       height: 16
     hasFunc: 1
@@ -2783,65 +2573,6 @@ MonoBehaviour:
       ManaRequirement: 0
       BuffRequirement: 
     hasFunc: 0
---- !u!114 &7721318055375929586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092c1586465c2b245be88c7d90437cd9, type: 3}
-  m_Name: String Builder
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 1240, y: 584}
-  Strings:
-  - ownerNode: {fileID: 7721318055375929586}
-    guid: 307f50e1-8793-43de-8ca2-19fceb2de931
-    fieldName: Strings
-    elementName: Strings.0
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 1233.84
-      y: 644.5
-      width: 16
-      height: 16
-    defaultValue: "\u4ECA\u5929\u5012\u662F\u7A00\u5947\uFF0C\u5996\u517D\u6CA1\u6709\u51FA\u73B0\n\u8D81\u8FD9\u4E2A\u673A\u4F1A\uFF0C\u4F60\u597D\u597D\u770B\u4E86\u770B\u8FD9\u4E2A\u53C2\u5929\u5927\u6811\n\u7A81\u7136\u5BF9\u4E4B\u524D\u67D0\u4E2A\u529F\u6CD5\u6709\u4E86\u65B0\u7684\u7406\u89E3\n\u9009\u62E9\u4E00\u5F20\u5361\u724C\u63D0\u5347\u81F3"
-  - ownerNode: {fileID: 7721318055375929586}
-    guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-    fieldName: Strings
-    elementName: Strings.1
-    connections:
-    - node: {fileID: 8369896462963216339}
-      guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1233.84
-      y: 776.5
-      width: 16
-      height: 16
-    defaultValue: 
-  Result:
-    ownerNode: {fileID: 7721318055375929586}
-    guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-    fieldName: Result
-    elementName: 
-    connections:
-    - node: {fileID: 2352640574465240706}
-      guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1626
-      y: 800.5
-      width: 16
-      height: 16
-    defaultValue: 
-    hasFunc: 1
 --- !u!114 &8037775418175050822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2877,8 +2608,8 @@ MonoBehaviour:
     fieldName: NextCell
     elementName: 
     connections:
-    - node: {fileID: -997989737853917685}
-      guid: a9ee40ae-17b0-49b1-a588-f325d7eb38dd
+    - node: {fileID: 783123032131120005}
+      guid: d278ecc5-534f-42ba-a8f1-27a256470463
       reroutes: []
     rect:
       serializedVersion: 2
@@ -2892,17 +2623,14 @@ MonoBehaviour:
     guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
     fieldName: DetailedText
     elementName: 
-    connections:
-    - node: {fileID: -5736223809924241156}
-      guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: 1750.1
       y: 161.5
       width: 16
       height: 16
-    defaultValue: 
+    defaultValue: "\u6E56\u9762\u672C\u8EAB\u5012\u662F\u5E73\u5E73\u65E0\u5947\uFF0C\u7075\u6C14\u5374\u5982\u6B64\u5145\u6C9B\n\u5982\u679C\u4E0D\u662F\u4F1A\u5438\u5F15\u8FD9\u4E48\u591A\u5996\u517D\uFF0C\u771F\u662F\u4E2A\u8BBE\u7ACB\u6D1E\u5E9C\u7684\u597D\u4F4D\u7F6E\n\u5728\u8FD9\u91CC\u4FEE\u884C\u4E8B\u534A\u529F\u500D\n\u968F\u673A\u83B7\u5F971\u5F20\u57FA\u7840\u5883\u754C\u662F\u5F53\u524D\u5883\u754C\u7684\u5361\u724C"
 --- !u!114 &8152930399100365173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3077,47 +2805,3 @@ MonoBehaviour:
       height: 16
     defaultValue: 0
     hasFunc: 0
---- !u!114 &8369896462963216339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab0fe5c268228d4e9eacbd8f74a3520, type: 3}
-  m_Name: Jing Jie Indirect As String
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 952, y: 744}
-  Input:
-    ownerNode: {fileID: 8369896462963216339}
-    guid: a8adf120-8465-4713-b8bb-b4e4726db55b
-    fieldName: Input
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 950.1
-      y: 779.5
-      width: 16
-      height: 16
-    defaultValue: 7
-  Output:
-    ownerNode: {fileID: 8369896462963216339}
-    guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-    fieldName: Output
-    elementName: 
-    connections:
-    - node: {fileID: 7721318055375929586}
-      guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1138
-      y: 779.5
-      width: 16
-      height: 16
-    defaultValue: 
-    hasFunc: 1

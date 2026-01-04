@@ -204,50 +204,6 @@ MonoBehaviour:
       height: 16
     defaultValue: 0
     hasFunc: 1
---- !u!114 &-6313838873487224665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab0fe5c268228d4e9eacbd8f74a3520, type: 3}
-  m_Name: Jing Jie Indirect As String
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 936, y: 344}
-  Input:
-    ownerNode: {fileID: -6313838873487224665}
-    guid: a8adf120-8465-4713-b8bb-b4e4726db55b
-    fieldName: Input
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 934.1
-      y: 379.5
-      width: 16
-      height: 16
-    defaultValue: 6
-  Output:
-    ownerNode: {fileID: -6313838873487224665}
-    guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-    fieldName: Output
-    elementName: 
-    connections:
-    - node: {fileID: -5736223809924241156}
-      guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1122
-      y: 379.5
-      width: 16
-      height: 16
-    defaultValue: 
-    hasFunc: 1
 --- !u!114 &-5989297250980847064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,65 +280,6 @@ MonoBehaviour:
       y: -1016.5
       width: 16
       height: 16
-    hasFunc: 1
---- !u!114 &-5736223809924241156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092c1586465c2b245be88c7d90437cd9, type: 3}
-  m_Name: String Builder
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 1256, y: 184}
-  Strings:
-  - ownerNode: {fileID: -5736223809924241156}
-    guid: 307f50e1-8793-43de-8ca2-19fceb2de931
-    fieldName: Strings
-    elementName: Strings.0
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 1249.84
-      y: 244.5
-      width: 16
-      height: 16
-    defaultValue: "\u4ECA\u5929\u5012\u662F\u7A00\u5947\uFF0C\u5996\u517D\u6CA1\u6709\u51FA\u73B0\n\u8D81\u8FD9\u4E2A\u673A\u4F1A\uFF0C\u4F60\u597D\u597D\u770B\u4E86\u770B\u8FD9\u4E2A\u53C2\u5929\u5927\u6811\n\u7A81\u7136\u5BF9\u4E4B\u524D\u67D0\u4E2A\u529F\u6CD5\u6709\u4E86\u65B0\u7684\u7406\u89E3\n\u9009\u62E9\u4E00\u5F20\u5361\u724C\u63D0\u5347\u81F3"
-  - ownerNode: {fileID: -5736223809924241156}
-    guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-    fieldName: Strings
-    elementName: Strings.1
-    connections:
-    - node: {fileID: -6313838873487224665}
-      guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1249.84
-      y: 376.5
-      width: 16
-      height: 16
-    defaultValue: 
-  Result:
-    ownerNode: {fileID: -5736223809924241156}
-    guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-    fieldName: Result
-    elementName: 
-    connections:
-    - node: {fileID: 8037775418175050822}
-      guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1642
-      y: 400.5
-      width: 16
-      height: 16
-    defaultValue: 
     hasFunc: 1
 --- !u!114 &-5724245413541565130
 MonoBehaviour:
@@ -539,7 +436,7 @@ MonoBehaviour:
       y: -1040.5
       width: 16
       height: 16
-    defaultValue: "\u6B64\u5904\u4EBA\u8FF9\u7F55\u81F3\uFF0C\u5E38\u6709\u5996\u517D\u51FA\u6CA1\n\u8FD9\u4E0D\uFF0C\u5C31\u9047\u4E0A\u4E86"
+    defaultValue: "\u8FD9\u91CC\u867D\u8BF4\u662F\u5996\u517D\u7ECF\u8425\u7684\u5EFA\u7B51\uFF0C\u4F46\u662F\u670D\u52A1\u5BF9\u4EBA\u7C7B\u4E5F\u662F\u5F00\u653E\u7684\u554A\n\u8BF6\uFF0C\u4F60\u8FD9\u5996\u517D\u600E\u4E48\u4E0D\u80FD\u597D\u597D\u6C9F\u901A\u5462\n\u4F60\u88AB\u5996\u517D\u7F20\u4E0A\u4E86"
   Option1String:
     ownerNode: {fileID: -5076455734701076886}
     guid: 2c2cf2b7-f56f-4b94-8d6c-71a3c9a063fb
@@ -885,7 +782,7 @@ MonoBehaviour:
       y: 305.5
       width: 16
       height: 16
-    defaultValue: "\u529F\u6CD5\u878D\u4F1A\u8D2F\u901A\uFF0C\u4F55\u5C1D\u4E0D\u662F\u4E00\u4EF6\u7F8E\u4E8B"
+    defaultValue: "\u4ECA\u5929\u600E\u4E48\u53C8\u6CA1\u5F00\u95E8\uFF0C\u771F\u7684\u662F\uFF0C\u4E8F\u5F97\u6211\u8FD8\u4E13\u95E8\u8DD1\u6765\u4E00\u8D9F"
 --- !u!114 &-4311086723320600382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,7 +1040,7 @@ MonoBehaviour:
       y: 561.5
       width: 16
       height: 16
-    defaultValue: "\u4F60\u7A81\u7136\u60F3\u8D77\u524D\u5929\u7684\u5546\u8D29\u597D\u50CF\u627E\u94B1\u627E\u9519\u4E86\n\u77ED\u4E86\u4F602\u91D1\n\u81EA\u5DF1\u521A\u624D\u5728\u505A\u4EC0\u4E48\uFF0C\u601D\u7EEA\u5DF2\u7ECF\u5B8C\u5168\u65AD\u4E86\n\u79BB\u5F00\u6B64\u5904\u7EE7\u7EED\u8D76\u8DEF\u5427"
+    defaultValue: "\u679C\u7136\u8FD8\u662F\u6709\u7740\u96BE\u4EE5\u5272\u820D\u7684\u8FC7\u5F80\uFF0C\u4F60\u6CA1\u6709\u559D\u4E0B\u773C\u524D\u7684\u9152"
 --- !u!114 &-3279626751906790578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1474,7 +1371,7 @@ MonoBehaviour:
       y: 299.5
       width: 16
       height: 16
-    defaultValue: 2
+    defaultValue: 1
   Requirements:
     ownerNode: {fileID: -997989737853917685}
     guid: c7d4b9bb-d7a3-4d0a-9ff5-fb9140ddc5f8
@@ -1544,8 +1441,8 @@ MonoBehaviour:
   m_Name: "Void\u660E\u5FC3\u5E90"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -3608.2134, y: -478.97046}
-  zoom: 1.6437784
+  panOffset: {x: -3117.2268, y: -499.27002}
+  zoom: 0.9609285
   nodes:
   - {fileID: 2496664909736741584}
   - {fileID: -5627440478662210802}
@@ -1562,8 +1459,6 @@ MonoBehaviour:
   - {fileID: -5724245413541565130}
   - {fileID: 5216141212720610721}
   - {fileID: 8037775418175050822}
-  - {fileID: -6313838873487224665}
-  - {fileID: -5736223809924241156}
   - {fileID: -997989737853917685}
   - {fileID: -4559303107399772606}
   - {fileID: -3381256678209193780}
@@ -1585,8 +1480,6 @@ MonoBehaviour:
   - {fileID: 136288558611287287}
   - {fileID: 7500093572690141476}
   - {fileID: 2352640574465240706}
-  - {fileID: 8369896462963216339}
-  - {fileID: 7721318055375929586}
   - {fileID: 5419917033989741397}
   parent: {fileID: 0}
   children: []
@@ -1887,17 +1780,14 @@ MonoBehaviour:
     guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
     fieldName: DetailedText
     elementName: 
-    connections:
-    - node: {fileID: 7721318055375929586}
-      guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: 1734.1
       y: 561.5
       width: 16
       height: 16
-    defaultValue: 
+    defaultValue: "\u4F20\u95FB\u4E2D\uFF0C\u8FD9\u91CC\u7684\u4E3B\u4E8B\u662F\u4E00\u540D\u4EBA\u7C7B\n\u8FD9\u91CC\u63D0\u4F9B\u4E00\u79CD\u670D\u52A1\uFF0C\u5C06\u4F60\u548C\u67D0\u7269\u7684\u56E0\u7F18\u65A9\u65AD\uFF0C\u4E0D\u518D\u6709\u5173\u4E8E\u4E8B\u7269\u7684\u56DE\u5FC6\uFF0C\u4E5F\u4E0D\u4F1A\u5728\u672A\u6765\u518D\u6B21\u9047\u5230\n\u53EF\u4EE5\u5C01\u53702\u5F20\u724C\uFF0C\u672A\u6765\u4E0D\u4F1A\u518D\u6B21\u9047\u5230"
 --- !u!114 &2428640587336724855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2482,7 +2372,7 @@ MonoBehaviour:
       y: 571.5
       width: 16
       height: 16
-    defaultValue: 3
+    defaultValue: 1
   Requirements:
     ownerNode: {fileID: 5419917033989741397}
     guid: c7d4b9bb-d7a3-4d0a-9ff5-fb9140ddc5f8
@@ -2496,6 +2386,17 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue:
+    - EntryName: 
+      WuXingPred: 0
+      JingJiePred: 0
+      LowBaseJingJie: 0
+      HighBaseJingJie: 6
+      Tag: 0
+      Description: "\u4E0D\u9AD8\u4E8E\u5F53\u524D\u5883\u754C"
+      AttackRequirement: 0
+      ArmorRequirement: 0
+      ManaRequirement: 0
+      BuffRequirement: 
     - EntryName: 
       WuXingPred: 0
       JingJiePred: 0
@@ -2783,65 +2684,6 @@ MonoBehaviour:
       ManaRequirement: 0
       BuffRequirement: 
     hasFunc: 0
---- !u!114 &7721318055375929586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092c1586465c2b245be88c7d90437cd9, type: 3}
-  m_Name: String Builder
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 1240, y: 584}
-  Strings:
-  - ownerNode: {fileID: 7721318055375929586}
-    guid: 307f50e1-8793-43de-8ca2-19fceb2de931
-    fieldName: Strings
-    elementName: Strings.0
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 1233.84
-      y: 644.5
-      width: 16
-      height: 16
-    defaultValue: "\u4ECA\u5929\u5012\u662F\u7A00\u5947\uFF0C\u5996\u517D\u6CA1\u6709\u51FA\u73B0\n\u8D81\u8FD9\u4E2A\u673A\u4F1A\uFF0C\u4F60\u597D\u597D\u770B\u4E86\u770B\u8FD9\u4E2A\u53C2\u5929\u5927\u6811\n\u7A81\u7136\u5BF9\u4E4B\u524D\u67D0\u4E2A\u529F\u6CD5\u6709\u4E86\u65B0\u7684\u7406\u89E3\n\u9009\u62E9\u4E00\u5F20\u5361\u724C\u63D0\u5347\u81F3"
-  - ownerNode: {fileID: 7721318055375929586}
-    guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-    fieldName: Strings
-    elementName: Strings.1
-    connections:
-    - node: {fileID: 8369896462963216339}
-      guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1233.84
-      y: 776.5
-      width: 16
-      height: 16
-    defaultValue: 
-  Result:
-    ownerNode: {fileID: 7721318055375929586}
-    guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-    fieldName: Result
-    elementName: 
-    connections:
-    - node: {fileID: 2352640574465240706}
-      guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1626
-      y: 800.5
-      width: 16
-      height: 16
-    defaultValue: 
-    hasFunc: 1
 --- !u!114 &8037775418175050822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2892,17 +2734,14 @@ MonoBehaviour:
     guid: 146e978e-02c4-4a3d-ac65-79f7ca5ac9d7
     fieldName: DetailedText
     elementName: 
-    connections:
-    - node: {fileID: -5736223809924241156}
-      guid: ed2d9a80-7bc6-47bf-ad43-090ce1632c40
-      reroutes: []
+    connections: []
     rect:
       serializedVersion: 2
       x: 1750.1
       y: 161.5
       width: 16
       height: 16
-    defaultValue: 
+    defaultValue: "\u4F20\u95FB\u4E2D\uFF0C\u8FD9\u91CC\u7684\u4E3B\u4E8B\u662F\u4E00\u540D\u4EBA\u7C7B\n\u8FD9\u91CC\u63D0\u4F9B\u4E00\u79CD\u670D\u52A1\uFF0C\u5C06\u4F60\u548C\u67D0\u7269\u7684\u56E0\u7F18\u65A9\u65AD\uFF0C\u4E0D\u518D\u6709\u5173\u4E8E\u4E8B\u7269\u7684\u56DE\u5FC6\uFF0C\u4E5F\u4E0D\u4F1A\u5728\u672A\u6765\u518D\u6B21\u9047\u5230\n\u53EF\u4EE5\u5C01\u53701\u5F20\u724C\uFF0C\u672A\u6765\u4E0D\u4F1A\u518D\u6B21\u9047\u5230"
 --- !u!114 &8152930399100365173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3077,47 +2916,3 @@ MonoBehaviour:
       height: 16
     defaultValue: 0
     hasFunc: 0
---- !u!114 &8369896462963216339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab0fe5c268228d4e9eacbd8f74a3520, type: 3}
-  m_Name: Jing Jie Indirect As String
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  nodePosition: {x: 952, y: 744}
-  Input:
-    ownerNode: {fileID: 8369896462963216339}
-    guid: a8adf120-8465-4713-b8bb-b4e4726db55b
-    fieldName: Input
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 950.1
-      y: 779.5
-      width: 16
-      height: 16
-    defaultValue: 7
-  Output:
-    ownerNode: {fileID: 8369896462963216339}
-    guid: 5d3c1139-9ef7-49db-8cce-3d28390b48bd
-    fieldName: Output
-    elementName: 
-    connections:
-    - node: {fileID: 7721318055375929586}
-      guid: 4339272e-b0a3-4be5-869d-57c552f6b952
-      reroutes: []
-    rect:
-      serializedVersion: 2
-      x: 1138
-      y: 779.5
-      width: 16
-      height: 16
-    defaultValue: 
-    hasFunc: 1
