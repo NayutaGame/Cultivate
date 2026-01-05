@@ -1,9 +1,9 @@
 
 public class RoomChangedDetails : RunClosureDetails
 {
-    public RoomEnvironment ToRoom;
+    public Room ToRoom;
 
-    public RoomChangedDetails(RoomEnvironment toRoom)
+    public RoomChangedDetails(Room toRoom)
     {
         ToRoom = toRoom;
     }

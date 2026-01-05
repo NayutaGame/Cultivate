@@ -60,7 +60,7 @@ public class DicePanel : Panel
         // 范围文本（始终显示）
         DiceRangeText.text = $"骰子范围 ~ [1, {cell.DiceRange}]";
         
-        GainList.Refresh();
+        GainList.Sync();
         OutcomeList.Refresh();
     }
 

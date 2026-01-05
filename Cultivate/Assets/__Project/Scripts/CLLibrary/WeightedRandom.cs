@@ -1,8 +1,6 @@
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Assertions;
 
 namespace CLLibrary
 {
@@ -10,7 +8,11 @@ namespace CLLibrary
     {
         public static void SelectWeightedIndex(out int index, List<int> weights)
         {
-            Assert.IsTrue(weights != null && weights.Count > 0);
+            if (weights == null || weights.Count <= 0)
+            {
+                index = -1;
+                return;
+            }
 
             int totalWeight = weights.Sum();
 

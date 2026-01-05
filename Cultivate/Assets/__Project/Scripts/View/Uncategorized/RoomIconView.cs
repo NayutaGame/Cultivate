@@ -10,20 +10,20 @@ public class RoomIconView : XView
     {
         base.Refresh();
 
-        Room room = Get<Room>();
+        LegacyRoom room = Get<LegacyRoom>();
         Icon.sprite = room.GetDescriptor().GetSprite().Sprite;
 
         switch (room.GetState())
         {
-            case Room.RoomState.Past:
+            case LegacyRoom.RoomState.Past:
                 Icon.color = new Color(1, 1, 1, 0.4f);
                 Icon.transform.localScale = Vector3.one;
                 break;
-            case Room.RoomState.Curr:
+            case LegacyRoom.RoomState.Curr:
                 Icon.color = new Color(1, 1, 1, 1);
                 Icon.transform.localScale = Vector3.one * 1.6f;
                 break;
-            case Room.RoomState.Future:
+            case LegacyRoom.RoomState.Future:
                 Icon.color = new Color(1, 1, 1, 1);
                 Icon.transform.localScale = Vector3.one;
                 break;

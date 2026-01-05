@@ -156,7 +156,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeReference] private SkillPool _skillPool;
     [NonSerialized] private MutatorPool _mutatorPool;
     [SerializeReference] public EntityPool EntityPool;
-    [SerializeReference] public RoomPool RoomPool;
 
     [SerializeReference] private List<AchievementEntry> _newlyUnlockedAchievements;
     // [Obsolete] [SerializeReference] private RunEntity _home;
@@ -576,7 +575,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         InitSkillPool();
         InitEntityPool();
-        InitRoomPool();
         
         Map.InitPanelFromCreation();
         Map.ResetMapProgressProcedure();
@@ -612,14 +610,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         EntityPool.Populate(AppManager.Instance.EditorManager.EntityEditableList.FilterObj(
             e => e.IsInPool() && e.GetAllowedDifficulty().Contains(difficulty)));
         EntityPool.Shuffle();
-    }
-
-    private void InitRoomPool()
-    {
-        RoomPool = new();
-        int difficulty = GetRunConfig().GetDifficulty();
-        RoomPool.Populate(Encyclopedia.LegacyRoomCategory.FilterObj(e => e.WithInPool && e.DifficultyBound.Contains(difficulty)));
-        RoomPool.Shuffle();
     }
 
     public void DepleteProcedure()

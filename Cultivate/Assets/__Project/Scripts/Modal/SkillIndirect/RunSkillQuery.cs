@@ -88,7 +88,7 @@ public sealed class RunSkillQuery : AnnotatableLine
         
         return new(
             predicates: predicates,
-            entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName),
+            entry: string.IsNullOrEmpty(editorQuery.EntryName) ? null : Encyclopedia.SkillCategory.FromName(editorQuery.EntryName) ?? Encyclopedia.SkillCategory.Default(),
             wuXingPred: editorQuery.WuXingPred,
             jingJiePred: editorQuery.JingJiePred,
             baseJingJieBound: baseJingjieBound,

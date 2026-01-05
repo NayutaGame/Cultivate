@@ -1,14 +1,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CLLibrary;
 using UnityEngine;
 
 [Serializable]
 public class Map : Addressable, ISerializationCallbackReceiver
 {
-    public static int[,] StepCount = new int[6, 2]
+    #region Constant
+    
+    public static readonly int[,] StepCount = new int[6, 2]
     {
         { 5, 3 },
         { 7, 4 },
@@ -17,6 +18,42 @@ public class Map : Addressable, ISerializationCallbackReceiver
         { 13, 7 },
         { 13, 7 },
     };
+    
+    public static readonly int[] SlotCountFromLadderMapping = new int[]
+    {
+        3, 4, 5, 6, 7, 8, 9, 9, 10, 11, 12, 12, 12, 12, 12,
+    };
+    
+    public Neuron<JingJieChangedDetails> JingJieChangedNeuron;
+    public Neuron LevelChangedNeuron;
+    public Neuron<RoomChangedDetails> RoomChangedNeuron;
+    public Neuron<CellChangedDetails> CellChangedNeuron;
+
+    #endregion
+
+    #region Core
+    
+    private LocationListModel _locations;
+    [SerializeField] private JingJie _jingJie;
+    public Room _room;
+    [NonSerialized] private ICellAdapter _cell;
+    private MapState _mapState;
+    [SerializeField] private int _availableStepCount;
+    [SerializeField] private int _totalStepCount;
+    [SerializeField] private int _totalChoiceCount;
+    
+    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
+    {
+        { "Locations",                   thisObject => ((Map)thisObject)._locations },
+        // { "CurrLevel",                  thisObject => ((Map)thisObject).GetCurrLevel() },
+    };
+    public object Get(string s) => Accessor[s](this);
+    public Map()
+    {
+        InitNeurons();
+        _jingJie = JingJie.LianQi;
+        _locations = new();
+    }
 
     public void InitNeurons()
     {
@@ -25,38 +62,10 @@ public class Map : Addressable, ISerializationCallbackReceiver
         RoomChangedNeuron = new();
         CellChangedNeuron = new();
     }
-    
-    public Neuron<JingJieChangedDetails> JingJieChangedNeuron;
-    public Neuron LevelChangedNeuron;
-    public Neuron<RoomChangedDetails> RoomChangedNeuron;
-    public Neuron<CellChangedDetails> CellChangedNeuron;
-    
-    private MapNodeListModel _mapNodes;
-    [SerializeField] private JingJie _jingJie;
-    public RoomEnvironment _room;
-    [NonSerialized] private ICellAdapter _cell;
-    private MapState _mapState;
-    [SerializeField] private int _availableStepCount;
-    [SerializeField] private int _totalStepCount;
-    [SerializeField] private int _totalChoiceCount;
 
-    public string GetStepText()
-        => $"{_availableStepCount} / {_totalStepCount}";
-    
-    private static readonly Dictionary<string, Func<object, object>> Accessor = new()
-    {
-        { "MapNodes",                   thisObject => ((Map)thisObject)._mapNodes },
-        // { "CurrLevel",                  thisObject => ((Map)thisObject).GetCurrLevel() },
-    };
-    public object Get(string s) => Accessor[s](this);
-    public Map()
-    {
-        InitNeurons();
-        _jingJie = JingJie.LianQi;
-        _mapNodes = new();
-    }
+    #endregion
 
-    #region Accessors
+    #region Accessor
     
     public JingJie JingJie => _jingJie;
 
@@ -78,13 +87,19 @@ public class Map : Addressable, ISerializationCallbackReceiver
         }
     }
 
+    public string GetStepText()
+        => $"{_availableStepCount} / {_totalStepCount}";
+
     public bool IsFinalJingJie()
         => _jingJie == RunManager.Instance.Environment.GetRunConfig().DifficultyProfile.GetEntry().FinalJingJie;
 
+    public bool IsFirstStep()
+        => _jingJie == JingJie.LianQi && _availableStepCount == _totalStepCount;
+
     public bool IsLastSelecting() => _mapState == MapState.LastSelecting;
     
-    public int GetIndexOfMapNode(MapNode mapNode)
-        => _mapNodes.IndexOf(mapNode);
+    public int GetIndexOfLocation(Location location)
+        => _locations.IndexOf(location);
 
     public static int GetTotalChoiceCountFromJingJie(JingJie jingJie)
         => StepCount[jingJie.GetIndex(), 0];
@@ -92,9 +107,9 @@ public class Map : Addressable, ISerializationCallbackReceiver
     public static int GetAvailableStepCountFromJingJie(JingJie jingJie)
         => StepCount[jingJie.GetIndex(), 1];
     
-    private void SelectedMapNodeWithRoomEntry(MapNode mapNode, RoomEntry roomEntry)
+    private void SelectedLocationWithRoomEntry(Location location, RoomEntry roomEntry)
     {
-        ReceiveSignalProcedure(SelectedMapNodeSignal.FromMapNodeAndRoomEntry(mapNode, roomEntry));
+        ReceiveSignalProcedure(SelectedLocationSignal.FromLocationAndRoomEntry(location, roomEntry));
     }
 
     private bool IsOverHalf(int maxStep, int restStep)
@@ -144,7 +159,20 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     #endregion
 
-    #region Procedures
+    #region Internal
+
+    private RoomEntry CalcLastRoomEntryFromJingJie(JingJie jingJie)
+        => jingJie.GetLastRoom();
+
+    private void AlignSlotCountFromLadder(int ladder)
+        => RunManager.Instance.Environment.Home.SetSlotCount(SlotCountFromLadderMapping[ladder]);
+
+    private void AlignHomeHealthFromJingJie(JingJie jingJie)
+        => RunManager.Instance.Environment.SetHealthProcedure(RunEntity.HealthFromJingJie[jingJie]);
+
+    #endregion
+
+    #region Procedure
     
     public void SetJingJieProcedure(JingJie toJingJie)
         => SetJingJieProcedure(new JingJieChangedDetails(JingJie, toJingJie));
@@ -180,15 +208,10 @@ public class Map : Addressable, ISerializationCallbackReceiver
         _totalStepCount = availableStepCount;
         _availableStepCount = availableStepCount;
 
-        int[] indices = Numeric.GetCombination(_mapNodes.Count(), _totalChoiceCount);
-        _mapNodes.Do(mapNode => mapNode.IsAccessible = false);
+        int[] indices = Numeric.GetCombination(_locations.Count(), _totalChoiceCount);
+        _locations.Do(location => location.State = LocationState.Sealed);
         foreach (int index in indices)
-            _mapNodes[index].IsAccessible = true;
-    }
-
-    private RoomEntry CalcLastRoomEntryFromJingJie(JingJie jingJie)
-    {
-        return null;
+            _locations[index].State = LocationState.Available;
     }
     
     public void ReceiveSignalProcedure(Signal signal)
@@ -209,10 +232,10 @@ public class Map : Addressable, ISerializationCallbackReceiver
                 ExitRoomProcedure();
                 return;
             case MapState.Selecting:
-                if (signal is SelectedMapNodeSignal selectedMapNodeSignal)
+                if (signal is SelectedLocationSignal selectedLocationSignal)
                 {
                     _availableStepCount -= 1;
-                    EnterRoomProcedure(selectedMapNodeSignal.MapNode, selectedMapNodeSignal.RoomEntry, CalcLadder(JingJie, false));
+                    EnterRoomProcedure(selectedLocationSignal.Location, selectedLocationSignal.RoomEntry, CalcLadder(JingJie, false));
                 }
                 return;
             case MapState.LastRoom:
@@ -240,16 +263,18 @@ public class Map : Addressable, ISerializationCallbackReceiver
         }
     }
 
-    public void EnterRoomProcedure(MapNode mapNode, RoomEntry roomEntry, int ladder)
+    public void EnterRoomProcedure(Location location, RoomEntry roomEntry, int ladder)
     {
         if (_availableStepCount == 0)
-            _mapNodes.Do(n => n.IsAccessible = false);
+            _locations.Do(n => n.State = LocationState.Sealed);
         
-        if (mapNode != null)
-            mapNode.IsAccessible = false;
+        if (location != null)
+            location.State = LocationState.Current;
+
+        AlignSlotCountFromLadder(ladder);
         
         _mapState = MapState.Room;
-        _room = RoomEnvironment.CreateRoom(mapNode, roomEntry, ladder);
+        _room = Room.CreateRoom(location, roomEntry, ladder);
         _room.Step();
         Cell = _room.CurrentCell;
         
@@ -258,8 +283,10 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     public void EnterLastRoomProcedure(RoomEntry roomEntry, int ladder)
     {
+        AlignSlotCountFromLadder(ladder);
+        
         _mapState = MapState.LastRoom;
-        _room = RoomEnvironment.CreateRoom(roomEntry, ladder);
+        _room = Room.CreateRoom(roomEntry, ladder);
         _room.Step();
         Cell = _room.CurrentCell;
         
@@ -268,6 +295,9 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     public void ExitRoomProcedure()
     {
+        if (_room.Location != null)
+            _room.Location.State = LocationState.Sealed;
+        
         if (_availableStepCount == 0)
             _mapState = MapState.LastSelecting;
         else
@@ -289,6 +319,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
         }
         
         SetJingJieProcedure(JingJie + 1);
+        AlignHomeHealthFromJingJie(JingJie);
         ResetMapProgressProcedure();
         
         if (_availableStepCount == 0)
@@ -342,9 +373,9 @@ public class Map : Addressable, ISerializationCallbackReceiver
         // RoomChangedNeuron.Invoke(new(null, newRoom));
     }
 
-    public MenuDetails GetMenuDetailsFromMapNode(MapNode mapNode)
+    public MenuDetails GetMenuDetailsFromLocation(Location location)
     {
-        List<RoomOption> roomOptions = mapNode.GetRoomOptions();
+        List<RoomOption> roomOptions = location.GetRoomOptions();
 
         List<MenuOption> menuOptions = new List<MenuOption>();
         roomOptions.Do(roomOption =>
@@ -356,14 +387,24 @@ public class Map : Addressable, ISerializationCallbackReceiver
             menuOptions.Add(menuOption);
             return;
             
-            void ClickAction() => SelectedMapNodeWithRoomEntry(mapNode, roomOption.RoomEntry);
+            void ClickAction() => SelectedLocationWithRoomEntry(location, roomOption.RoomEntry);
         });
         
         return new MenuDetails(menuOptions);
     }
 
+    public void SetAllLocationsAvailable()
+    {
+        _locations.Do(location =>
+        {
+            if (location.State == LocationState.Sealed)
+                location.State = LocationState.Available;
+        });
+    }
+
     #endregion
 
+    #region Serialization
     
     public void OnBeforeSerialize() { }
 
@@ -372,4 +413,6 @@ public class Map : Addressable, ISerializationCallbackReceiver
         InitNeurons();
         _jingJie = string.IsNullOrEmpty(_jingJie.GetId()) ? null : Encyclopedia.JingJieCategory.FromId(_jingJie.GetId());
     }
+
+    #endregion
 }

@@ -10,8 +10,8 @@ public class LegacyRoomEntry : Entry
     [NonSerialized] private Bound _ladderBound;
     [NonSerialized] private Bound _difficultyBound;
     [NonSerialized] private bool _withInPool;
-    [NonSerialized] private Func<Map, Room, bool> _canCreate;
-    [NonSerialized] private Func<Map, Room, Cell> _create;
+    [NonSerialized] private Func<Map, LegacyRoom, bool> _canCreate;
+    [NonSerialized] private Func<Map, LegacyRoom, Cell> _create;
     [NonSerialized] private SpriteEntry _spriteEntry;
 
     public LegacyRoomEntry(
@@ -21,8 +21,8 @@ public class LegacyRoomEntry : Entry
         Bound ladderBound,
         Bound difficultyBound,
         bool withInPool,
-        Func<Map, Room, Cell> create,
-        Func<Map, Room, bool> canCreate = null
+        Func<Map, LegacyRoom, Cell> create,
+        Func<Map, LegacyRoom, bool> canCreate = null
         ) : base(id, name)
     {
         _description = description;
@@ -40,8 +40,8 @@ public class LegacyRoomEntry : Entry
     public Bound DifficultyBound => _difficultyBound;
     public bool WithInPool => _withInPool;
 
-    public bool CanCreate(Map map, Room room) => _canCreate(map, room);
-    public Cell Create(Map map, Room room) => _create(map, room);
+    public bool CanCreate(Map map, LegacyRoom room) => _canCreate(map, room);
+    public Cell Create(Map map, LegacyRoom room) => _create(map, room);
     
     public Sprite GetSprite() => _spriteEntry.Sprite;
 }

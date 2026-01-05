@@ -665,6 +665,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
+      BuffRequirement: 
     - EntryName: 
       WuXingPred: 0
       JingJiePred: 0
@@ -675,6 +676,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: -6667277615631510049}
     guid: c5cc6ac0-50bc-4360-b4ed-50b2708660d5
@@ -687,7 +689,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 3718
-      y: 697.5
+      y: 227.5
       width: 16
       height: 16
     hasFunc: 1
@@ -703,7 +705,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 3718
-      y: 717.5
+      y: 247.5
       width: 16
       height: 16
     hasFunc: 1
@@ -891,6 +893,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 2
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: -5844745214081796473}
     guid: b6e518af-d6d9-490f-a0ac-6ac4b42d4724
@@ -903,7 +906,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2486
-      y: 1645.5
+      y: 1395.5
       width: 16
       height: 16
     hasFunc: 1
@@ -919,7 +922,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2486
-      y: 1665.5
+      y: 1415.5
       width: 16
       height: 16
     hasFunc: 1
@@ -2229,6 +2232,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: -281453514539884371}
     guid: c5cc6ac0-50bc-4360-b4ed-50b2708660d5
@@ -2241,7 +2245,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 3366
-      y: 733.5
+      y: 483.5
       width: 16
       height: 16
     hasFunc: 1
@@ -2257,7 +2261,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 3366
-      y: 753.5
+      y: 503.5
       width: 16
       height: 16
     hasFunc: 1
@@ -2371,6 +2375,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 6
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: -253651006598847132}
     guid: b6e518af-d6d9-490f-a0ac-6ac4b42d4724
@@ -2457,6 +2462,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
+      BuffRequirement: 
   ExcludingField:
     ownerNode: {fileID: -242163628445450797}
     guid: 9f8446ca-ec1a-4ab1-8985-73ea5c4537be
@@ -2466,7 +2472,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 975.12683
-      y: 185.88367
+      y: 205.88367
       width: 16
       height: 16
     defaultValue: 0
@@ -2479,7 +2485,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 975.12683
-      y: 205.88367
+      y: 225.88367
       width: 16
       height: 16
     defaultValue: 1
@@ -2496,8 +2502,8 @@ MonoBehaviour:
   m_Name: "Void\u661F\u5BAB"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -3141.979, y: -726.9498}
-  zoom: 1.5406039
+  panOffset: {x: -714.349, y: -301.77637}
+  zoom: 1.2478892
   nodes:
   - {fileID: 2496664909736741584}
   - {fileID: -5627440478662210802}
@@ -2663,6 +2669,7 @@ MonoBehaviour:
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 4
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: 650657321821830241}
     guid: b6e518af-d6d9-490f-a0ac-6ac4b42d4724
@@ -2721,7 +2728,7 @@ MonoBehaviour:
       y: 180.5
       width: 16
       height: 16
-    defaultValue: 8
+    defaultValue: 4
   - ownerNode: {fileID: 783819439525621400}
     guid: 18adee18-ea59-443d-8824-52bfd4a6b3f6
     fieldName: Weights
@@ -2745,7 +2752,7 @@ MonoBehaviour:
       y: 230.5
       width: 16
       height: 16
-    defaultValue: 4
+    defaultValue: 3
   - ownerNode: {fileID: 783819439525621400}
     guid: bf168e4c-beb8-4034-942d-394bb13806db
     fieldName: Weights

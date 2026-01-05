@@ -587,7 +587,7 @@ MonoBehaviour:
   LastRoomButton: {fileID: 5694791045992175227}
   OpenZone: {fileID: 2851475938586693715}
   CloseZone: {fileID: 6583146464133133735}
-  MapNodeListView: {fileID: 3563356092348396044}
+  LocationList: {fileID: 3563356092348396044}
 --- !u!1 &6566549708339441021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,6 +1256,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3696891138150049739}
     m_Modifications:
+    - target: {fileID: 874134749372900937, guid: 90ef8ae0bfbda004f97c87c658f07349, type: 3}
+      propertyPath: m_text
+      value: "Boss\u623F\u95F4"
+      objectReference: {fileID: 0}
     - target: {fileID: 6854705593353275624, guid: 90ef8ae0bfbda004f97c87c658f07349, type: 3}
       propertyPath: m_Name
       value: LastRoomButton

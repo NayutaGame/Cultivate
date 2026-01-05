@@ -1346,19 +1346,6 @@ MonoBehaviour:
       width: 16
       height: 16
     defaultValue: 
-  Ladder:
-    ownerNode: {fileID: -997989737853917685}
-    guid: 2c3449cd-237e-4dcc-8dac-8b57613d9e03
-    fieldName: Ladder
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 279.5
-      width: 16
-      height: 16
-    defaultValue: 0
   BehaviorType:
     ownerNode: {fileID: -997989737853917685}
     guid: 5844ec25-85f6-4cf7-bf18-762f0f7fb17e
@@ -1368,7 +1355,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 299.5
+      y: 279.5
       width: 16
       height: 16
     defaultValue: 1
@@ -1381,7 +1368,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 319.5
+      y: 299.5
       width: 16
       height: 16
     defaultValue:
@@ -1389,9 +1376,9 @@ MonoBehaviour:
       WuXingPred: 0
       JingJiePred: 0
       LowBaseJingJie: 0
-      HighBaseJingJie: 8
+      HighBaseJingJie: 7
       Tag: 0
-      Description: "\u4E0D\u9AD8\u4E8E\u4E0A\u4E00\u5883\u754C"
+      Description: "\u4E0D\u9AD8\u4E8E\u4E0B\u4E00\u5883\u754C"
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
@@ -1408,7 +1395,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2646
-      y: 339.5
+      y: 589.5
       width: 16
       height: 16
     hasFunc: 1
@@ -1424,7 +1411,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2646
-      y: 359.5
+      y: 609.5
       width: 16
       height: 16
     hasFunc: 1
@@ -1441,8 +1428,8 @@ MonoBehaviour:
   m_Name: "Void\u660E\u5FC3\u5E90"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -3117.2268, y: -499.27002}
-  zoom: 0.9609285
+  panOffset: {x: -2545.229, y: -847.91565}
+  zoom: 0.7005169
   nodes:
   - {fileID: 2496664909736741584}
   - {fileID: -5627440478662210802}
@@ -1576,7 +1563,7 @@ MonoBehaviour:
       y: 180.5
       width: 16
       height: 16
-    defaultValue: 8
+    defaultValue: 4
   - ownerNode: {fileID: 783819439525621400}
     guid: 18adee18-ea59-443d-8824-52bfd4a6b3f6
     fieldName: Weights
@@ -1600,7 +1587,7 @@ MonoBehaviour:
       y: 230.5
       width: 16
       height: 16
-    defaultValue: 4
+    defaultValue: 3
   - ownerNode: {fileID: 783819439525621400}
     guid: bf168e4c-beb8-4034-942d-394bb13806db
     fieldName: Weights
@@ -2305,7 +2292,7 @@ MonoBehaviour:
   m_Name: Require Cell
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  nodePosition: {x: 2360, y: 456}
+  nodePosition: {x: 2360, y: 648}
   prevs:
     ownerNode: {fileID: 5419917033989741397}
     guid: a9ee40ae-17b0-49b1-a588-f325d7eb38dd
@@ -2318,7 +2305,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 491.5
+      y: 683.5
       width: 16
       height: 16
   Title:
@@ -2330,7 +2317,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 511.5
+      y: 703.5
       width: 16
       height: 16
     defaultValue: "\u63D0\u4EA4"
@@ -2343,23 +2330,10 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 531.5
+      y: 723.5
       width: 16
       height: 16
     defaultValue: 
-  Ladder:
-    ownerNode: {fileID: 5419917033989741397}
-    guid: 2c3449cd-237e-4dcc-8dac-8b57613d9e03
-    fieldName: Ladder
-    elementName: 
-    connections: []
-    rect:
-      serializedVersion: 2
-      x: 2358.1
-      y: 551.5
-      width: 16
-      height: 16
-    defaultValue: 0
   BehaviorType:
     ownerNode: {fileID: 5419917033989741397}
     guid: 5844ec25-85f6-4cf7-bf18-762f0f7fb17e
@@ -2369,7 +2343,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 571.5
+      y: 743.5
       width: 16
       height: 16
     defaultValue: 1
@@ -2382,7 +2356,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2358.1
-      y: 591.5
+      y: 763.5
       width: 16
       height: 16
     defaultValue:
@@ -2390,9 +2364,9 @@ MonoBehaviour:
       WuXingPred: 0
       JingJiePred: 0
       LowBaseJingJie: 0
-      HighBaseJingJie: 6
+      HighBaseJingJie: 7
       Tag: 0
-      Description: "\u4E0D\u9AD8\u4E8E\u5F53\u524D\u5883\u754C"
+      Description: "\u4E0D\u9AD8\u4E8E\u4E0B\u4E00\u5883\u754C"
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
@@ -2401,9 +2375,9 @@ MonoBehaviour:
       WuXingPred: 0
       JingJiePred: 0
       LowBaseJingJie: 0
-      HighBaseJingJie: 6
+      HighBaseJingJie: 7
       Tag: 0
-      Description: "\u4E0D\u9AD8\u4E8E\u5F53\u524D\u5883\u754C"
+      Description: "\u4E0D\u9AD8\u4E8E\u4E0B\u4E00\u5883\u754C"
       AttackRequirement: 0
       ArmorRequirement: 0
       ManaRequirement: 0
@@ -2420,7 +2394,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2646
-      y: 611.5
+      y: 1293.5
       width: 16
       height: 16
     hasFunc: 1
@@ -2436,7 +2410,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2646
-      y: 631.5
+      y: 1313.5
       width: 16
       height: 16
     hasFunc: 1

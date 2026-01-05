@@ -31,6 +31,7 @@ public class ConsolePanel : Panel, Addressable
     private ListModelWithSearchBar<SkillEntry> SkillListModel;
     [TabGroup("Left")] public ListViewWithSearchBar SkillBrowser;
 
+    [TabGroup("Mid")] public Button SetAllLocationsAvailableButton;
     [TabGroup("Mid")] public TMP_InputField LadderInputField;
     [TabGroup("Mid")] public Button ExitRoomButton;
 
@@ -205,6 +206,7 @@ public class ConsolePanel : Panel, Addressable
         SkillBrowser.Browser.NeuronBundle.LeftClickNeuron.Add(PickSkill);
         RemoveSkillButton.onClick.AddListener(RemoveSkill);
         
+        SetAllLocationsAvailableButton.onClick.AddListener(SetAllLocationsAvailable);
         RoomBrowser.Browser.NeuronBundle.LeftClickNeuron.Add(EnterRoom);
         ExitRoomButton.onClick.AddListener(ExitRoom);
     }
@@ -230,6 +232,7 @@ public class ConsolePanel : Panel, Addressable
         SkillBrowser.Browser.NeuronBundle.LeftClickNeuron.Remove(PickSkill);
         RemoveSkillButton.onClick.RemoveAllListeners();
         
+        SetAllLocationsAvailableButton.onClick.RemoveAllListeners();
         RoomBrowser.Browser.NeuronBundle.LeftClickNeuron.Remove(EnterRoom);
         ExitRoomButton.onClick.RemoveAllListeners();
     }
@@ -318,6 +321,12 @@ public class ConsolePanel : Panel, Addressable
             return;
         DeckIndex lastSkillInHand = DeckIndex.FromHand(handCount - 1);
         RunManager.Instance.Environment.RemoveSkillProcedure(lastSkillInHand);
+    }
+
+    private void SetAllLocationsAvailable()
+    {
+        RunManager.Instance.Environment.Map.SetAllLocationsAvailable();
+        CanvasManager.Instance.RunCanvas.MapPanel.LocationList.Refresh();
     }
 
     private void EnterRoom(InteractBehaviour ib, PointerEventData d)

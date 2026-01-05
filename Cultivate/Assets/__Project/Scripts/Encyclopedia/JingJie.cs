@@ -1,6 +1,5 @@
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
@@ -16,6 +15,7 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
     [NonSerialized] private string _audioName;
     [NonSerialized] private AudioEntry _audio;
     [NonSerialized] private SpriteEntry _backgroundSprite;
+    [NonSerialized] private RoomEntry _lastRoom;
     
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -36,6 +36,7 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
         _description = new(_rawDescription);
         _audio = Encyclopedia.AudioCategory.FromName(_audioName);
         _backgroundSprite = Encyclopedia.SpriteCategory.FromName($"{GetName()}背景");
+        _lastRoom = Encyclopedia.RoomCategory.FromName($"LastRoom{GetName()}");
     }
     
     public int GetIndex() => _index;
@@ -44,6 +45,8 @@ public class JingJie : Entry, AnnotatableJingJie, IComparable<JingJie>
     public Sprite GetSprite() => _sprite.Sprite;
     public AudioEntry GetAudio() => _audio;
     public Sprite GetBackgroundSprite() => _backgroundSprite.Sprite;
+    public RoomEntry GetLastRoom() => _lastRoom;
+    
     public bool CanShowAnnotation() => true;
     public Sprite GetIconSprite() => _sprite.Sprite;
 

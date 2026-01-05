@@ -16,15 +16,15 @@ public class MapPanel : Panel
     [SerializeField] private PropagatePointerEnter OpenZone;
     [SerializeField] private PropagatePointerEnter CloseZone;
 
-    [SerializeField] private ListView MapNodeListView;
+    [SerializeField] public ListView LocationList;
 
     public override void AwakeFunction()
     {
         base.AwakeFunction();
 
         Address address = new Address("Run.Environment.Map");
-        MapNodeListView.SetAddress(new("Run.Environment.Map.MapNodes"));
-        MapNodeListView.NeuronBundle.LeftClickNeuron.Join(CreateMenu);
+        LocationList.SetAddress(new("Run.Environment.Map.Locations"));
+        LocationList.NeuronBundle.LeftClickNeuron.Join(CreateMenu);
         
         LastRoomButton.LeftClickNeuron.Join(EnterLastRoom);
 
@@ -46,7 +46,7 @@ public class MapPanel : Panel
     {
         RunManager.Instance.Environment.Map.RoomChangedNeuron.Add(RoomChanged);
         RunManager.Instance.Environment.Map.LevelChangedNeuron.Add(LevelChanged);
-        MapNodeListView.Sync();
+        LocationList.Sync();
         StepText.text = RunManager.Instance.Environment.Map.GetStepText();
         LastRoomButton.SetStateToActiveIf(RunManager.Instance.Environment.Map.IsLastSelecting());
     }
@@ -59,14 +59,14 @@ public class MapPanel : Panel
 
     private void RoomChanged(RoomChangedDetails d)
     {
-        MapNodeListView.Refresh();
+        LocationList.Refresh();
         StepText.text = RunManager.Instance.Environment.Map.GetStepText();
         LastRoomButton.SetStateToActiveIf(RunManager.Instance.Environment.Map.IsLastSelecting());
     }
 
     private void LevelChanged()
     {
-        MapNodeListView.Refresh();
+        LocationList.Refresh();
     }
 
     private void TryShow(PointerEventData eventData) => GetAnimator().SetStateAsync(1);
@@ -92,15 +92,15 @@ public class MapPanel : Panel
 
     private void CreateMenu(InteractBehaviour ib, PointerEventData d)
     {
-        MapNode mapNode = ib.Get<MapNode>();
-        if (!mapNode.IsAccessible)
+        Location location = ib.Get<Location>();
+        if (location.State != LocationState.Available)
             return;
-        MenuDetails menuDetails = RunManager.Instance.Environment.Map.GetMenuDetailsFromMapNode(mapNode);
+        MenuDetails menuDetails = RunManager.Instance.Environment.Map.GetMenuDetailsFromLocation(location);
         CanvasManager.Instance.MenuManager.CreateMenu(menuDetails);
     }
 
     private void EnterLastRoom(InteractBehaviour ib, PointerEventData d)
     {
-        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new());
+        RunManager.Instance.Environment.Map.ReceiveSignalProcedure(new SelectLastRoomSignal());
     }
 }

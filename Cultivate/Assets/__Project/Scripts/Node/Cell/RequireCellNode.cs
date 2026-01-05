@@ -46,9 +46,6 @@ public class RequireCellNode : CellNode
     private InputPort<string> DetailedText = new();
     
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
-    private InputPort<int> Ladder = new();
-    
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<RequireCellBehaviorType> BehaviorType = new(RequireCellBehaviorType.耗材);
 
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
@@ -115,8 +112,7 @@ public class RequireCellNode : CellNode
         if (confirmDeckSignal == null)
             return false;
 
-        int ladder = Ladder.Value;
-        JingJie currJingJie = RoomDefinition.GetJingJieFromLadder(ladder);
+        JingJie currJingJie = RunManager.Instance.Environment.Map.JingJie;
         JingJie nextJingJie = Mathf.Clamp(currJingJie + 1, 0, 4);
 
         Dictionary<RequireCellBehaviorType, Func<RequireCell, bool>> behaviorHandlers = new()
@@ -189,7 +185,7 @@ public class RequireCellNode : CellNode
                 
                     slot.Skill = RunSkill.FromChangeJingJie(slot.Skill, nextJingJie);
                 });
-                        
+                
                 requireCell.WithdrawAll();
                 return success;
             }},

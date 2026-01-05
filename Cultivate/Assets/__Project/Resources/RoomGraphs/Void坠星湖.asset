@@ -1301,8 +1301,8 @@ MonoBehaviour:
   m_Name: "Void\u5760\u661F\u6E56"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -1728.9767, y: -592.6176}
-  zoom: 1.0988805
+  panOffset: {x: -345.8115, y: -279.7783}
+  zoom: 0.6488779
   nodes:
   - {fileID: 2496664909736741584}
   - {fileID: -5627440478662210802}
@@ -1513,7 +1513,7 @@ MonoBehaviour:
       y: 180.5
       width: 16
       height: 16
-    defaultValue: 8
+    defaultValue: 4
   - ownerNode: {fileID: 783819439525621400}
     guid: 18adee18-ea59-443d-8824-52bfd4a6b3f6
     fieldName: Weights
@@ -1537,7 +1537,7 @@ MonoBehaviour:
       y: 230.5
       width: 16
       height: 16
-    defaultValue: 4
+    defaultValue: 3
   - ownerNode: {fileID: 783819439525621400}
     guid: bf168e4c-beb8-4034-942d-394bb13806db
     fieldName: Weights
@@ -1926,7 +1926,7 @@ MonoBehaviour:
       y: -980.5
       width: 16
       height: 16
-    defaultValue: 0
+    defaultValue: 1
     hasFunc: 0
 --- !u!114 &3429634962191388063
 MonoBehaviour:
@@ -2803,5 +2803,5 @@ MonoBehaviour:
       y: -208.5
       width: 16
       height: 16
-    defaultValue: 0
+    defaultValue: 11
     hasFunc: 0

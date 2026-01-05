@@ -72,6 +72,9 @@ public class GachaPanel : Panel
     {
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
         GachaCell cell = cellAdapter.AsCell() as GachaCell;
+        // GachaCellNode之后马上接一个GainGoldProcedure就会导致GachaCell已经退出，再往后面跑，可是GachaPanel的Neuron还未注销导致报错
+        if (cell == null)
+            return;
         BuyButton.SetStateToActiveIf(cell.CanCall());
     }
 

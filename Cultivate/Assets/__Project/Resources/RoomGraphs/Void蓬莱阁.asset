@@ -1175,7 +1175,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 1814.1
-      y: 319.5
+      y: 539.5
       width: 16
       height: 16
     defaultValue: 2
@@ -1191,7 +1191,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2002
-      y: 339.5
+      y: 559.5
       width: 16
       height: 16
     defaultValue: []
@@ -1406,7 +1406,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 1814.1
-      y: 639.5
+      y: 859.5
       width: 16
       height: 16
     defaultValue: 5
@@ -1422,7 +1422,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2002
-      y: 659.5
+      y: 879.5
       width: 16
       height: 16
     defaultValue: []
@@ -1569,7 +1569,7 @@ MonoBehaviour:
   m_Name: "Void\u84EC\u83B1\u9601"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -2811.3335, y: -392.9024}
+  panOffset: {x: -319.40662, y: -333.59363}
   zoom: 0.95659375
   nodes:
   - {fileID: 2496664909736741584}
@@ -1706,7 +1706,7 @@ MonoBehaviour:
       y: 180.5
       width: 16
       height: 16
-    defaultValue: 8
+    defaultValue: 4
   - ownerNode: {fileID: 783819439525621400}
     guid: 18adee18-ea59-443d-8824-52bfd4a6b3f6
     fieldName: Weights
@@ -1730,7 +1730,7 @@ MonoBehaviour:
       y: 230.5
       width: 16
       height: 16
-    defaultValue: 4
+    defaultValue: 3
   - ownerNode: {fileID: 783819439525621400}
     guid: bf168e4c-beb8-4034-942d-394bb13806db
     fieldName: Weights

@@ -11,7 +11,7 @@ public class WeightedRandomNode : Node
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<int>[] Weights;
     
-    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
+    [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<int> Result = new(self => (self as WeightedRandomNode).GetResult());
 
     private int _randomIndex = -1;

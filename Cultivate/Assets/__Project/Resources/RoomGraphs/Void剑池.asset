@@ -1231,6 +1231,8 @@ MonoBehaviour:
       Description: "\u653B\u51FB\u4E0D\u4F4E\u4E8E10"
       AttackRequirement: 10
       ArmorRequirement: 0
+      ManaRequirement: 0
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: -4105167901460430429}
     guid: b6e518af-d6d9-490f-a0ac-6ac4b42d4724
@@ -1243,7 +1245,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2406
-      y: 1641.5
+      y: 1411.5
       width: 16
       height: 16
     hasFunc: 1
@@ -1259,7 +1261,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2406
-      y: 1661.5
+      y: 1431.5
       width: 16
       height: 16
     hasFunc: 1
@@ -1618,6 +1620,8 @@ MonoBehaviour:
       Description: "\u653B\u51FB\u4E0D\u4F4E\u4E8E20"
       AttackRequirement: 20
       ArmorRequirement: 0
+      ManaRequirement: 0
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: -1887809109145795024}
     guid: b6e518af-d6d9-490f-a0ac-6ac4b42d4724
@@ -1630,7 +1634,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2406
-      y: 2073.5
+      y: 1843.5
       width: 16
       height: 16
     hasFunc: 1
@@ -1646,7 +1650,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2406
-      y: 2093.5
+      y: 1863.5
       width: 16
       height: 16
     hasFunc: 1
@@ -2003,6 +2007,8 @@ MonoBehaviour:
       Description: "\u8BF7\u63D0\u4EA4\u5361\u724C"
       AttackRequirement: 0
       ArmorRequirement: 0
+      ManaRequirement: 0
+      BuffRequirement: 
   ExcludingField:
     ownerNode: {fileID: -242163628445450797}
     guid: 9f8446ca-ec1a-4ab1-8985-73ea5c4537be
@@ -2012,7 +2018,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 975.12683
-      y: 165.88367
+      y: 205.88367
       width: 16
       height: 16
     defaultValue: 0
@@ -2025,7 +2031,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 975.12683
-      y: 185.88367
+      y: 225.88367
       width: 16
       height: 16
     defaultValue: 1
@@ -2113,8 +2119,8 @@ MonoBehaviour:
   m_Name: "Void\u5251\u6C60"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -2519.6343, y: -1946.7037}
-  zoom: 2
+  panOffset: {x: -230.37018, y: -333.68872}
+  zoom: 0.56485903
   nodes:
   - {fileID: 2496664909736741584}
   - {fileID: -5627440478662210802}
@@ -2400,7 +2406,7 @@ MonoBehaviour:
       y: 180.5
       width: 16
       height: 16
-    defaultValue: 8
+    defaultValue: 4
   - ownerNode: {fileID: 783819439525621400}
     guid: 18adee18-ea59-443d-8824-52bfd4a6b3f6
     fieldName: Weights
@@ -2412,7 +2418,7 @@ MonoBehaviour:
       y: 205.5
       width: 16
       height: 16
-    defaultValue: 4
+    defaultValue: 3
   - ownerNode: {fileID: 783819439525621400}
     guid: 0af95054-a64d-471a-8969-e060b8fbc3f2
     fieldName: Weights
@@ -3779,6 +3785,8 @@ MonoBehaviour:
       Description: "\u653B\u51FB\u4E0D\u4F4E\u4E8E30"
       AttackRequirement: 30
       ArmorRequirement: 0
+      ManaRequirement: 0
+      BuffRequirement: 
   Success:
     ownerNode: {fileID: 5538030009060825331}
     guid: b6e518af-d6d9-490f-a0ac-6ac4b42d4724
@@ -3791,7 +3799,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2406
-      y: 2505.5
+      y: 2275.5
       width: 16
       height: 16
     hasFunc: 1
@@ -3807,7 +3815,7 @@ MonoBehaviour:
     rect:
       serializedVersion: 2
       x: 2406
-      y: 2525.5
+      y: 2295.5
       width: 16
       height: 16
     hasFunc: 1
