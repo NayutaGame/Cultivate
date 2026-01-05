@@ -7,12 +7,12 @@ public class NarrativeCell : Cell
     private int _commendIndex;
     private List<Commend> _commends;
 
-    private string _leftCharacterName;
-    private string _rightCharacterName;
+    private CharacterEntry _leftCharacter;
+    private CharacterEntry _rightCharacter;
     private string _narrativeText;
 
-    public string GetLeftCharacterName() => _leftCharacterName;
-    public string GetRightCharacterName() => _rightCharacterName;
+    public CharacterEntry GetLeftCharacter() => _leftCharacter;
+    public CharacterEntry GetRightCharacter() => _rightCharacter;
     public string GetNarrativeText() => _narrativeText;
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -41,14 +41,14 @@ public class NarrativeCell : Cell
         _commendIndex++;
     }
 
-    public void SetCharacterName(string characterName, bool isHome)
+    public void SetCharacter(CharacterEntry characterEntry, bool isHome)
     {
         if (isHome)
-            _leftCharacterName = characterName;
+            _leftCharacter = characterEntry;
         else
-            _rightCharacterName = characterName;
+            _rightCharacter = characterEntry;
 
-        RunManager.Instance.Environment.CharacterNameChangedNeuron.Invoke(characterName, isHome);
+        RunManager.Instance.Environment.CharacterChangedNeuron.Invoke(characterEntry, isHome);
     }
 
     public void SetNarrativeText(string narrativeText)

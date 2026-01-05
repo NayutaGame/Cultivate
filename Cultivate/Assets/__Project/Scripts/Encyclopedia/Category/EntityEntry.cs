@@ -16,6 +16,7 @@ public class EntityEntry : Entry
     [NonSerialized] public PrefabEntry StageModel;
     [NonSerialized] public PrefabEntry RunModel;
     [NonSerialized] public PrefabEntry ScribbleModel;
+    [NonSerialized] public PrefabEntry NarrativeModel;
 
     public EntityEntry(
         string id,
@@ -42,5 +43,7 @@ public class EntityEntry : Entry
                    ?? Encyclopedia.PrefabCategory.MissingRunModel();
         ScribbleModel = Encyclopedia.PrefabCategory.FromName($"ScribbleModel{_modelName}")
                         ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
+        NarrativeModel = Encyclopedia.PrefabCategory.FromName($"NarrativeModel{_modelName}")
+                         ?? Encyclopedia.PrefabCategory.MissingScribbleModel();
     }
 }

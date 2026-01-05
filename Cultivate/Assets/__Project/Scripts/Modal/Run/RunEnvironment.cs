@@ -63,7 +63,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         CommendProcessedNeuron = new();
 
         NarrativeTextChangedNeuron = new();
-        CharacterNameChangedNeuron = new();
+        CharacterChangedNeuron = new();
     }
 
     public Neuron StartRunNeuron;
@@ -113,7 +113,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron<Commend> CommendProcessedNeuron;
 
     public Neuron<string> NarrativeTextChangedNeuron;
-    public Neuron<string, bool> CharacterNameChangedNeuron;
+    public Neuron<CharacterEntry, bool> CharacterChangedNeuron;
     
     public void SkillMovedInvokeResimulate(SkillMovedDetails d)
     {
@@ -939,14 +939,22 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
     #region Narrative
 
-    public void SetCharacterNameProcedure(string characterName, bool isHome)
+    public void SetCharacterProcedure(string characterName, bool isHome)
+    {
+        CharacterEntry characterEntry = Encyclopedia.CharacterCategory.FromName(characterName);
+        if (characterEntry == null)
+            return;
+        
+        SetCharacterProcedure(characterEntry, isHome);
+    }
+
+    public void SetCharacterProcedure(CharacterEntry characterEntry, bool isHome)
     {
         NarrativeCell narrativeCell = Map.Cell?.AsCell() as NarrativeCell;
         if (narrativeCell == null)
             return;
-            
-        narrativeCell.SetCharacterName(characterName, isHome);
-        // 通知NarrativePanel更新
+        
+        narrativeCell.SetCharacter(characterEntry, isHome);
     }
 
     public void SetNarrativeTextProcedure(string narrativeText)
@@ -956,7 +964,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             return;
             
         narrativeCell.SetNarrativeText(narrativeText);
-        // 通知NarrativePanel更新
     }
 
     #endregion

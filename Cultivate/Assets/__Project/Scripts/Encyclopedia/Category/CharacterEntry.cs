@@ -72,6 +72,7 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     public PrefabEntry GetConfigPrefabEntry() => EntityEntry.ConfigModel;
     public PrefabEntry GetStagePrefabEntry() => EntityEntry.StageModel;
     public PrefabEntry GetScribblePrefabEntry() => EntityEntry.ScribbleModel;
+    public PrefabEntry GetNarrativePrefabEntry() => EntityEntry.NarrativeModel;
 
     public bool CanShowAnnotation()
         => true;

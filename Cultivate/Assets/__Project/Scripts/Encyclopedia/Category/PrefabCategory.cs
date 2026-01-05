@@ -72,13 +72,41 @@ public class PrefabCategory : Category<PrefabEntry>
             new("Prefab03_023", "StageModel鹤仙人", "Prefabs/StageModels/鹤仙人"),
             new("Prefab03_024", "StageModel鹿仙人", "Prefabs/StageModels/鹿仙人"),
             
+            // Narrative Models
+            new("Prefab04_001", "NarrativeModel缺失", "Prefabs/NarrativeModels/缺失"),
+            new("Prefab04_002", "NarrativeModel徐福", "Prefabs/NarrativeModels/徐福"),
+            new("Prefab04_003", "NarrativeModel子非鱼", "Prefabs/NarrativeModels/子非鱼"),
+            new("Prefab04_004", "NarrativeModel子非燕", "Prefabs/NarrativeModels/子非燕"),
+            new("Prefab04_005", "NarrativeModel彼此卿", "Prefabs/NarrativeModels/彼此卿"),
+            new("Prefab04_006", "NarrativeModel风雨晴", "Prefabs/NarrativeModels/风雨晴"),
+            // new("Prefab04_007", "NarrativeModel梦乃遥", "Prefabs/NarrativeModels/梦乃遥"),
+            
+            new("Prefab04_008", "NarrativeModel噬金甲", "Prefabs/NarrativeModels/噬金甲"),
+            new("Prefab04_009", "NarrativeModel墨蛟", "Prefabs/NarrativeModels/墨蛟"),
+            new("Prefab04_010", "NarrativeModel渊虾", "Prefabs/NarrativeModels/渊虾"),
+            new("Prefab04_011", "NarrativeModel九尾狐", "Prefabs/NarrativeModels/九尾狐"),
+            new("Prefab04_012", "NarrativeModel推山兽", "Prefabs/NarrativeModels/推山兽"),
+            new("Prefab04_013", "NarrativeModel白泽", "Prefabs/NarrativeModels/白泽"),
+            new("Prefab04_014", "NarrativeModel鲲", "Prefabs/NarrativeModels/鲲"),
+            new("Prefab04_015", "NarrativeModel毕方", "Prefabs/NarrativeModels/毕方"),
+            new("Prefab04_016", "NarrativeModel火蟾", "Prefabs/NarrativeModels/火蟾"),
+            new("Prefab04_017", "NarrativeModel麒麟", "Prefabs/NarrativeModels/麒麟"),
+            new("Prefab04_018", "NarrativeModel醉良", "Prefabs/NarrativeModels/醉良"),
+            new("Prefab04_019", "NarrativeModel童游", "Prefabs/NarrativeModels/童游"),
+            new("Prefab04_020", "NarrativeModel眠谷", "Prefabs/NarrativeModels/眠谷"),
+            new("Prefab04_021", "NarrativeModel常夏", "Prefabs/NarrativeModels/常夏"),
+            new("Prefab04_022", "NarrativeModel司方", "Prefabs/NarrativeModels/司方"),
+            
+            new("Prefab04_023", "NarrativeModel鹤仙人", "Prefabs/NarrativeModels/鹤仙人"),
+            new("Prefab04_024", "NarrativeModel鹿仙人", "Prefabs/NarrativeModels/鹿仙人"),
+            
             // Scribble Models
-            new("Prefab04_001", "ScribbleModel徐福", "Prefabs/ScribbleModels/缺失"),
-            new("Prefab04_002", "ScribbleModel徐福", "Prefabs/ScribbleModels/徐福"),
-            new("Prefab04_003", "ScribbleModel子非鱼", "Prefabs/ScribbleModels/子非鱼"),
-            new("Prefab04_004", "ScribbleModel子非燕", "Prefabs/ScribbleModels/子非燕"),
-            new("Prefab04_005", "ScribbleModel彼此卿", "Prefabs/ScribbleModels/彼此卿"),
-            new("Prefab04_006", "ScribbleModel风雨晴", "Prefabs/ScribbleModels/风雨晴"),
+            new("Prefab05_001", "ScribbleModel徐福", "Prefabs/ScribbleModels/缺失"),
+            new("Prefab05_002", "ScribbleModel徐福", "Prefabs/ScribbleModels/徐福"),
+            new("Prefab05_003", "ScribbleModel子非鱼", "Prefabs/ScribbleModels/子非鱼"),
+            new("Prefab05_004", "ScribbleModel子非燕", "Prefabs/ScribbleModels/子非燕"),
+            new("Prefab05_005", "ScribbleModel彼此卿", "Prefabs/ScribbleModels/彼此卿"),
+            new("Prefab05_006", "ScribbleModel风雨晴", "Prefabs/ScribbleModels/风雨晴"),
             
             // Comics
             new("Prefab0043", "第一张", "Prefabs/Comics/Comic1"),

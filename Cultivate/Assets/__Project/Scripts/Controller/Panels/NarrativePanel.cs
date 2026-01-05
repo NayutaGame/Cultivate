@@ -1,11 +1,8 @@
 
-using System;
 using DG.Tweening;
-using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.PlayerLoop;
 
 public class NarrativePanel : Panel
 {
@@ -15,11 +12,10 @@ public class NarrativePanel : Panel
 
     [SerializeField] private PropagateClick ClickReceiver;
 
-    [SerializeField] private RectTransform Anchor;
-    [NonSerialized] private PrefabEntry PrefabEntry;
-    [NonSerialized] private GameObject Model;
-
     private Address _address;
+
+    [SerializeField] private SpineModelView LeftCharacter;
+    [SerializeField] private SpineModelView RightCharacter;
     
     public override void AwakeFunction()
     {
@@ -33,20 +29,26 @@ public class NarrativePanel : Panel
     {
         RunManager.Instance.Environment.CommendProcessedNeuron.Add(CommendProcessed);
         RunManager.Instance.Environment.NarrativeTextChangedNeuron.Add(NarrativeTextChangedStaging);
-        RunManager.Instance.Environment.CharacterNameChangedNeuron.Add(CharacterNameChangedStaging);
+        RunManager.Instance.Environment.CharacterChangedNeuron.Add(CharacterChangedStaging);
+        ClearContext();
     }
 
     private void OnDisable()
     {
         RunManager.Instance.Environment.CommendProcessedNeuron.Remove(CommendProcessed);
         RunManager.Instance.Environment.NarrativeTextChangedNeuron.Remove(NarrativeTextChangedStaging);
-        RunManager.Instance.Environment.CharacterNameChangedNeuron.Remove(CharacterNameChangedStaging);
+        RunManager.Instance.Environment.CharacterChangedNeuron.Remove(CharacterChangedStaging);
     }
 
     public override void Refresh()
     {
         ICellAdapter cellAdapter = _address.Get<ICellAdapter>();
         NarrativeCell cell = cellAdapter.AsCell() as NarrativeCell;
+    }
+
+    public void ClearContext()
+    {
+        
     }
 
     public void QueueProcessNarrativeSignal()
@@ -84,12 +86,18 @@ public class NarrativePanel : Panel
         NarrativeText.text = narrativeText;
     }
 
-    public void CharacterNameChangedStaging(string characterName, bool isHome)
+    public void CharacterChangedStaging(CharacterEntry characterEntry, bool isHome)
     {
         if (isHome)
-            LeftCharacterName.text = characterName;
+        {
+            LeftCharacter.SetPrefabEntry(characterEntry.GetNarrativePrefabEntry());
+            LeftCharacterName.text = characterEntry.GetName();
+        }
         else
-            RightCharacterName.text = characterName;
+        {
+            RightCharacter.SetPrefabEntry(characterEntry.GetNarrativePrefabEntry());
+            RightCharacterName.text = characterEntry.GetName();
+        }
     }
 
     private void ReceiveClick(PointerEventData d)
@@ -115,25 +123,6 @@ public class NarrativePanel : Panel
         else
         {
             QueueProcessNarrativeSignal();
-        }
-    }
-
-    private void SetPrefabEntry(PrefabEntry prefabEntry)
-    {
-        if (PrefabEntry == prefabEntry)
-            return;
-        
-        if (Model != null)
-            Destroy(Model);
-
-        PrefabEntry = prefabEntry;
-        Model = Instantiate(prefabEntry.Prefab, Anchor);
-
-        SkeletonGraphic skeletonGraphic = Model.GetComponentInChildren<SkeletonGraphic>();
-        if (skeletonGraphic != null)
-        {
-            skeletonGraphic.AnimationState.SetAnimation(1, "win", false);
-            skeletonGraphic.AnimationState.AddAnimation(1, "idle", true, 0);
         }
     }
 }

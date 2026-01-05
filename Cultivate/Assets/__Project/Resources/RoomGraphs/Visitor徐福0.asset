@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: "Visitor\u5F90\u798F0"
   m_EditorClassIdentifier: 
   blackboard: {fileID: 11400000, guid: 808e054150ac948488e0695d4c84cee0, type: 2}
-  panOffset: {x: -539.53876, y: -138.60089}
+  panOffset: {x: -635.1979, y: -144.34045}
   zoom: 0.95659375
   nodes:
   - {fileID: 8404964342545946824}
   - {fileID: 5254414691165939901}
   - {fileID: 7578805767694851827}
   - {fileID: 348118294748312388}
+  - {fileID: 7992745183109419747}
   parent: {fileID: 0}
   children: []
   inPoints:
@@ -51,6 +52,9 @@ MonoBehaviour:
     - node: {fileID: 8404964342545946824}
       guid: 95723977-1d43-4437-b194-d1e08b5731a5
       reroutes: []
+    - node: {fileID: 7992745183109419747}
+      guid: d48d6234-b116-41fe-bdb0-d23f8aca2bc6
+      reroutes: []
     rect:
       serializedVersion: 2
       x: 454.1
@@ -58,13 +62,16 @@ MonoBehaviour:
       width: 16
       height: 16
   Commends:
-  - rid: 428199433706143744
+  - rid: 428199433706143745
   next:
     ownerNode: {fileID: 348118294748312388}
     guid: 8f4ab9ba-2571-483a-b353-87f81d33ec54
     fieldName: next
     elementName: 
-    connections: []
+    connections:
+    - node: {fileID: 7992745183109419747}
+      guid: 5970f446-f39b-47b4-a99a-669df28823ac
+      reroutes: []
     rect:
       serializedVersion: 2
       x: 842
@@ -75,8 +82,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 428199433706143744
-      type: {class: SetCharacterNameCommend, ns: , asm: Assembly-CSharp}
+    - rid: 428199433706143745
+      type: {class: SetCharacterCommend, ns: , asm: Assembly-CSharp}
       data:
         _proceedMode: 2
         CharacterName: "\u5F90\u798F"
@@ -148,6 +155,64 @@ MonoBehaviour:
       height: 16
     defaultValue: "\u5F90\u798F0\n\u70BC\u4E39"
     hasFunc: 0
+--- !u!114 &7992745183109419747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fabce181ee8e7458792fa0e65bb9a0, type: 3}
+  m_Name: Dialog Cell Node Quick
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  nodePosition: {x: 1016, y: 376}
+  prevs:
+    ownerNode: {fileID: 7992745183109419747}
+    guid: 5970f446-f39b-47b4-a99a-669df28823ac
+    fieldName: prevs
+    elementName: 
+    connections:
+    - node: {fileID: 348118294748312388}
+      guid: 8f4ab9ba-2571-483a-b353-87f81d33ec54
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1014.1
+      y: 411.5
+      width: 16
+      height: 16
+  NextCell:
+    ownerNode: {fileID: 7992745183109419747}
+    guid: d48d6234-b116-41fe-bdb0-d23f8aca2bc6
+    fieldName: NextCell
+    elementName: 
+    connections:
+    - node: {fileID: 348118294748312388}
+      guid: 04d70ef8-6b43-40a5-a440-9ca70f737b2d
+      reroutes: []
+    rect:
+      serializedVersion: 2
+      x: 1302
+      y: 411.5
+      width: 16
+      height: 16
+    hasFunc: 1
+  DetailedText:
+    ownerNode: {fileID: 7992745183109419747}
+    guid: 20dc9d9d-9b33-42e6-8040-82867a7154e4
+    fieldName: DetailedText
+    elementName: 
+    connections: []
+    rect:
+      serializedVersion: 2
+      x: 1014.1
+      y: 433.5
+      width: 16
+      height: 16
+    defaultValue: "\u518D\u6765\u4E00\u6B21"
 --- !u!114 &8404964342545946824
 MonoBehaviour:
   m_ObjectHideFlags: 0
