@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 [Serializable]
 public class Map : Addressable, ISerializationCallbackReceiver
@@ -38,7 +39,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     public Room _room;
     [NonSerialized] private ICellAdapter _cell;
     private MapState _mapState;
-    private Dictionary<CharacterEntry, RunNPC> _visitorsDict;
+    private List<RunNPC> _visitors;
     [SerializeField] private int _availableStepCount;
     [SerializeField] private int _totalStepCount;
     [SerializeField] private int _totalChoiceCount;
@@ -49,16 +50,17 @@ public class Map : Addressable, ISerializationCallbackReceiver
         // { "CurrLevel",                  thisObject => ((Map)thisObject).GetCurrLevel() },
     };
     public object Get(string s) => Accessor[s](this);
-    public Map()
+    public Map(CharacterEntry playerCharacter)
     {
         InitNeurons();
         _jingJie = JingJie.LianQi;
         _locations = new();
 
-        _visitorsDict = new Dictionary<CharacterEntry, RunNPC>();
+        _visitors = new List<RunNPC>();
         Encyclopedia.CharacterCategory.Do(characterEntry =>
         {
-            _visitorsDict.Add(characterEntry, new RunNPC(characterEntry));
+            if (characterEntry != playerCharacter)
+                _visitors.Add(new RunNPC(characterEntry));
         });
     }
 
@@ -215,10 +217,19 @@ public class Map : Addressable, ISerializationCallbackReceiver
         _totalStepCount = availableStepCount;
         _availableStepCount = availableStepCount;
 
-        int[] indices = Numeric.GetCombination(_locations.Count(), _totalChoiceCount);
-        _locations.Do(location => location.State = LocationState.Sealed);
-        foreach (int index in indices)
+        int[] locationIndices = Numeric.GetCombination(_locations.Count(), _totalChoiceCount);
+        _locations.Do(location =>
+        {
+            location.State = LocationState.Sealed;
+            location.Visitor = null;
+        });
+        foreach (int index in locationIndices)
             _locations[index].State = LocationState.Available;
+
+        int availableVisitorCount = 4;
+        int[] visitorIndices = Numeric.GetCombination(_locations.Count(), availableVisitorCount);
+        for (int i = 0; i < visitorIndices.Length; i++)
+            _locations[visitorIndices[i]].Visitor = _visitors[i];
     }
     
     public void ReceiveSignalProcedure(Signal signal)

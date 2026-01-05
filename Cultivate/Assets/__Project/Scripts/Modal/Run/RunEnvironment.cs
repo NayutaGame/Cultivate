@@ -183,7 +183,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
 
         _intMemory = new();
         _config = config;
-        _map = new();
+        _map = new(_config.GetCharacter());
         
         _skillPool = new();
         _hand = new();

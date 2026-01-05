@@ -1,5 +1,6 @@
 
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +31,10 @@ public class LocationView : XView
         }
         
         NameText.text = location.Entry.GetName();
-        VisitorText.text = "无人访问";
+        if (location.Visitor == null)
+            VisitorText.text = "无人访问";
+        else
+            VisitorText.text = location.Visitor.CharacterEntry.GetName();
         ClueText.text = "";
     }
 }

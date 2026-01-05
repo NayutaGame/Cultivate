@@ -16,7 +16,6 @@ public class CharacterEntry : Entry, AnnotatableCharacter
     [NonSerialized] public EntityEntry EntityEntry;
 
     [NonSerialized] private RoomEntry[] _roomsFromCharacter;
-    [NonSerialized] private RoomEntry _roomFromVisitor;
 
     private static readonly Dictionary<string, Func<object, object>> Accessor = new()
     {
@@ -51,8 +50,6 @@ public class CharacterEntry : Entry, AnnotatableCharacter
         {
             Encyclopedia.RoomCategory.FromName($"Character{GetName()}1"),
         };
-        
-        _roomFromVisitor = Encyclopedia.RoomCategory.FromName($"Visitor{GetName()}");
     }
 
     public List<PackEntry> GetDefaultPacks()
@@ -67,7 +64,6 @@ public class CharacterEntry : Entry, AnnotatableCharacter
         => _abilityDescription;
 
     public RoomEntry[] RoomsFromCharacter => _roomsFromCharacter;
-    public RoomEntry RoomFromVisitor => _roomFromVisitor;
     
     public Sprite GetCharacterIconSprite() => EntityEntry.CharacterIconSprite.Sprite;
     public Sprite GetCharacterIconSelectSprite() => EntityEntry.CharacterIconSelectSprite.Sprite;

@@ -73,4 +73,15 @@ public class Encyclopedia : Addressable
         
         SpriteCategory.RefreshDict();
     }
+
+    public static RoomEntry GetRoomEntryFromVisitorLocation(CharacterEntry character, LocationEntry location)
+    {
+        int locationIndex = LocationCategory.IndexOf(location); // 0 ~ 14
+        locationIndex /= 5; // 0 1 2
+        // Visitor徐福0
+        // Visitor徐福1
+        // Visitor徐福2
+        string roomEntryName = $"Visitor{character.GetName()}{locationIndex}";
+        return Encyclopedia.RoomCategory.FromName(roomEntryName);
+    }
 }

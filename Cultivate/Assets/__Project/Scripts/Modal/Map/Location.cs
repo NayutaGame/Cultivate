@@ -22,6 +22,12 @@ public class Location
         set => _state = value;
     }
 
+    public RunNPC Visitor
+    {
+        get => _visitor;
+        set => _visitor = value;
+    }
+
     public List<RoomOption> GetRoomOptions()
     {
         List<RoomOption> roomOptions = new();
@@ -57,8 +63,9 @@ public class Location
     {
         if (_visitor == null)
             return;
-        
-        roomOptions.Add(new(_visitor.CharacterEntry.RoomFromVisitor, $"对{_visitor.CharacterEntry.GetName()}感到有兴趣"));
+
+        RoomEntry roomEntry = Encyclopedia.GetRoomEntryFromVisitorLocation(_visitor.CharacterEntry, _entry);
+        roomOptions.Add(new(roomEntry, $"对{_visitor.CharacterEntry.GetName()}感到有兴趣"));
     }
 
     private void AddFromLocation(List<RoomOption> roomOptions)
