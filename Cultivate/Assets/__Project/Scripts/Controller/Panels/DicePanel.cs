@@ -61,7 +61,7 @@ public class DicePanel : Panel
         DiceRangeText.text = $"骰子范围 ~ [1, {cell.DiceRange}]";
         
         GainList.Sync();
-        OutcomeList.Refresh();
+        OutcomeList.Sync();
     }
 
     private void OnEnable()

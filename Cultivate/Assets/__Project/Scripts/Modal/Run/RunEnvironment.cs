@@ -146,7 +146,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     [SerializeReference] private Map _map;
     
     private RunCharacter _character;
-    private Dictionary<CharacterEntry, RunNPC> _npcDict;
     
     [SerializeReference] private RunSkillListModel _hand;
     [SerializeField] private BoundedInt _gold;
@@ -185,12 +184,6 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         _intMemory = new();
         _config = config;
         _map = new();
-
-        _npcDict = new Dictionary<CharacterEntry, RunNPC>();
-        Encyclopedia.CharacterCategory.Do(characterEntry =>
-        {
-            _npcDict.Add(characterEntry, new RunNPC(characterEntry));
-        });
         
         _skillPool = new();
         _hand = new();

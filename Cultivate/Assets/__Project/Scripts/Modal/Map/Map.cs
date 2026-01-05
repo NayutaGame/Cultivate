@@ -38,6 +38,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
     public Room _room;
     [NonSerialized] private ICellAdapter _cell;
     private MapState _mapState;
+    private Dictionary<CharacterEntry, RunNPC> _visitorsDict;
     [SerializeField] private int _availableStepCount;
     [SerializeField] private int _totalStepCount;
     [SerializeField] private int _totalChoiceCount;
@@ -53,6 +54,12 @@ public class Map : Addressable, ISerializationCallbackReceiver
         InitNeurons();
         _jingJie = JingJie.LianQi;
         _locations = new();
+
+        _visitorsDict = new Dictionary<CharacterEntry, RunNPC>();
+        Encyclopedia.CharacterCategory.Do(characterEntry =>
+        {
+            _visitorsDict.Add(characterEntry, new RunNPC(characterEntry));
+        });
     }
 
     public void InitNeurons()

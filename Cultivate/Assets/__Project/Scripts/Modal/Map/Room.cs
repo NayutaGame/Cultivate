@@ -29,8 +29,12 @@ public class Room
         _roomGraph = _roomEntry.RoomGraph;
         _roomGraph.Reset();
         foreach (Node node in _roomGraph.Nodes)
+        {
             if (node is CellNode cellNode)
                 cellNode.Reset();
+            if (node is CLNode clNode)
+                clNode.Reset();
+        }
         _roomGraph.Blackboard.SetLocalValue(_roomGraph, "Ladder", _ladder);
     }
 

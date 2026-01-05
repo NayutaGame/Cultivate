@@ -6,7 +6,7 @@ using UnityEngine;
 
 [NodeWidth(200)]
 [CreateNodeMenu("Weighted Random", -10, true)]
-public class WeightedRandomNode : Node
+public class WeightedRandomNode : CLNode
 {
     [PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.Strict)] [SerializeField]
     private InputPort<int>[] Weights;
@@ -29,5 +29,11 @@ public class WeightedRandomNode : Node
 
         WeightedRandom.SelectWeightedIndex(out _randomIndex, weightList);
         return _randomIndex;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        _randomIndex = -1;
     }
 }
