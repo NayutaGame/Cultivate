@@ -11,6 +11,10 @@ public class DialogCellNode : CellNode
     [ArrowPort, PortSettings(true, ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited)] [SerializeField]
     private InputPort<ILogicNode> prevs;
     
+    [PortSettings(ShowBackingValue.Never, ConnectionType.Multiple, TypeConstraint.Inherited), SerializeField]
+    private OutputPort<int> Selection;
+    
+    [SpaceLine(-1)]
     [Multiline(5), PortSettings(ShowBackingValue.Unconnected, ConnectionType.Override, TypeConstraint.None)] [SerializeField]
     private InputPort<string> DetailedText;
     
@@ -42,14 +46,12 @@ public class DialogCellNode : CellNode
     [ArrowPort, PortSettings(isHideLabel: true, ShowBackingValue.Never, ConnectionType.Override, TypeConstraint.Inherited)] [SerializeField]
     private OutputPort<ILogicNode> Option4 = new(self => self as ILogicNode);
     
-    private int selectedOptionIndex = -1;
-    
     public override NodePort PrevPort => prevs;
     public override NodePort NextPort 
     {
         get 
         {
-            return selectedOptionIndex switch
+            return Selection.Value switch
             {
                 0 => Option1,
                 1 => Option2,
@@ -103,7 +105,7 @@ public class DialogCellNode : CellNode
     {
         if (signal is SelectedOptionSignal selectedOptionSignal)
         {
-            selectedOptionIndex = selectedOptionSignal.Selected;
+            Selection.Value = selectedOptionSignal.Selected;
             return true;
         }
 

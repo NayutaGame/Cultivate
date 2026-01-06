@@ -7,6 +7,7 @@ public class Room
     private Location _location;
     private RoomEntry _roomEntry;
     private int _ladder;
+    private bool _isOverHalf;
 
     private Memory _memory;
     private LogicGraph _roomGraph;
@@ -18,6 +19,7 @@ public class Room
         _location = location;
         _roomEntry = roomEntry;
         _ladder = ladder;
+        _isOverHalf = Map.IsOverHalfFromLadder[ladder];
         
         _memory = new Memory();
 
@@ -35,7 +37,7 @@ public class Room
             if (node is CLNode clNode)
                 clNode.Reset();
         }
-        _roomGraph.Blackboard.SetLocalValue(_roomGraph, "Ladder", _ladder);
+        // _roomGraph.Blackboard.SetLocalValue(_roomGraph, "Ladder", _ladder);
     }
 
     public static Room CreateRoom(Location location, RoomEntry roomEntry, int ladder)
@@ -52,6 +54,9 @@ public class Room
 
     public int GetLadder()
         => _ladder;
+
+    public bool IsOverHalf()
+        => _isOverHalf;
 
     public bool IsFinished()
         => CurrentCell == null;

@@ -48,7 +48,11 @@ public class NarrativePanel : Panel
 
     public void ClearContext()
     {
-        
+        LeftCharacter.SetPrefabEntry(null);
+        LeftCharacterName.text = "";
+        RightCharacter.SetPrefabEntry(null);
+        RightCharacterName.text = "";
+        NarrativeText.text = "";
     }
 
     public void QueueProcessNarrativeSignal()

@@ -3,14 +3,13 @@ using System;
 using System.Collections.Generic;
 using CLLibrary;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 [Serializable]
 public class Map : Addressable, ISerializationCallbackReceiver
 {
     #region Constant
     
-    public static readonly int[,] StepCount = new int[6, 2]
+    public static readonly int[,] StepCountFromJingJie = new int[6, 2]
     {
         { 5, 3 },
         { 7, 4 },
@@ -20,9 +19,24 @@ public class Map : Addressable, ISerializationCallbackReceiver
         { 13, 7 },
     };
     
-    public static readonly int[] SlotCountFromLadderMapping = new int[]
+    public static readonly int[] SlotCountFromLadder = new int[]
     {
-        3, 4, 5, 6, 7, 8, 9, 9, 10, 11, 12, 12, 12, 12, 12,
+        3, 4,
+        5, 6, 7,
+        8, 9, 9,
+        10, 11, 12,
+        12, 12, 12,
+        12,
+    };
+    
+    public static readonly bool[] IsOverHalfFromLadder = new[]
+    {
+        false, true,
+        false, true, true,
+        false, true, true,
+        false, true, true,
+        false, true, true,
+        true,
     };
     
     public Neuron<JingJieChangedDetails> JingJieChangedNeuron;
@@ -111,16 +125,23 @@ public class Map : Addressable, ISerializationCallbackReceiver
         => _locations.IndexOf(location);
 
     public static int GetTotalChoiceCountFromJingJie(JingJie jingJie)
-        => StepCount[jingJie.GetIndex(), 0];
+        => StepCountFromJingJie[jingJie.GetIndex(), 0];
 
     public static int GetAvailableStepCountFromJingJie(JingJie jingJie)
-        => StepCount[jingJie.GetIndex(), 1];
+        => StepCountFromJingJie[jingJie.GetIndex(), 1];
     
     private void SelectedLocationWithRoomEntry(Location location, RoomEntry roomEntry)
     {
         ReceiveSignalProcedure(SelectedLocationSignal.FromLocationAndRoomEntry(location, roomEntry));
     }
 
+    private bool IsOverHalf(JingJie jingJie)
+    {
+        int maxStep = GetAvailableStepCountFromJingJie(jingJie);
+        int restStep = _availableStepCount + 1;
+        return IsOverHalf(maxStep, restStep);
+    }
+    
     private bool IsOverHalf(int maxStep, int restStep)
     {
         // 6, 6, 0 -> false
@@ -141,12 +162,8 @@ public class Map : Addressable, ISerializationCallbackReceiver
 
     private int CalcLadder(JingJie jingJie, bool isLastRoom)
     {
-        int maxStep = GetAvailableStepCountFromJingJie(jingJie);
-        int restStep = _availableStepCount + 1;
-        bool isOverHalf = IsOverHalf(maxStep, restStep);
-        
         int lastRoomBonus = isLastRoom ? 1 : 0;
-        int overHalfBonus = isOverHalf ? 1 : 0;
+        int overHalfBonus = IsOverHalf(jingJie) ? 1 : 0;
         switch (jingJie.GetIndex())
         {
             case 0: // 0 1
@@ -166,6 +183,11 @@ public class Map : Addressable, ISerializationCallbackReceiver
         throw new Exception("CL:Unexpected pathway");
     }
 
+    public RunNPC GetNpc(CharacterEntry characterEntry)
+    {
+        return _visitors.FirstObj(npc => npc.CharacterEntry == characterEntry);
+    }
+
     #endregion
 
     #region Internal
@@ -174,7 +196,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
         => jingJie.GetLastRoom();
 
     private void AlignSlotCountFromLadder(int ladder)
-        => RunManager.Instance.Environment.Home.SetSlotCount(SlotCountFromLadderMapping[ladder]);
+        => RunManager.Instance.Environment.Home.SetSlotCount(SlotCountFromLadder[ladder]);
 
     private void AlignHomeHealthFromJingJie(JingJie jingJie)
         => RunManager.Instance.Environment.SetHealthProcedure(RunEntity.HealthFromJingJie[jingJie]);
@@ -253,6 +275,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
                 if (signal is SelectedLocationSignal selectedLocationSignal)
                 {
                     _availableStepCount -= 1;
+                    
                     EnterRoomProcedure(selectedLocationSignal.Location, selectedLocationSignal.RoomEntry, CalcLadder(JingJie, false));
                 }
                 return;
@@ -273,6 +296,7 @@ public class Map : Addressable, ISerializationCallbackReceiver
                 if (signal is SelectLastRoomSignal selectLastRoomSignal)
                 {
                     RoomEntry roomEntry = CalcLastRoomEntryFromJingJie(JingJie);
+                    
                     EnterLastRoomProcedure(roomEntry, CalcLadder(JingJie, true));
                 }
                 return;

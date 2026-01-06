@@ -31,8 +31,7 @@ public class SpineModelView : MonoBehaviour
         SkeletonGraphic skeletonGraphic = Model.GetComponentInChildren<SkeletonGraphic>();
         if (skeletonGraphic != null)
         {
-            skeletonGraphic.AnimationState.SetAnimation(1, "win", false);
-            skeletonGraphic.AnimationState.AddAnimation(1, "idle", true, 0);
+            skeletonGraphic.AnimationState.SetAnimation(1, "idle", true);
         }
     }
 }
