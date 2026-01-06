@@ -40,7 +40,7 @@ Cultivate/.idea/
 Cultivate/.vsconfig
 Cultivate/Logs/
 Cultivate/Assets/Plugins/FMOD/Cache/*
-# Cultivate/UserSettings/
+Cultivate/UserSettings/
 
 # Never ignore DLLs in the FMOD subfolder.
 !/[Aa]ssets/Plugins/FMOD/**/lib/*
