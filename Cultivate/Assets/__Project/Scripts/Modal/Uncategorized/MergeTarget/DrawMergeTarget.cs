@@ -3,9 +3,23 @@ using System;
 
 public class DrawMergeTarget : MergeTarget
 {
-    public DrawMergeTarget(string mergeType, JingJie resultJingJie, WuXing resultWuXing, Predicate<SkillEntry> pred)
+    private DrawMergeTarget(string mergeType, JingJie resultJingJie, WuXing resultWuXing, Predicate<SkillEntry> pred)
         : base(mergeType, true, null, null, resultJingJie, resultWuXing, null, null, pred)
     {
+    }
+
+    public static DrawMergeTarget From(string mergeType, JingJie resultJingJie, WuXing resultWuXing,
+        Predicate<SkillEntry> pred, bool resultJingJieIsBaseJingJie)
+    {
+        if (resultJingJieIsBaseJingJie)
+        {
+            bool NestedPred(SkillEntry skillEntry) => pred(skillEntry) && skillEntry.LowestJingJie == resultJingJie;
+            return new(mergeType, resultJingJie, resultWuXing, NestedPred);
+        }
+        else
+        {
+            return new(mergeType, resultJingJie, resultWuXing, pred);
+        }
     }
 
     public override void Execute(MergeDetails d, SkillInventory hand)

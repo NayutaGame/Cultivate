@@ -333,9 +333,10 @@ public class CharacterCategory : Category<CharacterEntry>
                         if (!ownerIsHome)
                             return;
 
-                        int stack = 1 + d.Owner.GetJingJie();
+                        if (d.Owner.RunEntity.GetJingJie() <= JingJie.ZhuJi)
+                            return;
 
-                        await d.Owner.GainBuffProcedure("空明", stack);
+                        await d.Owner.GainBuffProcedure("格挡");
                     }),
                     new(StageClosureDict.DID_CAST, 0, async (listener, closure, eventDetails) =>
                     {
@@ -356,9 +357,9 @@ public class CharacterCategory : Category<CharacterEntry>
 
             new("Character0005", "子非燕",
                 rawAbilityDescription: "练气|获得凶祸" +
-                                       "\n筑基|获得消耗气血 二动" +
+                                       "\n筑基|获得速晴" +
                                        "\n金丹|获得30气血上限" +
-                                       "\n元婴|获得灼烧->剑意" +
+                                       "\n元婴|获得焚天" +
                                        "\n化神|获得妖刀万华",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory.FromId("Pack0002"),
@@ -369,6 +370,93 @@ public class CharacterCategory : Category<CharacterEntry>
                     Encyclopedia.PackCategory.FromId("Pack0011"),
                     Encyclopedia.PackCategory.FromId("Pack0012"),
                 }),
+                runClosures: new RunClosure[]
+                {
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, (listener, closure, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        JingJieChangedDetails d = (JingJieChangedDetails)eventDetails;
+
+                        if (d.FromJingJie == JingJie.ZhuJi && d.ToJingJie == JingJie.JinDan)
+                        {
+                            RunManager.Instance.Environment.GainHealthProcedure(30);
+                            return;
+                        }
+                    }),
+                    // new(RunClosureDict.WIL_PLACEMENT, 0, (listener, closure, eventDetails) =>
+                    // {
+                    //     RunEnvironment env = (RunEnvironment)listener;
+                    //     PlacementDetails d = (PlacementDetails)eventDetails;
+                    //
+                    //     bool ownerIsHome = env.Home == d.Owner;
+                    //     if (!ownerIsHome) return;
+                    //
+                    //     if (env.Home.GetJingJie() >= JingJie.FanXu)
+                    //     {
+                    //         d.Owner.TraversalCurrentSlots().Do(slot =>
+                    //         {
+                    //             if (slot.Skill != null && slot.Skill.GetEntry().GetName() != "妖刀万华") return;
+                    //
+                    //             RunSkill oppoSkill = oppo.GetSlot(slot.GetIndex()).Skill;
+                    //             if (oppoSkill == null)
+                    //             {
+                    //                 slot.PlacedSkill = null;
+                    //                 return;
+                    //             }
+                    //
+                    //             bool fanXuMimic = slot.Skill != null &&
+                    //                               slot.Skill.GetEntry().GetName() == "幻化" &&
+                    //                               slot.Skill.GetJingJie() == JingJie.FanXu;
+                    //
+                    //             JingJie mimicedJingJie = fanXuMimic ? JingJie.FanXu : Mathf.Min(JingJie.HuaShen, oppoSkill.GetJingJie());
+                    //             bool successMimic = mimicedJingJie >= oppoSkill.GetEntry().LowestJingJie;
+                    //             if (oppoSkill.GetJingJie() == JingJie.FanXu && mimicedJingJie != JingJie.FanXu)
+                    //                 successMimic = false;
+                    //             if (!successMimic)
+                    //             {
+                    //                 slot.PlacedSkill = null;
+                    //                 return;
+                    //             }
+                    //         
+                    //             slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
+                    //                 oppoSkill.GetEntry(),
+                    //                 mimicedJingJie
+                    //             );
+                    //         });
+                    //         
+                    //         return;
+                    //     }
+                    //     
+                    //     d.Owner.TraversalCurrentSlots().Do(slot =>
+                    //     {
+                    //         if (slot.Skill == null || slot.Skill.GetEntry().GetName() != "幻化") return;
+                    //
+                    //         RunSkill oppoSkill = oppo.GetSlot(slot.GetIndex()).Skill;
+                    //         if (oppoSkill == null)
+                    //         {
+                    //             slot.PlacedSkill = null;
+                    //             return;
+                    //         }
+                    //
+                    //         bool fanXuMimic = slot.Skill.GetJingJie() == JingJie.FanXu;
+                    //
+                    //         JingJie mimicedJingJie = fanXuMimic ? JingJie.FanXu : Mathf.Min(slot.Skill.GetJingJie(), oppoSkill.GetJingJie());
+                    //         bool successMimic = mimicedJingJie >= oppoSkill.GetEntry().LowestJingJie;
+                    //         if (oppoSkill.GetJingJie() == JingJie.FanXu && mimicedJingJie != JingJie.FanXu)
+                    //             successMimic = false;
+                    //         if (!successMimic)
+                    //         {
+                    //             slot.PlacedSkill = null;
+                    //             return;
+                    //         }
+                    //         
+                    //         slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
+                    //             oppoSkill.GetEntry(),
+                    //             mimicedJingJie
+                    //         );
+                    //     });
+                    // }),
+                },
                 stageClosures: new StageClosure[]
                 {
                     new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>

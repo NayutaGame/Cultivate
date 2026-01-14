@@ -5,6 +5,7 @@ public class HealDetails : NestedStageClosureDetails
     public StageEntity Tgt;
     public int Value;
     public bool Penetrate;
+    public bool FromLifesteal;
 
     public HealDetails(
         StageEnvironment env,
@@ -12,6 +13,7 @@ public class HealDetails : NestedStageClosureDetails
         StageEntity tgt,
         int value,
         bool penetrate,
+        bool fromLifesteal,
         StageClosureListener listener,
         StageClosure[] closures,
         ResultDict castResult,
@@ -22,10 +24,11 @@ public class HealDetails : NestedStageClosureDetails
         Tgt = tgt;
         Value = value;
         Penetrate = penetrate;
+        FromLifesteal = fromLifesteal;
     }
 
-    public HealDetails ShallowClone() => new(Env, Src, Tgt, Value, Penetrate, Listener, Closures, CastResult, ClosureHasRegistered, Induced);
+    public HealDetails ShallowClone() => new(Env, Src, Tgt, Value, Penetrate, FromLifesteal, Listener, Closures, CastResult, ClosureHasRegistered, Induced);
 
     public static HealDetails FromLifeSteal(DamageDetails d)
-        => new(d.Env, d.Src, d.Src, d.Value, false, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, true);
+        => new(d.Env, d.Src, d.Src, d.Value, false, true, d.Listener, d.Closures, d.CastResult, d.ClosureHasRegistered, true);
 }

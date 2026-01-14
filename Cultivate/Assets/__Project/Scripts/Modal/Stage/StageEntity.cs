@@ -605,10 +605,10 @@ public class StageEntity : Addressable, StageClosureListener
         => await _env.LoseHealthProcedure(new LoseHealthDetails(_env, this, value, causedByAttack, srcSkill, null, castResult, false, induced));
     
     public async UniTask HealProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.HealProcedure(new HealDetails(_env, this, this, value, false, null, null, castResult, false, induced));
+        => await _env.HealProcedure(new HealDetails(_env, this, this, value, false, false, null, null, castResult, false, induced));
     
     public async UniTask HealOppoProcedure(int value, ResultDict castResult = null, bool induced = false)
-        => await _env.HealProcedure(new HealDetails(_env, this, Opponent(), value, false, null, null, castResult, false, induced));
+        => await _env.HealProcedure(new HealDetails(_env, this, Opponent(), value, false, false, null, null, castResult, false, induced));
     
     public async UniTask GainArmorProcedure(int value, ResultDict castResult = null, bool induced = false)
         => await _env.GainArmorProcedure(new GainArmorDetails(_env, this, this, value, null, null, castResult, false, induced));

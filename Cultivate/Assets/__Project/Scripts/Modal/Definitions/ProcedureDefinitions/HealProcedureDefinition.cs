@@ -57,6 +57,7 @@ public class HealProcedureDefinition : ProcedureDefinition
             tgt: d.Caster,
             value: Value,
             penetrate: Penetrate,
+            fromLifesteal: false,
             listener: d.Skill,
             closures: ClosuresArray,
             castResult: d.CastResult,

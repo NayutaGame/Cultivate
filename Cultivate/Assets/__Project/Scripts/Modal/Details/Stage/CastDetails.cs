@@ -79,10 +79,10 @@ public class CastDetails : StageClosureDetails
         => await Env.LoseHealthProcedure(new LoseHealthDetails(Env, Caster.Opponent(), value, false, Skill, null, CastResult, false, induced));
 
     public async UniTask HealProcedure(int value, bool induced)
-        => await Env.HealProcedure(new HealDetails(Env, Caster, Caster, value, false, Skill, null, CastResult, false, induced));
+        => await Env.HealProcedure(new HealDetails(Env, Caster, Caster, value, false, false, Skill, null, CastResult, false, induced));
 
     public async UniTask HealOppoProcedure(int value, bool induced)
-        => await Env.HealProcedure(new HealDetails(Env, Caster, Caster.Opponent(), value, false, Skill, null, CastResult, false, induced));
+        => await Env.HealProcedure(new HealDetails(Env, Caster, Caster.Opponent(), value, false, false, Skill, null, CastResult, false, induced));
 
     public async UniTask GainArmorProcedure(int value, bool induced)
         => await Env.GainArmorProcedure(new GainArmorDetails(Env, Caster, Caster, value, Skill, null, CastResult, false, induced));

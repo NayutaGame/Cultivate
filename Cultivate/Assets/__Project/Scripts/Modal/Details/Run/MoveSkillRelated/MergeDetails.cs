@@ -25,6 +25,8 @@ public class MergeDetails : RunClosureDetails
     public MergeState State;
     public MergeTarget MergeTarget;
     public List<Action> SideEffects;
+
+    public bool ResultJingJieIsBaseJingJie;
     
     private MergeDetails(RunSkill lhs, RunSkill rhs, JingJie playerJingJie, bool isDryRun)
     {
@@ -39,6 +41,8 @@ public class MergeDetails : RunClosureDetails
         State = MergeState.Continue;
         MergeTarget = null;
         SideEffects = new();
+
+        ResultJingJieIsBaseJingJie = false;
     }
 
     public static MergeDetails ForDryRun(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)
