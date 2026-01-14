@@ -301,13 +301,13 @@ public class AnnotationManager : XView, Addressable
         
             _categoryDetailsMappings = new CategoryDetails[]
             {
+                new(Encyclopedia.SkillCategory, AnnotationViewType.SkillAnnotation, "SkillCategory", "skill"),
+                new(Encyclopedia.BuffCategory, AnnotationViewType.BuffAnnotation, "BuffCategory", "buff"),
+                new(Encyclopedia.CharacterCategory, AnnotationViewType.CharacterAnnotation, "CharacterCategory", "character"),
+                new(Encyclopedia.PackCategory, AnnotationViewType.PackAnnotation, "PackCategory", "pack"),
+                new(Encyclopedia.JingJieCategory, AnnotationViewType.JingJieAnnotation, "JingJieCategory", "jingJie"),
                 new(Encyclopedia.KeywordCategory, AnnotationViewType.TextAnnotation, "KeywordCategory", "keyword"),
                 new(Encyclopedia.TagCategory, AnnotationViewType.TagAnnotation, "TagCategory", "tag"),
-                new(Encyclopedia.JingJieCategory, AnnotationViewType.JingJieAnnotation, "JingJieCategory", "jingJie"),
-                new(Encyclopedia.CharacterCategory, AnnotationViewType.CharacterAnnotation, "CharacterCategory", "character"),
-                new(Encyclopedia.BuffCategory, AnnotationViewType.BuffAnnotation, "BuffCategory", "buff"),
-                new(Encyclopedia.SkillCategory, AnnotationViewType.SkillAnnotation, "SkillCategory", "skill"),
-                new(Encyclopedia.PackCategory, AnnotationViewType.PackAnnotation, "PackCategory", "pack"),
             };
 
             return _categoryDetailsMappings;
@@ -333,16 +333,16 @@ public class AnnotationManager : XView, Addressable
             CategoryShortName = categoryShortName;
         }
 
-        public bool TryInterpret(string linkId, TMP_CharacterInfo criticalCharInfo, Rect alignRect,
+        public bool TryInterpret(string entryName, TMP_CharacterInfo criticalCharInfo, Rect alignRect,
             out AnnotationDetails annotationDetails)
         {
-            if (!Category.ContainsName(linkId))
+            if (!Category.ContainsName(entryName))
             {
                 annotationDetails = null;
                 return false;
             }
 
-            Entry entry = Category.FromName(linkId);
+            Entry entry = Category.FromName(entryName);
         
             int characterIndex = entry.GetName().IndexOf(criticalCharInfo.character);
             annotationDetails = new AnnotationDetails(

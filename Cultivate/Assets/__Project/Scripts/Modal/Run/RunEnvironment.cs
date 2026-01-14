@@ -885,6 +885,11 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         SelectOptionNeuron.Invoke(d);
         ReceiveSignalProcedure(new SelectedOptionSignal(d.SelectedIndex));
     }
+
+    public void DepopulateFromSkillMountainProcedure(SkillEntry target)
+    {
+        _skillPool.Depopulate(skillEntry => skillEntry == target);
+    }
     
     #endregion
 

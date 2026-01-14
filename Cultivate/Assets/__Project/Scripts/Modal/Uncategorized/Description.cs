@@ -1,5 +1,4 @@
 
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -31,6 +30,7 @@ public class Description
         
         string pattern = string.Join("|", patterns);
         SymbolizeRegex = new Regex($@"(?<!\[)({pattern})(?!\])", RegexOptions.Compiled);
+        // (?<!\[)(气血|护甲|破甲|吟唱|每回合|...|御虚诀|大椿功|游龙遁|归鸿十二步|大焚天秘乘|须弥妙法|锻体四则|丹兵道|化哉)(?!\])
         
         
 
@@ -45,6 +45,7 @@ public class Description
         
         // FindSymbolRegex = new Regex(@"\[(tag|buff|keyword|skill|character|jingJie):([^\]]+)\]", RegexOptions.Compiled);
         FindSymbolRegex = new Regex(@$"\[({midString}):([^\]]+)\]", RegexOptions.Compiled);
+        // \[(keyword|tag|jingJie|character|buff|skill|pack):([^\]]+)\]
     }
     
     public Description()
@@ -250,8 +251,9 @@ public class Description
     {
         return FindSymbolRegex.Replace(symbolized, match =>
         {
+            string category = match.Groups[1].Value;
             string name = match.Groups[2].Value;
-            return $"<link=\"{name}\"><style=\"Highlight\">{name}</style></link>";
+            return $"<link=\"{category}:{name}\"><style=\"Highlight\">{name}</style></link>";
         });
     }
 
@@ -269,7 +271,7 @@ public class Description
 
     public string GetHighlightedString()
     {
-        // "<link="灵气"><style="Highlight">灵气</style></link>+1"
+        // "<link="buff:灵气"><style="Highlight">灵气</style></link>+1"
         return CalcHighlightedString.Value;
     }
 

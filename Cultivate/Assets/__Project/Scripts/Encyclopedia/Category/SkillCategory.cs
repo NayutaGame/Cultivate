@@ -663,6 +663,13 @@ public class SkillCategory : Category<SkillEntry>
                                                         d.Times += d.Src.ExhaustedCount;
                                                     }, key: "YiWuJingHongClosure", rawDescription: "每1已升华牌，多1次", checkListener: true);
 
+    private static readonly StageClosure QianXiangClosure = new(StageClosureDict.WIL_FULL_ATTACK, -1,
+                                                    async (listener, closure, closureDetails) =>
+                                                    {
+                                                        AttackDetails d = closureDetails as AttackDetails;
+                                                        d.Times += d.Src.GetStackOfBuff("闪避");
+                                                    }, key: "YiWuJingHongClosure", rawDescription: "每1闪避，多1次", checkListener: true);
+
     private static readonly StageClosure WanXiaClosure = new(StageClosureDict.WIL_GAIN_BUFF, -2,
         async (listener, closure, closureDetails) =>
         {
@@ -2772,7 +2779,7 @@ public class SkillCategory : Category<SkillEntry>
 
             #endregion
             
-            #region 00特殊
+            #region 00特殊 & 角色专属
             
             new(id:                         "Skill00_001",
                 name:                       "卡池已空",
@@ -2805,11 +2812,16 @@ public class SkillCategory : Category<SkillEntry>
             new(id:                         "Skill00_004",
                 name:                       "幻化",
                 wuXing:                     WuXing.Wu,
-                jingJieBound:               JingJie.HuaShenOnly,
-                overridingMergeRule:        MergeRule.NoMerge,
+                jingJieBound:               JingJie.LianQi2FanXu,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"模仿对手对位的牌")),
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) =>
+                    {
+                        if (j == JingJie.FanXu)
+                            d.Join($"模仿对手对位的牌||境界为返虚");
+                        else
+                            d.Join($"模仿对手对位的牌||境界为两者较低||低于初始境界时失效");
+                    }),
                 }),
 
             new(id:                         "Skill00_005",
@@ -2829,6 +2841,66 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"能感受到生命之力")),
+                }),
+
+            new(id:                         "Skill00_007",
+                name:                       "小零食",
+                wuXing:                     WuXing.Wu,
+                jingJieBound:               JingJie.JinDan2FanXu,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new GainBuffProcedureDefinition("力量", 1 + dj),
+                    new AttackProcedureDefinition(2),
+                }),
+
+            new(id:                         "Skill00_008",
+                name:                       "长生不老药",
+                wuXing:                     WuXing.Wu,
+                jingJieBound:               JingJie.HuaShen2FanXu,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DirectProcedureDefinition(async d =>
+                        {
+                            d.Caster.TraversalBuffs().Do(b =>
+                            {
+                                if (b.GetEntry().BuffStackRule != BuffStackRule.One)
+                                    d.Caster.GainBuffProcedure(b.GetEntry(), 1 + dj);
+                            });
+                        })
+                        .SetDescription((d, procedureDefinition, costResult, castResult) =>
+                        {
+                            d.Join($"所有Buff获得{1 + dj}层");
+                        }),
+                }),
+
+            new(id:                         "Skill00_009",
+                name:                       "斩断",
+                wuXing:                     WuXing.Wu,
+                jingJieBound:               JingJie.LianQi2FanXu,
+                overridingMergeRule:        MergeRule.ZhanDuanMergeRule,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：将目标从牌山移除")),
+                }),
+
+            new(id:                         "Skill00_010",
+                name:                       "千象",
+                wuXing:                     WuXing.Wu,
+                jingJieBound:               JingJie.YuanYing2FanXu,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new GainBuffProcedureDefinition("闪避", stack: j == JingJie.FanXu ? 2 : 1),
+                    new AttackProcedureDefinition(6 + 2 * dj)
+                        .AddClosure(QianXiangClosure),
+                }),
+
+            new(id:                         "Skill00_011",
+                name:                       "天机",
+                wuXing:                     WuXing.Wu,
+                jingJieBound:               JingJie.LianQi2FanXu,
+                cast:                       (j, dj) => new ProcedureDefinition[]
+                {
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：")),
                 }),
 
             #endregion

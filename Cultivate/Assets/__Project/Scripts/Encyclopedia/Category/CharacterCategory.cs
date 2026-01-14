@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using CLLibrary;
+using UnityEngine;
 
 public class CharacterCategory : Category<CharacterEntry>
 {
@@ -9,7 +10,11 @@ public class CharacterCategory : Category<CharacterEntry>
         AddRange(new List<CharacterEntry>()
         {
             new("Character0001", "徐福",
-                rawAbilityDescription: "命元上限+2\n战斗中使用的最左边的一次性牌，战斗后返还",
+                rawAbilityDescription: "练气|获得2命元上限" +
+                                       "\n筑基|战斗中使用的最左边的一次性牌，战斗后返还" +
+                                       "\n金丹|获得小零食" +
+                                       "\n元婴|获得[skill:花海]" +
+                                       "\n化神|获得长生不老药",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory.FromId("Pack0001"),
                     Encyclopedia.PackCategory.FromId("Pack0003"),
@@ -33,13 +38,46 @@ public class CharacterCategory : Category<CharacterEntry>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DepleteDetails d = (DepleteDetails)eventDetails;
-                        d.PreserveFirstDeplete = true;
+                        
+                        d.PreserveFirstDeplete |= d.Owner.GetJingJie() >= JingJie.ZhuJi;
+                    }),
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, (listener, closure, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        JingJieChangedDetails d = (JingJieChangedDetails)eventDetails;
+
+                        if (d.FromJingJie == JingJie.ZhuJi && d.ToJingJie == JingJie.JinDan)
+                        {
+                            RunManager.Instance.Environment.PickSkillProcedure(
+                                Encyclopedia.SkillCategory.FromName("小零食"),
+                                preferredJingJie: JingJie.JinDan);
+                            return;
+                        }
+
+                        if (d.FromJingJie == JingJie.JinDan && d.ToJingJie == JingJie.YuanYing)
+                        {
+                            RunManager.Instance.Environment.PickSkillProcedure(
+                                Encyclopedia.SkillCategory.FromName("花海"),
+                                preferredJingJie: JingJie.YuanYing);
+                            return;
+                        }
+
+                        if (d.FromJingJie == JingJie.YuanYing && d.ToJingJie == JingJie.HuaShen)
+                        {
+                            RunManager.Instance.Environment.PickSkillProcedure(
+                                Encyclopedia.SkillCategory.FromName("长生不老药"),
+                                preferredJingJie: JingJie.HuaShen);
+                            return;
+                        }
                     }),
                 }),
             
             new("Character0002", "彼此卿",
-                rawAbilityDescription: "游戏开始时，获得一张幻化。可以模仿一张对手的卡牌" +
-                                       "\n如果战斗中模仿了一张牌，战后奖励时可选择模仿的卡牌",
+                rawAbilityDescription: "练气|获得一张幻化" +
+                                       "\n筑基|如果战斗中模仿了一张牌，战后奖励时可选择模仿的卡牌，优先第一张" +
+                                       "\n金丹|开局：二动+1" +
+                                       "\n元婴|获得第二张幻化" +
+                                       "\n化神|所有空白卡槽会置入一张幻化",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory.FromId("Pack0001"),
                     Encyclopedia.PackCategory.FromId("Pack0004"),
@@ -55,19 +93,29 @@ public class CharacterCategory : Category<CharacterEntry>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         StartRunDetails d = (StartRunDetails)eventDetails;
-
-                        GainSkillBuilder b = new();
-                        b.Pick(Encyclopedia.SkillCategory.FromName("幻化"));
-                        b.Create();
-                        b.Add();
-                        b.Invoke();
+                        
+                        RunManager.Instance.Environment.PickSkillProcedure(
+                            Encyclopedia.SkillCategory.FromName("幻化"),
+                            JingJie.LianQi);
                     }),
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, (listener, closure, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        JingJieChangedDetails d = (JingJieChangedDetails)eventDetails;
 
+                        if (d.FromJingJie == JingJie.JinDan && d.ToJingJie == JingJie.YuanYing)
+                        {
+                            RunManager.Instance.Environment.PickSkillProcedure(
+                                Encyclopedia.SkillCategory.FromName("幻化"),
+                                preferredJingJie: JingJie.YuanYing);
+                            return;
+                        }
+                    }),
                     new(RunClosureDict.WIL_PLACEMENT, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         PlacementDetails d = (PlacementDetails)eventDetails;
-                        string key = "MimickedSkill";
+                        string key = "FirstMimickedSkill";
 
                         bool ownerIsHome = env.Home == d.Owner;
                         if (!ownerIsHome)
@@ -78,35 +126,90 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         RunEntity oppo = env.Away;
                         
-                        // 清空之前模仿的记录
                         env.Memory.SetVariable<SkillEntryDescriptor>(key, null);
-                        
-                        d.Owner.TraversalCurrentSlots().Do(slot => 
+
+                        if (env.Home.GetJingJie() >= JingJie.HuaShen)
                         {
-                            if (slot.Skill == null || slot.Skill.GetEntry().GetName() != "幻化") return;
-                            
-                            SkillSlot oppoSlot = oppo.GetSlot(slot.GetIndex());
-                            if (oppoSlot.Skill == null)
+                            d.Owner.TraversalCurrentSlots().Do(slot =>
                             {
-                                slot.PlacedSkill = null;
-                                return;
-                            }
+                                if (slot.Skill != null && slot.Skill.GetEntry().GetName() != "幻化") return;
+
+                                RunSkill oppoSkill = oppo.GetSlot(slot.GetIndex()).Skill;
+                                if (oppoSkill == null)
+                                {
+                                    slot.PlacedSkill = null;
+                                    return;
+                                }
+
+                                bool fanXuMimic = slot.Skill != null &&
+                                                  slot.Skill.GetEntry().GetName() == "幻化" &&
+                                                  slot.Skill.GetJingJie() == JingJie.FanXu;
+
+                                JingJie mimicedJingJie = fanXuMimic ? JingJie.FanXu : Mathf.Min(JingJie.HuaShen, oppoSkill.GetJingJie());
+                                bool successMimic = mimicedJingJie >= oppoSkill.GetEntry().LowestJingJie;
+                                if (oppoSkill.GetJingJie() == JingJie.FanXu && mimicedJingJie != JingJie.FanXu)
+                                    successMimic = false;
+                                if (!successMimic)
+                                {
+                                    slot.PlacedSkill = null;
+                                    return;
+                                }
                             
-                            slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
-                                oppoSlot.Skill.GetEntry(),
-                                oppoSlot.Skill.GetJingJie()
-                            );
+                                slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
+                                    oppoSkill.GetEntry(),
+                                    mimicedJingJie
+                                );
                             
-                            // 记录第一个模仿的技能，用于后续奖励
-                            env.Memory.PerformOperation<SkillEntryDescriptor>(key, null, skill => skill ?? SkillEntryDescriptor.FromRunSkill(oppoSlot.Skill));
-                        });
+                                env.Memory.PerformOperation<SkillEntryDescriptor>(key, null,
+                                    skill => skill ?? SkillEntryDescriptor.FromEntryJingJie(oppoSkill.GetEntry(), mimicedJingJie));
+                            });
+                            
+                            return;
+                        }
+
+                        if (env.Home.GetJingJie() >= JingJie.ZhuJi)
+                        {
+                            d.Owner.TraversalCurrentSlots().Do(slot =>
+                            {
+                                if (slot.Skill == null || slot.Skill.GetEntry().GetName() != "幻化") return;
+
+                                RunSkill oppoSkill = oppo.GetSlot(slot.GetIndex()).Skill;
+                                if (oppoSkill == null)
+                                {
+                                    slot.PlacedSkill = null;
+                                    return;
+                                }
+
+                                bool fanXuMimic = slot.Skill.GetJingJie() == JingJie.FanXu;
+
+                                JingJie mimicedJingJie = fanXuMimic ? JingJie.FanXu : Mathf.Min(slot.Skill.GetJingJie(), oppoSkill.GetJingJie());
+                                bool successMimic = mimicedJingJie >= oppoSkill.GetEntry().LowestJingJie;
+                                if (oppoSkill.GetJingJie() == JingJie.FanXu && mimicedJingJie != JingJie.FanXu)
+                                    successMimic = false;
+                                if (!successMimic)
+                                {
+                                    slot.PlacedSkill = null;
+                                    return;
+                                }
+                            
+                                slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
+                                    oppoSkill.GetEntry(),
+                                    mimicedJingJie
+                                );
+                            
+                                env.Memory.PerformOperation<SkillEntryDescriptor>(key, null,
+                                    skill => skill ?? SkillEntryDescriptor.FromEntryJingJie(oppoSkill.GetEntry(), mimicedJingJie));
+                            });
+                            
+                            return;
+                        }
                     }),
                     new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
                         DiscoverSkillDetails d = (DiscoverSkillDetails)eventDetails;
 
-                        string key = "MimickedSkill";
+                        string key = "FirstMimickedSkill";
 
                         SkillEntryDescriptor copiedSkillEntry = env.Memory.TryGetVariable<SkillEntryDescriptor>(key, null);
                         if (copiedSkillEntry == null)
@@ -116,10 +219,31 @@ public class CharacterCategory : Category<CharacterEntry>
                         d.Skills.Add(copiedSkillEntry);
                         env.Memory.SetVariable<SkillEntryDescriptor>(key, null);
                     }),
+                },
+                stageClosures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
+
+                        bool ownerIsHome = env.Home == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        if (d.Owner.RunEntity.GetJingJie() <= JingJie.ZhuJi)
+                            return;
+
+                        await d.Owner.GainBuffProcedure("二动");
+                    }),
                 }),
             
             new("Character0003", "风雨晴",
-                rawAbilityDescription: "金丹后，组成阵法时，需求-1；化神，变成-2",
+                rawAbilityDescription: "练气|获得一张斩断" +
+                                       "\n筑基|组成阵法时，需求-1" +
+                                       "\n金丹|开局：闪避+1" +
+                                       "\n元婴|获得千象" +
+                                       "\n化神|组成阵法时，需求额外再-1",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory.FromId("Pack0001"),
                     Encyclopedia.PackCategory.FromId("Pack0003"),
@@ -131,6 +255,19 @@ public class CharacterCategory : Category<CharacterEntry>
                 }),
                 runClosures: new RunClosure[]
                 {
+                    new(RunClosureDict.DID_JINGJIE_CHANGE, 0, (listener, closure, eventDetails) =>
+                    {
+                        RunEnvironment env = (RunEnvironment)listener;
+                        JingJieChangedDetails d = (JingJieChangedDetails)eventDetails;
+
+                        if (d.FromJingJie == JingJie.JinDan && d.ToJingJie == JingJie.YuanYing)
+                        {
+                            RunManager.Instance.Environment.PickSkillProcedure(
+                                Encyclopedia.SkillCategory.FromName("千象"),
+                                preferredJingJie: JingJie.YuanYing);
+                            return;
+                        }
+                    }),
                     new(RunClosureDict.WIL_FORMATION, 0, (listener, closure, eventDetails) =>
                     {
                         RunEnvironment env = (RunEnvironment)listener;
@@ -140,10 +277,10 @@ public class CharacterCategory : Category<CharacterEntry>
                         if (!ownerIsHome)
                             return;
 
-                        if (d.Owner.GetJingJie() < JingJie.JinDan)
+                        if (d.Owner.GetJingJie() <= JingJie.LianQi)
                             return;
 
-                        if (d.Owner.GetJingJie() < JingJie.HuaShen)
+                        if (d.Owner.GetJingJie() <= JingJie.YuanYing)
                         {
                             d.Proficiency = 1;
                             return;
@@ -151,10 +288,31 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         d.Proficiency = 2;
                     }),
+                },
+                stageClosures: new StageClosure[]
+                {
+                    new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        StageDetails d = (StageDetails)eventDetails;
+
+                        bool ownerIsHome = env.Home == d.Owner;
+                        if (!ownerIsHome)
+                            return;
+
+                        if (d.Owner.RunEntity.GetJingJie() <= JingJie.ZhuJi)
+                            return;
+
+                        await d.Owner.GainBuffProcedure("闪避");
+                    }),
                 }),
 
             new("Character0004", "子非鱼",
-                rawAbilityDescription: "第一次获得五行Buff时，根据境界额外获得1/2/3/4/5点",
+                rawAbilityDescription: "练气|聚气术和灵气匮乏，获得额外灵气层数，练气时多1，筑基时多2，以此类推" +
+                                       "\n筑基|获得天机" +
+                                       "\n金丹|开局：格挡+1" +
+                                       "\n元婴|获得逍遥游" +
+                                       "\n化神|获得胜天半子",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory.FromId("Pack0001"),
                     Encyclopedia.PackCategory.FromId("Pack0004"),
@@ -179,10 +337,29 @@ public class CharacterCategory : Category<CharacterEntry>
 
                         await d.Owner.GainBuffProcedure("空明", stack);
                     }),
+                    new(StageClosureDict.DID_CAST, 0, async (listener, closure, eventDetails) =>
+                    {
+                        StageEnvironment env = (StageEnvironment)listener;
+                        CastDetails d = (CastDetails)eventDetails;
+
+                        bool casterIsHome = env.Home == d.Caster;
+                        if (!casterIsHome)
+                            return;
+
+                        string name = d.Skill.Entry.GetName();
+                        if (name is "聚气术" or "灵气匮乏")
+                        {
+                            await d.Caster.GainBuffProcedure("灵气", 1 + d.Caster.GetJingJie());
+                        }
+                    }),
                 }),
 
             new("Character0005", "子非燕",
-                rawAbilityDescription: "拥有一把奇怪的剑，此剑吞噬其他卡牌之后威力变得更强",
+                rawAbilityDescription: "练气|获得凶祸" +
+                                       "\n筑基|获得消耗气血 二动" +
+                                       "\n金丹|获得30气血上限" +
+                                       "\n元婴|获得灼烧->剑意" +
+                                       "\n化神|获得妖刀万华",
                 packPreset: new PackPreset(new List<PackEntry> {
                     Encyclopedia.PackCategory.FromId("Pack0002"),
                     Encyclopedia.PackCategory.FromId("Pack0003"),

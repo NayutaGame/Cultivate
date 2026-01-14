@@ -308,7 +308,7 @@ public class MergeRule
             }
 
             d.MergeTarget = new DrawMergeTarget(
-                mergeType: "同五行返虚置换",
+                mergeType: "同五行返虚重抽",
                 resultJingJie: JingJie.FanXu,
                 resultWuXing: rhs.GetWuXing(),
                 pred: skillEntry => skillEntry != lhs.GetEntry() && skillEntry != rhs.GetEntry());
@@ -333,7 +333,7 @@ public class MergeRule
             }
 
             d.MergeTarget = new DrawMergeTarget(
-                mergeType: "同五行化神置换",
+                mergeType: "同五行化神重抽",
                 resultJingJie: JingJie.HuaShen,
                 resultWuXing: rhs.GetWuXing(),
                 pred: skillEntry => skillEntry != lhs.GetEntry() && skillEntry != rhs.GetEntry());
@@ -382,7 +382,7 @@ public class MergeRule
             }
 
             d.MergeTarget = new DrawMergeTarget(
-                mergeType:              "相生五行返虚置换",
+                mergeType:              "相生五行返虚重抽",
                 resultJingJie:          JingJie.FanXu,
                 resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred:                   null);
@@ -406,7 +406,7 @@ public class MergeRule
             }
 
             d.MergeTarget = new DrawMergeTarget(
-                mergeType:              "相生五行化神置换",
+                mergeType:              "相生五行化神重抽",
                 resultJingJie:          JingJie.HuaShen,
                 resultWuXing:           WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred:                   null);
@@ -453,7 +453,7 @@ public class MergeRule
             }
 
             d.MergeTarget = new DrawMergeTarget(
-                mergeType:              "返虚置换",
+                mergeType:              "返虚重抽",
                 resultJingJie:          JingJie.FanXu,
                 resultWuXing:           null,
                 pred:                   skillEntry => !skillEntry.WuXing.IsBasic() ||
@@ -478,7 +478,7 @@ public class MergeRule
             }
 
             d.MergeTarget = new DrawMergeTarget(
-                mergeType:              "化神置换",
+                mergeType:              "化神重抽",
                 resultJingJie:          JingJie.HuaShen,
                 resultWuXing:           null,
                 pred:                   skillEntry => !skillEntry.WuXing.IsBasic() ||
@@ -821,5 +821,26 @@ public class MergeRule
                 lhsMutators:            tgt.GetMutators(),
                 rhsMutators:            null);
             d.State = MergeDetails.MergeState.Success;
+        });
+    
+    public static readonly MergeRule ZhanDuanMergeRule = new(
+        name:                       "斩断",
+        order:                      -100,
+        processMerge:               d =>
+        {
+            d.AddSideEffect(() =>
+            {
+                RunManager.Instance.Environment.DepopulateFromSkillMountainProcedure(d.Tgt.GetEntry());
+            });
+            d.State = MergeDetails.MergeState.Continue;
+        });
+    
+    public static readonly MergeRule TianJiMergeRule = new(
+        name:                       "天机",
+        order:                      -100,
+        processMerge:               d =>
+        {
+            // d.BaseJingJieBound
+            d.State = MergeDetails.MergeState.Continue;
         });
 }

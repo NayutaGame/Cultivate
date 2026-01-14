@@ -74,21 +74,36 @@ public class PropagateLink : MonoBehaviour, IPointerMoveHandler
         Rect alignRect = new Rect(worldBottomLeft, worldTopRight - worldBottomLeft);
 
         // Debug.Log($"criticalCharIndex: {criticalCharIndex}, char: {criticalCharInfo.character}, alignRect: {alignRect}");
+        
+        string linkId = linkInfo.GetLinkID(); // buff:灵气
+        ProcessLinkId(linkId, out string categoryShortName, out string entryName);
 
-        string linkId = linkInfo.GetLinkID();
+        AnnotationManager.CategoryDetails handleDetails =
+            AnnotationManager.CategoryDetailsMappings.FirstObj(handleDetails =>
+                handleDetails.CategoryShortName == categoryShortName);
 
         AnnotationDetails annotationDetails = null;
-        foreach (AnnotationManager.CategoryDetails handleDetails in AnnotationManager.CategoryDetailsMappings)
+        if (handleDetails.TryInterpret(entryName, criticalCharInfo, alignRect, out annotationDetails))
         {
-            if (handleDetails.TryInterpret(linkId, criticalCharInfo, alignRect, out annotationDetails))
-            {
-                annotationDetails.InvokerRectTransform = GetComponent<RectTransform>();
-                CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
-                return;
-            }
+            annotationDetails.InvokerRectTransform = GetComponent<RectTransform>();
+            CanvasManager.Instance.AnnotationManager.TryShowAnnotation(annotationDetails);
+            return;
         }
         
         if (annotationDetails == null)
             return;
+    }
+
+    private void ProcessLinkId(string linkId, out string categoryShortName, out string entryName)
+    {
+        string[] parts = linkId.Split(new[] { ':' }, 2);
+        if (parts.Length == 2)
+        {
+            categoryShortName = parts[0];
+            entryName = parts[1];
+            return;
+        }
+
+        throw new Exception("CL: Unexpected path way");
     }
 }
