@@ -72,11 +72,13 @@ public class BattlePanel : Panel
 
     private void RefreshEnemy()
     {
+        RunManager.Instance.Environment.GuaranteeSimulateResult();
         EnemyView.Refresh();
     }
 
     private void RefreshOperationPanel()
     {
+        RunManager.Instance.Environment.GuaranteeSimulateResult();
         // BattlePanelDescriptor d = _address.Get<BattlePanelDescriptor>();
         if (RunManager.Instance.Environment.GetSimulateResult() is { } result)
         {

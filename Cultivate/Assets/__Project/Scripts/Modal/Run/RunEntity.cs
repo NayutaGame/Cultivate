@@ -75,22 +75,6 @@ public class RunEntity : Addressable, IEntity, ISerializationCallbackReceiver, R
             yield return _slots[i];
     }
 
-    public bool CanRemoveSkill(RunSkill skill)
-    {
-        SkillSlot slot = TraversalCurrentSlots().FirstObj(s => s.Skill == skill);
-        return slot != null;
-    }
-
-    public bool TryRemoveSkill(RunSkill skill)
-    {
-        SkillSlot slot = TraversalCurrentSlots().FirstObj(s => s.Skill == skill);
-        if (slot == null)
-            return false;
-
-        slot.Skill = null;
-        return true;
-    }
-
     public void ClearSlotResults()
     {
         TraversalCurrentSlots().Do(s => s.ClearResults());

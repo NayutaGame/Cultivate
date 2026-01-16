@@ -290,6 +290,126 @@ public class MergeRule
             d.State = MergeDetails.MergeState.Continue;
         });
     
+    public static readonly MergeRule HasTianJiBothFanXu = new(
+        name: "天机返虚返虚",
+        processMerge: d =>
+        {
+            if (!d.HasTianJi)
+            {
+                d.State = MergeDetails.MergeState.Continue;
+                return;
+            }
+            
+            RunSkill tianJi;
+            RunSkill nonTianJi;
+            if (d.Lhs.GetEntry().GetName() == "天机")
+            {
+                tianJi = d.Lhs;
+                nonTianJi = d.Rhs;
+            }
+            else
+            {
+                tianJi = d.Rhs;
+                nonTianJi = d.Lhs;
+            }
+
+            bool cond = tianJi.GetJingJie() == JingJie.FanXu &&
+                        nonTianJi.GetJingJie() == JingJie.FanXu;
+            if (!cond)
+            {
+                d.State = MergeDetails.MergeState.Continue;
+                return;
+            }
+
+            d.MergeTarget = DrawMergeTarget.From(
+                mergeType: "天机返虚重抽",
+                resultJingJie: JingJie.FanXu,
+                resultWuXing: nonTianJi.GetWuXing(),
+                pred: skillEntry => skillEntry != tianJi.GetEntry() && skillEntry != nonTianJi.GetEntry(),
+                resultJingJieIsBaseJingJie: d.HasTianJi);
+            d.State = MergeDetails.MergeState.Success;
+        });
+    
+    public static readonly MergeRule HasTianJiBothHuaShen = new(
+        name: "天机化神化神",
+        processMerge: d =>
+        {
+            if (!d.HasTianJi)
+            {
+                d.State = MergeDetails.MergeState.Continue;
+                return;
+            }
+            
+            RunSkill tianJi;
+            RunSkill nonTianJi;
+            if (d.Lhs.GetEntry().GetName() == "天机")
+            {
+                tianJi = d.Lhs;
+                nonTianJi = d.Rhs;
+            }
+            else
+            {
+                tianJi = d.Rhs;
+                nonTianJi = d.Lhs;
+            }
+
+            bool cond = tianJi.GetJingJie() == JingJie.HuaShen &&
+                        nonTianJi.GetJingJie() == JingJie.HuaShen;
+            if (!cond)
+            {
+                d.State = MergeDetails.MergeState.Continue;
+                return;
+            }
+
+            d.MergeTarget = DrawMergeTarget.From(
+                mergeType: "天机化神重抽",
+                resultJingJie: JingJie.HuaShen,
+                resultWuXing: nonTianJi.GetWuXing(),
+                pred: skillEntry => skillEntry != tianJi.GetEntry() && skillEntry != nonTianJi.GetEntry(),
+                resultJingJieIsBaseJingJie: d.HasTianJi);
+            d.State = MergeDetails.MergeState.Success;
+        });
+    
+    public static readonly MergeRule HasTianJiBothLEYuanYing = new(
+        name: "天机",
+        processMerge: d =>
+        {
+            if (!d.HasTianJi)
+            {
+                d.State = MergeDetails.MergeState.Continue;
+                return;
+            }
+            
+            RunSkill tianJi;
+            RunSkill nonTianJi;
+            if (d.Lhs.GetEntry().GetName() == "天机")
+            {
+                tianJi = d.Lhs;
+                nonTianJi = d.Rhs;
+            }
+            else
+            {
+                tianJi = d.Rhs;
+                nonTianJi = d.Lhs;
+            }
+
+            bool cond = tianJi.GetJingJie() == nonTianJi.GetJingJie() &&
+                        tianJi.GetJingJie() <= JingJie.YuanYing;
+            if (!cond)
+            {
+                d.State = MergeDetails.MergeState.Continue;
+                return;
+            }
+
+            d.MergeTarget = DrawMergeTarget.From(
+                mergeType: "天机合成",
+                resultJingJie: (tianJi.GetJingJie() + 1).ClampUpper(JingJie.HuaShen),
+                resultWuXing: nonTianJi.GetWuXing(),
+                pred: skillEntry => skillEntry != tianJi.GetEntry() && skillEntry != nonTianJi.GetEntry(),
+                resultJingJieIsBaseJingJie: d.HasTianJi);
+            d.State = MergeDetails.MergeState.Success;
+        });
+    
     public static readonly MergeRule SameWuXingBothFanXu = new(
         name: "同五行返虚返虚",
         processMerge: d =>
@@ -297,7 +417,8 @@ public class MergeRule
             RunSkill lhs = d.Lhs;
             RunSkill rhs = d.Rhs;
 
-            bool cond = lhs.GetEntry() != rhs.GetEntry() &&
+            bool cond = lhs.GetWuXing().IsBasic() && rhs.GetWuXing().IsBasic() &&
+                        lhs.GetEntry() != rhs.GetEntry() &&
                         lhs.GetWuXing() == rhs.GetWuXing() &&
                         lhs.GetJingJie() == JingJie.FanXu &&
                         rhs.GetJingJie() == JingJie.FanXu;
@@ -312,7 +433,7 @@ public class MergeRule
                 resultJingJie: JingJie.FanXu,
                 resultWuXing: rhs.GetWuXing(),
                 pred: skillEntry => skillEntry != lhs.GetEntry() && skillEntry != rhs.GetEntry(),
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
     
@@ -323,7 +444,8 @@ public class MergeRule
             RunSkill lhs = d.Lhs;
             RunSkill rhs = d.Rhs;
 
-            bool cond = lhs.GetEntry() != rhs.GetEntry() &&
+            bool cond = lhs.GetWuXing().IsBasic() && rhs.GetWuXing().IsBasic() &&
+                        lhs.GetEntry() != rhs.GetEntry() &&
                         lhs.GetWuXing() == rhs.GetWuXing() &&
                         lhs.GetJingJie() == JingJie.HuaShen &&
                         rhs.GetJingJie() == JingJie.HuaShen;
@@ -338,7 +460,7 @@ public class MergeRule
                 resultJingJie: JingJie.HuaShen,
                 resultWuXing: rhs.GetWuXing(),
                 pred: skillEntry => skillEntry != lhs.GetEntry() && skillEntry != rhs.GetEntry(),
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
     
@@ -349,7 +471,8 @@ public class MergeRule
             RunSkill lhs = d.Lhs;
             RunSkill rhs = d.Rhs;
 
-            bool cond = lhs.GetEntry() != rhs.GetEntry() &&
+            bool cond = lhs.GetWuXing().IsBasic() && rhs.GetWuXing().IsBasic() &&
+                        lhs.GetEntry() != rhs.GetEntry() &&
                         lhs.GetWuXing() == rhs.GetWuXing() &&
                         lhs.GetJingJie() == rhs.GetJingJie() &&
                         lhs.GetJingJie() <= JingJie.YuanYing;
@@ -364,7 +487,7 @@ public class MergeRule
                 resultJingJie: (rhs.GetJingJie() + 1).ClampUpper(JingJie.HuaShen),
                 resultWuXing: rhs.GetWuXing(),
                 pred: skillEntry => skillEntry != lhs.GetEntry() && skillEntry != rhs.GetEntry(),
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -389,7 +512,7 @@ public class MergeRule
                 resultJingJie: JingJie.FanXu,
                 resultWuXing: WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred: null,
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -414,7 +537,7 @@ public class MergeRule
                 resultJingJie: JingJie.HuaShen,
                 resultWuXing: WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred: null,
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -439,7 +562,7 @@ public class MergeRule
                 resultJingJie: (rhs.GetJingJie() + 1).ClampUpper(JingJie.HuaShen),
                 resultWuXing: WuXing.XiangShengNext(lhs.GetWuXing(), rhs.GetWuXing()),
                 pred: null,
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -465,7 +588,7 @@ public class MergeRule
                 pred: skillEntry => !skillEntry.WuXing.IsBasic() ||
                                     (skillEntry.WuXing != lhs.GetWuXing() &&
                                      skillEntry.WuXing != rhs.GetWuXing()),
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -491,7 +614,7 @@ public class MergeRule
                 pred: skillEntry => !skillEntry.WuXing.IsBasic() ||
                                     (skillEntry.WuXing != lhs.GetWuXing() &&
                                      skillEntry.WuXing != rhs.GetWuXing()),
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -517,7 +640,7 @@ public class MergeRule
                 pred: skillEntry => !skillEntry.WuXing.IsBasic() ||
                                     (skillEntry.WuXing != lhs.GetWuXing() &&
                                      skillEntry.WuXing != rhs.GetWuXing()),
-                resultJingJieIsBaseJingJie: d.ResultJingJieIsBaseJingJie);
+                resultJingJieIsBaseJingJie: d.HasTianJi);
             d.State = MergeDetails.MergeState.Success;
         });
 
@@ -550,6 +673,9 @@ public class MergeRule
         DiffJingJieHasFanXu,
         DiffJingJie,
         JingJieLimitGEBoth,
+        HasTianJiBothFanXu,
+        HasTianJiBothHuaShen,
+        HasTianJiBothLEYuanYing,
         SameWuXingBothFanXu,
         SameWuXingBothHuaShen,
         SameWuXingBothLEYuanYing,
@@ -594,6 +720,9 @@ public class MergeRule
         DiffJingJieHasFanXu,
         DiffJingJie,
         JingJieLimitGEBoth,
+        HasTianJiBothFanXu,
+        HasTianJiBothHuaShen,
+        HasTianJiBothLEYuanYing,
         SameWuXingBothFanXu,
         SameWuXingBothHuaShen,
         SameWuXingBothLEYuanYing,
@@ -837,9 +966,10 @@ public class MergeRule
         order:                      -100,
         processMerge:               d =>
         {
+            SkillEntry toDepopulate = d.Tgt.GetEntry();
             d.AddSideEffect(() =>
             {
-                RunManager.Instance.Environment.DepopulateFromSkillMountainProcedure(d.Tgt.GetEntry());
+                RunManager.Instance.Environment.DepopulateFromSkillMountainProcedure(toDepopulate);
             });
             d.State = MergeDetails.MergeState.Continue;
         });
@@ -849,7 +979,7 @@ public class MergeRule
         order:                      -100,
         processMerge:               d =>
         {
-            d.ResultJingJieIsBaseJingJie = true;
+            d.HasTianJi = true;
             d.State = MergeDetails.MergeState.Continue;
         });
 }

@@ -26,7 +26,7 @@ public class MergeDetails : RunClosureDetails
     public MergeTarget MergeTarget;
     public List<Action> SideEffects;
 
-    public bool ResultJingJieIsBaseJingJie;
+    public bool HasTianJi;
     
     private MergeDetails(RunSkill lhs, RunSkill rhs, JingJie playerJingJie, bool isDryRun)
     {
@@ -42,7 +42,7 @@ public class MergeDetails : RunClosureDetails
         MergeTarget = null;
         SideEffects = new();
 
-        ResultJingJieIsBaseJingJie = false;
+        HasTianJi = false;
     }
 
     public static MergeDetails ForDryRun(RunSkill lhs, RunSkill rhs, JingJie playerJingJie)

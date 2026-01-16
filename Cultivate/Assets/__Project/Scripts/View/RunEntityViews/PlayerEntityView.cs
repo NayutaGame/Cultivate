@@ -52,6 +52,7 @@ public class PlayerEntityView : XView
 
     public void OnFieldChange()
     {
+        RunManager.Instance.Environment.GuaranteeSimulateResult();
         FieldView.Sync();
         FormationList.Refresh();
     }

@@ -55,7 +55,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         AppendReportNeuron = new();
         CommitBattleNeuron = new();
         GuideFinishNeuron = new();
-        
+
+        SkillMovedNeuron.Join(SkillMovedInvokeClearShengTianBanZiRecord);
         SkillMovedNeuron.Join(SkillMovedInvokeResimulate);
     }
 
@@ -99,6 +100,21 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public Neuron AppendReportNeuron;
     public Neuron<bool> CommitBattleNeuron;
     public Neuron<Guide> GuideFinishNeuron;
+
+    public void SkillMovedInvokeClearShengTianBanZiRecord(SkillMovedDetails d)
+    {
+        bool fromIsShengTianBanZi = d.FromIndex.Region == SkillRegion.Field &&
+                                    SkillFromDeckIndex(d.FromIndex) != null &&
+                                    SkillFromDeckIndex(d.FromIndex).GetName() == "胜天半子";
+        bool toIsShengTianBanZi = d.ToIndex.Region == SkillRegion.Field &&
+                                  SkillFromDeckIndex(d.ToIndex) != null &&
+                                  SkillFromDeckIndex(d.ToIndex).GetName() == "胜天半子";
+
+        if (!fromIsShengTianBanZi && !toIsShengTianBanZi)
+            return;
+        
+        RunManager.Instance.Environment.IntMemory.SetVariable(SkillCategory.ShengTianBanZiStackKey, 0);
+    }
     
     public void SkillMovedInvokeResimulate(SkillMovedDetails d)
     {
@@ -239,6 +255,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public SkillInventory Hand => _hand;
     public void SendEvent(int eventId, RunClosureDetails closureDetails) => _closureDict.SendEvent(eventId, closureDetails);
     public StageResult GetSimulateResult() => _simulateResult.Value;
+    public void GuaranteeSimulateResult() => _simulateResult.Guarantee();
     public RunResult GetResult() => _result;
     public Sprite GetCurrEventIllustration() => _map.GetCurrEventIllustration();
     public TimeSpan GetRunfinishedTime() => _runFinishedTime;
@@ -571,7 +588,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
             }
 
             d.DepletedSkills.Add(skill);
-            slot.Skill = null;
+            slot.SetSkillUnnotify(null);
         }
 
         SendEvent(RunClosureDict.DID_DEPLETE, d);
@@ -968,12 +985,12 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         if (toSkill == null)
         {
             Hand.Remove(fromSkill);
-            d.SkillSlot.Skill = fromSkill;
+            d.SkillSlot.SetSkillUnnotify(fromSkill);
         }
         else
         {
             Hand.Replace(fromSkill, toSkill);
-            d.SkillSlot.Skill = fromSkill;
+            d.SkillSlot.SetSkillUnnotify(fromSkill);
         }
 
         EquipNeuron.Invoke(d);
@@ -1028,7 +1045,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         DeckIndex toDeckIndex = new NextHandDeckIndexDefinition().Reify();
         
         Hand.Add(toUnequip);
-        d.SkillSlot.Skill = null;
+        d.SkillSlot.SetSkillUnnotify(null);
         
         UnequipNeuron.Invoke(d);
         SkillMovedNeuron.Invoke(new(d.DeckIndex, toDeckIndex));
@@ -1047,8 +1064,8 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void SwapProcedure(SwapDetails d)
     {
         RunSkill temp = d.FromSlot.Skill;
-        d.FromSlot.Skill = d.ToSlot.Skill;
-        d.ToSlot.Skill = temp;
+        d.FromSlot.SetSkillUnnotify(d.ToSlot.Skill);
+        d.ToSlot.SetSkillUnnotify(temp);
 
         SwapNeuron.Invoke(d);
         SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
@@ -1070,7 +1087,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     public void SubmitFromFieldProcedure(SubmitFromFieldDetails d)
     {
         RunSkill temp = d.FromSlot.Skill;
-        d.FromSlot.Skill = d.ToSlot.Skill;
+        d.FromSlot.SetSkillUnnotify(d.ToSlot.Skill);
         d.ToSlot.Skill = temp;
         
         SubmitFromFieldNeuron.Invoke(d);
@@ -1124,7 +1141,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
     {
         RunSkill temp = d.FromSlot.Skill;
         d.FromSlot.Skill = d.ToSlot.Skill;
-        d.ToSlot.Skill = temp;
+        d.ToSlot.SetSkillUnnotify(temp);
         
         WithdrawToFieldNeuron.Invoke(d);
         SkillMovedNeuron.Invoke(new(d.FromDeckIndex, d.ToDeckIndex));
@@ -1260,7 +1277,7 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         RemoveSkillDetails d = new(deckIndex);
         
         if (deckIndex.Region == SkillRegion.Field)
-            Home.GetSlot(deckIndex.Index).Skill = null;
+            Home.GetSlot(deckIndex.Index).SetSkillUnnotify(null);
         else if (deckIndex.Region == SkillRegion.Hand)
             Hand.RemoveAt(deckIndex.Index);
         else if (deckIndex.Region == SkillRegion.Requirement)
@@ -1286,14 +1303,14 @@ public class RunEnvironment : Addressable, RunClosureListener, ISerializationCal
         ReplaceSkillDetails d = new(template, deckIndex);
         
         if (deckIndex.Region == SkillRegion.Field)
-            Home.GetSlot(deckIndex.Index).Skill = template.Clone();
+            Home.GetSlot(deckIndex.Index).SetSkillUnnotify(template);
         else if (deckIndex.Region == SkillRegion.Hand)
             Hand.Replace(deckIndex.Index, template.Clone());
         else if (deckIndex.Region == SkillRegion.Requirement)
         {
             CardPickerCell cardPickerCell = GetPanel() as CardPickerCell;
             Assert.IsTrue(cardPickerCell != null);
-            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = template.Clone();
+            cardPickerCell.RequirementSlotList[deckIndex.Index].Skill = template;
         }
 
         ReplaceSkillNeuron.Invoke(d);

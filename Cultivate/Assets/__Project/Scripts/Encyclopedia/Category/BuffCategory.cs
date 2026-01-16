@@ -545,7 +545,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff03_011",
                 name:                       "花海",
-                rawDescription:             "每回合：力量+1",
+                rawDescription:             "每回合：力量+[层数]",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
@@ -1195,7 +1195,7 @@ public class BuffCategory : Category<BuffEntry>
 
                         if (b.Owner != d.Owner) return;
                         b.Emphasize();
-                        await b.Owner.GainBuffProcedure("灵气", b.Stack);
+                        await b.Owner.GainBuffProcedure("灵气", b.Stack, induced: true);
                     }),
                 }),
             

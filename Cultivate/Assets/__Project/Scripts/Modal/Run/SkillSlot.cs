@@ -56,6 +56,11 @@ public class SkillSlot : ISerializationCallbackReceiver, AnnotatableSkill
             ChangedNeuron.Invoke();
         }
     }
+
+    public void SetSkillUnnotify(RunSkill skill)
+    {
+        _skill = skill?.Clone();
+    }
     
     public bool IsOccupied()
         => !_hidden && _skill != null;

@@ -272,7 +272,7 @@ public class RoomCategory : Category<RoomEntry>
                         },
                         {
                             Encyclopedia.PackCategory.FromName("锻体四则"),
-                            DialogOption.FromTextAndSelect("锻体四则，土系，平时勤于修炼，气血高于同期修士，战斗中可化为天人之体以制敌",
+                            DialogOption.FromTextAndSelect("锻体四则，土系，平时勤于修炼，气血高于同期修士",
                                 option =>
                                 {
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("锻体四则");
@@ -478,7 +478,7 @@ public class RoomCategory : Category<RoomEntry>
                         },
                         {
                             Encyclopedia.PackCategory.FromName("锻体四则"),
-                            DialogOption.FromTextAndSelect("锻体四则，土系，平时勤于修炼，气血高于同期修士，战斗中可化为天人之体以制敌",
+                            DialogOption.FromTextAndSelect("锻体四则，土系，平时勤于修炼，气血高于同期修士",
                                 option =>
                                 {
                                     PackEntry packEntry = Encyclopedia.PackCategory.FromName("锻体四则");
