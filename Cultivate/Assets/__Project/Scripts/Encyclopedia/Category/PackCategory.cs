@@ -30,7 +30,7 @@ public class PackCategory : Category<PackEntry>
                 wuXing:              WuXing.Shui,
                 rawDescription:      "引导天地元气，化为己用。可汇聚灵气疗伤，亦可凝聚剑气伤敌。",
                 trivia:              "相传天河剑仙观天河之势，悟天地元气流转之理，创此神功。修习者常年观星引气，终有望羽化登仙。",
-                cardNames:           new string[] { "恋花", "吐纳", "止水", "大鱼", "一梦如是", "彩虹", "海啸", "飞鸿踏雪", "奔腾" },
+                cardNames:           new string[] { "恋花", "吐纳", "止水", "幻鱼", "一梦如是", "彩虹", "海啸", "飞鸿踏雪", "奔腾" },
                 startCardNames:      new string[] { "恋花", "吐纳", "止水" }
                 ),
             

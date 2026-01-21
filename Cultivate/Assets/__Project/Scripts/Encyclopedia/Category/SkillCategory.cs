@@ -1235,7 +1235,7 @@ public class SkillCategory : Category<SkillEntry>
                 }),
             
             new(id:                         "Skill02_005",
-                name:                       "大鱼",
+                name:                       "幻鱼",
                 wuXing:                     WuXing.Shui,
                 jingJieBound:               JingJie.LianQi2FanXu,
                 tagComposite:               TagCategory.Attack | TagCategory.Mana | TagCategory.Swift,

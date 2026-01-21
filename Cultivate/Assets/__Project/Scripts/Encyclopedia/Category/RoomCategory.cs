@@ -586,15 +586,25 @@ public class RoomCategory : Category<RoomEntry>
                         int index = combination[i];
                         dialogOptions[i] = DialogOption.FromTextAndSelect(descriptions[index], option =>
                         {
-                            env.NextJingJieProcedure();
                             return panels[index];
                         });
                     });
                     
                     DialogCell A = new(
                         titleText: "突破",
-                        detailedText: "你感到周身灵气运转无比通畅，即将突破长久以来的瓶颈",
+                        detailedText: "你感到周身灵气运转无比通畅，即将突破长久以来的瓶颈");
+
+                    DialogCell B = new(
+                        titleText: "突破",
+                        detailedText: "灵气又重新归于平静，你知道自己实力又前进了一大步。打算去哪里游历一番？",
                         options: dialogOptions);
+
+                    A[0].SetSelect(option =>
+                    {
+                        env.NextJingJieProcedure();
+                        return B;
+                    });
+                    
                     RunManager.Instance.SetBackgroundFromJingJie(nextJingJie);
                     return A;
                 }),
@@ -894,7 +904,8 @@ public class RoomCategory : Category<RoomEntry>
                         new MergeGuide("现在应该没问题了",
                             descriptor, descriptor),
                         new ConfirmGuide("合成后的牌卡框边缘从灰色变成了蓝色，代表境界更高了"),
-                        new ConfirmGuide("卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄，如果合成之前想查看卡牌不同境界的效果，可以悬停卡牌浏览"),
+                        new ConfirmGuide("卡牌的境界对应的颜色依次是灰，绿，蓝，紫，黄"),
+                        new ConfirmGuide("如果合成之前想查看卡牌不同境界的效果，可以右键展开卡牌浏览"),
                         new EquipGuide("将合成后的牌置入战斗区",
                             SkillEntryDescriptor.FromEntryJingJie(descriptor.Entry, JingJie.JinDan), firstDeckIndex),
                         new ClickBattleGuide("战斗中虽然说是观察对手的招数，找出应对之策" +
@@ -1066,6 +1077,7 @@ public class RoomCategory : Category<RoomEntry>
                             SkillEntryDescriptor.FromNameJingJie("云袖", JingJie.LianQi), SkillEntryDescriptor.FromNameJingJie("恋花", JingJie.LianQi)),
                         new ConfirmGuide("真的合成了诶。\n徐福发现了新的规律，不同名同境界两张牌，也可以合成。"),
                         new ConfirmGuide("效果是随机发现一张其他的牌。\n新发现的牌会比用于合成的牌，境界高一阶。"),
+                        new ConfirmGuide("如果记不住也不要紧，将一张牌悬停在另外一张牌上时，可以查看预合成浏览"),
                         new ConfirmGuide("这样就可以缓解战斗区的牌质量不足，而手牌太多帮不上忙的问题了。"),
                         new ConfirmGuide("用现有的牌击败对手吧。"),
                     });
