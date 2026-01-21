@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class BattleEntityView : XView
 {
@@ -16,9 +17,7 @@ public class BattleEntityView : XView
     [SerializeField] private RectTransform FieldViewHidePivot;
     [SerializeField] private CanvasGroup FieldViewCanvasGroup;
 
-    [SerializeField] private Transform Anchor;
-    private PrefabEntry CurrPrefabEntry;
-    private GameObject Model;
+    [SerializeField] private Image RunImage;
 
     public override void SetAddress(Address address)
     {
@@ -38,23 +37,10 @@ public class BattleEntityView : XView
             return;
 
         NameText.text = $"{entity.GetEntry().GetName()}";
-        
-        SetModel(entity.GetEntry().GetRunModelPrefabEntry());
+        RunImage.sprite = entity.GetEntry().GetRunIcon();
 
         FieldView.Sync();
         FormationList.Sync();
-    }
-
-    private void SetModel(PrefabEntry targetPrefabEntry)
-    {
-        if (CurrPrefabEntry == targetPrefabEntry)
-            return;
-        
-        if (Model != null)
-            Destroy(Model);
-
-        CurrPrefabEntry = targetPrefabEntry;
-        Model = Instantiate(CurrPrefabEntry.Prefab, Anchor);
     }
 
     public Tween ShowTween()

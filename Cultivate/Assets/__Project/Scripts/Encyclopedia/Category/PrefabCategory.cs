@@ -15,26 +15,6 @@ public class PrefabCategory : Category<PrefabEntry>
             new("Prefab01_005", "ConfigModel彼此卿", "Prefabs/ConfigModels/彼此卿"),
             new("Prefab01_006", "ConfigModel风雨晴", "Prefabs/ConfigModels/风雨晴"),
             
-            // Run Models
-            new("Prefab0006", "RunModel缺失模型", "Prefabs/RunModels/缺失模型"),
-            new("Prefab0007", "RunModel徐福", "Prefabs/RunModels/徐福"),
-            new("Prefab0008", "RunModel子非鱼", "Prefabs/RunModels/子非鱼"),
-            new("Prefab0009", "RunModel子非燕", "Prefabs/RunModels/子非燕"),
-            new("Prefab0010", "RunModel风雨晴", "Prefabs/RunModels/风雨晴"),
-            new("Prefab0011", "RunModel梦乃遥", "Prefabs/RunModels/梦乃遥"),
-            new("Prefab0012", "RunModel噬金甲", "Prefabs/RunModels/噬金甲"),
-            new("Prefab0013", "RunModel墨蛟", "Prefabs/RunModels/墨蛟"),
-            new("Prefab0014", "RunModel渊虾", "Prefabs/RunModels/渊虾"),
-            new("Prefab0015", "RunModel九尾狐", "Prefabs/RunModels/九尾狐"),
-            new("Prefab0016", "RunModel推山兽", "Prefabs/RunModels/推山兽"),
-            new("Prefab0017", "RunModel白泽", "Prefabs/RunModels/白泽"),
-            new("Prefab0018", "RunModel鲲", "Prefabs/RunModels/鲲"),
-            new("Prefab0019", "RunModel毕方", "Prefabs/RunModels/毕方"),
-            new("Prefab0020", "RunModel火蟾", "Prefabs/RunModels/火蟾"),
-            new("Prefab0021", "RunModel麒麟", "Prefabs/RunModels/麒麟"),
-            new("Prefab0022", "RunModel鹤仙人", "Prefabs/RunModels/鹤仙人"),
-            new("Prefab0023", "RunModel鹿仙人", "Prefabs/RunModels/鹿仙人"),
-            
             // Stage Models
             new("Prefab0024", "StageModel缺失模型", "Prefabs/StageModels/缺失模型"),
             new("Prefab0025", "StageModel徐福", "Prefabs/StageModels/徐福"),
@@ -65,5 +45,4 @@ public class PrefabCategory : Category<PrefabEntry>
 
     public PrefabEntry MissingConfigModel() => FromName("ConfigModel缺失模型");
     public PrefabEntry MissingStageModel() => FromName("StageModel缺失模型");
-    public PrefabEntry MissingRunModel() => FromName("RunModel缺失模型");
 }
