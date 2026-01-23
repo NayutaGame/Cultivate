@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using UnityEngine;
 
 public class DamagedTweenAnimation : Animation
 {
@@ -20,8 +21,10 @@ public class DamagedTweenAnimation : Animation
 
     private Tween GetTween()
     {
-        return _model.Transform
-            .DOShakeRotation(0.6f, 10 * _model.BaseTransform.forward, 10, 90, true, ShakeRandomnessMode.Harmonic)
-            .SetEase(Ease.InQuad);
+        return DOTween.Sequence()
+            .Append(_model.Transform
+                .DOShakeRotation(0.6f, 10 * _model.BaseTransform.forward, 10, 90, true, ShakeRandomnessMode.Harmonic)
+                .SetEase(Ease.InQuad))
+            .Append(_model.Transform.DOLocalRotate(Vector3.zero, 0.1f));
     }
 }
