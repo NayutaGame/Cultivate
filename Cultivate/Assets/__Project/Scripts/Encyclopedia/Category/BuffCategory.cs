@@ -941,7 +941,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff04_013",
                 name:                       "明镜",
-                rawDescription:             "下[Stack]次失去生命时，获得护甲",
+                rawDescription:             "下[层数]次失去生命时，获得护甲",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
