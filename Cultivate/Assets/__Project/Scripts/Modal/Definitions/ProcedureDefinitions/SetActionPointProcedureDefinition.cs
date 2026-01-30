@@ -47,7 +47,7 @@ public class SetActionPointProcedureDefinition : ProcedureDefinition
         description.Join(pd.PostCondDefinition.Description);
         
         if (ActionPoint == 2)
-            description.Join($"二动");
+            description.Join($"[keyword:二动]");
         else if (ActionPoint == 3)
             description.Join($"三动");
         else if (ActionPoint == 4)

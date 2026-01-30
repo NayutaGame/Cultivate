@@ -155,7 +155,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：开局：获得1免费" +
                                                                                     "\n4张：开局及每轮：获得1吸血" +
                                                                                     "\n6张：所有耗蓝-1" +
-                                                                                    "\n9张：第一次二动时，行动八次，之后如果受伤则死亡",
+                                                                                    "\n9张：第一次[keyword:二动]时，行动八次，之后如果受伤则死亡",
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -196,7 +196,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血" +
                         "\n6张：所有耗蓝-1" +
-                        "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
+                        "\n9张：第一次[keyword:二动]时，行动八次，之后如果受伤则死亡".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -222,7 +222,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血" +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
-                        "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
+                        "\n9张：第一次[keyword:二动]时，行动八次，之后如果受伤则死亡".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -246,7 +246,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：开局：获得1免费" +
                         "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
-                        "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive(),
+                        "\n9张：第一次[keyword:二动]时，行动八次，之后如果受伤则死亡".ApplyInactive(),
                         stageClosures: new StageClosure[]
                         {
                             new(StageClosureDict.WIL_STAGE, 0, async (listener, closure, stageEventDetails) =>
@@ -266,7 +266,7 @@ public class FormationCategory : Category<FormationGroupEntry>
                         rawRewardDescription:                                          "2张：开局：获得1免费".ApplyInactive() +
                         "\n4张：开局及每轮：获得1吸血".ApplyInactive() +
                         "\n6张：所有耗蓝-1".ApplyInactive() +
-                        "\n9张：第一次二动时，行动八次，之后如果受伤则死亡".ApplyInactive()),
+                        "\n9张：第一次[keyword:二动]时，行动八次，之后如果受伤则死亡".ApplyInactive()),
                 }),
 
             new(id: "FormationGroup0003",

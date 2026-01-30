@@ -954,7 +954,7 @@ MonoBehaviour:
     Major: 1
     Minor: 1
     Patch: 0
-  _targetAudience: 2
+  _targetAudience: 0
   _targetPackage: 0
   AppCanvas: {fileID: 1627659553}
   RandomManager: {fileID: 1379607458}

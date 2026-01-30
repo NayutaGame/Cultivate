@@ -254,7 +254,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff02_005",
                 name:                       "飞鸿踏雪",
-                rawDescription:             "二动时：获得1格挡",
+                rawDescription:             "[keyword:二动]时：获得1格挡",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false,
@@ -273,7 +273,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff02_006",
                 name:                       "二动",
-                rawDescription:             "下一回合二动",
+                rawDescription:             "下一回合[keyword:二动]",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
@@ -1466,7 +1466,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff07_005",
                 name:                       "缠绕",
-                rawDescription:             "无法二动/三动\n回合结束/二动时：-1层",
+                rawDescription:             "无法[keyword:二动]/三动\n回合结束/[keyword:二动]时：-1层",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                true,
@@ -1630,7 +1630,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff08_003",
                 name:                       "禁止二动",
-                rawDescription:             "无法二动",
+                rawDescription:             "无法[keyword:二动]",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   false,
                 dispellable:                false,
@@ -1936,7 +1936,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff99_011",
                 name:                       "灵敏",
-                rawDescription:             "使用二动牌时，获得[层数]闪避",
+                rawDescription:             "使用[keyword:二动]牌时，获得[层数]闪避",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false,
@@ -2161,7 +2161,7 @@ public class BuffCategory : Category<BuffEntry>
 
             new(id:                         "Buff99_023",
                 name:                       "火箭靴",
-                rawDescription:             "使用灵气牌时：获得二动",
+                rawDescription:             "使用灵气牌时：获得[keyword:二动]",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false,
@@ -2182,7 +2182,7 @@ public class BuffCategory : Category<BuffEntry>
 
             new(id:                         "Buff99_024",
                 name:                       "定龙桩",
-                rawDescription:             "对方二动时：暴击补至1",
+                rawDescription:             "对方[keyword:二动]时：暴击补至1",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false,

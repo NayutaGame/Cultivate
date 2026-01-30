@@ -213,7 +213,7 @@ public class SkillCategory : Category<SkillEntry>
                                                     {
                                                         DamageDetails d = closureDetails as DamageDetails;
                                                         d.Src.SetActionPoint(2);
-                                                    }, key: "BaiRenClosure", rawDescription: "击伤：二动", checkListener: true);
+                                                    }, key: "BaiRenClosure", rawDescription: "击伤：[keyword:二动]", checkListener: true);
 
     private static readonly StageClosure ShanFengClosure = new(StageClosureDict.WIL_CYCLE, 0,
                                                     async (listener, closure, closureDetails) =>
@@ -1311,7 +1311,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("飞鸿踏雪")
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("二动时：获得1格挡"))
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("[keyword:二动]时：获得1格挡"))
                         .SetPreCondDefinition(PreCondDefinition.GeHuaShen),
                     new CycleProcedureDefinition(WuXing.Shui, gain: 1),
                     new SetActionPointProcedureDefinition(2),
@@ -1426,7 +1426,7 @@ public class SkillCategory : Category<SkillEntry>
                     new GainBuffProcedureDefinition("瑞雪", induced: false)
                         .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("格挡变成治疗")),
                     new GainBuffProcedureDefinition("禁止二动", induced: false)
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("无法二动")),
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("无法[keyword:二动]")),
                 }),
             
             new(id:                         "Skill02_018",
@@ -2704,7 +2704,7 @@ public class SkillCategory : Category<SkillEntry>
                 },
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以二动")),
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：目标变得可以[keyword:二动]")),
                 }),
             
             new(id:                         "Skill07_013",
@@ -3631,7 +3631,7 @@ public class SkillCategory : Category<SkillEntry>
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 descriptionGenerator:       (j, dj, costResult, castResult) =>
-                    $"二动" +
+                    $"[keyword:二动]" +
                     $"\n每1格挡，造成{1 + dj}伤害",
                 castGenerator:              async d =>
                 {
@@ -3875,7 +3875,7 @@ public class SkillCategory : Category<SkillEntry>
                 jingJieBound:               JingJie.LianQi2HuaShen,
                 descriptionGenerator:       (j, dj, costResult, castResult) =>
                     $"护甲+{10 + 10 * dj}" +
-                    $"\n二动 升华",
+                    $"\n[keyword:二动] 升华",
                 castGenerator:              async d =>
                 {
                     await d.GainArmorProcedure(10 + 10 * d.Dj, induced: false);
@@ -4573,7 +4573,7 @@ public class SkillCategory : Category<SkillEntry>
             //         $"奇偶：" +
             //         $"升华".ApplyOdd(castResult) +
             //         $"/" +
-            //         $"二动".ApplyEven(castResult) +
+            //         $"[keyword:二动]".ApplyEven(castResult) +
             //         $"\n灵气+4",
             //     cast:                       async d =>
             //     {
@@ -5203,7 +5203,7 @@ public class SkillCategory : Category<SkillEntry>
             //     wuXing:                     WuXing.Wu,
             //     jingJieBound:               JingJie.YuanYingOnly,
             //     skillTypeComposite:         TagCategory.Deplete | TagCategory.Swift,
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n二动 二重",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n[keyword:二动] 二重",
             //     cast:                       async d =>
             //     {
             //         caster.SetActionPoint(2);
@@ -5457,7 +5457,7 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         TagCategory.Deplete | TagCategory.Exhaust,
             //     cost:                       CostResult.ChannelFromValue(2),
             //     costDescription:            CostDescription.ChannelFromValue(2),
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n升华\n使用灵气牌时，获得二动",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n升华\n使用灵气牌时，获得[keyword:二动]",
             //     cast:                       async d =>
             //     {
             //         await skill.ExhaustProcedure();
@@ -5472,7 +5472,7 @@ public class SkillCategory : Category<SkillEntry>
             //     skillTypeComposite:         TagCategory.Deplete | TagCategory.Exhaust,
             //     cost:                       CostResult.ChannelFromValue(2),
             //     costDescription:            CostDescription.ChannelFromValue(2),
-            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n升华\n对方二动时，如果没有暴击，获得1",
+            //     castDescription:            (j, dj, costResult, castResult) => "枯竭\n升华\n对方[keyword:二动]时，如果没有暴击，获得1",
             //     cast:                       async d =>
             //     {
             //         await skill.ExhaustProcedure();
