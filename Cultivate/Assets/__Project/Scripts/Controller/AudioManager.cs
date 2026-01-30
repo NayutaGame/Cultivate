@@ -47,6 +47,11 @@ public class AudioManager : Singleton<AudioManager>
 
     private void PlaySFX(AudioEntry audioEntry)
     {
+        // EventInstance instance = RuntimeManager.CreateInstance(audioEntry.EventReference);
+        // Instance.SFXBus.getVolume(out float volume);
+        // instance.setVolume(volume);
+        // instance.start();
+        // instance.release();
         RuntimeManager.PlayOneShot(audioEntry.EventReference);
     }
 

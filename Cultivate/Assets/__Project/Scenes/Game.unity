@@ -952,7 +952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _version:
     Major: 1
-    Minor: 0
+    Minor: 1
     Patch: 0
   _targetAudience: 2
   _targetPackage: 0
