@@ -648,7 +648,7 @@ public class AchievementCategory : Category<AchievementEntry>
             
             new(id: "ACH024",
                 name: "妙手空空",
-                rawConditionDescription: "利用幻化复制了高于自己境界的牌",
+                rawConditionDescription: "利用幻化复制了不低于自己境界的牌，并战后选择了",
                 rawRewardDescription: "彼此卿可以修改第三个卡包",
                 lockIndex: LockIndex.FromSlot("彼此卿", 2),
                 runClosures: new RunClosure[]
@@ -662,7 +662,7 @@ public class AchievementCategory : Category<AchievementEntry>
                         
                         JingJie currentJingJie = RunManager.Instance.Environment.JingJie;
                         JingJie mimickedJingJie = d.Skills[d.MimicIndex.Value].GetJingJie();
-                        if (mimickedJingJie <= currentJingJie) return;
+                        if (mimickedJingJie < currentJingJie) return;
                         p.Unlock();
                     })
                 }),

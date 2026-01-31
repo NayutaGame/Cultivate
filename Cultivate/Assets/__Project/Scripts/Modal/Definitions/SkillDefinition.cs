@@ -38,6 +38,8 @@ public class SkillDefinition
                 curr = mutateDefinitions[j].Mutate(curr);
         }
         
+        curr.CalcHasStageCast();
+        
         return curr;
     }
 
@@ -53,7 +55,10 @@ public class SkillDefinition
     {
         _hasStartStageCast = false;
         for (int i = 0; i < _procedureDefinitions.Length; i++)
-            _hasStartStageCast |= _procedureDefinitions[i].GetPostCondDefinition() == PostCondDefinition.StartStage;
+        {
+            bool isStartStage = _procedureDefinitions[i].GetPostCondDefinition().Description == PostCondDefinition.StartStage.Description;
+            _hasStartStageCast |= isStartStage;
+        }
     }
 
     public CostDescription GetLiteralCostDescription()

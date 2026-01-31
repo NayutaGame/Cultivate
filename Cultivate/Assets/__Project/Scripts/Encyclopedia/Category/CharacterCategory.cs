@@ -241,6 +241,40 @@ public class CharacterCategory : Category<CharacterEntry>
                             
                             return;
                         }
+                        
+                        if (env.Home.GetJingJie() >= JingJie.LianQi)
+                        {
+                            d.Owner.TraversalCurrentSlots().Do(slot =>
+                            {
+                                if (slot.Skill == null || slot.Skill.GetEntry().GetName() != "幻化") return;
+                        
+                                RunSkill oppoSkill = oppo.GetSlot(slot.GetIndex()).Skill;
+                                if (oppoSkill == null)
+                                {
+                                    slot.PlacedSkill = null;
+                                    return;
+                                }
+                        
+                                bool fanXuMimic = slot.Skill.GetJingJie() == JingJie.FanXu;
+                        
+                                JingJie mimicedJingJie = fanXuMimic ? JingJie.FanXu : Mathf.Min(slot.Skill.GetJingJie(), oppoSkill.GetJingJie());
+                                bool successMimic = mimicedJingJie >= oppoSkill.GetEntry().LowestJingJie;
+                                if (oppoSkill.GetJingJie() == JingJie.FanXu && mimicedJingJie != JingJie.FanXu)
+                                    successMimic = false;
+                                if (!successMimic)
+                                {
+                                    slot.PlacedSkill = null;
+                                    return;
+                                }
+                                
+                                slot.PlacedSkill = PlacedSkill.FromEntryAndJingJie(
+                                    oppoSkill.GetEntry(),
+                                    mimicedJingJie
+                                );
+                            });
+                            
+                            return;
+                        }
                     }),
                     new(RunClosureDict.WIL_DISCOVER_SKILL, 0, (listener, closure, eventDetails) =>
                     {
