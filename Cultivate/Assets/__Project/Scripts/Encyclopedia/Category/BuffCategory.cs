@@ -1401,7 +1401,7 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff07_001",
                 name:                       "跳走步",
-                rawDescription:             "跳过走步阶段",
+                rawDescription:             "跳过走步阶段，下回合将再次使用这回合的卡牌",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   false,
                 dispellable:                false,
