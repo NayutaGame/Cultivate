@@ -48,7 +48,7 @@ public class PostCondDefinition
             return true;
 
         return false;
-    }, "终结：");
+    }, "[keyword:终结]：");
     
     public static PostCondDefinition FromCc(int value, bool greaterEqual)
         => greaterEqual ?

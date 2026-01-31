@@ -18,9 +18,9 @@ public class MapCategory : Category<MapEntry>
                 {
                     new RoomDefinition[]
                     {
-                        new DirectRoomDefinition(0, "出门"),
-                        new DirectRoomDefinition(0, "忘忧堂"),
                         new DirectRoomDefinition(0, "教学10"),
+                        new DirectRoomDefinition(0, "天界树"),
+                        new DirectRoomDefinition(0, "天界树"),
                         new DirectRoomDefinition(0, "天界树"),
                     },
                 }),

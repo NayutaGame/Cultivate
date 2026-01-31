@@ -1303,21 +1303,21 @@ public class RoomCategory : Category<RoomEntry>
                     
                     A.SetWinOperation(() =>
                     {
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0705")); // 蜕变
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0706")); // 凝水
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0707")); // 流霰
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0708")); // 养气丹
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0709")); // 燎原
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_005")); // 蜕变
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_006")); // 凝水
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_007")); // 流霰
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_008")); // 养气丹
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_009")); // 燎原
                         return Dialog3;
                     });
 
                     A.SetLoseOperation(() =>
                     {
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0705"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0706"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0707"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0708"));
-                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("0709"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_005"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_006"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_007"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_008"));
+                        RunManager.Instance.Environment.RemoveSkillProcedure(SkillEntryDescriptor.FromId("Skill09_009"));
                         return Dialog3;
                     });
 

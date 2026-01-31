@@ -262,7 +262,7 @@ public class SkillCategory : Category<SkillEntry>
                                                         int tiaoHeGain = 1 + 4 * skill.Dj;
                                                         d.Value += tiaoHeGain;
                                                         d.CastResult["TiaoHeGain"] = tiaoHeGain.ToString();
-                                                    }, key: "TiaoHeClosure", rawDescription: $"终结：多[TiaoHeGain]", checkListener: true);
+                                                    }, key: "TiaoHeClosure", rawDescription: $"[keyword:终结]：多[TiaoHeGain]", checkListener: true);
 
     private static readonly StageClosure QiuLuBaiClosure = new(StageClosureDict.WIL_ATTACK, 0,
                                                     async (listener, closure, closureDetails) =>
@@ -797,7 +797,7 @@ public class SkillCategory : Category<SkillEntry>
                                                         }
 
                                                         d.Stack += 1;
-                                                    }, key: "JiaShiClosure", rawDescription: "终结：2次", checkListener: true);
+                                                    }, key: "JiaShiClosure", rawDescription: "[keyword:终结]：2次", checkListener: true);
 
     private static readonly StageClosure SunJiClosure = new(StageClosureDict.DID_DAMAGE, 0,
                                                     async (listener, closure, closureDetails) =>
@@ -4248,7 +4248,7 @@ public class SkillCategory : Category<SkillEntry>
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("终结")
-                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("激活下1次终结\n终结：2次"))
+                        .SetDescription((d, procedureDefinition, costResult, castResult) => d.Join("激活下1次终结\n[keyword:终结]：2次"))
                         .AddClosure(JiaShiClosure),
                 }),
 
@@ -4597,7 +4597,7 @@ public class SkillCategory : Category<SkillEntry>
             //     costDescription:            CostDescription.ManaFromValue(1),
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"{10 + 2 * dj}攻\n" +
-            //         $"终结：吸血".ApplyCond(castResult),
+            //         $"[keyword:终结]：吸血".ApplyCond(castResult),
             //     cast:                       async d =>
             //     {
             //         bool cond = await skill.IsEnd(useFocus: true);
@@ -4781,7 +4781,7 @@ public class SkillCategory : Category<SkillEntry>
             //     costDescription:            CostDescription.ManaFromValue(1),
             //     castDescription:            (j, dj, costResult, castResult) =>
             //         $"{7 + 3 * dj}攻".ApplyAttack() +
-            //         $"\n终结：穿透".ApplyStyle(castResult, "0") +
+            //         $"\n[keyword:终结]：穿透".ApplyStyle(castResult, "0") +
             //         $"\n击伤：穿透+1".ApplyStyle(castResult, "1"),
             //     cast:                       async d =>
             //     {
@@ -4869,7 +4869,7 @@ public class SkillCategory : Category<SkillEntry>
             //         $"|" +
             //         $"架势".ApplyStyle(castResult, "9") +
             //         $"|" +
-            //         $"终结".ApplyStyle(castResult, "10") +
+            //         $"[keyword:终结]".ApplyStyle(castResult, "10") +
             //         $"|" +
             //         $"初次".ApplyStyle(castResult, "11") +
             //         $"：翻倍",

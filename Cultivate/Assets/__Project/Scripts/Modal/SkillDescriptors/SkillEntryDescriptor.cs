@@ -39,7 +39,12 @@ public class SkillEntryDescriptor : AnnotatableSkill
         => new(entry: entry);
 
     public static SkillEntryDescriptor FromId(string id)
-        => new(entry: Encyclopedia.SkillCategory.FromId(id));
+    {
+        SkillEntry entry = Encyclopedia.SkillCategory.FromId(id);
+        if (entry == null)
+            Debug.Log("Undesirable Behaviour");
+        return new(entry: entry);
+    }
 
     public static SkillEntryDescriptor FromName(string name)
         => new(entry: Encyclopedia.SkillCategory.FromName(name));

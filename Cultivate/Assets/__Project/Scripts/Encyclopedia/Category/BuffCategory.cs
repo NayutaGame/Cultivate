@@ -986,14 +986,14 @@ public class BuffCategory : Category<BuffEntry>
             
             new(id:                         "Buff05_001",
                 name:                       "终结",
-                rawDescription:             "激活下一个终结效果",
+                rawDescription:             "激活下一个[keyword:终结]效果",
                 buffStackRule:              BuffStackRule.Add,
                 friendly:                   true,
                 dispellable:                false),
             
             new(id:                         "Buff05_002",
                 name:                       "连岳",
-                rawDescription:             "最后两张牌都可以触发终结",
+                rawDescription:             "最后两张牌都可以触发[keyword:终结]",
                 buffStackRule:              BuffStackRule.One,
                 friendly:                   true,
                 dispellable:                false),
