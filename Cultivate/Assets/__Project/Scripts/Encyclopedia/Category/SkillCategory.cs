@@ -2612,7 +2612,7 @@ public class SkillCategory : Category<SkillEntry>
                 },
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：将消耗变成气血消耗，数值根据某种规则")),
+                    new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) => d.Join($"合成：将消耗变成气血消耗，数值根据某种规则，至少为1")),
                 }),
             
             new(id:                         "Skill07_005",
@@ -2821,6 +2821,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "幻化",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.LianQi2FanXu,
+                overridingMergeRule:        MergeRule.CannotEffectMutateMergeRule,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) =>
@@ -2858,7 +2859,7 @@ public class SkillCategory : Category<SkillEntry>
                 tagComposite:               TagCategory.Attack,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
-                    new GainBuffProcedureDefinition("力量", 1 + dj),
+                    new CycleProcedureDefinition(wuXing: WuXing.Mu, gain: 1 + dj),
                     new AttackProcedureDefinition(2),
                 }),
 
@@ -3037,6 +3038,7 @@ public class SkillCategory : Category<SkillEntry>
                 name:                       "妖刀万华",
                 wuXing:                     WuXing.Wu,
                 jingJieBound:               JingJie.HuaShen2FanXu,
+                overridingMergeRule:        MergeRule.CannotEffectMutateMergeRule,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new DescriptionProcedureDefinition((d, procedureDefinition, costResult, castResult) =>
@@ -3054,8 +3056,9 @@ public class SkillCategory : Category<SkillEntry>
 
             new(id:                         "Skill08_001",
                 name:                       "遗憾",
-                wuXing:                     WuXing.Mu, 
+                wuXing:                     WuXing.Mu,
                 jingJieBound:               JingJie.LianQi2FanXu,
+                tagComposite:               TagCategory.Defend,
                 cast:                       (j, dj) => new ProcedureDefinition[]
                 {
                     new GainBuffProcedureDefinition("闪避"),

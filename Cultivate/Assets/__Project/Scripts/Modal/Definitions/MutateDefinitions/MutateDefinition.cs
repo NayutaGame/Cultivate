@@ -79,24 +79,25 @@ public class MutateDefinition
 
     public static readonly MutateDefinition RemoveDebuffMutate = new(
         skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd => 
-            (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly) ||
-            (pd is RemoveArmorProcedureDefinition)),
+            (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly && !g.BuffEntry.IsForbiddenDebuff) ||
+            (pd is LoseArmorProcedureDefinition)),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
             List<ProcedureDefinition> newProcedureDefinitions = new();
 
             Predicate<ProcedureDefinition> pred = pd =>
-                (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly) ||
+                (pd is GainBuffProcedureDefinition g && !g.BuffEntry.Friendly && !g.BuffEntry.IsForbiddenDebuff) ||
                 (pd is LoseArmorProcedureDefinition);
             
             for (int i = 0; i < oldProcedureDefinitions.Length; i++)
             {
-                ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
-                
                 bool cond = pred(oldProcedureDefinitions[i]);
-                if (!cond)
-                    newProcedureDefinitions.Add(cloned);
+                if (cond)
+                    continue;
+                
+                ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
+                newProcedureDefinitions.Add(cloned);
             }
 
             return SkillDefinition.FromDefinition(skillDefinition.GetCostDefinition().Clone(), newProcedureDefinitions.ToArray());
@@ -170,10 +171,10 @@ public class MutateDefinition
     
     public static readonly MutateDefinition AccumulateMutate = new(
         skillDefinition => skillDefinition.GetProcedureDefinitions().AnyMatch(pd =>
-            pd is CycleProcedureDefinition ||
-            pd is FollowingCycleProcedureDefinition ||
-            (pd is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry.BuffStackRule != BuffStackRule.One) ||
-            pd is GiveBuffProcedureDefinition giveBuff && giveBuff.BuffEntry.BuffStackRule != BuffStackRule.One),
+            (pd is CycleProcedureDefinition c && c.Gain > 0) ||
+            (pd is FollowingCycleProcedureDefinition fc && fc.Gain > 0) ||
+            (pd is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry.BuffStackRule != BuffStackRule.One && gainBuff.Stack > 0) ||
+            (pd is GiveBuffProcedureDefinition giveBuff && giveBuff.BuffEntry.BuffStackRule != BuffStackRule.One && giveBuff.Stack > 0)),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
@@ -183,19 +184,19 @@ public class MutateDefinition
             {
                 ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
                 
-                if (cloned is CycleProcedureDefinition c)
+                if (cloned is CycleProcedureDefinition c && c.Gain > 0)
                 {
                     c.Gain += 1;
                 }
-                else if (cloned is FollowingCycleProcedureDefinition fc)
+                else if (cloned is FollowingCycleProcedureDefinition fc && fc.Gain > 0)
                 {
                     fc.Gain += 1;
                 }
-                else if (cloned is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry.BuffStackRule != BuffStackRule.One)
+                else if (cloned is GainBuffProcedureDefinition gainBuff && gainBuff.BuffEntry.BuffStackRule != BuffStackRule.One && gainBuff.Stack > 0)
                 {
                     gainBuff.Stack += 1;
                 }
-                else if (cloned is GiveBuffProcedureDefinition giveBuff && giveBuff.BuffEntry.BuffStackRule != BuffStackRule.One)
+                else if (cloned is GiveBuffProcedureDefinition giveBuff && giveBuff.BuffEntry.BuffStackRule != BuffStackRule.One && giveBuff.Stack > 0)
                 {
                     giveBuff.Stack += 1;
                 }
@@ -349,7 +350,7 @@ public class MutateDefinition
         });
 
     public static readonly MutateDefinition RemoveCondMutate = new(
-        skillDefinition => null != skillDefinition.GetProcedureDefinitions().FirstObj(pd => pd.GetPostCondDefinition() != PostCondDefinition.Default),
+        skillDefinition => null != skillDefinition.GetProcedureDefinitions().FirstObj(pd => pd.GetPostCondDefinition().Description != PostCondDefinition.Default.Description),
         skillDefinition =>
         {
             ProcedureDefinition[] oldProcedureDefinitions = skillDefinition.GetProcedureDefinitions();
@@ -357,10 +358,10 @@ public class MutateDefinition
             
             for (int i = 0; i < oldProcedureDefinitions.Length; i++)
             {
-                ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
-                
-                if (cloned.GetPostCondDefinition() == PostCondDefinition.HasOtherAttack)
+                if (oldProcedureDefinitions[i].GetPostCondDefinition().Description == PostCondDefinition.HasOtherAttack.Description)
                     continue;
+                
+                ProcedureDefinition cloned = oldProcedureDefinitions[i].Clone();
 
                 cloned.SetPostCondDefinition(PostCondDefinition.Default);
                 

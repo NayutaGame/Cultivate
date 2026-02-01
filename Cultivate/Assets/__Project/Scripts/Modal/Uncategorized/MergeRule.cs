@@ -966,6 +966,16 @@ public class MergeRule
         order:                      -100,
         processMerge:               d =>
         {
+            bool isMutator = d.Tgt.GetEntry().IsMutator;
+            if (isMutator)
+            {
+                d.MergeTarget = new InvalidMergeTarget(
+                    mergeType:              "斩断",
+                    errorMessage:           "斩断无法影响墨染");
+                d.State = MergeDetails.MergeState.Cancel;
+                return;
+            }
+            
             SkillEntry toDepopulate = d.Tgt.GetEntry();
             d.AddSideEffect(() =>
             {
@@ -979,7 +989,35 @@ public class MergeRule
         order:                      -100,
         processMerge:               d =>
         {
+            bool isMutator = d.Tgt.GetEntry().IsMutator;
+            if (isMutator)
+            {
+                d.MergeTarget = new InvalidMergeTarget(
+                    mergeType:              "天机",
+                    errorMessage:           "天机无法影响墨染");
+                d.State = MergeDetails.MergeState.Cancel;
+                return;
+            }
+            
             d.HasTianJi = true;
+            d.State = MergeDetails.MergeState.Continue;
+        });
+    
+    public static readonly MergeRule CannotEffectMutateMergeRule = new(
+        name:                       "天机",
+        order:                      -100,
+        processMerge:               d =>
+        {
+            bool isMutator = d.Tgt.GetEntry().IsMutator;
+            if (isMutator)
+            {
+                d.MergeTarget = new InvalidMergeTarget(
+                    mergeType:              "无法墨染",
+                    errorMessage:           "这张牌无法和墨染交互");
+                d.State = MergeDetails.MergeState.Cancel;
+                return;
+            }
+            
             d.State = MergeDetails.MergeState.Continue;
         });
 }

@@ -319,12 +319,24 @@ public class MapCategory : Category<MapEntry>
                 onStartRun: env =>
                 {
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("金刃"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("阿修罗"));
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("起势"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("一切皆苦"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("断罪"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("斩断"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("幻化"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("焚天"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("妖刀万华"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("潜龙在渊"));
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("暴击墨染"));
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("吸血墨染"));
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("穿透墨染"));
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("二动墨染"));
                     env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("开局墨染"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("净化墨染"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("禁忌墨染"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("条件墨染"));
+                    env.PickSkillProcedure(Encyclopedia.SkillCategory.FromName("汇聚墨染"));
                 },
                 levels: new RoomDefinition[][]
                 {
